@@ -27,9 +27,9 @@ document.addEventListener("DOMContentLoaded", function() {
     let startTime;
     let local_startTime;
     let veryStartTime;
+    let targetTime;
     let elapsedTime = 0; //Time during each productivity interval
     let elapsedChillTime = 0;
-    let targetTime = 0;
     let startStopCounter = 0;
     let hitTarget = false;
     let submittedTarget = false;
@@ -170,6 +170,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         
         let percentage = timeDiff / targetTime;
+        console.log(percentage);
 
         if (percentage > 1) {
             percentage = 1; //cap percentage at 100%
