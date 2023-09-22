@@ -162,6 +162,11 @@ document.addEventListener("DOMContentLoaded", function() {
     function updateProgressBar() {
 
         let timeDiff;
+
+        if (isNaN(targetTime) || targetTime === null) { //if user doesn't input target time, break out
+            return;
+        }
+
         if (inHyperFocus) { //if in productivity mode
             timeDiff = Date.now() - startTime + elapsedTime;
         }
@@ -170,7 +175,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         
         let percentage = timeDiff / targetTime;
-        console.log(percentage);
 
         if (percentage > 1) {
             percentage = 1; //cap percentage at 100%
