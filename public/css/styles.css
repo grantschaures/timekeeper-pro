@@ -1,0 +1,278 @@
+@font-face {
+    font-family: myFont;
+    src: url("../fonts/GothamLight.ttf");
+}
+
+@font-face {
+    font-family: myFont2;
+    /* src: url("../fonts/CPMono_v07_Black.woff"); */
+    src: url("../fonts/CPMono_v07_Bold.woff");
+}
+
+body {
+    /* background-color: #000000; */
+    /* background: linear-gradient(rgb(0, 255, 0), rgba(17, 0, 255, 0.274)); */
+    font-family: myFont;
+}
+
+html, body { /* Extra step to ensure gradient covers entire window on all browsers */
+    margin: 0;
+    height: 100%;
+    /* background-color: #e65c57; /* maybe turn into slight lighter darker gradient */
+    /* background-color: #e65c57; */
+    background-image: linear-gradient(to bottom, #ff595e, #ca403b);
+
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;  /* Optional: this will keep the gradient fixed when the content scrolls */
+}
+
+h1 {
+    font-size: 30px;
+    font-family: myFont2; 
+    color: white;
+    /* border: 1px solid yellow; */
+}
+
+h4 {
+    font-family: myFont2;
+    color: white;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+#main-container {
+    /* Fixed dimensions */
+    width: 100%;
+    max-width: 600px;
+    
+    /* Centering it horizontally */
+    margin-left: auto;
+    margin-right: auto;
+
+    align-items: center;
+    flex-direction: column; 
+    
+    /* Optional: for clarity, to see the boundaries of the centered div */
+    /* border: 1px solid black; /* Remove this later on */
+    box-sizing: border-box; /* to include border in the div's total width/height */
+}
+
+.header-btns {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 225px;
+    margin-right: 0px;
+}
+
+.header-btns button {
+    width: 100px;           /* Set a specific width */
+}
+
+#target-hours-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    height: 50px;
+
+    background-color: rgba(0, 0, 0, 0.25);
+
+    /* Centering it horizontally */
+    margin-left: auto;
+    margin-right: auto;
+
+    /* Fixed dimensions */
+    width: 100%;
+    max-width: 500px;
+
+    height: 65px;
+
+    /* Optional: for clarity, to see the boundaries of the centered div */
+    border: 1px rgba(0, 0, 0, 0.25);
+    box-sizing: border-box; /* to include border in the div's total width/height */
+
+    border-radius: 10px;
+}
+
+#target-hours {
+    width: 40px;
+    background-color: rgb(175, 175, 175);
+    font-family: myFont;
+    font-size: 16px;
+}
+
+#coolDiv {
+    width: 100px;
+}
+
+#target-hours-submit {
+    width: 100px;
+}
+
+hr {
+    height: 2px;
+    background-color: white;
+    border: none;
+}
+
+#timekeeping-container {
+    display: flex;
+    justify-content: center;
+
+    padding-block: 50px;
+    margin-block: 10px;
+    margin-top: 50px;
+    margin-bottom: 100px;
+
+    background-color: rgba(0, 0, 0, 0.25);
+
+    /* Centering it horizontally */
+    margin-left: auto;
+    margin-right: auto;
+
+    flex-direction: column;
+    align-items: center;
+
+    /* Fixed dimensions */
+    width: 100%;
+    max-width: 400px;
+
+    /* Optional: for clarity, to see the boundaries of the centered div */
+    border: 1px rgba(0, 0, 0, 0.25);
+    box-sizing: border-box; /* to include border in the div's total width/height */
+
+    border-radius: 20px;
+}
+
+.lower-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    /* border: 1px solid yellow; */
+}
+
+.stopwatch {
+    padding-block: 25px;
+    font-size: 48px;
+    /* border: 1px solid yellow; */
+    color: white;
+}
+
+#start-stop {
+    width: 85px; /* to stop the button width from dynamically changing based on length of stop/ start */
+}
+
+
+button {
+    background-color: white; /* or any other color you prefer */
+    border: 1px solid white; /* or any other color and width you prefer */
+    outline: none; /* remove the default browser outline when the button is focused */
+    padding: 8px 15px;
+    cursor: pointer; /* make it clear it's clickable */
+    border-radius: 5px;
+    font-family: myFont2;
+    font-size: 16px;
+}
+
+button:active {
+    background-color: #e6e6e6; /* slightly darker background when button is pressed */
+    transform: scale(0.95);
+}
+
+button:focus {
+    box-shadow: none; /* remove the default browser box shadow when the button is focused */
+}
+
+button:hover {
+    background-color: rgb(226, 226, 226);
+    border-color: rgb(226, 226, 226);
+}
+
+#productivity-chill-mode {
+    /* border: 1px solid yellow; */
+    color: white;
+}
+
+#session-log {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 20px;
+}
+
+#session-log p {
+    margin-top: 0px;
+    /* Add other styles as needed */
+}
+
+.session-log-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.progress-container {
+    width: 100%;
+    max-width: 600px;  /* Set maximum width for the container if you like */
+    height: 15px;
+    background-color: #ffffff;  /* Light grey color for the background */
+    border-radius: 15px;  /* Rounded corners for the container */
+    overflow: hidden;  /* Ensure the progress-bar stays within the bounds */
+    /* Centering it horizontally */
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+}
+
+.progress-bar {
+    width: 0%;  /* You can change this to represent the actual progress */
+    height: 100%;
+    background-color: #53e658;  /* Green (#53e658) color for the progress */
+    border-radius: 15px 0 0 15px;  /* Only the left side is rounded to match the container */
+}
+
+#target-hours {
+    padding: 8px 12px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid white;
+}
+
+#display {
+    font-family: myFont2;
+    font-size: 60px;
+    padding-bottom: 25px;
+}
+
+#productivity-chill-mode {
+    font-family: myFont2;
+
+}
+
+@keyframes pulsate {
+    0% {
+        box-shadow: 0 0 5px #53e658,
+                    0 0 10px #53e658;
+    }
+    50% {
+        box-shadow: 0 0 10px #53e658,
+                    0 0 25px #53e658,
+                    0 0 30px #53e658;
+    }
+    100% {
+        box-shadow: 0 0 5px #53e658,
+                    0 0 10px #53e658;
+    }
+}
+
+.glowing-effect {
+    animation: pulsate 3s infinite; /* The animation will run for 3 seconds and will repeat indefinitely */
+}

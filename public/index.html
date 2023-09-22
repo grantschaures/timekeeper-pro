@@ -1,0 +1,69 @@
+<!DOCTYPE html> <!-- Instructs web browser about type of document that follows -->
+<html lang="en">
+    <head>
+        <meta charset='utf-8'>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <title>Timekeeper Pro</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <link rel='stylesheet' href='/css/styles.css'> <!-- Importing external stylesheet -->
+        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/favi_pic.png">
+        <script src='/js/index.js'></script>
+    </head>
+
+    <body> <!-- enclose all elements and content to be rendered in the browser -->
+        <div id="main-container">
+            <header>
+                <div class="container">
+                    <div id="logo">
+                        <h1>TIMEKEEPER PRO</h1>
+                    </div>
+
+                    <div class="header-btns">
+                        <button>Report</button>
+                        <button>Menu</button>
+                    </div>
+                </div>
+            </header>
+            
+            <main>
+                <div id="target-hours-container">
+                    <div>
+                        <label for="hours" id="target-label"><h4>Enter Target (hours):</h4></label>
+                    </div>
+                    <div id="coolDiv">
+                        <input type="number" id="target-hours" class="glowing-effect" name="hours" min="0">
+                    </div>
+                    <div>
+                        <button type="submit" id="target-hours-submit">Submit</button>
+                    </div>
+                </div>
+
+                <div class="progress-container">
+                    <div class="progress-bar"></div>
+                </div>
+
+                <div id="timekeeping-container">
+                    <div>
+                        <h3 id="productivity-chill-mode">Press 'Start' to start session</h3>
+                    </div>
+                    <div class="stopwatch">
+                        <div id="display">00:00:00</div>
+                    </div>
+                    <div class="lower-buttons">
+                        <div>
+                            <button id="notes">Notes</button>
+                        </div>
+                        <div>
+                            <button id="start-stop">Start</button>
+                            <audio id="click-sound" src="/sounds/OS_FEEL_snare_clock.wav" preload="auto"></audio>
+                        </div>
+                        <div>
+                            <button id="end-session">End Session</button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </body>
+</html>
