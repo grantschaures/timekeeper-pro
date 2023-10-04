@@ -220,9 +220,10 @@ button:hover {
 }
 
 .progress-container {
+    position: relative;
     width: 100%;
     max-width: 600px;  /* Set maximum width for the container if you like */
-    height: 15px;
+    height: 30px;
     background-color: #ffffff;  /* Light grey color for the background */
     border-radius: 15px;  /* Rounded corners for the container */
     overflow: hidden;  /* Ensure the progress-bar stays within the bounds */
@@ -237,6 +238,18 @@ button:hover {
     height: 100%;
     background-color: #53e658;  /* Green (#53e658) color for the progress */
     border-radius: 15px 0 0 15px;  /* Only the left side is rounded to match the container */
+}
+
+.progress-text {
+    font-family: myFont2;
+    font-size: 18px;
+    position: absolute;   /* Absolute positioning to overlay on top of the progress bar */
+    top: 50%;             /* Start from the vertical midpoint */
+    left: 50%;            /* Start from the horizontal midpoint */
+    transform: translate(-50%, -50%); /* Center both horizontally and vertically */
+    z-index: 1;           /* Ensure the text is on top */
+    color: #000;          /* Text color (adjust as needed) */
+    font-weight: bold;    /* Bold font (adjust as needed) */
 }
 
 #target-hours {
@@ -254,7 +267,6 @@ button:hover {
 
 #productivity-chill-mode {
     font-family: myFont2;
-
 }
 
 @keyframes pulsate {

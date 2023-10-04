@@ -308,7 +308,7 @@ function totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConve
             percentage = 1; //cap percentage at 100%
         }
 
-        total_time_display.textContent = `${hours}:${minutes}:${seconds}` + " | (" + Math.round(percentage * 100) + "%)";
+        //total_time_display.textContent = `${hours}:${minutes}:${seconds}` + " | (" + Math.round(percentage * 100) + "%)";
     } else {
         total_time_display.textContent = `${hours}:${minutes}:${seconds}`;
     }
