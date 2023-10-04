@@ -22,18 +22,38 @@ document.addEventListener("DOMContentLoaded", function() {
         msPerSec: 1000
     };
 
-    let interval;
-    let local_interval;
-    let startTime;
-    let local_startTime;
-    let veryStartTime;
-    let elapsedTime = 0; //Time during each productivity interval
-    let elapsedChillTime = 0;
-    let targetTime = 0;
-    let startStopCounter = 0;
-    let hitTarget = false;
-    let submittedTarget = false;
-    let inHyperFocus = true;
+    //bundle these function together after getting a good understanding of them
+
+    //INTERVALS
+    let intervals = {
+        main: null, //progress bar interval
+        local: null //interval for time display
+    };
+    
+    //START TIMES
+    let startTimes = {
+        hyperFocus: undefined, //startTime of current hyper focus session
+        chillTime: undefined, //startTime of current chill time session
+        local: undefined, //local start time for current display
+        beginning: undefined //very first start time of entire session
+    };
+
+    //TIME AMOUNTS
+    let targetTime = null; //Target amount of time in ms
+
+    let elapsedTime = {
+        hyperFocus: 0, //Accumulated time from each productivity interval
+        chillTime: 0 //time elapsed during each Chill Time mode
+    }
+
+    //STATE-RELATED FLAGS AND COUNTERS
+    let startStopCounter = 0; //tracks number of times start/stop is pressed
+
+    let flags = {
+        hitTarget: false, //Flag: target time has been reached
+        submittedTarget: false, //Flag: if target time has been submitted
+        inHyperFocus: true //Boolean Flag: check if in hyper focus mode
+    }
 
     // ----------------
     // EVENT LISTENERS
@@ -48,154 +68,172 @@ document.addEventListener("DOMContentLoaded", function() {
         startStopCounter++; //keep track of button presses
 
         if (startStopCounter === 1) {
-            veryStartActions(veryStartTime);
+            veryStartActions(startTimes);
         }
 
-        local_startTime = Date.now();
-        clearInterval(local_interval);
-        local_interval = setInterval(() => timeDisplay(local_startTime, display, timeConvert), 1000);
+        startTimes.local = Date.now();
+        clearInterval(intervals.local);
+        intervals.local = setInterval(() => timeDisplay(startTimes.local, display, timeConvert), 1000); //using arrow function so we can pass arguments
         
-        if (!interval) { //executes when interval is undefined --> Hyper Focus Mode
+        if (!intervals.main) { //executes when interval is undefined --> Hyper Focus Mode
 
-            setButtonTextAndMode("Stop", "Hyper Focus");
-            elapsedChillTime = Date.now() - (veryStartTime + elapsedTime);
-            startTime = Date.now();
-            interval = setInterval(updateProgressBar, 1000); //repeatedly calls reference to updateProgressBar function every 1000 ms (1 second)
+            setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop", "Hyper Focus");
+            startTimes.hyperFocus = Date.now();
+            intervals.main = setInterval(() => updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar), 1000); //repeatedly calls reference to updateProgressBar function every 1000 ms (1 second)
+
+            if (startStopCounter > 1) {
+                elapsedTime.chillTime += Date.now() - startTimes.chillTime;
+
+                //TESTING
+                console.log("Logged: " + Math.floor((Date.now() - startTimes.chillTime) / 1000) + " seconds of chill time.");
+                console.log("Logged: " + Math.floor((elapsedTime.chillTime) / 1000) + " seconds of elapsed chill time.");
+                console.log("----------------");
+            }
             setBackground("linear-gradient(to bottom, #ff595e, #ca403b)");
         } else { //--> Chill Time
-
-            setButtonTextAndMode("Start", "Chill Time");
-            clearInterval(interval);
-            interval = null;
-            elapsedTime += Date.now() - startTime;
-            console.log("Logged: " + Math.floor((Date.now() - startTime) / 1000) + " seconds of focused effort.");
+            
+            setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", "Chill Time");
+            startTimes.chillTime = Date.now();
+            clearInterval(intervals.main);
+            intervals.main = null;
+            elapsedTime.hyperFocus += Date.now() - startTimes.hyperFocus;
+            
+            //TESTING
+            console.log("Logged: " + Math.floor((Date.now() - startTimes.hyperFocus) / 1000) + " seconds of hyper focus.");
+            console.log("Logged: " + Math.floor((elapsedTime.hyperFocus) / 1000) + " seconds of elapsed hyper focus.");
+            console.log("----------------");
+            
             setBackground("linear-gradient(to bottom, #3b8fe3, #1d60a3, #7f04c7)");
         }
     });
     
     submit_change_btn.addEventListener("click", function() {
-        if (!submittedTarget) { //When submitting target hours
+        if (!flags.submittedTarget) { //When submitting target hours
             
             let inputHours = document.getElementById("target-hours").value;
             
             // Check if the input is empty or zero
-            if(!targetHoursValidate(inputHours, timeConvert)) {
+            if(!targetHoursValidate(inputHours, timeConvert, startTimes, elapsedTime, flags, startStopCounter)) {
                 return;
             }
 
-            replaceTargetHours(inputHours); //sets targetTime
+            targetTime = replaceTargetHours(inputHours, targetTime, flags); //sets targetTime
 
-            if (!inHyperFocus) { //if we're in chill time
-                updateProgressBar(); //update ProgressBar once to demonstrate change made
+            if (!flags.inHyperFocus) { //if we're in chill time
+                updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar); //update ProgressBar once to demonstrate change made
             }
             
-            hitTarget = false;
+            flags.hitTarget = false;
         }
-        else if (submittedTarget) { //When changing target hours
+        else if (flags.submittedTarget) { //When changing target hours
 
-            changeTargetHours();
+            changeTargetHours(flags);
         }
     });
     
     end_session_btn.addEventListener("click", function() { //temporary function
         location.reload();
     });
-
-    // ---------------------
-    // HELPER FUNCTIONS
-    // ---------------------
-    function changeTargetHours() {
-
-        document.getElementById("target-hours").remove();
-            
-        let enterHours = document.createElement('input');
-        enterHours.type = "number";
-        enterHours.id = "target-hours";
-        enterHours.name = "hours";
-        enterHours.min = "0";
-        document.getElementById("coolDiv").appendChild(enterHours);
-        
-        document.getElementById('target-hours-submit').textContent = "Submit";
-        submittedTarget = false;
-    };
-
-    function replaceTargetHours(inputHours) {
-
-        let targetHours = Math.round((parseFloat(inputHours)) * 100) / 100; //return to 100 after testing
-        targetTime = targetHours * 60 * 60 * 1000; //converting hours -> milliseconds
-        document.getElementById("target-hours").remove();
-
-        let submitTarget = document.createElement('h4');
-        submitTarget.textContent = targetHours;
-        submitTarget.id = "target-hours";
-        document.getElementById("coolDiv").appendChild(submitTarget);
-        document.getElementById('target-hours-submit').textContent = "Change";
-        submittedTarget = true;
-    };
-
-    function targetHoursValidate(inputHours, timeConvert) {
-        const roundedHours = Math.round((parseFloat(inputHours)) * 100) / 100;
-        if (!inputHours || roundedHours <= 0 || roundedHours > 24 || (roundedHours * 60 * 60 * 1000) <= getTotalElapsed(inHyperFocus, elapsedTime, local_startTime)) {
-            
-            if (startStopCounter !== 0) { //if not very start of program
-                if (inHyperFocus) { //if not at very start and in hyper focus
-                    alert("Enter a valid target time between " + Math.ceil((parseFloat((elapsedTime + (Date.now() - local_startTime)) / timeConvert.msPerHour)) * 100) / 100 + " hours and 24 hours");
-                }
-                else if (!inHyperFocus) { //if not at very start and in chill time
-                    alert("Enter a valid target time between " + Math.ceil((parseFloat(elapsedTime / timeConvert.msPerHour)) * 100) / 100 + " hours and 24 hours");
-                }
-            }
-            else if (startStopCounter === 0) { //if at very start
-                alert("Enter a valid target time between 0.01 hours and 24 hours");
-            }
-            return false;
-        }
-        return true;
-    };
-
-    function setButtonTextAndMode(stop_start, hf_ct) {
-        start_stop_btn.innerText = stop_start;
-        productivity_chill_mode.innerText = hf_ct;
-        inHyperFocus = stop_start === "Stop";
-    };
-    
-    function updateProgressBar() {
-
-        let timeDiff;
-        if (inHyperFocus) { //if in productivity mode
-            timeDiff = Date.now() - startTime + elapsedTime;
-        }
-        else if (!inHyperFocus) { //if in chill time
-            timeDiff = elapsedTime;
-        }
-        
-        let percentage = timeDiff / targetTime;
-
-        if (percentage > 1) {
-            percentage = 1; //cap percentage at 100%
-        }
-        
-        if (targetTime !== 0 && percentage >= 1 && !hitTarget) { //when target time is hit
-            hitTarget = true;
-            setTimeout(() => {
-                console.log("Congrats! You've hit your target time!");
-                alert("Congrats! You've hit your target time!");
-            }, 1); //experiment w/ value to solve timing issues
-        }
-        
-        progressBar.style.width = (percentage * 100) + '%';
-    };
 });
 
-//  I will define functions outside of the DOMContentLoaded event handler
-//  if it doesn't require more than 4 parameters
+// ---------------------
+// HELPER FUNCTIONS
+// ---------------------
+function changeTargetHours(flags) {
+
+    document.getElementById("target-hours").remove();
+        
+    let enterHours = document.createElement('input');
+    enterHours.type = "number";
+    enterHours.id = "target-hours";
+    enterHours.name = "hours";
+    enterHours.min = "0";
+    document.getElementById("coolDiv").appendChild(enterHours);
+    
+    document.getElementById('target-hours-submit').textContent = "Submit";
+    flags.submittedTarget = false;
+};
+
+function replaceTargetHours(inputHours, targetTime, flags) {
+
+    let targetHours = Math.round((parseFloat(inputHours)) * 100) / 100; //return to 100 after testing
+    targetTime = targetHours * 60 * 60 * 1000; //converting hours -> milliseconds
+    document.getElementById("target-hours").remove();
+
+    let submitTarget = document.createElement('h4');
+    submitTarget.textContent = targetHours;
+    submitTarget.id = "target-hours";
+    document.getElementById("coolDiv").appendChild(submitTarget);
+    document.getElementById('target-hours-submit').textContent = "Change";
+    flags.submittedTarget = true;
+
+    return targetTime;
+};
+
+function targetHoursValidate(inputHours, timeConvert, startTimes, elapsedTime, flags, startStopCounter) {
+    const roundedHours = Math.round((parseFloat(inputHours)) * 100) / 100;
+    if (!inputHours || roundedHours <= 0 || roundedHours > 24 || (roundedHours * 60 * 60 * 1000) <= getTotalElapsed(flags.inHyperFocus, elapsedTime.hyperFocus, startTimes.local)) {
+        
+        if (startStopCounter !== 0) { //if not very start of program
+            if (flags.inHyperFocus) { //if not at very start and in hyper focus
+                alert("Enter a valid target time between " + Math.ceil((parseFloat((elapsedTime.hyperFocus + (Date.now() - startTimes.local)) / timeConvert.msPerHour)) * 100) / 100 + " hours and 24 hours");
+            }
+            else if (!flags.inHyperFocus) { //if not at very start and in chill time
+                alert("Enter a valid target time between " + Math.ceil((parseFloat(elapsedTime.hyperFocus / timeConvert.msPerHour)) * 100) / 100 + " hours and 24 hours");
+            }
+        }
+        else if (startStopCounter === 0) { //if at very start
+            alert("Enter a valid target time between 0.01 hours and 24 hours");
+        }
+        return false;
+    }
+    return true;
+};
+
+function setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, stop_start, hf_ct) {
+    start_stop_btn.innerText = stop_start;
+    productivity_chill_mode.innerText = hf_ct;
+    flags.inHyperFocus = stop_start === "Stop";
+};
+
+function updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar) {
+
+    let timeDiff;
+
+    if (isNaN(targetTime) || targetTime === null) { //if user doesn't input target time, break out
+        return;
+    }
+
+    if (flags.inHyperFocus) { //if in productivity mode
+        timeDiff = Date.now() - startTimes.hyperFocus + elapsedTime.hyperFocus;
+    }
+    else if (!flags.inHyperFocus) { //if in chill time
+        timeDiff = elapsedTime.hyperFocus;
+    }
+    
+    let percentage = timeDiff / targetTime;
+    
+    if (percentage > 1) {
+        percentage = 1; //cap percentage at 100%
+    }
+    
+    if (targetTime !== 0 && percentage >= 1 && !flags.hitTarget) { //when target time is hit
+        flags.hitTarget = true;
+        setTimeout(() => {
+            console.log("Congrats! You've hit your target time!");
+            alert("Congrats! You've hit your target time!");
+        }, 1); //experiment w/ value to solve timing issues
+    }
+    
+    progressBar.style.width = (percentage * 100) + '%';
+};
 
 function resetDisplay(display) {
     display.innerText = "00:00:00"; //immediately resets display w/ no lag time
 };
 
-function veryStartActions(veryStartTime) {
-    veryStartTime = Date.now();
+function veryStartActions(startTimes) {
+    startTimes.beginning = Date.now();
     setBrowserTabTitle(); //sets browser tab title to the stopwatch time '00:00:00'
     document.getElementById("target-hours").classList.remove("glowing-effect");
 };
