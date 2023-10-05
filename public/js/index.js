@@ -81,8 +81,8 @@ document.addEventListener("DOMContentLoaded", function() {
             
             setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop", "Hyper Focus");
             startTimes.hyperFocus = Date.now();
-            intervals.main = setInterval(() => updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar), 1000); //repeatedly calls reference to updateProgressBar function every 1000 ms (1 second)
             intervals.total = setInterval(() => totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, targetTime), 1000);
+            intervals.main = setInterval(() => updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar), 1000); //repeatedly calls reference to updateProgressBar function every 1000 ms (1 second)
             
             if (startStopCounter > 1) {
                 elapsedTime.chillTime += Date.now() - startTimes.chillTime;
@@ -299,8 +299,6 @@ function totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConve
     minutes = minutes.toString().padStart(2, '0');
     seconds = seconds.toString().padStart(2, '0');
 
-    console.log(flags.submittedTarget);
-
     if (flags.submittedTarget) {
         let percentage = timeDiff / targetTime;
         
@@ -308,7 +306,7 @@ function totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConve
             percentage = 1; //cap percentage at 100%
         }
 
-        total_time_display.textContent = `${hours}:${minutes}:${seconds}` + " | (" + Math.round(percentage * 100) + "%)";
+        total_time_display.textContent = `${hours}:${minutes}:${seconds}` + " (" + Math.trunc(percentage * 100) + "%)";
     } else {
         total_time_display.textContent = `${hours}:${minutes}:${seconds}`;
     }
