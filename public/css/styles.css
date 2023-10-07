@@ -109,6 +109,19 @@ h4 {
     font-size: 16px;
 }
 
+input[type="number"] {
+    appearance: none;
+    -moz-appearance: none;  /* For Firefox */
+    -webkit-appearance: none;  /* For Safari and Chrome */
+    border: 1px solid #ccc;
+    padding: 5px;
+    font-size: 16px;
+}
+
+input[type="number"]:focus {
+    cursor: text;
+}
+
 #coolDiv {
     width: 100px;
 }
