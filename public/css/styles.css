@@ -114,6 +114,7 @@ h4 {
 
 #target-hours-submit {
     width: 100px;
+    color: black;
 }
 
 hr {
@@ -194,13 +195,6 @@ button:hover {
     background-color: rgb(226, 226, 226);
     border-color: rgb(226, 226, 226);
 }
-
-/*
-.mode-text {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-} */
 
 #productivity-chill-mode {
     /* border: 1px solid yellow; */

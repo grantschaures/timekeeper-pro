@@ -7,5 +7,7 @@
 			"path": "../../../music-services"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "timekeeper_pro"
+	}
 }
