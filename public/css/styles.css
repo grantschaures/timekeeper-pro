@@ -114,7 +114,6 @@ h4 {
 
 #target-hours-submit {
     width: 100px;
-    color: black;
 }
 
 hr {
@@ -172,8 +171,9 @@ hr {
 
 
 button {
-    background-color: white; /* or any other color you prefer */
-    border: 1px solid white; /* or any other color and width you prefer */
+    background-color: white;
+    color: black;
+    border: 1px solid white;
     outline: none; /* remove the default browser outline when the button is focused */
     padding: 8px 15px;
     cursor: pointer; /* make it clear it's clickable */
