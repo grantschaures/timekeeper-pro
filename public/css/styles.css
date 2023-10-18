@@ -5,26 +5,21 @@
 
 @font-face {
     font-family: myFont2;
-    /* src: url("../fonts/CPMono_v07_Black.woff"); */
     src: url("../fonts/CPMono_v07_Bold.woff");
 }
 
 body {
-    /* background-color: #000000; */
-    /* background: linear-gradient(rgb(0, 255, 0), rgba(17, 0, 255, 0.274)); */
     font-family: myFont;
 }
 
 html, body { /* Extra step to ensure gradient covers entire window on all browsers */
     margin: 0;
     height: 100%;
-    /* background-color: #e65c57; /* maybe turn into slight lighter darker gradient */
-    /* background-color: #e65c57; */
     background-image: linear-gradient(to bottom, #ff595e, #ca403b);
 
     background-size: cover;
     background-repeat: no-repeat;
-    background-attachment: fixed;  /* Optional: this will keep the gradient fixed when the content scrolls */
+    background-attachment: fixed;
 }
 
 h1 {
@@ -32,6 +27,12 @@ h1 {
     font-family: myFont2; 
     color: white;
     /* border: 1px solid yellow; */
+}
+
+@media (max-width: 409px) {
+    h1 {
+        font-size: 24px;
+    }
 }
 
 h4 {
@@ -58,47 +59,102 @@ h4 {
     align-items: center;
     flex-direction: column; 
     
-    /* Optional: for clarity, to see the boundaries of the centered div */
-    /* border: 1px solid black; /* Remove this later on */
-    box-sizing: border-box; /* to include border in the div's total width/height */
+    box-sizing: border-box;
+
+    padding: 10px;
+    /* border: 1px solid rgb(0, 255, 200); */
 }
 
 .header-btns {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
-    width: 225px;
-    margin-right: 0px;
+    /* border: 1px solid yellow; */
+}
+
+#reportBtn {
+    display: flex;         /* Convert the button into a flex container */
+    justify-content: space-around;
+    align-items: center;   /* Vertically center the contents */
+    margin-right: 10px;
+}
+
+#menuBtn {
+    display: flex;         /* Convert the button into a flex container */
+    justify-content: space-around;
+    align-items: center;   /* Vertically center the contents */
+}
+
+#reportIcon {
+    width: 20px;
+    height: 20px;
+}
+
+#menuIcon {
+    width: 20px;
+    height: 20px;
 }
 
 .header-btns button {
     width: 100px;           /* Set a specific width */
 }
 
+@media (max-width: 599px) {
+    #reportBtn div {
+        display: none;
+    }
+    #menuBtn div {
+        display: none;
+    }
+    .header-btns button {
+        width: 50px;
+    }
+}
+
 #target-hours-container {
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 10px;
-    height: 50px;
 
+    justify-content: center;
+    
     background-color: rgba(0, 0, 0, 0.25);
-
+    
     /* Centering it horizontally */
     margin-left: auto;
     margin-right: auto;
-
+    
     /* Fixed dimensions */
     width: 100%;
     max-width: 500px;
-
+    
     height: 65px;
-
-    /* Optional: for clarity, to see the boundaries of the centered div */
+    
     border: 1px rgba(0, 0, 0, 0.25);
-    box-sizing: border-box; /* to include border in the div's total width/height */
+    box-sizing: border-box;
+    
+    border-radius: 10px; /* Created corner curves */
+    
+    /* border: 1px solid yellow; */
+}
 
-    border-radius: 10px;
+#target-hours-sub-container {
+    display: flex;
+    align-items: center;
+
+    width: 350px;
+
+    justify-content: space-between;
+
+    margin: 10px;
+
+    /* border: 1px solid blue; */
+    
+}
+
+#target-label {
+    /* border: 1px solid yellow; */
+    display: flex;
+    justify-content: center;
 }
 
 #target-hours {
@@ -108,8 +164,10 @@ h4 {
     font-size: 16px;
 }
 
-#coolDiv {
-    width: 100px;
+@media (max-width: 374px) {
+    #target-label {
+        width: 60px;
+    }
 }
 
 #target-hours-submit {
@@ -140,13 +198,11 @@ hr {
     flex-direction: column;
     align-items: center;
 
-    /* Fixed dimensions */
     width: 100%;
     max-width: 400px;
 
-    /* Optional: for clarity, to see the boundaries of the centered div */
     border: 1px rgba(0, 0, 0, 0.25);
-    box-sizing: border-box; /* to include border in the div's total width/height */
+    box-sizing: border-box;
 
     border-radius: 20px;
 }
@@ -166,7 +222,7 @@ hr {
 }
 
 #start-stop {
-    width: 85px; /* to stop the button width from dynamically changing based on length of stop/ start */
+    width: 85px;
 }
 
 
@@ -174,21 +230,21 @@ button {
     background-color: white;
     color: black;
     border: 1px solid white;
-    outline: none; /* remove the default browser outline when the button is focused */
+    outline: none;
     padding: 8px 15px;
-    cursor: pointer; /* make it clear it's clickable */
+    cursor: pointer;
     border-radius: 5px;
     font-family: myFont2;
     font-size: 16px;
 }
 
 button:active {
-    background-color: #e6e6e6; /* slightly darker background when button is pressed */
+    background-color: #e6e6e6;
     transform: scale(0.95);
 }
 
 button:focus {
-    box-shadow: none; /* remove the default browser box shadow when the button is focused */
+    box-shadow: none;
 }
 
 button:hover {
@@ -210,7 +266,6 @@ button:hover {
 
 #session-log p {
     margin-top: 0px;
-    /* Add other styles as needed */
 }
 
 .session-log-container {
@@ -223,11 +278,11 @@ button:hover {
 .progress-container {
     position: relative;
     width: 100%;
-    max-width: 600px;  /* Set maximum width for the container if you like */
+    max-width: 600px;
     height: 30px;
-    background-color: #ffffff;  /* Light grey color for the background */
-    border-radius: 15px;  /* Rounded corners for the container */
-    overflow: hidden;  /* Ensure the progress-bar stays within the bounds */
+    background-color: #ffffff;
+    border-radius: 15px;
+    overflow: hidden;
     /* Centering it horizontally */
     margin-left: auto;
     margin-right: auto;
@@ -235,22 +290,22 @@ button:hover {
 }
 
 .progress-bar {
-    width: 0%;  /* You can change this to represent the actual progress */
+    width: 0%;
     height: 100%;
-    background-color: #53e658;  /* Green (#53e658) color for the progress */
-    border-radius: 15px 0 0 15px;  /* Only the left side is rounded to match the container */
+    background-color: #53e658;
+    border-radius: 15px 0 0 15px;
 }
 
 .progress-text {
     font-family: myFont2;
     font-size: 18px;
-    position: absolute;   /* Absolute positioning to overlay on top of the progress bar */
-    top: 50%;             /* Start from the vertical midpoint */
-    left: 50%;            /* Start from the horizontal midpoint */
-    transform: translate(-50%, -50%); /* Center both horizontally and vertically */
-    z-index: 1;           /* Ensure the text is on top */
-    color: #000;          /* Text color (adjust as needed) */
-    font-weight: bold;    /* Bold font (adjust as needed) */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    font-weight: bold;
+    white-space: nowrap;
 }
 
 #target-hours {
@@ -266,8 +321,44 @@ button:hover {
     padding-bottom: 25px;
 }
 
+@media (max-width: 354px) {
+    #display {
+        font-size: 50px;
+    }
+}
+
+.mode-text {
+    display: flex;             /* Convert the container to a flex container */
+    justify-content: center;   /* Center content horizontally */
+    align-items: center;       /* Center content vertically */
+    width: 100%;               /* Take up full width of its parent container */
+    height: 100%;              /* Take up full height of its parent container */
+}
+
 #productivity-chill-mode {
     font-family: myFont2;
+    text-align: center;        /* Center the text horizontally */
+}
+
+@media (max-width: 379px) {
+    #end-session {
+        font-size: 0;           /* Hide the original text */
+        padding-right: 15px;    /* Adjust padding to compensate for the hidden text */
+        position: relative;     /* Positioning context for the pseudo-element */
+    }
+
+    #end-session::before {
+        content: "End";         /* Add the new text */
+        background-color: white;
+        color: black;
+        border: 1px solid white;
+        outline: none;
+        padding: 8px 15px;
+        cursor: pointer;
+        border-radius: 5px;
+        font-family: myFont2;
+        font-size: 16px;
+    }
 }
 
 @keyframes pulsate {

@@ -20,21 +20,29 @@
                     </div>
 
                     <div class="header-btns">
-                        <button>Report</button>
-                        <button>Menu</button>
+                        <button id="reportBtn">
+                            <img id="reportIcon" src="/images/noun-report-1025965.png">
+                            <div>
+                                Report
+                            </div>
+                        </button>
+                        <button id="menuBtn">
+                            <img id="menuIcon"src="/images/noun-menu-6192580.png">
+                            <div>
+                                Menu
+                            </div>
+                        </button>
                     </div>
                 </div>
             </header>
             
             <main>
                 <div id="target-hours-container">
-                    <div>                                  
-                        <label for="hours" id="target-label"><h4>Enter Target (hours):</h4></label>
-                    </div>
-                    <div id="coolDiv">
-                        <input type="number" id="target-hours" class="glowing-effect" name="hours" min="0">
-                    </div>
-                    <div>
+                    <div id="target-hours-sub-container">
+                        <label for="hours" id="target-label"><h4>Target Hours: </h4></label>
+                        <div id="coolDiv">
+                            <input type="number" id="target-hours" class="glowing-effect" name="hours" min="0">
+                        </div>
                         <button type="submit" id="target-hours-submit">Submit</button>
                     </div>
                 </div>
