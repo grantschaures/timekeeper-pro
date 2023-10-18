@@ -128,7 +128,10 @@ document.addEventListener("DOMContentLoaded", function() {
             targetTime = replaceTargetHours(inputHours, targetTime, flags); //sets targetTime
 
             if (!flags.inHyperFocus) { //if we're in chill time
-                updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar); //update ProgressBar once to demonstrate change made
+
+                /* Update progress bar & percentage ONCE to demonstrate submitted change in Chill Time */
+                updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar);
+                totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, targetTime);
             }
             
             flags.hitTarget = false;
