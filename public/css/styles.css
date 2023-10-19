@@ -380,3 +380,15 @@ button:hover {
 .glowing-effect {
     animation: pulsate 3s infinite; /* The animation will run for 3 seconds and will repeat indefinitely */
 }
+
+header {
+    /* border: 1px solid yellow; */
+    height: 75px;
+}
+
+hr {
+    height: 1px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.25);; /* or any desired color */
+    margin-bottom: 30px;
+}
