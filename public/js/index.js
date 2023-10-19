@@ -14,7 +14,12 @@ document.addEventListener("DOMContentLoaded", function() {
     const productivity_chill_mode = document.getElementById("productivity-chill-mode");
     const audio = document.getElementById("click-sound"); //plays sound effect when stop/start button hit
     const progressBar = document.querySelector('.progress-bar');
+    const progressContainer = document.querySelector('.progress-container');
     const display = document.getElementById("display");
+
+    const redFavicon = "/images/RED.png";
+    const blueFavicon = "/images/BLUE.png";
+    const link = document.querySelector("link[rel~='icon']");
 
     const timeConvert = {
         msPerHour: 3600000,
@@ -78,11 +83,12 @@ document.addEventListener("DOMContentLoaded", function() {
         
         
         if (!intervals.main) { //executes when interval is undefined --> Hyper Focus Mode
+            setFavicon(link, redFavicon);
             
             setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop", "Hyper Focus");
             startTimes.hyperFocus = Date.now();
             intervals.total = setInterval(() => totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, targetTime), 1000);
-            intervals.main = setInterval(() => updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar), 1000); //repeatedly calls reference to updateProgressBar function every 1000 ms (1 second)
+            intervals.main = setInterval(() => updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar, progressContainer), 1000); //repeatedly calls reference to updateProgressBar function every 1000 ms (1 second)
             
             if (startStopCounter > 1) {
                 elapsedTime.chillTime += Date.now() - startTimes.chillTime;
@@ -94,6 +100,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             setBackground("linear-gradient(to bottom, #ff595e, #ca403b)");
         } else { //--> Chill Time
+            setFavicon(link, blueFavicon);
             
             setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", "Chill Time");
             startTimes.chillTime = Date.now();
@@ -125,12 +132,16 @@ document.addEventListener("DOMContentLoaded", function() {
                 return;
             }
 
+            if (flags.hitTarget) { //remove glowing effect if we've hit the target time (regardless of mode)
+                progressContainer.classList.remove("glowing-effect");
+            }
+
             targetTime = replaceTargetHours(inputHours, targetTime, flags); //sets targetTime
 
             if (!flags.inHyperFocus) { //if we're in chill time
 
                 /* Update progress bar & percentage ONCE to demonstrate submitted change in Chill Time */
-                updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar);
+                updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar, progressContainer);
                 totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, targetTime);
             }
             
@@ -207,7 +218,7 @@ function setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, st
     flags.inHyperFocus = stop_start === "Stop";
 };
 
-function updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar) {
+function updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar, progressContainer) {
 
     let timeDiff;
 
@@ -234,6 +245,8 @@ function updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressB
             console.log("Congrats! You've hit your target time!");
             alert("Congrats! You've hit your target time!");
         }, 1); //experiment w/ value to solve timing issues
+        
+        progressContainer.classList.add("glowing-effect"); //adds glowing effect to progress bar container
     }
     
     progressBar.style.width = (percentage * 100) + '%';
@@ -338,3 +351,14 @@ function setBrowserTabTitle() {
         characterData: true
     });
 };
+
+function setFavicon(link, faviconPath) {
+    // If it doesn't exist, create it and append to the head
+    if (!link) {
+        link = document.createElement('link');
+        link.rel = 'icon';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    }
+
+    link.href = faviconPath;
+}
