@@ -8,6 +8,11 @@
     src: url("../fonts/CPMono_v07_Bold.woff");
 }
 
+@font-face {
+    font-family: myFont3;
+    src: url("../fonts/CPMono_v07_Light.woff");
+}
+
 body {
     font-family: myFont;
 }
@@ -69,7 +74,8 @@ h4 {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    /* border: 1px solid yellow; */
+    position: relative;
+    /* border: 2px solid black; */
 }
 
 #reportBtn {
@@ -386,9 +392,53 @@ header {
     height: 75px;
 }
 
-hr {
+#main_hr {
     height: 1px;
     border: none;
-    background-color: rgba(0, 0, 0, 0.25);; /* or any desired color */
+    background-color: rgba(0, 0, 0, 0.25); /* or any desired color */
     margin-bottom: 30px;
+}
+
+#popup-window {
+    position: absolute;
+    font-family: myFont3;
+    font-size: 14px;
+    width: 150px;
+    height: 120px;
+    background: white;
+    padding: 5px 0px;
+    z-index: 10;
+    border-radius: 6px;
+    right: 0;
+    bottom: 0;
+    top: 80px;
+    border: 2px solid black;
+    display: none;
+}
+
+#popup-window > div {
+    position: relative;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Change this to left if you want to add icons */
+    height: 30px;
+}
+
+#popup-window > div:hover{
+    background-color: rgb(226, 226, 226);
+    border-color: rgb(226, 226, 226);
+    cursor: pointer;
+}
+
+#menu_hr {
+    height: 1px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.25); /* or any desired color */
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 87px;
+    bottom: 0;
 }

@@ -9,6 +9,11 @@ document.addEventListener("DOMContentLoaded", function() {
     const start_stop_btn = document.getElementById("start-stop");
     const submit_change_btn = document.getElementById("target-hours-submit");
     const end_session_btn = document.getElementById("end-session");
+    const menu_btn = document.getElementById("menuBtn");
+    const menu_icon = document.getElementById("menuIcon");
+    const menu_text = document.getElementById("menuText");
+
+    const popup_window = document.getElementById("popup-window");
     const total_time_display = document.getElementById("progress-text");
 
     const productivity_chill_mode = document.getElementById("productivity-chill-mode");
@@ -152,6 +157,21 @@ document.addEventListener("DOMContentLoaded", function() {
             changeTargetHours(flags);
         }
     });
+
+    menu_btn.addEventListener("click", function() {
+        //Cause the menu window to become visable
+        if (popup_window.style.display == "block") {
+            popup_window.style.display = "none"
+        } else {
+            popup_window.style.display = "block";
+        }
+    })
+
+    document.addEventListener("click", function(event) {
+        if (event.target !== menu_btn && event.target !== menu_icon && event.target !== menu_text) {
+            popup_window.style.display = "none";
+        }
+    })
     
     end_session_btn.addEventListener("click", function() { //temporary function
         location.reload();
