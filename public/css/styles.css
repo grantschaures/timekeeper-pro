@@ -550,3 +550,41 @@ li {
     object-fit: cover;
     object-position: center;
 }
+
+.exitIcon {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    z-index: 4;
+    right: 10px;
+}
+
+@keyframes rotateIconClockwise {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(90deg);
+    }
+}
+
+@keyframes rotateIconCounterClockwise {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(-90deg);
+    }
+}
+
+.exitIcon:hover {
+    cursor: pointer;
+}
+
+.triggerRotation {
+    animation: rotateIconClockwise 0.25s forwards;
+}
+
+.resetRotation {
+    animation: rotateIconCounterClockwise 0.25s forwards;
+}

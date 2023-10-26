@@ -13,8 +13,14 @@ document.addEventListener("DOMContentLoaded", function() {
     const menu_btn = document.getElementById("menuBtn");
     const blog_btn = document.getElementById("blogBtn");
     const about_btn = document.getElementById("aboutBtn");
+
     const settings_btn = document.getElementById("settingsBtn");
     const logInOut_btn = document.getElementById("logInOutBtn");
+
+    const about_exit = document.getElementById("aboutExit");
+    const blog_exit = document.getElementById("blogExit");
+
+    const exit_icons = document.querySelectorAll(".exitIcon")
 
     const main_elements = document.querySelector("main");
 
@@ -181,15 +187,15 @@ document.addEventListener("DOMContentLoaded", function() {
         if (!menu_btn.contains(event.target)) {
             popup_window.style.display = "none";
         }
-        if (event.target !== about_btn && !about_container.contains(event.target) && !menu_btn.contains(event.target)) {
+        if ((event.target !== about_btn && !about_container.contains(event.target) && !menu_btn.contains(event.target)) || event.target == about_exit) {
             about_container.style.display = "none";
         }
-        if (event.target !== blog_btn && !blog_container.contains(event.target) && !menu_btn.contains(event.target)) {
+        if ((event.target !== blog_btn && !blog_container.contains(event.target) && !menu_btn.contains(event.target)) || event.target == blog_exit) {
             blog_container.style.display = "none";
         }
 
-        //eventtually check for Settings and logInOut buttons and if event.target is equal to the settings and logInOut containers and what they contain
-        if (event.target !== blog_btn && event.target !== about_btn && event.target !== about_btn && !about_container.contains(event.target) && event.target !== blog_btn && !blog_container.contains(event.target) && !menu_btn.contains(event.target)) {
+        // //eventtually check for Settings and logInOut buttons and if event.target is equal to the settings and logInOut containers and what they contain
+        if ((event.target !== blog_btn && event.target !== about_btn && !about_container.contains(event.target) && !blog_container.contains(event.target) && !menu_btn.contains(event.target)) || (event.target == about_exit) || (event.target == blog_exit)) {
             main_elements.style.display = "block";
         }
     })
@@ -200,6 +206,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
         //show blog popup window
         about_container.style.display = "flex";
+
+        //remove icon animation so that it doesn't trigger when opening window
+        about_exit.classList.remove('resetRotation');
     })
 
     blog_btn.addEventListener("click", function() {
@@ -208,8 +217,24 @@ document.addEventListener("DOMContentLoaded", function() {
 
         //show about popup window
         blog_container.style.display = "flex";
+
+        //remove icon animation so that it doesn't trigger when opening window
+        blog_exit.classList.remove('resetRotation');
     })
+
+    exit_icons.forEach(function(icon) {
+        icon.addEventListener('mouseover', function() {
+            console.log("ROTATION");
+            icon.classList.remove('resetRotation');
+            icon.classList.add('triggerRotation');
+        })
     
+        icon.addEventListener('mouseout', function() {
+            icon.classList.remove('triggerRotation');
+            icon.classList.add('resetRotation');
+        })
+    })
+
     end_session_btn.addEventListener("click", function() { //temporary function
         location.reload();
     });
