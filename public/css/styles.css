@@ -490,6 +490,13 @@ header {
     overflow-y: auto;
 }
 
+li {
+    font-size: 24px;
+    font-family: myFont3;
+    color: white;
+    font-weight: bold;
+}
+
 @media (max-width: 1000px) {
     h2 {
         font-size: 20px;
@@ -506,10 +513,4 @@ header {
     li {
         font-size: 18px;
     }
-}
-
-li {
-    font-size: 24px;
-    font-family: myFont3;
-    color: white;
 }
