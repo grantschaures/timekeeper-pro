@@ -10,8 +10,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const submit_change_btn = document.getElementById("target-hours-submit");
     const end_session_btn = document.getElementById("end-session");
     const menu_btn = document.getElementById("menuBtn");
-    const menu_icon = document.getElementById("menuIcon");
-    const menu_text = document.getElementById("menuText");
     const about_btn = document.getElementById("aboutBtn");
     const main_elements = document.querySelector("main");
 
@@ -172,10 +170,10 @@ document.addEventListener("DOMContentLoaded", function() {
     })
 
     document.addEventListener("click", function(event) {
-        if (event.target !== menu_btn && event.target !== menu_icon && event.target !== menu_text) {
+        if (!menu_btn.contains(event.target)) {
             popup_window.style.display = "none";
         }
-        if (event.target !== about_btn && !about_container.contains(event.target)) {
+        if (event.target !== about_btn && !about_container.contains(event.target) && !menu_btn.contains(event.target)) {
             main_elements.style.display = "block";
             about_container.style.display = "none";
         }
