@@ -494,11 +494,22 @@ header {
     h2 {
         font-size: 20px;
     }
+    li {
+        font-size: 20px;
+    }
 }
 
 @media (max-width: 480px) {
     h2 {
         font-size: 18px;
     }
+    li {
+        font-size: 18px;
+    }
 }
 
+li {
+    font-size: 24px;
+    font-family: myFont3;
+    color: white;
+}
