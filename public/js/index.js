@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const about_btn = document.getElementById("aboutBtn");
     const main_elements = document.querySelector("main");
 
-    const about_window = document.getElementById("aboutContainer");
+    const about_container = document.getElementById("aboutContainer");
 
     const popup_window = document.getElementById("popup-menu");
     const total_time_display = document.getElementById("progress-text");
@@ -175,9 +175,9 @@ document.addEventListener("DOMContentLoaded", function() {
         if (event.target !== menu_btn && event.target !== menu_icon && event.target !== menu_text) {
             popup_window.style.display = "none";
         }
-        if (event.target !== about_btn) {
+        if (event.target !== about_btn && !about_container.contains(event.target)) {
             main_elements.style.display = "block";
-            about_window.style.display = "none";
+            about_container.style.display = "none";
         }
     })
 
@@ -186,7 +186,7 @@ document.addEventListener("DOMContentLoaded", function() {
         main_elements.style.display = "none";
 
         //show about popup window
-        about_window.style.display = "flex";
+        about_container.style.display = "flex";
     })
     
     end_session_btn.addEventListener("click", function() { //temporary function
