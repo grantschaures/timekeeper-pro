@@ -9,11 +9,19 @@ document.addEventListener("DOMContentLoaded", function() {
     const start_stop_btn = document.getElementById("start-stop");
     const submit_change_btn = document.getElementById("target-hours-submit");
     const end_session_btn = document.getElementById("end-session");
+
     const menu_btn = document.getElementById("menuBtn");
+    const blog_btn = document.getElementById("blogBtn");
     const about_btn = document.getElementById("aboutBtn");
+    const settings_btn = document.getElementById("settingsBtn");
+    const logInOut_btn = document.getElementById("logInOutBtn");
+
     const main_elements = document.querySelector("main");
 
+    const body = document.querySelector("body");
+
     const about_container = document.getElementById("aboutContainer");
+    const blog_container = document.getElementById("blogContainer");
 
     const popup_window = document.getElementById("popup-menu");
     const total_time_display = document.getElementById("progress-text");
@@ -174,8 +182,15 @@ document.addEventListener("DOMContentLoaded", function() {
             popup_window.style.display = "none";
         }
         if (event.target !== about_btn && !about_container.contains(event.target) && !menu_btn.contains(event.target)) {
-            main_elements.style.display = "block";
             about_container.style.display = "none";
+        }
+        if (event.target !== blog_btn && !blog_container.contains(event.target) && !menu_btn.contains(event.target)) {
+            blog_container.style.display = "none";
+        }
+
+        //eventtually check for Settings and logInOut buttons and if event.target is equal to the settings and logInOut containers and what they contain
+        if (event.target !== blog_btn && event.target !== about_btn && event.target !== about_btn && !about_container.contains(event.target) && event.target !== blog_btn && !blog_container.contains(event.target) && !menu_btn.contains(event.target)) {
+            main_elements.style.display = "block";
         }
     })
 
@@ -183,8 +198,16 @@ document.addEventListener("DOMContentLoaded", function() {
         //Hide main elements
         main_elements.style.display = "none";
 
-        //show about popup window
+        //show blog popup window
         about_container.style.display = "flex";
+    })
+
+    blog_btn.addEventListener("click", function() {
+        //Hide main elements
+        main_elements.style.display = "none";
+
+        //show about popup window
+        blog_container.style.display = "flex";
     })
     
     end_session_btn.addEventListener("click", function() { //temporary function
