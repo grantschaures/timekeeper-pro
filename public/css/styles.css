@@ -487,7 +487,6 @@ header {
     width: 100%;
     height: 100%;
     /* border: 2px solid yellow; */
-    overflow-y: auto;
 }
 
 li {
@@ -495,6 +494,10 @@ li {
     font-family: myFont3;
     color: white;
     font-weight: bold;
+}
+
+.blogDescription {
+    font-size: 18px;
 }
 
 @media (max-width: 1000px) {
@@ -506,6 +509,12 @@ li {
     }
 }
 
+@media (max-width: 750px) {
+    .blogDescription {
+        font-size: 15px;
+    }
+}
+
 @media (max-width: 480px) {
     h2 {
         font-size: 18px;
@@ -513,4 +522,31 @@ li {
     li {
         font-size: 18px;
     }
+    .blogDescription {
+        font-size: 12px;
+    }
+}
+
+.blog_cell{
+    width: 100%;
+    height: 200px;
+    /* border: 2px solid yellow; */
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    overflow: hidden;
+
+    margin-bottom: 10px;
+}
+
+.blog_cell > div {
+    padding: 5px;
+}
+
+.blog_cell > div > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
