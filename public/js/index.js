@@ -12,8 +12,12 @@ document.addEventListener("DOMContentLoaded", function() {
     const menu_btn = document.getElementById("menuBtn");
     const menu_icon = document.getElementById("menuIcon");
     const menu_text = document.getElementById("menuText");
+    const about_btn = document.getElementById("aboutBtn");
+    const main_elements = document.querySelector("main");
 
-    const popup_window = document.getElementById("popup-window");
+    const about_window = document.getElementById("aboutContainer");
+
+    const popup_window = document.getElementById("popup-menu");
     const total_time_display = document.getElementById("progress-text");
 
     const productivity_chill_mode = document.getElementById("productivity-chill-mode");
@@ -171,6 +175,18 @@ document.addEventListener("DOMContentLoaded", function() {
         if (event.target !== menu_btn && event.target !== menu_icon && event.target !== menu_text) {
             popup_window.style.display = "none";
         }
+        if (event.target !== about_btn) {
+            main_elements.style.display = "block";
+            about_window.style.display = "none";
+        }
+    })
+
+    about_btn.addEventListener("click", function() {
+        //Hide main elements
+        main_elements.style.display = "none";
+
+        //show about popup window
+        about_window.style.display = "flex";
     })
     
     end_session_btn.addEventListener("click", function() { //temporary function
