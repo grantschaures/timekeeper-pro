@@ -473,6 +473,9 @@ header {
 
     display: none;
     border: 2px solid yellow;
+
+    max-height: 75vh; /* added this line */
+    overflow-y: auto;
 }
 
 #aboutWindow {
