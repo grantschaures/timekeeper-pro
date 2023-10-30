@@ -40,9 +40,15 @@ h2 {
     color: white;
 }
 
-@media (max-width: 409px) {
+@media (max-width: 384px) {
     h1 {
         font-size: 24px;
+    }
+}
+
+@media (max-width: 332px) {
+    h1 {
+        font-size: 20px;
     }
 }
 
