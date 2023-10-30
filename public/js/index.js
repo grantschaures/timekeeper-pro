@@ -9,27 +9,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const start_stop_btn = document.getElementById("start-stop");
     const submit_change_btn = document.getElementById("target-hours-submit");
     const end_session_btn = document.getElementById("end-session");
-
-    const menu_btn = document.getElementById("menuBtn");
-    const blog_btn = document.getElementById("blogBtn");
-    const about_btn = document.getElementById("aboutBtn");
-
-    const settings_btn = document.getElementById("settingsBtn");
-    const logInOut_btn = document.getElementById("logInOutBtn");
-
-    const about_exit = document.getElementById("aboutExit");
-    const blog_exit = document.getElementById("blogExit");
-
-    const exit_icons = document.querySelectorAll(".exitIcon")
-
-    const main_elements = document.querySelector("main");
-
     const body = document.querySelector("body");
 
-    const about_container = document.getElementById("aboutContainer");
-    const blog_container = document.getElementById("blogContainer");
-
-    const popup_window = document.getElementById("popup-menu");
     const total_time_display = document.getElementById("progress-text");
 
     const productivity_chill_mode = document.getElementById("productivity-chill-mode");
@@ -79,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let flags = {
         hitTarget: false, //Flag: target time has been reached
         submittedTarget: false, //Flag: if target time has been submitted
-        inHyperFocus: true //Boolean Flag: check if in hyper focus mode
+        inHyperFocus: true, //Boolean Flag: check if in hyper focus mode
     }
 
     // ----------------
@@ -174,67 +155,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    menu_btn.addEventListener("click", function() {
-        //Cause the menu window to become visable
-        if (popup_window.style.display == "block") {
-            popup_window.style.display = "none"
-        } else {
-            popup_window.style.display = "block";
-        }
-    })
-
-    document.addEventListener("click", function(event) {
-        if (!menu_btn.contains(event.target)) {
-            popup_window.style.display = "none";
-        }
-        if ((event.target !== about_btn && !about_container.contains(event.target) && !menu_btn.contains(event.target)) || event.target == about_exit) {
-            about_container.style.display = "none";
-        }
-        if ((event.target !== blog_btn && !blog_container.contains(event.target) && !menu_btn.contains(event.target)) || event.target == blog_exit) {
-            blog_container.style.display = "none";
-        }
-
-        // //eventtually check for Settings and logInOut buttons and if event.target is equal to the settings and logInOut containers and what they contain
-        if ((event.target !== blog_btn && event.target !== about_btn && !about_container.contains(event.target) && !blog_container.contains(event.target) && !menu_btn.contains(event.target)) || (event.target == about_exit) || (event.target == blog_exit)) {
-            main_elements.style.display = "block";
-        }
-    })
-
-    about_btn.addEventListener("click", function() {
-        //Hide main elements
-        main_elements.style.display = "none";
-
-        //show blog popup window
-        about_container.style.display = "flex";
-
-        //remove icon animation so that it doesn't trigger when opening window
-        about_exit.classList.remove('resetRotation');
-    })
-
-    blog_btn.addEventListener("click", function() {
-        //Hide main elements
-        main_elements.style.display = "none";
-
-        //show about popup window
-        blog_container.style.display = "flex";
-
-        //remove icon animation so that it doesn't trigger when opening window
-        blog_exit.classList.remove('resetRotation');
-    })
-
-    exit_icons.forEach(function(icon) {
-        icon.addEventListener('mouseover', function() {
-            console.log("ROTATION");
-            icon.classList.remove('resetRotation');
-            icon.classList.add('triggerRotation');
-        })
-    
-        icon.addEventListener('mouseout', function() {
-            icon.classList.remove('triggerRotation');
-            icon.classList.add('resetRotation');
-        })
-    })
-
     end_session_btn.addEventListener("click", function() { //temporary function
         location.reload();
     });
@@ -243,6 +163,7 @@ document.addEventListener("DOMContentLoaded", function() {
 // ---------------------
 // HELPER FUNCTIONS
 // ---------------------
+
 function changeTargetHours(flags) {
 
     document.getElementById("target-hours").remove();

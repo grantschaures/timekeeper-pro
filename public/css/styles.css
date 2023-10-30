@@ -1,6 +1,6 @@
 @font-face {
-    font-family: myFont;
-    src: url("../fonts/GothamLight.ttf");
+    font-family: myFontBlog;
+    src: url("../fonts/CPMono_v07_Plain.woff");
 }
 
 @font-face {
@@ -417,7 +417,7 @@ header {
     height: 120px;
     background: white;
     padding: 5px 0px;
-    z-index: 3;
+    z-index: 100;
     border-radius: 6px;
     right: 0;
     bottom: 0;
@@ -459,7 +459,7 @@ header {
     /* background: rgb(255, 255, 255); */
     background-color: rgba(0, 0, 0, 0.25);
     padding: 10px 10px;
-    z-index: 2;
+    z-index: 12;
     border-radius: 10px;
     right: 0;
     left: 50%;
@@ -530,7 +530,6 @@ li {
 .blog_cell{
     width: 100%;
     height: 200px;
-    /* border: 2px solid yellow; */
 
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -538,6 +537,7 @@ li {
     overflow: hidden;
 
     margin-bottom: 10px;
+    cursor: pointer;
 }
 
 .blog_cell > div {
@@ -549,14 +549,6 @@ li {
     height: 100%;
     object-fit: cover;
     object-position: center;
-}
-
-.exitIcon {
-    position: fixed;
-    width: 40px;
-    height: 40px;
-    z-index: 4;
-    right: 10px;
 }
 
 @keyframes rotateIconClockwise {
@@ -577,6 +569,54 @@ li {
     }
 }
 
+@keyframes bounceLeft {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-5px);
+    }
+}
+
+@keyframes bounceBack {
+    from {
+        transform: translateX(-5px);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+.backIcon {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    z-index: 4;
+    left: 10px;
+    opacity: 1.00;
+}
+
+.backIcon:hover {
+    cursor: pointer;
+}
+
+.triggerBounceLeft {
+    animation: bounceLeft 0.25s forwards;
+}
+
+.resetBounce {
+    animation: bounceBack 0.25s forwards;
+}
+
+.exitIcon {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    z-index: 4;
+    right: 10px;
+    opacity: 1.00;
+}
+
 .exitIcon:hover {
     cursor: pointer;
 }
@@ -587,4 +627,67 @@ li {
 
 .resetRotation {
     animation: rotateIconCounterClockwise 0.25s forwards;
+}
+
+#blogPostContainer {
+    position: fixed;
+    background-color: rgb(255, 255, 255);
+    padding: 10px 10px;
+    z-index: 2;
+    border-radius: 10px;
+    right: 0;
+    left: 50%;
+    top: 105px;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 800px;
+
+    display: none;
+    max-height: 70vh;
+    overflow-y: auto;
+    /* border: 2px solid yellow; */
+}
+
+
+.blog {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.hidden {
+    display: none;
+}
+
+.blog h1 {
+    font-family: 'Lato', sans-serif;
+    font-weight: 800;
+    color: black;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.blog h2 {
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    color: black;
+}
+
+.blog p {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    color: black;
+    font-size: 18px;
+}
+
+.blogHeaderImage > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    padding-top: 10px;
 }
