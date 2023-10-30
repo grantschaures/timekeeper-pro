@@ -46,15 +46,9 @@ h2 {
     }
 }
 
-@media (max-width: 387px) {
+@media (max-width: 354px) {
     h1 {
-        font-size: 22px;
-    }
-}
-
-@media (max-width: 337px) {
-    h1 {
-        font-size: 20px;
+        font-size: 23px;
     }
 }
 
