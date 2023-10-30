@@ -40,13 +40,13 @@ h2 {
     color: white;
 }
 
-@media (max-width: 384px) {
+@media (max-width: 387px) {
     h1 {
         font-size: 24px;
     }
 }
 
-@media (max-width: 332px) {
+@media (max-width: 337px) {
     h1 {
         font-size: 20px;
     }
@@ -696,4 +696,8 @@ li {
     object-fit: cover;
     object-position: center;
     padding-top: 50px;
+}
+
+#logo {
+    border: 2px solid yellow;
 }

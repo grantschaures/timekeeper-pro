@@ -17,6 +17,7 @@ const logRequest = function(req, res, next) {
 app.use(logRequest);
 //////////
 
+//COMMENT OUT WHEN TESTING ON LOCALHOST:3000
 app.use((req, res, next) => {
     if (req.header('x-forwarded-proto') !== 'https')
         res.redirect(`https://${req.header('host')}${req.url}`);
