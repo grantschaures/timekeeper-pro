@@ -23,6 +23,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const blueFavicon = "/images/BLUE.png";
     const link = document.querySelector("link[rel~='icon']");
 
+    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
     const timeConvert = {
         msPerHour: 3600000,
         msPerMin: 60000,
@@ -70,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     start_stop_btn.addEventListener("click", function() {
 
-        playClick(audio);
+        playClick(audio, isMobile);
         resetDisplay(display);
 
         startStopCounter++; //keep track of button presses
@@ -82,7 +84,6 @@ document.addEventListener("DOMContentLoaded", function() {
         startTimes.local = Date.now();
         clearInterval(intervals.local);
         intervals.local = setInterval(() => timeDisplay(startTimes.local, display, timeConvert), 1000); //using arrow function so we can pass arguments
-        
         
         if (!intervals.main) { //executes when interval is undefined --> Hyper Focus Mode
             setFavicon(link, redFavicon);
@@ -158,8 +159,6 @@ document.addEventListener("DOMContentLoaded", function() {
     end_session_btn.addEventListener("click", function() { //temporary function
         location.reload();
     });
-
-    stopSoundMobile(audio);
 });
 
 // ---------------------
@@ -272,11 +271,14 @@ function setBackground(background_color) {
     document.documentElement.style.backgroundImage = background_color;
 };
 
-function playClick(audio) {
-    audio.volume = 0.25; //lowering volume of sound
-    audio.play().catch(error => {
-        console.error("Audio playback error:", error);
-    });
+function playClick(audio, isMobile) {
+    if (!isMobile)
+    {
+        audio.volume = 0.25; //lowering volume of sound
+        audio.play().catch(error => {
+            console.error("Audio playback error:", error);
+        });
+    }
 };
 
 function handleEnter(event, start_stop_btn, submit_change_btn) {
@@ -366,12 +368,4 @@ function setFavicon(link, faviconPath) {
     }
 
     link.href = faviconPath;
-}
-
-function stopSoundMobile(audio) {
-    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-    if (isMobile) {
-        audio.pause(); // Pause the audio
-    }
 }
