@@ -23,9 +23,7 @@ document.addEventListener("DOMContentLoaded", function() {
         'blog_1': 'blogPost1',
         'blog_2': 'blogPost2',
         'blog_3': 'blogPost3',
-        'blog_4': 'blogPost4',
-        'blog_5': 'blogPost5',
-        'blog_6': 'blogPost6'
+        'blog_4': 'blogPost4'
     }
 
     let flags = {

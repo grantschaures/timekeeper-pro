@@ -158,6 +158,8 @@ document.addEventListener("DOMContentLoaded", function() {
     end_session_btn.addEventListener("click", function() { //temporary function
         location.reload();
     });
+
+    stopSoundMobile(audio);
 });
 
 // ---------------------
@@ -364,4 +366,12 @@ function setFavicon(link, faviconPath) {
     }
 
     link.href = faviconPath;
+}
+
+function stopSoundMobile(audio) {
+    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    if (isMobile) {
+        audio.pause(); // Pause the audio
+    }
 }
