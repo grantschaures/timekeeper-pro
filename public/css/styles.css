@@ -40,7 +40,7 @@ h2 {
     color: white;
 }
 
-@media (max-width: 387px) {
+/* @media (max-width: 387px) {
     h1 {
         font-size: 22px;
     }
@@ -50,7 +50,7 @@ h2 {
     h1 {
         font-size: 20px;
     }
-}
+} */
 
 h4 {
     font-family: myFont2;
