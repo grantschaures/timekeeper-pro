@@ -14,9 +14,12 @@ document.addEventListener("DOMContentLoaded", function() {
     const main_elements = document.querySelector("main");
     const about_container = document.getElementById("aboutContainer");
     const blog_container = document.getElementById("blogContainer");
+    const settings_container = document.getElementById("settingsContainer");
     const blog_post_container = document.getElementById("blogPostContainer");
     const blog_cells = document.querySelectorAll(".blog_cell");
     const blogs = document.querySelectorAll(".blog");
+
+    const settings_exit = document.getElementById("settingsExit");
 
     //Add to this list when you create a new blog
     const blogIdList = {
@@ -75,6 +78,25 @@ document.addEventListener("DOMContentLoaded", function() {
 
         //Triggers reset animation once you enter for first time
         blog_exit.classList.add('resetRotation');
+    })
+
+    settings_btn.addEventListener("click", function() {
+        //Hide main elements
+        main_elements.style.display = "none";
+
+        //Hide blogs
+        if (flags.blogShowing == true) {
+            blog_post_container.style.display = 'none';
+
+            //ensure that any visible blog becomes hidden when clicking out
+            hideBlog(blogs);
+        }
+
+        //show blog popup window
+        settings_container.style.display = "flex";
+
+        //Triggers reset animation once you enter for first time
+        settings_exit.classList.add('resetRotation');
     })
 
     exit_icons.forEach(function(icon) {
@@ -138,9 +160,12 @@ document.addEventListener("DOMContentLoaded", function() {
         if ((event.target !== blog_btn && !blog_container.contains(event.target) && !blog_post_container.contains(event.target) && !menu_btn.contains(event.target)) || event.target == blog_exit) {
             blog_container.style.display = "none";
         }
+        if ((event.target !== settings_btn && !settings_container.contains(event.target) && !menu_btn.contains(event.target)) || event.target == settings_exit) {
+            settings_container.style.display = "none";
+        }
 
         //eventually check for Settings and logInOut buttons and if event.target is equal to the settings and logInOut containers and what they contain
-        if ((event.target !== blog_btn && event.target !== about_btn && !about_container.contains(event.target) && !blog_container.contains(event.target) && !menu_btn.contains(event.target)  && !blog_post_container.contains(event.target)) || (event.target == about_exit) || (event.target == blog_exit) || (event.target == blog_post_exit)) {
+        if ((event.target !== blog_btn && event.target !== about_btn && !about_container.contains(event.target) && !blog_container.contains(event.target) && !menu_btn.contains(event.target)  && !blog_post_container.contains(event.target) && event.target !== settings_btn  && !settings_container.contains(event.target)) || (event.target == about_exit) || (event.target == blog_exit) || (event.target == blog_post_exit) || (event.target == settings_exit)) {
             main_elements.style.display = "block";
 
             if (flags.blogShowing == true) {

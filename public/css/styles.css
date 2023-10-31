@@ -196,12 +196,6 @@ main {
     width: 100px;
 }
 
-hr {
-    height: 2px;
-    background-color: white;
-    border: none;
-}
-
 #timekeeping-container {
     display: flex;
     justify-content: center;
@@ -696,4 +690,50 @@ li {
     object-fit: cover;
     object-position: center;
     padding-top: 50px;
+}
+
+#settingsContainer {
+    position: fixed;
+    background-color: rgba(255, 255, 255);
+    padding: 10px 10px;
+    z-index: 12;
+    border-radius: 10px;
+    right: 0;
+    left: 50%;
+    top: 105px;
+    transform: translateX(-50%);
+    width: 50%;
+    max-width: 600px;
+
+    display: none;
+    /* border: 2px solid yellow; */
+
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+#settingsWindow {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    /* border: 2px solid yellow; */
+}
+
+.settings h1 {
+    color: black;
+}
+
+.settings h2 {
+    color: black;
+}
+
+.settings hr {
+    height: 1px;
+    width: 100%;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.25); /* or any desired color */
 }
