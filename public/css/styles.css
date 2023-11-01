@@ -724,8 +724,16 @@ li {
 }
 
 iframe {
-    padding-top: 50px;
-    padding-bottom: 5px;
+    width: 100%;
+    height: 100%;
+}
+
+.iframe-container {
+    max-width: 560px;
+    width: 100%;
+    height: 315px;
+    margin-top: 50px;
+    margin-bottom: 5px;
 }
 
 #settingsContainer {
