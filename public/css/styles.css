@@ -40,6 +40,12 @@ h2 {
     color: white;
 }
 
+h3 {
+    font-size: 20px;
+    font-family: myFont3;
+    color: white;
+}
+
 @media (max-width: 400px) {
     h1 {
         font-size: 26px;
@@ -497,7 +503,7 @@ li {
 }
 
 .blogDescription {
-    font-size: 18px;
+    font-size: 24px;
 }
 
 @media (max-width: 1000px) {
@@ -511,7 +517,7 @@ li {
 
 @media (max-width: 750px) {
     .blogDescription {
-        font-size: 15px;
+        font-size: 20px;
     }
 }
 
@@ -523,7 +529,7 @@ li {
         font-size: 18px;
     }
     .blogDescription {
-        font-size: 12px;
+        font-size: 18px;
     }
 }
 
@@ -663,6 +669,10 @@ li {
     display: none;
 }
 
+.mainBlogContent h2 {
+    text-align: center;
+}
+
 .blog h1 {
     font-family: 'Lato', sans-serif;
     font-weight: 800;
@@ -677,7 +687,27 @@ li {
     color: black;
 }
 
+.blog h3 {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    color: black;
+}
+
 .blog p {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    color: black;
+    font-size: 18px;
+}
+
+.blog ul {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    color: black;
+    font-size: 18px;
+}
+
+.blog li {
     font-family: 'Lato', sans-serif;
     font-weight: 300;
     color: black;
@@ -690,6 +720,12 @@ li {
     object-fit: cover;
     object-position: center;
     padding-top: 50px;
+    padding-bottom: 5px;
+}
+
+iframe {
+    padding-top: 50px;
+    padding-bottom: 5px;
 }
 
 #settingsContainer {
@@ -736,4 +772,15 @@ li {
     width: 100%;
     border: none;
     background-color: rgba(0, 0, 0, 0.25); /* or any desired color */
+}
+
+#compare_chartContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#compare_chart {
+    height: 50%;
+    width: 50%;
 }

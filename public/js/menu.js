@@ -24,9 +24,6 @@ document.addEventListener("DOMContentLoaded", function() {
     //Add to this list when you create a new blog
     const blogIdList = {
         'blog_1': 'blogPost1',
-        'blog_2': 'blogPost2',
-        'blog_3': 'blogPost3',
-        'blog_4': 'blogPost4'
     }
 
     let flags = {
