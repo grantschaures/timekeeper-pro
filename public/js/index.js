@@ -19,6 +19,10 @@ document.addEventListener("DOMContentLoaded", function() {
     const progressContainer = document.querySelector('.progress-container');
     const display = document.getElementById("display");
 
+    //SETTINGS
+    const targetTimeReachedToggle = document.getElementById("targetTimeReachedToggle");
+    const breakSuggestionToggle = document.getElementById("breakSuggestionToggle");
+
     const redFavicon = "/images/RED.png";
     const blueFavicon = "/images/BLUE.png";
     const link = document.querySelector("link[rel~='icon']");
@@ -62,7 +66,9 @@ document.addEventListener("DOMContentLoaded", function() {
     let flags = {
         hitTarget: false, //Flag: target time has been reached
         submittedTarget: false, //Flag: if target time has been submitted
-        inHyperFocus: true, //Boolean Flag: check if in hyper focus mode
+        inHyperFocus: true, //Flag: check if in hyper focus mode
+        targetReachedToggle: true, //Flag: changes based on user setting (alerts user when target reached)
+        breakSuggestionToggle: false
     }
 
     // ----------------
@@ -101,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 console.log("Logged: " + Math.floor((elapsedTime.chillTime) / 1000) + " seconds of elapsed chill time.");
                 console.log("----------------");
             }
-            setBackground("linear-gradient(to bottom, #ff595e, #ca403b)");
+            setBackground("linear-gradient(to bottom, #ff595e, #ca403b)"); //Red gradient
         } else { //--> Chill Time
             setFavicon(link, blueFavicon);
             
@@ -121,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log("Logged: " + Math.floor((elapsedTime.hyperFocus) / 1000) + " seconds of elapsed hyper focus.");
             console.log("----------------");
             
-            setBackground("linear-gradient(to bottom, #3b8fe3, #1d60a3, #7f04c7)");
+            setBackground("linear-gradient(to bottom, #3b8fe3, #1d60a3, #7f04c7)"); //Blue-Purple gradient
         }
     });
     
@@ -156,6 +162,28 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+    //Toggle is set to true by default
+    //Further clicks will render the targetReachToggle flag true or false
+    targetTimeReachedToggle.addEventListener("click", function() {
+        if (targetTimeReachedToggle.checked) {
+            flags.targetReachedToggle = true;
+            console.log(flags.targetReachedToggle);
+        } else {
+            flags.targetReachedToggle = false;
+            console.log(flags.targetReachedToggle);
+        }
+    })
+
+    breakSuggestionToggle.addEventListener("click", function() {
+        if (breakSuggestionToggle.checked) {
+            flags.breakSuggestionToggle = true;
+            //Show option to enter how long you'd like to stay in hyper focus mode before getting a suggestion to take break
+            enterSuggestionMinutes();
+        } else {
+            flags.breakSuggestionToggle = false;
+        }
+    })
+
     end_session_btn.addEventListener("click", function() { //temporary function
         location.reload();
     });
@@ -164,6 +192,10 @@ document.addEventListener("DOMContentLoaded", function() {
 // ---------------------
 // HELPER FUNCTIONS
 // ---------------------
+
+function enterSuggestionMinutes() {
+    //Insert a new number inoput box
+}
 
 function changeTargetHours(flags) {
 
@@ -189,6 +221,7 @@ function replaceTargetHours(inputHours, targetTime, flags) {
     let submitTarget = document.createElement('h4');
     submitTarget.textContent = targetHours;
     submitTarget.id = "target-hours";
+    submitTarget.className = "finalized-hours";
     document.getElementById("coolDiv").appendChild(submitTarget);
     document.getElementById('target-hours-submit').textContent = "Change";
     flags.submittedTarget = true;
@@ -247,7 +280,9 @@ function updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressB
         flags.hitTarget = true;
         setTimeout(() => {
             console.log("Congrats! You've hit your target time!");
-            alert("Congrats! You've hit your target time!");
+            if (flags.targetReachedToggle == true) {
+                alert("Congrats! You've hit your target time!");
+            }
         }, 1); //experiment w/ value to solve timing issues
         
         progressContainer.classList.add("glowing-effect"); //adds glowing effect to progress bar container

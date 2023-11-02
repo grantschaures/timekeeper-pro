@@ -86,6 +86,7 @@
                 </div>
             </main>
 
+            <!--ADD NEW BLOG GRID CONTAINER HERE-->
             <div id="blogContainer">
                 <img class="exitIcon" id="blogExit" src="images/noun-exit-button-261420-white.png">
                 <div id="blogWindow">
@@ -99,17 +100,23 @@
                                 <h2 class="blogDescription">Daily Practices & Protocols to Improve Focus</h2>
                             </div>
                         </div>
+                        <!-- <div class="blog_cell" id="blog_2">
+                            <div class="blogImage">
+                                <img src="images/Sunglow-Sizzling-Red-Crayola-Blue-Color-Palette-Cropped.png">
+                            </div>
+                            <div>
+                                <h2 class="blogDescription">Template Blog w/ Header Picture</h2>
+                            </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
             
+            <!--ADD NEW BLOG CONTENT HERE-->
             <div id="blogPostContainer">
                 <img class="backIcon" id="blogPostBack" src="images/noun-left-arrow-261369.png">
                 <img class="exitIcon" id="blogPostExit" src="images/noun-exit-button-261420.png">
                 <div class="blog hidden" id="blogPost1">
-                    <!-- <div class="blogHeaderImage">
-                        <img src="images/trees.jpg">
-                    </div> -->
                     <div class="iframe-container">
                         <iframe src="https://www.youtube.com/embed/yb5zpo5WDG4?si=GT9uix2oPLBnFHrq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                     </div>
@@ -317,6 +324,25 @@
                         </ul>
                     </div>               
                 </div>
+                <!-- <div class="blog hidden" id="blogPost2">
+                    <div class="blogHeaderImage">
+                        <img src="images/trees.jpg">
+                    </div>
+                    <div class="mainBlogContent">
+                        <h1>Main header</h1>
+                        <h2>Sub header</h2>
+                        <hr>
+                        <p><strong>[text]</strong> [text]</p>
+                        <hr>
+                        <h3><strong>[text]</strong></h3>
+                        <p><b>[text]</b></p>
+                        <ul>
+                            <li>[text]</li>
+                            <li>[text]</li>
+                            <li><a href="" target="_blank">[text]</a></li>
+                        </ul>
+                    </div>               
+                </div> -->
             </div>
 
             <div id="aboutContainer">
@@ -384,11 +410,52 @@
                 <div class="settings" id="settingsWindow">
                     <h1>Settings</h1>
                     <hr>
-                    <h2>Alerts</h2>
+                    <div id="alertsNotificationsContainer">
+                        <img src="images/noun-notifications-2548963.png" id="alertsNotificationsIcon">
+                        <h2>Alerts & Notifications</h2>
+                    </div>
+                    <div id="alertsNotificationsToggleContainer">
+                        <div id="toggleTargetTimeAlertContainer" class="settingsMicroContainer">
+                            <div id="targetTimeReachedText">
+                                <p><b>Target Time Reached Alert</b></p>
+                            </div>
+                            <div id="targetTimeReachedToggleContainer" class="toggleContainer">
+                                <input type="checkbox" id="targetTimeReachedToggle" class="toggle-checkbox" checked>
+                                <label for="targetTimeReachedToggle" id="targetTimeReachedToggleLabel" class="toggle-label">
+                                    <span id="targetTimeReachedToggleBall" class="toggle-ball"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div id="toggleBreakSuggestionContainer" class="settingsMicroContainer">
+                            <div id="breakSuggestionText">
+                                <p><b>Break Suggestion Notification</b></p>
+                                <img src="images/noun-info-6216356.png" id="breakSuggestionInfoIcon">
+                            </div>
+                            <div class="infoMessage" id="breakSuggestionInfoMessage"> <!-- Hidden by default -->
+                                <p>Enter the time (in minutes) you'd like to pass while in Hyper Focus mode before getting a suggestion to take break</p>
+                            </div>
+                            <div id="breakSuggestionToggleContainer" class="toggleContainer">
+                                <input type="checkbox" id="breakSuggestionToggle" class="toggle-checkbox">
+                                <label for="breakSuggestionToggle" id="breakSuggestionToggleLabel" class="toggle-label">
+                                    <span id="breakSuggestionToggleBall" class="toggle-ball"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div id="suggestionMinutesContainer" class="settingsMicroContainer">
+                            <div id="suggestionMinutesText">
+                                <p><b>Suggestion Minutes:</b></p>
+                            </div>
+                            <div id="suggestionMinutesInputContainer" class="toggleContainer">
+                                <div id="coolDiv2">
+                                    <input type="number" id="suggestionMinutesInput" name="minutes" min="0">
+                                </div>
+                                <button type="submit" id="suggestion-minutes-submit">Submit</button>
+                            </div>
+                        </div>
+                    </div>
                     <hr>
                     <h2>Chill Time Wallpaper</h2>
                     <div id="chillTimeWallpapers">
-                        
                     </div>
                 </div>
             </div>

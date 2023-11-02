@@ -18,16 +18,21 @@ document.addEventListener("DOMContentLoaded", function() {
     const blog_post_container = document.getElementById("blogPostContainer");
     const blog_cells = document.querySelectorAll(".blog_cell");
     const blogs = document.querySelectorAll(".blog");
+    
+    const break_suggestion_info_icon = document.getElementById("breakSuggestionInfoIcon");
+    const break_suggestion_info_window = document.getElementById("breakSuggestionInfoMessage");
 
     const settings_exit = document.getElementById("settingsExit");
 
-    //Add to this list when you create a new blog
+    //ADD TO THIS LIST WHEN YOU CREATE A NEW BLOG
     const blogIdList = {
-        'blog_1': 'blogPost1',
+        'blog_1': 'blogPost1'
+        // 'blog_2': 'blogPost2'
     }
 
     let flags = {
-        blogShowing: false
+        blogShowing: false,
+        breakSuggestionInfoWindowShowing: false
     }
 
     menu_btn.addEventListener("click", function() {
@@ -171,7 +176,30 @@ document.addEventListener("DOMContentLoaded", function() {
                 //ensure that any visible blog becomes hidden when clicking out
                 hideBlog(blogs);
             }
+
+            break_suggestion_info_window.style.display = "none";
+            flags.breakSuggestionInfoWindowShowing = false;
         }
+
+    })
+
+    settings_container.addEventListener("click", function(event) {
+        if (event.target != break_suggestion_info_icon) {
+            break_suggestion_info_window.style.display = "none";
+            flags.breakSuggestionInfoWindowShowing = false;
+        }
+    })
+
+    break_suggestion_info_icon.addEventListener("click", function() {
+        //basically, we're going to bring up a little pop-up window to explain the toggle function
+        if (flags.breakSuggestionInfoWindowShowing) {
+            break_suggestion_info_window.style.display = "none";
+            flags.breakSuggestionInfoWindowShowing = false;
+        } else {
+            break_suggestion_info_window.style.display = "flex";
+            flags.breakSuggestionInfoWindowShowing = true;
+        }
+        
     })
 });
 
