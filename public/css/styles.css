@@ -938,17 +938,19 @@ iframe {
 #suggestionMinutesInput {
     width: 40px;
     height: 20px;
-    background-color: #e6e6e6;
+    background-color: #5c5c5c;
     font-size: 16px;
     padding: 8px 12px;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border: 1px solid white;
     margin-right: 15px;
+    color: white;
 }
 
 #suggestionMinutesContainer {
     width: 100%;
+    display: none;
 }
 
 .toggleContainer {

@@ -22,6 +22,8 @@ document.addEventListener("DOMContentLoaded", function() {
     //SETTINGS
     const targetTimeReachedToggle = document.getElementById("targetTimeReachedToggle");
     const breakSuggestionToggle = document.getElementById("breakSuggestionToggle");
+    const suggestionMinutesContainer = document.getElementById("suggestionMinutesContainer");
+    const submit_suggestion_btn = document.getElementById("suggestion-minutes-submit");
 
     const redFavicon = "/images/RED.png";
     const blueFavicon = "/images/BLUE.png";
@@ -54,6 +56,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     //TIME AMOUNTS
     let targetTime = null; //Target amount of time in ms
+    let suggestionMinutes = null; //Suggestion minutes
 
     let elapsedTime = {
         hyperFocus: 0, //Accumulated time from each productivity interval
@@ -68,7 +71,8 @@ document.addEventListener("DOMContentLoaded", function() {
         submittedTarget: false, //Flag: if target time has been submitted
         inHyperFocus: true, //Flag: check if in hyper focus mode
         targetReachedToggle: true, //Flag: changes based on user setting (alerts user when target reached)
-        breakSuggestionToggle: false
+        breakSuggestionToggle: false,
+        submittedSuggestionMinutes: false
     }
 
     // ----------------
@@ -162,25 +166,55 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+    submit_suggestion_btn.addEventListener("click", function() {
+        if (!flags.submittedSuggestionMinutes) {
+
+            let inputSuggestionMinutes = document.getElementById("suggestionMinutesInput").value;
+
+            //Validate input (no decimals or negative numbers or numbers above 720)
+            if(!suggestionMinutesValidate(inputSuggestionMinutes)) {
+                return;
+            }
+
+            //set suggestion minutes w/ replaceSuggestionMinutes(inputSuggestionMinutes, suggestionMinutes, flags)
+            suggestionMinutes = replaceSuggestionMinutes(inputSuggestionMinutes, suggestionMinutes, flags);
+        }
+        else if (flags.submittedSuggestionMinutes) {
+            //call function to change the suggestion minutes
+            changeSuggestionMinutes(flags);
+        }
+    })
+
     //Toggle is set to true by default
     //Further clicks will render the targetReachToggle flag true or false
     targetTimeReachedToggle.addEventListener("click", function() {
         if (targetTimeReachedToggle.checked) {
             flags.targetReachedToggle = true;
-            console.log(flags.targetReachedToggle);
         } else {
             flags.targetReachedToggle = false;
-            console.log(flags.targetReachedToggle);
         }
     })
 
     breakSuggestionToggle.addEventListener("click", function() {
         if (breakSuggestionToggle.checked) {
+            //Check if notifications are disabled already, if they are alert user, uncheck, and return
+            //console.log(Notification.permission);
+            if (Notification.permission === "denied") {
+                alert("Enable notifications in the browser window")
+                breakSuggestionToggle.checked = false;
+                console.log("Notifications Denied");
+                return;
+            }
+            if (!enableNotifications(breakSuggestionToggle, flags, suggestionMinutesContainer)) {
+                return;
+            }
+
             flags.breakSuggestionToggle = true;
             //Show option to enter how long you'd like to stay in hyper focus mode before getting a suggestion to take break
-            enterSuggestionMinutes();
+            showSuggestionMinutesContainer(suggestionMinutesContainer);
         } else {
             flags.breakSuggestionToggle = false;
+            hideSuggestionMinutesContainer(suggestionMinutesContainer);
         }
     })
 
@@ -193,8 +227,79 @@ document.addEventListener("DOMContentLoaded", function() {
 // HELPER FUNCTIONS
 // ---------------------
 
-function enterSuggestionMinutes() {
-    //Insert a new number inoput box
+//For some reason, EDGE won't prompt the user to turn on notifications if they're set to default :/
+async function enableNotifications(breakSuggestionToggle, flags, suggestionMinutesContainer) {
+    // Check if notifications are supported
+    if (!("Notification" in window)) {
+        alert("This browser does not support desktop notifications");
+        return false;
+    }
+    // Otherwise, we need to ask the user for permission
+    else if (Notification.permission !== "denied") {
+        let permission = await Notification.requestPermission();
+        
+        if (permission === "granted") {
+            return true;
+        } else {
+            breakSuggestionToggle.checked = false;
+            flags.breakSuggestionToggle = false;
+            hideSuggestionMinutesContainer(suggestionMinutesContainer);
+            return false;
+        }
+    }
+    return true;
+}
+
+function suggestionMinutesValidate(inputSuggestionMinutes) {
+    const roundedMinutes = Math.round(parseFloat(inputSuggestionMinutes));
+
+    if (!roundedMinutes || roundedMinutes <= 0 || roundedMinutes > 720) { //720 minutes = 12 hours
+        
+        alert("Enter a valid time from 1 minute to 720 minutes");
+        return false;
+    }
+    return true;
+}
+
+function showSuggestionMinutesContainer(suggestionMinutesContainer) {
+    suggestionMinutesContainer.style.display = "flex";
+}
+
+function hideSuggestionMinutesContainer(suggestionMinutesContainer) {
+    suggestionMinutesContainer.style.display = "none";
+}
+
+function changeSuggestionMinutes(flags) {
+    document.getElementById("suggestionMinutesInput").remove();
+        
+    let enterSuggestionMinutes = document.createElement('input');
+    enterSuggestionMinutes.type = "number";
+    enterSuggestionMinutes.id = "suggestionMinutesInput";
+    enterSuggestionMinutes.name = "minutes";
+    enterSuggestionMinutes.min = "0";
+    document.getElementById("coolDiv2").appendChild(enterSuggestionMinutes);
+    
+    document.getElementById('suggestion-minutes-submit').textContent = "Submit";
+    flags.submittedSuggestionMinutes = false;
+}
+
+function replaceSuggestionMinutes(inputSuggestionMinutes, suggestionMinutes, flags) {
+    //Insert a new number input box
+    let targetSuggestionMinutes = Math.round(parseFloat(inputSuggestionMinutes)); //return to 100 after testing
+    suggestionMinutes = targetSuggestionMinutes;
+    document.getElementById("suggestionMinutesInput").remove();
+
+    let submitMinutes = document.createElement('h4');
+    submitMinutes.textContent = targetSuggestionMinutes;
+    submitMinutes.id = "suggestionMinutesInput";
+    submitMinutes.className = "finalized-suggestion-minutes";
+    submitMinutes.style.marginTop = "0px";
+    submitMinutes.style.marginBottom = "0px";
+    document.getElementById("coolDiv2").appendChild(submitMinutes);
+    document.getElementById('suggestion-minutes-submit').textContent = "Change";
+    flags.submittedSuggestionMinutes = true;
+
+    return suggestionMinutes;
 }
 
 function changeTargetHours(flags) {
