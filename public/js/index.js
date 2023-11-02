@@ -196,6 +196,25 @@ document.addEventListener("DOMContentLoaded", function() {
     })
 
     breakSuggestionToggle.addEventListener("click", function() {
+
+
+        var userAgent = navigator.userAgent;
+
+        if (userAgent.indexOf("Firefox") > -1) {
+            alert("You are using Mozilla Firefox");
+        } else if (userAgent.indexOf("Safari") > -1 && userAgent.indexOf("Chrome") == -1) {
+            alert("You are using Safari");
+        } else if (userAgent.indexOf("Edg") > -1) {
+            alert("You are using the Chromium-based Microsoft Edge");
+        } else if (userAgent.indexOf("Edge") > -1) {
+            alert("You are using the Legacy Microsoft Edge");
+        } else if (userAgent.indexOf("Chrome") > -1) {
+            alert("You are using Chrome")
+        } else {
+            alert("You are using another browser");
+        }
+
+
         if (breakSuggestionToggle.checked) {
             //Check if notifications are disabled already, if they are alert user, uncheck, and return
             //console.log(Notification.permission);
