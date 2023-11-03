@@ -79,6 +79,8 @@ document.addEventListener("DOMContentLoaded", function() {
     // ----------------
     // MAIN CODE (Runs after DOM content is loaded)
     // ----------------
+    alert(isMobile);
+
     if (isMobile) {
         removeBreakSuggestionBlock(breakSuggestionBlock);
     }
