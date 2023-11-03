@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const breakSuggestionToggle = document.getElementById("breakSuggestionToggle");
     const suggestionMinutesContainer = document.getElementById("suggestionMinutesContainer");
     const submit_suggestion_btn = document.getElementById("suggestion-minutes-submit");
+    const breakSuggestionBlock = document.getElementById("breakSuggestionBlock");
 
     const redFavicon = "/images/RED.png";
     const blueFavicon = "/images/BLUE.png";
@@ -73,6 +74,13 @@ document.addEventListener("DOMContentLoaded", function() {
         targetReachedToggle: true, //Flag: changes based on user setting (alerts user when target reached)
         breakSuggestionToggle: false,
         submittedSuggestionMinutes: false
+    }
+
+    // ----------------
+    // MAIN CODE (Runs after DOM content is loaded)
+    // ----------------
+    if (isMobile) {
+        removeBreakSuggestionBlock(breakSuggestionBlock);
     }
 
     // ----------------
@@ -196,28 +204,10 @@ document.addEventListener("DOMContentLoaded", function() {
     })
 
     breakSuggestionToggle.addEventListener("click", function() {
-
-
-        var userAgent = navigator.userAgent;
-
-        if (userAgent.indexOf("Firefox") > -1) {
-            alert("You are using Mozilla Firefox");
-        } else if (userAgent.indexOf("Safari") > -1 && userAgent.indexOf("Chrome") == -1) {
-            alert("You are using Safari");
-        } else if (userAgent.indexOf("Edg") > -1) {
-            alert("You are using the Chromium-based Microsoft Edge");
-        } else if (userAgent.indexOf("Edge") > -1) {
-            alert("You are using the Legacy Microsoft Edge");
-        } else if (userAgent.indexOf("Chrome") > -1) {
-            alert("You are using Chrome")
-        } else {
-            alert("You are using another browser");
-        }
-
-
         if (breakSuggestionToggle.checked) {
             //Check if notifications are disabled already, if they are alert user, uncheck, and return
             //console.log(Notification.permission);
+
             if (Notification.permission === "denied") {
                 alert("Enable notifications in the browser window")
                 breakSuggestionToggle.checked = false;
@@ -245,6 +235,35 @@ document.addEventListener("DOMContentLoaded", function() {
 // ---------------------
 // HELPER FUNCTIONS
 // ---------------------
+
+function removeBreakSuggestionBlock(breakSuggestionBlock) {
+    breakSuggestionBlock.style.display = "none";
+}
+
+//Returns user's broswer type; (this function is currently not being used)
+function detectBrowser() {
+    var userAgent = navigator.userAgent;
+
+    if (userAgent.indexOf("Firefox") > -1) {
+        // alert("You are using Mozilla Firefox");
+        return "Firefox";
+    } else if (userAgent.indexOf("Safari") > -1 && userAgent.indexOf("Chrome") == -1) {
+        // alert("You are using Safari");
+        return "Safari"
+    } else if (userAgent.indexOf("Edg") > -1) {
+        // alert("You are using the Chromium-based Microsoft Edge");
+        return "Chromium-Edge";
+    } else if (userAgent.indexOf("Edge") > -1) {
+        // alert("You are using the Legacy Microsoft Edge");
+        return "Legacy Edge";
+    } else if (userAgent.indexOf("Chrome") > -1) {
+        // alert("You are using Chrome")
+        return "Chrome"
+    } else {
+        // alert("You are using another browser");
+        return "Another browser"
+    }
+}
 
 //For some reason, EDGE won't prompt the user to turn on notifications if they're set to default :/
 async function enableNotifications(breakSuggestionToggle, flags, suggestionMinutesContainer) {
