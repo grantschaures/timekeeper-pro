@@ -80,8 +80,10 @@ document.addEventListener("DOMContentLoaded", function() {
     // MAIN CODE (Runs after DOM content is loaded)
     // ----------------
 
-   alert(navigator.userAgent);
-
+    //Unfortuantely, Safari on iPad Pro acts like mobile but identifies as desktop
+    /* This shouldn't be a huge deal, but iPad pro users will see the
+    break suggestion toggle, but it won't do anything... We'll have to just
+    live with this for now unfortunately */
     if (isMobile) {
         removeBreakSuggestionBlock(breakSuggestionBlock);
     }
