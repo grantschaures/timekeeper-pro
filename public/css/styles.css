@@ -211,7 +211,12 @@ main {
 
 .finalized-hours {
     font-family: myFont2;
-    color: black;
+    color: rgba(255, 255, 255); /* finalized text color */
+}
+
+.finalized-suggestion-minutes {
+    font-family: myFont2;
+    color: rgba(255, 255, 255); /* finalized text color */
 }
 
 #timekeeping-container {
@@ -935,17 +940,18 @@ iframe {
     display: none;
 }
 
+/* background-color: #5c5c5c; */
+
 #suggestionMinutesInput {
     width: 40px;
     height: 20px;
-    background-color: #5c5c5c;
+    background-color: #e0e0e0;
     font-size: 16px;
     padding: 8px 12px;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border: 1px solid white;
     margin-right: 15px;
-    color: white;
 }
 
 #suggestionMinutesContainer {

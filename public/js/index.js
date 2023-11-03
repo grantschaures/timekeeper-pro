@@ -44,7 +44,8 @@ document.addEventListener("DOMContentLoaded", function() {
     let intervals = {
         main: null, //progress bar interval
         total: null,
-        local: null //interval for time display
+        local: null, //interval for time display
+        suggestion: null
     };
     
     //START TIMES
@@ -61,7 +62,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let elapsedTime = {
         hyperFocus: 0, //Accumulated time from each productivity interval
-        chillTime: 0 //time elapsed during each Chill Time mode
+        chillTime: 0, //time elapsed during each Chill Time mode
+        suggestionSeconds: 0
     }
 
     //STATE-RELATED FLAGS AND COUNTERS
@@ -70,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let flags = {
         hitTarget: false, //Flag: target time has been reached
         submittedTarget: false, //Flag: if target time has been submitted
-        inHyperFocus: true, //Flag: check if in hyper focus mode
+        inHyperFocus: false, //Flag: check if in hyper focus mode
         targetReachedToggle: true, //Flag: changes based on user setting (alerts user when target reached)
         breakSuggestionToggle: false,
         submittedSuggestionMinutes: false
@@ -80,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // MAIN CODE (Runs after DOM content is loaded)
     // ----------------
 
-    //Unfortuantely, Safari on iPad Pro acts like mobile but identifies as desktop
+    //Safari on iPad Pro acts like mobile (no push notifications) but identifies as desktop
     /* This shouldn't be a huge deal, but iPad pro users will see the
     break suggestion toggle, but it won't do anything... We'll have to just
     live with this for now unfortunately */
@@ -116,6 +118,10 @@ document.addEventListener("DOMContentLoaded", function() {
             intervals.total = setInterval(() => totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, targetTime), 1000);
             intervals.main = setInterval(() => updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar, progressContainer), 1000); //repeatedly calls reference to updateProgressBar function every 1000 ms (1 second)
             
+            if (flags.submittedSuggestionMinutes) {
+                intervals.suggestion = setInterval(() => suggestionMinutesCountdown(elapsedTime, suggestionMinutes, flags), 1000);
+            }
+
             if (startStopCounter > 1) {
                 elapsedTime.chillTime += Date.now() - startTimes.chillTime;
 
@@ -136,6 +142,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
             clearInterval(intervals.total);
             intervals.total = null;
+
+            if (flags.submittedSuggestionMinutes) {
+                clearInterval(intervals.suggestion);
+                intervals.suggestion = null;
+                elapsedTime.suggestionSeconds = suggestionMinutes * 60;
+            }
 
             elapsedTime.hyperFocus += Date.now() - startTimes.hyperFocus;
             
@@ -191,10 +203,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
             //set suggestion minutes w/ replaceSuggestionMinutes(inputSuggestionMinutes, suggestionMinutes, flags)
             suggestionMinutes = replaceSuggestionMinutes(inputSuggestionMinutes, suggestionMinutes, flags);
+            elapsedTime.suggestionSeconds = suggestionMinutes * 60; //shallow copy suggestionMinutes to elapsedTime.suggestionSeconds (saves state)
+            
+            if (flags.inHyperFocus) {
+                intervals.suggestion = setInterval(() => suggestionMinutesCountdown(elapsedTime, suggestionMinutes, flags), 1000);
+            }
         }
         else if (flags.submittedSuggestionMinutes) {
-            //call function to change the suggestion minutes
+            //change suggestion minutes input back to blank state and clear interval (repeated code; refactor later)
             changeSuggestionMinutes(flags);
+            clearInterval(intervals.suggestion);
+            intervals.suggestion = null;
         }
     })
 
@@ -229,6 +248,11 @@ document.addEventListener("DOMContentLoaded", function() {
         } else {
             flags.breakSuggestionToggle = false;
             hideSuggestionMinutesContainer(suggestionMinutesContainer);
+
+            //change suggestion minutes input back to blank state and clear interval (repeated code; refactor later)
+            changeSuggestionMinutes(flags);
+            clearInterval(intervals.suggestion);
+            intervals.suggestion = null;
         }
     })
 
@@ -241,11 +265,26 @@ document.addEventListener("DOMContentLoaded", function() {
 // HELPER FUNCTIONS
 // ---------------------
 
+function suggestionMinutesCountdown(elapsedTime, suggestionMinutes, flags) {
+    // console.log(elapsedTime.suggestionSeconds); //testing
+    if (elapsedTime.suggestionSeconds === 0) {
+        let notificationString;
+        if (suggestionMinutes !== 1) {
+            notificationString = "Need a break? You've been hard at work for " + suggestionMinutes.toString() + " minutes!";
+        } else {
+            notificationString = "Need a break? You've been hard at work for " + suggestionMinutes.toString() + " minute!";
+        }
+        new Notification(notificationString);
+        elapsedTime.suggestionSeconds = suggestionMinutes * 60;
+    }
+    elapsedTime.suggestionSeconds--;
+}
+
 function removeBreakSuggestionBlock(breakSuggestionBlock) {
     breakSuggestionBlock.style.display = "none";
 }
 
-//Returns user's broswer type; (this function is currently not being used)
+//Returns user's broswer type; (this function is not currently being used)
 function detectBrowser() {
     var userAgent = navigator.userAgent;
 
@@ -336,6 +375,7 @@ function replaceSuggestionMinutes(inputSuggestionMinutes, suggestionMinutes, fla
     submitMinutes.textContent = targetSuggestionMinutes;
     submitMinutes.id = "suggestionMinutesInput";
     submitMinutes.className = "finalized-suggestion-minutes";
+    submitMinutes.style.backgroundColor = "#5c5c5c"; //dark grey finalized background color
     submitMinutes.style.marginTop = "0px";
     submitMinutes.style.marginBottom = "0px";
     document.getElementById("coolDiv2").appendChild(submitMinutes);
@@ -370,6 +410,7 @@ function replaceTargetHours(inputHours, targetTime, flags) {
     submitTarget.textContent = targetHours;
     submitTarget.id = "target-hours";
     submitTarget.className = "finalized-hours";
+    submitTarget.style.backgroundColor = "#5c5c5c"; //dark grey finalized background color
     document.getElementById("coolDiv").appendChild(submitTarget);
     document.getElementById('target-hours-submit').textContent = "Change";
     flags.submittedTarget = true;
@@ -404,7 +445,6 @@ function setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, st
 };
 
 function updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar, progressContainer) {
-
     let timeDiff;
 
     if (isNaN(targetTime) || targetTime === null) { //if user doesn't input target time, break out
