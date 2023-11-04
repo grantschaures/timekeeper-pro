@@ -17,17 +17,14 @@ body {
     font-family: myFont;
 }
 
-html, body { /* Extra step to ensure gradient covers entire window on all browsers */
+html, body {
     margin: 0;
     height: 100%;
-    background-image: linear-gradient(to bottom, #3b8fe3, #1d60a3, #7f04c7);
-
-    /* Dark Mode! */
-    /* background-image: linear-gradient(to bottom, #1f1f1f, #1f1f1f, #000000); */
-
-    background-size: cover;
+    background-image: url("../images/shroomtower.png");
+    background-size: cover; /* This will cover the full area of the element */
     background-repeat: no-repeat;
     background-attachment: fixed;
+    background-position: center center; /* This keeps the image centered */
 }
 
 h1 {
@@ -148,7 +145,8 @@ main {
 
     justify-content: center;
     
-    background-color: rgba(0, 0, 0, 0.25);
+    /* background-color: rgba(0, 0, 0, 0.25); */
+    background-color: rgba(0, 0, 0, 0.5);
     
     /* Centering it horizontally */
     margin-left: auto;
@@ -228,7 +226,8 @@ main {
     margin-top: 50px;
     margin-bottom: 100px;
 
-    background-color: rgba(0, 0, 0, 0.25);
+    /* background-color: rgba(0, 0, 0, 0.25); */
+    background-color: rgba(0, 0, 0, 0.5);
 
     /* Centering it horizontally */
     margin-left: auto;

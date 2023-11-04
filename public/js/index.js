@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (!intervals.main) { //executes when interval is undefined --> Hyper Focus Mode
             setFavicon(link, redFavicon);
             
-            setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop", "Hyper Focus");
+            setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop","Hyper Focus");
             startTimes.hyperFocus = Date.now();
             intervals.total = setInterval(() => totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, targetTime), 1000);
             intervals.main = setInterval(() => updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar, progressContainer), 1000); //repeatedly calls reference to updateProgressBar function every 1000 ms (1 second)
@@ -126,11 +126,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 elapsedTime.chillTime += Date.now() - startTimes.chillTime;
 
                 //TESTING
-                console.log("Logged: " + Math.floor((Date.now() - startTimes.chillTime) / 1000) + " seconds of chill time.");
-                console.log("Logged: " + Math.floor((elapsedTime.chillTime) / 1000) + " seconds of elapsed chill time.");
+                console.log("Logged: " + Math.floor((Date.now() - startTimes.chillTime) / 1000) + " seconds of Chill Time.");
+                console.log("Logged: " + Math.floor((elapsedTime.chillTime) / 1000) + " seconds of elapsed Chill Time.");
                 console.log("----------------");
             }
-            setBackground("linear-gradient(to bottom, #ff595e, #ca403b)"); //Red gradient
+            // setBackground("linear-gradient(to bottom, #ff595e, #ca403b)"); //Red gradient
+            setBackground("url('../images/shroomtower.png')"); //Image gradient
         } else { //--> Chill Time
             setFavicon(link, blueFavicon);
             
@@ -152,11 +153,12 @@ document.addEventListener("DOMContentLoaded", function() {
             elapsedTime.hyperFocus += Date.now() - startTimes.hyperFocus;
             
             //TESTING
-            console.log("Logged: " + Math.floor((Date.now() - startTimes.hyperFocus) / 1000) + " seconds of hyper focus.");
-            console.log("Logged: " + Math.floor((elapsedTime.hyperFocus) / 1000) + " seconds of elapsed hyper focus.");
+            console.log("Logged: " + Math.floor((Date.now() - startTimes.hyperFocus) / 1000) + " seconds of Hyper Focus.");
+            console.log("Logged: " + Math.floor((elapsedTime.hyperFocus) / 1000) + " seconds of elapsed Hyper Focus.");
             console.log("----------------");
             
-            setBackground("linear-gradient(to bottom, #3b8fe3, #1d60a3, #7f04c7)"); //Blue-Purple gradient
+            //setBackground("linear-gradient(to bottom, #3b8fe3, #1d60a3, #7f04c7)"); //Blue-Purple gradient
+            setBackground(("url('../images/shroomtower.png')"));
         }
     });
     
@@ -275,7 +277,7 @@ function suggestionMinutesCountdown(elapsedTime, suggestionMinutes, flags) {
             notificationString = "Need a break? You've been hard at work for " + suggestionMinutes.toString() + " minute!";
         }
         new Notification(notificationString);
-        elapsedTime.suggestionSeconds = suggestionMinutes * 60;
+        //elapsedTime.suggestionSeconds = suggestionMinutes * 60; //uncomment if you want notification to repeat in hyper focus mode
     }
     elapsedTime.suggestionSeconds--;
 }
