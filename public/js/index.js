@@ -112,7 +112,10 @@ document.addEventListener("DOMContentLoaded", function() {
         
         if (!intervals.main) { //executes when interval is undefined --> Hyper Focus Mode
             setFavicon(link, redFavicon);
-            
+
+            //Console.log out the --> Hyper Focus Time (00:00 format)
+            console.log(printCurrentTime() + " --> Entering Hyper Focus");
+
             setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop","Hyper Focus");
             startTimes.hyperFocus = Date.now();
             intervals.total = setInterval(() => totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, targetTime), 1000);
@@ -126,14 +129,18 @@ document.addEventListener("DOMContentLoaded", function() {
                 elapsedTime.chillTime += Date.now() - startTimes.chillTime;
 
                 //TESTING
-                console.log("Logged: " + Math.floor((Date.now() - startTimes.chillTime) / 1000) + " seconds of Chill Time.");
-                console.log("Logged: " + Math.floor((elapsedTime.chillTime) / 1000) + " seconds of elapsed Chill Time.");
-                console.log("----------------");
+                // console.log("Logged: " + Math.floor((Date.now() - startTimes.chillTime) / 1000) + " seconds of Chill Time.");
+                // console.log("Logged: " + Math.floor((elapsedTime.chillTime) / 1000) + " seconds of elapsed Chill Time.");
+                // console.log("----------------");
             }
+            // setBackground("url('../images/shroomtower.png')"); //Image gradient
             // setBackground("linear-gradient(to bottom, #ff595e, #ca403b)"); //Red gradient
-            setBackground("url('../images/shroomtower.png')"); //Image gradient
+            setBackground("linear-gradient(to bottom, #5dd44d, #50b350, #004400)"); //Green gradient
         } else { //--> Chill Time
             setFavicon(link, blueFavicon);
+
+            //Console.log out the --> Chill Time (00:00 format)
+            console.log(printCurrentTime() + " --> Entering Chill Time");
             
             setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", "Chill Time");
             startTimes.chillTime = Date.now();
@@ -153,12 +160,12 @@ document.addEventListener("DOMContentLoaded", function() {
             elapsedTime.hyperFocus += Date.now() - startTimes.hyperFocus;
             
             //TESTING
-            console.log("Logged: " + Math.floor((Date.now() - startTimes.hyperFocus) / 1000) + " seconds of Hyper Focus.");
-            console.log("Logged: " + Math.floor((elapsedTime.hyperFocus) / 1000) + " seconds of elapsed Hyper Focus.");
-            console.log("----------------");
+            // console.log("Logged: " + Math.floor((Date.now() - startTimes.hyperFocus) / 1000) + " seconds of Hyper Focus.");
+            // console.log("Logged: " + Math.floor((elapsedTime.hyperFocus) / 1000) + " seconds of elapsed Hyper Focus.");
+            // console.log("----------------");
             
-            //setBackground("linear-gradient(to bottom, #3b8fe3, #1d60a3, #7f04c7)"); //Blue-Purple gradient
-            setBackground(("url('../images/shroomtower.png')"));
+            //setBackground(("url('../images/shroomtower.png')"));
+            setBackground("linear-gradient(to bottom, #3b8fe3, #1d60a3, #7f04c7)"); //Blue-Purple gradient
         }
     });
     
@@ -266,6 +273,23 @@ document.addEventListener("DOMContentLoaded", function() {
 // ---------------------
 // HELPER FUNCTIONS
 // ---------------------
+function printCurrentTime() {
+    // Get the current timestamp from Date.now()
+    const timestamp = Date.now();
+
+    // Convert the timestamp to a Date object
+    const date = new Date(timestamp);
+
+    // Format the time parts
+    const hours = date.getHours() % 12 || 12; // convert 24h to 12h format and handle 0 as 12
+    const minutes = date.getMinutes().toString().padStart(2, '0'); // ensure two digits
+    const suffix = date.getHours() >= 12 ? 'PM' : 'AM';
+
+    // Combine the parts into a time string
+    const timeString = `${hours}:${minutes} ${suffix}`;
+
+    return timeString;
+}
 
 function suggestionMinutesCountdown(elapsedTime, suggestionMinutes, flags) {
     // console.log(elapsedTime.suggestionSeconds); //testing
