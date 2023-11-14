@@ -26,6 +26,10 @@ document.addEventListener("DOMContentLoaded", function() {
     const submit_suggestion_btn = document.getElementById("suggestion-minutes-submit");
     const breakSuggestionBlock = document.getElementById("breakSuggestionBlock");
 
+    const transitionClockSoundToggle = document.getElementById("transitionClockSoundToggle");
+
+    let academicWeaponSelect = document.getElementById("academicWeaponSelect");
+
     const redFavicon = "/images/RED.png";
     const blueFavicon = "/images/BLUE.png";
     const link = document.querySelector("link[rel~='icon']");
@@ -75,7 +79,9 @@ document.addEventListener("DOMContentLoaded", function() {
         inHyperFocus: false, //Flag: check if in hyper focus mode
         targetReachedToggle: true, //Flag: changes based on user setting (alerts user when target reached)
         breakSuggestionToggle: false,
-        submittedSuggestionMinutes: false
+        submittedSuggestionMinutes: false,
+        transitionClockSoundToggle: false,
+        isAcademicWeapon: false
     }
 
     // ----------------
@@ -97,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     start_stop_btn.addEventListener("click", function() {
 
-        playClick(audio, isMobile);
+        playClick(audio, flags);
         resetDisplay(display);
 
         startStopCounter++; //keep track of button presses
@@ -262,6 +268,24 @@ document.addEventListener("DOMContentLoaded", function() {
             changeSuggestionMinutes(flags);
             clearInterval(intervals.suggestion);
             intervals.suggestion = null;
+        }
+    })
+
+    transitionClockSoundToggle.addEventListener("click", function() {
+        if (transitionClockSoundToggle.checked) {
+            flags.transitionClockSoundToggle = true;
+        } else {
+            flags.transitionClockSoundToggle = false;
+        }
+    })
+    
+    academicWeaponSelect.addEventListener("click", function() {
+        let value = academicWeaponSelect.value;
+    
+        if (value == "yes") {
+            flags.isAcademicWeapon = true;
+        } else {
+            flags.isAcademicWeapon = false;
         }
     })
 
@@ -520,8 +544,8 @@ function setBackground(background_color) {
     document.documentElement.style.backgroundImage = background_color;
 };
 
-function playClick(audio, isMobile) {
-    if (!isMobile)
+function playClick(audio, flags) {
+    if (flags.transitionClockSoundToggle == true)
     {
         audio.volume = 0.25; //lowering volume of sound
         audio.play().catch(error => {

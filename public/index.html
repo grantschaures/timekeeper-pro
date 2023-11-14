@@ -411,11 +411,11 @@
                 <div class="settings" id="settingsWindow">
                     <h1>Settings</h1>
                     <hr>
-                    <div id="alertsNotificationsContainer">
-                        <img src="images/noun-notifications-2548963.png" id="alertsNotificationsIcon">
+                    <div id="alertsNotificationsContainer" class="settingsIconTextContainer">
+                        <img src="images/noun-notifications-2548963.png" id="alertsNotificationsIcon" class="settingsIcon">
                         <h2>Alerts & Notifications</h2>
                     </div>
-                    <div id="alertsNotificationsToggleContainer">
+                    <div id="alertsNotificationsToggleContainer" class="settingsCategory">
                         <div id="toggleTargetTimeAlertContainer" class="settingsMicroContainer">
                             <div id="targetTimeReachedText">
                                 <p><b>Target Time Reached Alert</b></p>
@@ -456,7 +456,43 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <hr>  -->
+                    <hr>
+                    <div id="soundsContainer" class="settingsIconTextContainer">
+                        <img src="images/noun-sound-3074860.png" id="soundsIcon" class="settingsIcon">
+                        <h2>Sounds</h2>
+                    </div>
+                    <div id="soundsToggleContainer" class="settingsCategory">
+                        <div id="toggleClockSoundContainer" class="settingsMicroContainer">
+                            <div id="transitionClockSoundText">
+                                <p><b>Transition Clock Sound</b></p>
+                            </div>
+                            <div id="transitionClockSoundToggleContainer" class="toggleContainer">
+                                <input type="checkbox" id="transitionClockSoundToggle" class="toggle-checkbox">
+                                <label for="transitionClockSoundToggle" id="transitionClockSoundToggleLabel" class="toggle-label">
+                                    <span id="transitionClockSoundToggleBall" class="toggle-ball"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div id="academicSurveyContainer" class="settingsIconTextContainer">
+                        <img src="images/noun-sword-6278206.png" id="swordIcon" class="settingsIcon">
+                        <h2>Academic Survey</h2>
+                    </div>
+                    <div id="academicSurveyDropdownContainer" class="settingsCategory">
+                        <div id="academicWeaponContainer" class="settingsMicroContainer">
+                            <div id="academicWeaponText">
+                                <p><b>Are you an Absolute Academic Weapon?</b></p>
+                            </div>
+                            <div id="academicWeaponDropdownContainer" class="toggleContainer">
+                                <select name="academicWeapon" id="academicWeaponSelect">
+                                    <option value="select">Select</option>
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
