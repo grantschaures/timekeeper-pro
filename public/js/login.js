@@ -15,6 +15,8 @@ async function addUser() {
             password: password
         };
 
+        console.log(user.email);
+
         const response = await fetch("/api/api", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
