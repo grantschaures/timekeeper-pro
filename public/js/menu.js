@@ -167,7 +167,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         //eventually check for Settings and logInOut buttons and if event.target is equal to the settings and logInOut containers and what they contain
-        if ((event.target !== blog_btn && event.target !== about_btn && !about_container.contains(event.target) && !blog_container.contains(event.target) && !menu_btn.contains(event.target)  && !blog_post_container.contains(event.target) && event.target !== settings_btn  && !settings_container.contains(event.target)) || (event.target == about_exit) || (event.target == blog_exit) || (event.target == blog_post_exit) || (event.target == settings_exit)) {
+        if ((event.target !== blog_btn && event.target !== about_btn && !about_container.contains(event.target) && !blog_container.contains(event.target) && !menu_btn.contains(event.target)  && !blog_post_container.contains(event.target) && event.target !== settings_btn  && !settings_container.contains(event.target) && event.target !== logInOut_btn) || (event.target == about_exit) || (event.target == blog_exit) || (event.target == blog_post_exit) || (event.target == settings_exit)) {
             main_elements.style.display = "block";
 
             if (flags.blogShowing == true) {
@@ -200,6 +200,10 @@ document.addEventListener("DOMContentLoaded", function() {
             flags.breakSuggestionInfoWindowShowing = true;
         }
         
+    })
+
+    logInOut_btn.addEventListener("click", function() {
+        window.location.href = "/login";
     })
 });
 

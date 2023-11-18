@@ -1,0 +1,71 @@
+<!DOCTYPE html> <!-- Instructs web browser about type of document that follows -->
+<html lang="en">
+    <head>
+        <meta charset='utf-8'>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <title>HyperChill.io</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <link rel='stylesheet' href='/css/styles.css'> <!-- Importing external stylesheet -->
+        <link rel="icon" href="/RED.png" type="image/x-icon">
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/RED.png">
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
+        <script src='/js/login.js'></script>
+    </head>
+
+    <body> <!-- enclose all elements and content to be rendered in the browser -->
+        <div id="loginWindow">
+            <div id="loginContainer">
+                <div id="loginLogo">
+                    <h1>HyperChill.io</h1>
+                </div>
+                <div id="loginText">
+                    <h3>Login</h3>
+                </div>
+                <div id="loginInputWindow">
+                    <div id="googleSignInBlock">
+                        <button id="googleSignInBtn">
+                            <img id="googleIcon" src="/images/google.256x256.png">
+                            <div>
+                                Login with Google
+                            </div>
+                        </button>
+                    </div>
+                    <div id="hr_or_hr_block">
+                        <hr class="or_hr">
+                        <div id="or">
+                            or
+                        </div>
+                        <hr class="or_hr">
+                    </div>
+                    <div id="emailBlock">
+                        <h3 id="email_h3">Email</h3>
+                        <input type="email" id="emailInput" name="email" placeholder="example@mail.com" class="loginInput">
+                    </div>
+                    <div id="passwordBlock">
+                        <h3 id="password_h3">Password</h3>
+                        <input type="password" id="passwordInput" name="password" class="loginInput">
+                    </div>
+                    <div id="loginSubmitBtnContainer">
+                        <button id="loginSubmitBtn" style="background-color: grey">
+                            Submit
+                        </button>
+                    </div>
+                    <div id="forgotPasswordContainer">
+                        <h3 id="forgotPassowrd_h3"><u>Forgot Password</u></h3>
+                        <!-- Link to /reset-password page -->
+                    </div>
+                </div>
+                <div id="createAccountContainer">
+                    <div id="noAccountText">
+                        <h3 id="createAccount_h3">Don't have an account?</h3>
+                    </div>
+                    <div id="createAccountText">
+                        <h3 id="createAccount_h3"><u>Create Account</u></h3>
+                    </div>
+
+                </div>
+            </div>
+        </div>  
+    </body>
+</html>

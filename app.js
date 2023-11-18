@@ -2,6 +2,7 @@
 
 require('dotenv').config();
 const express = require("express");
+const mongoose = require('mongoose');
 const path = require('path');
 
 // initialization of a new express application
@@ -15,15 +16,29 @@ const logRequest = function(req, res, next) {
 };
  
 app.use(logRequest);
+
+async function connect() {
+    try {
+      await mongoose.connect(process.env.MONGODB_URI, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      });
+      console.log("Connected to MongoDB");
+    } catch (error) {
+      console.error(error);
+    }
+}
+
+connect();
 //////////
 
 //COMMENT OUT WHEN TESTING ON LOCALHOST:3000
-app.use((req, res, next) => {
-    if (req.header('x-forwarded-proto') !== 'https')
-        res.redirect(`https://${req.header('host')}${req.url}`);
-    else
-        next();
-});
+// app.use((req, res, next) => {
+//     if (req.header('x-forwarded-proto') !== 'https')
+//         res.redirect(`https://${req.header('host')}${req.url}`);
+//     else
+//         next();
+// });
 
 // Serve static files from the public dir
 app.use(express.static("public")); //app.use() function is used to mount middleware functions at a specific path
@@ -31,10 +46,12 @@ app.use(express.static("public")); //app.use() function is used to mount middlew
 
 // A middleware function (or just middleware) is a function that examines or modifies the request and/or response objects. A middleware function has three parameters: req, res, and next
 
-app.get("/test", (req, res) => {
-    const filePath = path.join(__dirname, 'public', 'test.html')
+app.get("/login", (req, res) => {
+    const filePath = path.join(__dirname, 'public', 'login.html')
     res.sendFile(filePath);
 });
+
+app.use("/api/api", require("./api/api"));
 
 
 const PORT = process.env.PORT || 3000;
