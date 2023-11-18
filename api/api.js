@@ -3,7 +3,7 @@ const User = require("../models/user");
 const router = require("express").Router();
 
 // telling the router to use the JSON parsing middleware for all routes under this router
-router.use(express.json());
+//router.use(express.json());
 
 // Add a new User to the database
 //async functionality seems to be unecessary
