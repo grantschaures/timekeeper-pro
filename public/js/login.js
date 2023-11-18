@@ -15,13 +15,13 @@ async function addUser() {
             password: password
         };
 
-        console.log(user.email);
-
+        
         const response = await fetch("/api/api", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(user)
         });
+        console.log(user.email);
         
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
