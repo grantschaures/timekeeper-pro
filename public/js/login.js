@@ -34,6 +34,6 @@ async function addUser() {
 
     } catch (error) {
         console.error("Error:", error);
-        // Handle the error (e.g., display an error message to the user)
+        // Handle the error (e.g., display an error message to the user).
     }
 }
