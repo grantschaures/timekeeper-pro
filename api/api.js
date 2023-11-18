@@ -7,10 +7,10 @@ router.use(express.json());
 
 // Add a new User to the database
 //async functionality seems to be unecessary
-router.post("/", function(req, res) {
+router.post("/", async function(req, res) {
     try {
         const user = new User(req.body);
-        user.save();
+        await user.save();
         res.status(201).json(user);
     } catch (err) {
         res.status(400).send(err);
