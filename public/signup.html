@@ -10,24 +10,24 @@
         <link rel="icon" type="image/png" sizes="32x32" href="/images/RED.png">
         <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
-        <script src='/js/login.js'></script>
+        <script src='/js/signup.js'></script>
     </head>
 
     <body> <!-- enclose all elements and content to be rendered in the browser -->
-        <div id="loginWindow">
-            <div id="loginContainer">
-                <div id="loginLogo">
+        <div id="signupWindow">
+            <div id="signupContainer">
+                <div id="signupLogo">
                     <h1>HyperChill.io</h1>
                 </div>
-                <div id="loginText">
-                    <h3>Login</h3>
+                <div id="signupText">
+                    <h3>Create Account</h3>
                 </div>
-                <div id="loginInputWindow">
-                    <div id="googleSignInBlock">
-                        <button id="googleSignInBtn">
+                <div id="signupInputWindow">
+                    <div id="googleSignUpBlock">
+                        <button id="googleSignUpBtn">
                             <img class="googleIcon" src="/images/google.256x256.png">
                             <div>
-                                Log in with Google
+                                Sign up with Google
                             </div>
                         </button>
                     </div>
@@ -38,30 +38,22 @@
                         </div>
                         <hr class="or_hr">
                     </div>
-                    <div class="emailBlock" id="signInEmail">
+                    <div class="emailBlock" id="signUpEmail">
                         <h3 id="email_h3">Email</h3>
-                        <input type="email" id="emailInputSignin" name="email" placeholder="example@mail.com" class="loginInput">
+                        <input type="email" id="emailInputSignup" name="email" placeholder="example@mail.com" class="signupInput">
                     </div>
-                    <div id="passwordBlock">
-                        <h3 id="password_h3">Password</h3>
-                        <input type="password" id="passwordInput" name="password" class="loginInput">
-                    </div>
-                    <div id="loginSubmitBtnContainer">
-                        <button id="loginSubmitBtn" style="background-color: grey">
+                    <div id="signupSubmitBtnContainer">
+                        <button id="signupSubmitBtn" style="background-color: grey">
                             Submit
                         </button>
                     </div>
-                    <div id="forgotPasswordContainer">
-                        <h3 id="forgotPassword_h3"><u>Forgot Password</u></h3>
-                        <!-- Link to /reset-password page -->
-                    </div>
                 </div>
-                <div id="createAccountContainer">
-                    <div id="noAccountText">
-                        <h3 id="createAccount_h3" class="accountRevert">Don't have an account?</h3>
+                <div id="logBackInContainer">
+                    <div id="logBackInText">
+                        <h3 id="logBackIn_h3" class="accountRevert">Already have an account?</h3>
                     </div>
-                    <div id="createAccountText">
-                        <h3 id="createAccount2_h3" class="accountRevert"><u>Create Account</u></h3>
+                    <div id="loginText">
+                        <h3 id="logBackIn2_h3" class="accountRevert"><u>Log in</u></h3>
                     </div>
 
                 </div>

@@ -51,8 +51,12 @@ app.get("/login", (req, res) => {
     res.sendFile(filePath);
 });
 
-app.use("/api/api", require("./api/api"));
+app.get("/signup", (req, res) => {
+    const filePath = path.join(__dirname, 'public', 'signup.html')
+    res.sendFile(filePath);
+});
 
+app.use("/api/api", require("./api/api"));
 
 const PORT = process.env.PORT || 3000;
 // Start the web server

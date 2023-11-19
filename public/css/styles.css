@@ -1061,7 +1061,7 @@ iframe {
     color: black;
 }
 
-#loginWindow {
+#loginWindow, #signupWindow {
     height: 80%;
     min-height: 100px;
     margin: 50px;
@@ -1071,23 +1071,18 @@ iframe {
     /* border: 3px solid red; */
 }
 
-/* #loginContainer {
-    border: 3px solid orange;
-} */
-
-#loginLogo {
+#loginLogo, #signupLogo {
     text-align: center;
     /* border: 3px solid black; */
 }
 
-#loginText {
+#loginText, #signupText {
     text-align: center;
     /* border: 3px solid black; */
 }
 
-#loginInputWindow {
+#loginInputWindow, #signupInputWindow {
     background-color: white;
-    align-items: center;
     height: 400px;
     width: 350px;
     border-radius: 10px;
@@ -1098,7 +1093,7 @@ iframe {
     align-items: center;
 }
 
-#emailBlock,
+.emailBlock,
 #passwordBlock {
     margin-bottom: 20px; /* Add some spacing between the blocks */
     display: flex;
@@ -1111,7 +1106,7 @@ iframe {
     margin-bottom: 5px; /* Add some spacing between the label and input */
 }
 
-.loginInput {
+.loginInput, .signupInput {
     width: 250px;
     height: 35px;
     border-radius: 5px;
@@ -1124,20 +1119,23 @@ iframe {
     #loginInputWindow {
         width: 300px;
     }
+    #signupInputWindow {
+        width: 300px;
+    }
 }
 
-#googleIcon {
+.googleIcon {
     width: 20px;
     height: 20px;
     padding-right: 10px;
 }
 
-#googleSignInBlock {
+#googleSignInBlock, #googleSignUpBlock {
     margin-bottom: 10px; /* Adjust the margin as needed to move it closer to the top */
     margin-top: 20px;
 }
 
-#googleSignInBtn {
+#googleSignInBtn, #googleSignUpBtn {
     display: flex;         /* Convert the button into a flex container */
     justify-content: space-around;
     align-items: center;   /* Vertically center the contents */
@@ -1146,7 +1144,7 @@ iframe {
     width: 250px;
 }
 
-#hr_or_hr_block {
+.hr_or_hr_block {
     width: 250px;
     display: flex;
     flex-direction: row;
@@ -1154,9 +1152,11 @@ iframe {
     margin-top: 10px;
 }
 
-#or {
+.or {
     padding-left: 10px;
     padding-right: 10px;
+    font-family: myFont2;
+    font-size: 14px;
 }
 
 .or_hr {
@@ -1164,7 +1164,7 @@ iframe {
     border-color: #ffffff;
 }
 
-#emailBlock > h3 {
+.emailBlock > h3 {
     color: black;
     font-size: 14px;
 }
@@ -1179,40 +1179,39 @@ iframe {
     font-size: 14px;
 }
 
-#or {
-    font-family: myFont2;
-    font-size: 14px;
-}
-
 #forgotPasswordContainer > h3 {
     color: black;
     font-size: 14px;
 }
 
-#loginSubmitBtnContainer {
+#loginSubmitBtnContainer, #signupSubmitBtnContainer {
     margin-bottom: 10px;
 }
 
-#forgotPassowrd_h3:hover {
+#forgotPassword_h3:hover {
     cursor: pointer;
 }
 
-#createAccountContainer {
+#createAccountContainer, #logBackInContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 5px;
 }
 
-#createAccount_h3 {
+.accountRevert {
     color: white;
     font-size: 14px;
 }
 
-#createAccount_h3:hover {
+#createAccount2_h3:hover, #logBackIn2_h3:hover{
     cursor: pointer;
 }
 
-#noAccountText {
+#noAccountText, #logBackInText {
     margin-bottom: -20px;
+}
+
+#signUpEmail {
+    margin-bottom: 30px;
 }

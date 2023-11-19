@@ -1,13 +1,20 @@
 addEventListener("DOMContentLoaded", function () {
     const loginSubmitBtn = document.getElementById("loginSubmitBtn");
-    loginSubmitBtn.addEventListener("click", async function () {
+    const forgotPasswordBtn = document.getElementById("forgotPassword_h3");
+    const createAccountBtn = document.getElementById("createAccount2_h3");
+
+    loginSubmitBtn.addEventListener("click", async function() {
         await addUser();
     });
+
+    createAccountBtn.addEventListener("click", async function() {
+        window.location.href = "/signup";
+    })
 });
 
 async function addUser() {
     try {
-        const email = document.getElementById("emailInput").value;
+        const email = document.getElementById("emailInputSignin").value;
         const password = document.getElementById("passwordInput").value;
 
         const user = {
@@ -15,7 +22,6 @@ async function addUser() {
             password: password
         };
 
-        
         const response = await fetch("/api/api", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -29,7 +35,7 @@ async function addUser() {
         const results = await response.json();
         // console.log("Added user with ID: " + results._id); //testing
 
-        document.getElementById("emailInput").value = "";
+        document.getElementById("emailInputSignin").value = "";
         document.getElementById("passwordInput").value = "";
 
     } catch (error) {
