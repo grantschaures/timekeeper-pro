@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function() {
             //Console.log out the --> Hyper Focus Time (00:00 format)
             console.log(printCurrentTime() + " --> Entering Hyper Focus");
 
-            setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop","Hyper Focus");
+            setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop","Flow Time");
             startTimes.hyperFocus = Date.now();
             intervals.total = setInterval(() => totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, targetTime), 1000);
             intervals.main = setInterval(() => updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar, progressContainer), 1000); //repeatedly calls reference to updateProgressBar function every 1000 ms (1 second)
