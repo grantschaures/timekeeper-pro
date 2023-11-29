@@ -19,12 +19,28 @@ document.addEventListener("DOMContentLoaded", function() {
     const progressContainer = document.querySelector('.progress-container');
     const display = document.getElementById("display");
 
+    //INTERRUPTIONS CONTAINER
+    const interruptionsContainer = document.getElementById("interruptions-container");
+    const interruptionsSubContainer = document.getElementById("interruptions-sub-container");
+    const interruptionsChangeContainer = document.getElementById("interruptions-change-container");
+    const decBtn = document.getElementById("decBtn");
+    const incBtn = document.getElementById("incBtn");
+
+    const coolerDiv = document.getElementById("coolerDiv");
+    const interruptionsNum = document.getElementById("interruptions_num");
+
+    const suggestionBreakContainer = document.getElementById("suggestionBreakContainer");
+    const suggestionBreak_label = document.getElementById("suggestionBreak-label");
+    const suggestionBreak_min = document.getElementById("suggestionBreak-min");
+
     //SETTINGS
     const targetTimeReachedToggle = document.getElementById("targetTimeReachedToggle");
     const breakSuggestionToggle = document.getElementById("breakSuggestionToggle");
     const suggestionMinutesContainer = document.getElementById("suggestionMinutesContainer");
     const submit_suggestion_btn = document.getElementById("suggestion-minutes-submit");
     const breakSuggestionBlock = document.getElementById("breakSuggestionBlock");
+    const breakSuggestionBlock2 = document.getElementById("breakSuggestionBlock2");
+    const chillTimeBreakSuggestionToggle = document.getElementById("chillTimeBreakSuggestionToggle");
 
     const transitionClockSoundToggle = document.getElementById("transitionClockSoundToggle");
 
@@ -49,7 +65,8 @@ document.addEventListener("DOMContentLoaded", function() {
         main: null, //progress bar interval
         total: null,
         local: null, //interval for time display
-        suggestion: null
+        suggestion: null,
+        chillTimeBreak: null
     };
     
     //START TIMES
@@ -63,15 +80,24 @@ document.addEventListener("DOMContentLoaded", function() {
     //TIME AMOUNTS
     let targetTime = null; //Target amount of time in ms
     let suggestionMinutes = null; //Suggestion minutes
+    let breakTimeSuggestionsArr = [5, 8, 10, 15];
 
     let elapsedTime = {
         hyperFocus: 0, //Accumulated time from each productivity interval
         chillTime: 0, //time elapsed during each Chill Time mode
-        suggestionSeconds: 0
+        suggestionSeconds: 0,
+        chillTimeSuggestionSeconds: 0
     }
 
     //STATE-RELATED FLAGS AND COUNTERS
-    let startStopCounter = 0; //tracks number of times start/stop is pressed
+    let counters = {
+        startStop: 0, //tracks number of times start/stop is pressed
+        interruptions: 0,
+        currentChillTimeBreakSuggestion: 0
+    }
+
+    //STORAGE
+    savedInterruptionsArr = [];
 
     let flags = {
         hitTarget: false, //Flag: target time has been reached
@@ -81,7 +107,8 @@ document.addEventListener("DOMContentLoaded", function() {
         breakSuggestionToggle: false,
         submittedSuggestionMinutes: false,
         transitionClockSoundToggle: false,
-        isAcademicWeapon: false
+        isAcademicWeapon: false,
+        chillTimeBreakSuggestionToggle: false
     }
 
     // ----------------
@@ -93,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function() {
     break suggestion toggle, but it won't do anything... We'll have to just
     live with this for now unfortunately */
     if (isMobile) {
-        removeBreakSuggestionBlock(breakSuggestionBlock);
+        removeBreakSuggestionBlock(breakSuggestionBlock, breakSuggestionBlock2);
     }
 
     // ----------------
@@ -106,9 +133,9 @@ document.addEventListener("DOMContentLoaded", function() {
         playClick(audio, flags);
         resetDisplay(display);
 
-        startStopCounter++; //keep track of button presses
+        counters.startStop++; //keep track of button presses
 
-        if (startStopCounter === 1) {
+        if (counters.startStop === 1) {
             veryStartActions(startTimes);
         }
 
@@ -118,6 +145,9 @@ document.addEventListener("DOMContentLoaded", function() {
         
         if (!intervals.main) { //executes when interval is undefined --> Hyper Focus Mode
             setFavicon(link, redFavicon);
+
+            hideSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min);
+            showInterruptionsSubContainer(interruptionsSubContainer);
 
             //Console.log out the --> Hyper Focus Time (00:00 format)
             console.log(printCurrentTime() + " --> Entering Hyper Focus");
@@ -131,7 +161,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 intervals.suggestion = setInterval(() => suggestionMinutesCountdown(elapsedTime, suggestionMinutes, flags), 1000);
             }
 
-            if (startStopCounter > 1) {
+            if (flags.chillTimeBreakSuggestionToggle) {
+                clearInterval(intervals.chillTimeBreak);
+            }
+
+            if (counters.startStop > 1) {
                 elapsedTime.chillTime += Date.now() - startTimes.chillTime;
 
                 //TESTING
@@ -145,6 +179,17 @@ document.addEventListener("DOMContentLoaded", function() {
         } else { //--> Chill Time
             setFavicon(link, blueFavicon);
 
+            saveResetInterruptions(interruptionsNum, counters, savedInterruptionsArr);
+            hideInterruptionsSubContainer(interruptionsSubContainer);
+
+            let lastHyperFocusIntervalMin = Math.floor((Date.now() - startTimes.hyperFocus) / (1000 * 60));
+            
+            showSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, breakTimeSuggestionsArr, lastHyperFocusIntervalMin, counters);
+            
+            if (flags.chillTimeBreakSuggestionToggle) {
+                elapsedTime.chillTimeSuggestionSeconds = counters.currentChillTimeBreakSuggestion * 60;
+                intervals.chillTimeBreak = setInterval(() => chillTimeSuggestionCountdown(elapsedTime, counters, flags), 1000);
+            }
             //Console.log out the --> Chill Time (00:00 format)
             console.log(printCurrentTime() + " --> Entering Chill Time");
             
@@ -181,7 +226,7 @@ document.addEventListener("DOMContentLoaded", function() {
             let inputHours = document.getElementById("target-hours").value;
             
             // Check if the input is empty or zero
-            if(!targetHoursValidate(inputHours, timeConvert, startTimes, elapsedTime, flags, startStopCounter)) {
+            if(!targetHoursValidate(inputHours, timeConvert, startTimes, elapsedTime, flags, counters)) {
                 return;
             }
 
@@ -232,6 +277,20 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     })
 
+    decBtn.addEventListener("click", function() {
+        if (counters.interruptions > 0) {
+            counters.interruptions--;
+            interruptionsNum.textContent = counters.interruptions;
+        }
+    })
+
+    incBtn.addEventListener("click", function() {
+        if (counters.interruptions < 1000) {
+            counters.interruptions++;
+            interruptionsNum.textContent = counters.interruptions;
+        }
+    })
+
     //Toggle is set to true by default
     //Further clicks will render the targetReachToggle flag true or false
     targetTimeReachedToggle.addEventListener("click", function() {
@@ -253,7 +312,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 console.log("Notifications Denied");
                 return;
             }
-            if (!enableNotifications(breakSuggestionToggle, flags, suggestionMinutesContainer)) {
+            if (!enableNotifications(breakSuggestionToggle, chillTimeBreakSuggestionToggle, flags, suggestionMinutesContainer)) {
                 return;
             }
 
@@ -268,6 +327,31 @@ document.addEventListener("DOMContentLoaded", function() {
             changeSuggestionMinutes(flags);
             clearInterval(intervals.suggestion);
             intervals.suggestion = null;
+        }
+    })
+
+    chillTimeBreakSuggestionToggle.addEventListener("click", function() {
+        if (chillTimeBreakSuggestionToggle.checked) {
+            if (Notification.permission === "denied") {
+                alert("Enable notifications in the browser window")
+                chillTimeBreakSuggestionToggle.checked = false;
+                console.log("Notifications Denied");
+                return;
+            }
+            if (!enableNotifications(breakSuggestionToggle, chillTimeBreakSuggestionToggle, flags, suggestionMinutesContainer)) {
+                return;
+            }
+
+            if (!flags.inHyperFocus && counters.startStop !== 0) {
+                elapsedTime.chillTimeSuggestionSeconds = counters.currentChillTimeBreakSuggestion * 60;
+                intervals.chillTimeBreak = setInterval(() => chillTimeSuggestionCountdown(elapsedTime, counters, flags), 1000);
+            }
+
+            flags.chillTimeBreakSuggestionToggle = true;
+        } else {
+            flags.chillTimeBreakSuggestionToggle = false;
+            clearInterval(intervals.chillTimeBreak);
+            intervals.chillTimeBreak = null
         }
     })
 
@@ -297,6 +381,41 @@ document.addEventListener("DOMContentLoaded", function() {
 // ---------------------
 // HELPER FUNCTIONS
 // ---------------------
+function showSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, breakTimeSuggestionsArr, lastHyperFocusIntervalMin, counters) {
+    suggestionBreakContainer.style.display = 'flex';
+
+    if (lastHyperFocusIntervalMin >= 90) {
+        counters.currentChillTimeBreakSuggestion = breakTimeSuggestionsArr[3];
+    } else if (lastHyperFocusIntervalMin >= 50) {
+        counters.currentChillTimeBreakSuggestion = breakTimeSuggestionsArr[2];
+    } else if (lastHyperFocusIntervalMin >= 25) {
+        counters.currentChillTimeBreakSuggestion = breakTimeSuggestionsArr[1];
+    } else {
+        counters.currentChillTimeBreakSuggestion = breakTimeSuggestionsArr[0];
+    }
+
+    suggestionBreak_label.textContent = "Suggested Break";
+    suggestionBreak_min.textContent = counters.currentChillTimeBreakSuggestion + " min";
+}
+
+function hideSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label) {
+    suggestionBreakContainer.style.display = 'none';
+}
+
+function hideInterruptionsSubContainer(interruptionsSubContainer) {
+    interruptionsSubContainer.style.display = 'none';
+}
+
+function showInterruptionsSubContainer(interruptionsSubContainer) {
+    interruptionsSubContainer.style.display = 'block';
+}
+
+function saveResetInterruptions(interruptionsNum, counters, savedInterruptionsArr) {
+    savedInterruptionsArr.push(counters.interruptions);
+    counters.interruptions = 0;
+    interruptionsNum.textContent = counters.interruptions;
+}
+
 function printCurrentTime() {
     // Get the current timestamp from Date.now()
     const timestamp = Date.now();
@@ -328,10 +447,21 @@ function suggestionMinutesCountdown(elapsedTime, suggestionMinutes, flags) {
         //elapsedTime.suggestionSeconds = suggestionMinutes * 60; //uncomment if you want notification to repeat in hyper focus mode
     }
     elapsedTime.suggestionSeconds--;
+    // console.log(elapsedTime.suggestionSeconds);
 }
 
-function removeBreakSuggestionBlock(breakSuggestionBlock) {
+function chillTimeSuggestionCountdown(elapsedTime, counters, flags) {
+    if (elapsedTime.chillTimeSuggestionSeconds === 0) {
+        let notificationString = "It's been " + counters.currentChillTimeBreakSuggestion + " minutes! Are you ready to get back into Flow Time?";
+        new Notification(notificationString);
+    }
+    elapsedTime.chillTimeSuggestionSeconds--;
+    // console.log(elapsedTime.chillTimeSuggestionSeconds);
+}
+
+function removeBreakSuggestionBlock(breakSuggestionBlock, breakSuggestionBlock2) {
     breakSuggestionBlock.style.display = "none";
+    breakSuggestionBlock2.style.display = "none";
 }
 
 //Returns user's broswer type; (this function is not currently being used)
@@ -360,7 +490,7 @@ function detectBrowser() {
 }
 
 //For some reason, EDGE won't prompt the user to turn on notifications if they're set to default :/
-async function enableNotifications(breakSuggestionToggle, flags, suggestionMinutesContainer) {
+async function enableNotifications(breakSuggestionToggle, chillTimeBreakSuggestionToggle, flags, suggestionMinutesContainer) {
     // Check if notifications are supported
     if (!("Notification" in window)) {
         alert("This browser does not support desktop notifications");
@@ -375,6 +505,9 @@ async function enableNotifications(breakSuggestionToggle, flags, suggestionMinut
         } else {
             breakSuggestionToggle.checked = false;
             flags.breakSuggestionToggle = false;
+
+            chillTimeBreakSuggestionToggle.checked = false;
+            flags.chillTimeBreakSuggestionToggle = false;
             hideSuggestionMinutesContainer(suggestionMinutesContainer);
             return false;
         }
@@ -436,7 +569,6 @@ function replaceSuggestionMinutes(inputSuggestionMinutes, suggestionMinutes, fla
 }
 
 function changeTargetHours(flags) {
-
     document.getElementById("target-hours").remove();
         
     let enterHours = document.createElement('input');
@@ -468,11 +600,11 @@ function replaceTargetHours(inputHours, targetTime, flags) {
     return targetTime;
 };
 
-function targetHoursValidate(inputHours, timeConvert, startTimes, elapsedTime, flags, startStopCounter) {
+function targetHoursValidate(inputHours, timeConvert, startTimes, elapsedTime, flags, counters) {
     const roundedHours = Math.round((parseFloat(inputHours)) * 100) / 100;
     if (!inputHours || roundedHours <= 0 || roundedHours > 24 || (roundedHours * 60 * 60 * 1000) <= getTotalElapsed(flags.inHyperFocus, elapsedTime.hyperFocus, startTimes.local)) {
         
-        if (startStopCounter !== 0) { //if not very start of program
+        if (counters.startStop !== 0) { //if not very start of program
             if (flags.inHyperFocus) { //if not at very start and in hyper focus
                 alert("Enter a valid target time between " + Math.ceil((parseFloat((elapsedTime.hyperFocus + (Date.now() - startTimes.local)) / timeConvert.msPerHour)) * 100) / 100 + " hours and 24 hours");
             }
@@ -480,7 +612,7 @@ function targetHoursValidate(inputHours, timeConvert, startTimes, elapsedTime, f
                 alert("Enter a valid target time between " + Math.ceil((parseFloat(elapsedTime.hyperFocus / timeConvert.msPerHour)) * 100) / 100 + " hours and 24 hours");
             }
         }
-        else if (startStopCounter === 0) { //if at very start
+        else if (counters.startStop === 0) { //if at very start
             alert("Enter a valid target time between 0.01 hours and 24 hours");
         }
         return false;

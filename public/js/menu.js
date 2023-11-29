@@ -22,6 +22,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const break_suggestion_info_icon = document.getElementById("breakSuggestionInfoIcon");
     const break_suggestion_info_window = document.getElementById("breakSuggestionInfoMessage");
 
+    const chill_time_break_suggestion_icon = document.getElementById("chillTimeBreakSuggestionInfoIcon");
+    const chill_time_break_suggestion_info_window = document.getElementById("breakSuggestionInfoMessage2");
+
     const settings_exit = document.getElementById("settingsExit");
 
     //ADD TO THIS LIST WHEN YOU CREATE A NEW BLOG
@@ -32,7 +35,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let flags = {
         blogShowing: false,
-        breakSuggestionInfoWindowShowing: false
+        breakSuggestionInfoWindowShowing: false,
+        chillTimeBreakSuggestionInfoWindowShowing: false
     }
 
     menu_btn.addEventListener("click", function() {
@@ -179,6 +183,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
             break_suggestion_info_window.style.display = "none";
             flags.breakSuggestionInfoWindowShowing = false;
+
+            chill_time_break_suggestion_info_window.style.display = "none";
+            flags.chillTimeBreakSuggestionInfoWindowShowing = false;
         }
 
     })
@@ -187,6 +194,11 @@ document.addEventListener("DOMContentLoaded", function() {
         if (event.target != break_suggestion_info_icon) {
             break_suggestion_info_window.style.display = "none";
             flags.breakSuggestionInfoWindowShowing = false;
+        }
+
+        if (event.target != chill_time_break_suggestion_icon) {
+            chill_time_break_suggestion_info_window.style.display = "none";
+            flags.chillTimeBreakSuggestionInfoWindowShowing = false;
         }
     })
 
@@ -200,6 +212,16 @@ document.addEventListener("DOMContentLoaded", function() {
             flags.breakSuggestionInfoWindowShowing = true;
         }
         
+    })
+
+    chill_time_break_suggestion_icon.addEventListener("click", function() {
+        if (flags.chillTimeBreakSuggestionInfoWindowShowing) {
+            chill_time_break_suggestion_info_window.style.display = "none";
+            flags.chillTimeBreakSuggestionInfoWindowShowing = false;
+        } else {
+            chill_time_break_suggestion_info_window.style.display = "flex";
+            flags.chillTimeBreakSuggestionInfoWindowShowing = true;
+        }
     })
 
     logInOut_btn.addEventListener("click", function() {

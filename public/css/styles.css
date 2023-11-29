@@ -20,7 +20,7 @@ body {
 html, body {
     margin: 0;
     height: 100%;
-    /* background-image: url("../images/louie.jpg"); */
+    /* background-image: url("../images/beautiful-sky-sunset-canoe.jpg"); */
     background-image: linear-gradient(to bottom, #3b8fe3, #1d60a3, #7f04c7);
     background-size: cover; /* This will cover the full area of the element */
     background-repeat: no-repeat;
@@ -94,6 +94,18 @@ main {
     /* border: 1px solid rgb(0, 255, 200); */
 }
 
+@media (max-width: 504px) {
+    #target-hours-interruptions-container {
+        flex-direction: column;
+        align-items: center;
+        /* border: 1px solid yellow; */
+        height: 325px;
+    }
+    #target-hours-container {
+        margin-right: 0px;
+    }
+}
+
 .header-btns {
     display: flex;
     justify-content: flex-end;
@@ -107,22 +119,39 @@ main {
     justify-content: space-around;
     align-items: center;   /* Vertically center the contents */
     margin-right: 10px;
+    width: 125px;
+}
+
+
+#reportIcon {
+    width: 30px;
+    height: 30px;
+    display: none;
 }
 
 #menuBtn {
     display: flex;         /* Convert the button into a flex container */
     justify-content: space-around;
     align-items: center;   /* Vertically center the contents */
-}
-
-#reportIcon {
-    width: 20px;
-    height: 20px;
+    width: 100px;
 }
 
 #menuIcon {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
+    display: none;
+}
+
+#reportIcon-black {
+    width: 30px;
+    height: 30px;
+    display: none;
+}
+
+#menuIcon-black {
+    width: 30px;
+    height: 30px;
+    display: none;
 }
 
 .header-btns button {
@@ -133,12 +162,157 @@ main {
     #reportBtn div {
         display: none;
     }
+    #reportBtn {
+        width: 50px;
+    }
     #menuBtn div {
         display: none;
+    }
+    #menuBtn {
+        width: 50px;
+    }
+    #reportIcon {
+        display: flex;
+    }
+    #menuIcon {
+        display: flex;
     }
     .header-btns button {
         width: 50px;
     }
+    #reportBtn:hover #reportIcon {
+        display: none;
+    }
+    #reportBtn:hover #reportIcon-black {
+        display: flex;
+    }
+    #menuBtn:hover #menuIcon {
+        display: none;
+    }
+    #menuBtn:hover #menuIcon-black {
+        display: flex;
+    }
+}
+
+#target-hours-interruptions-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+#interruptions-container {
+    display: flex;
+    align-items: center;
+
+    justify-content: center;
+    
+    background-color: rgba(0, 0, 0, 0.35);
+    /* background-color: rgba(0, 0, 0, 0.5); */
+    
+    /* Centering it horizontally */
+    /* margin-left: auto;
+    margin-right: auto; */
+    
+    /* Fixed dimensions */
+    width: 100%;
+    
+    height: 150px;
+    
+    border: 1px rgba(0, 0, 0, 0.25);
+    box-sizing: border-box;
+    
+    border-radius: 25px; /* Created corner curves */
+    /* border: 1px solid yellow; */
+    
+    /* POTENTIAL DESIGN ALTERNATIVE -- WHITE BORDER */
+    /* border: 3px solid rgb(255, 255, 255); */
+}
+
+@media (min-width: 505px) {
+    #interruptions-container {
+        max-width: 275px;
+    }
+    #target-hours-container {
+        max-width: 275px;
+        margin-right: 15px;
+    }
+}
+
+#suggestionBreakContainer {
+    display: none;
+    /* border: 1px solid purple; */
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    max-width: 225px;
+}
+
+#interruptions-sub-container {
+    margin-top: 6px;
+    /* border: 1px solid yellow; */
+}
+
+#interruptions-change-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: -8px;
+    margin-bottom: 30px;
+    /* border: 1px solid brown; */
+}
+
+/* #coolerDiv {
+    border: 1px solid brown;
+} */
+
+/* #interruptions-change-container * {
+    border: 1px solid yellow;
+} */
+
+.interruptionsDivBtn {
+    background-color: rgba(255, 255, 255, 0);
+    border: 2px solid white;
+    color: white;
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: myFont3;
+    font-size: 50px;
+    transition: background-color 0.25s ease;
+    line-height: 0%;
+}
+
+#decBtn:hover {
+    background-color: white;
+    color: black;
+    cursor: pointer;
+    transition: transform 0.10s ease;
+    transition: background-color 0.25s ease;
+}
+
+#decBtn:active {
+    transform: scale(0.95);
+}
+
+#incBtn:hover {
+    background-color: white;
+    color: black;
+    cursor: pointer;
+    transition: transform 0.10s ease;
+    transition: background-color 0.25s ease;
+}
+
+#incBtn:active {
+    transform: scale(0.95);
+}
+
+#interruptions_num {
+    font-family: myFont3;
+    font-size: 50px;
+    color: white;
 }
 
 #target-hours-container {
@@ -151,42 +325,78 @@ main {
     /* background-color: rgba(0, 0, 0, 0.5); */
     
     /* Centering it horizontally */
-    margin-left: auto;
-    margin-right: auto;
+    /* margin-left: auto;
+    margin-right: auto; */
     
     /* Fixed dimensions */
     width: 100%;
-    max-width: 500px;
     
-    height: 65px;
+    height: 150px;
     
     border: 1px rgba(0, 0, 0, 0.25);
     box-sizing: border-box;
     
-    border-radius: 10px; /* Created corner curves */
+    border-radius: 25px; /* Created corner curves */
+    /* border: 1px solid yellow; */
     
     /* POTENTIAL DESIGN ALTERNATIVE -- WHITE BORDER */
     /* border: 3px solid rgb(255, 255, 255); */
 }
 
+#interruptions-label {
+    /* border: 1px solid yellow; */
+    display: flex;
+    justify-content: center;
+    font-family: myFont3;
+}
+
+#suggestionBreak-label {
+    /* border: 1px solid yellow; */
+    display: flex;
+    justify-content: center;
+    font-family: myFont3;
+    margin-bottom: 12px;
+}
+
+#suggestionBreak-min {
+    /* border: 1px solid yellow; */
+    display: flex;
+    justify-content: center;
+    font-family: myFont3;
+    border: 2px solid white;
+    width: 100px;
+    border-radius: 50px;
+    margin-bottom: 42px;
+}
+
 #target-hours-sub-container {
     display: flex;
     align-items: center;
-
-    width: 350px;
-
-    justify-content: space-between;
+    flex-direction: column;
 
     margin: 10px;
 
     /* border: 1px solid blue; */
-    
+}
+
+#coolDiv-submit {
+    display: flex;
+    align-items: center;
+    /* border: 1px solid yellow; */
+    margin-bottom: 30px; /* not sure why this was necessary, 
+                            but it had to be done. Items weren't
+                            centering properly otherwise. */
+}
+
+#coolDiv {
+    margin-right: 25px;
 }
 
 #target-label {
     /* border: 1px solid yellow; */
     display: flex;
     justify-content: center;
+    font-family: myFont3;
 }
 
 #target-hours {
@@ -200,19 +410,14 @@ main {
     border: 1px solid white;
 }
 
-@media (max-width: 374px) {
-    #target-label {
-        width: 60px;
-    }
-}
-
 #target-hours-submit {
-    width: 100px;
+    width: 125px;
 }
 
 .finalized-hours {
     font-family: myFont2;
     color: rgba(255, 255, 255); /* finalized text color */
+    margin: 0px;
 }
 
 .finalized-suggestion-minutes {
@@ -240,11 +445,11 @@ main {
     align-items: center;
 
     width: 100%;
-    max-width: 400px;
+    max-width: 600px;
 
     box-sizing: border-box;
     
-    border-radius: 20px;
+    border-radius: 25px;
     
     /* POTENTIAL DESIGN ALTERNATIVE -- WHITE BORDER */
     /* border: 3px solid rgb(255, 255, 255); */
@@ -254,7 +459,38 @@ main {
     display: flex;
     justify-content: center;
     gap: 10px;
+    margin: 10px;
     /* border: 1px solid yellow; */
+}
+
+@media (max-width: 374px) {
+    .lower-buttons {
+        scale: 0.85;
+    }
+}
+
+@media (max-width: 320px) {
+    .lower-buttons {
+        scale: 0.75;
+        flex-direction: column;
+        align-items: center;
+    }
+    #display {
+        scale: 0.8;
+    }
+    #logo {
+        display: none;
+    }
+    .container {
+        align-items: center;
+        justify-content: center;
+    }
+    #target-hours-interruptions-container {
+        display: none;
+    }
+    #progress-text {
+        font-size: 12px;
+    }
 }
 
 .stopwatch {
@@ -265,24 +501,26 @@ main {
 }
 
 #start-stop {
-    width: 85px;
+    width: 115px;
 }
 
 
 button {
-    background-color: white;
-    color: black;
-    border: 1px solid white;
+    background-color: rgba(255, 255, 255, 0);
+    color: white;
+    border: 2px solid white;
     outline: none;
     padding: 8px 15px;
     cursor: pointer;
-    border-radius: 5px;
-    font-family: myFont2;
-    font-size: 16px;
+    border-radius: 15px;
+    font-family: myFont3;
+    font-size: 24px;
+    transition: background-color 0.25s ease;
 }
 
 button:active {
-    background-color: #e6e6e6;
+    /* background-color: #e6e6e6; */
+    background-color: white;
     transform: scale(0.95);
 }
 
@@ -291,13 +529,19 @@ button:focus {
 }
 
 button:hover {
-    background-color: rgb(226, 226, 226);
-    border-color: rgb(226, 226, 226);
+    background-color: #ffffff;
+    border: 2px solid #ffffff;
+    /* border-color: rgb(255, 255, 255); */
+    color: black;
+    transition: transform 0.10s ease;
+    transition: background-color 0.25s ease;
 }
 
 #productivity-chill-mode {
     /* border: 1px solid yellow; */
     color: white;
+    font-family: myFont3;
+    text-align: center;        /* Center the text horizontally */
 }
 
 #session-log {
@@ -333,7 +577,7 @@ button:hover {
     
     /* Fixed dimensions */
     width: 100%;
-    max-width: 500px;
+    max-width: 600px;
     
     height: 65px;
     
@@ -368,10 +612,10 @@ button:hover {
 }
 
 .progress-text {
-    font-family: myFont2;
-    font-size: 18px;
+    font-family: myFont3;
+    font-size: 24px;
     position: absolute;
-    top: 50%;
+    top: 55%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 1;
@@ -380,14 +624,32 @@ button:hover {
 }
 
 #display {
-    font-family: myFont2;
-    font-size: 60px;
+    font-family: myFont3;
+    font-size: 100px;
     padding-bottom: 25px;
 }
 
-@media (max-width: 354px) {
+@media (max-width: 599px) {
     #display {
-        font-size: 50px;
+        font-size: 80px;
+    }
+}
+
+@media (max-width: 472px) {
+    #display {
+        font-size: 70px;
+    }
+}
+
+@media (max-width: 404px) {
+    #display {
+        font-size: 60px;
+    }
+}
+
+@media (max-width: 350px) {
+    #display {
+        font-size: 55px;
     }
 }
 
@@ -399,12 +661,7 @@ button:hover {
     height: 100%;              /* Take up full height of its parent container */
 }
 
-#productivity-chill-mode {
-    font-family: myFont2;
-    text-align: center;        /* Center the text horizontally */
-}
-
-@media (max-width: 379px) {
+@media (max-width: 492px) {
     #end-session {
         font-size: 0;           /* Hide the original text */
         padding-right: 15px;    /* Adjust padding to compensate for the hidden text */
@@ -413,15 +670,14 @@ button:hover {
 
     #end-session::before {
         content: "End";         /* Add the new text */
-        background-color: white;
-        color: black;
-        border: 1px solid white;
+        background-color: rgba(255, 255, 255, 0);
+        color: white;
         outline: none;
-        padding: 8px 15px;
         cursor: pointer;
-        border-radius: 5px;
-        font-family: myFont2;
-        font-size: 16px;
+        border-radius: 15px;
+        font-family: myFont3;
+        font-size: 24px;
+        transition: background-color 0.25s ease;
     }
 }
 
@@ -454,7 +710,7 @@ header {
     height: 1px;
     border: none;
     background-color: rgba(0, 0, 0, 0.25); /* or any desired color */
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 }
 
 #popup-menu {
@@ -469,8 +725,8 @@ header {
     border-radius: 6px;
     right: 0;
     bottom: 0;
-    top: 70px;
-    border: 2px solid black;
+    top: 80px;
+    /* border: 2px solid black; */
     display: none;
 }
 
@@ -886,6 +1142,12 @@ iframe {
     transition: all 0.3s ease;
 }
 
+#chillTimeBreakSuggestionText {
+    /* border: 1px solid brown; */
+    display: flex;
+    align-items: center;
+}
+
 /* For Target Time Reached Alert Toggle */
 #targetTimeReachedToggle:checked + #targetTimeReachedToggleLabel {
     background-color: #53e658;
@@ -901,6 +1163,15 @@ iframe {
 }
 
 #breakSuggestionToggle:checked + #breakSuggestionToggleLabel #breakSuggestionToggleBall {
+    left: 30px;
+}
+
+/* For Suggested Chill Time Break Suggestion Toggle */
+#chillTimeBreakSuggestionToggle:checked + #chillTimeBreakSuggestionToggleLabel {
+    background-color: #53e658;
+}
+
+#chillTimeBreakSuggestionToggle:checked + #chillTimeBreakSuggestionToggleLabel #chillTimeBreakSuggestionToggleBall {
     left: 30px;
 }
 
@@ -924,7 +1195,7 @@ iframe {
     /* border: 2px solid black; */
 }
 
-#breakSuggestionInfoIcon {
+.infoIcon {
     position: relative;
     width: 20px;
     height: 20px;
@@ -942,6 +1213,23 @@ iframe {
 }
 
 #breakSuggestionInfoMessage {
+    position: absolute;
+    font-family: myFont3;
+    font-size: 14px;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 280px;
+    height: auto; /* Change the height to auto */
+    background: rgb(255, 255, 255);
+    z-index: 100;
+    padding: 0px 10px;
+    border-radius: 6px;
+    border: 2px solid black;
+    display: none;
+}
+
+#breakSuggestionInfoMessage2 {
     position: absolute;
     font-family: myFont3;
     font-size: 14px;

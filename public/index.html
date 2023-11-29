@@ -20,19 +20,19 @@
             <header>
                 <div class="container">
                     <div id="logo">
-                        <!-- <h1>HyperChill.io</h1> -->
-                        <!-- <h1>HyperChill.io</h1> -->
                         <h1>HyperChill.io</h1> <!-- Gotta commit to the prgramming theme ;) -->
                     </div>
                     <div class="header-btns">
                         <button id="reportBtn">
-                            <img id="reportIcon" src="/images/noun-report-1025965.png">
-                            <div>
+                            <img id="reportIcon" src="/images/noun-report-1025965-white.png">
+                            <img id="reportIcon-black" src="/images/noun-report-1025965.png">
+                            <div id="reportText">
                                 Report
                             </div>
                         </button>
                         <button id="menuBtn">
-                            <img id="menuIcon"src="/images/noun-menu-6192580.png">
+                            <img id="menuIcon"src="/images/noun-menu-6192580-white.png">
+                            <img id="menuIcon-black"src="/images/noun-menu-6192580.png">
                             <div id="menuText">
                                 Menu
                             </div>
@@ -51,16 +51,37 @@
             <hr id="main_hr">
 
             <main>
-                <div id="target-hours-container">
-                    <div id="target-hours-sub-container">
-                        <label for="hours" id="target-label"><h4 >Target Hours: </h4></label>
-                        <div id="coolDiv">
-                            <input type="number" id="target-hours" class="glowing-effect" name="hours" min="0">
+                <div id="target-hours-interruptions-container">
+                    <div id="target-hours-container">
+                        <div id="target-hours-sub-container">
+                            <!-- <h4 id="target-label">Target Hours </h4> -->
+                            <h4 id="target-label" style="font-size: 20px">Target Hours</h4>
+                            <div id="coolDiv-submit">
+                                <div id="coolDiv">
+                                    <input type="number" id="target-hours" class="glowing-effect" name="hours" min="0">
+                                </div>
+                                <button type="submit" id="target-hours-submit">Submit</button>
+                            </div>
                         </div>
-                        <button type="submit" id="target-hours-submit">Submit</button>
+                    </div>
+                    <div id="interruptions-container">
+                        <div id="interruptions-sub-container">
+                            <h4 id="interruptions-label" style="font-size: 20px"> Interruptions </h4>
+                            <div id="interruptions-change-container">
+                                <div id="decBtn" class="interruptionsDivBtn">-</div>
+                                <div id="coolerDiv">
+                                    <div id="interruptions_num">0</div>
+                                </div>
+                                <div id="incBtn" class="interruptionsDivBtn">+</div>
+                            </div>
+                        </div>
+                        <div id="suggestionBreakContainer">
+                            <h4 id="suggestionBreak-label" style="font-size: 20px"></h4>
+                            <h4 id="suggestionBreak-min" style="font-size: 20px"></h4>
+                        </div>
                     </div>
                 </div>
-
+                    
                 <div id="progress-bar-container">
                     <div class="progress-container">
                         <div class="progress-bar"></div>
@@ -433,8 +454,8 @@
                         <div id="breakSuggestionBlock">
                             <div id="toggleBreakSuggestionContainer" class="settingsMicroContainer">
                                 <div id="breakSuggestionText">
-                                    <p><b>Break Suggestion Notification</b></p>
-                                    <img src="images/noun-info-6216356.png" id="breakSuggestionInfoIcon">
+                                    <p><b>Flow Time Break Notification</b></p>
+                                    <img src="images/noun-info-6216356.png" id="breakSuggestionInfoIcon" class="infoIcon">
                                 </div>
                                 <div class="infoMessage" id="breakSuggestionInfoMessage"> <!-- Hidden by default -->
                                     <p>Enter the time (in minutes) you'd like to pass while in Flow Time before getting a suggestion to take break</p>
@@ -455,6 +476,23 @@
                                         <input type="number" id="suggestionMinutesInput" name="minutes" min="0">
                                     </div>
                                     <button type="submit" id="suggestion-minutes-submit">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="breakSuggestionBlock2">
+                            <div id="toggleChillTimeBreakSuggestionContainer" class="settingsMicroContainer">
+                                <div id="chillTimeBreakSuggestionText">
+                                    <p><b>Suggested Chill Time Break Notification</b></p>
+                                    <img src="images/noun-info-6216356.png" id="chillTimeBreakSuggestionInfoIcon" class="infoIcon">
+                                </div>
+                                <div class="infoMessage" id="breakSuggestionInfoMessage2"> <!-- Hidden by default -->
+                                    <p>Notifies you after Chill Time suggestion break time has passed</p>
+                                </div>
+                                <div id="chillTimeBreakSuggestionToggleContainer" class="toggleContainer">
+                                    <input type="checkbox" id="chillTimeBreakSuggestionToggle" class="toggle-checkbox">
+                                    <label for="chillTimeBreakSuggestionToggle" id="chillTimeBreakSuggestionToggleLabel" class="toggle-label">
+                                        <span id="chillTimeBreakSuggestionToggleBall" class="toggle-ball"></span>
+                                    </label>
                                 </div>
                             </div>
                         </div>
