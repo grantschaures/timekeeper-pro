@@ -1430,6 +1430,9 @@ iframe {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
     height: 50px;
     width: 250px;
+    font-family: myFont2;
+    font-size: 14px;
+    color: black;
 }
 
 .hr_or_hr_block {
