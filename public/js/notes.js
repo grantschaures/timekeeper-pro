@@ -43,6 +43,7 @@ document.addEventListener("DOMContentLoaded", function() {
     notesBtn.addEventListener("click", function() {
         if (notesFlags.notesShowing === false) {
             notesContainer.style.display = "block";
+            document.getElementById(state.currentNoteInputId).focus();
             notesFlags.notesShowing = true;
         } else {
             notesContainer.style.display = "none";
@@ -90,6 +91,7 @@ function handleTaskEnter(event, clearIcon, promptContainer, counters, currentTim
         } else if (document.activeElement === userInputTask) { //submit task
             clearIcon.style.display = 'flex';
             userInputTask.blur();
+            document.getElementById(state.currentNoteInputId).focus();
         } else if (document.activeElement === document.getElementById(state.currentNoteInputId)) {
             document.getElementById(state.currentNoteInputId).blur();
             setNewConsoleLine(counters, currentTime, state);
