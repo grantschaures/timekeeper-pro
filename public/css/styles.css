@@ -432,7 +432,7 @@ main {
     padding-block: 50px;
     margin-block: 10px;
     margin-top: 25px;
-    margin-bottom: 100px;
+    margin-bottom: 25px;
 
     background-color: rgba(0, 0, 0, 0.35);
     /* background-color: rgba(0, 0, 0, 0.5); */
@@ -501,8 +501,198 @@ main {
 }
 
 #start-stop {
-    width: 115px;
+    width: 125px;
 }
+
+#notes-container {
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.35);
+    z-index: 12;
+    border-radius: 25px;
+    max-width: 600px;
+    /* min-height: 250px; */
+    height: 250px;
+
+    display: none;
+    /* border: 2px solid yellow; */
+
+    width: 100%;
+    max-width: 600px;
+}
+
+#task-container {
+    height: 45px;
+    /* border: 1px solid yellow; */
+    display: flex;
+    
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+#prompt-container {
+    display: flex;
+    z-index: 3;
+
+    position: absolute;
+}
+
+#task-input-container {
+    /* display: none; */
+    /* border: 1px solid yellow; */
+    height: 100%;
+    width: 85%;
+    z-index: 4;
+    margin-right: 10px;
+
+    position: absolute;
+}
+
+#clearIcon {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    opacity: 1.00;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    margin-right: 10px;
+    margin-top: 10px;
+    /* border: 2px solid black; */
+}
+
+/* #clearIcon {
+    transform: rotate(90deg);
+} */
+
+#userInputTask {
+    font-family: myFont2;
+    font-size: 24px;
+    color: white;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
+    outline: none;
+    text-align: center;
+
+    /* border: 1px solid red; */
+}
+
+#notes-hr {
+    margin: 0px;
+    margin-bottom: -10px;
+    /* display: none; */
+}
+
+#notes-console {
+    font-family: myFont2;
+    color: white;
+    margin-top: 10px;
+    margin-left: 20px;
+    margin-right: 0px;
+    height: 198px;
+    overflow: auto;
+    padding-top: 5px;
+    /* border: 1px solid red; */
+}
+
+#pencil-icon {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    opacity: 1.00;
+    margin-left: 10px;
+    /* border: 2px solid black; */
+}
+
+#clearIcon {
+    display: none;
+}
+
+#task-prompt {
+    font-family: myFont2;
+    font-size: 24px;
+    color: rgba(255, 255, 255, 0.50);
+}
+
+@media (max-width: 535px) {
+    #task-prompt {
+        font-size: 0;
+        /* position: relative; */
+    }
+    
+    #task-prompt::before {
+        content: "Enter task";
+        font-family: myFont2;
+        font-size: 24px;
+        color: rgba(255, 255, 255, 0.50);
+    }
+}
+
+@media (max-width: 235px) {
+    #task-prompt {
+        font-size: 0;
+        /* position: relative; */
+    }
+    #task-prompt::before {
+        content: "";
+        font-family: myFont2;
+        font-size: 24px;
+        color: rgba(255, 255, 255, 0.50);
+    }
+}
+
+/* main {
+    border: 1px solid orange;
+} */
+
+.console-line-container {
+    display: flex;
+    width: 100%;
+    /* border: 1px solid yellow; */
+}
+
+.console-line-time {
+    width: 85px;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    /* border: 2px solid purple; */
+}
+
+.console-line-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    /* border: 2px solid purple; */
+}
+
+.note-input-div {
+    /* border: 2px solid purple; */
+    /* width: 100%; */
+    width: 440px;
+}
+
+.noteInput {
+    width: 99%;
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
+    outline: none;
+    font-family: myFont2;
+    font-size: 16px;
+    color: white;
+    margin-bottom: 1px;
+}
+
+
+
+
+
+
+
 
 
 button {
@@ -522,6 +712,7 @@ button:active {
     /* background-color: #e6e6e6; */
     background-color: white;
     transform: scale(0.95);
+    color: black;
 }
 
 button:focus {
@@ -653,32 +844,36 @@ button:hover {
     }
 }
 
+@media (max-width: 250px) {
+    #display {
+        font-size: 50px;
+    }
+}
+
+@media (max-width: 230px) {
+    #display {
+        font-size: 45px;
+    }
+}
+
+@media (max-width: 215px) {
+    #display {
+        font-size: 40px;
+    }
+}
+
+@media (max-width: 200px) {
+    #display {
+        font-size: 30px;
+    }
+}
+
 .mode-text {
     display: flex;             /* Convert the container to a flex container */
     justify-content: center;   /* Center content horizontally */
     align-items: center;       /* Center content vertically */
     width: 100%;               /* Take up full width of its parent container */
     height: 100%;              /* Take up full height of its parent container */
-}
-
-@media (max-width: 492px) {
-    #end-session {
-        font-size: 0;           /* Hide the original text */
-        padding-right: 15px;    /* Adjust padding to compensate for the hidden text */
-        position: relative;     /* Positioning context for the pseudo-element */
-    }
-
-    #end-session::before {
-        content: "End";         /* Add the new text */
-        background-color: rgba(255, 255, 255, 0);
-        color: white;
-        outline: none;
-        cursor: pointer;
-        border-radius: 15px;
-        font-family: myFont3;
-        font-size: 24px;
-        transition: background-color 0.25s ease;
-    }
 }
 
 @keyframes pulsate {
@@ -855,6 +1050,17 @@ li {
     object-position: center;
 }
 
+@keyframes resetIconRotation { /* notes reset icon */
+    from {
+        transform: rotate(0deg);
+        opacity: 1;
+    }
+    to {
+        transform: rotate(360deg);
+        opacity: 0;
+    }
+}
+
 @keyframes rotateIconClockwise {
     from {
         transform: rotate(0deg);
@@ -931,6 +1137,10 @@ li {
 
 .resetRotation {
     animation: rotateIconCounterClockwise 0.25s forwards;
+}
+
+.resetIconRotation { /* notes reset icon */
+    animation: resetIconRotation 0.5s forwards;
 }
 
 #blogPostContainer {

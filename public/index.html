@@ -13,6 +13,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
         <script src='/js/index.js'></script>
         <script src='/js/menu.js'></script>
+        <script src='/js/notes.js'></script>
     </head>
 
     <body> <!-- enclose all elements and content to be rendered in the browser -->
@@ -105,8 +106,28 @@
                             <audio id="click-sound" src="/sounds/OS_FEEL_snare_clock.wav" preload="auto"></audio>
                         </div>
                         <div>
-                            <button id="end-session">End Session</button>
+                            <button id="end-session"></button> <!-- Text inserted via JS -->
                         </div>
+                    </div>
+                </div>
+
+                <div id="notes-container">
+                    <div id="task-container">
+                        <div id="clearDiv">
+                            <img src="images/noun-reset-1033424-white.png" id="clearIcon">
+                        </div>
+                        <div id="prompt-container">
+                            <div id="task-prompt">
+                                What do you want to focus on?
+                            </div>
+                            <img id="pencil-icon" src="images/noun-pencil-6325691-white.png">
+                        </div>
+                        <div id="task-input-container">
+                            <input type="text" id="userInputTask">
+                        </div>
+                    </div>
+                    <hr id="notes-hr">
+                    <div id="notes-console">
                     </div>
                 </div>
             </main>

@@ -46,11 +46,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let academicWeaponSelect = document.getElementById("academicWeaponSelect");
 
+    //NOTES
+    const userInputTask = document.getElementById("userInputTask");
+
     const redFavicon = "/images/RED.png";
     const blueFavicon = "/images/BLUE.png";
     const link = document.querySelector("link[rel~='icon']");
 
     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    const initialViewportWidth = window.innerWidth || document.documentElement.clientWidth;
 
     const timeConvert = {
         msPerHour: 3600000,
@@ -119,14 +124,18 @@ document.addEventListener("DOMContentLoaded", function() {
     /* This shouldn't be a huge deal, but iPad pro users will see the
     break suggestion toggle, but it won't do anything... We'll have to just
     live with this for now unfortunately */
+
+    // INITIAL DOMContentLoaded FUNCTION CALLS
     if (isMobile) {
         removeBreakSuggestionBlock(breakSuggestionBlock, breakSuggestionBlock2);
     }
 
+    setInitialEndSessionBtnText(initialViewportWidth, end_session_btn);
+
     // ----------------
     // EVENT LISTENERS
     // ----------------
-    document.addEventListener('keydown', (event) => handleEnter(event, start_stop_btn, submit_change_btn));
+    document.addEventListener('keydown', (event) => handleEnter(event, start_stop_btn, submit_change_btn, userInputTask, submit_suggestion_btn));
 
     start_stop_btn.addEventListener("click", function() {
 
@@ -150,9 +159,9 @@ document.addEventListener("DOMContentLoaded", function() {
             showInterruptionsSubContainer(interruptionsSubContainer);
 
             //Console.log out the --> Hyper Focus Time (00:00 format)
-            console.log(printCurrentTime() + " --> Entering Hyper Focus");
+            console.log(getCurrentTime() + " --> Entering Hyper Focus");
 
-            setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop","Flow Time");
+            setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Switch","Flow Time");
             startTimes.hyperFocus = Date.now();
             intervals.total = setInterval(() => totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, targetTime), 1000);
             intervals.main = setInterval(() => updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar, progressContainer), 1000); //repeatedly calls reference to updateProgressBar function every 1000 ms (1 second)
@@ -191,9 +200,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 intervals.chillTimeBreak = setInterval(() => chillTimeSuggestionCountdown(elapsedTime, counters, flags), 1000);
             }
             //Console.log out the --> Chill Time (00:00 format)
-            console.log(printCurrentTime() + " --> Entering Chill Time");
+            console.log(getCurrentTime() + " --> Entering Chill Time");
             
-            setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", "Chill Time");
+            setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Switch", "Chill Time");
             startTimes.chillTime = Date.now();
 
             clearInterval(intervals.main);
@@ -373,6 +382,8 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     })
 
+    window.addEventListener("resize", handleViewportWidthChange);
+
     end_session_btn.addEventListener("click", function() { //temporary function
         location.reload();
     });
@@ -381,6 +392,24 @@ document.addEventListener("DOMContentLoaded", function() {
 // ---------------------
 // HELPER FUNCTIONS
 // ---------------------
+function setInitialEndSessionBtnText(initialViewportWidth, end_session_btn) {
+    if (initialViewportWidth <= 504) {
+        end_session_btn.innerText = "End";
+    } else {
+        end_session_btn.innerText = "End Session";
+    }
+}
+
+function handleViewportWidthChange() {
+    let viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+    let end_session_btn = document.getElementById("end-session");
+    if (viewportWidth <= 504) {
+        end_session_btn.innerText = "End";
+    } else {
+        end_session_btn.innerText = "End Session";
+    }
+}
+
 function showSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, breakTimeSuggestionsArr, lastHyperFocusIntervalMin, counters) {
     suggestionBreakContainer.style.display = 'flex';
 
@@ -416,7 +445,7 @@ function saveResetInterruptions(interruptionsNum, counters, savedInterruptionsAr
     interruptionsNum.textContent = counters.interruptions;
 }
 
-function printCurrentTime() {
+function getCurrentTime() {
     // Get the current timestamp from Date.now()
     const timestamp = Date.now();
 
@@ -686,13 +715,19 @@ function playClick(audio, flags) {
     }
 };
 
-function handleEnter(event, start_stop_btn, submit_change_btn) {
+function handleEnter(event, start_stop_btn, submit_change_btn, userInputTask, submit_suggestion_btn) {
 
     if (event.key === 'Enter') {
         event.preventDefault();
         
         if (document.activeElement.id === 'target-hours') {
             submit_change_btn.click();
+        } else if (document.activeElement === userInputTask) {
+            // DO NOTHING - code for this event is implemented in notes.js instead
+        }  else if (document.activeElement.className == "noteInput") {
+            // DO NOTHING - code for this event is implemented in notes.js instead
+        } else if (document.activeElement.id === 'suggestionMinutesInput') {
+            submit_suggestion_btn.click();
         } else {
             start_stop_btn.click();
         }
