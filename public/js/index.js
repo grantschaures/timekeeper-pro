@@ -159,9 +159,9 @@ document.addEventListener("DOMContentLoaded", function() {
             showInterruptionsSubContainer(interruptionsSubContainer);
 
             //Console.log out the --> Hyper Focus Time (00:00 format)
-            console.log(getCurrentTime() + " --> Entering Hyper Focus");
+            console.log(getCurrentTime() + " --> Entering Flow Time");
 
-            setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Switch","Flow Time");
+            setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop","Flow Time");
             startTimes.hyperFocus = Date.now();
             intervals.total = setInterval(() => totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, targetTime), 1000);
             intervals.main = setInterval(() => updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar, progressContainer), 1000); //repeatedly calls reference to updateProgressBar function every 1000 ms (1 second)
@@ -202,7 +202,7 @@ document.addEventListener("DOMContentLoaded", function() {
             //Console.log out the --> Chill Time (00:00 format)
             console.log(getCurrentTime() + " --> Entering Chill Time");
             
-            setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Switch", "Chill Time");
+            setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", "Chill Time");
             startTimes.chillTime = Date.now();
 
             clearInterval(intervals.main);
@@ -750,6 +750,7 @@ function timeDisplay(local_startTime, display, timeConvert) {
 };
 
 function totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, targetTime) {
+    console.log("TEST")
     
     let timeDiff = getTotalElapsed(flags.inHyperFocus, elapsedTime.hyperFocus, startTimes.local);
     
