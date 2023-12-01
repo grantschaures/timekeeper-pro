@@ -750,7 +750,6 @@ function timeDisplay(local_startTime, display, timeConvert) {
 };
 
 function totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, targetTime) {
-    console.log("TEST")
     
     let timeDiff = getTotalElapsed(flags.inHyperFocus, elapsedTime.hyperFocus, startTimes.local);
     
