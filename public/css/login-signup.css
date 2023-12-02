@@ -32,26 +32,29 @@
     align-items: center;
 }
 
+#signupInputWindow {
+    height: 450px;
+    padding-bottom: 10px;
+}
+
 .emailBlock,
-.passwordBlock, .confirmPasswordBlock {
-    margin-bottom: 20px; /* Add some spacing between the blocks */
+.passwordBlock {
+    margin-bottom: 15px; /* Add some spacing between the blocks */
     display: flex;
     flex-direction: column;
-    margin-bottom: 15px;
 }
 
-#emailBlock label,
-#passwordBlock label {
-    margin-bottom: 5px;
-}
-
-.loginInput, .signupInput {
+.login-signup-input {
     width: 250px;
     height: 35px;
     border-radius: 5px;
     background-color: #dfdfdf;
     border: 0px;
     margin-top: -10px;
+}
+
+#signUpEmail, #signUpPassword, #signUpConfirmPassword {
+    margin-top: -20px;
 }
 
 @media (max-width: 349px) {
@@ -69,12 +72,12 @@
     padding-right: 10px;
 }
 
-#googleSignInBlock, #googleSignUpBlock {
+.google-signin-signup-block {
     margin-bottom: 10px; /* Adjust the margin as needed to move it closer to the top */
     margin-top: 20px;
 }
 
-#googleSignInBtn, #googleSignUpBtn {
+.google-signin-signup-btn {
     display: flex;         /* Convert the button into a flex container */
     justify-content: space-around;
     align-items: center;   /* Vertically center the contents */
@@ -84,6 +87,10 @@
     font-family: myFont2;
     font-size: 14px;
     color: black;
+}
+
+#signUpEmail {
+    margin-top: 10px;
 }
 
 .hr_or_hr_block {
@@ -111,12 +118,12 @@
     font-size: 14px;
 }
 
-#passwordBlock {
+.passwordBlock {
     margin-top: -5px;
     margin-bottom: 30px;
 }
 
-#passwordBlock > h3 {
+.passwordBlock > h3 {
     color: black;
     font-size: 14px;
 }
@@ -126,7 +133,7 @@
     font-size: 14px;
 }
 
-#loginSubmitBtnContainer, #signupSubmitBtnContainer {
+.login-signup-submit-btn-container {
     margin-bottom: 10px;
 }
 
