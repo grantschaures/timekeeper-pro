@@ -765,9 +765,10 @@ button:hover {
     
     /* Fixed dimensions */
     width: 100%;
-    max-width: 600px;
-    
     height: 65px;
+    transition: width 1s ease-in-out, height 1s ease-in-out;
+
+    max-width: 600px;
     
     border: 1px rgba(0, 0, 0, 0.25);
     box-sizing: border-box;
@@ -778,7 +779,17 @@ button:hover {
     /* border: 1px solid rgb(255, 255, 255); */
 }
 
-.progress-container {
+/*  This style causes progress container to "bounce" a little on
+    mobile viewports during the transition. This isn't a huge deal
+    but something to consider fixing later on... It's caused by
+    a discrepancy between the width and min-width values */
+#progress-bar-container.small {
+    width: 35%;
+    min-width: 160px;
+    height: 50px;
+}
+
+#progress-container {
     position: relative;
     width: 90%;
     max-width: 600px;
@@ -792,14 +803,14 @@ button:hover {
     /* margin-top: 50px; */
 }
 
-.progress-bar {
+#progress-bar {
     width: 0%;
     height: 100%;
     background-color: #53e658;
     border-radius: 15px 0 0 15px;
 }
 
-.progress-text {
+#progress-text {
     font-family: myFont3;
     font-size: 24px;
     position: absolute;
@@ -809,6 +820,12 @@ button:hover {
     z-index: 1;
     font-weight: bold;
     white-space: nowrap;
+}
+
+@media (max-width: 199px) {
+    #progress-text {
+        font-size: 16px;
+    }
 }
 
 #display {
@@ -1554,167 +1571,4 @@ iframe {
     font-family: myFont2;
     font-size: 16px;
     color: black;
-}
-
-
-
-
-/* LOGIN AND SIGNUP PAGES */
-
-#loginWindow, #signupWindow {
-    height: 80%;
-    min-height: 100px;
-    margin: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* border: 3px solid red; */
-}
-
-#loginLogo, #signupLogo {
-    text-align: center;
-    /* border: 3px solid black; */
-}
-
-#loginText, #signupText {
-    text-align: center;
-    /* border: 3px solid black; */
-}
-
-#loginInputWindow, #signupInputWindow {
-    background-color: white;
-    height: 400px;
-    width: 350px;
-    border-radius: 10px;
-
-    display: flex;
-    flex-direction: column; /* Stack items vertically */
-    justify-content: center; /* Center items vertically */
-    align-items: center;
-}
-
-.emailBlock,
-.passwordBlock, .confirmPasswordBlock {
-    margin-bottom: 20px; /* Add some spacing between the blocks */
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 15px;
-}
-
-#emailBlock label,
-#passwordBlock label {
-    margin-bottom: 5px; /* Add some spacing between the label and input */
-}
-
-.loginInput, .signupInput {
-    width: 250px;
-    height: 35px;
-    border-radius: 5px;
-    background-color: #dfdfdf;
-    border: 0px;
-    margin-top: -10px;
-}
-
-@media (max-width: 349px) {
-    #loginInputWindow {
-        width: 300px;
-    }
-    #signupInputWindow {
-        width: 300px;
-    }
-}
-
-.googleIcon {
-    width: 20px;
-    height: 20px;
-    padding-right: 10px;
-}
-
-#googleSignInBlock, #googleSignUpBlock {
-    margin-bottom: 10px; /* Adjust the margin as needed to move it closer to the top */
-    margin-top: 20px;
-}
-
-#googleSignInBtn, #googleSignUpBtn {
-    display: flex;         /* Convert the button into a flex container */
-    justify-content: space-around;
-    align-items: center;   /* Vertically center the contents */
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    height: 50px;
-    width: 250px;
-    font-family: myFont2;
-    font-size: 14px;
-    color: black;
-}
-
-.hr_or_hr_block {
-    width: 250px;
-    display: flex;
-    flex-direction: row;
-    align-items: center; /* Center items vertically */
-    margin-top: 10px;
-}
-
-.or {
-    padding-left: 10px;
-    padding-right: 10px;
-    font-family: myFont2;
-    font-size: 14px;
-}
-
-.or_hr {
-    width: 110px;
-    border-color: #ffffff;
-}
-
-.emailBlock > h3 {
-    color: black;
-    font-size: 14px;
-}
-
-#passwordBlock {
-    margin-top: -5px;
-    margin-bottom: 30px;
-}
-
-#passwordBlock > h3 {
-    color: black;
-    font-size: 14px;
-}
-
-#forgotPasswordContainer > h3 {
-    color: black;
-    font-size: 14px;
-}
-
-#loginSubmitBtnContainer, #signupSubmitBtnContainer {
-    margin-bottom: 10px;
-}
-
-#forgotPassword_h3:hover {
-    cursor: pointer;
-}
-
-#createAccountContainer, #logBackInContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 5px;
-}
-
-.accountRevert {
-    color: white;
-    font-size: 14px;
-}
-
-#createAccount2_h3:hover, #logBackIn2_h3:hover{
-    cursor: pointer;
-}
-
-#noAccountText, #logBackInText {
-    margin-bottom: -20px;
-}
-
-#signUpEmail {
-    margin-bottom: 30px;
 }

@@ -15,8 +15,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const productivity_chill_mode = document.getElementById("productivity-chill-mode");
     const audio = document.getElementById("click-sound"); //plays sound effect when stop/start button hit
-    const progressBar = document.querySelector('.progress-bar');
-    const progressContainer = document.querySelector('.progress-container');
+    const progressBarContainer = document.getElementById("progress-bar-container");
+    const progressBar = document.getElementById("progress-bar");
+    const progressContainer = document.getElementById("progress-container");
     const display = document.getElementById("display");
 
     //INTERRUPTIONS CONTAINER
@@ -113,7 +114,8 @@ document.addEventListener("DOMContentLoaded", function() {
         submittedSuggestionMinutes: false,
         transitionClockSoundToggle: false,
         isAcademicWeapon: false,
-        chillTimeBreakSuggestionToggle: false
+        chillTimeBreakSuggestionToggle: false,
+        progressBarContainerIsSmall: false
     }
 
     // ----------------
@@ -146,6 +148,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if (counters.startStop === 1) {
             veryStartActions(startTimes);
+
+            if (document.getElementById("target-hours").value == "") {
+                progressBarContainer.classList.toggle("small");
+                flags.progressBarContainerIsSmall = true;
+            }
         }
 
         startTimes.local = Date.now();
@@ -174,16 +181,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 clearInterval(intervals.chillTimeBreak);
             }
 
-            if (counters.startStop > 1) {
+            if (counters.startStop > 1) { // runs first during first chill time interval
                 elapsedTime.chillTime += Date.now() - startTimes.chillTime;
-
-                //TESTING
-                // console.log("Logged: " + Math.floor((Date.now() - startTimes.chillTime) / 1000) + " seconds of Chill Time.");
-                // console.log("Logged: " + Math.floor((elapsedTime.chillTime) / 1000) + " seconds of elapsed Chill Time.");
-                // console.log("----------------");
             }
-            // setBackground("url('../images/shroomtower.png')"); //Image gradient
-            // setBackground("linear-gradient(to bottom, #ff595e, #ca403b)"); //Red gradient
             setBackground("linear-gradient(to bottom, #5dd44d, #50b350, #004400)"); //Green gradient
         } else { //--> Chill Time
             setFavicon(link, blueFavicon);
@@ -224,7 +224,7 @@ document.addEventListener("DOMContentLoaded", function() {
             // console.log("Logged: " + Math.floor((elapsedTime.hyperFocus) / 1000) + " seconds of elapsed Hyper Focus.");
             // console.log("----------------");
             
-            //setBackground(("url('../images/shroomtower.png')"));
+            // setBackground(("url('../images/shroomtower.png')"));
             setBackground("linear-gradient(to bottom, #3b8fe3, #1d60a3, #7f04c7)"); //Blue-Purple gradient
         }
     });
@@ -245,8 +245,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
             targetTime = replaceTargetHours(inputHours, targetTime, flags); //sets targetTime
 
+            if (flags.progressBarContainerIsSmall) {
+                progressBarContainer.classList.toggle("small"); // make progress container large
+                flags.progressBarContainerIsSmall = false;
+            }
+            
             if (!flags.inHyperFocus) { //if we're in chill time
-
+                
                 /* Update progress bar & percentage ONCE to demonstrate submitted change in Chill Time */
                 updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar, progressContainer);
                 totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, targetTime);
@@ -255,8 +260,22 @@ document.addEventListener("DOMContentLoaded", function() {
             flags.hitTarget = false;
         }
         else if (flags.submittedTarget) { //When changing target hours
-
             changeTargetHours(flags);
+
+            if (!flags.inHyperFocus) { //if we're in chill time
+                
+                /* Update progress bar & percentage ONCE to demonstrate submitted change in Chill Time */
+                updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar, progressContainer);
+                totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, targetTime);
+            }
+            
+            /* The reason for this is that we don't want to bombard the user with progress container animations at the very start of the program :P */
+            if (counters.startStop > 0) { // only if session has been started
+                if (!flags.progressBarContainerIsSmall) { // and progress bar container is large
+                    progressBarContainer.classList.toggle("small"); // make progress container small
+                    flags.progressBarContainerIsSmall = true;
+                }
+            }
         }
     });
 
@@ -605,6 +624,7 @@ function changeTargetHours(flags) {
     enterHours.id = "target-hours";
     enterHours.name = "hours";
     enterHours.min = "0";
+    enterHours.value = "";
     document.getElementById("coolDiv").appendChild(enterHours);
     
     document.getElementById('target-hours-submit').textContent = "Submit";
@@ -658,7 +678,8 @@ function setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, st
 function updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar, progressContainer) {
     let timeDiff;
 
-    if (isNaN(targetTime) || targetTime === null) { //if user doesn't input target time, break out
+    if (isNaN(targetTime) || targetTime === null || !flags.submittedTarget) { //if user doesn't input target time, break out
+        progressBar.style.width = (0) + '%';
         return;
     }
 
