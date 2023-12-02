@@ -56,7 +56,7 @@ app.get("/signup", (req, res) => {
     res.sendFile(filePath);
 });
 
-app.use("/api/api", require("./api/api"));
+app.use("/api/users", require("./api/users"));
 
 const PORT = process.env.PORT || 3000;
 // Start the web server

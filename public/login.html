@@ -13,6 +13,15 @@
         <script src='/js/login.js'></script>
     </head>
 
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E3SBGG3VKK"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-E3SBGG3VKK');
+    </script>
+
     <body> <!-- enclose all elements and content to be rendered in the browser -->
         <div id="loginWindow">
             <div id="loginContainer">
@@ -42,7 +51,7 @@
                         <h3 id="email_h3">Email</h3>
                         <input type="email" id="emailInputSignin" name="email" placeholder="example@mail.com" class="loginInput">
                     </div>
-                    <div id="passwordBlock">
+                    <div id="passwordBlock" class="passwordBlock">
                         <h3 id="password_h3">Password</h3>
                         <input type="password" id="passwordInput" name="password" class="loginInput">
                     </div>

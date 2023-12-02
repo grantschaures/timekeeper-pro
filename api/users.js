@@ -23,6 +23,18 @@ router.post('/emailsignup', (req, res) => {
   
     const email = req.body.email;
     console.log('Received email:', email);
+
+    
+
+
+
+
+
+
+
+
+
+
   
     const sgMail = require('@sendgrid/mail')
     sgMail.setApiKey(process.env.SENDGRID_API_KEY)

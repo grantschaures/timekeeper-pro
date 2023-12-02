@@ -29,7 +29,7 @@ function isValidEmail(email) {
 
 async function createUser(email) {
 
-    fetch('/api/api/emailsignup', {
+    fetch('/api/users/emailsignup', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

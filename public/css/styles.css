@@ -273,8 +273,8 @@ main {
     background-color: rgba(255, 255, 255, 0);
     border: 2px solid white;
     color: white;
-    height: 35px;
-    width: 35px;
+    height: 40px;
+    width: 40px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -686,9 +686,6 @@ main {
     color: white;
     margin-bottom: 1px;
 }
-
-
-
 
 
 
@@ -1559,6 +1556,11 @@ iframe {
     color: black;
 }
 
+
+
+
+/* LOGIN AND SIGNUP PAGES */
+
 #loginWindow, #signupWindow {
     height: 80%;
     min-height: 100px;
@@ -1592,7 +1594,7 @@ iframe {
 }
 
 .emailBlock,
-#passwordBlock {
+.passwordBlock, .confirmPasswordBlock {
     margin-bottom: 20px; /* Add some spacing between the blocks */
     display: flex;
     flex-direction: column;

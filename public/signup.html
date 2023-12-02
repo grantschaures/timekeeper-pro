@@ -13,6 +13,15 @@
         <script src='/js/signup.js'></script>
     </head>
 
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E3SBGG3VKK"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-E3SBGG3VKK');
+    </script>
+
     <body> <!-- enclose all elements and content to be rendered in the browser -->
         <div id="signupWindow">
             <div id="signupContainer">
@@ -39,8 +48,16 @@
                         <hr class="or_hr">
                     </div>
                     <div class="emailBlock" id="signUpEmail">
-                        <h3 id="email_h3">Email</h3>
+                        <h3 id="email_h3_signup">Email</h3>
                         <input type="email" id="emailInputSignup" name="email" placeholder="example@mail.com" class="signupInput">
+                    </div>
+                    <div class="passwordBlock" id="signUpPassword">
+                        <h3 id="password_h3_signup">Password</h3>
+                        <input type="email" id="passwordInputSignup" name="email" class="signupInput">
+                    </div>
+                    <div class="confirmPasswordBlock" id="signUpConfirmPassword">
+                        <h3 id="confirm_password_h3_signup">Confirm Password</h3>
+                        <input type="email" id="confirmPasswordInputSignup" name="email" class="signupInput">
                     </div>
                     <div id="signupSubmitBtnContainer">
                         <button id="signupSubmitBtn" style="background-color: grey">

@@ -16,6 +16,16 @@
         <script src='/js/notes.js'></script>
     </head>
 
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E3SBGG3VKK"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-E3SBGG3VKK');
+    </script>
+
     <body> <!-- enclose all elements and content to be rendered in the browser -->
         <div id="main-container">
             <header>
@@ -69,11 +79,11 @@
                         <div id="interruptions-sub-container">
                             <h4 id="interruptions-label" style="font-size: 20px"> Interruptions </h4>
                             <div id="interruptions-change-container">
-                                <div id="decBtn" class="interruptionsDivBtn">-</div>
+                                <button id="decBtn" class="interruptionsDivBtn">-</button>
                                 <div id="coolerDiv">
                                     <div id="interruptions_num">0</div>
                                 </div>
-                                <div id="incBtn" class="interruptionsDivBtn">+</div>
+                                <button id="incBtn" class="interruptionsDivBtn">+</button>
                             </div>
                         </div>
                         <div id="suggestionBreakContainer">

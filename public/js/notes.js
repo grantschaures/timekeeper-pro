@@ -92,7 +92,7 @@ function handleTaskEnter(event, clearIcon, promptContainer, counters, currentTim
             clearIcon.style.display = 'flex';
             userInputTask.blur();
             document.getElementById(state.currentNoteInputId).focus();
-        } else if (document.activeElement === document.getElementById(state.currentNoteInputId)) {
+        } else if ((document.activeElement === document.getElementById(state.currentNoteInputId)) && (document.activeElement.value !== "")) {
             document.getElementById(state.currentNoteInputId).blur();
             setNewConsoleLine(counters, currentTime, state);
             document.getElementById(state.currentNoteInputId).focus();
