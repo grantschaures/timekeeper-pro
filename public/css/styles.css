@@ -784,8 +784,8 @@ button:hover {
     but something to consider fixing later on... It's caused by
     a discrepancy between the width and min-width values */
 #progress-bar-container.small {
-    width: 35%;
-    min-width: 160px;
+    width: 180px;
+    min-width: 130px;
     height: 50px;
 }
 
@@ -822,9 +822,12 @@ button:hover {
     white-space: nowrap;
 }
 
-@media (max-width: 199px) {
+@media (max-width: 280px) {
     #progress-text {
-        font-size: 16px;
+        font-size: 14px;
+    }
+    #progress-bar-container.small {
+        width: 45%;
     }
 }
 
