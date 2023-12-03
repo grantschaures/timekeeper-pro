@@ -42,11 +42,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
     notesBtn.addEventListener("click", function() {
         if (notesFlags.notesShowing === false) {
-            notesContainer.style.display = "block";
+            // notesContainer.style.display = "block"; //old instant transition
+
+            notesContainer.classList.add('fullsize');
+
             document.getElementById(state.currentNoteInputId).focus();
             notesFlags.notesShowing = true;
         } else {
-            notesContainer.style.display = "none";
+            notesContainer.classList.remove('fullsize');
+
+            // notesContainer.style.display = "none"; //old instant transition
             notesFlags.notesShowing = false;
         }
     })

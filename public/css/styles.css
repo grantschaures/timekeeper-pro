@@ -513,11 +513,26 @@ main {
     /* min-height: 250px; */
     height: 250px;
 
-    display: none;
+    display: block;
     /* border: 2px solid yellow; */
 
     width: 100%;
     max-width: 600px;
+
+    transform: scaleY(0);
+    opacity: 0;
+
+    transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
+
+}
+
+#notes-container.fullsize {
+    transform: scaleY(1);
+    opacity: 1;
+}
+
+#notes-container.fullopacity {
+    opacity: 1;
 }
 
 #task-container {
