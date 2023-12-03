@@ -255,6 +255,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 /* Update progress bar & percentage ONCE to demonstrate submitted change in Chill Time */
                 updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar, progressContainer);
                 totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, targetTime);
+            } else {
+                /* This code is (kind of) optional, it makes the progress bar fade in happen a bit faster in flow
+                time because otherwise, the speed of the fade in is determined by the next interval after the submit btn
+                is pressed */
+                updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar, progressContainer);
+                totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, targetTime);
             }
             
             flags.hitTarget = false;
@@ -265,6 +271,12 @@ document.addEventListener("DOMContentLoaded", function() {
             if (!flags.inHyperFocus) { //if we're in chill time
                 
                 /* Update progress bar & percentage ONCE to demonstrate submitted change in Chill Time */
+                updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar, progressContainer);
+                totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, targetTime);
+            } else {
+                /* This code is (kind of) optional, it makes the progress bar fade out happen a bit faster in chill
+                time because otherwise, the speed of the fade in is determined by the next interval after the submit btn
+                is pressed */
                 updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar, progressContainer);
                 totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, targetTime);
             }
@@ -677,13 +689,23 @@ function setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, st
 
 function updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar, progressContainer) {
     let timeDiff;
-
+    
     if (isNaN(targetTime) || targetTime === null || !flags.submittedTarget) { //if user doesn't input target time, break out
-        progressBar.style.width = (0) + '%';
+        if (progressBar.classList.contains('fullopacity1')) {
+            progressBar.classList.remove('fullopacity1');
+            setTimeout(() => {
+                progressBar.style.width = (0) + '%';
+            }, 500)
+        }
         return;
     }
 
-    if (flags.inHyperFocus) { //if in productivity mode
+    if (!progressBar.classList.contains('fullopacity1')) {
+        progressBar.classList.add('fullopacity1');
+    }
+
+    
+    if (flags.inHyperFocus) { //if in flow time
         timeDiff = Date.now() - startTimes.hyperFocus + elapsedTime.hyperFocus;
     }
     else if (!flags.inHyperFocus) { //if in chill time

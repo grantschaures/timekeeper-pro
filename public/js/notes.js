@@ -45,11 +45,13 @@ document.addEventListener("DOMContentLoaded", function() {
             // notesContainer.style.display = "block"; //old instant transition
 
             notesContainer.classList.add('fullsize');
-
+            notesContainer.classList.add('fullopacity');
+            
             document.getElementById(state.currentNoteInputId).focus();
             notesFlags.notesShowing = true;
         } else {
             notesContainer.classList.remove('fullsize');
+            notesContainer.classList.remove('fullopacity');
 
             // notesContainer.style.display = "none"; //old instant transition
             notesFlags.notesShowing = false;
