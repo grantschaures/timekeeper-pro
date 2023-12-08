@@ -139,7 +139,7 @@ h4 {
     top: 150px;
     z-index: 0;
     opacity: 0.25;
-    margin-left: -600px;
+    margin-left: 0px;
     margin-top: -35px;
     animation: slideRight 12s linear infinite;
 }
