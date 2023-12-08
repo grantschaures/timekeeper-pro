@@ -65,6 +65,115 @@ h4 {
     color: white;
 }
 
+#animationContainer {
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    /* border: 4px solid orange; */
+    width: 100%;
+    height: 100%;
+    /* z-index: -1; */
+}
+
+#animation {
+    /* border: 7px solid black; */
+    display: absolute;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    height: 50%;
+    width: 100%;
+    top: 300px;
+    overflow: hidden;
+}
+
+/* #sineWave {
+    transform: scale(1);
+    height: 60%;
+    position: absolute;
+    top: 150px;
+    z-index: 0;
+    opacity: 0.05;
+    animation: slideLeft 15s linear infinite;
+} */
+
+#sineWave2 {
+    height: 45%;
+    position: absolute;
+    margin-top: 30px;
+    top: 200px;
+    z-index: 0;
+    opacity: 0.10;
+    margin-left: -450px;
+    margin-top: -35px;
+    animation: slideRight2 30s linear infinite, alteropacity2 30s linear infinite;
+}
+
+#sineWave3 {
+    height: 60%;
+    position: absolute;
+    top: 150px;
+    z-index: 0;
+    opacity: 0.25;
+    margin-left: -600px;
+    margin-top: -35px;
+    animation: slideRight 12s linear infinite;
+}
+
+@keyframes slideRight2 {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(448px); /* Moves left by the full width of the image */
+    }
+}
+
+@keyframes slideRight {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(538px); /* Moves left by the full width of the image */
+    }
+}
+
+@keyframes alteropacity1 {
+    0% {
+        opacity: 0.05;
+    }
+    20% {
+        opacity: 0.25;
+    }
+    45% {
+        opacity: 0.05;
+    }
+    80% {
+        opacity: 0.25;
+    }
+    100% {
+        opacity: 0.05;
+    }
+}
+
+@keyframes alteropacity2 {
+    0% {
+        opacity: 0.15;
+    }
+    20% {
+        opacity: 0.05;
+    }
+    45% {
+        opacity: 0.15;
+    }
+    80% {
+        opacity: 0.05;
+    }
+    100% {
+        opacity: 0.15;
+    }
+}
+
 .container {
     display: flex;
     flex-direction: row;
@@ -78,6 +187,7 @@ main {
 
 #main-container {
     /* Fixed dimensions */
+    position: relative;
     width: 100%;
     max-width: 600px;
     
@@ -450,6 +560,7 @@ main {
     box-sizing: border-box;
     
     border-radius: 25px;
+    z-index: 1;
     
     /* POTENTIAL DESIGN ALTERNATIVE -- WHITE BORDER */
     /* border: 3px solid rgb(255, 255, 255); */
