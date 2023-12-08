@@ -106,7 +106,8 @@ h4 {
     opacity: 0.10;
     margin-left: -450px;
     margin-top: -35px;
-    animation: slideRight2 30s linear infinite, alteropacity2 30s linear infinite;
+    /* animation: slideRight2 30s linear infinite, alteropacity2 30s linear infinite; */
+    animation: slideRight2 3s linear infinite, alteropacity2 30s linear infinite;
 }
 
 #sineWave3 {
@@ -125,7 +126,7 @@ h4 {
         transform: translateX(0);
     }
     100% {
-        transform: translateX(448px); /* Moves left by the full width of the image */
+        transform: translateX(402px); /* Moves left by the full width of the image */
     }
 }
 
