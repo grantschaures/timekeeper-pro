@@ -149,7 +149,7 @@ h4 {
         transform: translateX(0);
     }
     100% {
-        transform: translateX(380px); /* Moves left by the full width of the image */
+        transform: translateX(-380px); /* Moves left by the full width of the image */
     }
 }
 
@@ -158,7 +158,7 @@ h4 {
         transform: translateX(0);
     }
     100% {
-        transform: translateX(507px); /* Moves left by the full width of the image */
+        transform: translateX(-507px); /* Moves left by the full width of the image */
     }
 }
 
