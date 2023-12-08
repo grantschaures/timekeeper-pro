@@ -103,13 +103,11 @@ h4 {
     margin-top: 30px;
     top: 200px;
     z-index: 0;
-    /* opacity: 0.10; */
-    opacity: 0.15;
+    opacity: 0.10;
     margin-left: -600px;
     margin-top: -35px;
-    /* animation: slideRight2 30s linear infinite, alteropacity2 30s linear infinite; */
-    /* animation: slideRight2 15s linear infinite, alteropacity2 30s linear infinite; */
-    animation: slideRight2 30s linear infinite;
+    animation: slideRight2 30s linear infinite, alteropacity2 30s linear infinite;
+    /* animation: slideRight2 30s linear infinite; */
 }
 
 #sineWave3 {
@@ -167,7 +165,7 @@ h4 {
         opacity: 0.05;
     }
     45% {
-        opacity: 0.15;
+        opacity: 0.25;
     }
     80% {
         opacity: 0.05;
