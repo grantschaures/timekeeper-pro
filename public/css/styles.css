@@ -65,6 +65,19 @@ h4 {
     color: white;
 }
 
+#logo {
+    display: flex;
+    align-items: center;
+    /* border: 1px solid red; */
+    height: 80px
+}
+
+#hyperChillLogoImage {
+    height: 40px;
+    width: 56.20px;
+    margin-right: 10px;
+}
+
 #animationContainer {
     position: absolute;
     justify-content: center;
@@ -590,9 +603,6 @@ main {
     #display {
         scale: 0.8;
     }
-    #logo {
-        display: none;
-    }
     .container {
         align-items: center;
         justify-content: center;
@@ -602,6 +612,12 @@ main {
     }
     #progress-text {
         font-size: 12px;
+    }
+}
+
+@media (max-width: 450px) {
+    #hyperChillTitle {
+        display: none;
     }
 }
 
