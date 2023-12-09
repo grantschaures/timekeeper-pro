@@ -98,9 +98,9 @@ h4 {
     /* z-index: -1; */
 }
 
-#animation {
+#flowAnimation {
     /* border: 7px solid black; */
-    display: absolute;
+    position: absolute;
     justify-content: center;
     align-items: center;
     position: absolute;
@@ -108,6 +108,12 @@ h4 {
     width: 100%;
     top: 300px;
     overflow: hidden;
+
+     /* For some unknown reason, making base opacity
+        0 causes lag when triggering opacity
+        transition animation */
+    opacity: 0.001;
+    animation-fill-mode: forwards;
 }
 
 #sineWaveBack {
@@ -119,7 +125,7 @@ h4 {
     opacity: 0.10;
     margin-left: 0px;
     margin-top: -35px;
-    animation: slideRight2 30s linear infinite, alteropacity2 30s linear infinite;
+    animation: slideBack 30s linear infinite, alteropacityback 30s linear infinite;
     /* animation: slideRight2 30s linear infinite; */
 }
 
@@ -131,10 +137,10 @@ h4 {
     opacity: 0.25;
     margin-left: 0px;
     margin-top: -35px;
-    animation: slideRight 12s linear infinite;
+    animation: slideFront 12s linear infinite;
 }
 
-@keyframes slideRight2 {
+@keyframes slideBack {
     0% {
         transform: translateX(0);
     }
@@ -143,7 +149,7 @@ h4 {
     }
 }
 
-@keyframes slideRight {
+@keyframes slideFront {
     0% {
         transform: translateX(0);
     }
@@ -152,7 +158,164 @@ h4 {
     }
 }
 
-@keyframes alteropacity1 {
+@keyframes intoOpacityTransition {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes outOfOpacityTransition {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+#chillAnimation {
+    /* border: 7px solid black; */
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    height: 600px;
+    width: 100%;
+    top: 300px;
+    /* overflow: hidden; */
+
+    /* For some unknown reason, making base opacity
+        0 causes lag when triggering opacity
+        transition animation */
+    opacity: 0.001;
+    animation-fill-mode: forwards;
+}
+
+#circleOuter {
+    height: 1000px;
+    width: 1000px;
+    position: absolute;
+    opacity: 0.05;
+    animation: circleOuterAnimation 6s linear infinite;
+}
+
+#circleMiddle {
+    height: 800px;
+    width: 800px;
+    position: absolute;
+    opacity: 0.05;
+    animation: circleMiddleAnimation 6s linear infinite;
+}
+
+#circleInner {
+    height: 600px;
+    width: 600px;
+    position: absolute;
+    opacity: 0.05;
+    animation: circleInnerAnimation 6s linear infinite;
+}
+
+@keyframes circleOuterAnimation {
+    0% {
+        opacity: 0;
+        transform: scaleX(1) scaleY(1);
+    }
+    5% {
+        opacity: 0.05;
+    }
+    65% {
+        opacity: 0.05;
+    }
+    80% {
+        opacity: 0.05;
+    }
+    85% {
+        opacity: 0.05;
+        transform: scaleX(1.005) scaleY(1.005);
+    }
+    90% {
+        opacity: 0.15;
+        transform: scaleX(1.01) scaleY(1.01);
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes circleMiddleAnimation {
+    0% {
+        opacity: 0.05;
+    }
+    5% {
+        opacity: 0.05;
+    }
+    65% {
+        opacity: 0.05;
+    }
+    80% {
+        opacity: 0.05;
+    }
+    85% {
+        opacity: 0.15;
+        transform: scaleX(1.03) scaleY(1.03);
+    }
+    90% {
+        opacity: 0;
+        transform: scaleX(1) scaleY(1);
+    }
+}
+
+@keyframes circleInnerAnimation {
+    0% {
+        opacity: 0.05;
+    }
+    65% {
+        opacity: 0.05;
+    }
+    80% {
+        opacity: 0.15;
+        transform: scaleX(1.05) scaleY(1.05);
+    }
+    85% {
+        opacity: 0;
+        transform: scaleX(1) scaleY(1);
+    }
+    90% {
+        opacity: 0.05;
+    }
+}
+
+.intoOpacityTransition {
+    animation: intoOpacityTransition 6s;
+}
+
+.outOfOpacityTransition {
+    animation: outOfOpacityTransition 0.5s;
+}
+
+@keyframes alteropacityback {
+    0% {
+        opacity: 0.15;
+    }
+    20% {
+        opacity: 0.05;
+    }
+    40% {
+        opacity: 0.25;
+    }
+    60% {
+        opacity: 0.10;
+    }
+    80% {
+        opacity: 0.05;
+    }
+}
+
+@keyframes alteropacityfront {
     0% {
         opacity: 0.05;
     }
@@ -170,23 +333,6 @@ h4 {
     }
 }
 
-@keyframes alteropacity2 {
-    0% {
-        opacity: 0.15;
-    }
-    20% {
-        opacity: 0.05;
-    }
-    45% {
-        opacity: 0.25;
-    }
-    80% {
-        opacity: 0.05;
-    }
-    100% {
-        opacity: 0.15;
-    }
-}
 
 .container {
     display: flex;
@@ -615,7 +761,7 @@ main {
     }
 }
 
-@media (max-width: 450px) {
+@media (max-width: 465px) {
     #hyperChillTitle {
         display: none;
     }

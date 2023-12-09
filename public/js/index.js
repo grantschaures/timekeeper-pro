@@ -42,10 +42,12 @@ document.addEventListener("DOMContentLoaded", function() {
     const breakSuggestionBlock = document.getElementById("breakSuggestionBlock");
     const breakSuggestionBlock2 = document.getElementById("breakSuggestionBlock2");
     const chillTimeBreakSuggestionToggle = document.getElementById("chillTimeBreakSuggestionToggle");
-
     const transitionClockSoundToggle = document.getElementById("transitionClockSoundToggle");
-
     let academicWeaponSelect = document.getElementById("academicWeaponSelect");
+
+    //Background Animations
+    const flowAnimation = document.getElementById("flowAnimation");
+    const chillAnimation = document.getElementById("chillAnimation");
 
     //NOTES
     const userInputTask = document.getElementById("userInputTask");
@@ -162,6 +164,19 @@ document.addEventListener("DOMContentLoaded", function() {
         if (!intervals.main) { //executes when interval is undefined --> Hyper Focus Mode
             setFavicon(link, redFavicon);
 
+            //Remove circle animations
+
+            //if not first transition
+            if (counters.startStop > 1) {
+                chillAnimation.classList.remove('intoOpacityTransition');
+                chillAnimation.classList.add('outOfOpacityTransition');
+            }
+
+            //Fade in sine wave animations
+            flowAnimation.classList.remove('outOfOpacityTransition');
+            flowAnimation.classList.add('intoOpacityTransition');
+
+
             hideSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min);
             showInterruptionsSubContainer(interruptionsSubContainer);
 
@@ -187,6 +202,14 @@ document.addEventListener("DOMContentLoaded", function() {
             setBackground("linear-gradient(to bottom, #5dd44d, #50b350, #004400)"); //Green gradient
         } else { //--> Chill Time
             setFavicon(link, blueFavicon);
+
+            //Remove sine wave animations
+            flowAnimation.classList.remove('intoOpacityTransition');
+            flowAnimation.classList.add('outOfOpacityTransition');
+
+            //Add circle animations
+            chillAnimation.classList.add('intoOpacityTransition');
+            chillAnimation.classList.remove('outOfOpacityTransition');
 
             saveResetInterruptions(interruptionsNum, counters, savedInterruptionsArr);
             hideInterruptionsSubContainer(interruptionsSubContainer);
