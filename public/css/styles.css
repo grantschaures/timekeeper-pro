@@ -199,7 +199,7 @@ h4 {
     height: 1000px;
     width: 1000px;
     position: absolute;
-    opacity: 0.05;
+    /* opacity: 0.05; */
     animation: circleOuterAnimation 6s linear infinite;
 }
 
@@ -207,7 +207,7 @@ h4 {
     height: 800px;
     width: 800px;
     position: absolute;
-    opacity: 0.05;
+    /* opacity: 0.05; */
     animation: circleMiddleAnimation 6s linear infinite;
 }
 
@@ -215,34 +215,35 @@ h4 {
     height: 600px;
     width: 600px;
     position: absolute;
-    opacity: 0.05;
+    /* opacity: 0.05; */
     animation: circleInnerAnimation 6s linear infinite;
 }
 
 @keyframes circleOuterAnimation {
     0% {
-        opacity: 0;
+        opacity: 0.08;
+    }
+    10% {
         transform: scaleX(1) scaleY(1);
+        opacity: 0;
     }
-    5% {
+    30% {
         opacity: 0.05;
     }
-    65% {
+    50% {
         opacity: 0.05;
     }
-    80% {
+    70% {
         opacity: 0.05;
-    }
-    85% {
-        opacity: 0.05;
-        transform: scaleX(1.005) scaleY(1.005);
+        transform: scaleX(1) scaleY(1);
     }
     90% {
         opacity: 0.15;
-        transform: scaleX(1.01) scaleY(1.01);
+        transform: scaleX(1.005) scaleY(1.005);
     }
     100% {
-        opacity: 0;
+        opacity: 0.08;
+        transform: scaleX(1.0025) scaleY(1.0025);
     }
 }
 
@@ -253,13 +254,14 @@ h4 {
     5% {
         opacity: 0.05;
     }
-    65% {
+    30% {
         opacity: 0.05;
     }
-    80% {
+    50% {
         opacity: 0.05;
+        transform: scaleX(1) scaleY(1);
     }
-    85% {
+    70% {
         opacity: 0.15;
         transform: scaleX(1.03) scaleY(1.03);
     }
@@ -267,25 +269,35 @@ h4 {
         opacity: 0;
         transform: scaleX(1) scaleY(1);
     }
+    100% {
+        opacity: 0.05;
+    }
 }
 
 @keyframes circleInnerAnimation {
     0% {
         opacity: 0.05;
     }
-    65% {
+    5% {
         opacity: 0.05;
     }
-    80% {
+    30% {
+        opacity: 0.05;
+        transform: scaleX(1) scaleY(1);
+    }
+    50% {
         opacity: 0.15;
         transform: scaleX(1.05) scaleY(1.05);
     }
-    85% {
+    70% {
         opacity: 0;
         transform: scaleX(1) scaleY(1);
     }
     90% {
         opacity: 0.05;
+    }
+    100% {
+        opacity: 0.05
     }
 }
 
