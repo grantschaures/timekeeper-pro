@@ -221,7 +221,8 @@ h4 {
 
 @keyframes circleOuterAnimation {
     0% {
-        opacity: 0.08;
+        opacity: 0.075;
+        transform: scaleX(1.005) scaleY(1.005);
     }
     10% {
         transform: scaleX(1) scaleY(1);
@@ -239,11 +240,11 @@ h4 {
     }
     90% {
         opacity: 0.15;
-        transform: scaleX(1.005) scaleY(1.005);
+        transform: scaleX(1.01) scaleY(1.01);
     }
     100% {
-        opacity: 0.08;
-        transform: scaleX(1.0025) scaleY(1.0025);
+        opacity: 0.075;
+        transform: scaleX(1.005) scaleY(1.005);
     }
 }
 
