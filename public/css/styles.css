@@ -79,6 +79,13 @@ h4 {
     animation: logoRotate 60s linear infinite;
 }
 
+/* #hyperChillLogoImageCircular {
+    height: 40px;
+    width: 40px;
+    margin-right: 10px;
+    animation: logoRotate 60s linear infinite;
+} */
+
 @keyframes logoRotate {
     from {
         transform: rotate(0deg);
@@ -182,10 +189,10 @@ h4 {
     justify-content: center;
     align-items: center;
     position: absolute;
-    height: 600px;
+    height: 1200px;
     width: 100%;
-    top: 300px;
-    /* overflow: hidden; */
+    /* top: 300px; */
+    overflow: hidden;
 
     /* For some unknown reason, making base opacity
         0 causes lag when triggering opacity
@@ -385,6 +392,9 @@ main {
     }
     #target-hours-container {
         margin-right: 0px;
+    }
+    #chillAnimation {
+        margin-top: 150px;
     }
 }
 
