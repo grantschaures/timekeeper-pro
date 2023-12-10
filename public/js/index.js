@@ -55,8 +55,8 @@ document.addEventListener("DOMContentLoaded", function() {
     //NOTES
     const userInputTask = document.getElementById("userInputTask");
 
-    const greenFavicon = "/images/hyperChillLogoGreen.png";
-    const blueFavicon = "/images/hyperChillLogoBlue.png";
+    const greenFavicon = "public/images/hyperChillLogoGreen.png";
+    const blueFavicon = "public/images/hyperChillLogoBlue.png";
     const link = document.querySelector("link[rel~='icon']");
 
     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
