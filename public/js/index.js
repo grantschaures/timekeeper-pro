@@ -872,11 +872,17 @@ function setBrowserTabTitle() {
 
 function setFavicon(link, faviconPath) {
     // If it doesn't exist, create it and append to the head
-    if (!link) {
-        link = document.createElement('link');
-        link.rel = 'icon';
-        document.getElementsByTagName('head')[0].appendChild(link);
-    }
+    // if (!link) {
+    //     link = document.createElement('link');
+    //     link.rel = 'icon';
+    //     document.getElementsByTagName('head')[0].appendChild(link);
+    // }
 
-    link.href = faviconPath;
+    // link.href = faviconPath;
+
+    let favicon1 = document.getElementById("favicon1");
+    let favicon2 = document.getElementById("favicon2");
+
+    favicon1.href = faviconPath;
+    favicon2.href = faviconPath;
 }
