@@ -85,7 +85,24 @@ document.addEventListener("DOMContentLoaded", function() {
         clearIcon.style.display = "none";
         clearIcon.classList.remove('resetIconRotation');
     })
+
+    // const textAreas = document.querySelectorAll('.noteInput');
+
+    // textAreas.forEach(textArea => {
+    //     textArea.addEventListener("input", function() {
+    //         let latestTextArea = document.getElementById(state.currentNoteInputId);
+    //         if (latestTextArea.value.length >= 42) {
+    //             // Reset height to ensure we get the actual scroll height
+    //             latestTextArea.style.height = 'auto';
+    //             latestTextArea.style.height = latestTextArea.scrollHeight + 'px';
+    //         } else {
+    //             latestTextArea.style.height = '20px';
+    //         }
+    //     })
+    // })
+
 })
+
 
 function handleTaskEnter(event, clearIcon, promptContainer, counters, currentTime, state) {
     if (event.key === 'Enter') {
@@ -131,7 +148,7 @@ function setNewConsoleLine(counters, currentTime, state) {
     noteInputDiv.id = "note-input-div" + counters.notesLines;
     noteInputDiv.className = "note-input-div";
 
-    var noteInput = document.createElement("input");
+    var noteInput = document.createElement("textarea");
     noteInput.type = "text";
     noteInput.id = "noteInput" + counters.notesLines;
     noteInput.className = "noteInput";
@@ -150,8 +167,20 @@ function setNewConsoleLine(counters, currentTime, state) {
     consoleLineContainer.appendChild(noteInputDiv);
     noteInputDiv.appendChild(noteInput);
 
-
     counters.notesLines++;
+
+    let textArea = document.getElementById(noteInput.id);
+    textArea.addEventListener("input", function() {
+        let latestTextArea = document.getElementById(state.currentNoteInputId);
+        if (latestTextArea.value.length >= 42) {
+            // Reset height to ensure we get the actual scroll height
+            latestTextArea.style.height = 'auto';
+            latestTextArea.style.height = latestTextArea.scrollHeight + 'px';
+        } else {
+            latestTextArea.style.height = '20px';
+            latestTextArea.style.boxSizing = 'border-box';
+        }
+    })
 }
 
 function getCurrentTime() {

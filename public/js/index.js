@@ -166,10 +166,8 @@ document.addEventListener("DOMContentLoaded", function() {
         clearInterval(intervals.local);
         intervals.local = setInterval(() => timeDisplay(startTimes.local, display, timeConvert), 1000); //using arrow function so we can pass arguments
         
-        if (!intervals.main) { //executes when interval is undefined --> Hyper Focus Mode
+        if (!intervals.main) { //executes when interval is undefined --> Flow Time
             setFavicon(link, greenFavicon);
-
-            //Remove circle animations
 
             //if not first transition
             if (counters.startStop > 1) {
@@ -278,36 +276,24 @@ document.addEventListener("DOMContentLoaded", function() {
                 flags.progressBarContainerIsSmall = false;
             }
             
-            if (!flags.inHyperFocus) { //if we're in chill time
-                
-                /* Update progress bar & percentage ONCE to demonstrate submitted change in Chill Time */
-                updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar, progressContainer);
-                totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, targetTime);
-            } else {
-                /* This code is (kind of) optional, it makes the progress bar fade in happen a bit faster in flow
-                time because otherwise, the speed of the fade in is determined by the next interval after the submit btn
-                is pressed */
-                updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar, progressContainer);
-                totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, targetTime);
-            }
+            /* Update progress bar & percentage ONCE to demonstrate submitted change in Chill Time.
+                In Flow Time, this code makes the change happen just a little bit faster. */
+            updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar, progressContainer);
+            totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, targetTime);
             
             flags.hitTarget = false;
         }
         else if (flags.submittedTarget) { //When changing target hours
+            if (flags.hitTarget) {
+                progressContainer.classList.remove("glowing-effect");
+            }
+
             changeTargetHours(flags);
 
-            if (!flags.inHyperFocus) { //if we're in chill time
-                
-                /* Update progress bar & percentage ONCE to demonstrate submitted change in Chill Time */
-                updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar, progressContainer);
-                totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, targetTime);
-            } else {
-                /* This code is (kind of) optional, it makes the progress bar fade out happen a bit faster in chill
-                time because otherwise, the speed of the fade in is determined by the next interval after the submit btn
-                is pressed */
-                updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar, progressContainer);
-                totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, targetTime);
-            }
+            /* Update progress bar & percentage ONCE to demonstrate submitted change in Chill Time.
+                In Flow Time, this code makes the change happen just a little bit faster. */
+            updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar, progressContainer);
+            totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, targetTime);
             
             /* The reason for this is that we don't want to bombard the user with progress container animations at the very start of the program :P */
             if (counters.startStop > 0) { // only if session has been started
@@ -316,6 +302,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     flags.progressBarContainerIsSmall = true;
                 }
             }
+
         }
     });
 

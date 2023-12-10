@@ -973,26 +973,29 @@ main {
 .console-line-time {
     width: 85px;
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     white-space: nowrap;
-    /* border: 2px solid purple; */
+    border: 2px solid rgba(255, 255, 255, 0);
 }
 
 .console-line-arrow {
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     justify-content: center;
     width: 25px;
-    /* border: 2px solid purple; */
+    border: 2px solid rgba(255, 255, 255, 0);
 }
 
 .note-input-div {
-    /* border: 2px solid purple; */
+    /* border: 5px solid rgb(0, 124, 128); */
     /* width: 100%; */
     width: 440px;
+    align-items: center;
+    display: flex;
+    box-sizing: border-box;
 }
 
-.noteInput {
+/* .noteInput {
     width: 99%;
     background-color: rgba(255, 255, 255, 0);
     border: none;
@@ -1001,10 +1004,27 @@ main {
     font-size: 16px;
     color: white;
     margin-bottom: 1px;
+} */
+
+.noteInput {
+    width: 99%;
+    /* height: auto; */
+    height: 20px;
+    /* height: auto; Change to this eventually */
+    min-height: 20px; /* Minimum height before user input */
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
+    outline: none;
+    font-family: myFont2;
+    font-size: 16px;
+    color: white;
+    overflow: hidden; /* Prevents scrollbars */
+    resize: none; /* Disables manual resizing */
+    white-space: pre-wrap; /* Allows text wrapping */
+    word-wrap: break-word; /* Breaks long words */
+    /* align-items: center; */
+    box-sizing: border-box;
 }
-
-
-
 
 
 
