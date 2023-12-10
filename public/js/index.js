@@ -653,6 +653,8 @@ function changeTargetHours(flags) {
     enterHours.min = "0";
     enterHours.value = "";
     document.getElementById("coolDiv").appendChild(enterHours);
+
+    enterHours.focus();
     
     document.getElementById('target-hours-submit').textContent = "Submit";
     flags.submittedTarget = false;

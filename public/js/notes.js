@@ -11,6 +11,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const notesBtn = document.getElementById("notes");
 
+    const notesConsole = document.getElementById("notes-console");
+
     // CONSOLE
     let notesFlags = {
         isClicked: false,
@@ -73,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     })
 
-    document.addEventListener('keydown', (event) => handleTaskEnter(event, clearIcon, promptContainer, counters, getCurrentTime(), state));
+    document.addEventListener('keydown', (event) => handleTaskEnter(event, clearIcon, promptContainer, counters, getCurrentTime(), state, notesConsole));
 
     clearIcon.addEventListener("click", async function() {
         clearIcon.classList.add('resetIconRotation');
@@ -104,7 +106,7 @@ document.addEventListener("DOMContentLoaded", function() {
 })
 
 
-function handleTaskEnter(event, clearIcon, promptContainer, counters, currentTime, state) {
+function handleTaskEnter(event, clearIcon, promptContainer, counters, currentTime, state, notesConsole) {
     if (event.key === 'Enter') {
         event.preventDefault();
         
@@ -117,12 +119,23 @@ function handleTaskEnter(event, clearIcon, promptContainer, counters, currentTim
             userInputTask.blur();
             document.getElementById(state.currentNoteInputId).focus();
         } else if ((document.activeElement === document.getElementById(state.currentNoteInputId)) && (document.activeElement.value !== "")) {
-            document.getElementById(state.currentNoteInputId).blur();
-            document.getElementById(state.currentNoteInputId).setAttribute('readonly', 'readonly');
+            if ((document.getElementById(state.currentNoteInputId)).value == "clear") {
+                clearConsole(notesConsole, counters);
+            } else {
+                document.getElementById(state.currentNoteInputId).blur();
+                document.getElementById(state.currentNoteInputId).setAttribute('readonly', 'readonly');
+            }
             setNewConsoleLine(counters, currentTime, state);
             document.getElementById(state.currentNoteInputId).focus();
         }
     }
+}
+
+function clearConsole(notesConsole, counters) {
+    while (notesConsole.firstChild) {
+        notesConsole.removeChild(notesConsole.firstChild);
+    }
+    counters.notesLines = 0;
 }
 
 function delay(milliseconds) {
