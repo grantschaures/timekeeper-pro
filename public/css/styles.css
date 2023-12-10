@@ -76,15 +76,11 @@ h4 {
     height: 40px;
     width: 56.20px;
     margin-right: 10px;
-    animation: logoRotate 60s linear infinite;
 }
 
-/* #hyperChillLogoImageCircular {
-    height: 40px;
-    width: 40px;
-    margin-right: 10px;
+.hyperChillLogoRotate {
     animation: logoRotate 60s linear infinite;
-} */
+}
 
 @keyframes logoRotate {
     from {
@@ -180,6 +176,14 @@ h4 {
     to {
         opacity: 0;
     }
+}
+
+.intoOpacityTransition {
+    animation: intoOpacityTransition 6s;
+}
+
+.outOfOpacityTransition {
+    animation: outOfOpacityTransition 0.5s;
 }
 
 #chillAnimation {
@@ -306,14 +310,6 @@ h4 {
     100% {
         opacity: 0.05
     }
-}
-
-.intoOpacityTransition {
-    animation: intoOpacityTransition 6s;
-}
-
-.outOfOpacityTransition {
-    animation: outOfOpacityTransition 0.5s;
 }
 
 @keyframes alteropacityback {

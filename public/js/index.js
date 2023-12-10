@@ -49,11 +49,14 @@ document.addEventListener("DOMContentLoaded", function() {
     const flowAnimation = document.getElementById("flowAnimation");
     const chillAnimation = document.getElementById("chillAnimation");
 
+    //Logo
+    const hyperChillLogoImage = document.getElementById("hyperChillLogoImage");
+
     //NOTES
     const userInputTask = document.getElementById("userInputTask");
 
-    const redFavicon = "/images/RED.png";
-    const blueFavicon = "/images/BLUE.png";
+    const greenFavicon = "/images/hyperChillLogoGreen.png";
+    const blueFavicon = "/images/hyperChillLogoBlue.png";
     const link = document.querySelector("link[rel~='icon']");
 
     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -151,6 +154,8 @@ document.addEventListener("DOMContentLoaded", function() {
         if (counters.startStop === 1) {
             veryStartActions(startTimes);
 
+            hyperChillLogoImage.classList.add("hyperChillLogoRotate");
+
             if (document.getElementById("target-hours").value == "") {
                 progressBarContainer.classList.toggle("small");
                 flags.progressBarContainerIsSmall = true;
@@ -162,7 +167,7 @@ document.addEventListener("DOMContentLoaded", function() {
         intervals.local = setInterval(() => timeDisplay(startTimes.local, display, timeConvert), 1000); //using arrow function so we can pass arguments
         
         if (!intervals.main) { //executes when interval is undefined --> Hyper Focus Mode
-            setFavicon(link, redFavicon);
+            setFavicon(link, greenFavicon);
 
             //Remove circle animations
 
