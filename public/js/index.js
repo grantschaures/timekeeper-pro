@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const start_stop_btn = document.getElementById("start-stop");
     const submit_change_btn = document.getElementById("target-hours-submit");
     const end_session_btn = document.getElementById("end-session");
+    const report_btn = document.getElementById("reportBtn");
     const body = document.querySelector("body");
 
     const total_time_display = document.getElementById("progress-text");
@@ -464,7 +465,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             }
         }
-    });    
+    });
+
+    report_btn.addEventListener("click", function() {
+        alert("This feature is currently under development. Thank you for your patience.")
+    })
 
     end_session_btn.addEventListener("click", function() { //temporary function
         location.reload();
