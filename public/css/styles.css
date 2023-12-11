@@ -904,7 +904,7 @@ main {
     height: 198px;
     overflow: auto;
     padding-top: 5px;
-    /* border: 1px solid red; */
+    /* border: 5px solid red; */
 }
 
 #pencil-icon {
@@ -1001,26 +1001,22 @@ main {
 
 .noteInput {
     width: 99%;
-    /* height: auto; */
     height: 20px;
     /* height: auto; Change to this eventually */
-    min-height: 20px; /* Minimum height before user input */
+    min-height: 20px;
     background-color: rgba(255, 255, 255, 0);
     border: none;
     outline: none;
     font-family: myFont2;
     font-size: 16px;
     color: white;
-    overflow: hidden; /* Prevents scrollbars */
-    resize: none; /* Disables manual resizing */
-    white-space: pre-wrap; /* Allows text wrapping */
-    word-wrap: break-word; /* Breaks long words */
-    /* align-items: center; */
+    overflow: hidden;
+    resize: none;
+    white-space: pre-wrap;
+    word-wrap: break-word;
     box-sizing: border-box;
-    rows: 1;
+    /* border: 3px solid grey; */
 }
-
-
 
 button {
     background-color: rgba(255, 255, 255, 0);

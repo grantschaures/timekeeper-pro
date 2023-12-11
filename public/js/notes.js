@@ -170,17 +170,21 @@ function setNewConsoleLine(counters, currentTime, state) {
     textArea.addEventListener("input", function() {
         let latestTextArea = document.getElementById(state.currentNoteInputId);
         if (window.innerWidth >= 600) {
-            if (latestTextArea.value.length >= 42) {
+            if (latestTextArea.value.length >= 41) {
                 // Reset height to ensure we get the actual scroll height
                 latestTextArea.style.height = 'auto';
+                latestTextArea.style.overflow = 'auto';
                 latestTextArea.style.height = latestTextArea.scrollHeight + 'px';
             } else {
                 latestTextArea.style.height = '20px';
             }
         } else { //if small viewport width, we'll just have to have extra line if only one line entered :/
             latestTextArea.style.height = 'auto';
+            latestTextArea.style.overflow = 'auto';
             latestTextArea.style.height = latestTextArea.scrollHeight + 'px';
         }
+
+
     })
 }
 
