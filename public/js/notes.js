@@ -87,22 +87,6 @@ document.addEventListener("DOMContentLoaded", function() {
         clearIcon.style.display = "none";
         clearIcon.classList.remove('resetIconRotation');
     })
-
-    // const textAreas = document.querySelectorAll('.noteInput');
-
-    // textAreas.forEach(textArea => {
-    //     textArea.addEventListener("input", function() {
-    //         let latestTextArea = document.getElementById(state.currentNoteInputId);
-    //         if (latestTextArea.value.length >= 42) {
-    //             // Reset height to ensure we get the actual scroll height
-    //             latestTextArea.style.height = 'auto';
-    //             latestTextArea.style.height = latestTextArea.scrollHeight + 'px';
-    //         } else {
-    //             latestTextArea.style.height = '20px';
-    //         }
-    //     })
-    // })
-
 })
 
 
@@ -185,13 +169,17 @@ function setNewConsoleLine(counters, currentTime, state) {
     let textArea = document.getElementById(noteInput.id);
     textArea.addEventListener("input", function() {
         let latestTextArea = document.getElementById(state.currentNoteInputId);
-        if (latestTextArea.value.length >= 42) {
-            // Reset height to ensure we get the actual scroll height
+        if (window.innerWidth >= 600) {
+            if (latestTextArea.value.length >= 42) {
+                // Reset height to ensure we get the actual scroll height
+                latestTextArea.style.height = 'auto';
+                latestTextArea.style.height = latestTextArea.scrollHeight + 'px';
+            } else {
+                latestTextArea.style.height = '20px';
+            }
+        } else { //if small viewport width, we'll just have to have extra line if only one line entered :/
             latestTextArea.style.height = 'auto';
             latestTextArea.style.height = latestTextArea.scrollHeight + 'px';
-        } else {
-            latestTextArea.style.height = '20px';
-            latestTextArea.style.boxSizing = 'border-box';
         }
     })
 }

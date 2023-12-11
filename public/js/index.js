@@ -173,11 +173,15 @@ document.addEventListener("DOMContentLoaded", function() {
             if (counters.startStop > 1) {
                 chillAnimation.classList.remove('intoOpacityTransition');
                 chillAnimation.classList.add('outOfOpacityTransition');
+                setTimeout(() => {
+                    chillAnimation.style.display = 'none';
+                }, 500)
             }
 
             //Fade in sine wave animations
             flowAnimation.classList.remove('outOfOpacityTransition');
             flowAnimation.classList.add('intoOpacityTransition');
+            flowAnimation.style.display = 'block';
 
 
             hideSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min);
@@ -209,10 +213,14 @@ document.addEventListener("DOMContentLoaded", function() {
             //Remove sine wave animations
             flowAnimation.classList.remove('intoOpacityTransition');
             flowAnimation.classList.add('outOfOpacityTransition');
+            setTimeout(() => {
+                flowAnimation.style.display = 'none';
+            }, 500)
 
             //Add circle animations
             chillAnimation.classList.add('intoOpacityTransition');
             chillAnimation.classList.remove('outOfOpacityTransition');
+            chillAnimation.style.display = 'flex';
 
             saveResetInterruptions(interruptionsNum, counters, savedInterruptionsArr);
             hideInterruptionsSubContainer(interruptionsSubContainer);
@@ -430,6 +438,32 @@ document.addEventListener("DOMContentLoaded", function() {
 
     window.addEventListener("resize", handleViewportWidthChange);
 
+    document.addEventListener('visibilitychange', function() {
+        //user clicks out of tab (or minimizes window)
+        if (document.visibilityState === 'hidden') {
+            if (flags.inHyperFocus) {
+                flowAnimation.classList.remove('intoOpacityTransition');
+                flowAnimation.style.display = 'none';
+            } else {
+                chillAnimation.classList.remove('intoOpacityTransition');
+                chillAnimation.style.display = 'none';
+            }
+            
+        } else if (document.visibilityState === 'visible') { //user returns to tab
+            if (flags.inHyperFocus) {
+                setTimeout(() => {
+                    flowAnimation.style.display = 'block';
+                    flowAnimation.classList.add('intoOpacityTransition');
+                }, 500);
+            } else {
+                setTimeout(() => {
+                    chillAnimation.style.display = 'flex';
+                    chillAnimation.classList.add('intoOpacityTransition');
+                }, 500);
+            }
+        }
+    });    
+
     end_session_btn.addEventListener("click", function() { //temporary function
         location.reload();
     });
@@ -438,6 +472,7 @@ document.addEventListener("DOMContentLoaded", function() {
 // ---------------------
 // HELPER FUNCTIONS
 // ---------------------
+
 function setInitialEndSessionBtnText(initialViewportWidth, end_session_btn) {
     if (initialViewportWidth <= 504) {
         end_session_btn.innerText = "End";
