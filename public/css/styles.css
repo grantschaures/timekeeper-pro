@@ -1017,6 +1017,7 @@ main {
     word-wrap: break-word; /* Breaks long words */
     /* align-items: center; */
     box-sizing: border-box;
+    rows: 1;
 }
 
 
