@@ -180,7 +180,7 @@ function setNewConsoleLine(counters, currentTime, state) {
             }
         } else { //if small viewport width, we'll just have to have extra line if only one line entered :/
             latestTextArea.style.height = 'auto';
-            latestTextArea.style.overflow = 'auto';
+            latestTextArea.style.overflow = 'auto'; //evidently not necessary but just for insurance
             latestTextArea.style.height = latestTextArea.scrollHeight + 'px';
         }
 

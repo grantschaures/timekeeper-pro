@@ -456,10 +456,12 @@ document.addEventListener("DOMContentLoaded", function() {
                     flowAnimation.classList.add('intoOpacityTransition');
                 }, 500);
             } else {
-                setTimeout(() => {
-                    chillAnimation.style.display = 'flex';
-                    chillAnimation.classList.add('intoOpacityTransition');
-                }, 500);
+                if (counters.startStop > 0) {
+                    setTimeout(() => {
+                        chillAnimation.style.display = 'flex';
+                        chillAnimation.classList.add('intoOpacityTransition');
+                    }, 500);
+                }
             }
         }
     });    
