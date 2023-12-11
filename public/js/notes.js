@@ -177,6 +177,7 @@ function setNewConsoleLine(counters, currentTime, state) {
                 latestTextArea.style.height = latestTextArea.scrollHeight + 'px';
             } else {
                 latestTextArea.style.height = '20px';
+                latestTextArea.style.overflow = 'hidden';
             }
         } else { //if small viewport width, we'll just have to have extra line if only one line entered :/
             latestTextArea.style.height = 'auto';
