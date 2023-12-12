@@ -13,6 +13,16 @@
     src: url("../fonts/CPMono_v07_Light.woff");
 }
 
+/* Makes it so user can't select images used for animations */
+.no-select {
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none;    /* Firefox */
+    -ms-user-select: none;     /* Internet Explorer/Edge */
+    user-select: none;         /* Non-prefixed version, currently supported by Chrome, Opera, and Edge */
+
+    pointer-events: none;      /* This makes it so the image cannot be interacted with */
+}
+
 body {
     font-family: myFont;
 }
@@ -351,6 +361,8 @@ h4 {
 
 main {
     display: block;
+    height: 80%;
+    /* border: 3px solid red; */
 }
 
 #main-container {
@@ -804,7 +816,6 @@ main {
     z-index: 12;
     border-radius: 25px;
     max-width: 600px;
-    /* min-height: 250px; */
     height: 250px;
 
     display: block;
