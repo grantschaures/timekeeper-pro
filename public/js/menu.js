@@ -225,7 +225,10 @@ document.addEventListener("DOMContentLoaded", function() {
     })
 
     logInOut_btn.addEventListener("click", function() {
-        window.location.href = "/login";
+        alert("This feature is currently under development. Thank you for your patience.");
+
+        //eventually uncomment this out to continue w/ login-signup development
+        //window.location.href = "/login";
     })
 });
 

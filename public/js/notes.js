@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     })
 
-    document.addEventListener('keydown', (event) => handleTaskEnter(event, clearIcon, promptContainer, counters, getCurrentTime(), state, notesConsole));
+    document.addEventListener('keydown', (event) => handleTaskEnter_or_n(event, clearIcon, promptContainer, counters, getCurrentTime(), state, notesConsole, notesFlags, state, notesContainer));
 
     clearIcon.addEventListener("click", async function() {
         clearIcon.classList.add('resetIconRotation');
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function() {
 })
 
 
-function handleTaskEnter(event, clearIcon, promptContainer, counters, currentTime, state, notesConsole) {
+function handleTaskEnter_or_n(event, clearIcon, promptContainer, counters, currentTime, state, notesConsole, notesFlags, state, notesContainer) {
     if (event.key === 'Enter') {
         event.preventDefault();
         
@@ -112,6 +112,23 @@ function handleTaskEnter(event, clearIcon, promptContainer, counters, currentTim
             setNewConsoleLine(counters, currentTime, state);
             document.getElementById(state.currentNoteInputId).focus();
         }
+    } else if ((event.key === 'n') && (!notesFlags.notesShowing)) {
+        console.log("test")
+        notesContainer.classList.add('fullsize');
+        notesContainer.classList.add('fullopacity');
+        
+        // for some reason, this 0ms timeout "clears the input buffer" so-to-speak
+        setTimeout(() => {
+            document.getElementById(state.currentNoteInputId).focus();
+        }, 0)
+        notesFlags.notesShowing = true;
+    } else if ((event.key === 'Escape') && (notesFlags.notesShowing)) {
+        notesContainer.classList.remove('fullsize');
+        notesContainer.classList.remove('fullopacity');
+        document.getElementById(state.currentNoteInputId).blur();
+
+        // notesContainer.style.display = "none"; //old instant transition
+        notesFlags.notesShowing = false;
     }
 }
 

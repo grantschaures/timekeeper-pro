@@ -10,14 +10,6 @@ const app = express();
 
 const PRIMARY_DOMAIN = 'hyperchill.io';
 
-app.use((req, res, next) => {
-  if (req.headers.host !== PRIMARY_DOMAIN) {
-      // Redirect to the primary domain
-      return res.redirect(301, `https://${PRIMARY_DOMAIN}${req.url}`);
-  }
-  next();
-});
-
 //CHECKING REQUESTS IN LOG
 const logRequest = function(req, res, next) {
     console.log(`Request: ${req.method} for ${req.path}`);
@@ -42,6 +34,15 @@ connect();
 //////////
 
 // //COMMENT OUT WHEN TESTING ON LOCALHOST:3000
+
+app.use((req, res, next) => {
+  if (req.headers.host !== PRIMARY_DOMAIN) {
+      // Redirect to the primary domain
+      return res.redirect(301, `https://${PRIMARY_DOMAIN}${req.url}`);
+  }
+  next();
+});
+
 app.use((req, res, next) => {
     if (req.header('x-forwarded-proto') !== 'https')
         res.redirect(`https://${req.header('host')}${req.url}`);
