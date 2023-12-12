@@ -8,6 +8,15 @@ const path = require('path');
 // initialization of a new express application
 const app = express();
 
+const PRIMARY_DOMAIN = 'hyperchill.io';
+
+app.use((req, res, next) => {
+  if (req.headers.host !== PRIMARY_DOMAIN) {
+      // Redirect to the primary domain
+      return res.redirect(301, `https://${PRIMARY_DOMAIN}${req.url}`);
+  }
+  next();
+});
 
 //CHECKING REQUESTS IN LOG
 const logRequest = function(req, res, next) {
