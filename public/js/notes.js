@@ -186,24 +186,70 @@ function setNewConsoleLine(counters, currentTime, state) {
     let textArea = document.getElementById(noteInput.id);
     textArea.addEventListener("input", function() {
         let latestTextArea = document.getElementById(state.currentNoteInputId);
-        if (window.innerWidth >= 600) {
-            if (latestTextArea.value.length >= 41) {
-                // Reset height to ensure we get the actual scroll height
-                latestTextArea.style.height = 'auto';
-                latestTextArea.style.overflow = 'auto';
-                latestTextArea.style.height = latestTextArea.scrollHeight + 'px';
-            } else {
-                latestTextArea.style.height = '20px';
-                latestTextArea.style.overflow = 'hidden';
-            }
-        } else { //if small viewport width, we'll just have to have extra line if only one line entered :/
-            latestTextArea.style.height = 'auto';
-            latestTextArea.style.overflow = 'auto'; //evidently not necessary but just for insurance
-            latestTextArea.style.height = latestTextArea.scrollHeight + 'px';
+        if (window.innerWidth >= 592) {
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 42);
+        } else if (window.innerWidth < 325) {
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 18);
+        } else if (window.innerWidth < 337) {
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 19);
+        } else if (window.innerWidth < 348) {
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 20);
+        } else if (window.innerWidth < 359) {
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 21);
+        } else if (window.innerWidth < 370) {
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 22);
+        } else if (window.innerWidth < 381) {
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 23);
+        } else if (window.innerWidth < 392) {
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 24);
+        } else if (window.innerWidth < 403) {
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 25);
+        } else if (window.innerWidth < 414) {
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 26);
+        } else if (window.innerWidth < 425) {
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 27);
+        } else if (window.innerWidth < 436) {
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 28);
+        } else if (window.innerWidth < 448) {
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 29);
+        } else if (window.innerWidth < 459) {
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 30);
+        } else if (window.innerWidth < 470) {
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 31);
+        } else if (window.innerWidth < 481) {
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 32);
+        } else if (window.innerWidth < 492) {
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 33);
+        } else if (window.innerWidth < 503) {
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 34);
+        } else if (window.innerWidth < 514) {
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 35);
+        } else if (window.innerWidth < 526) {
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 36);
+        } else if (window.innerWidth < 539) {
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 37);
+        } else if (window.innerWidth < 553) {
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 38);
+        } else if (window.innerWidth < 566) {
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 39);
+        } else if (window.innerWidth < 579) {
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 40);
+        } else if (window.innerWidth < 592) {
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 41);
         }
-
-
     })
+}
+
+function modifyNoteEntryNewlineTriggerLength(latestTextArea, triggerChars) {
+    if (latestTextArea.value.length >= triggerChars) {
+        // Reset height to ensure we get the actual scroll height
+        latestTextArea.style.height = 'auto';
+        latestTextArea.style.overflow = 'auto';
+        latestTextArea.style.height = latestTextArea.scrollHeight + 'px';
+    } else {
+        latestTextArea.style.height = '20px';
+        latestTextArea.style.overflow = 'hidden';
+    }
 }
 
 function getCurrentTime() {
