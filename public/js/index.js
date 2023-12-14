@@ -56,8 +56,8 @@ document.addEventListener("DOMContentLoaded", function() {
     //NOTES
     const userInputTask = document.getElementById("userInputTask");
 
-    const greenFavicon = "/images/HyperChillLogoGreen.png";
-    const blueFavicon = "/images/HyperChillLogoBlue.png";
+    const greenFavicon = "/images/logo/HyperChillLogoGreen.png";
+    const blueFavicon = "/images/logo/HyperChillLogoBlue.png";
     const link = document.querySelector("link[rel~='icon']");
 
     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -157,7 +157,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             hyperChillLogoImage.classList.add("hyperChillLogoRotate");
 
-            if (document.getElementById("target-hours").value == "") {
+            if ((document.getElementById("target-hours").value == "") || ((!document.getElementById("target-hours").value == "") && (!flags.submittedTarget))) {
                 progressBarContainer.classList.toggle("small");
                 flags.progressBarContainerIsSmall = true;
             }
@@ -208,6 +208,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 elapsedTime.chillTime += Date.now() - startTimes.chillTime;
             }
             setBackground("linear-gradient(to bottom, #5dd44d, #50b350, #004400)"); //Green gradient
+            // setBackground("url('images/pexels/beautiful-sky-sunset-canoe.jpg')");
         } else { //--> Chill Time
             setFavicon(link, blueFavicon);
 
@@ -230,8 +231,9 @@ document.addEventListener("DOMContentLoaded", function() {
             
             showSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, breakTimeSuggestionsArr, lastHyperFocusIntervalMin, counters);
             
+            //if chill time break suggestion is set BEFORE entering Chill Time
             if (flags.chillTimeBreakSuggestionToggle) {
-                elapsedTime.chillTimeSuggestionSeconds = counters.currentChillTimeBreakSuggestion * 60;
+                elapsedTime.chillTimeSuggestionSeconds = (counters.currentChillTimeBreakSuggestion * 60) - 1;
                 intervals.chillTimeBreak = setInterval(() => chillTimeSuggestionCountdown(elapsedTime, counters, flags), 1000);
             }
             //Console.log out the --> Chill Time (00:00 format)
@@ -249,7 +251,7 @@ document.addEventListener("DOMContentLoaded", function() {
             if (flags.submittedSuggestionMinutes) {
                 clearInterval(intervals.suggestion);
                 intervals.suggestion = null;
-                elapsedTime.suggestionSeconds = suggestionMinutes * 60;
+                elapsedTime.suggestionSeconds = (suggestionMinutes * 60) - 1;
             }
 
             elapsedTime.hyperFocus += Date.now() - startTimes.hyperFocus;
@@ -327,7 +329,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
             //set suggestion minutes w/ replaceSuggestionMinutes(inputSuggestionMinutes, suggestionMinutes, flags)
             suggestionMinutes = replaceSuggestionMinutes(inputSuggestionMinutes, suggestionMinutes, flags);
-            elapsedTime.suggestionSeconds = suggestionMinutes * 60; //shallow copy suggestionMinutes to elapsedTime.suggestionSeconds (saves state)
+            let elapsedTimeInHyperfocus = Math.floor((Date.now() - startTimes.hyperFocus) / 1000); //unit: seconds
+
+            if (!flags.inHyperFocus) {
+                elapsedTime.suggestionSeconds = (suggestionMinutes * 60) - 1; //shallow copy suggestionMinutes to elapsedTime.suggestionSeconds (saves state)
+            } else {
+                elapsedTime.suggestionSeconds = ((suggestionMinutes * 60) - elapsedTimeInHyperfocus) - 1;
+            }
             
             if (flags.inHyperFocus) {
                 intervals.suggestion = setInterval(() => suggestionMinutesCountdown(elapsedTime, suggestionMinutes, flags), 1000);
@@ -406,8 +414,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 return;
             }
 
+            let elapsedTimeInChillTime = Math.floor((Date.now() - startTimes.chillTime) / 1000); //in seconds
+
+            // When toggle for break notification is turned on whilst in chill time
             if (!flags.inHyperFocus && counters.startStop !== 0) {
-                elapsedTime.chillTimeSuggestionSeconds = counters.currentChillTimeBreakSuggestion * 60;
+                elapsedTime.chillTimeSuggestionSeconds = ((counters.currentChillTimeBreakSuggestion * 60) - elapsedTimeInChillTime) - 1;
                 intervals.chillTimeBreak = setInterval(() => chillTimeSuggestionCountdown(elapsedTime, counters, flags), 1000);
             }
 
@@ -561,7 +572,6 @@ function suggestionMinutesCountdown(elapsedTime, suggestionMinutes, flags) {
             notificationString = "Need a break? You've been hard at work for " + suggestionMinutes.toString() + " minute!";
         }
         new Notification(notificationString);
-        //elapsedTime.suggestionSeconds = suggestionMinutes * 60; //uncomment if you want notification to repeat in hyper focus mode
     }
     elapsedTime.suggestionSeconds--;
     // console.log(elapsedTime.suggestionSeconds);
@@ -645,6 +655,9 @@ function suggestionMinutesValidate(inputSuggestionMinutes) {
 
 function showSuggestionMinutesContainer(suggestionMinutesContainer) {
     suggestionMinutesContainer.style.display = "flex";
+
+    let inputSuggestionMinutesInput = document.getElementById("suggestionMinutesInput");
+    inputSuggestionMinutesInput.focus();
 }
 
 function hideSuggestionMinutesContainer(suggestionMinutesContainer) {
@@ -902,15 +915,6 @@ function setBrowserTabTitle() {
 };
 
 function setFavicon(link, faviconPath) {
-    // If it doesn't exist, create it and append to the head
-    // if (!link) {
-    //     link = document.createElement('link');
-    //     link.rel = 'icon';
-    //     document.getElementsByTagName('head')[0].appendChild(link);
-    // }
-
-    // link.href = faviconPath;
-
     let favicon1 = document.getElementById("favicon1");
     let favicon2 = document.getElementById("favicon2");
 

@@ -1,0 +1,92 @@
+@keyframes resetIconRotation { /* notes reset icon */
+    from {
+        transform: rotate(0deg);
+        opacity: 1;
+    }
+    to {
+        transform: rotate(360deg);
+        opacity: 0;
+    }
+}
+
+@keyframes rotateIconClockwise {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(90deg);
+    }
+}
+
+@keyframes rotateIconCounterClockwise {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(-90deg);
+    }
+}
+
+@keyframes bounceLeft {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-5px);
+    }
+}
+
+@keyframes bounceBack {
+    from {
+        transform: translateX(-5px);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+.backIcon {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    z-index: 4;
+    left: 10px;
+    opacity: 1.00;
+}
+
+.backIcon:hover {
+    cursor: pointer;
+}
+
+.triggerBounceLeft {
+    animation: bounceLeft 0.25s forwards;
+}
+
+.resetBounce {
+    animation: bounceBack 0.25s forwards;
+}
+
+.exitIcon {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    z-index: 4;
+    right: 10px;
+    opacity: 1.00;
+}
+
+.exitIcon:hover {
+    cursor: pointer;
+}
+
+.triggerRotation {
+    animation: rotateIconClockwise 0.25s forwards;
+}
+
+.resetRotation {
+    animation: rotateIconCounterClockwise 0.25s forwards;
+}
+
+.resetIconRotation { /* notes reset icon */
+    animation: resetIconRotation 0.5s forwards;
+}

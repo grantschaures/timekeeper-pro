@@ -44,18 +44,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
     notesBtn.addEventListener("click", function() {
         if (notesFlags.notesShowing === false) {
-            // notesContainer.style.display = "block"; //old instant transition
-
             notesContainer.classList.add('fullsize');
             notesContainer.classList.add('fullopacity');
-            
+
             document.getElementById(state.currentNoteInputId).focus();
             notesFlags.notesShowing = true;
         } else {
             notesContainer.classList.remove('fullsize');
             notesContainer.classList.remove('fullopacity');
 
-            // notesContainer.style.display = "none"; //old instant transition
             notesFlags.notesShowing = false;
         }
     })

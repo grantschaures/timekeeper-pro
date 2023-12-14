@@ -1,0 +1,249 @@
+#animationContainer {
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    /* border: 4px solid orange; */
+    width: 100%;
+    height: 100%;
+    /* z-index: -1; */
+}
+
+#flowAnimation {
+    /* border: 7px solid black; */
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    height: 600px;
+    width: 100%;
+    top: 300px;
+    overflow: hidden;
+    display: none;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+#sineWaveBack {
+    height: 45%;
+    position: absolute;
+    margin-top: 30px;
+    top: 200px;
+    z-index: 0;
+    opacity: 0.10;
+    margin-left: 0px;
+    margin-top: -35px;
+    animation: slideBack 30s linear infinite, alteropacityback 30s linear infinite;
+}
+
+#sineWaveFront {
+    height: 60%;
+    position: absolute;
+    top: 150px;
+    z-index: 0;
+    opacity: 0.25;
+    margin-left: 0px;
+    margin-top: -35px;
+    animation: slideFront 12s linear infinite;
+}
+
+@keyframes slideBack {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-380px);
+    }
+}
+
+@keyframes slideFront {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-503px);
+    }
+}
+
+@keyframes intoOpacityTransition {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes outOfOpacityTransition {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.intoOpacityTransition {
+    animation: intoOpacityTransition 6s;
+}
+
+.outOfOpacityTransition {
+    animation: outOfOpacityTransition 0.5s;
+}
+
+#chillAnimation {
+    /* border: 7px solid black; */
+    position: absolute;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    height: 1200px;
+    width: 100%;
+    /* top: 300px; */
+    overflow: hidden;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+#circleOuter {
+    height: 1000px;
+    width: 1000px;
+    position: absolute;
+    /* opacity: 0.05; */
+    animation: circleOuterAnimation 6s linear infinite;
+}
+
+#circleMiddle {
+    height: 800px;
+    width: 800px;
+    position: absolute;
+    /* opacity: 0.05; */
+    animation: circleMiddleAnimation 6s linear infinite;
+}
+
+#circleInner {
+    height: 600px;
+    width: 600px;
+    position: absolute;
+    /* opacity: 0.05; */
+    animation: circleInnerAnimation 6s linear infinite;
+}
+
+@keyframes circleOuterAnimation {
+    0% {
+        opacity: 0.075;
+        transform: scaleX(1.005) scaleY(1.005);
+    }
+    10% {
+        transform: scaleX(1) scaleY(1);
+        opacity: 0;
+    }
+    30% {
+        opacity: 0.05;
+    }
+    50% {
+        opacity: 0.05;
+    }
+    70% {
+        opacity: 0.05;
+        transform: scaleX(1) scaleY(1);
+    }
+    90% {
+        opacity: 0.15;
+        transform: scaleX(1.01) scaleY(1.01);
+    }
+    100% {
+        opacity: 0.075;
+        transform: scaleX(1.005) scaleY(1.005);
+    }
+}
+
+@keyframes circleMiddleAnimation {
+    0% {
+        opacity: 0.05;
+    }
+    5% {
+        opacity: 0.05;
+    }
+    30% {
+        opacity: 0.05;
+    }
+    50% {
+        opacity: 0.05;
+        transform: scaleX(1) scaleY(1);
+    }
+    70% {
+        opacity: 0.15;
+        transform: scaleX(1.03) scaleY(1.03);
+    }
+    90% {
+        opacity: 0;
+        transform: scaleX(1) scaleY(1);
+    }
+    100% {
+        opacity: 0.05;
+    }
+}
+
+@keyframes circleInnerAnimation {
+    0% {
+        opacity: 0.05;
+    }
+    5% {
+        opacity: 0.05;
+    }
+    30% {
+        opacity: 0.05;
+        transform: scaleX(1) scaleY(1);
+    }
+    50% {
+        opacity: 0.15;
+        transform: scaleX(1.05) scaleY(1.05);
+    }
+    70% {
+        opacity: 0;
+        transform: scaleX(1) scaleY(1);
+    }
+    90% {
+        opacity: 0.05;
+    }
+    100% {
+        opacity: 0.05
+    }
+}
+
+@keyframes alteropacityback {
+    0% {
+        opacity: 0.15;
+    }
+    20% {
+        opacity: 0.05;
+    }
+    40% {
+        opacity: 0.25;
+    }
+    60% {
+        opacity: 0.10;
+    }
+    80% {
+        opacity: 0.05;
+    }
+}
+
+@keyframes alteropacityfront {
+    0% {
+        opacity: 0.05;
+    }
+    20% {
+        opacity: 0.25;
+    }
+    45% {
+        opacity: 0.05;
+    }
+    80% {
+        opacity: 0.25;
+    }
+    100% {
+        opacity: 0.05;
+    }
+}

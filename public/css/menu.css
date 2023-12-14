@@ -1,0 +1,79 @@
+#popup-menu {
+    position: absolute;
+    font-family: myFont3;
+    font-size: 14px;
+    width: 150px;
+    height: 120px;
+    background: white;
+    padding: 5px 0px;
+    z-index: 100;
+    border-radius: 6px;
+    right: 0;
+    bottom: 0;
+    top: 80px;
+    /* border: 2px solid black; */
+    display: none;
+}
+
+#popup-menu > div {
+    position: relative;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Change this to left if you want to add icons */
+    height: 30px;
+}
+
+#popup-menu > div:hover{
+    background-color: rgb(226, 226, 226);
+    border-color: rgb(226, 226, 226);
+    cursor: pointer;
+}
+
+#menu_hr {
+    height: 1px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.25); /* or any desired color */
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 87px;
+    bottom: 0;
+    width: 120px;
+}
+
+#aboutContainer, #blogContainer {
+    position: fixed;
+    /* background: rgb(255, 255, 255); */
+    background-color: rgba(0, 0, 0, 0.35);
+    padding: 10px 10px;
+    z-index: 12;
+    border-radius: 10px;
+    right: 0;
+    left: 50%;
+    top: 105px;
+    /* transform: translate(-50%, -50%); */
+    transform: translateX(-50%);
+    /* border: 2px solid black; */
+    width: 80%;
+    max-width: 800px;
+    /* min-height: 800px; */
+
+    display: none;
+    /* border: 2px solid yellow; */
+
+    max-height: 70vh; /* make smaller to make full 'about window' show up on devices smaller than my iPhone 12 */
+    overflow-y: auto;
+}
+
+#aboutWindow, #blogWindow {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    /* border: 2px solid yellow; */
+}

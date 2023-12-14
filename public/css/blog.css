@@ -1,0 +1,148 @@
+li {
+    font-size: 24px;
+    font-family: myFont3;
+    color: white;
+    font-weight: bold;
+}
+
+.blogDescription {
+    font-size: 24px;
+}
+
+@media (max-width: 480px) {
+    .blogDescription {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 750px) {
+    .blogDescription {
+        font-size: 20px;
+    }
+}
+
+.blog_cell{
+    width: 100%;
+    height: 200px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    overflow: hidden;
+
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.blog_cell > div {
+    padding: 5px;
+}
+
+.blog_cell > div > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+#blogPostContainer {
+    position: fixed;
+    background-color: rgb(255, 255, 255);
+    padding: 10px 10px;
+    z-index: 2;
+    border-radius: 10px;
+    right: 0;
+    left: 50%;
+    top: 105px;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 800px;
+
+    display: none;
+    max-height: 70vh;
+    overflow-y: auto;
+    /* border: 2px solid yellow; */
+}
+
+
+.blog {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.hidden {
+    display: none;
+}
+
+.mainBlogContent h2 {
+    text-align: center;
+}
+
+.blog h1 {
+    font-family: 'Lato', sans-serif;
+    font-weight: 800;
+    color: black;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.blog h2 {
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    color: black;
+}
+
+.blog h3 {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    color: black;
+}
+
+.blog p {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    color: black;
+    font-size: 18px;
+}
+
+.blog ul {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    color: black;
+    font-size: 18px;
+}
+
+.blog li {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    color: black;
+    font-size: 18px;
+}
+
+.blogHeaderImage > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    padding-top: 50px;
+    padding-bottom: 5px;
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+}
+
+.iframe-container {
+    max-width: 560px;
+    width: 100%;
+    height: 315px;
+    margin-top: 50px;
+    margin-bottom: 5px;
+}
+

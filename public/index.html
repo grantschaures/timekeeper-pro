@@ -6,9 +6,15 @@
         <meta name="description" content="A simple and effective Flowtime stopwatch tool to help you focus.">
         <title>HyperChill.io: Online Flowtime Tracker</title>
         <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-        <link rel='stylesheet' href='/css/styles.css'> <!-- Importing external stylesheet -->
-        <link id="favicon1" rel="icon" href="/HyperChillLogo_circular_white_border.png" type="image/x-icon">
-        <link id="favicon2" rel="icon" type="image/png" sizes="32x32" href="/images/HyperChillLogo_circular_white_border.png">
+        <link rel='stylesheet' href='/css/styles.css'>
+        <link rel='stylesheet' href='/css/background-animations.css'>
+        <link rel='stylesheet' href='/css/settings.css'>
+        <link rel='stylesheet' href='/css/blog.css'>
+        <link rel='stylesheet' href='/css/icons.css'>
+        <link rel='stylesheet' href='/css/notes.css'>
+        <link rel='stylesheet' href='/css/menu.css'>
+        <link id="favicon1" rel="icon" href="/images/logo/HyperChillLogo_circular_white_border.png" type="image/x-icon">
+        <link id="favicon2" rel="icon" type="image/png" sizes="32x32" href="/images/logo/HyperChillLogo_circular_white_border.png">
         <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
         <script src='/js/index.js'></script>
@@ -29,13 +35,13 @@
     <body> <!-- enclose all elements and content to be rendered in the browser -->
         <div id="animationContainer" class="wave-container">
             <div id="flowAnimation" class="wave">
-                <img id="sineWaveBack" src="images/sine-wave-FINAL-LONG_small.png" class="no-select" draggable="false">
-                <img id="sineWaveFront" src="images/sine-wave-hella-long_smaller.png" class="no-select" draggable="false">
+                <img id="sineWaveBack" src="images/animations/sine-wave-FINAL-LONG_small.png" class="no-select" draggable="false">
+                <img id="sineWaveFront" src="images/animations/sine-wave-hella-long_smaller.png" class="no-select" draggable="false">
             </div>
             <div id="chillAnimation" class="circle">
-                <img id="circleOuter" src="images/Circle-20pt_small.png" class="no-select" draggable="false"> 
-                <img id="circleMiddle" src="images/Circle-20pt_small.png" class="no-select" draggable="false"> 
-                <img id="circleInner" src="images/Circle-20pt_small.png" class="no-select" draggable="false"> 
+                <img id="circleOuter" src="images/animations/Circle-20pt_small.png" class="no-select" draggable="false"> 
+                <img id="circleMiddle" src="images/animations/Circle-20pt_small.png" class="no-select" draggable="false"> 
+                <img id="circleInner" src="images/animations/Circle-20pt_small.png" class="no-select" draggable="false"> 
             </div>
         </div>
 
@@ -43,20 +49,20 @@
             <header>
                 <div class="container">
                     <div id="logo">
-                        <img id="hyperChillLogoImage" src="images/HyperChillLogo_small.png" class="no-select" draggable="false">
+                        <img id="hyperChillLogoImage" src="images/logo/HyperChillLogo_smallest.png" class="no-select" draggable="false">
                         <h1 id="hyperChillTitle">HyperChill.io</h1> <!-- Gotta commit to the prgramming theme ;) -->
                     </div>
                     <div class="header-btns">
                         <button id="reportBtn">
-                            <img id="reportIcon" src="/images/noun-report-1025965-white.png">
-                            <img id="reportIcon-black" src="/images/noun-report-1025965.png">
+                            <img id="reportIcon" src="/images/icons/noun-report-1025965-white.png">
+                            <img id="reportIcon-black" src="/images/icons/noun-report-1025965.png">
                             <div id="reportText">
                                 Report
                             </div>
                         </button>
                         <button id="menuBtn">
-                            <img id="menuIcon"src="/images/noun-menu-6192580-white.png">
-                            <img id="menuIcon-black"src="/images/noun-menu-6192580.png">
+                            <img id="menuIcon"src="/images/icons/noun-menu-6192580-white.png">
+                            <img id="menuIcon-black"src="/images/icons/noun-menu-6192580.png">
                             <div id="menuText">
                                 Menu
                             </div>
@@ -126,7 +132,7 @@
                         </div>
                         <div>
                             <button id="start-stop">Start</button>
-                            <audio id="click-sound" src="/sounds/OS_FEEL_snare_clock.wav" preload="auto"></audio>
+                            <audio id="click-sound" src="/sounds/new_clock_tick.wav" preload="auto"></audio>
                         </div>
                         <div>
                             <button id="end-session"></button> <!-- Text inserted via JS -->
@@ -137,13 +143,13 @@
                 <div id="notes-container">
                     <div id="task-container">
                         <div id="clearDiv">
-                            <img src="images/noun-reset-1033424-white.png" id="clearIcon">
+                            <img src="images/icons/noun-reset-1033424-white.png" id="clearIcon">
                         </div>
                         <div id="prompt-container">
                             <div id="task-prompt">
                                 What do you want to focus on?
                             </div>
-                            <img id="pencil-icon" src="images/noun-pencil-6325691-white.png">
+                            <img id="pencil-icon" src="images/icons/noun-pencil-6325691-white.png">
                         </div>
                         <div id="task-input-container">
                             <input type="text" id="userInputTask">
@@ -157,13 +163,13 @@
 
             <!--ADD NEW BLOG GRID CONTAINER HERE-->
             <div id="blogContainer">
-                <img class="exitIcon" id="blogExit" src="images/noun-exit-button-261420-white.png" draggable="false">
+                <img class="exitIcon" id="blogExit" src="images/icons/noun-exit-button-261420-white.png" draggable="false">
                 <div id="blogWindow">
                     <h1>Blog</h1>
                     <div id="blog_grid_container">
                         <div class="blog_cell" id="blog_1">
                             <div class="blogImage">
-                                <img src="images/pexels-ariel-castillo-3563697.jpg">
+                                <img src="images/blog/pexels-ariel-castillo-3563697.jpg">
                             </div>
                             <div>
                                 <h2 class="blogDescription">Daily Practices & Protocols to Improve Focus</h2>
@@ -183,8 +189,8 @@
             
             <!--ADD NEW BLOG CONTENT HERE-->
             <div id="blogPostContainer">
-                <img class="backIcon" id="blogPostBack" src="images/noun-left-arrow-261369.png" draggable="false">
-                <img class="exitIcon" id="blogPostExit" src="images/noun-exit-button-261420.png" draggable="false">
+                <img class="backIcon" id="blogPostBack" src="images/icons/noun-left-arrow-261369.png" draggable="false">
+                <img class="exitIcon" id="blogPostExit" src="images/icons/noun-exit-button-261420.png" draggable="false">
                 <div class="blog hidden" id="blogPost1">
                     <div class="iframe-container">
                         <iframe src="https://www.youtube.com/embed/yb5zpo5WDG4?si=GT9uix2oPLBnFHrq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
@@ -271,7 +277,7 @@
                         <hr>
                         <h3><strong>Daily Practices to Improve Natural Ability to Focus:</strong></h3>
                         <div id="compare_chartContainer">
-                            <img class="chartImages" id="compare_chart" src="images/compare_chart_big.png">
+                            <img class="chartImages" id="compare_chart" src="images/blog/compare_chart_big.png">
                         </div>
                         <p><b>1) Concentration Meditation: </b></p>
                         <ul>
@@ -415,7 +421,7 @@
             </div>
 
             <div id="aboutContainer">
-                <img class="exitIcon" id="aboutExit" src="images/noun-exit-button-261420-white.png" draggable="false">
+                <img class="exitIcon" id="aboutExit" src="images/icons/noun-exit-button-261420-white.png" draggable="false">
                 <div id="aboutWindow">
                     <h1>About</h1>
                     <div>
@@ -475,12 +481,12 @@
             </div>
 
             <div id="settingsContainer">
-                <img class="exitIcon" id="settingsExit" src="images/noun-exit-button-261420.png" draggable="false">
+                <img class="exitIcon" id="settingsExit" src="images/icons/noun-exit-button-261420.png" draggable="false">
                 <div class="settings" id="settingsWindow">
                     <h1>Settings</h1>
                     <hr>
                     <div id="alertsNotificationsContainer" class="settingsIconTextContainer">
-                        <img src="images/noun-notifications-2548963.png" id="alertsNotificationsIcon" class="settingsIcon" draggable="false">
+                        <img src="images/icons/noun-notifications-2548963.png" id="alertsNotificationsIcon" class="settingsIcon" draggable="false">
                         <h2>Alerts & Notifications</h2>
                     </div>
                     <div id="alertsNotificationsToggleContainer" class="settingsCategory">
@@ -499,7 +505,7 @@
                             <div id="toggleBreakSuggestionContainer" class="settingsMicroContainer">
                                 <div id="breakSuggestionText">
                                     <p><b>Flow Time Break Notification</b></p>
-                                    <img src="images/noun-info-6216356.png" id="breakSuggestionInfoIcon" class="infoIcon" draggable="false">
+                                    <img src="images/icons/noun-info-6216356.png" id="breakSuggestionInfoIcon" class="infoIcon" draggable="false">
                                 </div>
                                 <div class="infoMessage" id="breakSuggestionInfoMessage"> <!-- Hidden by default -->
                                     <p>Enter the time (in minutes) you'd like to pass while in Flow Time before getting a suggestion to take break</p>
@@ -527,7 +533,7 @@
                             <div id="toggleChillTimeBreakSuggestionContainer" class="settingsMicroContainer">
                                 <div id="chillTimeBreakSuggestionText">
                                     <p><b>Suggested Chill Time Break Notification</b></p>
-                                    <img src="images/noun-info-6216356.png" id="chillTimeBreakSuggestionInfoIcon" class="infoIcon" draggable="false">
+                                    <img src="images/icons/noun-info-6216356.png" id="chillTimeBreakSuggestionInfoIcon" class="infoIcon" draggable="false">
                                 </div>
                                 <div class="infoMessage" id="breakSuggestionInfoMessage2"> <!-- Hidden by default -->
                                     <p>Notifies you after Chill Time suggestion break time has passed</p>
@@ -543,7 +549,7 @@
                     </div>
                     <hr>
                     <div id="soundsContainer" class="settingsIconTextContainer">
-                        <img src="images/noun-sound-3074860.png" id="soundsIcon" class="settingsIcon" draggable="false">
+                        <img src="images/icons/noun-sound-3074860.png" id="soundsIcon" class="settingsIcon" draggable="false">
                         <h2>Sounds</h2>
                     </div>
                     <div id="soundsToggleContainer" class="settingsCategory">
@@ -561,7 +567,7 @@
                     </div>
                     <hr>
                     <div id="academicSurveyContainer" class="settingsIconTextContainer">
-                        <img src="images/noun-sword-6278206.png" id="swordIcon" class="settingsIcon" draggable="false">
+                        <img src="images/icons/noun-sword-6278206.png" id="swordIcon" class="settingsIcon" draggable="false">
                         <h2>Academic Survey</h2>
                     </div>
                     <div id="academicSurveyDropdownContainer" class="settingsCategory">
