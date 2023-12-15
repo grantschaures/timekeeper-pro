@@ -1,10 +1,10 @@
 document.addEventListener("DOMContentLoaded", function() {
     const menu_btn = document.getElementById("menuBtn");
     const popup_window = document.getElementById("popup-menu");
-    const blog_btn = document.getElementById("blogBtn");
-    const about_btn = document.getElementById("aboutBtn");
-    const settings_btn = document.getElementById("settingsBtn");
-    const logInOut_btn = document.getElementById("logInOutBtn");
+    const blog_btn = document.getElementById("blogMenuContainer");
+    const about_btn = document.getElementById("aboutMenuContainer");
+    const settings_btn = document.getElementById("settingsMenuContainer");
+    const logInOut_btn = document.getElementById("loginMenuContainer");
     const about_exit = document.getElementById("aboutExit");
     const blog_exit = document.getElementById("blogExit");
     const blog_post_exit = document.getElementById("blogPostExit");
@@ -41,10 +41,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
     menu_btn.addEventListener("click", function() {
         //Cause the menu window to become visable
-        if (popup_window.style.display == "block") {
+        if (popup_window.style.display == "flex") {
             popup_window.style.display = "none"
         } else {
-            popup_window.style.display = "block";
+            popup_window.style.display = "flex";
         }
     })
 

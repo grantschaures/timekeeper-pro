@@ -1,18 +1,32 @@
+@font-face {
+    font-family: menuFont;
+    src: url("../fonts/TTNormsProRegular.otf");
+}
+
 #popup-menu {
     position: absolute;
-    font-family: myFont3;
-    font-size: 14px;
-    width: 150px;
-    height: 120px;
-    background: white;
-    padding: 5px 0px;
+    font-family: menuFont;
+    color: rgb(187, 187, 187);
+    letter-spacing: 1px;
+    font-size: 15px;
+    width: 210px;
+    height: 200px;
+    /* background-image: url('/images/DALLE/DALLE4.png'); */
+    background-color: black;
+    background-size: 300% 300%;
+
+    /* background-image: linear-gradient(to bottom, #3b8fe3, #1d60a3, #7f04c7); */
+    padding: 10px 10px;
     z-index: 100;
-    border-radius: 6px;
+    border-radius: 15px;
     right: 0;
     bottom: 0;
     top: 80px;
-    /* border: 2px solid black; */
+    /* border: 1px solid rgb(187, 187, 187); */
+    border: 2px solid rgb(255, 255, 255);
     display: none;
+
+    flex-direction: column;
 }
 
 #popup-menu > div {
@@ -21,26 +35,57 @@
 
     display: flex;
     align-items: center;
-    justify-content: center; /* Change this to left if you want to add icons */
-    height: 30px;
+    justify-content: left; /* Change this to left if you want to add icons */
+    height: 45px;
+    
+    /* border: 1px solid white; */
+    border-radius: 8px;
 }
 
-#popup-menu > div:hover{
-    background-color: rgb(226, 226, 226);
-    border-color: rgb(226, 226, 226);
+#popup-menu > div:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    color: white;
     cursor: pointer;
+}
+
+.menuContainer {
+    display: flex;
+    flex-direction: columns;
+}
+
+.menuIcon {
+    padding-left: 10px;
+    padding-right: 15px;
+}
+
+#blogIcon {
+    width: 22px;
+    height: 25px;
+}
+
+#aboutIcon {
+    width: 22px;
+    height: 22px;
+}
+
+#settingsIcon {
+    width: 22px;
+    height: 22px;
+}
+
+#loginIcon {
+    width: 30px;
+    height: 22px;
 }
 
 #menu_hr {
     height: 1px;
     border: none;
-    background-color: rgba(0, 0, 0, 0.25); /* or any desired color */
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 87px;
-    bottom: 0;
-    width: 120px;
+    background-color: rgba(255, 255, 255, 0.25); /* or any desired color */
+    /* position: absolute; */
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
 }
 
 #aboutContainer, #blogContainer {
