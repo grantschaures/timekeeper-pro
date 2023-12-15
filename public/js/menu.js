@@ -199,8 +199,7 @@ document.addEventListener("DOMContentLoaded", function() {
             settings_container.style.display = "none";
         }
 
-        //eventually check for Settings and logInOut buttons and if event.target is equal to the settings and logInOut containers and what they contain
-        if ((event.target !== blog_btn && event.target !== blog_icon && event.target !== blog_menu_container && event.target !== about_btn && event.target !== about_icon  && event.target !== about_menu_container && !about_container.contains(event.target) && !blog_container.contains(event.target) && !menu_btn.contains(event.target)  && !blog_post_container.contains(event.target) && event.target !== settings_btn && event.target !== settings_icon && event.target !== settings_menu_container && !settings_container.contains(event.target) && event.target !== logInOut_btn) || (event.target == about_exit) || (event.target == blog_exit) || (event.target == blog_post_exit) || (event.target == settings_exit)) {
+        if ((event.target !== blog_btn && event.target !== blog_icon && event.target !== blog_menu_container && event.target !== about_btn && event.target !== about_icon  && event.target !== about_menu_container && !about_container.contains(event.target) && !blog_container.contains(event.target) && !menu_btn.contains(event.target)  && !blog_post_container.contains(event.target) && event.target !== settings_btn && event.target !== settings_icon && event.target !== settings_menu_container && !settings_container.contains(event.target) && event.target !== logInOut_btn && event.target !== login_icon && event.target !== login_menu_container) || (event.target == about_exit) || (event.target == blog_exit) || (event.target == blog_post_exit) || (event.target == settings_exit)) {
             main_elements.style.display = "block";
 
             if (flags.blogShowing == true) {
@@ -253,12 +252,16 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     })
 
-    logInOut_btn.addEventListener("click", function() {
+    function handleClickLogInOut(event) {
         alert("This feature is currently under development. Thank you for your patience.");
-
+    
         //eventually uncomment this out to continue w/ login-signup development
         //window.location.href = "/login";
-    })
+    }
+
+    logInOut_btn.addEventListener("click", handleClickLogInOut);
+    login_icon.addEventListener("click", handleClickLogInOut);
+    login_menu_container.addEventListener("click", handleClickLogInOut);
 });
 
 function showBlog(blog_id, blog_container, blog_post_container, blogIdList, flags) {
