@@ -42,9 +42,14 @@ document.addEventListener("DOMContentLoaded", function() {
     menu_btn.addEventListener("click", function() {
         //Cause the menu window to become visable
         if (popup_window.style.display == "flex") {
+            popup_window.style.opacity = '0';
             popup_window.style.display = "none"
         } else {
             popup_window.style.display = "flex";
+            setTimeout(() => {
+                popup_window.classList.add('menuLanding');
+                popup_window.style.opacity = '1';
+            }, 1);
         }
     })
 
