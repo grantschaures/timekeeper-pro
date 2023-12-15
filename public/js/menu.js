@@ -83,9 +83,6 @@ document.addEventListener("DOMContentLoaded", function() {
         //Triggers reset animation once you enter for first time
         blog_exit.classList.add('resetRotation');
     }
-    
-    blog_btn.addEventListener("click", handleClickBlog);
-    blog_icon.addEventListener("click", handleClickBlog);
     blog_menu_container.addEventListener("click", handleClickBlog);
 
     function handleClickAbout(event) {
@@ -106,9 +103,6 @@ document.addEventListener("DOMContentLoaded", function() {
         //Triggers reset animation once you enter for first time
         about_exit.classList.add('resetRotation');
     }
-
-    about_btn.addEventListener("click", handleClickAbout);
-    about_icon.addEventListener("click", handleClickAbout);
     about_menu_container.addEventListener("click", handleClickAbout);
 
     function handleClickSettings(event) {
@@ -129,10 +123,15 @@ document.addEventListener("DOMContentLoaded", function() {
         //Triggers reset animation once you enter for first time
         settings_exit.classList.add('resetRotation');
     }
-
-    settings_btn.addEventListener("click", handleClickSettings);
-    settings_icon.addEventListener("click", handleClickSettings);
     settings_menu_container.addEventListener("click", handleClickSettings);
+
+    function handleClickLogInOut(event) {
+        alert("This feature is currently under development. Thank you for your patience.");
+    
+        //eventually uncomment this out to continue w/ login-signup development
+        //window.location.href = "/login";
+    }
+    login_menu_container.addEventListener("click", handleClickLogInOut);
 
     exit_icons.forEach(function(icon) {
         icon.addEventListener('mouseover', function() {
@@ -251,17 +250,6 @@ document.addEventListener("DOMContentLoaded", function() {
             flags.chillTimeBreakSuggestionInfoWindowShowing = true;
         }
     })
-
-    function handleClickLogInOut(event) {
-        alert("This feature is currently under development. Thank you for your patience.");
-    
-        //eventually uncomment this out to continue w/ login-signup development
-        //window.location.href = "/login";
-    }
-
-    logInOut_btn.addEventListener("click", handleClickLogInOut);
-    login_icon.addEventListener("click", handleClickLogInOut);
-    login_menu_container.addEventListener("click", handleClickLogInOut);
 });
 
 function showBlog(blog_id, blog_container, blog_post_container, blogIdList, flags) {
