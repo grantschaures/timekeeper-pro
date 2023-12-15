@@ -78,6 +78,9 @@
 #loginIcon {
     width: 30px;
     height: 22px;
+
+    /* Override padding for login icon cause it's hella wide :P */
+    padding-right: 7px;
 }
 
 #menu_hr {
