@@ -494,106 +494,246 @@
             </div>
 
             <div id="settingsContainer">
-                <img class="exitIcon" id="settingsExit" src="images/icons/noun-exit-button-261420.png" draggable="false">
-                <div class="settings" id="settingsWindow">
+                <div id="settingsHeader">
+                    <img class="exitIcon" id="settingsExit" src="images/icons/noun-exit-button-261420-white.png" draggable="false">
                     <h1>Settings</h1>
-                    <hr>
-                    <div id="alertsNotificationsContainer" class="settingsIconTextContainer">
-                        <img src="images/icons/noun-notifications-2548963.png" id="alertsNotificationsIcon" class="settingsIcon" draggable="false">
-                        <h2>Alerts & Notifications</h2>
-                    </div>
-                    <div id="alertsNotificationsToggleContainer" class="settingsCategory">
-                        <div id="toggleTargetTimeAlertContainer" class="settingsMicroContainer">
-                            <div id="targetTimeReachedText">
-                                <p><b>Target Time Reached Alert</b></p>
+                </div>
+                <div class="settings" id="settingsWindow">
+                    <div id="settingsHeaderColumn">
+                        <div id="notificationsHeaderContainer" class="settingsHeaderRow">
+                            <div class="settingsIconContainer">
+                                <img src="images/icons/noun-notifications-2548963-white.png" id="alertsNotificationsIcon" class="settingsIcon" draggable="false">
                             </div>
-                            <div id="targetTimeReachedToggleContainer" class="toggleContainer">
-                                <input type="checkbox" id="targetTimeReachedToggle" class="toggle-checkbox" checked>
-                                <label for="targetTimeReachedToggle" id="targetTimeReachedToggleLabel" class="toggle-label">
-                                    <span id="targetTimeReachedToggleBall" class="toggle-ball"></span>
-                                </label>
+                            <div id="notificationsHeader" class="settingsHeader">
+                                <b>Notifications</b>
                             </div>
                         </div>
-                        <div id="breakSuggestionBlock">
-                            <div id="toggleBreakSuggestionContainer" class="settingsMicroContainer">
-                                <div id="breakSuggestionText">
-                                    <p><b>Flow Time Break Notification</b></p>
-                                    <img src="images/icons/noun-info-6216356.png" id="breakSuggestionInfoIcon" class="infoIcon" draggable="false">
-                                </div>
-                                <div class="infoMessage" id="breakSuggestionInfoMessage"> <!-- Hidden by default -->
-                                    <p>Enter the time (in minutes) you'd like to pass while in Flow Time before getting a suggestion to take break</p>
-                                </div>
-                                <div id="breakSuggestionToggleContainer" class="toggleContainer">
-                                    <input type="checkbox" id="breakSuggestionToggle" class="toggle-checkbox">
-                                    <label for="breakSuggestionToggle" id="breakSuggestionToggleLabel" class="toggle-label">
-                                        <span id="breakSuggestionToggleBall" class="toggle-ball"></span>
-                                    </label>
-                                </div>
+                        <div id="pomodoroBtnContainer" class="settingsHeaderRow subCategory selected">
+                            <div class="settingsIconContainer">
+                                <img src="images/icons/tomatoIcon.png" id="pomodoroIcon" class="settingsIcon" draggable="false">
                             </div>
-                            <div id="suggestionMinutesContainer" class="settingsMicroContainer">
-                                <div id="suggestionMinutesText">
-                                    <p><b>Suggestion Minutes:</b></p>
-                                </div>
-                                <div id="suggestionMinutesInputContainer" class="toggleContainer">
-                                    <div id="coolDiv2">
-                                        <input type="number" id="suggestionMinutesInput" name="minutes" min="0">
+                            <div id="pomodoroHeader" class="settingsHeader">
+                                <b>Pomodoro</b>
+                            </div>
+                        </div>
+                        <div id="flowmodoroBtnContainer" class="settingsHeaderRow subCategory">
+                            <div class="settingsIconContainer">
+                                <img src="images/icons/flowmodoroIcon.png" id="flowmodoroIcon" class="settingsIcon" draggable="false">
+                            </div>
+                            <div id="flowmodoroHeader" class="settingsHeader">
+                                <b>Flowmodoro</b>
+                            </div>
+                        </div>
+                        <div id="generalBtnContainer" class="settingsHeaderRow subCategory">
+                            <div class="settingsIconContainer">
+                                <img src="images/icons/settingsIcon1.png" id="generalIcon" class="settingsIcon" draggable="false">
+                            </div>
+                            <div id="generalHeader" class="settingsHeader">
+                                <b>General</b>
+                            </div>
+                        </div>
+                        <div id="backgroundsBtnContainer" class="settingsHeaderRow">
+                            <div class="settingsIconContainer">
+                                <img src="images/icons/backgroundsIcon.png" id="backgroundsIcon" class="settingsIcon" draggable="false">
+                            </div>
+                            <div id="backgroundsHeader" class="settingsHeader">
+                                <b>Backgrounds & Themes</b>
+                            </div>
+                        </div>
+                        <div id="soundsBtnContainer" class="settingsHeaderRow">
+                            <div class="settingsIconContainer">
+                                <img src="images/icons/noun-sound-3074860-white.png" id="soundsIcon" class="settingsIcon" draggable="false">
+                            </div>
+                            <div id="soundsHeader" class="settingsHeader">
+                                <b>Sounds</b>
+                            </div>
+                        </div>
+                        <div id="accountBtnContainer" class="settingsHeaderRow">
+                            <div class="settingsIconContainer">
+                                <img src="images/icons/accountIcon.png" id="accountIcon" class="settingsIcon" draggable="false">
+                            </div>
+                            <div id="accountHeader" class="settingsHeader">
+                                <b>Account</b>
+                            </div>
+                        </div>
+                        <div id="supportAndFeedbackBtnContainer" class="settingsHeaderRow">
+                            <div class="settingsIconContainer">
+                                <img src="images/icons/supportAndFeedbackIcon.png" id="supportAndFeedbackIcon" class="settingsIcon" draggable="false">
+                            </div>
+                            <div id="supportAndFeedbackHeader" class="settingsHeader">
+                                <b>Support & Feedback</b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vertical"></div>
+                    <div id="settingsContent">
+                        <div id="pomodoroSettingsContainer" class="settingsContentContainer">
+                            <div id="alertsNotificationsContainer" class="settingsIconTextContainer">
+                                <h2>Pomodoro</h2>
+                            </div>
+                            <div id="" class="settingsCategory">
+                            </div>
+                        </div>
+
+
+                        <div id="flowmodoroSettingsContainer" class="settingsContentContainer">
+                            <div id="flowmodoroContainer" class="settingsIconTextContainer">
+                                <h2>Flowmodoro</h2>
+                            </div>
+                            <!-- <div class="horizontal"></div> -->
+                            <div id="alertsNotificationsToggleContainer" class="settingsCategory">
+                                <div id="breakSuggestionBlock2">
+                                    <div id="toggleChillTimeBreakSuggestionContainer" class="settingsMicroContainer">
+                                        <div id="chillTimeBreakSuggestionText" class="settingsText">
+                                            <p><b>Flowmodoro Notifications</b></p>
+                                        </div>
+                                        <div id="chillTimeBreakSuggestionToggleContainer" class="toggleContainer">
+                                            <input type="checkbox" id="chillTimeBreakSuggestionToggle" class="toggle-checkbox">
+                                            <label for="chillTimeBreakSuggestionToggle" id="chillTimeBreakSuggestionToggleLabel" class="toggle-label">
+                                                <span id="chillTimeBreakSuggestionToggleBall" class="toggle-ball"></span>
+                                            </label>
+                                        </div>
                                     </div>
-                                    <button type="submit" id="suggestion-minutes-submit">Submit</button>
+                                    <div id="flowTimeBreakDemoImages" class="settingsMicroContainer">
+                                        <!-- <div id="endOfBreakNotificationText">
+                                            <p><b>End of Break Notification</b></p>
+                                        </div> -->
+                                        <div id="endOfBreakImages">
+                                            <div id="minutesImageBucket" class="imageBucketHeader">
+                                                <div>
+                                                    <p><b>Flow Time: </b></p>
+                                                </div>
+                                                <div>
+                                                    <p><b>Chill Time: </b></p>
+                                                </div>
+                                            </div>
+                                            <div id="minutesImageBucket5" class="imageBucket">
+                                                <div>
+                                                    <p><b>&lt; 25 min</b></p>
+                                                </div>
+                                                <img src="images/HyperChill/5minutes.png" class="minutesImage">
+                                            </div>
+                                            <div id="minutesImageBucket8" class="imageBucket">
+                                                <div>
+                                                    <p><b>&lt; 50 min</b></p>
+                                                </div>
+                                                <img src="images/HyperChill/8minutes.png" class="minutesImage">
+                                            </div>
+                                            <div id="minutesImageBucket10" class="imageBucket">
+                                                <div>
+                                                    <p><b>&lt; 90 min</b></p>
+                                                </div>
+                                                <img src="images/HyperChill/10minutes.png" class="minutesImage">
+                                            </div>
+                                            <div id="minutesImageBucket15" class="imageBucket">
+                                                <div>
+                                                    <p><b>&gt;= 90 min</b></p>
+                                                </div>
+                                                <img src="images/HyperChill/15minutes.png" class="minutesImage">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="autoStartFlowTimeIntervalBlock">
+                                    <div id="autoStartFlowTimeIntervalContainer" class="settingsMicroContainer">
+                                        <div id="autoStartFlowTimeIntervalText" class="settingsText">
+                                            <p><b>Auto Start Flow Time Interval</b></p>
+                                        </div>
+                                        <div id="autoStartFlowTimeIntervalToggleContainer" class="toggleContainer">
+                                            <input type="checkbox" id="autoStartFlowTimeIntervalToggle" class="toggle-checkbox">
+                                            <label for="chillTimeBreakSuggestionToggle" id="autoStartFlowTimeIntervalToggleLabel" class="toggle-label">
+                                                <span id="autoStartFlowTimeIntervalToggleBall" class="toggle-ball"></span>
+                                            </label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div id="breakSuggestionBlock2">
-                            <div id="toggleChillTimeBreakSuggestionContainer" class="settingsMicroContainer">
-                                <div id="chillTimeBreakSuggestionText">
-                                    <p><b>Suggested Chill Time Break Notification</b></p>
-                                    <img src="images/icons/noun-info-6216356.png" id="chillTimeBreakSuggestionInfoIcon" class="infoIcon" draggable="false">
+
+                        <div id="generalSettingsContainer" class="settingsContentContainer">
+                            <div id="generalContainer" class="settingsIconTextContainer">
+                                <h2>General</h2>
+                            </div>
+                            <div id="toggleTargetTimeAlertContainer" class="settingsMicroContainer">
+                                <div id="targetTimeReachedText" class="settingsText">
+                                    <p><b>Target Time Reached Alert</b></p>
                                 </div>
-                                <div class="infoMessage" id="breakSuggestionInfoMessage2"> <!-- Hidden by default -->
-                                    <p>Notifies you after Chill Time suggestion break time has passed</p>
-                                </div>
-                                <div id="chillTimeBreakSuggestionToggleContainer" class="toggleContainer">
-                                    <input type="checkbox" id="chillTimeBreakSuggestionToggle" class="toggle-checkbox">
-                                    <label for="chillTimeBreakSuggestionToggle" id="chillTimeBreakSuggestionToggleLabel" class="toggle-label">
-                                        <span id="chillTimeBreakSuggestionToggleBall" class="toggle-ball"></span>
+                                <div id="targetTimeReachedToggleContainer" class="toggleContainer">
+                                    <input type="checkbox" id="targetTimeReachedToggle" class="toggle-checkbox" checked>
+                                    <label for="targetTimeReachedToggle" id="targetTimeReachedToggleLabel" class="toggle-label">
+                                        <span id="targetTimeReachedToggleBall" class="toggle-ball"></span>
                                     </label>
                                 </div>
                             </div>
+                            <div id="breakSuggestionBlock">
+                                <div id="toggleBreakSuggestionContainer" class="settingsMicroContainer">
+                                    <div id="breakSuggestionText" class="settingsText">
+                                        <p><b>Flow Time Break Notification</b></p>
+                                    </div>
+                                    <div class="infoMessage" id="breakSuggestionInfoMessage">
+                                        <p>Enter the time (in minutes) you'd like to pass while in Flow Time before getting a suggestion to take break</p>
+                                    </div>
+                                    <div id="breakSuggestionToggleContainer" class="toggleContainer">
+                                        <input type="checkbox" id="breakSuggestionToggle" class="toggle-checkbox">
+                                        <label for="breakSuggestionToggle" id="breakSuggestionToggleLabel" class="toggle-label">
+                                            <span id="breakSuggestionToggleBall" class="toggle-ball"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div id="suggestionMinutesContainer" class="settingsMicroContainer">
+                                    <div id="suggestionMinutesText">
+                                        <p><b>Suggestion Minutes:</b></p>
+                                    </div>
+                                    <div id="suggestionMinutesInputContainer" class="toggleContainer">
+                                        <div id="coolDiv2">
+                                            <input type="number" id="suggestionMinutesInput" name="minutes" min="0">
+                                        </div>
+                                        <button type="submit" id="suggestion-minutes-submit">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <hr>
-                    <div id="soundsContainer" class="settingsIconTextContainer">
-                        <img src="images/icons/noun-sound-3074860.png" id="soundsIcon" class="settingsIcon" draggable="false">
-                        <h2>Sounds</h2>
-                    </div>
-                    <div id="soundsToggleContainer" class="settingsCategory">
-                        <div id="toggleClockSoundContainer" class="settingsMicroContainer">
-                            <div id="transitionClockSoundText">
-                                <p><b>Transition Clock Sound</b></p>
+
+                        <div id="backgroundsSettingsContainer" class="settingsContentContainer">
+                            <div id="backgroundsContainer" class="settingsIconTextContainer">
+                                <h2>Backgrounds & Themes</h2>
                             </div>
-                            <div id="transitionClockSoundToggleContainer" class="toggleContainer">
-                                <input type="checkbox" id="transitionClockSoundToggle" class="toggle-checkbox">
-                                <label for="transitionClockSoundToggle" id="transitionClockSoundToggleLabel" class="toggle-label">
-                                    <span id="transitionClockSoundToggleBall" class="toggle-ball"></span>
-                                </label>
+                            <div id="" class="settingsMicroContainer">
                             </div>
                         </div>
-                    </div>
-                    <hr>
-                    <div id="academicSurveyContainer" class="settingsIconTextContainer">
-                        <img src="images/icons/noun-sword-6278206.png" id="swordIcon" class="settingsIcon" draggable="false">
-                        <h2>Academic Survey</h2>
-                    </div>
-                    <div id="academicSurveyDropdownContainer" class="settingsCategory">
-                        <div id="academicWeaponContainer" class="settingsMicroContainer">
-                            <div id="academicWeaponText">
-                                <p><b>Are you an Absolute Academic Weapon?</b></p>
+
+                        <div id="soundsSettingsContainer" class="settingsContentContainer">
+                            <div id="soundsContainer" class="settingsIconTextContainer">
+                                <h2>Sounds</h2>
                             </div>
-                            <div id="academicWeaponDropdownContainer" class="toggleContainer">
-                                <select name="academicWeapon" id="academicWeaponSelect">
-                                    <option value="select">Select</option>
-                                    <option value="yes">Yes</option>
-                                    <option value="no">No</option>
-                                </select>
+                            <div id="soundsToggleContainer" class="settingsCategory">
+                                <div id="toggleClockSoundContainer" class="settingsMicroContainer">
+                                    <div id="transitionClockSoundText" class="settingsText">
+                                        <p><b>Transition Clock Sound</b></p>
+                                    </div>
+                                    <div id="transitionClockSoundToggleContainer" class="toggleContainer">
+                                        <input type="checkbox" id="transitionClockSoundToggle" class="toggle-checkbox">
+                                        <label for="transitionClockSoundToggle" id="transitionClockSoundToggleLabel" class="toggle-label">
+                                            <span id="transitionClockSoundToggleBall" class="toggle-ball"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="accountSettingsContainer" class="settingsContentContainer">
+                            <div id="accountContainer" class="settingsIconTextContainer">
+                                <h2>Account</h2>
+                            </div>
+                            <div id="" class="settingsMicroContainer">
+                            </div>
+                        </div>
+
+                        <div id="supportAndFeedbackSettingsContainer" class="settingsContentContainer">
+                            <div id="supportAndFeedbackContainer" class="settingsIconTextContainer">
+                                <h2>Support & Feedback</h2>
+                            </div>
+                            <div id="" class="settingsMicroContainer">
                             </div>
                         </div>
                     </div>

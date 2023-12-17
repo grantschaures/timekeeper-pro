@@ -1,6 +1,12 @@
 #notes-container {
     position: relative;
     background-color: rgba(0, 0, 0, 0.35);
+
+    /* DARK GREY THEME BACKGROUND */
+    /* background-color: rgba(32, 32, 32, 0.9); */
+
+    /* POTENTIAL DESIGN ALTERNATIVE -- WHITE BORDER */
+    /* border: 3px solid rgb(255, 255, 255); */
     z-index: 12;
     border-radius: 25px;
     max-width: 600px;
@@ -16,7 +22,6 @@
     opacity: 0;
 
     transition: transform 0.25s ease-in-out, opacity 0.1s ease-in-out;
-
 }
 
 #notes-container.fullsize {

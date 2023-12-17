@@ -1,51 +1,181 @@
+@font-face {
+    font-family: settingsHeaderFont;
+    src: url("../fonts/TTNormsProRegular.otf");
+}
+
 #settingsContainer {
     position: fixed;
-    background-color: rgb(255, 255, 255);
-    padding: 10px 10px;
+    background-color: rgb(0, 0, 0);
+
+    /* DARK GREY THEME BACKGROUND */
+    /* background-color: rgba(32, 32, 32, 1); */
+
+    /* POTENTIAL DESIGN ALTERNATIVE -- WHITE BORDER */
+    /* border: 3px solid rgb(255, 255, 255); */
+    
+    /* margin: 20px; */
     z-index: 12;
-    border-radius: 10px;
-    right: 0;
-    left: 50%;
-    top: 105px;
-    transform: translateX(-50%);
-    width: 50%;
-    max-width: 600px;
-    min-width: 312px;
+    /* border-radius: 10px; */
 
-    display: none;
-    /* border: 2px solid yellow; */
-
-    max-height: 70vh;
+    top: 0;       /* Align to the top */
+    right: 0;     /* Stretch to the right */
+    bottom: 0;    /* Stretch to the bottom */
+    
+    width: 1200px;
+    height: 100%; /* Cover the full height */
+    
+    display: none; /* eventually make this none by default */
     overflow-y: auto;
+}
+
+@media (max-width: 1200px) {
+    #settingsContainer {
+        border-radius: 0px;
+        width: 100%;
+    }
 }
 
 #settingsWindow {
     display: flex;
     position: relative;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    justify-content: left;
+    align-items: top;
     width: 100%;
     height: 100%;
-    /* border: 2px solid yellow; */
+    /* border: 2px solid red; */
 }
 
-.settings h1 {
-    color: black;
+#settingsHeaderColumn {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    margin-right: 20px;
+    margin-left: 20px;
+    margin-top: 25px;
+
+    /* border: 1px solid white; */
+}
+
+#settingsHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* border: 2px solid yellowgreen; */
+}
+
+#settingsExit {
+    position: absolute;
+    left: 0;
+    margin-left: 20px;
+}
+
+.minutesImage {
+    height: 50px;
+    width: 93px;
+    border-radius: 10px;
+    border: 2px solid white;
+}
+
+.imageBucket {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 20px;
+    /* border: 1px solid white; */
+}
+
+.imageBucketHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    margin-right: 20px;
+    /* border: 1px solid white; */
+}
+
+#endOfBreakImages {
+    display: flex;
+}
+
+.vertical {
+    background-color: rgba(255, 255, 255, 0.15);
+    width: 1px;
+    height: 100%;
+    display: block;
+    margin-right: 50px;
+}
+
+.horizontal {
+    background-color: rgba(255, 255, 255, 0.15);
+    width: 95%;
+    height: 1px;
+    display: block;
+    margin-right: 50px;
+}
+
+.settingsHeader {
+    font-family: menuFont;
+    letter-spacing: 1px;
+    font-weight: 300;
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+    padding-right: 10px;
+}
+
+.settingsHeaderRow {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 8px;
+
+    transition: background-color 0.15s ease-in-out;
+    
+    /* border: 1px solid green; */
+}
+
+.settingsContentContainer {
+    display: none;
+    width: 100%;
+}
+
+.settingsHeaderRow:not(#notificationsHeaderContainer):not(.selected):hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: white;
+    cursor: pointer;
+}
+
+.selected {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+#notificationsHeaderContainer:hover {
+    cursor: default;
+}
+
+#settingsContent {
+    /* border: 1px solid yellow; */
+    display: block;
+    width: 100%;
 }
 
 .settings h2 {
-    color: black;
+    color: rgb(255, 255, 255);
+    font-size: 32px;
 }
 
 .settings h3 {
-    color: black;
+    color: rgb(255, 255, 255);
 }
 
 .settings p {
-    font-family: 'Lato', sans-serif;
+    font-family: settingsHeaderFont;
+    letter-spacing: 1px;;
     font-weight: 300;
-    color: black;
+    color: rgb(255, 255, 255);
     font-size: 18px;
 }
 
@@ -53,7 +183,11 @@
     height: 1px;
     width: 100%;
     border: none;
-    background-color: rgba(0, 0, 0, 0.25); /* or any desired color */
+    background-color: rgba(255, 255, 255, 0.25); /* or any desired color */
+}
+
+.settingsText {
+    margin-right: 20px;
 }
 
 #compare_chartContainer {
@@ -69,7 +203,6 @@
 
 .settingsMicroContainer {
     display: flex;
-    justify-content: space-between;
     width: 100%;
     /* border: 2px solid yellow; */
 }
@@ -86,7 +219,7 @@
 .toggle-label {
     display: block;
     width: 60px;
-    height: 30px;
+    height: 20px;
     background-color: #e0e0e0;
     border-radius: 30px;
     position: relative;
@@ -97,8 +230,8 @@
 
 .toggle-ball {
     position: absolute;
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
     background-color: #ffffff;
     border-radius: 50%;
     top: 0;
@@ -118,7 +251,7 @@
 }
 
 #targetTimeReachedToggle:checked + #targetTimeReachedToggleLabel #targetTimeReachedToggleBall {
-    left: 30px;
+    left: 40px;
 }
 
 /* For Break Suggestion Toggle */
@@ -127,16 +260,25 @@
 }
 
 #breakSuggestionToggle:checked + #breakSuggestionToggleLabel #breakSuggestionToggleBall {
-    left: 30px;
+    left: 40px;
 }
 
-/* For Suggested Chill Time Break Suggestion Toggle */
+/* Flomodoro Notifications */
 #chillTimeBreakSuggestionToggle:checked + #chillTimeBreakSuggestionToggleLabel {
     background-color: #53e658;
 }
 
 #chillTimeBreakSuggestionToggle:checked + #chillTimeBreakSuggestionToggleLabel #chillTimeBreakSuggestionToggleBall {
-    left: 30px;
+    left: 40px;
+}
+
+/* Auto Start Flow Time Interval */
+#autoStartFlowTimeIntervalToggle:checked + #autoStartFlowTimeIntervalToggleLabel {
+    background-color: #53e658;
+}
+
+#autoStartFlowTimeIntervalToggle:checked + #autoStartFlowTimeIntervalToggleLabel #autoStartFlowTimeIntervalToggleBall {
+    left: 40px;
 }
 
 /* For Transition Clock Sound Toggle */
@@ -145,7 +287,7 @@
 }
 
 #transitionClockSoundToggle:checked + #transitionClockSoundToggleLabel #transitionClockSoundToggleBall {
-    left: 30px;
+    left: 40px;
 }
 
 #breakSuggestionText {
@@ -168,46 +310,6 @@
     padding: 5px;
     cursor: pointer;
     /* border: 2px solid black; */
-}
-
-@media (max-width: 670px) {
-    #breakSuggestionInfoIcon {
-        margin-right: 65px;
-    }
-}
-
-#breakSuggestionInfoMessage {
-    position: absolute;
-    font-family: myFont3;
-    font-size: 14px;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 280px;
-    height: auto; /* Change the height to auto */
-    background: rgb(255, 255, 255);
-    z-index: 100;
-    padding: 0px 10px;
-    border-radius: 6px;
-    border: 2px solid black;
-    display: none;
-}
-
-#breakSuggestionInfoMessage2 {
-    position: absolute;
-    font-family: myFont3;
-    font-size: 14px;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 280px;
-    height: auto; /* Change the height to auto */
-    background: rgb(255, 255, 255);
-    z-index: 100;
-    padding: 0px 10px;
-    border-radius: 6px;
-    border: 2px solid black;
-    display: none;
 }
 
 #suggestionMinutesInput {
@@ -241,7 +343,8 @@
     padding: 8px 15px;
     cursor: pointer;
     border-radius: 5px;
-    font-family: myFont2;
+    font-family: menuFont;
+    letter-spacing: 1px;
     font-size: 16px;
     width: 100px;
 }
@@ -258,23 +361,49 @@
 .settingsIconTextContainer {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: left;
+
+    /* border: 1px solid plum; */
+}
+
+.settingsIconContainer {
+    width: 40px;
 }
 
 .settingsIcon {
     position: relative;
-    width: 30px;
-    height: 30px;
+    width: 22px;
+    height: 22px;
     z-index: 4;
     opacity: 1.00;
     right: 10px;
+    margin-left: 15px;
     /* border: 2px solid yellow; */
+}
+
+#pomodoroIcon {
+    width: 20px;
+    height: 22px;
+}
+
+#accountIcon {
+    width: 17px;
+    height: 25px;
+}
+
+#supportAndFeedbackIcon {
+    width: 27px;
+    height: 22px;
 }
 
 .settingsCategory {
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
     /* border: 2px solid yellow; */
+}
+
+.subCategory {
+    margin-left: 20px;
 }
 
 #academicWeaponSelect {
@@ -289,7 +418,8 @@
 
 #academicWeaponSelect {
     /* Apply font styles */
-    font-family: myFont2;
+    font-family: menuFont;
+    letter-spacing: 1px;
     font-size: 16px;
     
     /* Adjust background and border styles */
@@ -306,7 +436,8 @@
 
 /* Style the options within the select */
 #academicWeaponSelect option {
-    font-family: myFont2;
+    font-family: menuFont;
+    letter-spacing: 1px;
     font-size: 16px;
     color: black;
 }

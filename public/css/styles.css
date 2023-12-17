@@ -30,7 +30,7 @@ body {
 html, body {
     margin: 0;
     height: 100%;
-    /* background-image: url("../images/beautiful-sky-sunset-canoe.jpg"); */
+    /* background-image: url("../images/DALLE/DALLE6.png"); */
     background-image: linear-gradient(to bottom, #3b8fe3, #1d60a3, #7f04c7);
     background-size: cover; /* This will cover the full area of the element */
     background-repeat: no-repeat;
@@ -111,6 +111,9 @@ h4 {
 main {
     display: block;
     height: 80%;
+    /* margin-top: 20px; */
+    /* style commented out above is when there's no <hr> */
+
     /* border: 3px solid red; */
 }
 
@@ -251,6 +254,12 @@ main {
     justify-content: center;
     
     background-color: rgba(0, 0, 0, 0.35);
+
+    /* DARK GREY THEME BACKGROUND */
+    /* background-color: rgba(32, 32, 32, 0.9); */
+
+    /* POTENTIAL DESIGN ALTERNATIVE -- WHITE BORDER */
+    /* border: 3px solid rgb(255, 255, 255); */
     
     width: 100%;
     
@@ -261,9 +270,7 @@ main {
     
     border-radius: 25px; /* Created corner curves */
     /* border: 1px solid yellow; */
-    
-    /* POTENTIAL DESIGN ALTERNATIVE -- WHITE BORDER */
-    /* border: 3px solid rgb(255, 255, 255); */
+
 }
 
 @media (min-width: 505px) {
@@ -353,6 +360,12 @@ main {
     justify-content: center;
     
     background-color: rgba(0, 0, 0, 0.35);
+
+    /* DARK GREY THEME BACKGROUND */
+    /* background-color: rgba(32, 32, 32, 0.9); */
+
+    /* POTENTIAL DESIGN ALTERNATIVE -- WHITE BORDER */
+    /* border: 3px solid rgb(255, 255, 255); */
     
     /* Fixed dimensions */
     width: 100%;
@@ -364,9 +377,6 @@ main {
     
     border-radius: 25px; /* Created corner curves */
     /* border: 1px solid yellow; */
-    
-    /* POTENTIAL DESIGN ALTERNATIVE -- WHITE BORDER */
-    /* border: 3px solid rgb(255, 255, 255); */
 }
 
 #interruptions-label {
@@ -461,7 +471,12 @@ main {
     margin-bottom: 25px;
 
     background-color: rgba(0, 0, 0, 0.35);
-    /* background-color: rgba(0, 0, 0, 0.5); */
+
+    /* DARK GREY THEME BACKGROUND */
+    /* background-color: rgba(32, 32, 32, 0.9); */
+
+    /* POTENTIAL DESIGN ALTERNATIVE -- WHITE BORDER */
+    /* border: 3px solid rgb(255, 255, 255); */
 
     /* Centering it horizontally */
     margin-left: auto;
@@ -478,8 +493,6 @@ main {
     border-radius: 25px;
     z-index: 1;
     
-    /* POTENTIAL DESIGN ALTERNATIVE -- WHITE BORDER */
-    /* border: 3px solid rgb(255, 255, 255); */
 }
 
 .lower-buttons {
@@ -604,8 +617,13 @@ button:hover {
 
     justify-content: center;
     
-    /* background-color: rgba(0, 0, 0, 0.35); */
-    background-color: rgba(255, 255, 255, 0.25);
+    background-color: rgba(0, 0, 0, 0.25);
+
+    /* DARK GREY THEME BACKGROUND */
+    /* background-color: rgba(32, 32, 32, 0.9); */
+
+    /* POTENTIAL DESIGN ALTERNATIVE -- WHITE BORDER */
+    /* border: 3px solid rgb(255, 255, 255); */
     
     /* Centering it horizontally */
     margin-left: auto;
@@ -623,8 +641,6 @@ button:hover {
     
     border-radius: 40px; /* Created corner curves */
     margin-top: 25px;
-    
-    /* border: 1px solid rgb(255, 255, 255); */
 }
 
 /*  This style causes progress container to "bounce" a little on
@@ -776,7 +792,8 @@ header {
 #main_hr {
     height: 1px;
     border: none;
-    background-color: rgba(0, 0, 0, 0.25); /* or any desired color */
+    /* background-color: rgba(0, 0, 0, 0.25); */
+    background-color: rgba(255, 255, 255, 0.5);
     margin-bottom: 25px;
 }
 

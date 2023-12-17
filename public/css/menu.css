@@ -7,12 +7,20 @@
     position: absolute;
     font-family: menuFont;
     color: rgb(187, 187, 187);
+
     letter-spacing: 1px;
     font-size: 15px;
     width: 210px;
     height: 200px;
     /* background-image: url('/images/DALLE/DALLE4.png'); */
     background-color: black;
+
+    /* DARK GREY THEME BACKGROUND */
+    /* background-color: rgba(32, 32, 32, 1); */
+
+    /* POTENTIAL DESIGN ALTERNATIVE -- WHITE BORDER */
+    /* border: 3px solid rgb(255, 255, 255); */
+
     background-size: 300% 300%;
 
     /* background-image: linear-gradient(to bottom, #3b8fe3, #1d60a3, #7f04c7); */

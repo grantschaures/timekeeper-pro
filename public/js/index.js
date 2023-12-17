@@ -36,6 +36,27 @@ document.addEventListener("DOMContentLoaded", function() {
     const suggestionBreak_min = document.getElementById("suggestionBreak-min");
 
     //SETTINGS
+    const pomodoroBtnContainer = document.getElementById("pomodoroBtnContainer");
+    const pomodoroSettingsContainer = document.getElementById("pomodoroSettingsContainer");
+
+    const flowmodoroBtnContainer = document.getElementById("flowmodoroBtnContainer");
+    const flowmodoroSettingsContainer = document.getElementById("flowmodoroSettingsContainer");
+
+    const generalBtnContainer = document.getElementById("generalBtnContainer");
+    const generalSettingsContainer = document.getElementById("generalSettingsContainer");
+
+    const backgroundsBtnContainer = document.getElementById("backgroundsBtnContainer");
+    const backgroundsSettingsContainer = document.getElementById("backgroundsSettingsContainer");
+
+    const soundsBtnContainer = document.getElementById("soundsBtnContainer");
+    const soundsSettingsContainer = document.getElementById("soundsSettingsContainer");
+
+    const accountBtnContainer = document.getElementById("accountBtnContainer");
+    const accountSettingsContainer = document.getElementById("accountSettingsContainer");
+
+    const supportAndFeedbackBtnContainer = document.getElementById("supportAndFeedbackBtnContainer");
+    const supportAndFeedbackSettingsContainer = document.getElementById("supportAndFeedbackSettingsContainer");
+
     const targetTimeReachedToggle = document.getElementById("targetTimeReachedToggle");
     const breakSuggestionToggle = document.getElementById("breakSuggestionToggle");
     const suggestionMinutesContainer = document.getElementById("suggestionMinutesContainer");
@@ -44,7 +65,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const breakSuggestionBlock2 = document.getElementById("breakSuggestionBlock2");
     const chillTimeBreakSuggestionToggle = document.getElementById("chillTimeBreakSuggestionToggle");
     const transitionClockSoundToggle = document.getElementById("transitionClockSoundToggle");
-    let academicWeaponSelect = document.getElementById("academicWeaponSelect");
+
+    const autoStartFlowTimeIntervalToggle = document.getElementById("autoStartFlowTimeIntervalToggle");
 
     //Background Animations
     const flowAnimation = document.getElementById("flowAnimation");
@@ -159,7 +181,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             if ((document.getElementById("target-hours").value == "") || ((!document.getElementById("target-hours").value == "") && (!flags.submittedTarget))) {
                 progressBarContainer.classList.toggle("small");
-                flags.progressBarContainerIsSmall = true;
+                flags.progressBarConsetBacktainerIsSmall = true;
             }
         }
 
@@ -207,8 +229,8 @@ document.addEventListener("DOMContentLoaded", function() {
             if (counters.startStop > 1) { // runs first during first chill time interval
                 elapsedTime.chillTime += Date.now() - startTimes.chillTime;
             }
-            setBackground("linear-gradient(to bottom, #5dd44d, #50b350, #004400)"); //Green gradient
-            // setBackground("url('images/pexels/beautiful-sky-sunset-canoe.jpg')");
+            setBackground("linear-gradient(to bottom, #5dd44d, #50b350, #004400)");
+            // setBackground("url('../images/DALLE/DALLE7.png')");
         } else { //--> Chill Time
             setFavicon(link, blueFavicon);
 
@@ -262,7 +284,8 @@ document.addEventListener("DOMContentLoaded", function() {
             // console.log("----------------");
             
             // setBackground(("url('../images/shroomtower.png')"));
-            setBackground("linear-gradient(to bottom, #3b8fe3, #1d60a3, #7f04c7)"); //Blue-Purple gradient
+            // setBackground("url('../images/DALLE/DALLE6.png')");
+            setBackground("linear-gradient(to bottom, #3b8fe3, #1d60a3, #7f04c7)");
         }
     });
     
@@ -363,6 +386,169 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     })
 
+    pomodoroBtnContainer.addEventListener("click", function() {
+        pomodoroSettingsContainer.style.display = "block";
+        pomodoroBtnContainer.classList.add('selected');
+
+        soundsSettingsContainer.style.display = "none";
+        soundsBtnContainer.classList.remove('selected');
+
+        flowmodoroSettingsContainer.style.display = "none";
+        flowmodoroBtnContainer.classList.remove('selected');
+
+        generalSettingsContainer.style.display = "none";
+        generalBtnContainer.classList.remove('selected');
+
+        backgroundsSettingsContainer.style.display = "none";
+        backgroundsBtnContainer.classList.remove('selected');
+
+        accountSettingsContainer.style.display = "none";
+        accountBtnContainer.classList.remove('selected');
+
+        supportAndFeedbackSettingsContainer.style.display = "none";
+        supportAndFeedbackBtnContainer.classList.remove('selected');
+    })
+
+    flowmodoroBtnContainer.addEventListener("click", function() {
+        flowmodoroSettingsContainer.style.display = "block";
+        flowmodoroBtnContainer.classList.add('selected');
+
+        soundsSettingsContainer.style.display = "none";
+        soundsBtnContainer.classList.remove('selected');
+
+        pomodoroSettingsContainer.style.display = "none";
+        pomodoroBtnContainer.classList.remove('selected');
+
+        generalSettingsContainer.style.display = "none";
+        generalBtnContainer.classList.remove('selected');
+
+        backgroundsSettingsContainer.style.display = "none";
+        backgroundsBtnContainer.classList.remove('selected');
+
+        accountSettingsContainer.style.display = "none";
+        accountBtnContainer.classList.remove('selected');
+
+        supportAndFeedbackSettingsContainer.style.display = "none";
+        supportAndFeedbackBtnContainer.classList.remove('selected');
+    })
+
+    generalBtnContainer.addEventListener("click", function() {
+        generalSettingsContainer.style.display = "block";
+        generalBtnContainer.classList.add('selected');
+
+        soundsSettingsContainer.style.display = "none";
+        soundsBtnContainer.classList.remove('selected');
+
+        pomodoroSettingsContainer.style.display = "none";
+        pomodoroBtnContainer.classList.remove('selected');
+
+        flowmodoroSettingsContainer.style.display = "none";
+        flowmodoroBtnContainer.classList.remove('selected');
+
+        backgroundsSettingsContainer.style.display = "none";
+        backgroundsBtnContainer.classList.remove('selected');
+
+        accountSettingsContainer.style.display = "none";
+        accountBtnContainer.classList.remove('selected');
+
+        supportAndFeedbackSettingsContainer.style.display = "none";
+        supportAndFeedbackBtnContainer.classList.remove('selected');
+    })
+
+    backgroundsBtnContainer.addEventListener("click", function() {
+        
+        
+        backgroundsSettingsContainer.style.display = "block";
+        backgroundsBtnContainer.classList.add('selected');
+
+        generalSettingsContainer.style.display = "none";
+        generalBtnContainer.classList.remove('selected');
+
+        soundsSettingsContainer.style.display = "none";
+        soundsBtnContainer.classList.remove('selected');
+
+        pomodoroSettingsContainer.style.display = "none";
+        pomodoroBtnContainer.classList.remove('selected');
+
+        flowmodoroSettingsContainer.style.display = "none";
+        flowmodoroBtnContainer.classList.remove('selected');
+
+        accountSettingsContainer.style.display = "none";
+        accountBtnContainer.classList.remove('selected');
+
+        supportAndFeedbackSettingsContainer.style.display = "none";
+        supportAndFeedbackBtnContainer.classList.remove('selected');
+    })
+    
+    soundsBtnContainer.addEventListener("click", function() {
+        soundsSettingsContainer.style.display = "block";
+        soundsBtnContainer.classList.add('selected');
+
+        pomodoroSettingsContainer.style.display = "none";
+        pomodoroBtnContainer.classList.remove('selected');
+
+        flowmodoroSettingsContainer.style.display = "none";
+        flowmodoroBtnContainer.classList.remove('selected');
+
+        generalSettingsContainer.style.display = "none";
+        generalBtnContainer.classList.remove('selected');
+
+        backgroundsSettingsContainer.style.display = "none";
+        backgroundsBtnContainer.classList.remove('selected');
+
+        accountSettingsContainer.style.display = "none";
+        accountBtnContainer.classList.remove('selected');
+
+        supportAndFeedbackSettingsContainer.style.display = "none";
+        supportAndFeedbackBtnContainer.classList.remove('selected');
+    })
+
+    accountBtnContainer.addEventListener("click", function() {
+        accountSettingsContainer.style.display = "block";
+        accountBtnContainer.classList.add('selected');
+
+        soundsSettingsContainer.style.display = "none";
+        soundsBtnContainer.classList.remove('selected');
+
+        pomodoroSettingsContainer.style.display = "none";
+        pomodoroBtnContainer.classList.remove('selected');
+
+        flowmodoroSettingsContainer.style.display = "none";
+        flowmodoroBtnContainer.classList.remove('selected');
+
+        generalSettingsContainer.style.display = "none";
+        generalBtnContainer.classList.remove('selected');
+
+        backgroundsSettingsContainer.style.display = "none";
+        backgroundsBtnContainer.classList.remove('selected');
+
+        supportAndFeedbackSettingsContainer.style.display = "none";
+        supportAndFeedbackBtnContainer.classList.remove('selected');
+    })
+
+    supportAndFeedbackBtnContainer.addEventListener("click", function() {
+        supportAndFeedbackSettingsContainer.style.display = "block";
+        supportAndFeedbackBtnContainer.classList.add('selected');
+
+        accountSettingsContainer.style.display = "none";
+        accountBtnContainer.classList.remove('selected');
+
+        soundsSettingsContainer.style.display = "none";
+        soundsBtnContainer.classList.remove('selected');
+
+        pomodoroSettingsContainer.style.display = "none";
+        pomodoroBtnContainer.classList.remove('selected');
+
+        flowmodoroSettingsContainer.style.display = "none";
+        flowmodoroBtnContainer.classList.remove('selected');
+
+        generalSettingsContainer.style.display = "none";
+        generalBtnContainer.classList.remove('selected');
+
+        backgroundsSettingsContainer.style.display = "none";
+        backgroundsBtnContainer.classList.remove('selected');
+    })
+
     //Toggle is set to true by default
     //Further clicks will render the targetReachToggle flag true or false
     targetTimeReachedToggle.addEventListener("click", function() {
@@ -430,21 +616,15 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     })
 
+    autoStartFlowTimeIntervalToggle.addEventListener("click", function() {
+        //Fill this out tomorrow
+    })
+
     transitionClockSoundToggle.addEventListener("click", function() {
         if (transitionClockSoundToggle.checked) {
             flags.transitionClockSoundToggle = true;
         } else {
             flags.transitionClockSoundToggle = false;
-        }
-    })
-    
-    academicWeaponSelect.addEventListener("click", function() {
-        let value = academicWeaponSelect.value;
-    
-        if (value == "yes") {
-            flags.isAcademicWeapon = true;
-        } else {
-            flags.isAcademicWeapon = false;
         }
     })
 

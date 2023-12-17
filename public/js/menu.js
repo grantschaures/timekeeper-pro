@@ -31,14 +31,10 @@ document.addEventListener("DOMContentLoaded", function() {
     const blog_post_container = document.getElementById("blogPostContainer");
     const blog_cells = document.querySelectorAll(".blog_cell");
     const blogs = document.querySelectorAll(".blog");
-    
-    const break_suggestion_info_icon = document.getElementById("breakSuggestionInfoIcon");
-    const break_suggestion_info_window = document.getElementById("breakSuggestionInfoMessage");
-
-    const chill_time_break_suggestion_icon = document.getElementById("chillTimeBreakSuggestionInfoIcon");
-    const chill_time_break_suggestion_info_window = document.getElementById("breakSuggestionInfoMessage2");
 
     const settings_exit = document.getElementById("settingsExit");
+
+    const pomodoroBtnContainer = document.getElementById("pomodoroBtnContainer");
 
     //ADD TO THIS LIST WHEN YOU CREATE A NEW BLOG
     const blogIdList = {
@@ -48,8 +44,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let flags = {
         blogShowing: false,
-        breakSuggestionInfoWindowShowing: false,
-        chillTimeBreakSuggestionInfoWindowShowing: false
     }
 
     menu_btn.addEventListener("click", function() {
@@ -107,7 +101,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function handleClickSettings(event) {
         //Hide main elements
-        main_elements.style.display = "none";
+        // main_elements.style.display = "none";
+        pomodoroBtnContainer.click();
     
         //Hide blogs
         if (flags.blogShowing == true) {
@@ -118,7 +113,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     
         //show blog popup window
-        settings_container.style.display = "flex";
+        settings_container.style.display = "block"; //EDIT: changed from flex to block
     
         //Triggers reset animation once you enter for first time
         settings_exit.classList.add('resetRotation');
@@ -207,48 +202,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 //ensure that any visible blog becomes hidden when clicking out
                 hideBlog(blogs);
             }
-
-            break_suggestion_info_window.style.display = "none";
-            flags.breakSuggestionInfoWindowShowing = false;
-
-            chill_time_break_suggestion_info_window.style.display = "none";
-            flags.chillTimeBreakSuggestionInfoWindowShowing = false;
         }
 
-    })
-
-    settings_container.addEventListener("click", function(event) {
-        if (event.target != break_suggestion_info_icon) {
-            break_suggestion_info_window.style.display = "none";
-            flags.breakSuggestionInfoWindowShowing = false;
-        }
-
-        if (event.target != chill_time_break_suggestion_icon) {
-            chill_time_break_suggestion_info_window.style.display = "none";
-            flags.chillTimeBreakSuggestionInfoWindowShowing = false;
-        }
-    })
-
-    break_suggestion_info_icon.addEventListener("click", function() {
-        //basically, we're going to bring up a little pop-up window to explain the toggle function
-        if (flags.breakSuggestionInfoWindowShowing) {
-            break_suggestion_info_window.style.display = "none";
-            flags.breakSuggestionInfoWindowShowing = false;
-        } else {
-            break_suggestion_info_window.style.display = "flex";
-            flags.breakSuggestionInfoWindowShowing = true;
-        }
-        
-    })
-
-    chill_time_break_suggestion_icon.addEventListener("click", function() {
-        if (flags.chillTimeBreakSuggestionInfoWindowShowing) {
-            chill_time_break_suggestion_info_window.style.display = "none";
-            flags.chillTimeBreakSuggestionInfoWindowShowing = false;
-        } else {
-            chill_time_break_suggestion_info_window.style.display = "flex";
-            flags.chillTimeBreakSuggestionInfoWindowShowing = true;
-        }
     })
 });
 
