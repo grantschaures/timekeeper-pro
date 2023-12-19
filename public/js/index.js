@@ -171,7 +171,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     //Safari on iPad Pro acts like mobile (no push notifications) but identifies as desktop
     // INITIAL DOMContentLoaded FUNCTION CALLS
-    
+
     if (isMobile) {
         removeBreakSuggestionBlock(breakSuggestionBlock, breakSuggestionBlock2);
     }
@@ -191,14 +191,7 @@ document.addEventListener("DOMContentLoaded", function() {
         counters.startStop++; //keep track of button presses
 
         if (counters.startStop === 1) {
-            veryStartActions(startTimes);
-
-            hyperChillLogoImage.classList.add("hyperChillLogoRotate");
-
-            if ((document.getElementById("target-hours").value == "") || ((!document.getElementById("target-hours").value == "") && (!flags.submittedTarget))) {
-                progressBarContainer.classList.toggle("small");
-                flags.progressBarContainerIsSmall = true;
-            }
+            veryStartActions(startTimes, hyperChillLogoImage, progressBarContainer, flags);
         }
 
         startTimes.local = Date.now();
@@ -208,19 +201,10 @@ document.addEventListener("DOMContentLoaded", function() {
         if (!intervals.main) { //executes when interval is undefined --> Flow Time
             setFavicon(greenFavicon);
 
-            //if not first transition
             if (counters.startStop > 1) {
-                chillAnimation.classList.remove('intoOpacityTransition');
-                chillAnimation.classList.add('outOfOpacityTransition');
-                setTimeout(() => {
-                    chillAnimation.style.display = 'none';
-                }, 500)
+                animationsFadeOut(chillAnimation);
             }
-
-            //Fade in sine wave animations
-            flowAnimation.classList.remove('outOfOpacityTransition');
-            flowAnimation.classList.add('intoOpacityTransition');
-            flowAnimation.style.display = 'block';
+            animationsFadeIn(flowAnimation, 'block');
 
 
             hideSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min);
@@ -250,17 +234,8 @@ document.addEventListener("DOMContentLoaded", function() {
         } else { //--> Chill Time
             setFavicon(blueFavicon);
 
-            //Remove sine wave animations
-            flowAnimation.classList.remove('intoOpacityTransition');
-            flowAnimation.classList.add('outOfOpacityTransition');
-            setTimeout(() => {
-                flowAnimation.style.display = 'none';
-            }, 500)
-
-            //Add circle animations
-            chillAnimation.classList.add('intoOpacityTransition');
-            chillAnimation.classList.remove('outOfOpacityTransition');
-            chillAnimation.style.display = 'flex';
+            animationsFadeOut(flowAnimation);
+            animationsFadeIn(chillAnimation, 'flex');
 
             saveResetInterruptions(interruptionsNum, counters, savedInterruptionsArr);
             hideInterruptionsSubContainer(interruptionsSubContainer);
@@ -295,13 +270,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
             elapsedTime.hyperFocus += Date.now() - startTimes.hyperFocus;
             
-            //TESTING
-            // console.log("Logged: " + Math.floor((Date.now() - startTimes.hyperFocus) / 1000) + " seconds of Hyper Focus.");
-            // console.log("Logged: " + Math.floor((elapsedTime.hyperFocus) / 1000) + " seconds of elapsed Hyper Focus.");
-            // console.log("----------------");
-            
-            // setBackground(("url('../images/shroomtower.png')"));
-            // setBackground("url('../images/DALLE/DALLE6.png')");
             setBackground("linear-gradient(to bottom, #3b8fe3, #1d60a3, #7f04c7)");
         }
     });
@@ -353,37 +321,23 @@ document.addEventListener("DOMContentLoaded", function() {
                     flags.progressBarContainerIsSmall = true;
                 }
             }
-
         }
     });
 
     suggestionMinutesInput.addEventListener("change", function() {
+
+        // Immediate actions w/ user's inputted value
         let inputSuggestionMinutes = suggestionMinutesInput.value;
         suggestionMinutes = Math.round(parseFloat(inputSuggestionMinutes));
+        let validatedFinalInputVal = validateAndSetNotificationInput(suggestionMinutes);
+        suggestionMinutesInput.value = validatedFinalInputVal;
 
-        if (suggestionMinutes > 720) {
-            suggestionMinutes = 720;
-        } else if (suggestionMinutes < 1) {
-            suggestionMinutes = 1;
-        }
-
-        suggestionMinutesInput.value = suggestionMinutes;
-
+        
         if (flags.breakSuggestionToggle) {
             clearInterval(intervals.suggestion);
             intervals.suggestion = null;
 
-            //MAKE THIS A FUNCTION
-
-            let elapsedTimeInHyperfocus = Math.floor((Date.now() - startTimes.hyperFocus) / 1000); //unit: seconds
-            if (!flags.inHyperFocus) {
-                elapsedTime.suggestionSeconds = (suggestionMinutes * 60) - 1; //shallow copy suggestionMinutes to elapsedTime.suggestionSeconds (saves state)
-            } else {
-                elapsedTime.suggestionSeconds = ((suggestionMinutes * 60) - elapsedTimeInHyperfocus) - 1;
-            }
-            if (flags.inHyperFocus) {
-                intervals.suggestion = setInterval(() => suggestionMinutesCountdown(elapsedTime, suggestionMinutes, flags, alertSounds, alertVolumes, chime, bell, start_stop_btn), 1000);
-            }
+            setSuggestionMinutes(startTimes, flags, elapsedTime, suggestionMinutes, intervals, alertSounds, alertVolumes, chime, bell, start_stop_btn);
         }
     })
 
@@ -401,7 +355,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     })
 
-    // Settings Menu Functionality
+    // Settings Menu Functionality (showing & hiding containers)
     for (const [buttonId, containerId] of Object.entries(settingsMappings)) {
         document.getElementById(buttonId).addEventListener('click', function() {
             hideAllSettingsContainers(settingsMappings);
@@ -411,150 +365,67 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     flowmodoroNotifications.addEventListener('click', function() {
-        if (!flags.showingFlowmodoroNotificationInfoWindow) {
-            flowmodoroNotificationInfoWindow.classList.add('infoWindowOpacity');
-            flags.showingFlowmodoroNotificationInfoWindow = true;
-        } else {
-            flowmodoroNotificationInfoWindow.classList.remove('infoWindowOpacity');
-            flags.showingFlowmodoroNotificationInfoWindow = false;
-        }
-    })
-
-    flowTimeBreakNotification.addEventListener("click", function() {
-        if(!flags.showingFlowTimeBreakNotificationInfoWindow) {
-            flowTimeBreakNotificationInfoWindow.classList.add('infoWindowOpacity');
-            flags.showingFlowTimeBreakNotificationInfoWindow = true;
-        } else {
-            flowTimeBreakNotificationInfoWindow.classList.remove('infoWindowOpacity');
-            flags.showingFlowTimeBreakNotificationInfoWindow = false;
-        }
-    })
+        toggleInfoWindow(flowmodoroNotificationInfoWindow, 'showingFlowmodoroNotificationInfoWindow', flags);
+    });
+    
+    flowTimeBreakNotification.addEventListener('click', function() {
+        toggleInfoWindow(flowTimeBreakNotificationInfoWindow, 'showingFlowTimeBreakNotificationInfoWindow', flags);
+    });
 
     flowmodoroVolumeThumb.addEventListener('mousedown', (event) => {
         flags.flowmodoroThumbIsDragging = true;
-        event.preventDefault(); // Prevent text selection
+        event.preventDefault();
     })
 
     generalVolumeThumb.addEventListener('mousedown', (event) => {
         flags.generalThumbIsDragging = true;
-        event.preventDefault(); // Prevent text selection
+        event.preventDefault();
     })
 
     document.addEventListener('mousemove', (event) => {
         if (flags.flowmodoroThumbIsDragging) {
-            const rect = flowmodoroVolumeContainer.getBoundingClientRect();
-            let volumeLevel = (event.clientX - rect.left) / rect.width;
-            volumeLevel = Math.max(0, Math.min(1, volumeLevel)); // Constrain between 0 and 1
-
-            // Update the thumb and bar positions
-            flowmodoroVolumeThumb.style.left = `${volumeLevel * 100}%`;
-            flowmodoroVolumeBar.style.width = `${volumeLevel * 100}%`;
-
-            // Optionally, update the actual volume here
-            setVolumeFlowmodoroAlert(volumeLevel, alertVolumes);
+            alertVolumeChange(flowmodoroVolumeContainer, alertVolumes, flowmodoroVolumeThumb, flowmodoroVolumeBar, event, flags);
         } else if (flags.generalThumbIsDragging) {
-            const rect = generalVolumeContainer.getBoundingClientRect();
-            let volumeLevel = (event.clientX - rect.left) / rect.width;
-            volumeLevel = Math.max(0, Math.min(1, volumeLevel)); // Constrain between 0 and 1
-
-            // Update the thumb and bar positions
-            generalVolumeThumb.style.left = `${volumeLevel * 100}%`;
-            generalVolumeBar.style.width = `${volumeLevel * 100}%`;
-
-            // Optionally, update the actual volume here
-            setVolumeGeneralAlert(volumeLevel, alertVolumes);
-
+            alertVolumeChange(generalVolumeContainer, alertVolumes, generalVolumeThumb, generalVolumeBar, event, flags);
         }
     })
 
     document.addEventListener('mouseup', (event) => {
         if (flags.flowmodoroThumbIsDragging) {
             if (alertSounds.flowmodoro === 'chime') {
-                bell.pause();
-                bell.currentTime = 0;
-                chime.pause();
-                chime.currentTime = 0;
-                chime.volume = alertVolumes.flowmodoro;
-                chime.play();
+                pauseAndResetAlertSounds(bell, chime);
+                playAlertSound(chime, "flowmodoro", alertVolumes);
             } else if (alertSounds.flowmodoro === 'bell') {
-                bell.pause();
-                bell.currentTime = 0;
-                chime.pause();
-                chime.currentTime = 0;
-                bell.volume = alertVolumes.flowmodoro;
-                bell.play();
+                pauseAndResetAlertSounds(bell, chime);
+                playAlertSound(bell, "flowmodoro", alertVolumes);
             }
             flags.flowmodoroThumbIsDragging = false;
         } else if (flags.generalThumbIsDragging) {
             if (alertSounds.general === 'chime') {
-                bell.pause();
-                bell.currentTime = 0;
-                chime.pause();
-                chime.currentTime = 0;
-                chime.volume = alertVolumes.general;
-                chime.play();
+                pauseAndResetAlertSounds(bell, chime);
+                playAlertSound(chime, "general", alertVolumes);
             } else if (alertSounds.general === 'bell') {
-                bell.pause();
-                bell.currentTime = 0;
-                chime.pause();
-                chime.currentTime = 0;
-                bell.volume = alertVolumes.general;
-                bell.play();
+                pauseAndResetAlertSounds(bell, chime);
+                playAlertSound(bell, "general", alertVolumes);
             }
             flags.generalThumbIsDragging = false;
             
         } else {
             if ((event.target.className !== 'flowmodoroAlert') && (event.target.className !== 'volume-thumb') && (document.getElementById("settingsContainer").style.display === "block")) {
-                bell.pause();
-                bell.currentTime = 0;
-                chime.pause();
-                chime.currentTime = 0;
+                pauseAndResetAlertSounds(bell, chime);
             }
         }
     })
 
     flowmodoroInputs.forEach(input => {
         input.addEventListener('change', function(event) {
-
-            //remove decimal values
             let finalInputVal = Math.round(event.target.value);
-
-            //cap max num minutes (equivalent to 12 hours)
-            if (finalInputVal > 720) {
-                finalInputVal = 720;
-            } else if (finalInputVal < 1) {
-                finalInputVal = 1;
-            }
+            let validatedFinalInputVal = validateAndSetNotificationInput(finalInputVal);
+            document.getElementById(event.target.id).value = validatedFinalInputVal;
             
             let secondsPassed = (breakTimeSuggestionsArr[counters.currentFlowmodoroBreakIndex] * 60) - elapsedTime.flowmodoroNotificationSeconds;
-
-            //set number displayed to user as the finalInputVal
-            document.getElementById(event.target.id).value = finalInputVal;
-            
-            if (event.target.id === 'flowmodoroBreakInput1') {
-                breakTimeSuggestionsArr[0] = finalInputVal;
-                counters.currentFlowmodoroBreakIndex = 0;
-            } else if (event.target.id === 'flowmodoroBreakInput2') {
-                breakTimeSuggestionsArr[1] = finalInputVal;
-                counters.currentFlowmodoroBreakIndex = 1;
-            } else if (event.target.id === 'flowmodoroBreakInput3') {
-                breakTimeSuggestionsArr[2] = finalInputVal;
-                counters.currentFlowmodoroBreakIndex = 2;
-            } else if (event.target.id === 'flowmodoroBreakInput4') {
-                breakTimeSuggestionsArr[3] = finalInputVal;
-                counters.currentFlowmodoroBreakIndex = 3;
-            }
-
-            //MAKE THIS A FUNCTION
-            if (flags.lastHyperFocusIntervalMin >= 90) {
-                counters.currentFlowmodoroNotification = breakTimeSuggestionsArr[3];
-            } else if (flags.lastHyperFocusIntervalMin >= 50) {
-                counters.currentFlowmodoroNotification = breakTimeSuggestionsArr[2];
-            } else if (flags.lastHyperFocusIntervalMin >= 25) {
-                counters.currentFlowmodoroNotification = breakTimeSuggestionsArr[1];
-            } else {
-                counters.currentFlowmodoroNotification = breakTimeSuggestionsArr[0];
-            }
+            setBreakTimeSuggestionsArr(event, breakTimeSuggestionsArr, validatedFinalInputVal, counters);
+            setCurrentFlowmodoroNotification(flags, counters, breakTimeSuggestionsArr);
 
             if ((counters.startStop === 0) || (flags.inHyperFocus)) {
                 elapsedTime.flowmodoroNotificationSeconds = ((counters.currentFlowmodoroNotification * 60) - secondsPassed) - 1;
@@ -569,23 +440,16 @@ document.addEventListener("DOMContentLoaded", function() {
     flowmodoroRadios.forEach(radio => {
         radio.addEventListener('change', function(event) {
             if (event.target.id === 'flowmodoroNoAlertInput') {
+                pauseAndResetAlertSounds(bell, chime);
                 alertSounds.flowmodoro = 'none';
-                bell.pause();
-                bell.currentTime = 0;
-                chime.pause();
-                chime.currentTime = 0;
             } else if (event.target.id === 'flowmodoroChimeInput') {
+                pauseAndResetAlertSounds(bell, chime);
                 alertSounds.flowmodoro = 'chime';
-                chime.volume = alertVolumes.flowmodoro;
-                bell.pause();
-                bell.currentTime = 0;
-                chime.play();
+                playAlertSound(chime, 'flowmodoro', alertVolumes);
             } else if (event.target.id === 'flowmodoroBellInput') {
+                pauseAndResetAlertSounds(bell, chime);
                 alertSounds.flowmodoro = 'bell';
-                bell.volume = alertVolumes.flowmodoro;
-                chime.pause();
-                chime.currentTime = 0;
-                bell.play();
+                playAlertSound(bell, 'flowmodoro', alertVolumes);
             }
         })
     })
@@ -593,23 +457,16 @@ document.addEventListener("DOMContentLoaded", function() {
     generalRadios.forEach(radio => {
         radio.addEventListener('change', function(event) {
             if (event.target.id === 'generalNoAlertInput') {
+                pauseAndResetAlertSounds(bell, chime);
                 alertSounds.general = 'none';
-                bell.pause();
-                bell.currentTime = 0;
-                chime.pause();
-                chime.currentTime = 0;
             } else if (event.target.id === 'generalChimeInput') {
+                pauseAndResetAlertSounds(bell, chime);
                 alertSounds.general = 'chime';
-                chime.volume = alertVolumes.general;
-                bell.pause();
-                bell.currentTime = 0;
-                chime.play();
+                playAlertSound(chime, 'general', alertVolumes);
             } else if (event.target.id === 'generalBellInput') {
+                pauseAndResetAlertSounds(bell, chime);
                 alertSounds.general = 'bell';
-                bell.volume = alertVolumes.general;
-                chime.pause();
-                chime.currentTime = 0;
-                bell.play();
+                playAlertSound(bell, 'general', alertVolumes);
             }
         })
     })
@@ -629,6 +486,7 @@ document.addEventListener("DOMContentLoaded", function() {
             //Check if notifications are disabled already, if they are alert user, uncheck, and return
             //console.log(Notification.permission);
 
+            //SECTION 1: DEALING W/ NOTIFICATIONS
             if (Notification.permission === "denied") {
                 alert("Enable notifications in the browser window")
                 breakSuggestionToggle.checked = false;
@@ -638,30 +496,13 @@ document.addEventListener("DOMContentLoaded", function() {
             if (!enableNotifications(breakSuggestionToggle, flowmodoroNotificationToggle, flags, suggestionMinutesContainer)) {
                 return;
             }
-
             flags.breakSuggestionToggle = true;
 
-            //MAKE THIS A FUNCTION
-            let inputSuggestionMinutes = suggestionMinutesInput.value;
-            //Validate input (no decimals or negative numbers or numbers above 720)
-            if(!suggestionMinutesValidate(inputSuggestionMinutes)) { //unnecessary input validation
-                breakSuggestionToggle.checked = false;
-                return;
-            }
-            suggestionMinutes = Math.round(parseFloat(inputSuggestionMinutes));
-            let elapsedTimeInHyperfocus = Math.floor((Date.now() - startTimes.hyperFocus) / 1000); //unit: seconds
-            if (!flags.inHyperFocus) {
-                elapsedTime.suggestionSeconds = (suggestionMinutes * 60) - 1; //shallow copy suggestionMinutes to elapsedTime.suggestionSeconds (saves state)
-            } else {
-                elapsedTime.suggestionSeconds = ((suggestionMinutes * 60) - elapsedTimeInHyperfocus) - 1;
-            }
-            if (flags.inHyperFocus) {
-                intervals.suggestion = setInterval(() => suggestionMinutesCountdown(elapsedTime, suggestionMinutes, flags, alertSounds, alertVolumes, chime, bell, start_stop_btn), 1000);
-            }
+            suggestionMinutes = suggestionMinutesInput.value;
+            setSuggestionMinutes(startTimes, flags, elapsedTime, suggestionMinutes, intervals, alertSounds, alertVolumes, chime, bell, start_stop_btn);
+
         } else {
             flags.breakSuggestionToggle = false;
-
-            //change suggestion minutes input back to blank state and clear interval (repeated code; refactor later)
             clearInterval(intervals.suggestion);
             intervals.suggestion = null;
         }
@@ -694,17 +535,10 @@ document.addEventListener("DOMContentLoaded", function() {
             intervals.chillTimeBreak = null
         }
 
-        // MAKE THIS A FUNCTION
-        if (flags.flowmodoroNotificationToggle) {
-            suggestionBreak_label.textContent = "Break";
-        } else {
-            suggestionBreak_label.textContent = "Suggested Break";
-        }
-        suggestionBreak_min.textContent = counters.currentFlowmodoroNotification + " min";
+        changeSuggestionBreakContainerHeader(flags, suggestionBreak_label, suggestionBreak_min, counters);
     })
 
     autoStartFlowTimeIntervalToggle.addEventListener("click", function() {
-        //Fill this out tomorrow
         if (!flags.autoStartFlowTimeInterval) {
             flags.autoStartFlowTimeInterval = true;
         } else if (flags.autoStartFlowTimeInterval) {
@@ -775,21 +609,88 @@ document.addEventListener("DOMContentLoaded", function() {
 // ---------------------
 // HELPER FUNCTIONS
 // ---------------------
+function animationsFadeIn(animationType, displayType) {
+    animationType.classList.remove('outOfOpacityTransition');
+    animationType.classList.add('intoOpacityTransition');
+    animationType.style.display = displayType;
+}
+
+function animationsFadeOut(animationType) {
+    animationType.classList.remove('intoOpacityTransition');
+    animationType.classList.add('outOfOpacityTransition');
+    setTimeout(() => {
+        animationType.style.display = 'none';
+    }, 500)
+}
+
+function toggleInfoWindow(infoWindowElement, flagKey, flags) {
+    const isCurrentlyShowing = flags[flagKey];
+    if (isCurrentlyShowing) {
+        infoWindowElement.classList.remove('infoWindowOpacity');
+    } else {
+        infoWindowElement.classList.add('infoWindowOpacity');
+    }
+    flags[flagKey] = !isCurrentlyShowing;
+}
+
+function setSuggestionMinutes(startTimes, flags, elapsedTime, suggestionMinutes, intervals, alertSounds, alertVolumes, chime, bell, start_stop_btn) {
+    let elapsedTimeInHyperfocus = Math.floor((Date.now() - startTimes.hyperFocus) / 1000); //unit: seconds
+    if (!flags.inHyperFocus) {
+        elapsedTime.suggestionSeconds = (suggestionMinutes * 60) - 1; //shallow copy suggestionMinutes to elapsedTime.suggestionSeconds (saves state)
+    } else {
+        elapsedTime.suggestionSeconds = ((suggestionMinutes * 60) - elapsedTimeInHyperfocus) - 1;
+        intervals.suggestion = setInterval(() => suggestionMinutesCountdown(elapsedTime, suggestionMinutes, flags, alertSounds, alertVolumes, chime, bell, start_stop_btn), 1000);
+    }
+}
+
+function validateAndSetNotificationInput(finalInputVal) {
+    if (finalInputVal > 720) {
+        finalInputVal = 720;
+    } else if (finalInputVal < 1 || isNaN(finalInputVal) || finalInputVal === undefined) {
+        finalInputVal = 1;
+    }
+
+    return finalInputVal;
+}
+
+function playAlertSound(soundType, notificationSettingType, alertVolumes) {
+    if (notificationSettingType === "flowmodoro") {
+        soundType.volume = alertVolumes.flowmodoro;
+    } else if (notificationSettingType === "general") {
+        soundType.volume = alertVolumes.general;
+    }
+    soundType.play();
+}
+
+function pauseAndResetAlertSounds(bell, chime) {
+    bell.pause();
+    bell.currentTime = 0;
+    chime.pause();
+    chime.currentTime = 0;
+}
 
 // Function to hide all settings containers and remove 'selected' class from all buttons
+function alertVolumeChange(volumeContainerType, alertVolumes, volumeThumbType, volumeBarType, event, flags) {
+    const rect = volumeContainerType.getBoundingClientRect();
+    let volumeLevel = (event.clientX - rect.left) / rect.width;
+    volumeLevel = Math.max(0, Math.min(1, volumeLevel)); // Constrain between 0 and 1
+
+    // Update the thumb and bar positions
+    volumeThumbType.style.left = `${volumeLevel * 100}%`;
+    volumeBarType.style.width = `${volumeLevel * 100}%`;
+
+    if (flags.flowmodoroThumbIsDragging) {
+        alertVolumes.flowmodoro = volumeLevel;
+    } else if (flags.generalThumbIsDragging) {
+        alertVolumes.general = volumeLevel;
+    }
+}
+
 function hideAllSettingsContainers(settingsMappings) {
     for (const [buttonId, containerId] of Object.entries(settingsMappings)) {
         document.getElementById(containerId).style.display = 'none';
         document.getElementById(buttonId).classList.remove('selected');
     }
-}
-
-function setVolumeGeneralAlert(volumeLevel, alertVolumes) {
-    alertVolumes.general = volumeLevel;
-}
-
-function setVolumeFlowmodoroAlert(volumeLevel, alertVolumes) {
-    alertVolumes.flowmodoro = volumeLevel;
 }
 
 function setInitialEndSessionBtnText(initialViewportWidth, end_session_btn) {
@@ -813,6 +714,11 @@ function handleViewportWidthChange() {
 function showSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, breakTimeSuggestionsArr, counters, flags) {
     suggestionBreakContainer.style.display = 'flex';
 
+    setCurrentFlowmodoroNotification(flags, counters, breakTimeSuggestionsArr);
+    changeSuggestionBreakContainerHeader(flags, suggestionBreak_label, suggestionBreak_min, counters);
+}
+
+function setCurrentFlowmodoroNotification(flags, counters, breakTimeSuggestionsArr) {
     if (flags.lastHyperFocusIntervalMin >= 90) {
         counters.currentFlowmodoroNotification = breakTimeSuggestionsArr[3];
     } else if (flags.lastHyperFocusIntervalMin >= 50) {
@@ -822,8 +728,25 @@ function showSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_
     } else {
         counters.currentFlowmodoroNotification = breakTimeSuggestionsArr[0];
     }
+}
 
-    // MAKE THIS A FUNCTION
+function setBreakTimeSuggestionsArr(event, breakTimeSuggestionsArr, validatedFinalInputVal, counters) {
+    if (event.target.id === 'flowmodoroBreakInput1') {
+        breakTimeSuggestionsArr[0] = validatedFinalInputVal;
+        counters.currentFlowmodoroBreakIndex = 0;
+    } else if (event.target.id === 'flowmodoroBreakInput2') {
+        breakTimeSuggestionsArr[1] = validatedFinalInputVal;
+        counters.currentFlowmodoroBreakIndex = 1;
+    } else if (event.target.id === 'flowmodoroBreakInput3') {
+        breakTimeSuggestionsArr[2] = validatedFinalInputVal;
+        counters.currentFlowmodoroBreakIndex = 2;
+    } else if (event.target.id === 'flowmodoroBreakInput4') {
+        breakTimeSuggestionsArr[3] = validatedFinalInputVal;
+        counters.currentFlowmodoroBreakIndex = 3;
+    }
+}
+
+function changeSuggestionBreakContainerHeader(flags, suggestionBreak_label, suggestionBreak_min, counters) {
     if (flags.flowmodoroNotificationToggle) {
         suggestionBreak_label.textContent = "Break";
     } else {
@@ -971,20 +894,8 @@ async function enableNotifications(breakSuggestionToggle, flowmodoroNotification
 
             flowmodoroNotificationToggle.checked = false;
             flags.flowmodoroNotificationToggle = false;
-            hideSuggestionMinutesContainer(suggestionMinutesContainer);
             return false;
         }
-    }
-    return true;
-}
-
-function suggestionMinutesValidate(inputSuggestionMinutes) {
-    const roundedMinutes = Math.round(parseFloat(inputSuggestionMinutes));
-
-    if (!roundedMinutes || roundedMinutes <= 0 || roundedMinutes > 720) { //720 minutes = 12 hours
-        
-        alert("Enter a valid time from 1 minute to 720 minutes");
-        return false;
     }
     return true;
 }
@@ -1100,10 +1011,16 @@ function resetDisplay(display) {
     display.innerText = "00:00:00"; //immediately resets display w/ no lag time
 };
 
-function veryStartActions(startTimes) {
+function veryStartActions(startTimes, hyperChillLogoImage, progressBarContainer, flags) {
     startTimes.beginning = Date.now();
     setBrowserTabTitle(); //sets browser tab title to the stopwatch time '00:00:00'
     document.getElementById("target-hours").classList.remove("glowing-effect");
+    hyperChillLogoImage.classList.add("hyperChillLogoRotate");
+
+    if ((document.getElementById("target-hours").value == "") || ((!document.getElementById("target-hours").value == "") && (!flags.submittedTarget))) {
+        progressBarContainer.classList.toggle("small");
+        flags.progressBarContainerIsSmall = true;
+    }
 };
 
 function setBackground(background_color) {
