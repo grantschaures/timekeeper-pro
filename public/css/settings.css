@@ -70,12 +70,12 @@
     margin-left: 20px;
 }
 
-.minutesImage {
+/* .minutesImage {
     height: 50px;
     width: 93px;
     border-radius: 10px;
     border: 2px solid white;
-}
+} */
 
 .imageBucket {
     display: flex;
@@ -93,7 +93,7 @@
     /* border: 1px solid white; */
 }
 
-#endOfBreakImages {
+#endOfBreakIntervals {
     display: flex;
 }
 
@@ -103,6 +103,7 @@
     height: 100%;
     display: block;
     margin-right: 50px;
+    margin-top: 20px;
 }
 
 .horizontal {
@@ -120,6 +121,25 @@
     color: rgb(255, 255, 255);
     font-size: 16px;
     padding-right: 10px;
+}
+
+#pickAlertSound {
+    display: flex;
+}
+
+.flowmodoroAlert, .generalAlert {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 5px;
+    margin-right: 10px;
+    background-color: #53e658;
+}
+
+.flowmodoroAlertContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* border: 1px solid white; */
 }
 
 .settingsHeaderRow {
@@ -173,7 +193,7 @@
 
 .settings p {
     font-family: settingsHeaderFont;
-    letter-spacing: 1px;;
+    letter-spacing: 1px;
     font-weight: 300;
     color: rgb(255, 255, 255);
     font-size: 18px;
@@ -188,6 +208,67 @@
 
 .settingsText {
     margin-right: 20px;
+
+    /* border: 1px solid white; */
+}
+
+.flowmodoroBreak, #suggestionMinutesInput {
+    width: 50px;
+    height: 20px;
+    background-color: #e0e0e0;
+    font-size: 16px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid white;
+    
+    font-family: settingsHeaderFont;
+    letter-spacing: 1px;
+    font-weight: bold;
+    color: rgb(0, 0, 0);
+    font-size: 18px;
+}
+
+.notificationInfoWindow {
+    border: 2px solid white;
+    background-color: black;
+    font-family: settingsHeaderFont;
+    letter-spacing: 1px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    position: relative;
+    z-index: 50;
+    margin-left: 20px;
+    border-radius: 25px;
+    text-align: center;
+    display: block;
+    padding: 5px;
+    
+    transition: opacity 0.25s ease-in-out;
+}
+
+#flowmodoroNotificationInfoWindow {
+    width: 300px;
+    opacity: 0;
+}
+
+#flowmodoroNotificationInfoWindow.infoWindowOpacity {
+    opacity: 1;
+}
+
+#flowTimeBreakNotificationInfoWindow {
+    width: 350px;
+    opacity: 0;
+}
+
+#flowTimeBreakNotificationInfoWindow.infoWindowOpacity {
+    opacity: 1;
+}
+
+
+#flowmodoro-break-submit {
+    border: 1px solid white;
 }
 
 #compare_chartContainer {
@@ -204,12 +285,26 @@
 .settingsMicroContainer {
     display: flex;
     width: 100%;
+    align-items: center;
     /* border: 2px solid yellow; */
 }
 
-#toggleBreakSuggestionContainer {
-    width: 100%;
-    /* border: 2px solid yellow; */
+#suggestionMinutesText {
+    /* border: 1px solid orange; */
+    width: 200px;
+}
+
+#suggestionMinutesInputContainer {
+    /* border: 1px solid purple; */
+    width: 200px;
+}
+
+#FlowTime {
+    color: #53e658;
+}
+
+#ChillTime {
+    color: #3b8fe3;
 }
 
 .toggle-checkbox {
@@ -264,11 +359,11 @@
 }
 
 /* Flomodoro Notifications */
-#chillTimeBreakSuggestionToggle:checked + #chillTimeBreakSuggestionToggleLabel {
+#flowmodoroNotificationToggle:checked + #flowmodoroNotificationToggleLabel {
     background-color: #53e658;
 }
 
-#chillTimeBreakSuggestionToggle:checked + #chillTimeBreakSuggestionToggleLabel #chillTimeBreakSuggestionToggleBall {
+#flowmodoroNotificationToggle:checked + #flowmodoroNotificationToggleLabel #flowmodoroNotificationToggleBall {
     left: 40px;
 }
 
@@ -281,6 +376,15 @@
     left: 40px;
 }
 
+/* Auto Start Chill Time Interval */
+#autoStartChillTimeIntervalToggle:checked + #autoStartChillTimeIntervalToggleLabel {
+    background-color: #53e658;
+}
+
+#autoStartChillTimeIntervalToggle:checked + #autoStartChillTimeIntervalToggleLabel #autoStartChillTimeIntervalToggleBall {
+    left: 40px;
+}
+
 /* For Transition Clock Sound Toggle */
 #transitionClockSoundToggle:checked + #transitionClockSoundToggleLabel {
     background-color: #53e658;
@@ -288,6 +392,10 @@
 
 #transitionClockSoundToggle:checked + #transitionClockSoundToggleLabel #transitionClockSoundToggleBall {
     left: 40px;
+}
+
+#toggleTargetTimeAlertContainer {
+    margin-top: 20px;
 }
 
 #breakSuggestionText {
@@ -301,6 +409,41 @@
     /* border: 2px solid black; */
 }
 
+#autoStartFlowTimeIntervalBlock {
+    margin-top: 20px;
+}
+
+.volume-container {
+    position: relative;
+    width: 200px; /* Adjust to your preference */
+    height: 10px; /* Adjust to match the image */
+    background-color: #333; /* Dark background */
+    border-radius: 10px; /* Rounded corners */
+    /* overflow: hidden; */
+}
+
+.volume-bar {
+    position: absolute;
+    width: 100%; /* Full width of the container */
+    height: 100%; /* Full height of the container */
+}
+
+.volume-thumb {
+    position: absolute;
+    width: 20px; /* Width of the thumb */
+    height: 20px; /* Height of the thumb */
+    background-color: white;
+    border-radius: 50%; /* Makes it a circle */
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: 50%; /* Adjust this to set the initial thumb position */
+}
+
+.settingsCategoryHeading {
+    font-size: 24px;
+    cursor: pointer;
+}
+
 .infoIcon {
     position: relative;
     width: 20px;
@@ -310,23 +453,6 @@
     padding: 5px;
     cursor: pointer;
     /* border: 2px solid black; */
-}
-
-#suggestionMinutesInput {
-    width: 40px;
-    height: 20px;
-    background-color: #e0e0e0;
-    font-size: 16px;
-    padding: 8px 12px;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border: 1px solid white;
-    margin-right: 15px;
-}
-
-#suggestionMinutesContainer {
-    width: 100%;
-    display: none;
 }
 
 .toggleContainer {
@@ -404,40 +530,4 @@
 
 .subCategory {
     margin-left: 20px;
-}
-
-#academicWeaponSelect {
-    width: 100px;
-    height: 25px;
-}
-
-#swordIcon {
-    width: 35px;
-    height: 35px;
-}
-
-#academicWeaponSelect {
-    /* Apply font styles */
-    font-family: menuFont;
-    letter-spacing: 1px;
-    font-size: 16px;
-    
-    /* Adjust background and border styles */
-    background-color: #e0e0e0;
-    border: 1px solid white;
-    border-radius: 4px;
-    
-    /* Add box shadow for a subtle lift */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    
-    /* Set the text color */
-    color: black;
-}
-
-/* Style the options within the select */
-#academicWeaponSelect option {
-    font-family: menuFont;
-    letter-spacing: 1px;
-    font-size: 16px;
-    color: black;
 }

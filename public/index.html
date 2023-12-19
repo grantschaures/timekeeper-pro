@@ -145,7 +145,6 @@
                         </div>
                         <div>
                             <button id="start-stop">Start</button>
-                            <audio id="click-sound" src="/sounds/new_clock_tick.wav" preload="auto"></audio>
                         </div>
                         <div>
                             <button id="end-session"></button> <!-- Text inserted via JS -->
@@ -438,18 +437,6 @@
                 <div id="aboutWindow">
                     <h1>About</h1>
                     <div>
-                        <h2>Hello! Welcome to HyperChill.io. My name is Grant and I designed this web app
-                        to help myself stay on task while in college. After noticing a phenomenal improvement in my own productivity
-                        as a result of this app, I knew it had to be shared with the world.</h2>
-                    </div>
-                    <div>
-                        <h2>This web app was intended to be an alternative to the <a href="https://en.wikipedia.org/wiki/Pomodoro_Technique" target="_blank">Pomodoro Method</a>. It offers a more flexible
-                            and adaptable approach to studying which better takes into account the unpredictability of life. Rather than letting a timer dictate when you can take a break, the stopwatch embedded
-                            within this app highlights the amount of time you've spent studying and lets YOU decide when to take 
-                            a break based on how you're feeling.
-                        </h2>
-                    </div>
-                    <div>
                         <h1 style="font-size: 26px">How It Works</h1>
                     </div>
                     <div>
@@ -508,7 +495,7 @@
                                 <b>Notifications</b>
                             </div>
                         </div>
-                        <div id="pomodoroBtnContainer" class="settingsHeaderRow subCategory selected">
+                        <div id="pomodoroBtnContainer" class="settingsHeaderRow subCategory">
                             <div class="settingsIconContainer">
                                 <img src="images/icons/tomatoIcon.png" id="pomodoroIcon" class="settingsIcon" draggable="false">
                             </div>
@@ -583,53 +570,68 @@
                             <!-- <div class="horizontal"></div> -->
                             <div id="alertsNotificationsToggleContainer" class="settingsCategory">
                                 <div id="breakSuggestionBlock2">
-                                    <div id="toggleChillTimeBreakSuggestionContainer" class="settingsMicroContainer">
-                                        <div id="chillTimeBreakSuggestionText" class="settingsText">
-                                            <p><b>Flowmodoro Notifications</b></p>
+                                    <div id="toggleFlowmodoroNotificationContainer" class="settingsMicroContainer">
+                                        <div id="flowmodoroNotificationText" class="settingsText">
+                                            <p id="flowmodoroNotifications"><b class="settingsCategoryHeading">Flowmodoro Notifications</b></p>
                                         </div>
-                                        <div id="chillTimeBreakSuggestionToggleContainer" class="toggleContainer">
-                                            <input type="checkbox" id="chillTimeBreakSuggestionToggle" class="toggle-checkbox">
-                                            <label for="chillTimeBreakSuggestionToggle" id="chillTimeBreakSuggestionToggleLabel" class="toggle-label">
-                                                <span id="chillTimeBreakSuggestionToggleBall" class="toggle-ball"></span>
+                                        <div id="flowmodoroNotificationToggleContainer" class="toggleContainer">
+                                            <input type="checkbox" id="flowmodoroNotificationToggle" class="toggle-checkbox">
+                                            <label for="flowmodoroNotificationToggle" id="flowmodoroNotificationToggleLabel" class="toggle-label">
+                                                <span id="flowmodoroNotificationToggleBall" class="toggle-ball"></span>
                                             </label>
                                         </div>
+                                        <div id="flowmodoroNotificationInfoWindow" class="notificationInfoWindow">
+                                            This will notify you after a specified number of minutes in Chill (break) time
+                                        </div>  
                                     </div>
                                     <div id="flowTimeBreakDemoImages" class="settingsMicroContainer">
                                         <!-- <div id="endOfBreakNotificationText">
                                             <p><b>End of Break Notification</b></p>
                                         </div> -->
-                                        <div id="endOfBreakImages">
+                                        <div id="endOfBreakIntervals">
                                             <div id="minutesImageBucket" class="imageBucketHeader">
                                                 <div>
-                                                    <p><b>Flow Time: </b></p>
+                                                    <p id="FlowTime"><b>Flow Time: </b></p>
                                                 </div>
                                                 <div>
-                                                    <p><b>Chill Time: </b></p>
+                                                    <p id="ChillTime"><b>Chill Time: </b></p>
                                                 </div>
                                             </div>
-                                            <div id="minutesImageBucket5" class="imageBucket">
+                                            <div id="minutesImageBucket1" class="imageBucket">
                                                 <div>
                                                     <p><b>&lt; 25 min</b></p>
                                                 </div>
-                                                <img src="images/HyperChill/5minutes.png" class="minutesImage">
+                                                <!-- <img src="images/HyperChill/5minutes.png" class="minutesImage"> -->
+                                                <div class="chillTimeNotificationContainer">
+                                                    <input type="number" id="flowmodoroBreakInput1" value="5" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1">
+                                                </div>
                                             </div>
-                                            <div id="minutesImageBucket8" class="imageBucket">
+                                            <div id="minutesImageBucket2" class="imageBucket">
                                                 <div>
                                                     <p><b>&lt; 50 min</b></p>
                                                 </div>
-                                                <img src="images/HyperChill/8minutes.png" class="minutesImage">
+                                                <!-- <img src="images/HyperChill/8minutes.png" class="minutesImage"> -->
+                                                <div class="chillTimeNotificationContainer">
+                                                    <input type="number" id="flowmodoroBreakInput2" value="8" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1">
+                                                </div>
                                             </div>
-                                            <div id="minutesImageBucket10" class="imageBucket">
+                                            <div id="minutesImageBucket3" class="imageBucket">
                                                 <div>
                                                     <p><b>&lt; 90 min</b></p>
                                                 </div>
-                                                <img src="images/HyperChill/10minutes.png" class="minutesImage">
+                                                <!-- <img src="images/HyperChill/10minutes.png" class="minutesImage"> -->
+                                                <div class="chillTimeNotificationContainer">
+                                                    <input type="number" id="flowmodoroBreakInput3" value="10" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1">
+                                                </div>
                                             </div>
-                                            <div id="minutesImageBucket15" class="imageBucket">
+                                            <div id="minutesImageBucket4" class="imageBucket">
                                                 <div>
                                                     <p><b>&gt;= 90 min</b></p>
                                                 </div>
-                                                <img src="images/HyperChill/15minutes.png" class="minutesImage">
+                                                <!-- <img src="images/HyperChill/15minutes.png" class="minutesImage"> -->
+                                                <div class="chillTimeNotificationContainer">
+                                                    <input type="number" id="flowmodoroBreakInput4" value="15" class="flowmodoroBreak" name="minutes" min="1" step="1">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -641,10 +643,44 @@
                                         </div>
                                         <div id="autoStartFlowTimeIntervalToggleContainer" class="toggleContainer">
                                             <input type="checkbox" id="autoStartFlowTimeIntervalToggle" class="toggle-checkbox">
-                                            <label for="chillTimeBreakSuggestionToggle" id="autoStartFlowTimeIntervalToggleLabel" class="toggle-label">
+                                            <label for="autoStartFlowTimeIntervalToggle" id="autoStartFlowTimeIntervalToggleLabel" class="toggle-label">
                                                 <span id="autoStartFlowTimeIntervalToggleBall" class="toggle-ball"></span>
                                             </label>
                                         </div>
+                                    </div>
+                                </div>
+                                <div id="flowmodoroAlertSoundBlock">
+                                    <div id="flowmodoroAlertSoundContainer" class="settingsMicroContainer">
+                                        <div id="flowmodoroAlertSoundText" class="settingsText">
+                                            <p><b>Alert Volume</b></p>
+                                        </div>
+                                        <div id="flowmodoroAlertSoundVolumeContainer" class="toggleContainer">
+                                            <div id="flowmodoroVolumeContainer" class="volume-container">
+                                                <div id="flowmodoroVolumeBar" class="volume-bar">
+                                                </div>
+                                                <div id="flowmodoroVolumeThumb" class="volume-thumb"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="pickAlertSound">
+                                        <label id="flowmodoroNoAlertContainer" class="flowmodoroAlertContainer">
+                                            <input id="flowmodoroNoAlertInput" type="radio" name="flowmodoroAlert" class="flowmodoroAlert" checked>
+                                            <span id="flomodoroNoAlertText" class="settingsHeader">
+                                                No Alert
+                                            </span>
+                                        </label>
+                                        <label id="flowmodoroChimeAlertContainer" class="flowmodoroAlertContainer">
+                                            <input id="flowmodoroChimeInput" type="radio" name="flowmodoroAlert" class="flowmodoroAlert">
+                                            <span id="flomodoroChimeText" class="settingsHeader">
+                                                Chime
+                                            </span>
+                                        </label>
+                                        <label id="flowmodoroBellContainer" class="flowmodoroAlertContainer">
+                                            <input id="flowmodoroBellInput" type="radio" name="flowmodoroAlert" class="flowmodoroAlert">
+                                            <span id="flomodoroBellText" class="settingsHeader">
+                                                Bell
+                                            </span>
+                                        </label>
                                     </div>
                                 </div>
                             </div>
@@ -654,24 +690,10 @@
                             <div id="generalContainer" class="settingsIconTextContainer">
                                 <h2>General</h2>
                             </div>
-                            <div id="toggleTargetTimeAlertContainer" class="settingsMicroContainer">
-                                <div id="targetTimeReachedText" class="settingsText">
-                                    <p><b>Target Time Reached Alert</b></p>
-                                </div>
-                                <div id="targetTimeReachedToggleContainer" class="toggleContainer">
-                                    <input type="checkbox" id="targetTimeReachedToggle" class="toggle-checkbox" checked>
-                                    <label for="targetTimeReachedToggle" id="targetTimeReachedToggleLabel" class="toggle-label">
-                                        <span id="targetTimeReachedToggleBall" class="toggle-ball"></span>
-                                    </label>
-                                </div>
-                            </div>
                             <div id="breakSuggestionBlock">
                                 <div id="toggleBreakSuggestionContainer" class="settingsMicroContainer">
                                     <div id="breakSuggestionText" class="settingsText">
-                                        <p><b>Flow Time Break Notification</b></p>
-                                    </div>
-                                    <div class="infoMessage" id="breakSuggestionInfoMessage">
-                                        <p>Enter the time (in minutes) you'd like to pass while in Flow Time before getting a suggestion to take break</p>
+                                        <p id="flowTimeBreakNotification"><b class="settingsCategoryHeading">Flow Time Break Notifications</b></p>
                                     </div>
                                     <div id="breakSuggestionToggleContainer" class="toggleContainer">
                                         <input type="checkbox" id="breakSuggestionToggle" class="toggle-checkbox">
@@ -679,17 +701,77 @@
                                             <span id="breakSuggestionToggleBall" class="toggle-ball"></span>
                                         </label>
                                     </div>
+                                    <div id="flowTimeBreakNotificationInfoWindow" class="notificationInfoWindow">
+                                        Enter the time (in minutes) you'd like to pass while in Flow Time before getting a suggestion to take break
+                                    </div>  
                                 </div>
                                 <div id="suggestionMinutesContainer" class="settingsMicroContainer">
                                     <div id="suggestionMinutesText">
-                                        <p><b>Suggestion Minutes:</b></p>
+                                        <p><b>Suggestion Minutes: </b></p>
                                     </div>
                                     <div id="suggestionMinutesInputContainer" class="toggleContainer">
                                         <div id="coolDiv2">
-                                            <input type="number" id="suggestionMinutesInput" name="minutes" min="0">
+                                            <input type="number" id="suggestionMinutesInput" value = '90' name="minutes" min="1" max="720">
                                         </div>
-                                        <button type="submit" id="suggestion-minutes-submit">Submit</button>
                                     </div>
+                                </div>
+                            </div>
+                            <div id="autoStartChillTimeIntervalBlock">
+                                <div id="autoStartChillTimeIntervalContainer" class="settingsMicroContainer">
+                                    <div id="autoStartChillTimeIntervalText" class="settingsText">
+                                        <p><b>Auto Start Chill Time (break) Interval</b></p>
+                                    </div>
+                                    <div id="autoStartChillTimeIntervalToggleContainer" class="toggleContainer">
+                                        <input type="checkbox" id="autoStartChillTimeIntervalToggle" class="toggle-checkbox">
+                                        <label for="autoStartChillTimeIntervalToggle" id="autoStartChillTimeIntervalToggleLabel" class="toggle-label">
+                                            <span id="autoStartChillTimeIntervalToggleBall" class="toggle-ball"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="generalAlertSoundBlock">
+                                <div id="generalAlertSoundContainer" class="settingsMicroContainer">
+                                    <div id="generalAlertSoundText" class="settingsText">
+                                        <p><b>Alert Volume</b></p>
+                                    </div>
+                                    <div id="generalAlertSoundVolumeContainer" class="toggleContainer">
+                                        <div id="generalVolumeContainer" class="volume-container">
+                                            <div id="generalVolumeBar" class="volume-bar">
+                                            </div>
+                                            <div id="generalVolumeThumb" class="volume-thumb"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="pickAlertSound">
+                                    <label id="generalNoAlertContainer" class="generalAlertContainer">
+                                        <input id="generalNoAlertInput" type="radio" name="generalAlert" class="generalAlert" checked>
+                                        <span id="generalNoAlertText" class="settingsHeader">
+                                            No Alert
+                                        </span>
+                                    </label>
+                                    <label id="generalChimeAlertContainer" class="generalAlertContainer">
+                                        <input id="generalChimeInput" type="radio" name="generalAlert" class="generalAlert">
+                                        <span id="generalChimeText" class="settingsHeader">
+                                            Chime
+                                        </span>
+                                    </label>
+                                    <label id="generalBellContainer" class="generalAlertContainer">
+                                        <input id="generalBellInput" type="radio" name="generalAlert" class="generalAlert">
+                                        <span id="generalBellText" class="settingsHeader">
+                                            Bell
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div id="toggleTargetTimeAlertContainer" class="settingsMicroContainer">
+                                <div id="targetTimeReachedText" class="settingsText">
+                                    <p id="targetTimeReachedAlert"><b class="settingsCategoryHeading">Target Time Reached Alert</b></p>
+                                </div>
+                                <div id="targetTimeReachedToggleContainer" class="toggleContainer">
+                                    <input type="checkbox" id="targetTimeReachedToggle" class="toggle-checkbox" checked>
+                                    <label for="targetTimeReachedToggle" id="targetTimeReachedToggleLabel" class="toggle-label">
+                                        <span id="targetTimeReachedToggleBall" class="toggle-ball"></span>
+                                    </label>
                                 </div>
                             </div>
                         </div>

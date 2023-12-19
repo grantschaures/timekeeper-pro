@@ -10,80 +10,71 @@ document.addEventListener("DOMContentLoaded", function() {
     const submit_change_btn = document.getElementById("target-hours-submit");
     const end_session_btn = document.getElementById("end-session");
     const report_btn = document.getElementById("reportBtn");
-    const body = document.querySelector("body");
-
     const total_time_display = document.getElementById("progress-text");
-
     const productivity_chill_mode = document.getElementById("productivity-chill-mode");
-    const audio = document.getElementById("click-sound"); //plays sound effect when stop/start button hit
     const progressBarContainer = document.getElementById("progress-bar-container");
     const progressBar = document.getElementById("progress-bar");
     const progressContainer = document.getElementById("progress-container");
     const display = document.getElementById("display");
 
-    //INTERRUPTIONS CONTAINER
-    const interruptionsContainer = document.getElementById("interruptions-container");
+    // INTERRUPTIONS CONTAINER
     const interruptionsSubContainer = document.getElementById("interruptions-sub-container");
-    const interruptionsChangeContainer = document.getElementById("interruptions-change-container");
     const decBtn = document.getElementById("decBtn");
     const incBtn = document.getElementById("incBtn");
 
-    const coolerDiv = document.getElementById("coolerDiv");
     const interruptionsNum = document.getElementById("interruptions_num");
 
     const suggestionBreakContainer = document.getElementById("suggestionBreakContainer");
     const suggestionBreak_label = document.getElementById("suggestionBreak-label");
     const suggestionBreak_min = document.getElementById("suggestionBreak-min");
 
-    //SETTINGS
-    const pomodoroBtnContainer = document.getElementById("pomodoroBtnContainer");
-    const pomodoroSettingsContainer = document.getElementById("pomodoroSettingsContainer");
-
-    const flowmodoroBtnContainer = document.getElementById("flowmodoroBtnContainer");
-    const flowmodoroSettingsContainer = document.getElementById("flowmodoroSettingsContainer");
-
-    const generalBtnContainer = document.getElementById("generalBtnContainer");
-    const generalSettingsContainer = document.getElementById("generalSettingsContainer");
-
-    const backgroundsBtnContainer = document.getElementById("backgroundsBtnContainer");
-    const backgroundsSettingsContainer = document.getElementById("backgroundsSettingsContainer");
-
-    const soundsBtnContainer = document.getElementById("soundsBtnContainer");
-    const soundsSettingsContainer = document.getElementById("soundsSettingsContainer");
-
-    const accountBtnContainer = document.getElementById("accountBtnContainer");
-    const accountSettingsContainer = document.getElementById("accountSettingsContainer");
-
-    const supportAndFeedbackBtnContainer = document.getElementById("supportAndFeedbackBtnContainer");
-    const supportAndFeedbackSettingsContainer = document.getElementById("supportAndFeedbackSettingsContainer");
-
+    // SETTINGS
     const targetTimeReachedToggle = document.getElementById("targetTimeReachedToggle");
     const breakSuggestionToggle = document.getElementById("breakSuggestionToggle");
     const suggestionMinutesContainer = document.getElementById("suggestionMinutesContainer");
-    const submit_suggestion_btn = document.getElementById("suggestion-minutes-submit");
     const breakSuggestionBlock = document.getElementById("breakSuggestionBlock");
     const breakSuggestionBlock2 = document.getElementById("breakSuggestionBlock2");
-    const chillTimeBreakSuggestionToggle = document.getElementById("chillTimeBreakSuggestionToggle");
-    const transitionClockSoundToggle = document.getElementById("transitionClockSoundToggle");
-
+    const suggestionMinutesInput = document.getElementById("suggestionMinutesInput");
+    const flowmodoroNotificationToggle = document.getElementById("flowmodoroNotificationToggle");
     const autoStartFlowTimeIntervalToggle = document.getElementById("autoStartFlowTimeIntervalToggle");
+    const flowmodoroNotifications = document.getElementById("flowmodoroNotifications");
+    const flowmodoroNotificationInfoWindow = document.getElementById("flowmodoroNotificationInfoWindow");
+    const flowTimeBreakNotification = document.getElementById("flowTimeBreakNotification");
+    const flowTimeBreakNotificationInfoWindow = document.getElementById("flowTimeBreakNotificationInfoWindow");
+    let hoverTimer;
+    const targetTimeReachedAlert = document.getElementById("targetTimeReachedAlert");
+    const transitionClockSoundToggle = document.getElementById("transitionClockSoundToggle");
+    const flowmodoroVolumeContainer = document.getElementById("flowmodoroVolumeContainer");
+    const flowmodoroVolumeBar = document.getElementById('flowmodoroVolumeBar');
+    const flowmodoroVolumeThumb = document.getElementById('flowmodoroVolumeThumb');
+    const generalVolumeContainer = document.getElementById("generalVolumeContainer");
+    const generalVolumeBar = document.getElementById('generalVolumeBar');
+    const generalVolumeThumb = document.getElementById('generalVolumeThumb');
+    const flowmodoroRadios = document.querySelectorAll('.flowmodoroAlert');
+    const flowmodoroInputs = document.querySelectorAll('.flowmodoroBreak');
+    const generalRadios = document.querySelectorAll('.generalAlert');
+    const autoStartChillTimeIntervalToggle = document.getElementById("autoStartChillTimeIntervalToggle")
 
-    //Background Animations
+    // Audio
+    const chime = new Audio('sounds/alerts/LEX_LM_77_bell_loop_vinyl_night_F.wav');
+    const bell = new Audio('sounds/alerts/ESM_Christmas_Glockenspiel_Bell_Pluck_Hit_Single_9_Wet_Perc_Tonal.wav');
+    const clock_tick = new Audio('sounds/new_clock_tick.wav');
+
+    // Background Animations
     const flowAnimation = document.getElementById("flowAnimation");
     const chillAnimation = document.getElementById("chillAnimation");
 
-    //Logo
+    // Logo
     const hyperChillLogoImage = document.getElementById("hyperChillLogoImage");
 
-    //NOTES
+    // NOTES
     const userInputTask = document.getElementById("userInputTask");
 
+    // Favicons
     const greenFavicon = "/images/logo/HyperChillLogoGreen.png";
     const blueFavicon = "/images/logo/HyperChillLogoBlue.png";
-    const link = document.querySelector("link[rel~='icon']");
 
     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
     const initialViewportWidth = window.innerWidth || document.documentElement.clientWidth;
 
     const timeConvert = {
@@ -91,8 +82,6 @@ document.addEventListener("DOMContentLoaded", function() {
         msPerMin: 60000,
         msPerSec: 1000
     };
-
-    //bundle these function together after getting a good understanding of them
 
     //INTERVALS
     let intervals = {
@@ -120,14 +109,29 @@ document.addEventListener("DOMContentLoaded", function() {
         hyperFocus: 0, //Accumulated time from each productivity interval
         chillTime: 0, //time elapsed during each Chill Time mode
         suggestionSeconds: 0,
-        chillTimeSuggestionSeconds: 0
+        flowmodoroNotificationSeconds: 0,
+        lastHyperFocusIntervalMin: 0
+    }
+
+    //Alert volumes
+    let alertVolumes = {
+        pomodoro: 0.5,
+        flowmodoro: 0.5,
+        general: 0.5
+    }
+
+    let alertSounds = {
+        pomodoro: 'none',
+        flowmodoro: 'none',
+        general: 'none'
     }
 
     //STATE-RELATED FLAGS AND COUNTERS
     let counters = {
         startStop: 0, //tracks number of times start/stop is pressed
         interruptions: 0,
-        currentChillTimeBreakSuggestion: 0
+        currentFlowmodoroNotification: 0,
+        currentFlowmodoroBreakIndex: 0
     }
 
     //STORAGE
@@ -141,21 +145,33 @@ document.addEventListener("DOMContentLoaded", function() {
         breakSuggestionToggle: false,
         submittedSuggestionMinutes: false,
         transitionClockSoundToggle: false,
-        isAcademicWeapon: false,
-        chillTimeBreakSuggestionToggle: false,
-        progressBarContainerIsSmall: false
+        flowmodoroNotificationToggle: false,
+        progressBarContainerIsSmall: false,
+        flowmodoroThumbIsDragging: false,
+        autoStartFlowTimeInterval: false,
+        autoStartChillTimeInterval: false,
+        showingFlowmodoroNotificationInfoWindow: false,
+        showingFlowTimeBreakNotificationInfoWindow: false,
+        generalThumbIsDragging: false
     }
+
+    const settingsMappings = {
+        'pomodoroBtnContainer': 'pomodoroSettingsContainer',
+        'flowmodoroBtnContainer': 'flowmodoroSettingsContainer',
+        'generalBtnContainer': 'generalSettingsContainer',
+        'backgroundsBtnContainer': 'backgroundsSettingsContainer',
+        'soundsBtnContainer': 'soundsSettingsContainer',
+        'accountBtnContainer': 'accountSettingsContainer',
+        'supportAndFeedbackBtnContainer': 'supportAndFeedbackSettingsContainer' ,
+    };
 
     // ----------------
     // MAIN CODE (Runs after DOM content is loaded)
     // ----------------
 
     //Safari on iPad Pro acts like mobile (no push notifications) but identifies as desktop
-    /* This shouldn't be a huge deal, but iPad pro users will see the
-    break suggestion toggle, but it won't do anything... We'll have to just
-    live with this for now unfortunately */
-
     // INITIAL DOMContentLoaded FUNCTION CALLS
+    
     if (isMobile) {
         removeBreakSuggestionBlock(breakSuggestionBlock, breakSuggestionBlock2);
     }
@@ -165,11 +181,11 @@ document.addEventListener("DOMContentLoaded", function() {
     // ----------------
     // EVENT LISTENERS
     // ----------------
-    document.addEventListener('keydown', (event) => handleEnter(event, start_stop_btn, submit_change_btn, userInputTask, submit_suggestion_btn));
+    document.addEventListener('keydown', (event) => handleEnter(event, start_stop_btn, submit_change_btn, userInputTask));
 
     start_stop_btn.addEventListener("click", function() {
 
-        playClick(audio, flags);
+        playClick(clock_tick, flags);
         resetDisplay(display);
 
         counters.startStop++; //keep track of button presses
@@ -181,7 +197,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             if ((document.getElementById("target-hours").value == "") || ((!document.getElementById("target-hours").value == "") && (!flags.submittedTarget))) {
                 progressBarContainer.classList.toggle("small");
-                flags.progressBarConsetBacktainerIsSmall = true;
+                flags.progressBarContainerIsSmall = true;
             }
         }
 
@@ -190,7 +206,7 @@ document.addEventListener("DOMContentLoaded", function() {
         intervals.local = setInterval(() => timeDisplay(startTimes.local, display, timeConvert), 1000); //using arrow function so we can pass arguments
         
         if (!intervals.main) { //executes when interval is undefined --> Flow Time
-            setFavicon(link, greenFavicon);
+            setFavicon(greenFavicon);
 
             //if not first transition
             if (counters.startStop > 1) {
@@ -218,11 +234,11 @@ document.addEventListener("DOMContentLoaded", function() {
             intervals.total = setInterval(() => totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, targetTime), 1000);
             intervals.main = setInterval(() => updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar, progressContainer), 1000); //repeatedly calls reference to updateProgressBar function every 1000 ms (1 second)
             
-            if (flags.submittedSuggestionMinutes) {
-                intervals.suggestion = setInterval(() => suggestionMinutesCountdown(elapsedTime, suggestionMinutes, flags), 1000);
+            if (flags.breakSuggestionToggle) {
+                intervals.suggestion = setInterval(() => suggestionMinutesCountdown(elapsedTime, suggestionMinutes, flags, alertSounds, alertVolumes, chime, bell, start_stop_btn), 1000);
             }
 
-            if (flags.chillTimeBreakSuggestionToggle) {
+            if (flags.flowmodoroNotificationToggle) {
                 clearInterval(intervals.chillTimeBreak);
             }
 
@@ -232,7 +248,7 @@ document.addEventListener("DOMContentLoaded", function() {
             setBackground("linear-gradient(to bottom, #5dd44d, #50b350, #004400)");
             // setBackground("url('../images/DALLE/DALLE7.png')");
         } else { //--> Chill Time
-            setFavicon(link, blueFavicon);
+            setFavicon(blueFavicon);
 
             //Remove sine wave animations
             flowAnimation.classList.remove('intoOpacityTransition');
@@ -249,14 +265,14 @@ document.addEventListener("DOMContentLoaded", function() {
             saveResetInterruptions(interruptionsNum, counters, savedInterruptionsArr);
             hideInterruptionsSubContainer(interruptionsSubContainer);
 
-            let lastHyperFocusIntervalMin = Math.floor((Date.now() - startTimes.hyperFocus) / (1000 * 60));
+            flags.lastHyperFocusIntervalMin = Math.floor((Date.now() - startTimes.hyperFocus) / (1000 * 60));
             
-            showSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, breakTimeSuggestionsArr, lastHyperFocusIntervalMin, counters);
+            showSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, breakTimeSuggestionsArr, counters, flags);
             
             //if chill time break suggestion is set BEFORE entering Chill Time
-            if (flags.chillTimeBreakSuggestionToggle) {
-                elapsedTime.chillTimeSuggestionSeconds = (counters.currentChillTimeBreakSuggestion * 60) - 1;
-                intervals.chillTimeBreak = setInterval(() => chillTimeSuggestionCountdown(elapsedTime, counters, flags), 1000);
+            if (flags.flowmodoroNotificationToggle) {
+                elapsedTime.flowmodoroNotificationSeconds = (counters.currentFlowmodoroNotification * 60) - 1;
+                intervals.chillTimeBreak = setInterval(() => flowmodoroNotificationCountdown(elapsedTime, counters, flags, alertSounds, alertVolumes, chime, bell, start_stop_btn, breakTimeSuggestionsArr), 1000);
             }
             //Console.log out the --> Chill Time (00:00 format)
             console.log(getCurrentTime() + " --> Entering Chill Time");
@@ -270,10 +286,11 @@ document.addEventListener("DOMContentLoaded", function() {
             clearInterval(intervals.total);
             intervals.total = null;
 
-            if (flags.submittedSuggestionMinutes) {
+            //if flow time break notification is turned on
+            if (flags.breakSuggestionToggle) {
                 clearInterval(intervals.suggestion);
                 intervals.suggestion = null;
-                elapsedTime.suggestionSeconds = (suggestionMinutes * 60) - 1;
+                elapsedTime.suggestionSeconds = (suggestionMinutes * 60);
             }
 
             elapsedTime.hyperFocus += Date.now() - startTimes.hyperFocus;
@@ -340,35 +357,33 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    submit_suggestion_btn.addEventListener("click", function() {
-        if (!flags.submittedSuggestionMinutes) {
+    suggestionMinutesInput.addEventListener("change", function() {
+        let inputSuggestionMinutes = suggestionMinutesInput.value;
+        suggestionMinutes = Math.round(parseFloat(inputSuggestionMinutes));
 
-            let inputSuggestionMinutes = document.getElementById("suggestionMinutesInput").value;
+        if (suggestionMinutes > 720) {
+            suggestionMinutes = 720;
+        } else if (suggestionMinutes < 1) {
+            suggestionMinutes = 1;
+        }
 
-            //Validate input (no decimals or negative numbers or numbers above 720)
-            if(!suggestionMinutesValidate(inputSuggestionMinutes)) {
-                return;
-            }
+        suggestionMinutesInput.value = suggestionMinutes;
 
-            //set suggestion minutes w/ replaceSuggestionMinutes(inputSuggestionMinutes, suggestionMinutes, flags)
-            suggestionMinutes = replaceSuggestionMinutes(inputSuggestionMinutes, suggestionMinutes, flags);
+        if (flags.breakSuggestionToggle) {
+            clearInterval(intervals.suggestion);
+            intervals.suggestion = null;
+
+            //MAKE THIS A FUNCTION
+
             let elapsedTimeInHyperfocus = Math.floor((Date.now() - startTimes.hyperFocus) / 1000); //unit: seconds
-
             if (!flags.inHyperFocus) {
                 elapsedTime.suggestionSeconds = (suggestionMinutes * 60) - 1; //shallow copy suggestionMinutes to elapsedTime.suggestionSeconds (saves state)
             } else {
                 elapsedTime.suggestionSeconds = ((suggestionMinutes * 60) - elapsedTimeInHyperfocus) - 1;
             }
-            
             if (flags.inHyperFocus) {
-                intervals.suggestion = setInterval(() => suggestionMinutesCountdown(elapsedTime, suggestionMinutes, flags), 1000);
+                intervals.suggestion = setInterval(() => suggestionMinutesCountdown(elapsedTime, suggestionMinutes, flags, alertSounds, alertVolumes, chime, bell, start_stop_btn), 1000);
             }
-        }
-        else if (flags.submittedSuggestionMinutes) {
-            //change suggestion minutes input back to blank state and clear interval (repeated code; refactor later)
-            changeSuggestionMinutes(flags);
-            clearInterval(intervals.suggestion);
-            intervals.suggestion = null;
         }
     })
 
@@ -386,167 +401,217 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     })
 
-    pomodoroBtnContainer.addEventListener("click", function() {
-        pomodoroSettingsContainer.style.display = "block";
-        pomodoroBtnContainer.classList.add('selected');
+    // Settings Menu Functionality
+    for (const [buttonId, containerId] of Object.entries(settingsMappings)) {
+        document.getElementById(buttonId).addEventListener('click', function() {
+            hideAllSettingsContainers(settingsMappings);
+            document.getElementById(containerId).style.display = 'block';
+            this.classList.add('selected');
+        });
+    }
 
-        soundsSettingsContainer.style.display = "none";
-        soundsBtnContainer.classList.remove('selected');
-
-        flowmodoroSettingsContainer.style.display = "none";
-        flowmodoroBtnContainer.classList.remove('selected');
-
-        generalSettingsContainer.style.display = "none";
-        generalBtnContainer.classList.remove('selected');
-
-        backgroundsSettingsContainer.style.display = "none";
-        backgroundsBtnContainer.classList.remove('selected');
-
-        accountSettingsContainer.style.display = "none";
-        accountBtnContainer.classList.remove('selected');
-
-        supportAndFeedbackSettingsContainer.style.display = "none";
-        supportAndFeedbackBtnContainer.classList.remove('selected');
+    flowmodoroNotifications.addEventListener('click', function() {
+        if (!flags.showingFlowmodoroNotificationInfoWindow) {
+            flowmodoroNotificationInfoWindow.classList.add('infoWindowOpacity');
+            flags.showingFlowmodoroNotificationInfoWindow = true;
+        } else {
+            flowmodoroNotificationInfoWindow.classList.remove('infoWindowOpacity');
+            flags.showingFlowmodoroNotificationInfoWindow = false;
+        }
     })
 
-    flowmodoroBtnContainer.addEventListener("click", function() {
-        flowmodoroSettingsContainer.style.display = "block";
-        flowmodoroBtnContainer.classList.add('selected');
-
-        soundsSettingsContainer.style.display = "none";
-        soundsBtnContainer.classList.remove('selected');
-
-        pomodoroSettingsContainer.style.display = "none";
-        pomodoroBtnContainer.classList.remove('selected');
-
-        generalSettingsContainer.style.display = "none";
-        generalBtnContainer.classList.remove('selected');
-
-        backgroundsSettingsContainer.style.display = "none";
-        backgroundsBtnContainer.classList.remove('selected');
-
-        accountSettingsContainer.style.display = "none";
-        accountBtnContainer.classList.remove('selected');
-
-        supportAndFeedbackSettingsContainer.style.display = "none";
-        supportAndFeedbackBtnContainer.classList.remove('selected');
+    flowTimeBreakNotification.addEventListener("click", function() {
+        if(!flags.showingFlowTimeBreakNotificationInfoWindow) {
+            flowTimeBreakNotificationInfoWindow.classList.add('infoWindowOpacity');
+            flags.showingFlowTimeBreakNotificationInfoWindow = true;
+        } else {
+            flowTimeBreakNotificationInfoWindow.classList.remove('infoWindowOpacity');
+            flags.showingFlowTimeBreakNotificationInfoWindow = false;
+        }
     })
 
-    generalBtnContainer.addEventListener("click", function() {
-        generalSettingsContainer.style.display = "block";
-        generalBtnContainer.classList.add('selected');
-
-        soundsSettingsContainer.style.display = "none";
-        soundsBtnContainer.classList.remove('selected');
-
-        pomodoroSettingsContainer.style.display = "none";
-        pomodoroBtnContainer.classList.remove('selected');
-
-        flowmodoroSettingsContainer.style.display = "none";
-        flowmodoroBtnContainer.classList.remove('selected');
-
-        backgroundsSettingsContainer.style.display = "none";
-        backgroundsBtnContainer.classList.remove('selected');
-
-        accountSettingsContainer.style.display = "none";
-        accountBtnContainer.classList.remove('selected');
-
-        supportAndFeedbackSettingsContainer.style.display = "none";
-        supportAndFeedbackBtnContainer.classList.remove('selected');
+    flowmodoroVolumeThumb.addEventListener('mousedown', (event) => {
+        flags.flowmodoroThumbIsDragging = true;
+        event.preventDefault(); // Prevent text selection
     })
 
-    backgroundsBtnContainer.addEventListener("click", function() {
-        
-        
-        backgroundsSettingsContainer.style.display = "block";
-        backgroundsBtnContainer.classList.add('selected');
-
-        generalSettingsContainer.style.display = "none";
-        generalBtnContainer.classList.remove('selected');
-
-        soundsSettingsContainer.style.display = "none";
-        soundsBtnContainer.classList.remove('selected');
-
-        pomodoroSettingsContainer.style.display = "none";
-        pomodoroBtnContainer.classList.remove('selected');
-
-        flowmodoroSettingsContainer.style.display = "none";
-        flowmodoroBtnContainer.classList.remove('selected');
-
-        accountSettingsContainer.style.display = "none";
-        accountBtnContainer.classList.remove('selected');
-
-        supportAndFeedbackSettingsContainer.style.display = "none";
-        supportAndFeedbackBtnContainer.classList.remove('selected');
-    })
-    
-    soundsBtnContainer.addEventListener("click", function() {
-        soundsSettingsContainer.style.display = "block";
-        soundsBtnContainer.classList.add('selected');
-
-        pomodoroSettingsContainer.style.display = "none";
-        pomodoroBtnContainer.classList.remove('selected');
-
-        flowmodoroSettingsContainer.style.display = "none";
-        flowmodoroBtnContainer.classList.remove('selected');
-
-        generalSettingsContainer.style.display = "none";
-        generalBtnContainer.classList.remove('selected');
-
-        backgroundsSettingsContainer.style.display = "none";
-        backgroundsBtnContainer.classList.remove('selected');
-
-        accountSettingsContainer.style.display = "none";
-        accountBtnContainer.classList.remove('selected');
-
-        supportAndFeedbackSettingsContainer.style.display = "none";
-        supportAndFeedbackBtnContainer.classList.remove('selected');
+    generalVolumeThumb.addEventListener('mousedown', (event) => {
+        flags.generalThumbIsDragging = true;
+        event.preventDefault(); // Prevent text selection
     })
 
-    accountBtnContainer.addEventListener("click", function() {
-        accountSettingsContainer.style.display = "block";
-        accountBtnContainer.classList.add('selected');
+    document.addEventListener('mousemove', (event) => {
+        if (flags.flowmodoroThumbIsDragging) {
+            const rect = flowmodoroVolumeContainer.getBoundingClientRect();
+            let volumeLevel = (event.clientX - rect.left) / rect.width;
+            volumeLevel = Math.max(0, Math.min(1, volumeLevel)); // Constrain between 0 and 1
 
-        soundsSettingsContainer.style.display = "none";
-        soundsBtnContainer.classList.remove('selected');
+            // Update the thumb and bar positions
+            flowmodoroVolumeThumb.style.left = `${volumeLevel * 100}%`;
+            flowmodoroVolumeBar.style.width = `${volumeLevel * 100}%`;
 
-        pomodoroSettingsContainer.style.display = "none";
-        pomodoroBtnContainer.classList.remove('selected');
+            // Optionally, update the actual volume here
+            setVolumeFlowmodoroAlert(volumeLevel, alertVolumes);
+        } else if (flags.generalThumbIsDragging) {
+            const rect = generalVolumeContainer.getBoundingClientRect();
+            let volumeLevel = (event.clientX - rect.left) / rect.width;
+            volumeLevel = Math.max(0, Math.min(1, volumeLevel)); // Constrain between 0 and 1
 
-        flowmodoroSettingsContainer.style.display = "none";
-        flowmodoroBtnContainer.classList.remove('selected');
+            // Update the thumb and bar positions
+            generalVolumeThumb.style.left = `${volumeLevel * 100}%`;
+            generalVolumeBar.style.width = `${volumeLevel * 100}%`;
 
-        generalSettingsContainer.style.display = "none";
-        generalBtnContainer.classList.remove('selected');
+            // Optionally, update the actual volume here
+            setVolumeGeneralAlert(volumeLevel, alertVolumes);
 
-        backgroundsSettingsContainer.style.display = "none";
-        backgroundsBtnContainer.classList.remove('selected');
-
-        supportAndFeedbackSettingsContainer.style.display = "none";
-        supportAndFeedbackBtnContainer.classList.remove('selected');
+        }
     })
 
-    supportAndFeedbackBtnContainer.addEventListener("click", function() {
-        supportAndFeedbackSettingsContainer.style.display = "block";
-        supportAndFeedbackBtnContainer.classList.add('selected');
+    document.addEventListener('mouseup', (event) => {
+        if (flags.flowmodoroThumbIsDragging) {
+            if (alertSounds.flowmodoro === 'chime') {
+                bell.pause();
+                bell.currentTime = 0;
+                chime.pause();
+                chime.currentTime = 0;
+                chime.volume = alertVolumes.flowmodoro;
+                chime.play();
+            } else if (alertSounds.flowmodoro === 'bell') {
+                bell.pause();
+                bell.currentTime = 0;
+                chime.pause();
+                chime.currentTime = 0;
+                bell.volume = alertVolumes.flowmodoro;
+                bell.play();
+            }
+            flags.flowmodoroThumbIsDragging = false;
+        } else if (flags.generalThumbIsDragging) {
+            if (alertSounds.general === 'chime') {
+                bell.pause();
+                bell.currentTime = 0;
+                chime.pause();
+                chime.currentTime = 0;
+                chime.volume = alertVolumes.general;
+                chime.play();
+            } else if (alertSounds.general === 'bell') {
+                bell.pause();
+                bell.currentTime = 0;
+                chime.pause();
+                chime.currentTime = 0;
+                bell.volume = alertVolumes.general;
+                bell.play();
+            }
+            flags.generalThumbIsDragging = false;
+            
+        } else {
+            if ((event.target.className !== 'flowmodoroAlert') && (event.target.className !== 'volume-thumb') && (document.getElementById("settingsContainer").style.display === "block")) {
+                bell.pause();
+                bell.currentTime = 0;
+                chime.pause();
+                chime.currentTime = 0;
+            }
+        }
+    })
 
-        accountSettingsContainer.style.display = "none";
-        accountBtnContainer.classList.remove('selected');
+    flowmodoroInputs.forEach(input => {
+        input.addEventListener('change', function(event) {
 
-        soundsSettingsContainer.style.display = "none";
-        soundsBtnContainer.classList.remove('selected');
+            //remove decimal values
+            let finalInputVal = Math.round(event.target.value);
 
-        pomodoroSettingsContainer.style.display = "none";
-        pomodoroBtnContainer.classList.remove('selected');
+            //cap max num minutes (equivalent to 12 hours)
+            if (finalInputVal > 720) {
+                finalInputVal = 720;
+            } else if (finalInputVal < 1) {
+                finalInputVal = 1;
+            }
+            
+            let secondsPassed = (breakTimeSuggestionsArr[counters.currentFlowmodoroBreakIndex] * 60) - elapsedTime.flowmodoroNotificationSeconds;
 
-        flowmodoroSettingsContainer.style.display = "none";
-        flowmodoroBtnContainer.classList.remove('selected');
+            //set number displayed to user as the finalInputVal
+            document.getElementById(event.target.id).value = finalInputVal;
+            
+            if (event.target.id === 'flowmodoroBreakInput1') {
+                breakTimeSuggestionsArr[0] = finalInputVal;
+                counters.currentFlowmodoroBreakIndex = 0;
+            } else if (event.target.id === 'flowmodoroBreakInput2') {
+                breakTimeSuggestionsArr[1] = finalInputVal;
+                counters.currentFlowmodoroBreakIndex = 1;
+            } else if (event.target.id === 'flowmodoroBreakInput3') {
+                breakTimeSuggestionsArr[2] = finalInputVal;
+                counters.currentFlowmodoroBreakIndex = 2;
+            } else if (event.target.id === 'flowmodoroBreakInput4') {
+                breakTimeSuggestionsArr[3] = finalInputVal;
+                counters.currentFlowmodoroBreakIndex = 3;
+            }
 
-        generalSettingsContainer.style.display = "none";
-        generalBtnContainer.classList.remove('selected');
+            //MAKE THIS A FUNCTION
+            if (flags.lastHyperFocusIntervalMin >= 90) {
+                counters.currentFlowmodoroNotification = breakTimeSuggestionsArr[3];
+            } else if (flags.lastHyperFocusIntervalMin >= 50) {
+                counters.currentFlowmodoroNotification = breakTimeSuggestionsArr[2];
+            } else if (flags.lastHyperFocusIntervalMin >= 25) {
+                counters.currentFlowmodoroNotification = breakTimeSuggestionsArr[1];
+            } else {
+                counters.currentFlowmodoroNotification = breakTimeSuggestionsArr[0];
+            }
 
-        backgroundsSettingsContainer.style.display = "none";
-        backgroundsBtnContainer.classList.remove('selected');
+            if ((counters.startStop === 0) || (flags.inHyperFocus)) {
+                elapsedTime.flowmodoroNotificationSeconds = ((counters.currentFlowmodoroNotification * 60) - secondsPassed) - 1;
+            } else {
+                elapsedTime.flowmodoroNotificationSeconds = ((counters.currentFlowmodoroNotification * 60) - secondsPassed);
+            }
+
+            suggestionBreak_min.textContent = counters.currentFlowmodoroNotification + " min";
+        })
+    }) 
+
+    flowmodoroRadios.forEach(radio => {
+        radio.addEventListener('change', function(event) {
+            if (event.target.id === 'flowmodoroNoAlertInput') {
+                alertSounds.flowmodoro = 'none';
+                bell.pause();
+                bell.currentTime = 0;
+                chime.pause();
+                chime.currentTime = 0;
+            } else if (event.target.id === 'flowmodoroChimeInput') {
+                alertSounds.flowmodoro = 'chime';
+                chime.volume = alertVolumes.flowmodoro;
+                bell.pause();
+                bell.currentTime = 0;
+                chime.play();
+            } else if (event.target.id === 'flowmodoroBellInput') {
+                alertSounds.flowmodoro = 'bell';
+                bell.volume = alertVolumes.flowmodoro;
+                chime.pause();
+                chime.currentTime = 0;
+                bell.play();
+            }
+        })
+    })
+
+    generalRadios.forEach(radio => {
+        radio.addEventListener('change', function(event) {
+            if (event.target.id === 'generalNoAlertInput') {
+                alertSounds.general = 'none';
+                bell.pause();
+                bell.currentTime = 0;
+                chime.pause();
+                chime.currentTime = 0;
+            } else if (event.target.id === 'generalChimeInput') {
+                alertSounds.general = 'chime';
+                chime.volume = alertVolumes.general;
+                bell.pause();
+                bell.currentTime = 0;
+                chime.play();
+            } else if (event.target.id === 'generalBellInput') {
+                alertSounds.general = 'bell';
+                bell.volume = alertVolumes.general;
+                chime.pause();
+                chime.currentTime = 0;
+                bell.play();
+            }
+        })
     })
 
     //Toggle is set to true by default
@@ -570,33 +635,47 @@ document.addEventListener("DOMContentLoaded", function() {
                 console.log("Notifications Denied");
                 return;
             }
-            if (!enableNotifications(breakSuggestionToggle, chillTimeBreakSuggestionToggle, flags, suggestionMinutesContainer)) {
+            if (!enableNotifications(breakSuggestionToggle, flowmodoroNotificationToggle, flags, suggestionMinutesContainer)) {
                 return;
             }
 
             flags.breakSuggestionToggle = true;
-            //Show option to enter how long you'd like to stay in hyper focus mode before getting a suggestion to take break
-            showSuggestionMinutesContainer(suggestionMinutesContainer);
+
+            //MAKE THIS A FUNCTION
+            let inputSuggestionMinutes = suggestionMinutesInput.value;
+            //Validate input (no decimals or negative numbers or numbers above 720)
+            if(!suggestionMinutesValidate(inputSuggestionMinutes)) { //unnecessary input validation
+                breakSuggestionToggle.checked = false;
+                return;
+            }
+            suggestionMinutes = Math.round(parseFloat(inputSuggestionMinutes));
+            let elapsedTimeInHyperfocus = Math.floor((Date.now() - startTimes.hyperFocus) / 1000); //unit: seconds
+            if (!flags.inHyperFocus) {
+                elapsedTime.suggestionSeconds = (suggestionMinutes * 60) - 1; //shallow copy suggestionMinutes to elapsedTime.suggestionSeconds (saves state)
+            } else {
+                elapsedTime.suggestionSeconds = ((suggestionMinutes * 60) - elapsedTimeInHyperfocus) - 1;
+            }
+            if (flags.inHyperFocus) {
+                intervals.suggestion = setInterval(() => suggestionMinutesCountdown(elapsedTime, suggestionMinutes, flags, alertSounds, alertVolumes, chime, bell, start_stop_btn), 1000);
+            }
         } else {
             flags.breakSuggestionToggle = false;
-            hideSuggestionMinutesContainer(suggestionMinutesContainer);
 
             //change suggestion minutes input back to blank state and clear interval (repeated code; refactor later)
-            changeSuggestionMinutes(flags);
             clearInterval(intervals.suggestion);
             intervals.suggestion = null;
         }
     })
 
-    chillTimeBreakSuggestionToggle.addEventListener("click", function() {
-        if (chillTimeBreakSuggestionToggle.checked) {
+    flowmodoroNotificationToggle.addEventListener("click", function() {
+        if (flowmodoroNotificationToggle.checked) {
             if (Notification.permission === "denied") {
                 alert("Enable notifications in the browser window")
-                chillTimeBreakSuggestionToggle.checked = false;
+                flowmodoroNotificationToggle.checked = false;
                 console.log("Notifications Denied");
                 return;
             }
-            if (!enableNotifications(breakSuggestionToggle, chillTimeBreakSuggestionToggle, flags, suggestionMinutesContainer)) {
+            if (!enableNotifications(breakSuggestionToggle, flowmodoroNotificationToggle, flags, suggestionMinutesContainer)) {
                 return;
             }
 
@@ -604,20 +683,46 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // When toggle for break notification is turned on whilst in chill time
             if (!flags.inHyperFocus && counters.startStop !== 0) {
-                elapsedTime.chillTimeSuggestionSeconds = ((counters.currentChillTimeBreakSuggestion * 60) - elapsedTimeInChillTime) - 1;
-                intervals.chillTimeBreak = setInterval(() => chillTimeSuggestionCountdown(elapsedTime, counters, flags), 1000);
+                elapsedTime.flowmodoroNotificationSeconds = ((counters.currentFlowmodoroNotification * 60) - elapsedTimeInChillTime) - 1;
+                intervals.chillTimeBreak = setInterval(() => flowmodoroNotificationCountdown(elapsedTime, counters, flags, alertSounds, alertVolumes, chime, bell, start_stop_btn, breakTimeSuggestionsArr), 1000);
             }
 
-            flags.chillTimeBreakSuggestionToggle = true;
+            flags.flowmodoroNotificationToggle = true;
         } else {
-            flags.chillTimeBreakSuggestionToggle = false;
+            flags.flowmodoroNotificationToggle = false;
             clearInterval(intervals.chillTimeBreak);
             intervals.chillTimeBreak = null
         }
+
+        // MAKE THIS A FUNCTION
+        if (flags.flowmodoroNotificationToggle) {
+            suggestionBreak_label.textContent = "Break";
+        } else {
+            suggestionBreak_label.textContent = "Suggested Break";
+        }
+        suggestionBreak_min.textContent = counters.currentFlowmodoroNotification + " min";
     })
 
     autoStartFlowTimeIntervalToggle.addEventListener("click", function() {
         //Fill this out tomorrow
+        if (!flags.autoStartFlowTimeInterval) {
+            flags.autoStartFlowTimeInterval = true;
+        } else if (flags.autoStartFlowTimeInterval) {
+            flags.autoStartFlowTimeInterval = false;
+        }
+    })
+    
+    autoStartChillTimeIntervalToggle.addEventListener("click", function() {
+        if (!flags.autoStartChillTimeInterval) {
+            flags.autoStartChillTimeInterval = true;
+        } else if (flags.autoStartChillTimeInterval) {
+            flags.autoStartChillTimeInterval = false;
+        }
+    })
+
+    //FUTURE NOTE: could possibly make this a notification instead of an alert
+    targetTimeReachedAlert.addEventListener("click", function() {
+        alert("This is what you will see when you hit your target time!");
     })
 
     transitionClockSoundToggle.addEventListener("click", function() {
@@ -671,6 +776,22 @@ document.addEventListener("DOMContentLoaded", function() {
 // HELPER FUNCTIONS
 // ---------------------
 
+// Function to hide all settings containers and remove 'selected' class from all buttons
+function hideAllSettingsContainers(settingsMappings) {
+    for (const [buttonId, containerId] of Object.entries(settingsMappings)) {
+        document.getElementById(containerId).style.display = 'none';
+        document.getElementById(buttonId).classList.remove('selected');
+    }
+}
+
+function setVolumeGeneralAlert(volumeLevel, alertVolumes) {
+    alertVolumes.general = volumeLevel;
+}
+
+function setVolumeFlowmodoroAlert(volumeLevel, alertVolumes) {
+    alertVolumes.flowmodoro = volumeLevel;
+}
+
 function setInitialEndSessionBtnText(initialViewportWidth, end_session_btn) {
     if (initialViewportWidth <= 504) {
         end_session_btn.innerText = "End";
@@ -689,21 +810,26 @@ function handleViewportWidthChange() {
     }
 }
 
-function showSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, breakTimeSuggestionsArr, lastHyperFocusIntervalMin, counters) {
+function showSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, breakTimeSuggestionsArr, counters, flags) {
     suggestionBreakContainer.style.display = 'flex';
 
-    if (lastHyperFocusIntervalMin >= 90) {
-        counters.currentChillTimeBreakSuggestion = breakTimeSuggestionsArr[3];
-    } else if (lastHyperFocusIntervalMin >= 50) {
-        counters.currentChillTimeBreakSuggestion = breakTimeSuggestionsArr[2];
-    } else if (lastHyperFocusIntervalMin >= 25) {
-        counters.currentChillTimeBreakSuggestion = breakTimeSuggestionsArr[1];
+    if (flags.lastHyperFocusIntervalMin >= 90) {
+        counters.currentFlowmodoroNotification = breakTimeSuggestionsArr[3];
+    } else if (flags.lastHyperFocusIntervalMin >= 50) {
+        counters.currentFlowmodoroNotification = breakTimeSuggestionsArr[2];
+    } else if (flags.lastHyperFocusIntervalMin >= 25) {
+        counters.currentFlowmodoroNotification = breakTimeSuggestionsArr[1];
     } else {
-        counters.currentChillTimeBreakSuggestion = breakTimeSuggestionsArr[0];
+        counters.currentFlowmodoroNotification = breakTimeSuggestionsArr[0];
     }
 
-    suggestionBreak_label.textContent = "Suggested Break";
-    suggestionBreak_min.textContent = counters.currentChillTimeBreakSuggestion + " min";
+    // MAKE THIS A FUNCTION
+    if (flags.flowmodoroNotificationToggle) {
+        suggestionBreak_label.textContent = "Break";
+    } else {
+        suggestionBreak_label.textContent = "Suggested Break";
+    }
+    suggestionBreak_min.textContent = counters.currentFlowmodoroNotification + " min";
 }
 
 function hideSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label) {
@@ -742,7 +868,7 @@ function getCurrentTime() {
     return timeString;
 }
 
-function suggestionMinutesCountdown(elapsedTime, suggestionMinutes, flags) {
+function suggestionMinutesCountdown(elapsedTime, suggestionMinutes, flags, alertSounds, alertVolumes, chime, bell, start_stop_btn) {
     // console.log(elapsedTime.suggestionSeconds); //testing
     if (elapsedTime.suggestionSeconds === 0) {
         let notificationString;
@@ -752,18 +878,48 @@ function suggestionMinutesCountdown(elapsedTime, suggestionMinutes, flags) {
             notificationString = "Need a break? You've been hard at work for " + suggestionMinutes.toString() + " minute!";
         }
         new Notification(notificationString);
+
+        if (alertSounds.general === 'chime') {
+            chime.volume = alertVolumes.general;
+            chime.play();
+        } else if (alertSounds.general === 'bell') {
+            bell.volume = alertVolumes.general;
+            bell.play();
+        }
+        //IF AUTO START CHILL TIME INTERVAL OPTION IS SELECTED
+        if (flags.autoStartChillTimeInterval) {
+            start_stop_btn.click();
+        }
     }
     elapsedTime.suggestionSeconds--;
-    // console.log(elapsedTime.suggestionSeconds);
+    console.log(elapsedTime.suggestionSeconds);
 }
 
-function chillTimeSuggestionCountdown(elapsedTime, counters, flags) {
-    if (elapsedTime.chillTimeSuggestionSeconds === 0) {
-        let notificationString = "It's been " + counters.currentChillTimeBreakSuggestion + " minutes! Are you ready to get back into Flow Time?";
+function flowmodoroNotificationCountdown(elapsedTime, counters, flags, alertSounds, alertVolumes, chime, bell, start_stop_btn, breakTimeSuggestionsArr) {
+    if (elapsedTime.flowmodoroNotificationSeconds === 0) {
+
+        let notificationString;
+        if (breakTimeSuggestionsArr[counters.currentFlowmodoroBreakIndex] == 1) {
+            notificationString = "It's been " + counters.currentFlowmodoroNotification + " minute! Are you ready to get back into Flow Time?";
+        } else {
+            notificationString = "It's been " + counters.currentFlowmodoroNotification + " minutes! Are you ready to get back into Flow Time?";
+        }
         new Notification(notificationString);
+
+        if (alertSounds.flowmodoro === 'chime') {
+            chime.volume = alertVolumes.flowmodoro;
+            chime.play();
+        } else if (alertSounds.flowmodoro === 'bell') {
+            bell.volume = alertVolumes.flowmodoro;
+            bell.play();
+        }
+        //IF AUTO START FLOW TIME INTERVAL OPTION IS SELECTED
+        if (flags.autoStartFlowTimeInterval) {
+            start_stop_btn.click();
+        }
     }
-    elapsedTime.chillTimeSuggestionSeconds--;
-    // console.log(elapsedTime.chillTimeSuggestionSeconds);
+    elapsedTime.flowmodoroNotificationSeconds--;
+    console.log(elapsedTime.flowmodoroNotificationSeconds);
 }
 
 function removeBreakSuggestionBlock(breakSuggestionBlock, breakSuggestionBlock2) {
@@ -797,7 +953,7 @@ function detectBrowser() {
 }
 
 //For some reason, EDGE won't prompt the user to turn on notifications if they're set to default :/
-async function enableNotifications(breakSuggestionToggle, chillTimeBreakSuggestionToggle, flags, suggestionMinutesContainer) {
+async function enableNotifications(breakSuggestionToggle, flowmodoroNotificationToggle, flags, suggestionMinutesContainer) {
     // Check if notifications are supported
     if (!("Notification" in window)) {
         alert("This browser does not support desktop notifications");
@@ -813,8 +969,8 @@ async function enableNotifications(breakSuggestionToggle, chillTimeBreakSuggesti
             breakSuggestionToggle.checked = false;
             flags.breakSuggestionToggle = false;
 
-            chillTimeBreakSuggestionToggle.checked = false;
-            flags.chillTimeBreakSuggestionToggle = false;
+            flowmodoroNotificationToggle.checked = false;
+            flags.flowmodoroNotificationToggle = false;
             hideSuggestionMinutesContainer(suggestionMinutesContainer);
             return false;
         }
@@ -831,51 +987,6 @@ function suggestionMinutesValidate(inputSuggestionMinutes) {
         return false;
     }
     return true;
-}
-
-function showSuggestionMinutesContainer(suggestionMinutesContainer) {
-    suggestionMinutesContainer.style.display = "flex";
-
-    let inputSuggestionMinutesInput = document.getElementById("suggestionMinutesInput");
-    inputSuggestionMinutesInput.focus();
-}
-
-function hideSuggestionMinutesContainer(suggestionMinutesContainer) {
-    suggestionMinutesContainer.style.display = "none";
-}
-
-function changeSuggestionMinutes(flags) {
-    document.getElementById("suggestionMinutesInput").remove();
-        
-    let enterSuggestionMinutes = document.createElement('input');
-    enterSuggestionMinutes.type = "number";
-    enterSuggestionMinutes.id = "suggestionMinutesInput";
-    enterSuggestionMinutes.name = "minutes";
-    enterSuggestionMinutes.min = "0";
-    document.getElementById("coolDiv2").appendChild(enterSuggestionMinutes);
-    
-    document.getElementById('suggestion-minutes-submit').textContent = "Submit";
-    flags.submittedSuggestionMinutes = false;
-}
-
-function replaceSuggestionMinutes(inputSuggestionMinutes, suggestionMinutes, flags) {
-    //Insert a new number input box
-    let targetSuggestionMinutes = Math.round(parseFloat(inputSuggestionMinutes)); //return to 100 after testing
-    suggestionMinutes = targetSuggestionMinutes;
-    document.getElementById("suggestionMinutesInput").remove();
-
-    let submitMinutes = document.createElement('h4');
-    submitMinutes.textContent = targetSuggestionMinutes;
-    submitMinutes.id = "suggestionMinutesInput";
-    submitMinutes.className = "finalized-suggestion-minutes";
-    submitMinutes.style.backgroundColor = "#5c5c5c"; //dark grey finalized background color
-    submitMinutes.style.marginTop = "0px";
-    submitMinutes.style.marginBottom = "0px";
-    document.getElementById("coolDiv2").appendChild(submitMinutes);
-    document.getElementById('suggestion-minutes-submit').textContent = "Change";
-    flags.submittedSuggestionMinutes = true;
-
-    return suggestionMinutes;
 }
 
 function changeTargetHours(flags) {
@@ -1000,17 +1111,14 @@ function setBackground(background_color) {
     document.documentElement.style.backgroundImage = background_color;
 };
 
-function playClick(audio, flags) {
-    if (flags.transitionClockSoundToggle == true)
-    {
-        audio.volume = 0.25; //lowering volume of sound
-        audio.play().catch(error => {
-            console.error("Audio playback error:", error);
-        });
+function playClick(clock_tick, flags) {
+    if (flags.transitionClockSoundToggle == true) {
+        clock_tick.volume = 0.25; //lowering volume of sound
+        clock_tick.play();
     }
 };
 
-function handleEnter(event, start_stop_btn, submit_change_btn, userInputTask, submit_suggestion_btn) {
+function handleEnter(event, start_stop_btn, submit_change_btn, userInputTask) {
 
     if (event.key === 'Enter') {
         event.preventDefault();
@@ -1021,8 +1129,6 @@ function handleEnter(event, start_stop_btn, submit_change_btn, userInputTask, su
             // DO NOTHING - code for this event is implemented in notes.js instead
         }  else if (document.activeElement.className == "noteInput") {
             // DO NOTHING - code for this event is implemented in notes.js instead
-        } else if (document.activeElement.id === 'suggestionMinutesInput') {
-            submit_suggestion_btn.click();
         } else {
             start_stop_btn.click();
         }
@@ -1094,7 +1200,7 @@ function setBrowserTabTitle() {
     });
 };
 
-function setFavicon(link, faviconPath) {
+function setFavicon(faviconPath) {
     let favicon1 = document.getElementById("favicon1");
     let favicon2 = document.getElementById("favicon2");
 
