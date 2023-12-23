@@ -119,8 +119,12 @@
                             </div>
                         </div>
                         <div id="suggestionBreakContainer">
-                            <h4 id="suggestionBreak-label" style="font-size: 20px"></h4>
-                            <h4 id="suggestionBreak-min" style="font-size: 20px"></h4>
+                            <h4 id="suggestionBreak-label"></h4>
+                            <h4 id="suggestionBreak-min"></h4>
+                        </div>
+                        <div id="completedPomodorosContainer">
+                            <h4 id="completedPomodoros-label"></h4>
+                            <div id="completedPomodoros-min"></div>
                         </div>
                     </div>
                 </div>
@@ -558,18 +562,131 @@
                             <div id="alertsNotificationsContainer" class="settingsIconTextContainer">
                                 <h2>Pomodoro</h2>
                             </div>
-                            <div id="" class="settingsCategory">
+                            <!-- <div class="horizontal"></div> -->
+                            <div id="alertsNotificationsToggleContainer1" class="settingsCategory">
+                                <div id="pomodoroNotificationsBlock">
+                                    <div id="togglePomodoroNotificationContainer" class="settingsMicroContainer">
+                                        <div id="pomodoroNotificationText" class="settingsText">
+                                            <p id="pomodoroNotifications"><b class="settingsCategoryHeading">Pomodoro Notifications</b></p>
+                                        </div>
+                                        <div id="pomodoroNotificationToggleContainer" class="toggleContainer">
+                                            <input type="checkbox" id="pomodoroNotificationToggle" class="toggle-checkbox">
+                                            <label for="pomodoroNotificationToggle" id="pomodoroNotificationToggleLabel" class="toggle-label">
+                                                <span id="pomodoroNotificationToggleBall" class="toggle-ball"></span>
+                                            </label>
+                                        </div>
+                                        <div id="pomodoroNotificationInfoWindow" class="notificationInfoWindow">
+                                            This is notify you after each interval specified for Pomodoro, Short Break, and Long Break
+                                        </div>  
+                                    </div>
+                                    <div id="flowTimeBreakDemoImages" class="settingsMicroContainer">
+                                        <div id="endOfBreakIntervals">
+                                            <div id="minutesImageBucket" class="imageBucketHeader">
+                                                <div>
+                                                    <p id="Interval"><b>Interval: </b></p>
+                                                </div>
+                                                <div>
+                                                    <p id="BreakTime"><b>Break Time: </b></p>
+                                                </div>
+                                            </div>
+                                            <div id="minutesImageBucket1" class="imageBucket">
+                                                <div>
+                                                    <p><b>Pomodoro</b></p>
+                                                </div>
+                                                <!-- <img src="images/HyperChill/5minutes.png" class="minutesImage"> -->
+                                                <div class="pomodoroNotificationContainer">
+                                                    <input type="number" id="pomodoroInput" value="25" class="pomodoroInterval" name="minutes" min="1" max="720" step="1">
+                                                </div>
+                                            </div>
+                                            <div id="minutesImageBucket2" class="imageBucket">
+                                                <div>
+                                                    <p><b>Short Break</b></p>
+                                                </div>
+                                                <!-- <img src="images/HyperChill/8minutes.png" class="minutesImage"> -->
+                                                <div class="pomodoroNotificationContainer">
+                                                    <input type="number" id="shortBreakInput" value="5" class="pomodoroInterval" name="minutes" min="1" max="720" step="1">
+                                                </div>
+                                            </div>
+                                            <div id="minutesImageBucket3" class="imageBucket">
+                                                <div>
+                                                    <p><b>Long Break</b></p>
+                                                </div>
+                                                <!-- <img src="images/HyperChill/10minutes.png" class="minutesImage"> -->
+                                                <div class="pomodoroNotificationContainer">
+                                                    <input type="number" id="longBreakInput" value="15" class="pomodoroInterval" name="minutes" min="1" max="720" step="1">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="autoStartIntervalsBlock">
+                                    <div id="autoStartPomodoroIntervalContainer" class="settingsMicroContainer">
+                                        <div id="autoStartPomodoroIntervalText" class="settingsText">
+                                            <p><b>Auto Start Pomodoro Interval</b></p>
+                                        </div>
+                                        <div id="autoStartPomodoroIntervalToggleContainer" class="toggleContainer">
+                                            <input type="checkbox" id="autoStartPomodoroIntervalToggle" class="toggle-checkbox">
+                                            <label for="autoStartPomodoroIntervalToggle" id="autoStartPomodoroIntervalToggleLabel" class="toggle-label">
+                                                <span id="autoStartPomodoroIntervalToggleBall" class="toggle-ball"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div id="autoStartBreakIntervalContainer" class="settingsMicroContainer">
+                                        <div id="autoStartBreakIntervalText" class="settingsText">
+                                            <p><b>Auto Start Break Interval</b></p>
+                                        </div>
+                                        <div id="autoStartBreakIntervalToggleContainer" class="toggleContainer">
+                                            <input type="checkbox" id="autoStartBreakIntervalToggle" class="toggle-checkbox">
+                                            <label for="autoStartBreakIntervalToggle" id="autoStartBreakIntervalToggleLabel" class="toggle-label">
+                                                <span id="autoStartBreakIntervalToggleBall" class="toggle-ball"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="pomodoroAlertSoundBlock">
+                                    <div id="pomodoroAlertSoundContainer" class="settingsMicroContainer">
+                                        <div id="pomodoroAlertSoundText" class="settingsText">
+                                            <p><b>Alert Volume</b></p>
+                                        </div>
+                                        <div id="pomodoroAlertSoundVolumeContainer" class="toggleContainer">
+                                            <div id="pomodoroVolumeContainer" class="volume-container">
+                                                <div id="pomodoroVolumeBar" class="volume-bar">
+                                                </div>
+                                                <div id="pomodoroVolumeThumb" class="volume-thumb"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="pickAlertSound">
+                                        <label id="pomodoroNoAlertContainer" class="pomodoroAlertContainer">
+                                            <input id="pomodoroNoAlertInput" type="radio" name="pomodoroAlert" class="pomodoroAlert" checked>
+                                            <span id="pomodoroNoAlertText" class="settingsHeader">
+                                                No Alert
+                                            </span>
+                                        </label>
+                                        <label id="pomodoroChimeAlertContainer" class="pomodoroAlertContainer">
+                                            <input id="pomodoroChimeInput" type="radio" name="pomodoroAlert" class="pomodoroAlert">
+                                            <span id="pomodoroChimeText" class="settingsHeader">
+                                                Chime
+                                            </span>
+                                        </label>
+                                        <label id="pomodoroBellContainer" class="pomodoroAlertContainer">
+                                            <input id="pomodoroBellInput" type="radio" name="pomodoroAlert" class="pomodoroAlert">
+                                            <span id="pomodoroBellText" class="settingsHeader">
+                                                Bell
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-
 
                         <div id="flowmodoroSettingsContainer" class="settingsContentContainer">
                             <div id="flowmodoroContainer" class="settingsIconTextContainer">
                                 <h2>Flowmodoro</h2>
                             </div>
                             <!-- <div class="horizontal"></div> -->
-                            <div id="alertsNotificationsToggleContainer" class="settingsCategory">
-                                <div id="breakSuggestionBlock2">
+                            <div id="alertsNotificationsToggleContainer2" class="settingsCategory">
+                                <div id="flowmodoroNotificationsBlock">
                                     <div id="toggleFlowmodoroNotificationContainer" class="settingsMicroContainer">
                                         <div id="flowmodoroNotificationText" class="settingsText">
                                             <p id="flowmodoroNotifications"><b class="settingsCategoryHeading">Flowmodoro Notifications</b></p>
@@ -585,9 +702,6 @@
                                         </div>  
                                     </div>
                                     <div id="flowTimeBreakDemoImages" class="settingsMicroContainer">
-                                        <!-- <div id="endOfBreakNotificationText">
-                                            <p><b>End of Break Notification</b></p>
-                                        </div> -->
                                         <div id="endOfBreakIntervals">
                                             <div id="minutesImageBucket" class="imageBucketHeader">
                                                 <div>
@@ -665,19 +779,19 @@
                                     <div id="pickAlertSound">
                                         <label id="flowmodoroNoAlertContainer" class="flowmodoroAlertContainer">
                                             <input id="flowmodoroNoAlertInput" type="radio" name="flowmodoroAlert" class="flowmodoroAlert" checked>
-                                            <span id="flomodoroNoAlertText" class="settingsHeader">
+                                            <span id="flowmodoroNoAlertText" class="settingsHeader">
                                                 No Alert
                                             </span>
                                         </label>
                                         <label id="flowmodoroChimeAlertContainer" class="flowmodoroAlertContainer">
                                             <input id="flowmodoroChimeInput" type="radio" name="flowmodoroAlert" class="flowmodoroAlert">
-                                            <span id="flomodoroChimeText" class="settingsHeader">
+                                            <span id="flowmodoroChimeText" class="settingsHeader">
                                                 Chime
                                             </span>
                                         </label>
                                         <label id="flowmodoroBellContainer" class="flowmodoroAlertContainer">
                                             <input id="flowmodoroBellInput" type="radio" name="flowmodoroAlert" class="flowmodoroAlert">
-                                            <span id="flomodoroBellText" class="settingsHeader">
+                                            <span id="flowmodoroBellText" class="settingsHeader">
                                                 Bell
                                             </span>
                                         </label>
@@ -690,7 +804,7 @@
                             <div id="generalContainer" class="settingsIconTextContainer">
                                 <h2>General</h2>
                             </div>
-                            <div id="breakSuggestionBlock">
+                            <div id="flowTimeBreakNotificationBlock">
                                 <div id="toggleBreakSuggestionContainer" class="settingsMicroContainer">
                                     <div id="breakSuggestionText" class="settingsText">
                                         <p id="flowTimeBreakNotification"><b class="settingsCategoryHeading">Flow Time Break Notifications</b></p>

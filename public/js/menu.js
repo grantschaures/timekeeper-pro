@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const settings_exit = document.getElementById("settingsExit");
 
     const pomodoroBtnContainer = document.getElementById("pomodoroBtnContainer");
-    const flowmodoroBtnContainerBtnContainer = document.getElementById("flowmodoroBtnContainer");
+    const flowmodoroBtnContainer = document.getElementById("flowmodoroBtnContainer");
 
     //ADD TO THIS LIST WHEN YOU CREATE A NEW BLOG
     const blogIdList = {
@@ -103,8 +103,7 @@ document.addEventListener("DOMContentLoaded", function() {
     function handleClickSettings(event) {
         // We don't necessarily need to hide the main elements
 
-        // pomodoroBtnContainer.click();
-        flowmodoroBtnContainer.click();
+        pomodoroBtnContainer.click();
     
         //Hide blogs
         if (flags.blogShowing == true) {

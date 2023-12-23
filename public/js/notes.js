@@ -110,7 +110,6 @@ function handleTaskEnter_or_n(event, clearIcon, promptContainer, counters, curre
             document.getElementById(state.currentNoteInputId).focus();
         }
     } else if ((event.key === 'n') && (!notesFlags.notesShowing)) {
-        console.log("test")
         notesContainer.classList.add('fullsize');
         notesContainer.classList.add('fullopacity');
         

@@ -293,6 +293,18 @@ main {
     max-width: 225px;
 }
 
+#completedPomodorosContainer {
+    display: none;
+    /* border: 1px solid purple; */
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    max-width: 225px;
+    margin-bottom: 30px;
+    margin-top: 6px;
+}
+
 #interruptions-sub-container {
     margin-top: 6px;
     /* border: 1px solid yellow; */
@@ -347,10 +359,14 @@ main {
     transform: scale(0.95);
 }
 
-#interruptions_num {
+#interruptions_num, #completedPomodoros-min {
     font-family: myFont3;
     font-size: 50px;
     color: white;
+}
+
+#completedPomodoros-min {
+    margin-top: 7px;
 }
 
 #target-hours-container {
@@ -386,11 +402,12 @@ main {
     font-family: myFont3;
 }
 
-#suggestionBreak-label {
+#suggestionBreak-label, #completedPomodoros-label {
     /* border: 1px solid yellow; */
     display: flex;
     justify-content: center;
     font-family: myFont3;
+    font-size: 20px;
     margin-bottom: 12px;
 }
 
@@ -403,6 +420,8 @@ main {
     width: 100px;
     border-radius: 50px;
     margin-bottom: 42px;
+    font-size: 20px;
+    color: white;
 }
 
 #target-hours-sub-container {

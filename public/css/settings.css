@@ -127,12 +127,13 @@
     display: flex;
 }
 
-.flowmodoroAlert, .generalAlert {
+.flowmodoroAlert, .pomodoroAlert, .generalAlert {
     width: 20px;
     height: 20px;
     margin-bottom: 5px;
     margin-right: 10px;
     background-color: #53e658;
+    cursor: pointer;
 }
 
 .flowmodoroAlertContainer {
@@ -212,7 +213,7 @@
     /* border: 1px solid white; */
 }
 
-.flowmodoroBreak, #suggestionMinutesInput {
+.flowmodoroBreak, .pomodoroInterval, #suggestionMinutesInput {
     width: 50px;
     height: 20px;
     background-color: #e0e0e0;
@@ -248,12 +249,12 @@
     transition: opacity 0.25s ease-in-out;
 }
 
-#flowmodoroNotificationInfoWindow {
+#flowmodoroNotificationInfoWindow, #pomodoroNotificationInfoWindow {
     width: 300px;
     opacity: 0;
 }
 
-#flowmodoroNotificationInfoWindow.infoWindowOpacity {
+#flowmodoroNotificationInfoWindow.infoWindowOpacity, #flowTimeBreakNotificationInfoWindow.infoWindowOpacity, #pomodoroNotificationInfoWindow.infoWindowOpacity {
     opacity: 1;
 }
 
@@ -261,11 +262,6 @@
     width: 350px;
     opacity: 0;
 }
-
-#flowTimeBreakNotificationInfoWindow.infoWindowOpacity {
-    opacity: 1;
-}
-
 
 #flowmodoro-break-submit {
     border: 1px solid white;
@@ -358,12 +354,21 @@
     left: 40px;
 }
 
-/* Flomodoro Notifications */
+/* Flowmodoro Notifications */
 #flowmodoroNotificationToggle:checked + #flowmodoroNotificationToggleLabel {
     background-color: #53e658;
 }
 
 #flowmodoroNotificationToggle:checked + #flowmodoroNotificationToggleLabel #flowmodoroNotificationToggleBall {
+    left: 40px;
+}
+
+/* Pomodoro Notifications */
+#pomodoroNotificationToggle:checked + #pomodoroNotificationToggleLabel {
+    background-color: #53e658;
+}
+
+#pomodoroNotificationToggle:checked + #pomodoroNotificationToggleLabel #pomodoroNotificationToggleBall {
     left: 40px;
 }
 
@@ -385,6 +390,23 @@
     left: 40px;
 }
 
+/* Auto Start Pomodoro Interval */
+#autoStartPomodoroIntervalToggle:checked + #autoStartPomodoroIntervalToggleLabel {
+    background-color: #53e658;
+}
+
+#autoStartPomodoroIntervalToggle:checked + #autoStartPomodoroIntervalToggleLabel #autoStartPomodoroIntervalToggleBall {
+    left: 40px;
+}
+
+/* Auto Start (Pomodoro) Break Interval */
+#autoStartBreakIntervalToggle:checked + #autoStartBreakIntervalToggleLabel {
+    background-color: #53e658;
+}
+
+#autoStartBreakIntervalToggle:checked + #autoStartBreakIntervalToggleLabel #autoStartBreakIntervalToggleBall {
+    left: 40px;
+}
 /* For Transition Clock Sound Toggle */
 #transitionClockSoundToggle:checked + #transitionClockSoundToggleLabel {
     background-color: #53e658;
@@ -437,6 +459,7 @@
     top: 50%;
     transform: translate(-50%, -50%);
     left: 50%; /* Adjust this to set the initial thumb position */
+    cursor: pointer;
 }
 
 .settingsCategoryHeading {
