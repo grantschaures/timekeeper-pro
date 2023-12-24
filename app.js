@@ -55,6 +55,43 @@ app.use(express.static("public")); //app.use() function is used to mount middlew
 //express.static() is a built in middleware function in express to serve static files such as images, CS files, and JS files
 
 // A middleware function (or just middleware) is a function that examines or modifies the request and/or response objects. A middleware function has three parameters: req, res, and next
+app.use(express.json());
+
+let workerIntervalPomodoro;
+app.post('/pomodoroInterval', (req, res) => {
+  let serverTime = Date.now();
+
+  let timeDiff = serverTime - req.body.clientTime;
+  let timeDiffSeconds = Math.round(timeDiff / 1000);
+  console.log(timeDiffSeconds);
+
+  // Check if the request is to clear the interval
+  if (req.body.pomodoroNotificationSeconds === "clearInterval") {
+    clearInterval(workerIntervalPomodoro);
+    workerIntervalPomodoro = null;
+    res.send("Interval cleared");
+    return;
+  }
+
+  // Assuming the body contains a number of seconds
+  let totalNotificationSeconds = (req.body.pomodoroNotificationSeconds - 1) - timeDiffSeconds;
+  if (typeof totalNotificationSeconds === 'number') {
+    workerIntervalPomodoro = setInterval(() => {
+      if (totalNotificationSeconds === 1) { //might need to modify this value...
+        clearInterval(workerIntervalPomodoro);
+        workerIntervalPomodoro = null;
+        res.send("Interval finished");
+      } else {
+        totalNotificationSeconds--;
+        console.log(totalNotificationSeconds);
+      }
+    }, 1000);
+  } else {
+    clearInterval(workerIntervalPomodoro);
+    workerIntervalPomodoro = null;
+    res.send("Interval cleared");
+  }
+});
 
 app.get("/login", (req, res) => {
     const filePath = path.join(__dirname, 'public', 'login.html')
