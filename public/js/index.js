@@ -121,7 +121,8 @@ document.addEventListener("DOMContentLoaded", function() {
         hyperFocus: undefined, //startTime of current hyper focus session
         chillTime: undefined, //startTime of current chill time session
         local: undefined, //local start time for current display
-        beginning: undefined //very first start time of entire session
+        beginning: undefined, //very first start time of entire session
+        lastPomNotification: undefined
     };
 
     //RECOVERY
@@ -182,7 +183,7 @@ document.addEventListener("DOMContentLoaded", function() {
         hitTarget: false, //Flag: target time has been reached
         submittedTarget: false, //Flag: if target time has been submitted
         inHyperFocus: false, //Flag: check if in hyper focus mode
-        targetReachedToggle: true, //Flag: changes based on user setting (alerts user when target reached)
+        targetReachedToggle: false, //Flag: changes based on user setting (alerts user when target reached)
         breakSuggestionToggle: false,
         submittedSuggestionMinutes: false,
         transitionClockSoundToggle: false,
@@ -233,10 +234,11 @@ document.addEventListener("DOMContentLoaded", function() {
         playClick(clock_tick, flags);
         resetDisplay(display);
 
-        counters.startStop++; //keep track of button presses
+        counters.startStop++; //keep track of button presses (doesn't account for time recovery iterations)
 
         if (counters.startStop === 1) {
             veryStartActions(startTimes, hyperChillLogoImage, progressBarContainer, flags);
+            startTimes.lastPomNotification = Date.now();
         } else { // if not very first transition, and in pomodoro mode and not coming from non-pomodoro mode
             if ((flags.pomodoroNotificationToggle) && (productivity_chill_mode.textContent !== "Chill Time")) {
                 iterateCurrentPomodoroIntervalOrderIndex(counters);
@@ -335,14 +337,23 @@ document.addEventListener("DOMContentLoaded", function() {
                     // console.log("PREDICTED TIME: " + predictedTime);
                 }
                 var milliseconds = elapsedTime.hyperFocus;
-                elapsedTime.hyperFocus = Math.round(milliseconds / 1000) * 1000;
+                elapsedTime.hyperFocus = Math.round(milliseconds / 1000) * 1000; //see if this is necessary for manual transition
                 totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, targetTime);
+                if (flags.inRecoveryBreak) {
+                    setTimeout(() => {
+                        updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressBar, progressContainer);
+                    }, 1000)
+
+                    if (getTotalElapsed(flags, elapsedTime.hyperFocus, startTimes) < targetTime) {
+                        progressContainer.classList.remove("glowing-effect");
+                        flags.hitTarget = false;
+                    }
+                }
             } else {
                 showSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, breakTimeSuggestionsArr, counters, flags);
             }
             flags.autoSwitchedModes = false;
-            
-            
+
             //if chill time break suggestion is set BEFORE entering Chill Time
             if (flags.flowmodoroNotificationToggle) {
                 elapsedTime.flowmodoroNotificationSeconds = (counters.currentFlowmodoroNotification * 60);
@@ -870,6 +881,8 @@ document.addEventListener("DOMContentLoaded", function() {
         if (counters.currentPomodoroIntervalIndex === 0) {
             counters.pomodorosCompleted++;
         }
+
+        startTimes.lastPomNotification = Date.now();
         
         //IF AUTO START FLOW TIME INTERVAL OPTION IS SELECTED
         if (((flags.inHyperFocus) && (flags.autoStartBreakInterval)) || ((!flags.inHyperFocus) && (flags.autoStartPomodoroInterval))) {
@@ -950,11 +963,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 // }, 0)
             } else if ((flags.inHyperFocus) && ((counters.currentPomodoroNotification * 60 * 1000) < ((Date.now() - startTimes.local) - 1000))) {
                 flags.autoSwitchedModes = false;
-                setTimeout(() => {
-                    // console.log("timeout")
-                    flowTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, startTimes, start_stop_btn, recoverBreakState);
-                }, 0)
-                temp = true;
+                flowTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, startTimes, start_stop_btn, recoverBreakState, chime, bell, alertSounds, alertVolumes);
             }
         }
     }
@@ -967,6 +976,35 @@ document.addEventListener("DOMContentLoaded", function() {
 // ---------------------
 // HELPER FUNCTIONS
 // ---------------------
+
+function sendPomodoroDelayNotification(startTimes, counters, pomodoroIntervalArr, chime, bell, alertSounds, alertVolumes) {
+    let notificationString;
+    if (counters.currentPomodoroIntervalOrderIndex == 0 || counters.currentPomodoroIntervalOrderIndex == 2 || counters.currentPomodoroIntervalOrderIndex == 4) { // 1st-3rd pomodoro
+        if (pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] == 1) {
+            notificationString = "It's been " + counters.currentPomodoroNotification + " minute! Are you ready to take a short break?";
+        } else {
+            notificationString = "It's been " + counters.currentPomodoroNotification + " minutes! Are you ready to take a short break?";
+        }
+    } else if (counters.currentPomodoroIntervalOrderIndex == 6) { // 4th pomodoro
+        if (pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] == 1) {
+            notificationString = "It's been " + counters.currentPomodoroNotification + " minute! Are you ready to take a long break?";
+        } else {
+            notificationString = "It's been " + counters.currentPomodoroNotification + " minutes! Are you ready to take a long break?";
+        }
+    } else { // any of the breaks
+        if (pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] == 1) {
+            notificationString = "It's been " + counters.currentPomodoroNotification + " minute! Are you ready to start your Pomodoro Interval?";
+        } else {
+            notificationString = "It's been " + counters.currentPomodoroNotification + " minutes! Are you ready to start your Pomodoro Interval?";
+        }
+    }
+    new Notification(notificationString);
+    
+    playAlertSoundCountdown(chime, bell, alertSounds.pomodoro, alertVolumes.pomodoro);
+
+    startTimes.lastPomNotification = Date.now();
+}
+
 function chillTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, startTimes, start_stop_btn) {
     let displayTime = Date.now() - startTimes.local;
 
@@ -994,7 +1032,7 @@ function chillTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, st
         } else {
             // startTimes.local = Date.now() - displayTime;
         }
-    } else { //if (flags.autoStartPomodoroInterval)
+    } else if (flags.autoStartPomodoroInterval) { //if (flags.autoStartPomodoroInterval)
         displayTime -= pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60 * 1000;
         counters.currentPomodoroIntervalOrderIndex++;
         setCurrentPomodoroNotification(counters, pomodoroIntervalArr);
@@ -1005,6 +1043,8 @@ function chillTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, st
         // startTimes.local = Date.now() - displayTime;
 
         start_stop_btn.click();
+    } else {
+        //deal with showing the notification?
     }
 }
 
@@ -1012,8 +1052,7 @@ function chillTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, st
     This function deals w/ the situation where the computer goes to sleep during a pomodoro interval
     and calculates the future state of the program based on which intervals should have occured.
 */
-function flowTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, startTimes, start_stop_btn, recoverBreakState) {
-    
+function flowTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, startTimes, start_stop_btn, recoverBreakState, chime, bell, alertSounds, alertVolumes) {
     // INITIALIZING VARS
     let displayTime = Date.now() - startTimes.local;
     const currentPomodoro = {
@@ -1046,9 +1085,7 @@ function flowTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, sta
         if (currentPomodoro.intervalIndex === 0) { //pomodoro --> sleep --> pomodoro end state
             recoverBreakState.hyperFocusElapsedTime = hyperFocusElapsedTime;
             hyperFocusElapsedTime += ((Date.now() - localStartTime) - displayTime);
-
             startTimes.hyperFocus = localStartTime;
-
             localStartTime = Date.now() - displayTime;
             elapsedTime.hyperFocus = hyperFocusElapsedTime;
             startTimes.local = localStartTime;
@@ -1060,27 +1097,15 @@ function flowTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, sta
 
             flags.inRecoveryPom = true;
 
-            counters.currentPomodoroIntervalIndex = currentPomodoro.intervalIndex;
-            counters.currentPomodoroIntervalOrderIndex = currentPomodoro.intervalOrderIndex;
-            counters.currentPomodoroNotification = currentPomodoro.notification;
+            setPomodoroIndexes(counters, currentPomodoro);
         } else { //pomodoro --> sleep --> break end state
             hyperFocusElapsedTime -= displayTime; //for total display in chill time
             localStartTime = Date.now() - displayTime; //effectively resets display time
 
-            recoverBreakState.displayTime = displayTime;
-            recoverBreakState.pomodorosCompleted = pomodorosCompleted;
-            recoverBreakState.hyperFocusElapsedTime = hyperFocusElapsedTime;
-            recoverBreakState.localStartTime = localStartTime;
-
-            counters.pomodorosCompleted = recoverBreakState.pomodorosCompleted;
-            flags.inRecoveryBreak = true;
-            start_stop_btn.click();
-
-            counters.currentPomodoroIntervalIndex = currentPomodoro.intervalIndex;
-            counters.currentPomodoroIntervalOrderIndex = currentPomodoro.intervalOrderIndex;
-            counters.currentPomodoroNotification = currentPomodoro.notification;
+            setRecoverBreakState(recoverBreakState, displayTime, pomodorosCompleted, hyperFocusElapsedTime, localStartTime, counters, flags, start_stop_btn);
+            setPomodoroIndexes(counters, currentPomodoro);
         }
-    } else { //pomodoro --> sleep --> break end state (only one jump ahead)
+    } else if (flags.autoStartBreakInterval) { //pomodoro --> sleep --> break end state (only one jump ahead)
         displayTime -= pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60 * 1000;
         pomodorosCompleted++;
         hyperFocusElapsedTime -= displayTime;
@@ -1088,27 +1113,45 @@ function flowTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, sta
         localStartTime = Date.now() - displayTime;
 
         setCurrentPomodoroNotificationRecovery(currentPomodoro, pomodoroIntervalArr);
-
-        recoverBreakState.displayTime = displayTime;
-        recoverBreakState.pomodorosCompleted = pomodorosCompleted;
-        recoverBreakState.hyperFocusElapsedTime = hyperFocusElapsedTime;
-        recoverBreakState.localStartTime = localStartTime;
-        
-        counters.pomodorosCompleted = recoverBreakState.pomodorosCompleted;
-        flags.inRecoveryBreak = true;
-        start_stop_btn.click();
-
-        counters.currentPomodoroIntervalIndex = currentPomodoro.intervalIndex;
-        counters.currentPomodoroIntervalOrderIndex = currentPomodoro.intervalOrderIndex;
-        counters.currentPomodoroNotification = currentPomodoro.notification;
+        setRecoverBreakState(recoverBreakState, displayTime, pomodorosCompleted, hyperFocusElapsedTime, localStartTime, counters, flags, start_stop_btn);
+        setPomodoroIndexes(counters, currentPomodoro);
+    } else if ((((Math.round(displayTime / 1000)) - (pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60)) <= 1) && (((Date.now() - startTimes.lastPomNotification) / 1000) > 30)) {
+        // This evaluates when a the computer sleeps and then awakens during the same interval when autoswitchtobreak isn't turned on
+        pomodoroWorker.postMessage("clearInterval");
+        sendPomodoroDelayNotification(startTimes, counters, pomodoroIntervalArr, chime, bell, alertSounds, alertVolumes);
+    }
+    
+    if ((flags.autoStartBreakInterval) && ((((Math.round(displayTime / 1000)) - (pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60)) <= 1) && (((Date.now() - startTimes.lastPomNotification) / 1000) > 30))) {
+        sendPomodoroDelayNotification(startTimes, counters, pomodoroIntervalArr, chime, bell, alertSounds, alertVolumes);
     }
 
+    // flowtimeRecoveryDebuggingOutput(displayTime, currentPomodoro, pomodorosCompleted, hyperFocusElapsedTime, localStartTime);
+}
+
+function flowtimeRecoveryDebuggingOutput(displayTime, currentPomodoro, pomodorosCompleted, hyperFocusElapsedTime, localStartTime) {
     console.log("Display Time: " + displayTime);
     console.log("Current Pomodoro Interval Index: " + currentPomodoro.intervalIndex);
     console.log("Current Pomodoro Interval Order Index: " + currentPomodoro.intervalOrderIndex);
     console.log("Pomodoros Completed: " + pomodorosCompleted);
     console.log("Elapsed Time In Hyper Focus: " + hyperFocusElapsedTime);
     console.log("Local Start Time: " + localStartTime);
+}
+
+function setRecoverBreakState(recoverBreakState, displayTime, pomodorosCompleted, hyperFocusElapsedTime, localStartTime, counters, flags, start_stop_btn) {
+    recoverBreakState.displayTime = displayTime;
+    recoverBreakState.pomodorosCompleted = pomodorosCompleted;
+    recoverBreakState.hyperFocusElapsedTime = hyperFocusElapsedTime;
+    recoverBreakState.localStartTime = localStartTime;
+    
+    counters.pomodorosCompleted = recoverBreakState.pomodorosCompleted;
+    flags.inRecoveryBreak = true;
+    start_stop_btn.click();
+}
+
+function setPomodoroIndexes(counters, currentPomodoro) {
+    counters.currentPomodoroIntervalIndex = currentPomodoro.intervalIndex;
+    counters.currentPomodoroIntervalOrderIndex = currentPomodoro.intervalOrderIndex;
+    counters.currentPomodoroNotification = currentPomodoro.notification;
 }
 
 function convertMinutesToTimeFormat(minutes) {
@@ -1519,13 +1562,7 @@ function updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressB
         progressBar.classList.add('fullopacity1');
     }
 
-    
-    if (flags.inHyperFocus) { //if in flow time
-        timeDiff = Date.now() - startTimes.hyperFocus + elapsedTime.hyperFocus;
-    }
-    else if (!flags.inHyperFocus) { //if in chill time
-        timeDiff = elapsedTime.hyperFocus;
-    }
+    timeDiff = getTotalElapsed(flags, elapsedTime.hyperFocus, startTimes);
     
     let percentage = timeDiff / targetTime;
     
@@ -1536,9 +1573,9 @@ function updateProgressBar(targetTime, startTimes, elapsedTime, flags, progressB
     if (targetTime !== 0 && percentage >= 1 && !flags.hitTarget) { //when target time is hit
         flags.hitTarget = true;
         setTimeout(() => {
-            console.log("Congrats! You've hit your target time!");
             if (flags.targetReachedToggle == true) {
-                alert("Congrats! You've hit your target time!");
+                let notificationString = "Congrats! You've hit your target time!";
+                new Notification(notificationString);
             }
         }, 1); //experiment w/ value to solve timing issues
         
