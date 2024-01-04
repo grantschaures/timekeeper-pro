@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const display = document.getElementById("display");
 
     // INTERRUPTIONS CONTAINER
+    const interruptionsContainer = document.getElementById("interruptions-container");
     const interruptionsSubContainer = document.getElementById("interruptions-sub-container");
     const decBtn = document.getElementById("decBtn");
     const incBtn = document.getElementById("incBtn");
@@ -37,12 +38,22 @@ document.addEventListener("DOMContentLoaded", function() {
     const completedPomodoros_label = document.getElementById("completedPomodoros-label");
     const completedPomodoros_min = document.getElementById("completedPomodoros-min");
 
+    const targetHoursContainer = document.getElementById("target-hours-container");
+
+    const timekeepingContainer = document.getElementById("timekeeping-container");
+
+    const popup_window = document.getElementById("popup-menu");
+
+    const settingsContainer = document.getElementById("settingsContainer");
+
+    const notesContainer = document.getElementById("notes-container");
+
     // SETTINGS
     const targetTimeReachedToggle = document.getElementById("targetTimeReachedToggle");
     const breakSuggestionToggle = document.getElementById("breakSuggestionToggle");
     const suggestionMinutesInput = document.getElementById("suggestionMinutesInput");
     const flowmodoroNotificationToggle = document.getElementById("flowmodoroNotificationToggle");
-    const autoStartFlowTimeIntervalToggle = document.getElementById("autoStartFlowTimeIntervalToggle");
+    // const autoStartFlowTimeIntervalToggle = document.getElementById("autoStartFlowTimeIntervalToggle");
     const flowmodoroNotifications = document.getElementById("flowmodoroNotifications");
     const flowmodoroNotificationInfoWindow = document.getElementById("flowmodoroNotificationInfoWindow");
     const flowTimeBreakNotification = document.getElementById("flowTimeBreakNotification");
@@ -54,10 +65,18 @@ document.addEventListener("DOMContentLoaded", function() {
     const autoStartPomodoroIntervalToggle = document.getElementById("autoStartPomodoroIntervalToggle");
     const autoStartBreakIntervalToggle = document.getElementById("autoStartBreakIntervalToggle");
 
+    const defaultThemeContainer = document.getElementById("defaultThemeContainer");
+    const defaultTheme = document.getElementById("defaultTheme");
+
+    const darkThemeContainer = document.getElementById("darkThemeContainer");
+    const darkGrayTheme = document.getElementById("darkGrayTheme");
 
     let hoverTimer;
     const targetTimeReachedAlert = document.getElementById("targetTimeReachedAlert");
     const transitionClockSoundToggle = document.getElementById("transitionClockSoundToggle");
+
+    const flowTimeAnimationToggle = document.getElementById("flowTimeAnimationToggle");
+    const chillTimeAnimationToggle = document.getElementById("chillTimeAnimationToggle");
 
     const pomodoroVolumeContainer = document.getElementById("pomodoroVolumeContainer");
     const pomodoroVolumeBar = document.getElementById('pomodoroVolumeBar');
@@ -76,7 +95,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const generalRadios = document.querySelectorAll('.generalAlert');
     const pomodoroInputs = document.querySelectorAll('.pomodoroInterval')
     const pomodoroRadios = document.querySelectorAll('.pomodoroAlert');
-    const autoStartChillTimeIntervalToggle = document.getElementById("autoStartChillTimeIntervalToggle")
+    const flowtimeBackgroundCells = document.querySelectorAll('.flowtimeBackgroundCell');
+    const chilltimeBackgroundCells = document.querySelectorAll('.chilltimeBackgroundCell');
+    // const autoStartChillTimeIntervalToggle = document.getElementById("autoStartChillTimeIntervalToggle");
 
     // Audio
     const chime = new Audio('sounds/alerts/LEX_LM_77_bell_loop_vinyl_night_F.wav');
@@ -99,6 +120,34 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     const initialViewportWidth = window.innerWidth || document.documentElement.clientWidth;
+
+    const flowtimeBackgrounds = {
+        "green-default": "linear-gradient(to bottom, #5dd44d, #50b350, #004400)",
+        "red-flowtime": "linear-gradient(to bottom, #ff595e, #ff595e, #ff595e)",
+        "yellow-flowtime": "linear-gradient(to bottom, #ffca3a, #ffca3a, #ffca3a)",
+        "blue-flowtime": "linear-gradient(to bottom, #1982c4, #1982c4, #1982c4)",
+        "purple-flowtime": "linear-gradient(to bottom, #6a4c93, #6a4c93, #6a4c93)",
+        "black-flowtime": "linear-gradient(to bottom, #202020, #202020, #202020)"
+    }
+
+    const chilltimeBackgrounds = {
+        "blue-default": "linear-gradient(to bottom, #3b8fe3, #1d60a3, #7f04c7)",
+        "red-chilltime": "linear-gradient(to bottom, #ff595e, #ff595e, #ff595e)",
+        "yellow-chilltime": "linear-gradient(to bottom, #ffca3a, #ffca3a, #ffca3a)",
+        "green-chilltime": "linear-gradient(to bottom, #5dd44d, #5dd44d, #5dd44d)",
+        "purple-chilltime": "linear-gradient(to bottom, #6a4c93, #6a4c93, #6a4c93)",
+        "black-chilltime": "linear-gradient(to bottom, #202020, #202020, #202020)"
+    }
+
+    const selectedBackground = {
+        "flowtime": "linear-gradient(to bottom, #5dd44d, #50b350, #004400)",
+        "chilltime": "linear-gradient(to bottom, #3b8fe3, #1d60a3, #7f04c7)"
+    }
+
+    const selectedBackgroundId = {
+        "flowtime": "green-default",
+        "chilltime": "blue-default"
+    }
 
     const timeConvert = {
         msPerHour: 3600000,
@@ -213,7 +262,10 @@ document.addEventListener("DOMContentLoaded", function() {
         inRecoveryBreak: false,
         inRecoveryPom: false,
         inRecoveryBreak2: false,
-        inRecoveryPom2: false
+        inRecoveryPom2: false,
+        flowTimeAnimationToggle: true,
+        chillTimeAnimationToggle: true,
+        darkThemeActivated: false
     }
 
     const settingsMappings = {
@@ -277,7 +329,10 @@ document.addEventListener("DOMContentLoaded", function() {
             if (counters.startStop > 1) {
                 animationsFadeOut(chillAnimation);
             }
-            animationsFadeIn(flowAnimation, 'block');
+            
+            if (flags.flowTimeAnimationToggle) {
+                animationsFadeIn(flowAnimation, 'block');
+            }
 
             hideSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min);
             hidePomodorosCompletedContainer(completedPomodorosContainer);
@@ -329,7 +384,7 @@ document.addEventListener("DOMContentLoaded", function() {
             if (counters.startStop > 1) { // runs first during first chill time interval
                 elapsedTime.chillTime += Date.now() - startTimes.chillTime;
             }
-            setBackground("linear-gradient(to bottom, #5dd44d, #50b350, #004400)");
+            setBackground(selectedBackground.flowtime);
             flags.autoSwitchedModes = false;
             // setBackground("url('../images/DALLE/DALLE7.png')");
         } else { //--> Chill Time
@@ -341,7 +396,10 @@ document.addEventListener("DOMContentLoaded", function() {
             setFavicon(blueFavicon);
 
             animationsFadeOut(flowAnimation);
-            animationsFadeIn(chillAnimation, 'flex');
+
+            if (flags.chillTimeAnimationToggle) {
+                animationsFadeIn(chillAnimation, 'flex');
+            }
 
             saveResetInterruptions(interruptionsNum, counters, savedInterruptionsArr);
             hideInterruptionsSubContainer(interruptionsSubContainer);
@@ -424,7 +482,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 suggestionWorker.postMessage("clearInterval");
             }
 
-            setBackground("linear-gradient(to bottom, #3b8fe3, #1d60a3, #7f04c7)");
+            setBackground(selectedBackground.chilltime);
         }
 
         flags.inRecoveryBreak = false;
@@ -695,6 +753,38 @@ document.addEventListener("DOMContentLoaded", function() {
         })
     })
 
+    flowtimeBackgroundCells.forEach(background => {
+        background.addEventListener('click', function(event) {
+            let newId = event.target.id;
+            let priorId = selectedBackgroundId["flowtime"];
+            document.getElementById(priorId).classList.remove('selected-background');
+
+            selectedBackground.flowtime = flowtimeBackgrounds[newId];
+            selectedBackgroundId.flowtime = newId;
+            document.getElementById(event.target.id).classList.add('selected-background');
+
+            if ((flags.inHyperFocus) && (counters.startStop >= 1)) {
+                setBackground(selectedBackground.flowtime);
+            }
+        })
+    })
+    
+    chilltimeBackgroundCells.forEach(background => {
+        background.addEventListener('click', function(event) {
+            let newId = event.target.id;
+            let priorId = selectedBackgroundId["chilltime"];
+            document.getElementById(priorId).classList.remove('selected-background');
+            
+            selectedBackground.chilltime = chilltimeBackgrounds[newId];
+            selectedBackgroundId.chilltime = newId;
+            document.getElementById(event.target.id).classList.add('selected-background');
+
+            if ((!flags.inHyperFocus) && (counters.startStop > 1)) {
+                setBackground(selectedBackground.chilltime);
+            }
+        })
+    })
+
     //Toggle is set to true by default
     //Further clicks will render the targetReachToggle flag true or false
     targetTimeReachedToggle.addEventListener("click", function() {
@@ -842,6 +932,51 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     })
 
+    flowTimeAnimationToggle.addEventListener("click", function() {
+        if (flowTimeAnimationToggle.checked) {
+            flags.flowTimeAnimationToggle = true;
+            if (flags.inHyperFocus) {
+                animationsFadeIn(flowAnimation, 'block');
+            } 
+
+        } else {
+            flags.flowTimeAnimationToggle = false;
+            if (flags.inHyperFocus) {
+                animationsFadeOut(flowAnimation);
+            }
+        }
+    })
+
+    chillTimeAnimationToggle.addEventListener("click", function() {
+        if (chillTimeAnimationToggle.checked) {
+            flags.chillTimeAnimationToggle = true;
+            if (!flags.inHyperFocus) {
+                animationsFadeIn(chillAnimation, 'flex');
+            }
+        } else {
+            flags.chillTimeAnimationToggle = false;
+            if (!flags.inHyperFocus) {
+                animationsFadeOut(chillAnimation);
+            }
+        }
+    })
+
+    defaultThemeContainer.addEventListener("click", function() {
+        darkGrayTheme.classList.remove('selected-background');
+        defaultTheme.classList.add('selected-background');
+        flags.darkThemeActivated = false;
+
+        deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popup_window, settingsContainer, notesContainer);
+    })
+
+    darkThemeContainer.addEventListener("click", function() {
+        defaultTheme.classList.remove('selected-background');
+        darkGrayTheme.classList.add('selected-background');
+        flags.darkThemeActivated = true;
+
+        activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popup_window, settingsContainer, notesContainer);
+    })
+
     window.addEventListener("resize", handleViewportWidthChange);
 
     document.addEventListener('visibilitychange', function() {
@@ -981,6 +1116,46 @@ document.addEventListener("DOMContentLoaded", function() {
 // ---------------------
 // HELPER FUNCTIONS
 // ---------------------
+function activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popup_window, settingsContainer, notesContainer) {
+    let componentArr1 = [interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, notesContainer];
+    let componentArr2 = [popup_window, settingsContainer];
+
+    let darkBackgroundTranslucent = "rgba(32, 32, 32, 0.9)";
+    let darkBackground = "rgba(32, 32, 32, 1)";
+    let border = "3px solid rgb(255, 255, 255)";
+
+    componentArr1.forEach(function(component) {
+        component.style.backgroundColor = darkBackgroundTranslucent;
+        component.style.border = border;
+    })
+
+    componentArr2.forEach(function(component) {
+        component.style.backgroundColor = darkBackground;
+    })
+}
+
+function deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popup_window, settingsContainer, notesContainer) {
+    let componentArr1 = [interruptionsContainer, targetHoursContainer, timekeepingContainer, notesContainer];
+    let componentArr2 = [popup_window, settingsContainer];
+
+    let darkBackgroundTranslucent = "rgba(0, 0, 0, 0.35)";
+    let darkBackground = "rgb(0, 0, 0)";
+    let progressBarBackground = "rgba(255, 255, 255, 0.25)";
+    let progressBarBorder = "1px rgba(0, 0, 0, 0.25)";
+
+    componentArr1.forEach(function(component) {
+        component.style.backgroundColor = darkBackgroundTranslucent;
+        component.style.border = null;
+    })
+
+    progressBarContainer.style.backgroundColor = progressBarBackground;
+    progressBarContainer.style.border = progressBarBorder;
+
+    componentArr2.forEach(function(component) {
+        component.style.backgroundColor = darkBackground;
+    })
+}
+
 function sendSuggestionBreakNotification(suggestionMinutes, startTimes, chime, bell, alertSounds, alertVolumes) {
     let notificationString;
     if (suggestionMinutes !== 1) {

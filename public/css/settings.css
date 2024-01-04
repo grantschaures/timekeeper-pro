@@ -26,6 +26,8 @@
     
     display: none; /* eventually make this none by default */
     overflow-y: auto;
+
+    transition: background-color 0.6s ease-in-out;
 }
 
 @media (max-width: 1200px) {
@@ -82,6 +84,7 @@
     flex-direction: column;
     align-items: center;
     margin-right: 20px;
+    min-width: 90px;
     /* border: 1px solid white; */
 }
 
@@ -91,6 +94,20 @@
     align-items: left;
     margin-right: 20px;
     /* border: 1px solid white; */
+}
+
+@media (max-width: 760px) {
+    .imageBucketHeader {
+        display: none;
+    }
+    #endOfBreakIntervals {
+        display: flex;
+        flex-direction: column;
+    }    
+}
+
+.semiBlock {
+    display: flex;
 }
 
 #endOfBreakIntervals {
@@ -161,6 +178,8 @@
 .settingsContentContainer {
     display: none;
     width: 100%;
+
+    /* border: 1px solid yellow; */
 }
 
 .settingsHeaderRow:not(#notificationsHeaderContainer):not(.selected):hover {
@@ -407,12 +426,31 @@
 #autoStartBreakIntervalToggle:checked + #autoStartBreakIntervalToggleLabel #autoStartBreakIntervalToggleBall {
     left: 40px;
 }
+
 /* For Transition Clock Sound Toggle */
 #transitionClockSoundToggle:checked + #transitionClockSoundToggleLabel {
     background-color: #53e658;
 }
 
 #transitionClockSoundToggle:checked + #transitionClockSoundToggleLabel #transitionClockSoundToggleBall {
+    left: 40px;
+}
+
+/* For Flow Time Animation Toggle */
+#flowTimeAnimationToggle:checked + #flowTimeAnimationToggleLabel {
+    background-color: #53e658;
+}
+
+#flowTimeAnimationToggle:checked + #flowTimeAnimationToggleLabel #flowTimeAnimationToggleBall {
+    left: 40px;
+}
+
+/* For Flow Time Animation Toggle */
+#chillTimeAnimationToggle:checked + #chillTimeAnimationToggleLabel {
+    background-color: #53e658;
+}
+
+#chillTimeAnimationToggle:checked + #chillTimeAnimationToggleLabel #chillTimeAnimationToggleBall {
     left: 40px;
 }
 
@@ -553,4 +591,140 @@
 
 .subCategory {
     margin-left: 20px;
+}
+
+.flowtimeBackgroundCell, .chilltimeBackgroundCell {
+    border-radius: 15px;
+    padding: 10px 20px;
+    color: white;
+    display: block; /* Or block, depending on your layout */
+    text-align: center;
+    width: 150px;
+    height: 85px;
+    margin: 10px;
+    box-sizing: border-box;
+    border: 0px solid white;
+    transition: border 0.10s ease-in-out;
+    box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.5);
+}
+
+.flowtimeBackgroundCell:hover, .chilltimeBackgroundCell:hover, .themeCell:hover {
+    cursor: pointer;
+}
+
+#green-default {
+    background-image: linear-gradient(to bottom, #5dd44d, #50b350, #004400);
+}
+
+#red-flowtime, #red-chilltime {
+    background-color: #ff595e;
+}
+
+#yellow-flowtime, #yellow-chilltime {
+    background-color: #ffca3a;
+}
+
+#blue-flowtime {
+    background-color: #1982c4;
+}
+
+#purple-flowtime, #purple-chilltime {
+    background-color: #6a4c93;
+}
+
+#black-flowtime, #black-chilltime {
+    background-color: #202020;
+}
+
+#flowTimeBackgroundsContainer, #chillTimeBackgroundsContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Creates three columns */
+    grid-template-rows: auto auto; /* Creates two rows */
+    width: 500px;
+    /* border: 1px solid yellow; */
+}
+
+@media (max-width: 892px) {
+    #flowTimeBackgroundsContainer, #chillTimeBackgroundsContainer {
+        grid-template-columns: repeat(2, 1fr); /* Creates three columns */
+        grid-template-rows: auto auto auto; /* Creates two rows */
+        width: 400px;
+    }
+}
+
+@media (max-width: 690px) {
+    #flowTimeBackgroundsContainer, #chillTimeBackgroundsContainer {
+        grid-template-columns: repeat(1, 1fr); /* Creates three columns */
+        grid-template-rows: auto auto auto auto auto auto; /* Creates two rows */
+    }
+    #themesContainer {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        grid-template-rows: auto auto;
+    }
+    .themeContainer {
+        width: 180px;
+    }
+}
+
+#blue-default {
+    background-image: linear-gradient(to bottom, #3b8fe3, #1d60a3, #7f04c7);
+}
+
+#green-chilltime {
+    background-color: #5dd44d;
+}
+
+.selected-background {
+    border: 3px solid white;
+}
+
+.themeCell {
+    border-radius: 15px;
+    padding: 10px 20px;
+    color: white;
+    font-weight: bold;
+    display: inline-block; /* Or block, depending on your layout */
+    text-align: center;
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.25); /* Adjust the shadow to match the image */
+    width: 160px;
+    height: 60px;
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-bottom: -5px;
+    background-position: center;
+    box-sizing: border-box;
+    transition: border 0.10s ease-in-out;
+    /* background-repeat: no-repeat; */
+}
+
+#defaultTheme {
+    background-image: url('../images/settings/defaulttheme.png');
+
+}
+
+#darkGrayTheme {
+    background-image: url('../images/settings/darktheme.png');
+}
+
+#flowTimeAnimationToggleContainer {
+    display: flex;
+}
+
+#chillTimeAnimationToggleContainer {
+    display: flex;
+}
+
+#animationsContainer {
+    display: flex;
+    flex-direction: column;
+    /* border: 1px solid white; */
+    align-items: flex-start;
+}
+
+.themeContainer {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    /* border: 1px solid white; */
 }

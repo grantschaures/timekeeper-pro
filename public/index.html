@@ -711,40 +711,44 @@
                                                     <p id="ChillTime"><b>Chill Time: </b></p>
                                                 </div>
                                             </div>
-                                            <div id="minutesImageBucket1" class="imageBucket">
-                                                <div>
-                                                    <p><b>&lt; 25 min</b></p>
+                                            <div id="semiBlock1" class="semiBlock">
+                                                <div id="minutesImageBucket1" class="imageBucket">
+                                                    <div>
+                                                        <p><b>&lt; 25 min</b></p>
+                                                    </div>
+                                                    <!-- <img src="images/HyperChill/5minutes.png" class="minutesImage"> -->
+                                                    <div class="chillTimeNotificationContainer">
+                                                        <input type="number" id="flowmodoroBreakInput1" value="5" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1">
+                                                    </div>
                                                 </div>
-                                                <!-- <img src="images/HyperChill/5minutes.png" class="minutesImage"> -->
-                                                <div class="chillTimeNotificationContainer">
-                                                    <input type="number" id="flowmodoroBreakInput1" value="5" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1">
-                                                </div>
-                                            </div>
-                                            <div id="minutesImageBucket2" class="imageBucket">
-                                                <div>
-                                                    <p><b>&lt; 50 min</b></p>
-                                                </div>
-                                                <!-- <img src="images/HyperChill/8minutes.png" class="minutesImage"> -->
-                                                <div class="chillTimeNotificationContainer">
-                                                    <input type="number" id="flowmodoroBreakInput2" value="8" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1">
-                                                </div>
-                                            </div>
-                                            <div id="minutesImageBucket3" class="imageBucket">
-                                                <div>
-                                                    <p><b>&lt; 90 min</b></p>
-                                                </div>
-                                                <!-- <img src="images/HyperChill/10minutes.png" class="minutesImage"> -->
-                                                <div class="chillTimeNotificationContainer">
-                                                    <input type="number" id="flowmodoroBreakInput3" value="10" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1">
+                                                <div id="minutesImageBucket2" class="imageBucket">
+                                                    <div>
+                                                        <p><b>&lt; 50 min</b></p>
+                                                    </div>
+                                                    <!-- <img src="images/HyperChill/8minutes.png" class="minutesImage"> -->
+                                                    <div class="chillTimeNotificationContainer">
+                                                        <input type="number" id="flowmodoroBreakInput2" value="8" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1">
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div id="minutesImageBucket4" class="imageBucket">
-                                                <div>
-                                                    <p><b>&gt;= 90 min</b></p>
+                                            <div id="semiBlock2" class="semiBlock">
+                                                <div id="minutesImageBucket3" class="imageBucket">
+                                                    <div>
+                                                        <p><b>&lt; 90 min</b></p>
+                                                    </div>
+                                                    <!-- <img src="images/HyperChill/10minutes.png" class="minutesImage"> -->
+                                                    <div class="chillTimeNotificationContainer">
+                                                        <input type="number" id="flowmodoroBreakInput3" value="10" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1">
+                                                    </div>
                                                 </div>
-                                                <!-- <img src="images/HyperChill/15minutes.png" class="minutesImage"> -->
-                                                <div class="chillTimeNotificationContainer">
-                                                    <input type="number" id="flowmodoroBreakInput4" value="15" class="flowmodoroBreak" name="minutes" min="1" step="1">
+                                                <div id="minutesImageBucket4" class="imageBucket">
+                                                    <div>
+                                                        <p><b>&gt;= 90 min</b></p>
+                                                    </div>
+                                                    <!-- <img src="images/HyperChill/15minutes.png" class="minutesImage"> -->
+                                                    <div class="chillTimeNotificationContainer">
+                                                        <input type="number" id="flowmodoroBreakInput4" value="15" class="flowmodoroBreak" name="minutes" min="1" step="1">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -894,7 +898,75 @@
                             <div id="backgroundsContainer" class="settingsIconTextContainer">
                                 <h2>Backgrounds & Themes</h2>
                             </div>
-                            <div id="" class="settingsMicroContainer">
+                            <div id="flowTimeBackgrounds" class="settingsMicroContainer">
+                                <div id="flowTimeBackgroundsText" class="settingsText">
+                                    <p id="flowTimeBackgrounds"><b class="settingsCategoryHeading">Flow Time Background</b></p>
+                                </div>
+                            </div>
+                            <div id="flowTimeBackgroundsContainer" class="settingsMicroContainer">
+                                <div id="green-default" class="flowtimeBackgroundCell selected-background"></div>
+                                <div id="red-flowtime" class="flowtimeBackgroundCell"></div>
+                                <div id="yellow-flowtime" class="flowtimeBackgroundCell"></div>
+                                <div id="blue-flowtime" class="flowtimeBackgroundCell"></div>
+                                <div id="purple-flowtime" class="flowtimeBackgroundCell"></div>
+                                <div id="black-flowtime" class="flowtimeBackgroundCell"></div>
+                            </div>
+                            <div id="chillTimeBackgrounds" class="settingsMicroContainer">
+                                <div id="chillTimeBackgroundsText" class="settingsText">
+                                    <p id="chillTimeBackgrounds"><b class="settingsCategoryHeading">Chill Time Background</b></p>
+                                </div>
+                            </div>
+                            <div id="chillTimeBackgroundsContainer" class="settingsMicroContainer">
+                                <div id="blue-default" class="chilltimeBackgroundCell selected-background"></div>
+                                <div id="red-chilltime" class="chilltimeBackgroundCell"></div>
+                                <div id="yellow-chilltime" class="chilltimeBackgroundCell"></div>
+                                <div id="green-chilltime" class="chilltimeBackgroundCell"></div>
+                                <div id="purple-chilltime" class="chilltimeBackgroundCell"></div>
+                                <div id="black-chilltime" class="chilltimeBackgroundCell"></div>
+                            </div>
+                            <div id="themesContainer" class="settingsMicroContainer">
+                                <div id="themesText" class="settingsText">
+                                    <p id="themesHeader"><b class="settingsCategoryHeading">Themes</b></p>
+                                </div>
+                            </div>
+                            <div id="themesContainer" class="settingsMicroContainer"> <!-- Take screenshots to demonstrate themes -->
+                                <div id="defaultThemeContainer" class="themeContainer">
+                                    <div id="defaultTheme" class="themeCell selected-background"></div>
+                                    <p><b>Default Theme</b></p>
+                                </div>
+                                <div id="darkThemeContainer" class="themeContainer">
+                                    <div id="darkGrayTheme" class="themeCell"></div>
+                                    <p><b>Dark Theme</b></p>
+                                </div>
+                            </div>
+                            <div id="animationsHeaderContainer" class="settingsMicroContainer">
+                                <div id="animationsText" class="settingsText">
+                                    <p id="animationsHeader"><b class="settingsCategoryHeading">Animations</b></p>
+                                </div>
+                            </div>
+                            <div id="animationsContainer" class="settingsMicroContainer">
+                                <div id="flowTimeAnimationToggleContainer">
+                                    <div id="flowTimeAnimationText" class="settingsText">
+                                        <p id="flowTimeAnimationHeader"><b>Flow Time</b></p>
+                                    </div>
+                                    <div id="flowTimeAnimationToggleContainer" class="toggleContainer">
+                                        <input type="checkbox" id="flowTimeAnimationToggle" class="toggle-checkbox" checked>
+                                        <label for="flowTimeAnimationToggle" id="flowTimeAnimationToggleLabel" class="toggle-label">
+                                            <span id="flowTimeAnimationToggleBall" class="toggle-ball"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div id="chillTimeAnimationToggleContainer">
+                                    <div id="chillTimeAnimationText" class="settingsText">
+                                        <p id="chillTimeAnimationHeader"><b>Chill Time</b></p>
+                                    </div>
+                                    <div id="chillTimeAnimationToggleContainer" class="toggleContainer">
+                                        <input type="checkbox" id="chillTimeAnimationToggle" class="toggle-checkbox" checked>
+                                        <label for="chillTimeAnimationToggle" id="chillTimeAnimationToggleLabel" class="toggle-label">
+                                            <span id="chillTimeAnimationToggleBall" class="toggle-ball"></span>
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -922,6 +994,7 @@
                                 <h2>Account</h2>
                             </div>
                             <div id="" class="settingsMicroContainer">
+                                <p><b>This feature is currently under development. Thank you for your patience.</b></p>
                             </div>
                         </div>
 
@@ -930,6 +1003,7 @@
                                 <h2>Support & Feedback</h2>
                             </div>
                             <div id="" class="settingsMicroContainer">
+                                <p><b>This feature is currently under development. Thank you for your patience.</b></p>
                             </div>
                         </div>
                     </div>
