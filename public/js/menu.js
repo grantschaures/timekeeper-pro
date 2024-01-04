@@ -106,8 +106,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function handleClickSettings(event) {
         // We don't necessarily need to hide the main elements
+        let viewportWidth = window.innerWidth || document.documentElement.clientWidth;
 
-        if (counters.settingsBtnClicked === 0) {
+        if ((counters.settingsBtnClicked === 0) && (viewportWidth > 650)) {
             pomodoroBtnContainer.click();
         }
         counters.settingsBtnClicked++;

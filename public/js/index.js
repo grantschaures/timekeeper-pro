@@ -291,6 +291,10 @@ document.addEventListener("DOMContentLoaded", function() {
         darkThemeActivated: false
     }
 
+    tempStorage = {
+        lastSettingsSelectionId: 'pomodoroBtnContainer'
+    }
+
     const settingsMappings = {
         'pomodoroBtnContainer': 'pomodoroSettingsContainer',
         'flowmodoroBtnContainer': 'flowmodoroSettingsContainer',
@@ -593,11 +597,13 @@ document.addEventListener("DOMContentLoaded", function() {
     })
 
     // Settings Menu Functionality (showing & hiding containers)
+
     for (const [buttonId, containerId] of Object.entries(settingsMappings)) {
         document.getElementById(buttonId).addEventListener('click', function() {
             hideAllSettingsContainers(settingsMappings);
             document.getElementById(containerId).style.display = 'block';
             this.classList.add('selected');
+            tempStorage.lastSettingsSelectionId = buttonId;
         });
     }
 
@@ -1042,7 +1048,11 @@ document.addEventListener("DOMContentLoaded", function() {
         activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popup_window, settingsContainer, notesContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId);
     })
 
-    window.addEventListener("resize", handleViewportWidthChange);
+    window.addEventListener("resize", handleViewportWidthChange(settingsMappings, tempStorage));
+
+    window.addEventListener("resize", function() {
+        handleViewportWidthChange(settingsMappings, tempStorage);
+    });
 
     document.addEventListener('visibilitychange', function() {
         //user clicks out of tab (or minimizes window)
@@ -1674,6 +1684,13 @@ function hideAllSettingsContainers(settingsMappings) {
     }
 }
 
+function showAllSettingsContainers(settingsMappings) {
+    for (const [buttonId, containerId] of Object.entries(settingsMappings)) {
+        document.getElementById(containerId).style.display = 'block';
+        // document.getElementById(buttonId).classList.remove('selected');
+    }
+}
+
 function setInitialEndSessionBtnText(initialViewportWidth, end_session_btn) {
     if (initialViewportWidth <= 504) {
         end_session_btn.innerText = "End";
@@ -1682,13 +1699,26 @@ function setInitialEndSessionBtnText(initialViewportWidth, end_session_btn) {
     }
 }
 
-function handleViewportWidthChange() {
+function handleViewportWidthChange(settingsMappings, tempStorage) {
     let viewportWidth = window.innerWidth || document.documentElement.clientWidth;
     let end_session_btn = document.getElementById("end-session");
     if (viewportWidth <= 504) {
         end_session_btn.innerText = "End";
     } else {
         end_session_btn.innerText = "End Session";
+    }
+
+    if (viewportWidth <= 650) {
+        showAllSettingsContainers(settingsMappings);
+    } else {
+        for (const [buttonId, containerId] of Object.entries(settingsMappings)) {
+            document.getElementById(buttonId).addEventListener('click', function() {
+                hideAllSettingsContainers(settingsMappings);
+                document.getElementById(containerId).style.display = 'block';
+                this.classList.add('selected');
+            });
+        }
+        document.getElementById(tempStorage.lastSettingsSelectionId).click();
     }
 }
 

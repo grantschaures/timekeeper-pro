@@ -49,12 +49,12 @@
 
 #settingsHeaderColumn {
     display: flex;
+    /* display: none; */
     flex-direction: column;
     justify-content: left;
     margin-right: 20px;
     margin-left: 20px;
     margin-top: 25px;
-
     /* border: 1px solid white; */
 }
 
@@ -96,7 +96,7 @@
     /* border: 1px solid white; */
 }
 
-@media (max-width: 760px) {
+@media (max-width: 810px) {
     .imageBucketHeader {
         display: none;
     }
@@ -104,6 +104,73 @@
         display: flex;
         flex-direction: column;
     }    
+}
+
+@media (max-width: 775px) {
+    #pomodoroAlertSoundContainer2, #flowmodoroAlertSoundContainer2, #generalAlertSoundContainer2 {
+        display: flex;
+        flex-direction: left;
+        /* border: 1px solid yellow; */
+        width: 300px;
+    }
+    #toggleTargetTimeAlertContainer, #togglePomodoroNotificationContainer, #toggleFlowmodoroNotificationContainer {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 650px) {
+    #settingsHeaderColumn {
+        display: none;
+    }
+}
+
+@media (max-width: 560px) {
+    #pomodoroAlertSoundContainer2, #flowmodoroAlertSoundContainer2, #generalAlertSoundContainer2 {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+        /* border: 1px solid yellow; */
+    }
+    #autoStartPomodoroIntervalContainer, #autoStartBreakIntervalContainer {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 420px) {
+    #pomodoroAlertSoundContainer, #flowmodoroAlertSoundContainer, #generalAlertSoundContainer {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+    }
+    #chillTimeBackgroundsContainer > div, #flowTimeBackgroundsContainer > div {
+        width: 80px;
+    }
+    #themesContainer {
+        display: flex;
+        flex-direction: column;
+        /* border: 1px solid white; */
+    }
+    .themeContainer {
+        text-align: left;
+    }
+    #defaultThemeP {
+        text-align: left;
+        margin-left: 25px;
+    }
+    #darkThemeP {
+        text-align: left;
+        margin-left: 35px;
+    }
+}
+
+#pomodoroAlertSoundContainer2, #flowmodoroAlertSoundContainer2, #generalAlertSoundContainer2 {
+    display: flex;
+    max-width: 500px;
+    width: 100%;
+    justify-content: space-between;
+    /* border: 1px solid white; */
 }
 
 .semiBlock {
@@ -177,6 +244,7 @@
 
 .settingsContentContainer {
     display: none;
+    /* display: block; */
     width: 100%;
 
     /* border: 1px solid yellow; */
@@ -200,6 +268,7 @@
     /* border: 1px solid yellow; */
     display: block;
     width: 100%;
+    margin-right: 20px;
 }
 
 .settings h2 {
@@ -300,7 +369,7 @@
 .settingsMicroContainer {
     display: flex;
     width: 100%;
-    align-items: center;
+    align-items: left;
     /* border: 2px solid yellow; */
 }
 
@@ -638,24 +707,24 @@
 
 #flowTimeBackgroundsContainer, #chillTimeBackgroundsContainer {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Creates three columns */
-    grid-template-rows: auto auto; /* Creates two rows */
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto;
     width: 500px;
     /* border: 1px solid yellow; */
 }
 
 @media (max-width: 892px) {
     #flowTimeBackgroundsContainer, #chillTimeBackgroundsContainer {
-        grid-template-columns: repeat(2, 1fr); /* Creates three columns */
-        grid-template-rows: auto auto auto; /* Creates two rows */
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto auto auto;
         width: 400px;
     }
 }
 
-@media (max-width: 690px) {
+/* @media (max-width: 690px) {
     #flowTimeBackgroundsContainer, #chillTimeBackgroundsContainer {
-        grid-template-columns: repeat(1, 1fr); /* Creates three columns */
-        grid-template-rows: auto auto auto auto auto auto; /* Creates two rows */
+        grid-template-columns: repeat(1, 1fr);
+        grid-template-rows: auto auto auto auto auto auto;
     }
     #themesContainer {
         display: grid;
@@ -665,7 +734,7 @@
     .themeContainer {
         width: 180px;
     }
-}
+} */
 
 #blue-default {
     background-image: linear-gradient(to bottom, #3b8fe3, #1d60a3, #7f04c7);
