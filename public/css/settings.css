@@ -117,11 +117,26 @@
         display: flex;
         flex-direction: column;
     }
+    #togglePomodoroNotificationContainer, #toggleFlowmodoroNotificationContainer {
+        margin-bottom: -80px;
+    }
+    #toggleFlowmodoroNotificationContainer {
+        margin-bottom: -50px;
+    }
+}
+
+@media (min-width: 980px) {
+    #toggleTargetTimeAlertContainer, #togglePomodoroNotificationContainer, #toggleFlowmodoroNotificationContainer {
+        align-items: center;
+    }
 }
 
 @media (max-width: 650px) {
     #settingsHeaderColumn {
         display: none;
+    }
+    .settingsIconTextContainer {
+        margin-top: 60px;
     }
 }
 
