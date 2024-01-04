@@ -48,6 +48,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const notesContainer = document.getElementById("notes-container");
 
+    const blackFlowtimeBackground = document.getElementById("black-flowtime");
+    const blackChilltimeBackground = document.getElementById("black-chilltime");
+
     // SETTINGS
     const targetTimeReachedToggle = document.getElementById("targetTimeReachedToggle");
     const breakSuggestionToggle = document.getElementById("breakSuggestionToggle");
@@ -142,6 +145,11 @@ document.addEventListener("DOMContentLoaded", function() {
     const selectedBackground = {
         "flowtime": "linear-gradient(to bottom, #5dd44d, #50b350, #004400)",
         "chilltime": "linear-gradient(to bottom, #3b8fe3, #1d60a3, #7f04c7)"
+    }
+
+    const selectedBackgroundIdTemp = {
+        "flowtime": null,
+        "chilltime": null
     }
 
     const selectedBackgroundId = {
@@ -763,7 +771,7 @@ document.addEventListener("DOMContentLoaded", function() {
             selectedBackgroundId.flowtime = newId;
             document.getElementById(event.target.id).classList.add('selected-background');
 
-            if ((flags.inHyperFocus) && (counters.startStop >= 1)) {
+            if (flags.inHyperFocus) {
                 setBackground(selectedBackground.flowtime);
             }
         })
@@ -779,7 +787,7 @@ document.addEventListener("DOMContentLoaded", function() {
             selectedBackgroundId.chilltime = newId;
             document.getElementById(event.target.id).classList.add('selected-background');
 
-            if ((!flags.inHyperFocus) && (counters.startStop > 1)) {
+            if ((!flags.inHyperFocus)) {
                 setBackground(selectedBackground.chilltime);
             }
         })
@@ -966,7 +974,7 @@ document.addEventListener("DOMContentLoaded", function() {
         defaultTheme.classList.add('selected-background');
         flags.darkThemeActivated = false;
 
-        deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popup_window, settingsContainer, notesContainer);
+        deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popup_window, settingsContainer, notesContainer, selectedBackgroundIdTemp, selectedBackgroundId);
     })
 
     darkThemeContainer.addEventListener("click", function() {
@@ -974,7 +982,7 @@ document.addEventListener("DOMContentLoaded", function() {
         darkGrayTheme.classList.add('selected-background');
         flags.darkThemeActivated = true;
 
-        activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popup_window, settingsContainer, notesContainer);
+        activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popup_window, settingsContainer, notesContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId);
     })
 
     window.addEventListener("resize", handleViewportWidthChange);
@@ -1116,7 +1124,7 @@ document.addEventListener("DOMContentLoaded", function() {
 // ---------------------
 // HELPER FUNCTIONS
 // ---------------------
-function activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popup_window, settingsContainer, notesContainer) {
+function activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popup_window, settingsContainer, notesContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId) {
     let componentArr1 = [interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, notesContainer];
     let componentArr2 = [popup_window, settingsContainer];
 
@@ -1132,9 +1140,15 @@ function activateDarkTheme(interruptionsContainer, targetHoursContainer, timekee
     componentArr2.forEach(function(component) {
         component.style.backgroundColor = darkBackground;
     })
+
+    selectedBackgroundIdTemp["flowtime"] = selectedBackgroundId.flowtime;
+    selectedBackgroundIdTemp["chilltime"] = selectedBackgroundId.chilltime;
+
+    blackFlowtimeBackground.click();
+    blackChilltimeBackground.click();
 }
 
-function deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popup_window, settingsContainer, notesContainer) {
+function deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popup_window, settingsContainer, notesContainer, selectedBackgroundIdTemp, selectedBackgroundId) {
     let componentArr1 = [interruptionsContainer, targetHoursContainer, timekeepingContainer, notesContainer];
     let componentArr2 = [popup_window, settingsContainer];
 
@@ -1154,6 +1168,11 @@ function deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timek
     componentArr2.forEach(function(component) {
         component.style.backgroundColor = darkBackground;
     })
+
+    if ((selectedBackgroundId.flowtime === "black-flowtime") && (selectedBackgroundId.chilltime === "black-chilltime")) {
+        document.getElementById(selectedBackgroundIdTemp.flowtime).click();
+        document.getElementById(selectedBackgroundIdTemp.chilltime).click();
+    }
 }
 
 function sendSuggestionBreakNotification(suggestionMinutes, startTimes, chime, bell, alertSounds, alertVolumes) {
