@@ -140,7 +140,7 @@
     padding-right: 10px;
 }
 
-#pickAlertSound {
+.pickAlertSound {
     display: flex;
 }
 
@@ -727,4 +727,14 @@
     flex-direction: column;
     text-align: center;
     /* border: 1px solid white; */
+}
+
+.pomodoroAlertContainer, .flowmodoroAlertContainer, .generalAlertContainer {
+    display: flex;
+    align-items: center;
+    /* border: 2px solid white; */
+}
+
+#pomodoroAlertSoundBlock2, #flowmodoroAlertSoundBlock2, #generalAlertSoundsBlock2 {
+    margin-bottom: 15px;
 }

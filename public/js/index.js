@@ -93,6 +93,18 @@ document.addEventListener("DOMContentLoaded", function() {
     const generalVolumeBar = document.getElementById('generalVolumeBar');
     const generalVolumeThumb = document.getElementById('generalVolumeThumb');
 
+    const pomodoroVolumeContainer2 = document.getElementById("pomodoroVolumeContainer2");
+    const pomodoroVolumeBar2 = document.getElementById('pomodoroVolumeBar2');
+    const pomodoroVolumeThumb2 = document.getElementById('pomodoroVolumeThumb2');
+
+    const flowmodoroVolumeContainer2 = document.getElementById("flowmodoroVolumeContainer2");
+    const flowmodoroVolumeBar2 = document.getElementById('flowmodoroVolumeBar2');
+    const flowmodoroVolumeThumb2 = document.getElementById('flowmodoroVolumeThumb2');
+
+    const generalVolumeContainer2 = document.getElementById("generalVolumeContainer2");
+    const generalVolumeBar2 = document.getElementById('generalVolumeBar2');
+    const generalVolumeThumb2 = document.getElementById('generalVolumeThumb2');
+
     const flowmodoroRadios = document.querySelectorAll('.flowmodoroAlert');
     const flowmodoroInputs = document.querySelectorAll('.flowmodoroBreak');
     const generalRadios = document.querySelectorAll('.generalAlert');
@@ -263,6 +275,9 @@ document.addEventListener("DOMContentLoaded", function() {
         showingFlowTimeBreakNotificationInfoWindow: false,
         generalThumbIsDragging: false,
         pomodoroThumbIsDragging: false,
+        flowmodoroThumbIsDragging2: false,
+        generalThumbIsDragging2: false,
+        pomodoroThumbIsDragging2: false,
         pomodoroNotificationToggle: false,
         autoStartPomodoroInterval: false,
         autoStartBreakInterval: false,
@@ -613,18 +628,39 @@ document.addEventListener("DOMContentLoaded", function() {
         event.preventDefault();
     })
 
+    flowmodoroVolumeThumb2.addEventListener('mousedown', (event) => {
+        flags.flowmodoroThumbIsDragging2 = true;
+        event.preventDefault();
+    })
+
+    generalVolumeThumb2.addEventListener('mousedown', (event) => {
+        flags.generalThumbIsDragging2 = true;
+        event.preventDefault();
+    })
+
+    pomodoroVolumeThumb2.addEventListener('mousedown', (event) => {
+        flags.pomodoroThumbIsDragging2 = true;
+        event.preventDefault();
+    })
+
     document.addEventListener('mousemove', (event) => {
         if (flags.flowmodoroThumbIsDragging) {
-            alertVolumeChange(flowmodoroVolumeContainer, alertVolumes, flowmodoroVolumeThumb, flowmodoroVolumeBar, event, flags);
+            alertVolumeChange(flowmodoroVolumeContainer, alertVolumes, flowmodoroVolumeThumb, flowmodoroVolumeBar, flowmodoroVolumeThumb2, flowmodoroVolumeBar2, event, flags);
+        } else if (flags.flowmodoroThumbIsDragging2) {
+            alertVolumeChange(flowmodoroVolumeContainer2, alertVolumes, flowmodoroVolumeThumb, flowmodoroVolumeBar, flowmodoroVolumeThumb2, flowmodoroVolumeBar2, event, flags);
         } else if (flags.generalThumbIsDragging) {
-            alertVolumeChange(generalVolumeContainer, alertVolumes, generalVolumeThumb, generalVolumeBar, event, flags);
+            alertVolumeChange(generalVolumeContainer, alertVolumes, generalVolumeThumb, generalVolumeBar,  generalVolumeThumb2, generalVolumeBar2, event, flags);
+        } else if (flags.generalThumbIsDragging2) {
+            alertVolumeChange(generalVolumeContainer2, alertVolumes, generalVolumeThumb, generalVolumeBar,  generalVolumeThumb2, generalVolumeBar2, event, flags);
         } else if (flags.pomodoroThumbIsDragging) {
-            alertVolumeChange(pomodoroVolumeContainer, alertVolumes, pomodoroVolumeThumb, pomodoroVolumeBar, event, flags)
+            alertVolumeChange(pomodoroVolumeContainer, alertVolumes, pomodoroVolumeThumb, pomodoroVolumeBar,  pomodoroVolumeThumb2, pomodoroVolumeBar2, event, flags)
+        }  else if (flags.pomodoroThumbIsDragging2) {
+            alertVolumeChange(pomodoroVolumeContainer2, alertVolumes, pomodoroVolumeThumb, pomodoroVolumeBar, pomodoroVolumeThumb2, pomodoroVolumeBar2, event, flags)
         }
     })
 
     document.addEventListener('mouseup', (event) => {
-        if (flags.flowmodoroThumbIsDragging) {
+        if ((flags.flowmodoroThumbIsDragging) || (flags.flowmodoroThumbIsDragging2)) {
             if (alertSounds.flowmodoro === 'chime') {
                 pauseAndResetAlertSounds(bell, chime);
                 playAlertSound(chime, "flowmodoro", alertVolumes);
@@ -633,7 +669,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 playAlertSound(bell, "flowmodoro", alertVolumes);
             }
             flags.flowmodoroThumbIsDragging = false;
-        } else if (flags.generalThumbIsDragging) {
+            flags.flowmodoroThumbIsDragging2 = false;
+        } else if ((flags.generalThumbIsDragging) || (flags.generalThumbIsDragging2)) {
             if (alertSounds.general === 'chime') {
                 pauseAndResetAlertSounds(bell, chime);
                 playAlertSound(chime, "general", alertVolumes);
@@ -642,8 +679,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 playAlertSound(bell, "general", alertVolumes);
             }
             flags.generalThumbIsDragging = false;
+            flags.generalThumbIsDragging2 = false;
             
-        } else if (flags.pomodoroThumbIsDragging) {
+        } else if ((flags.pomodoroThumbIsDragging) || (flags.pomodoroThumbIsDragging2)) {
             if (alertSounds.pomodoro === 'chime') {
                 pauseAndResetAlertSounds(bell, chime);
                 playAlertSound(chime, "pomodoro", alertVolumes);
@@ -652,6 +690,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 playAlertSound(bell, "pomodoro", alertVolumes);
             }
             flags.pomodoroThumbIsDragging = false;
+            flags.pomodoroThumbIsDragging2 = false;
             
         } else {
             if ((event.target.className !== 'flowmodoroAlert') && (event.target.className !== 'generalAlert') && (event.target.className !== 'pomodoroAlert') && (event.target.className !== 'volume-thumb') && (document.getElementById("settingsContainer").style.display === "block")) {
@@ -712,16 +751,22 @@ document.addEventListener("DOMContentLoaded", function() {
 
     flowmodoroRadios.forEach(radio => {
         radio.addEventListener('change', function(event) {
-            if (event.target.id === 'flowmodoroNoAlertInput') {
+            if ((event.target.id === 'flowmodoroNoAlertInput') || (event.target.id === 'flowmodoroNoAlertInput2')) {
                 pauseAndResetAlertSounds(bell, chime);
                 alertSounds.flowmodoro = 'none';
-            } else if (event.target.id === 'flowmodoroChimeInput') {
+                document.getElementById('flowmodoroNoAlertInput').checked = true;
+                document.getElementById('flowmodoroNoAlertInput2').checked = true;
+            } else if ((event.target.id === 'flowmodoroChimeInput') || (event.target.id === 'flowmodoroChimeInput2')) {
                 pauseAndResetAlertSounds(bell, chime);
                 alertSounds.flowmodoro = 'chime';
+                document.getElementById('flowmodoroChimeInput').checked = true;
+                document.getElementById('flowmodoroChimeInput2').checked = true;
                 playAlertSound(chime, 'flowmodoro', alertVolumes);
-            } else if (event.target.id === 'flowmodoroBellInput') {
+            } else if ((event.target.id === 'flowmodoroBellInput') || (event.target.id === 'flowmodoroBellInput2')) {
                 pauseAndResetAlertSounds(bell, chime);
                 alertSounds.flowmodoro = 'bell';
+                document.getElementById('flowmodoroBellInput').checked = true;
+                document.getElementById('flowmodoroBellInput2').checked = true;
                 playAlertSound(bell, 'flowmodoro', alertVolumes);
             }
         })
@@ -729,34 +774,46 @@ document.addEventListener("DOMContentLoaded", function() {
 
     generalRadios.forEach(radio => {
         radio.addEventListener('change', function(event) {
-            if (event.target.id === 'generalNoAlertInput') {
+            if ((event.target.id === 'generalNoAlertInput') || (event.target.id === 'generalNoAlertInput2')) {
                 pauseAndResetAlertSounds(bell, chime);
                 alertSounds.general = 'none';
-            } else if (event.target.id === 'generalChimeInput') {
+                document.getElementById('generalNoAlertInput').checked = true;
+                document.getElementById('generalNoAlertInput2').checked = true;
+            } else if ((event.target.id === 'generalChimeInput') || (event.target.id === 'generalChimeInput2')) {
                 pauseAndResetAlertSounds(bell, chime);
                 alertSounds.general = 'chime';
                 playAlertSound(chime, 'general', alertVolumes);
-            } else if (event.target.id === 'generalBellInput') {
+                document.getElementById('generalChimeInput').checked = true;
+                document.getElementById('generalChimeInput2').checked = true;
+            } else if ((event.target.id === 'generalBellInput') || (event.target.id === 'generalBellInput2')) {
                 pauseAndResetAlertSounds(bell, chime);
                 alertSounds.general = 'bell';
                 playAlertSound(bell, 'general', alertVolumes);
+                document.getElementById('generalBellInput').checked = true;
+                document.getElementById('generalBellInput2').checked = true;
             }
         })
     })
 
     pomodoroRadios.forEach(radio => {
         radio.addEventListener('change', function(event) {
-            if (event.target.id === 'pomodoroNoAlertInput') {
+            if ((event.target.id === 'pomodoroNoAlertInput') || (event.target.id === 'pomodoroNoAlertInput2')) {
                 pauseAndResetAlertSounds(bell, chime);
                 alertSounds.pomodoro = 'none';
-            } else if (event.target.id === 'pomodoroChimeInput') {
+                document.getElementById('pomodoroNoAlertInput').checked = true;
+                document.getElementById('pomodoroNoAlertInput2').checked = true;
+            } else if ((event.target.id === 'pomodoroChimeInput') || (event.target.id === 'pomodoroChimeInput2')) {
                 pauseAndResetAlertSounds(bell, chime);
                 alertSounds.pomodoro = 'chime';
                 playAlertSound(chime, 'pomodoro', alertVolumes);
-            } else if (event.target.id === 'pomodoroBellInput') {
+                document.getElementById('pomodoroChimeInput').checked = true;
+                document.getElementById('pomodoroChimeInput2').checked = true;
+            } else if ((event.target.id === 'pomodoroBellInput') || (event.target.id === 'pomodoroBellInput2')) {
                 pauseAndResetAlertSounds(bell, chime);
                 alertSounds.pomodoro = 'bell';
                 playAlertSound(bell, 'pomodoro', alertVolumes);
+                document.getElementById('pomodoroBellInput').checked = true;
+                document.getElementById('pomodoroBellInput2').checked = true;
             }
         })
     })
@@ -1590,7 +1647,7 @@ function pauseAndResetAlertSounds(bell, chime) {
 }
 
 // Function to hide all settings containers and remove 'selected' class from all buttons
-function alertVolumeChange(volumeContainerType, alertVolumes, volumeThumbType, volumeBarType, event, flags) {
+function alertVolumeChange(volumeContainerType, alertVolumes, volumeThumbType, volumeBarType, volumeThumbType2, volumeBarType2, event, flags) {
     const rect = volumeContainerType.getBoundingClientRect();
     let volumeLevel = (event.clientX - rect.left) / rect.width;
     volumeLevel = Math.max(0, Math.min(1, volumeLevel)); // Constrain between 0 and 1
@@ -1598,12 +1655,14 @@ function alertVolumeChange(volumeContainerType, alertVolumes, volumeThumbType, v
     // Update the thumb and bar positions
     volumeThumbType.style.left = `${volumeLevel * 100}%`;
     volumeBarType.style.width = `${volumeLevel * 100}%`;
+    volumeThumbType2.style.left = `${volumeLevel * 100}%`;
+    volumeBarType2.style.width = `${volumeLevel * 100}%`;
 
-    if (flags.flowmodoroThumbIsDragging) {
+    if ((flags.flowmodoroThumbIsDragging) || (flags.flowmodoroThumbIsDragging2)) {
         alertVolumes.flowmodoro = volumeLevel;
-    } else if (flags.generalThumbIsDragging) {
+    } else if ((flags.generalThumbIsDragging) || (flags.generalThumbIsDragging2)) {
         alertVolumes.general = volumeLevel;
-    } else if (flags.pomodoroThumbIsDragging) {
+    } else if ((flags.pomodoroThumbIsDragging) || (flags.pomodoroThumbIsDragging2)){
         alertVolumes.pomodoro = volumeLevel;
     }
 }
