@@ -47,6 +47,10 @@ document.addEventListener("DOMContentLoaded", function() {
         blogShowing: false,
     }
 
+    let counters = {
+        settingsBtnClicked: 0
+    }
+
     menu_btn.addEventListener("click", function() {
         //Cause the menu window to become visable
         if (popup_window.style.display == "flex") {
@@ -103,7 +107,10 @@ document.addEventListener("DOMContentLoaded", function() {
     function handleClickSettings(event) {
         // We don't necessarily need to hide the main elements
 
-        pomodoroBtnContainer.click();
+        if (counters.settingsBtnClicked === 0) {
+            pomodoroBtnContainer.click();
+        }
+        counters.settingsBtnClicked++;
     
         //Hide blogs
         if (flags.blogShowing == true) {
