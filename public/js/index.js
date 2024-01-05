@@ -1618,17 +1618,23 @@ function setPomodoroIntervalArr(event, pomodoroIntervalArr, validatedFinalInputV
 }
 
 function animationsFadeIn(animationType, displayType) {
-    animationType.classList.remove('outOfOpacityTransition');
+    // animationType.classList.remove('outOfOpacityTransition');
     animationType.classList.add('intoOpacityTransition');
     animationType.style.display = displayType;
 }
 
+/* 
+    If you want to make the switch transition smoother,
+    comment back in the addition/ removal of the outOfOpacityTransition
+    and set the setTimeout delay to ~500ms or possibly shorter
+*/
+
 function animationsFadeOut(animationType) {
     animationType.classList.remove('intoOpacityTransition');
-    animationType.classList.add('outOfOpacityTransition');
+    // animationType.classList.add('outOfOpacityTransition');
     setTimeout(() => {
         animationType.style.display = 'none';
-    }, 500)
+    }, 0)
 }
 
 function toggleInfoWindow(infoWindowElement, flagKey, flags) {
