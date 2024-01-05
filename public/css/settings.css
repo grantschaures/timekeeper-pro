@@ -131,15 +131,6 @@
     }
 }
 
-@media (max-width: 650px) {
-    #settingsHeaderColumn {
-        display: none;
-    }
-    .settingsIconTextContainer {
-        margin-top: 60px;
-    }
-}
-
 @media (max-width: 560px) {
     #pomodoroAlertSoundContainer2, #flowmodoroAlertSoundContainer2, #generalAlertSoundContainer2 {
         display: flex;
@@ -263,6 +254,18 @@
     width: 100%;
 
     /* border: 1px solid yellow; */
+}
+
+@media (max-width: 650px) {
+    #settingsHeaderColumn {
+        display: none;
+    }
+    .settingsIconTextContainer {
+        margin-top: 60px;
+    }
+    .settingsContentContainer {
+        width: 80%;
+    }
 }
 
 .settingsHeaderRow:not(#notificationsHeaderContainer):not(.selected):hover {
