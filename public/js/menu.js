@@ -35,7 +35,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const settings_exit = document.getElementById("settingsExit");
 
     const pomodoroBtnContainer = document.getElementById("pomodoroBtnContainer");
-    const flowmodoroBtnContainer = document.getElementById("flowmodoroBtnContainer");
+    const backgroundsBtnContainer = document.getElementById("backgroundsBtnContainer");
+
+    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
     //ADD TO THIS LIST WHEN YOU CREATE A NEW BLOG
     const blogIdList = {
@@ -109,7 +111,11 @@ document.addEventListener("DOMContentLoaded", function() {
         let viewportWidth = window.innerWidth || document.documentElement.clientWidth;
 
         if ((counters.settingsBtnClicked === 0) && (viewportWidth > 650)) {
-            pomodoroBtnContainer.click();
+            if (!isMobile) {
+                pomodoroBtnContainer.click();
+            } else {
+                backgroundsBtnContainer.click();
+            }
         }
         counters.settingsBtnClicked++;
     

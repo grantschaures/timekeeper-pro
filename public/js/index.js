@@ -314,6 +314,10 @@ document.addEventListener("DOMContentLoaded", function() {
     // INITIAL DOMContentLoaded FUNCTION CALLS
     setInitialEndSessionBtnText(initialViewportWidth, end_session_btn);
 
+    if (isMobile) {
+        //
+    }
+
     // ----------------
     // EVENT LISTENERS
     // ----------------
@@ -597,7 +601,6 @@ document.addEventListener("DOMContentLoaded", function() {
     })
 
     // Settings Menu Functionality (showing & hiding containers)
-
     for (const [buttonId, containerId] of Object.entries(settingsMappings)) {
         document.getElementById(buttonId).addEventListener('click', function() {
             hideAllSettingsContainers(settingsMappings);
@@ -605,6 +608,24 @@ document.addEventListener("DOMContentLoaded", function() {
             this.classList.add('selected');
             tempStorage.lastSettingsSelectionId = buttonId;
         });
+    }
+
+    if (isMobile) {
+        document.getElementById("notificationsHeaderContainer").style.display = 'none';
+        document.getElementById("pomodoroBtnContainer").style.display = 'none';
+        document.getElementById("flowmodoroBtnContainer").style.display = 'none';
+        document.getElementById("generalBtnContainer").style.display = 'none';
+
+        document.getElementById("pomodoroSettingsContainer").style.display = 'none';
+        document.getElementById("flowmodoroSettingsContainer").style.display = 'none';
+        document.getElementById("generalSettingsContainer").style.display = 'none';
+
+        document.getElementById("pomodoroAlertSoundBlock2").style.display = 'none';
+        document.getElementById("flowmodoroAlertSoundBlock2").style.display = 'none';
+        document.getElementById("generalAlertSoundBlock2").style.display = 'none';
+
+
+        tempStorage.lastSettingsSelectionId = 'backgroundsBtnContainer';
     }
 
     pomodoroNotifications.addEventListener('click', function() {
@@ -1048,10 +1069,10 @@ document.addEventListener("DOMContentLoaded", function() {
         activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popup_window, settingsContainer, notesContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId);
     })
 
-    window.addEventListener("resize", handleViewportWidthChange(settingsMappings, tempStorage));
+    window.addEventListener("resize", handleViewportWidthChange(settingsMappings, tempStorage, isMobile));
 
     window.addEventListener("resize", function() {
-        handleViewportWidthChange(settingsMappings, tempStorage);
+        handleViewportWidthChange(settingsMappings, tempStorage, isMobile);
     });
 
     document.addEventListener('visibilitychange', function() {
@@ -1699,7 +1720,7 @@ function setInitialEndSessionBtnText(initialViewportWidth, end_session_btn) {
     }
 }
 
-function handleViewportWidthChange(settingsMappings, tempStorage) {
+function handleViewportWidthChange(settingsMappings, tempStorage, isMobile) {
     let viewportWidth = window.innerWidth || document.documentElement.clientWidth;
     let end_session_btn = document.getElementById("end-session");
     if (viewportWidth <= 504) {
@@ -1718,7 +1739,14 @@ function handleViewportWidthChange(settingsMappings, tempStorage) {
                 this.classList.add('selected');
             });
         }
+
         document.getElementById(tempStorage.lastSettingsSelectionId).click();
+    }
+
+    if (isMobile) {
+        document.getElementById("pomodoroSettingsContainer").style.display = 'none';
+        document.getElementById("flowmodoroSettingsContainer").style.display = 'none';
+        document.getElementById("generalSettingsContainer").style.display = 'none';
     }
 }
 
