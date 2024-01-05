@@ -185,7 +185,7 @@ function setNewConsoleLine(counters, currentTime, state) {
         if (window.innerWidth >= 592) {
             modifyNoteEntryNewlineTriggerLength(latestTextArea, 42);
         } else if (window.innerWidth < 325) {
-            modifyNoteEntryNewlineTriggerLength(latestTextArea, 18);
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 17);
         } else if (window.innerWidth < 337) {
             modifyNoteEntryNewlineTriggerLength(latestTextArea, 19);
         } else if (window.innerWidth < 348) {
