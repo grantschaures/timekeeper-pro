@@ -48,6 +48,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const notesContainer = document.getElementById("notes-container");
 
+    const aboutContainer = document.getElementById("aboutContainer");
+    const blogContainer = document.getElementById("blogContainer");
+
     const blackFlowtimeBackground = document.getElementById("black-flowtime");
     const blackChilltimeBackground = document.getElementById("black-chilltime");
 
@@ -624,7 +627,6 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("flowmodoroAlertSoundBlock2").style.display = 'none';
         document.getElementById("generalAlertSoundBlock2").style.display = 'none';
 
-
         tempStorage.lastSettingsSelectionId = 'backgroundsBtnContainer';
     }
 
@@ -1058,7 +1060,7 @@ document.addEventListener("DOMContentLoaded", function() {
         defaultTheme.classList.add('selected-background');
         flags.darkThemeActivated = false;
 
-        deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popup_window, settingsContainer, notesContainer, selectedBackgroundIdTemp, selectedBackgroundId);
+        deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popup_window, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId);
     })
 
     darkThemeContainer.addEventListener("click", function() {
@@ -1066,7 +1068,7 @@ document.addEventListener("DOMContentLoaded", function() {
         darkGrayTheme.classList.add('selected-background');
         flags.darkThemeActivated = true;
 
-        activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popup_window, settingsContainer, notesContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId);
+        activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popup_window, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId);
     })
 
     window.addEventListener("resize", handleViewportWidthChange(settingsMappings, tempStorage, isMobile));
@@ -1212,8 +1214,8 @@ document.addEventListener("DOMContentLoaded", function() {
 // ---------------------
 // HELPER FUNCTIONS
 // ---------------------
-function activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popup_window, settingsContainer, notesContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId) {
-    let componentArr1 = [interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, notesContainer];
+function activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popup_window, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId) {
+    let componentArr1 = [interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, notesContainer, aboutContainer, blogContainer];
     let componentArr2 = [popup_window, settingsContainer];
 
     let darkBackgroundTranslucent = "rgba(32, 32, 32, 0.9)";
@@ -1236,8 +1238,8 @@ function activateDarkTheme(interruptionsContainer, targetHoursContainer, timekee
     blackChilltimeBackground.click();
 }
 
-function deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popup_window, settingsContainer, notesContainer, selectedBackgroundIdTemp, selectedBackgroundId) {
-    let componentArr1 = [interruptionsContainer, targetHoursContainer, timekeepingContainer, notesContainer];
+function deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popup_window, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId) {
+    let componentArr1 = [interruptionsContainer, targetHoursContainer, timekeepingContainer, notesContainer, aboutContainer, blogContainer];
     let componentArr2 = [popup_window, settingsContainer];
 
     let darkBackgroundTranslucent = "rgba(0, 0, 0, 0.35)";
@@ -1740,7 +1742,9 @@ function handleViewportWidthChange(settingsMappings, tempStorage, isMobile) {
             });
         }
 
-        document.getElementById(tempStorage.lastSettingsSelectionId).click();
+        if (document.getElementById("settingsContainer").style.display === 'block') {
+            document.getElementById(tempStorage.lastSettingsSelectionId).click();
+        }
     }
 
     if (isMobile) {

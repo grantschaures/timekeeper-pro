@@ -123,6 +123,12 @@
 
     max-height: 70vh; /* make smaller to make full 'about window' show up on devices smaller than my iPhone 12 */
     overflow-y: auto;
+
+    /* DARK GREY THEME BACKGROUND */
+    /* background-color: rgba(32, 32, 32, 0.9); */
+
+    /* POTENTIAL DESIGN ALTERNATIVE -- WHITE BORDER */
+    /* border: 3px solid rgb(255, 255, 255); */
 }
 
 #aboutWindow, #blogWindow {

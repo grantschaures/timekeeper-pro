@@ -179,6 +179,7 @@ function setNewConsoleLine(counters, currentTime, state) {
 
     counters.notesLines++;
 
+    // Still not 100% correct
     let textArea = document.getElementById(noteInput.id);
     textArea.addEventListener("input", function() {
         let latestTextArea = document.getElementById(state.currentNoteInputId);
