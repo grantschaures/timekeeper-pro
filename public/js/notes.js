@@ -185,53 +185,53 @@ function setNewConsoleLine(counters, currentTime, state) {
         if (window.innerWidth >= 592) {
             modifyNoteEntryNewlineTriggerLength(latestTextArea, 42);
         } else if (window.innerWidth < 325) {
-            modifyNoteEntryNewlineTriggerLength(latestTextArea, 16);
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 15);
         } else if (window.innerWidth < 337) {
-            modifyNoteEntryNewlineTriggerLength(latestTextArea, 17);
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 16);
         } else if (window.innerWidth < 348) {
-            modifyNoteEntryNewlineTriggerLength(latestTextArea, 18);
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 17);
         } else if (window.innerWidth < 359) {
-            modifyNoteEntryNewlineTriggerLength(latestTextArea, 19);
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 18);
         } else if (window.innerWidth < 370) {
-            modifyNoteEntryNewlineTriggerLength(latestTextArea, 20);
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 19);
         } else if (window.innerWidth < 381) {
-            modifyNoteEntryNewlineTriggerLength(latestTextArea, 21);
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 20);
         } else if (window.innerWidth < 392) {
-            modifyNoteEntryNewlineTriggerLength(latestTextArea, 22);
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 21);
         } else if (window.innerWidth < 403) {
-            modifyNoteEntryNewlineTriggerLength(latestTextArea, 23);
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 22);
         } else if (window.innerWidth < 414) {
-            modifyNoteEntryNewlineTriggerLength(latestTextArea, 24);
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 23);
         } else if (window.innerWidth < 425) {
-            modifyNoteEntryNewlineTriggerLength(latestTextArea, 25);
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 24);
         } else if (window.innerWidth < 436) {
-            modifyNoteEntryNewlineTriggerLength(latestTextArea, 26);
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 25);
         } else if (window.innerWidth < 448) {
-            modifyNoteEntryNewlineTriggerLength(latestTextArea, 27);
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 26);
         } else if (window.innerWidth < 459) {
-            modifyNoteEntryNewlineTriggerLength(latestTextArea, 28);
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 27);
         } else if (window.innerWidth < 470) {
-            modifyNoteEntryNewlineTriggerLength(latestTextArea, 29);
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 28);
         } else if (window.innerWidth < 481) {
-            modifyNoteEntryNewlineTriggerLength(latestTextArea, 30);
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 29);
         } else if (window.innerWidth < 492) {
-            modifyNoteEntryNewlineTriggerLength(latestTextArea, 31);
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 30);
         } else if (window.innerWidth < 503) {
-            modifyNoteEntryNewlineTriggerLength(latestTextArea, 32);
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 31);
         } else if (window.innerWidth < 514) {
-            modifyNoteEntryNewlineTriggerLength(latestTextArea, 33);
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 32);
         } else if (window.innerWidth < 526) {
-            modifyNoteEntryNewlineTriggerLength(latestTextArea, 34);
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 33);
         } else if (window.innerWidth < 539) {
-            modifyNoteEntryNewlineTriggerLength(latestTextArea, 35);
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 34);
         } else if (window.innerWidth < 553) {
-            modifyNoteEntryNewlineTriggerLength(latestTextArea, 36);
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 35);
         } else if (window.innerWidth < 566) {
-            modifyNoteEntryNewlineTriggerLength(latestTextArea, 37);
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 36);
         } else if (window.innerWidth < 579) {
-            modifyNoteEntryNewlineTriggerLength(latestTextArea, 38);
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 37);
         } else if (window.innerWidth < 592) {
-            modifyNoteEntryNewlineTriggerLength(latestTextArea, 39);
+            modifyNoteEntryNewlineTriggerLength(latestTextArea, 38);
         }
     })
 }
