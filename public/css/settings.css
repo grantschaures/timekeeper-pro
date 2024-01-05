@@ -42,6 +42,7 @@
     position: relative;
     justify-content: left;
     align-items: top;
+    overflow-x: hidden;
     /* border: 2px solid red; */
 }
 
@@ -142,33 +143,6 @@
     }
 }
 
-@media (max-width: 420px) {
-    #pomodoroAlertSoundContainer, #flowmodoroAlertSoundContainer, #generalAlertSoundContainer {
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 20px;
-    }
-    #chillTimeBackgroundsContainer > div, #flowTimeBackgroundsContainer > div {
-        width: 80px;
-    }
-    #themesContainer {
-        display: flex;
-        flex-direction: column;
-        /* border: 1px solid white; */
-    }
-    .themeContainer {
-        text-align: left;
-    }
-    #defaultThemeP {
-        text-align: left;
-        margin-left: 25px;
-    }
-    #darkThemeP {
-        text-align: left;
-        margin-left: 35px;
-    }
-}
-
 #pomodoroAlertSoundContainer2, #flowmodoroAlertSoundContainer2, #generalAlertSoundContainer2 {
     display: flex;
     max-width: 500px;
@@ -264,7 +238,14 @@
     .settingsContentContainer {
         width: 80%;
     }
+    #generalContainer {
+        margin-bottom: -70px;
+    }
+    #breakSuggestionText {
+        margin-bottom: -70px;
+    }
 }
+
 
 .settingsHeaderRow:not(#notificationsHeaderContainer):not(.selected):hover {
     background-color: rgba(255, 255, 255, 0.15);
@@ -283,8 +264,8 @@
 #settingsContent {
     /* border: 1px solid yellow; */
     display: block;
-    width: 100%;
-    margin-right: 20px;
+    width: 80%;
+    /* margin-right: 20px; */
 }
 
 .settings h2 {
@@ -725,7 +706,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: auto auto;
-    width: 500px;
+    width: 600px;
     /* border: 1px solid yellow; */
 }
 
@@ -822,4 +803,37 @@
 
 #pomodoroAlertSoundBlock2, #flowmodoroAlertSoundBlock2, #generalAlertSoundsBlock2 {
     margin-bottom: 15px;
+}
+
+@media (max-width: 420px) {
+    #pomodoroAlertSoundContainer, #flowmodoroAlertSoundContainer, #generalAlertSoundContainer {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+    }
+    #chillTimeBackgroundsContainer > div, #flowTimeBackgroundsContainer > div {
+        width: 80px;
+    }
+    #themesContainer {
+        display: flex;
+        flex-direction: column;
+        /* border: 1px solid white; */
+    }
+    .themeContainer {
+        text-align: left;
+    }
+    #defaultThemeP {
+        text-align: left;
+        margin-left: 25px;
+    }
+    #darkThemeP {
+        text-align: left;
+        margin-left: 35px;
+    }
+    #flowTimeBackgroundsContainer, #chillTimeBackgroundsContainer {
+        /* border: 1px solid white; */
+        grid-template-columns: 130px 130px;
+        grid-template-rows: auto auto auto;
+        /* width: 200px; */
+    }
 }
