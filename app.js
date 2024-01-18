@@ -35,20 +35,20 @@ connect();
 //new comment!
 // //COMMENT OUT WHEN TESTING ON LOCALHOST:3000
 
-app.use((req, res, next) => {
-  if (req.headers.host !== PRIMARY_DOMAIN) {
-    // Redirect to the primary domain
-    return res.redirect(301, `https://${PRIMARY_DOMAIN}${req.url}`);
-  }
-  next();
-});
+// app.use((req, res, next) => {
+//   if (req.headers.host !== PRIMARY_DOMAIN) {
+//     // Redirect to the primary domain
+//     return res.redirect(301, `https://${PRIMARY_DOMAIN}${req.url}`);
+//   }
+//   next();
+// });
 
-app.use((req, res, next) => {
-  if (req.header('x-forwarded-proto') !== 'https')
-      res.redirect(`https://${req.header('host')}${req.url}`);
-  else
-    next();
-});
+// app.use((req, res, next) => {
+//   if (req.header('x-forwarded-proto') !== 'https')
+//       res.redirect(`https://${req.header('host')}${req.url}`);
+//   else
+//     next();
+// });
 
 // Serve static files from the public dir
 app.use(express.static("public")); //app.use() function is used to mount middleware functions at a specific path
