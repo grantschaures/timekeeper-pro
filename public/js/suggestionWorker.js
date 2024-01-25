@@ -17,7 +17,7 @@ onmessage = function(message) {
                 workerIntervalSuggestion = null;
             } else {
                 totalNotificationSeconds--;
-                console.log(totalNotificationSeconds);
+                // console.log(totalNotificationSeconds);
             }
         }, 1000)
     }   

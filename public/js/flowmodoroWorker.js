@@ -17,7 +17,7 @@ onmessage = function(message) {
                 workerIntervalFlowmodoro = null;
             } else {
                 totalNotificationSeconds--;
-                console.log(totalNotificationSeconds);
+                // console.log(totalNotificationSeconds);
             }
         }, 1000)
     }   

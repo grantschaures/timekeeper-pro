@@ -239,11 +239,25 @@ document.addEventListener("DOMContentLoaded", function() {
         general: 0.5
     }
 
+    // values include 'none', 'bell', and 'chime'
     let alertSounds = {
         pomodoro: 'none',
         flowmodoro: 'none',
         general: 'none'
     }
+
+    // RADIO BTN SOUND MAPPING
+    const soundMap = {
+        NoAlert: null,
+        Chime: chime,
+        Bell: bell
+    };
+
+    const radioGroups = [
+        { radios: flowmodoroRadios, type: 'flowmodoro' },
+        { radios: generalRadios, type: 'general' },
+        { radios: pomodoroRadios, type: 'pomodoro' }
+    ];
 
     //STATE-RELATED FLAGS AND COUNTERS
     let counters = {
@@ -256,6 +270,7 @@ document.addEventListener("DOMContentLoaded", function() {
         currentPomodoroIntervalOrderIndex: 0,
         pomodorosCompleted: 0
     }
+
 
     //STORAGE
     savedInterruptionsArr = [];
@@ -319,7 +334,7 @@ document.addEventListener("DOMContentLoaded", function() {
     setInitialEndSessionBtnText(initialViewportWidth, end_session_btn);
 
     if (isMobile) {
-        //
+        // TBD
     }
 
     // ----------------
@@ -475,7 +490,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     suggestionMinutesInput.addEventListener("change", function() {
-
         // Immediate actions w/ user's inputted value
         let inputSuggestionMinutes = suggestionMinutesInput.value;
         suggestionMinutes = Math.round(parseFloat(inputSuggestionMinutes));
@@ -677,74 +691,11 @@ document.addEventListener("DOMContentLoaded", function() {
         })
     })
 
-    flowmodoroRadios.forEach(radio => {
-        radio.addEventListener('change', function(event) {
-            if ((event.target.id === 'flowmodoroNoAlertInput') || (event.target.id === 'flowmodoroNoAlertInput2')) {
-                pauseAndResetAlertSounds(bell, chime);
-                alertSounds.flowmodoro = 'none';
-                document.getElementById('flowmodoroNoAlertInput').checked = true;
-                document.getElementById('flowmodoroNoAlertInput2').checked = true;
-            } else if ((event.target.id === 'flowmodoroChimeInput') || (event.target.id === 'flowmodoroChimeInput2')) {
-                pauseAndResetAlertSounds(bell, chime);
-                alertSounds.flowmodoro = 'chime';
-                document.getElementById('flowmodoroChimeInput').checked = true;
-                document.getElementById('flowmodoroChimeInput2').checked = true;
-                playAlertSound(chime, 'flowmodoro', alertVolumes);
-            } else if ((event.target.id === 'flowmodoroBellInput') || (event.target.id === 'flowmodoroBellInput2')) {
-                pauseAndResetAlertSounds(bell, chime);
-                alertSounds.flowmodoro = 'bell';
-                document.getElementById('flowmodoroBellInput').checked = true;
-                document.getElementById('flowmodoroBellInput2').checked = true;
-                playAlertSound(bell, 'flowmodoro', alertVolumes);
-            }
-        })
-    })
-
-    generalRadios.forEach(radio => {
-        radio.addEventListener('change', function(event) {
-            if ((event.target.id === 'generalNoAlertInput') || (event.target.id === 'generalNoAlertInput2')) {
-                pauseAndResetAlertSounds(bell, chime);
-                alertSounds.general = 'none';
-                document.getElementById('generalNoAlertInput').checked = true;
-                document.getElementById('generalNoAlertInput2').checked = true;
-            } else if ((event.target.id === 'generalChimeInput') || (event.target.id === 'generalChimeInput2')) {
-                pauseAndResetAlertSounds(bell, chime);
-                alertSounds.general = 'chime';
-                playAlertSound(chime, 'general', alertVolumes);
-                document.getElementById('generalChimeInput').checked = true;
-                document.getElementById('generalChimeInput2').checked = true;
-            } else if ((event.target.id === 'generalBellInput') || (event.target.id === 'generalBellInput2')) {
-                pauseAndResetAlertSounds(bell, chime);
-                alertSounds.general = 'bell';
-                playAlertSound(bell, 'general', alertVolumes);
-                document.getElementById('generalBellInput').checked = true;
-                document.getElementById('generalBellInput2').checked = true;
-            }
-        })
-    })
-
-    pomodoroRadios.forEach(radio => {
-        radio.addEventListener('change', function(event) {
-            if ((event.target.id === 'pomodoroNoAlertInput') || (event.target.id === 'pomodoroNoAlertInput2')) {
-                pauseAndResetAlertSounds(bell, chime);
-                alertSounds.pomodoro = 'none';
-                document.getElementById('pomodoroNoAlertInput').checked = true;
-                document.getElementById('pomodoroNoAlertInput2').checked = true;
-            } else if ((event.target.id === 'pomodoroChimeInput') || (event.target.id === 'pomodoroChimeInput2')) {
-                pauseAndResetAlertSounds(bell, chime);
-                alertSounds.pomodoro = 'chime';
-                playAlertSound(chime, 'pomodoro', alertVolumes);
-                document.getElementById('pomodoroChimeInput').checked = true;
-                document.getElementById('pomodoroChimeInput2').checked = true;
-            } else if ((event.target.id === 'pomodoroBellInput') || (event.target.id === 'pomodoroBellInput2')) {
-                pauseAndResetAlertSounds(bell, chime);
-                alertSounds.pomodoro = 'bell';
-                playAlertSound(bell, 'pomodoro', alertVolumes);
-                document.getElementById('pomodoroBellInput').checked = true;
-                document.getElementById('pomodoroBellInput2').checked = true;
-            }
-        })
-    })
+    radioGroups.forEach(group => {
+        group.radios.forEach(radio => {
+            radio.addEventListener('change', event => handleRadioChange(event, group.type, soundMap, bell, chime, alertSounds, alertVolumes));
+        });
+    });
 
     flowtimeBackgroundCells.forEach(background => {
         background.addEventListener('click', function(event) {
@@ -880,22 +831,6 @@ document.addEventListener("DOMContentLoaded", function() {
         changeSuggestionBreakContainerHeader(flags, suggestionBreak_label, suggestionBreak_min, counters);
     })
 
-    // autoStartFlowTimeIntervalToggle.addEventListener("click", function() {
-    //     if (!flags.autoStartFlowTimeInterval) {
-    //         flags.autoStartFlowTimeInterval = true;
-    //     } else if (flags.autoStartFlowTimeInterval) {
-    //         flags.autoStartFlowTimeInterval = false;
-    //     }
-    // })
-    
-    // autoStartChillTimeIntervalToggle.addEventListener("click", function() {
-    //     if (!flags.autoStartChillTimeInterval) {
-    //         flags.autoStartChillTimeInterval = true;
-    //     } else if (flags.autoStartChillTimeInterval) {
-    //         flags.autoStartChillTimeInterval = false;
-    //     }
-    // })
-
     autoStartPomodoroIntervalToggle.addEventListener("click", function() {
         if (!flags.autoStartPomodoroInterval) {
             flags.autoStartPomodoroInterval = true;
@@ -1011,30 +946,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     pomodoroWorker.onmessage = function(message) {
         if (!flags.modeChangeExecuted) {
-            // console.log("POMODOROWORKER EXECUTING");
             flags.modeChangeExecuted = true;
     
-            let notificationString;
-            if (counters.currentPomodoroIntervalOrderIndex == 0 || counters.currentPomodoroIntervalOrderIndex == 2 || counters.currentPomodoroIntervalOrderIndex == 4) { // 1st-3rd pomodoro
-                if (pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] == 1) {
-                    notificationString = "It's been " + counters.currentPomodoroNotification + " minute! Are you ready to take a short break?";
-                } else {
-                    notificationString = "It's been " + counters.currentPomodoroNotification + " minutes! Are you ready to take a short break?";
-                }
-            } else if (counters.currentPomodoroIntervalOrderIndex == 6) { // 4th pomodoro
-                if (pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] == 1) {
-                    notificationString = "It's been " + counters.currentPomodoroNotification + " minute! Are you ready to take a long break?";
-                } else {
-                    notificationString = "It's been " + counters.currentPomodoroNotification + " minutes! Are you ready to take a long break?";
-                }
-            } else { // any of the breaks
-                if (pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] == 1) {
-                    notificationString = "It's been " + counters.currentPomodoroNotification + " minute! Are you ready to start your Pomodoro Interval?";
-                } else {
-                    notificationString = "It's been " + counters.currentPomodoroNotification + " minutes! Are you ready to start your Pomodoro Interval?";
-                }
-            }
-            new Notification(notificationString);
+            new Notification(getPomodoroNotificationString(counters, pomodoroIntervalArr));
             
             playAlertSoundCountdown(chime, bell, alertSounds.pomodoro, alertVolumes.pomodoro);
             
@@ -1083,36 +997,7 @@ document.addEventListener("DOMContentLoaded", function() {
         
         display.textContent = `${hours}:${minutes}:${seconds}`;
 
-        //if local interval time is more than the pomodoro or break time, call a function which compensates
-        // console.log("Pomodoro Interval Index: " + counters.currentPomodoroIntervalIndex);
-        // console.log("Current Pomodoro Order Index: " + counters.currentPomodoroIntervalOrderIndex);
-
-        if (flags.pomodoroNotificationToggle) {
-            if ((!flags.inHyperFocus) && ((counters.currentPomodoroNotification * 60 * 1000) < ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000)) && (!flags.modeChangeExecuted)) {
-                flags.modeChangeExecuted = true;
-                flags.autoSwitchedModes = false;
-                chillTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, startTimes, start_stop_btn, recoverPomState, targetTime, total_time_display, timeConvert, progressBar, progressContainer, chime, bell, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min);
-            } else if ((flags.inHyperFocus) && ((counters.currentPomodoroNotification * 60 * 1000) < ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000)) && (!flags.modeChangeExecuted)) {
-                flags.modeChangeExecuted = true;
-                flags.autoSwitchedModes = false;
-                flowTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, startTimes, start_stop_btn, recoverBreakState, chime, bell, alertSounds, alertVolumes);
-            }
-            // console.log("Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000: " + ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000)));
-        } else {
-            if ((flags.flowmodoroNotificationToggle) && (!flags.inHyperFocus) && ((counters.currentFlowmodoroNotification * 60 * 1000) < ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000)) && (!flags.sentFlowmodoroNotification)) {
-                // console.log("TIME RECOVERY FOR FLOWMODORO")
-                flowmodoroWorker.postMessage("clearInterval");
-                sendFlowmodoroNotification(breakTimeSuggestionsArr, counters, startTimes, chime, bell, alertSounds, alertVolumes);
-                flags.sentFlowmodoroNotification = true;
-            }
-            
-            if ((flags.breakSuggestionToggle) && (flags.inHyperFocus) && ((suggestionMinutes * 60 * 1000) < ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000)) && (!flags.sentSuggestionMinutesNotification)) {
-                // console.log("TIME RECOVERY FOR SUGGESTION MINUTES")
-                suggestionWorker.postMessage("clearInterval");
-                sendSuggestionBreakNotification(suggestionMinutes, startTimes, chime, bell, alertSounds, alertVolumes);
-                flags.sentSuggestionMinutesNotification = true;
-            }
-        }
+        timeRecovery(flags, counters, startTimes, elapsedTime, pomodoroIntervalArr, start_stop_btn, recoverPomState, recoverBreakState, targetTime, total_time_display, timeConvert, progressBar, progressContainer, chime, bell, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min, flowmodoroWorker, breakTimeSuggestionsArr, suggestionWorker, suggestionMinutes);
     }
 
     totalDisplayWorker.onmessage = function(message) {
@@ -1123,6 +1008,85 @@ document.addEventListener("DOMContentLoaded", function() {
 // ---------------------
 // HELPER FUNCTIONS
 // ---------------------
+function timeRecovery(flags, counters, startTimes, elapsedTime, pomodoroIntervalArr, start_stop_btn, recoverPomState, recoverBreakState, targetTime, total_time_display, timeConvert, progressBar, progressContainer, chime, bell, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min, flowmodoroWorker, breakTimeSuggestionsArr, suggestionWorker, suggestionMinutes) {
+    if (flags.pomodoroNotificationToggle) {
+        if ((!flags.inHyperFocus) && ((counters.currentPomodoroNotification * 60 * 1000) < ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000)) && (!flags.modeChangeExecuted)) {
+            flags.modeChangeExecuted = true;
+            flags.autoSwitchedModes = false;
+            chillTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, startTimes, start_stop_btn, recoverPomState, targetTime, total_time_display, timeConvert, progressBar, progressContainer, chime, bell, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min);
+        } else if ((flags.inHyperFocus) && ((counters.currentPomodoroNotification * 60 * 1000) < ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000)) && (!flags.modeChangeExecuted)) {
+            flags.modeChangeExecuted = true;
+            flags.autoSwitchedModes = false;
+            flowTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, startTimes, start_stop_btn, recoverBreakState, chime, bell, alertSounds, alertVolumes);
+        }
+        // console.log("Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000: " + ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000)));
+    } else {
+        if ((flags.flowmodoroNotificationToggle) && (!flags.inHyperFocus) && ((counters.currentFlowmodoroNotification * 60 * 1000) < ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000)) && (!flags.sentFlowmodoroNotification)) {
+            // console.log("TIME RECOVERY FOR FLOWMODORO")
+            flowmodoroWorker.postMessage("clearInterval");
+            sendFlowmodoroNotification(breakTimeSuggestionsArr, counters, startTimes, chime, bell, alertSounds, alertVolumes);
+            flags.sentFlowmodoroNotification = true;
+        }
+        if ((flags.breakSuggestionToggle) && (flags.inHyperFocus) && ((suggestionMinutes * 60 * 1000) < ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000)) && (!flags.sentSuggestionMinutesNotification)) {
+            // console.log("TIME RECOVERY FOR SUGGESTION MINUTES")
+            suggestionWorker.postMessage("clearInterval");
+            sendSuggestionBreakNotification(suggestionMinutes, startTimes, chime, bell, alertSounds, alertVolumes);
+            flags.sentSuggestionMinutesNotification = true;
+        }
+    }
+}
+
+function getPomodoroNotificationString(counters, pomodoroIntervalArr) {
+    let notificationString;
+    if (counters.currentPomodoroIntervalOrderIndex == 0 || counters.currentPomodoroIntervalOrderIndex == 2 || counters.currentPomodoroIntervalOrderIndex == 4) { // 1st-3rd pomodoro
+        if (pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] == 1) {
+            notificationString = "It's been " + counters.currentPomodoroNotification + " minute! Are you ready to take a short break?";
+        } else {
+            notificationString = "It's been " + counters.currentPomodoroNotification + " minutes! Are you ready to take a short break?";
+        }
+    } else if (counters.currentPomodoroIntervalOrderIndex == 6) { // 4th pomodoro
+        if (pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] == 1) {
+            notificationString = "It's been " + counters.currentPomodoroNotification + " minute! Are you ready to take a long break?";
+        } else {
+            notificationString = "It's been " + counters.currentPomodoroNotification + " minutes! Are you ready to take a long break?";
+        }
+    } else { // any of the breaks
+        if (pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] == 1) {
+            notificationString = "It's been " + counters.currentPomodoroNotification + " minute! Are you ready to start your Pomodoro Interval?";
+        } else {
+            notificationString = "It's been " + counters.currentPomodoroNotification + " minutes! Are you ready to start your Pomodoro Interval?";
+        }
+    }
+
+    return notificationString;
+}
+
+function handleRadioChange(event, alertType, soundMap, bell, chime, alertSounds, alertVolumes) {
+    const { target } = event;
+    const soundTypes = Object.keys(soundMap); // ['NoAlert', 'Chime', 'Bell']
+
+    soundTypes.forEach(soundType => {
+        if (target.id === `${alertType}${soundType}Input` || target.id === `${alertType}${soundType}Input2`) {
+            pauseAndResetAlertSounds(bell, chime);
+
+            if (soundType === 'NoAlert') {
+                alertSounds[alertType] = 'none';
+            } else {
+                alertSounds[alertType] = soundType.toLowerCase(); //effectively turns key into value (except for NoAlert key)
+            }
+
+            if (soundType !== 'NoAlert') {
+                playAlertSound(soundMap[soundType], alertType, alertVolumes);
+                document.getElementById(`${alertType}${soundType}Input`).checked = true;
+                document.getElementById(`${alertType}${soundType}Input2`).checked = true;
+            } else {
+                document.getElementById(`${alertType}NoAlertInput`).checked = true;
+                document.getElementById(`${alertType}NoAlertInput2`).checked = true;
+            }
+        }
+    });
+}
+
 function setPomodoroNotificationSeconds(flags, elapsedTime, counters, recoverBreakState, pomodoroWorker) {
     if ((flags.inRecoveryBreak) && !(flags.autoStartPomodoroInterval)) {
         elapsedTime.pomodoroNotificationSeconds = Math.round((counters.currentPomodoroNotification * 60) - ((recoverBreakState.displayTime / 1000) - 1));
@@ -1424,7 +1388,7 @@ function chillTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, st
         sendPomodoroDelayNotification(startTimes, counters, pomodoroIntervalArr, chime, bell, alertSounds, alertVolumes);
     }
 
-    // recoveryDebuggingOutput(displayTime, currentPomodoro, pomodorosCompleted, hyperFocusElapsedTime, localStartTime);n
+    // recoveryDebuggingOutput(displayTime, currentPomodoro, pomodorosCompleted, hyperFocusElapsedTime, localStartTime);
 }
 
 /* 
