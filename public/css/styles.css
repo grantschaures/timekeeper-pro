@@ -25,6 +25,10 @@
 
 body {
     font-family: myFont;
+
+    /* Takes care of bug that causes elements to shift right when opening blog or about windows.
+        Not really sure why.. */
+    border: 1px solid rgba(255, 255, 255, 0);
 }
 
 html, body {

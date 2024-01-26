@@ -37,6 +37,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const pomodoroBtnContainer = document.getElementById("pomodoroBtnContainer");
     const backgroundsBtnContainer = document.getElementById("backgroundsBtnContainer");
 
+    const start_stop_btn = document.getElementById("start-stop");
+
     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
     //ADD TO THIS LIST WHEN YOU CREATE A NEW BLOG
@@ -119,16 +121,12 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         counters.settingsBtnClicked++;
     
-        //Hide blogs
-        if (flags.blogShowing == true) {
-            blog_post_container.style.display = 'none';
-    
-            //ensure that any visible blog becomes hidden when clicking out
-            hideBlog(blogs);
-        }
-    
         //show blog popup window
         settings_container.style.display = "block"; //EDIT: changed from flex to block
+
+        //show main elements if not showing (e.g. if we previously had blog or about containers displayed)
+        main_elements.style.display = "block";
+
     
         //Triggers reset animation once you enter for first time
         settings_exit.classList.add('resetRotation');
@@ -204,7 +202,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if ((event.target !== blog_btn && event.target !== blog_icon && event.target !== blog_menu_container && !blog_container.contains(event.target) && !blog_post_container.contains(event.target) && !menu_btn.contains(event.target)) || event.target == blog_exit) {
             blog_container.style.display = "none";
         }
-        if ((event.target !== settings_btn  && event.target !== settings_icon && event.target !== settings_menu_container && !settings_container.contains(event.target) && !menu_btn.contains(event.target)) || event.target == settings_exit) {
+        if ((event.target !== settings_btn && event.target !== settings_icon && event.target !== settings_menu_container && event.target !== start_stop_btn && !settings_container.contains(event.target) && !menu_btn.contains(event.target)) || event.target == settings_exit) {
             settings_container.style.display = "none";
         }
 
