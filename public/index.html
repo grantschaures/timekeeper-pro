@@ -20,9 +20,9 @@
 
         <!-- CHANGE TO NON-MINIFIED VERSION DURING DEVELOPMENT -->
         <!-- CHANGE BACK TO MINIFIED VERSION FOR DEPLOYMENT -->
-        <script src='/js/index.min.js'></script>
-        <script src='/js/menu.min.js'></script>
-        <script src='/js/notes.min.js'></script>
+        <script src='/js/index.js'></script>
+        <script src='/js/menu.js'></script>
+        <script src='/js/notes.js'></script>
     </head>
 
     <!-- Google tag (gtag.js) -->
@@ -596,7 +596,6 @@
                                                 <div>
                                                     <p><b>Pomodoro</b></p>
                                                 </div>
-                                                <!-- <img src="images/HyperChill/5minutes.png" class="minutesImage"> -->
                                                 <div class="pomodoroNotificationContainer">
                                                     <input type="number" id="pomodoroInput" value="25" class="pomodoroInterval" name="minutes" min="1" max="720" step="1">
                                                 </div>
@@ -605,7 +604,6 @@
                                                 <div>
                                                     <p><b>Short Break</b></p>
                                                 </div>
-                                                <!-- <img src="images/HyperChill/8minutes.png" class="minutesImage"> -->
                                                 <div class="pomodoroNotificationContainer">
                                                     <input type="number" id="shortBreakInput" value="5" class="pomodoroInterval" name="minutes" min="1" max="720" step="1">
                                                 </div>
@@ -614,7 +612,6 @@
                                                 <div>
                                                     <p><b>Long Break</b></p>
                                                 </div>
-                                                <!-- <img src="images/HyperChill/10minutes.png" class="minutesImage"> -->
                                                 <div class="pomodoroNotificationContainer">
                                                     <input type="number" id="longBreakInput" value="15" class="pomodoroInterval" name="minutes" min="1" max="720" step="1">
                                                 </div>
@@ -719,7 +716,6 @@
                                                     <div>
                                                         <p><b>&lt; 25 min</b></p>
                                                     </div>
-                                                    <!-- <img src="images/HyperChill/5minutes.png" class="minutesImage"> -->
                                                     <div class="chillTimeNotificationContainer">
                                                         <input type="number" id="flowmodoroBreakInput1" value="5" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1">
                                                     </div>
@@ -728,7 +724,6 @@
                                                     <div>
                                                         <p><b>&lt; 50 min</b></p>
                                                     </div>
-                                                    <!-- <img src="images/HyperChill/8minutes.png" class="minutesImage"> -->
                                                     <div class="chillTimeNotificationContainer">
                                                         <input type="number" id="flowmodoroBreakInput2" value="8" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1">
                                                     </div>
@@ -739,7 +734,6 @@
                                                     <div>
                                                         <p><b>&lt; 90 min</b></p>
                                                     </div>
-                                                    <!-- <img src="images/HyperChill/10minutes.png" class="minutesImage"> -->
                                                     <div class="chillTimeNotificationContainer">
                                                         <input type="number" id="flowmodoroBreakInput3" value="10" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1">
                                                     </div>
@@ -748,7 +742,6 @@
                                                     <div>
                                                         <p><b>&gt;= 90 min</b></p>
                                                     </div>
-                                                    <!-- <img src="images/HyperChill/15minutes.png" class="minutesImage"> -->
                                                     <div class="chillTimeNotificationContainer">
                                                         <input type="number" id="flowmodoroBreakInput4" value="15" class="flowmodoroBreak" name="minutes" min="1" step="1">
                                                     </div>
@@ -757,19 +750,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- <div id="autoStartFlowTimeIntervalBlock">
-                                    <div id="autoStartFlowTimeIntervalContainer" class="settingsMicroContainer">
-                                        <div id="autoStartFlowTimeIntervalText" class="settingsText">
-                                            <p><b>Auto Start Flow Time Interval</b></p>
-                                        </div>
-                                        <div id="autoStartFlowTimeIntervalToggleContainer" class="toggleContainer">
-                                            <input type="checkbox" id="autoStartFlowTimeIntervalToggle" class="toggle-checkbox">
-                                            <label for="autoStartFlowTimeIntervalToggle" id="autoStartFlowTimeIntervalToggleLabel" class="toggle-label">
-                                                <span id="autoStartFlowTimeIntervalToggleBall" class="toggle-ball"></span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div> -->
                                 <div id="flowmodoroAlertSoundBlock">
                                     <div id="flowmodoroAlertSoundContainer" class="settingsMicroContainer">
                                         <div id="flowmodoroAlertSoundText" class="settingsText">
@@ -837,19 +817,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- <div id="autoStartChillTimeIntervalBlock">
-                                <div id="autoStartChillTimeIntervalContainer" class="settingsMicroContainer">
-                                    <div id="autoStartChillTimeIntervalText" class="settingsText">
-                                        <p><b>Auto Start Chill Time (break) Interval</b></p>
-                                    </div>
-                                    <div id="autoStartChillTimeIntervalToggleContainer" class="toggleContainer">
-                                        <input type="checkbox" id="autoStartChillTimeIntervalToggle" class="toggle-checkbox">
-                                        <label for="autoStartChillTimeIntervalToggle" id="autoStartChillTimeIntervalToggleLabel" class="toggle-label">
-                                            <span id="autoStartChillTimeIntervalToggleBall" class="toggle-ball"></span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div> -->
                             <div id="generalAlertSoundBlock">
                                 <div id="generalAlertSoundContainer" class="settingsMicroContainer">
                                     <div id="generalAlertSoundText" class="settingsText">
