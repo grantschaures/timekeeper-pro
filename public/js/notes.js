@@ -3,9 +3,10 @@ document.addEventListener("DOMContentLoaded", function() {
     
     const taskContainer = document.getElementById("task-container");
     const promptContainer = document.getElementById("prompt-container");
-    const taskInputContainer = document.getElementById("task-input-container");
+    const labelInputContainer = document.getElementById("label-input-container");
 
-    const userInputTask = document.getElementById("userInputTask");
+    const labelSelectionWindow = document.getElementById("label-selection-window");
+    const labelSelectionRow = document.querySelector('.label-selection-row');
 
     const clearIcon = document.getElementById("clearIcon");
 
@@ -13,28 +14,52 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const notesConsole = document.getElementById("notes-console");
 
+    const taskPrompt = document.getElementById("task-prompt");
+
+    const tagIcon = document.getElementById("tag-icon");
+
+
+    const tagSelection = document.querySelectorAll('.selection-tag');
+
+    const tagSelectionDivider = document.getElementById('tag-selection-divider');
+    const addDoneContainer = document.getElementById('add-done-container');
+
+    const selectionDoneDiv = document.getElementById('selection-done-div');
+    const selectionDone = document.getElementById('selection-done');
+
     // CONSOLE
     let notesFlags = {
         isClicked: false,
-        notesShowing: false
+        notesShowing: false,
+        notesConsoleShowing: true
     }
 
     let counters = {
-        notesLines: 0
+        notesLines: 0,
+        tagsSelected: 0
     }
 
     let state = {
         currentNoteInputId: null,
         currentNoteTimeId: null,
-        lastNotesLineTime: null
+        lastNotesLineTime: null,
+        currentLabelInputTagSize: 20
     }
 
     let intervals = {
         notesTime: null
     }
 
-    let currentTime = getCurrentTime();
+    let flags = {
+        tagSelected: false,
+        tagSelection: true,
+        clearIconClicked: false
+    }
 
+    fontSizeArr = ['20px', '19px', '18px', '17px', '16px', '15px', '14px', '13px', '12px'];
+    fontNumArr = [20, 19, 18, 17, 16, 15, 14, 13, 12];
+
+    let currentTime = getCurrentTime();
     
     //Set initial console line
     setNewConsoleLine(counters, getCurrentTime(), state);
@@ -52,54 +77,297 @@ document.addEventListener("DOMContentLoaded", function() {
         } else {
             notesContainer.classList.remove('fullsize');
             notesContainer.classList.remove('fullopacity');
-
             notesFlags.notesShowing = false;
         }
     })
-
-    taskInputContainer.addEventListener("mousedown", function() {
-        promptContainer.style.display = "none";
-        notesFlags.isClicked = true;
-    })
     
-    document.addEventListener("click", function(event) {
-        notesFlags.isClicked = false;
-        if ((userInputTask.value == "") && (event.target !== userInputTask) && (event.target !== clearIcon) && (document.activeElement !== userInputTask)) {
+    document.addEventListener('keydown', (event) => handleTaskEnter_or_n(event, clearIcon, promptContainer, counters, getCurrentTime(), state, notesConsole, notesFlags, state, notesContainer));
+    
+    clearIcon.addEventListener("click", async function() {
+
+        let tagDivs = document.querySelectorAll('.selected-tag .tag-text');
+        tagDivs.forEach(tag => {
+            tag.style.fontSize = '20px';
+        })
+
+        flags.clearIconClicked = true;
+        clearIcon.classList.add('resetIconRotation');
+        setTimeout(() => {
             clearIcon.style.display = "none";
-            promptContainer.style.display = "flex";
-        } else if ((userInputTask.value != "") && (event.target !== userInputTask)) { //submit task
-            clearIcon.style.display = 'flex';
+            clearIcon.classList.remove('resetIconRotation');
+        }, 500)
+
+        tagIcon.style.marginLeft = '';
+        tagIcon.classList.remove('tagToLeftSide');
+        promptContainer.style.width = '';
+
+
+        if (notesFlags.notesConsoleShowing) {
+            notesConsole.style.display = "none";
+            labelSelectionWindow.style.display = "block";
+            notesFlags.notesConsoleShowing = false;
+        }
+        
+        // query select all w/ className 'tag unselectable selected-tag'\
+        let selectedTags = document.querySelectorAll('.selected-tag');
+        
+        selectedTags.forEach(tag => {
+            deselectTags(tag, flags, tagIcon, clearIcon, labelSelectionRow, counters, tagSelectionDivider, addDoneContainer);
+        })
+        flags.clearIconClicked = false;
+        flags.tagSelected = false;
+
+        labelInputContainer.style.justifyContent = 'center';
+    })
+
+    promptContainer.addEventListener("click", function() {
+        notesFlags.isClicked = true;
+        taskPrompt.style.display = "none";
+        tagIcon.style.marginRight = 0;
+        tagIcon.classList.add('blink');
+
+        notesConsole.style.display = "none";
+        labelSelectionWindow.style.display = "block";
+
+        notesFlags.notesConsoleShowing = false;
+
+        promptContainer.style.zIndex = 3;
+    })
+
+    labelSelectionRow.addEventListener('click', function(event) {
+        var target = event.target;
+
+        if (target.className === 'selection-tag' || ((target.className === 'tag-text') && (target.innerText !== "Done"))) {
+
+            // this limit can be changed if needed (refer to user feedback, if there is any)
+            if (counters.tagsSelected === 5) {
+                alert("You've reached your max limit of 5 labels")
+            } else {
+                //if more than 1 selected tag, adds a '|' divider to left
+                counters.tagsSelected++;
+                if (counters.tagsSelected > 1) {
+                    let dividerElement = document.createElement('h4');
+                    dividerElement.className = 'tag-divider unselectable';
+                    dividerElement.innerText = '|';
+                    labelInputContainer.append(dividerElement);
+                }
+    
+                // initialize vars
+                let selectionTagId;
+                let innerHTML;
+                let selectedBackgroundColor = 'rgba(255, 255, 255, 0.2)';
+    
+                if (target.className === 'tag-text') {
+                    selectionTagId = target.parentElement.id;
+                    innerHTML = target.parentElement.innerHTML;
+                } else {
+                    selectionTagId = target.id;
+                    innerHTML = target.innerHTML;
+                }
+                
+                // Remove tag from selection window
+                document.getElementById(selectionTagId).remove();
+    
+                // Add tag to label input container
+                let selectedDiv = document.createElement('div');
+                selectedDiv.className = 'tag unselectable selected-tag';
+                selectedDiv.innerHTML = innerHTML;
+                selectedDiv.id = selectionTagId;
+                selectedDiv.firstElementChild.style.backgroundColor = selectedBackgroundColor;
+    
+                labelInputContainer.appendChild(selectedDiv);
+    
+                if (flags.tagSelected === false) {
+                    flags.tagSelected = true;
+                    tagIcon.style.marginLeft = '5px';
+                    tagIcon.classList.add('tagToLeftSide');
+                    promptContainer.style.width = '100%';
+
+                    clearIcon.style.display = 'flex';
+                }
+    
+                if (!addDoneContainer.previousElementSibling) {
+                    tagSelectionDivider.style.display = 'none';
+                    addDoneContainer.style.marginLeft = '7px';
+                    flags.tagSelection = false;
+                }
+
+                if ((labelInputContainer.scrollWidth > labelInputContainer.clientWidth) || (state.currentLabelInputTagSize < 20)) {
+                    
+                    console.log(labelInputContainer.scrollWidth - labelInputContainer.clientWidth);
+                    
+                    
+                    // MAKE FUNCTION
+                    let tagDivs = document.querySelectorAll('.selected-tag .tag-text');
+                    let fontArrIndex = 0;
+                    do {
+                        tagDivs.forEach(tag => {
+                            tag.style.fontSize = fontSizeArr[fontArrIndex];
+                            state.currentLabelInputTagSize = fontNumArr[fontArrIndex];
+                        })
+                        console.log(fontSizeArr[fontArrIndex]);
+                        fontArrIndex++;
+                    } while (((labelInputContainer.scrollWidth - labelInputContainer.clientWidth) > 0) && (fontArrIndex < 9))
+                    // MAKE FUNCTION
+
+                    if (labelInputContainer.scrollWidth > labelInputContainer.clientWidth) {
+                        labelInputContainer.style.justifyContent = 'left';
+                    }
+                }
+            }
+        } else if ((target.id === 'selection-done-div') || (target.id === 'selection-done')) {
+            done();
+            notesFlags.notesConsoleShowing = true;
+        } else if (target.id === 'add-tag-icon') {
+            addNewTag();
         }
     })
 
-    document.addEventListener('keydown', (event) => handleTaskEnter_or_n(event, clearIcon, promptContainer, counters, getCurrentTime(), state, notesConsole, notesFlags, state, notesContainer));
-
-    clearIcon.addEventListener("click", async function() {
-        clearIcon.classList.add('resetIconRotation');
-
-        userInputTask.value = "";
-        userInputTask.focus();
-
-        await delay(500);
-        clearIcon.style.display = "none";
-        clearIcon.classList.remove('resetIconRotation');
+    labelInputContainer.addEventListener('mouseover', function(event) {
+        var target = event.target;
+        if ((target.className === 'selected-tag' || target.className === 'tag-text') && (!notesFlags.notesConsoleShowing)) {
+            target.classList.add('deleteJiggling');
+            setTimeout(() => {
+                target.classList.remove('deleteJiggling');
+            }, 250)
+        }
     })
+    
+    labelInputContainer.addEventListener('click', function(event) {
+        var target = event.target;
+        
+        // check if div or h4 is clicked on
+        if ((target.className === 'selected-tag' || target.className === 'tag-text' || target.className === 'tag-text deleteJiggling') && (!notesFlags.notesConsoleShowing)) {
+            if (target.className === 'tag-text deleteJiggling') {
+                target.className = 'tag-text';
+            }
+            
+            deselectTags(target, flags, tagIcon, clearIcon, labelSelectionRow, counters, tagSelectionDivider, addDoneContainer);
+            // resets font size for all in main selection container
+            let tagDivs = document.querySelectorAll('.selection-tag .tag-text'); //not actually a div (really an h4 (the div's child))
+            tagDivs.forEach(tag => {
+                tag.style.fontSize = '20px';
+            })
+            
+            // resets size of no overflow in labelInputContainer
+            if (labelInputContainer.scrollWidth <= labelInputContainer.clientWidth) {
+                
+                
+                // MAKE FUNCTION
+                let tagDivs = document.querySelectorAll('.selected-tag .tag-text');
+                let fontArrIndex = 0;
+                do {
+                    tagDivs.forEach(tag => {
+                        tag.style.fontSize = fontSizeArr[fontArrIndex];
+                        state.currentLabelInputTagSize = fontNumArr[fontArrIndex];
+                    })
+                    console.log(fontSizeArr[fontArrIndex]);
+                    fontArrIndex++;
+                } while (((labelInputContainer.scrollWidth - labelInputContainer.clientWidth) > 0) && (fontArrIndex < 9))
+                // MAKE FUNCTION
+            }
+
+            if (labelInputContainer.scrollWidth <= labelInputContainer.clientWidth) {
+                labelInputContainer.style.justifyContent = 'center';
+            }
+    
+            if (!flags.tagSelected) {
+                tagIcon.style.marginLeft = '';
+                tagIcon.classList.remove('tagToLeftSide');
+                promptContainer.style.width = '';
+            }
+        } else {
+            promptContainer.click();
+        }
+
+    })
+    
+    // ---------------------
+    // HELPER FUNCTIONS 1
+    // ---------------------
+    function done() {
+        notesConsole.style.display = "block";
+        labelSelectionWindow.style.display = "none";
+
+        if (counters.tagsSelected === 0) {
+            tagIcon.style.marginLeft = '';
+            tagIcon.classList.remove('tagToLeftSide');
+            promptContainer.style.width = '';
+            taskPrompt.style.display = "block";
+            tagIcon.style.marginRight = '10px';
+            promptContainer.style.zIndex = 5;
+
+        }
+
+        tagIcon.classList.remove('blink');
+
+        document.getElementById(state.currentNoteInputId).focus();
+        notesFlags.notesConsoleShowing = true;
+    }
+
+    function addNewTag() {
+        //
+    }
 })
 
+// ---------------------
+// HELPER FUNCTIONS 2
+// ---------------------
+
+function deselectTags(tag, flags, tagIcon, clearIcon, labelSelectionRow, counters, tagSelectionDivider, addDoneContainer) {
+    let selectedTagId;
+    let innerHTML;
+
+    if ((tag.className === 'tag-text')) {
+        selectedTagId = tag.parentElement.id;
+        innerHTML = tag.parentElement.innerHTML;
+    } else {
+        selectedTagId = tag.id;
+        innerHTML = tag.innerHTML;
+    }
+
+    let previousSibling = document.getElementById(selectedTagId).previousElementSibling;
+    let nextSibling = document.getElementById(selectedTagId).nextElementSibling;
+
+    if ((previousSibling) && (previousSibling.tagName.toLowerCase() === 'h4')) {
+        previousSibling.remove();
+    } else if ((nextSibling) && (nextSibling.tagName.toLowerCase() === 'h4')) {
+        nextSibling.remove();
+    } else {
+        flags.tagSelected = false;
+        tagIcon.classList.add('blink');
+        tagIcon.style.display = 'block';
+
+        if (!flags.clearIconClicked) {
+            clearIcon.style.display = 'none';
+        }
+    }
+
+    document.getElementById(selectedTagId).remove();
+
+    // place tag back in selection area
+    let selectionDiv = document.createElement('div');
+    selectionDiv.className = 'tag unselectable selection-tag';
+    selectionDiv.innerHTML = innerHTML;
+    selectionDiv.id = selectedTagId;
+    selectionDiv.firstElementChild.style.backgroundColor = '';
+    // console.log(selectionDiv.id);
+
+    labelSelectionRow.insertBefore(selectionDiv, labelSelectionRow.firstChild);
+    counters.tagsSelected--;
+
+    if (flags.tagSelection === false) {
+        tagSelectionDivider.style.display = 'flex';
+        addDoneContainer.style.marginLeft = '';
+        flags.tagSelection = true;
+    }
+}
 
 function handleTaskEnter_or_n(event, clearIcon, promptContainer, counters, currentTime, state, notesConsole, notesFlags, state, notesContainer) {
     if (event.key === 'Enter') {
         event.preventDefault();
         
-        if ((document.activeElement === userInputTask) && (userInputTask.value == "")) {
-            userInputTask.blur();
-            clearIcon.style.display = "none";
-            promptContainer.style.display = "flex";
-        } else if (document.activeElement === userInputTask) { //submit task
-            clearIcon.style.display = 'flex';
-            userInputTask.blur();
-            document.getElementById(state.currentNoteInputId).focus();
-        } else if ((document.activeElement === document.getElementById(state.currentNoteInputId)) && (document.activeElement.value !== "")) {
+        if ((document.activeElement === document.getElementById(state.currentNoteInputId)) && (document.activeElement.value !== "")) {
             if ((document.getElementById(state.currentNoteInputId)).value == "clear") {
                 clearConsole(notesConsole, counters);
             } else {
