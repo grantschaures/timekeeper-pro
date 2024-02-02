@@ -328,7 +328,7 @@
     }
     
     #task-prompt::before {
-        content: "Enter task";
+        content: "Add Labels";
         font-family: myFont2;
         font-size: 24px;
         color: rgba(255, 255, 255, 0.50);
