@@ -62,11 +62,10 @@
 
 #label-input-container {
     /* display: none; */
-    /* border: 3px solid purple; */
     display: flex;
     overflow-x: auto;
     overflow-y: hidden;
-
+    
     height: 100%;
     width: 85%;
     z-index: 4;
@@ -74,6 +73,76 @@
     align-items: center;
     justify-content: center;
     /* justify-content: left; */
+
+    /* border: 3px solid purple; */
+}
+
+#create-label-container {
+    display: none;
+    z-index: 7;
+    height: 100%;
+    align-items: center;
+    position: absolute;
+
+    font-family: myFont2;
+    font-size: 24px;
+    color: rgba(255, 255, 255, 1);
+    margin-top: 2px;
+
+    /* border: 3px solid cyan;   */
+}
+
+#create-label-window {
+    display: none;
+    font-family: myFont2;
+    color: white;
+    margin-top: 10px;
+    height: 198px;
+    overflow: auto;
+    padding-top: 5px;
+    /* border: 3px solid cyan; */
+}
+
+#create-label {
+    display: flex;
+    height: 55%;
+    align-items: center;
+    justify-content: center;
+
+    /* border: 3px solid red; */
+}
+
+#cancel-done-div {
+    display: flex;
+}
+
+#create-label-input {
+    width:auto;
+    height: 30px;
+    border-radius: 50px;
+    font-family: myFont2;
+    font-size: 20px;
+    background-color: transparent;
+    border: 3px solid white;
+    color: white;
+    outline: none;
+    text-align: center;
+}
+
+#create-label-input::placeholder {
+    color: rgba(255, 255, 255, 0.20);
+}
+
+#create-label-cancel {
+    margin-right: 5px;
+}
+
+#create-label-done {
+    margin-left: 5px;
+}
+
+.create-label {
+    border: 3px solid white;
 }
 
 @media (max-width: 530px) {
@@ -219,9 +288,14 @@
     rotate: 45deg;
     margin-left: 3px;
     margin-right: 3px;
+    transform: scale(1.05);
     /* border: 1px solid rgba(255, 255, 255, 1); */
 
     /* display: none; */    
+}
+
+#add-tag-icon:hover {
+    transform: scale(0.95);
 }
 
 /* not working quite yet */
@@ -344,11 +418,11 @@
     transition: background-color 0.15s ease-in-out;
 }
 
-.tag-text:not(#selection-done):hover {
+.tag-text:not(#selection-done):not(.create-label):hover {
     background-color: rgba(255, 255, 255, 0.2);
 }
 
-#selection-done:hover {
+#selection-done:hover, .create-label:hover {
     transform: scale(0.95);
 }
 

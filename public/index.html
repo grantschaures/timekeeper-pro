@@ -20,9 +20,9 @@
 
         <!-- CHANGE TO NON-MINIFIED VERSION DURING DEVELOPMENT -->
         <!-- CHANGE BACK TO MINIFIED VERSION FOR DEPLOYMENT -->
-        <script src='/js/index.js'></script>
-        <script src='/js/menu.js'></script>
-        <script src='/js/notes.js'></script>
+        <script src='/js/index.min.js'></script>
+        <script src='/js/menu.min.js'></script>
+        <script src='/js/notes.min.js'></script>
     </head>
 
     <!-- Google tag (gtag.js) -->
@@ -171,17 +171,9 @@
                             </div>
                         </div>
                         <div id="label-input-container">
-                            <!-- <div class="tag unselectable selected-tag">
-                                <h4 class="tag-text">CS 361</h4>
-                            </div>
-                            <h4 class="tag-divider">|</h4>
-                            <div class="tag unselectable selected-tag">
-                                <h4 class="tag-text">School</h4>
-                            </div>
-                            <h4 class="tag-divider">|</h4>
-                            <div class="tag unselectable selected-tag">
-                                <h4 class="tag-text">HW</h4>
-                            </div> -->
+                        </div>
+                        <div id="create-label-container">
+                            Create Label
                         </div>
                     </div>
                     <hr id="notes-hr">
@@ -196,31 +188,7 @@
                                 <h4 class="tag-text">Reading</h4>
                             </div>
                             <div id="tag-3" class="tag unselectable selection-tag">
-                                <h4 class="tag-text">Testing</h4>
-                            </div>
-                            <div id="tag-5" class="tag unselectable selection-tag">
-                                <h4 class="tag-text">Cooking</h4>
-                            </div>
-                            <div id="tag-7" class="tag unselectable selection-tag">
-                                <h4 class="tag-text">Kung Fu</h4>
-                            </div>
-                            <div id="tag-8" class="tag unselectable selection-tag">
-                                <h4 class="tag-text">Playing BB</h4>
-                            </div>
-                            <div id="tag-9" class="tag unselectable selection-tag">
-                                <h4 class="tag-text">Fun</h4>
-                            </div>
-                            <div id="tag-10" class="tag unselectable selection-tag">
-                                <h4 class="tag-text">CS 362</h4>
-                            </div>
-                            <div id="tag-11" class="tag unselectable selection-tag">
                                 <h4 class="tag-text">Meditation</h4>
-                            </div>
-                            <div id="tag-12" class="tag unselectable selection-tag">
-                                <h4 class="tag-text">Assignment 5</h4>
-                            </div>
-                            <div id="tag-13" class="tag unselectable selection-tag">
-                                <h4 class="tag-text">HW</h4>
                             </div>
                             <div id="add-done-container">
                                 <h4 id="tag-selection-divider" class="unselectable" >|</h4>
@@ -229,6 +197,15 @@
                                     <h4 id="selection-done" class="tag-text">Done</h4>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div id="create-label-window">
+                        <div id="create-label">
+                            <input type="text" id="create-label-input" placeholder="Enter Label Name">
+                        </div>
+                        <div id="cancel-done-div" class="tag unselectable">
+                            <h4 id="create-label-cancel" class="tag-text create-label">Cancel</h4>
+                            <h4 id="create-label-done" class="tag-text create-label">Done</h4>
                         </div>
                     </div>
                 </div>

@@ -1834,7 +1834,7 @@ function detectBrowser() {
 async function enableNotifications(breakSuggestionToggle, flowmodoroNotificationToggle, pomodoroNotificationToggle, flags) {
     // Check if notifications are supported
     if (!("Notification" in window)) {
-        alert("This browser does not support desktop notifications");
+        alert("This browser does not support desktop notifications or auto start functionality");
         return false;
     }
     // Otherwise, we need to ask the user for permission

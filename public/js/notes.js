@@ -4,6 +4,12 @@ document.addEventListener("DOMContentLoaded", function() {
     const taskContainer = document.getElementById("task-container");
     const promptContainer = document.getElementById("prompt-container");
     const labelInputContainer = document.getElementById("label-input-container");
+    const createLabelContainer = document.getElementById("create-label-container");
+    const createLabelWindow = document.getElementById("create-label-window");
+    const createLabelInput = document.getElementById("create-label-input");
+
+    const createLabelDone = document.getElementById("create-label-done");
+    const createLabelCancel = document.getElementById("create-label-cancel");
 
     const labelSelectionWindow = document.getElementById("label-selection-window");
     const labelSelectionRow = document.querySelector('.label-selection-row');
@@ -17,7 +23,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const taskPrompt = document.getElementById("task-prompt");
 
     const tagIcon = document.getElementById("tag-icon");
-
 
     const tagSelection = document.querySelectorAll('.selection-tag');
 
@@ -36,7 +41,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let counters = {
         notesLines: 0,
-        tagsSelected: 0
+        tagsSelected: 0,
+        lastLabelIdNum: 3 //subject to change based on num of predefined labels for user (need to store in database)
     }
 
     let state = {
@@ -164,7 +170,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     selectionTagId = target.id;
                     innerHTML = target.innerHTML;
                 }
-                
+
                 // Remove tag from selection window
                 document.getElementById(selectionTagId).remove();
     
@@ -281,7 +287,45 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
     })
+
+    createLabelCancel.addEventListener("click", function(event) {
+        //clear the input
+        createLabelInput.value = "";
+        
+        backToLabelSelection(createLabelContainer, createLabelWindow, clearIcon, promptContainer, labelInputContainer, labelSelectionWindow);
+    })
     
+    createLabelDone.addEventListener("click", function(event) {
+        //take user input and turn into a label selection element
+        if (createLabelInput.value !== "") {
+            console.log("Something was entered");
+            
+            let labelName = createLabelInput.value;
+            let innerHTMLString = "<h4 class='tag-text'>" + labelName + "</h4>";
+            
+            let selectionDiv = document.createElement('div');
+            selectionDiv.className = 'tag unselectable selection-tag';
+            selectionDiv.innerHTML = innerHTMLString;
+            
+            counters.lastLabelIdNum += 1;
+            selectionDiv.id = "tag-" + (counters.lastLabelIdNum);
+
+            labelSelectionRow.insertBefore(selectionDiv, addDoneContainer);
+        }
+
+        //MAKE THIS A FUNCTION
+        if (flags.tagSelection === false) {
+            tagSelectionDivider.style.display = 'flex';
+            addDoneContainer.style.marginLeft = '';
+            flags.tagSelection = true;
+        }
+        
+        //go back to label selection window
+        createLabelInput.value = "";
+        backToLabelSelection(createLabelContainer, createLabelWindow, clearIcon, promptContainer, labelInputContainer, labelSelectionWindow);
+
+    })
+
     // ---------------------
     // HELPER FUNCTIONS 1
     // ---------------------
@@ -296,7 +340,6 @@ document.addEventListener("DOMContentLoaded", function() {
             taskPrompt.style.display = "block";
             tagIcon.style.marginRight = '10px';
             promptContainer.style.zIndex = 5;
-
         }
 
         tagIcon.classList.remove('blink');
@@ -306,13 +349,46 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function addNewTag() {
-        //
+        console.log("Adding new tag");
+        
+        //hide clear icon
+        clearIcon.style.display = "none";
+
+        //hide prompt container (also includes tag icon)
+        promptContainer.style.display = "none";
+
+        //hide label-input-container
+        labelInputContainer.style.display = "none";
+
+        //hide label-selection-window
+        labelSelectionWindow.style.display = "none";
+
+        //show create-label-container
+        createLabelContainer.style.display = "flex";
+
+        //show create-label-window
+        createLabelWindow.style.display = "block";
+
+        //focus on input
+        createLabelInput.focus();
     }
 })
 
 // ---------------------
 // HELPER FUNCTIONS 2
 // ---------------------
+function backToLabelSelection(createLabelContainer, createLabelWindow, clearIcon, promptContainer, labelInputContainer, labelSelectionWindow) {
+    //hide create label container and window
+    createLabelContainer.style.display = "none";
+    createLabelWindow.style.display = "none";
+
+    //reset back to label selection window and prompt container and label input container
+    //hide clear icon
+    clearIcon.style.display = "flex";
+    promptContainer.style.display = "flex";
+    labelInputContainer.style.display = "flex";
+    labelSelectionWindow.style.display = "block";
+}
 
 function deselectTags(tag, flags, tagIcon, clearIcon, labelSelectionRow, counters, tagSelectionDivider, addDoneContainer) {
     let selectedTagId;
@@ -349,6 +425,7 @@ function deselectTags(tag, flags, tagIcon, clearIcon, labelSelectionRow, counter
     let selectionDiv = document.createElement('div');
     selectionDiv.className = 'tag unselectable selection-tag';
     selectionDiv.innerHTML = innerHTML;
+    // console.log(innerHTML);
     selectionDiv.id = selectedTagId;
     selectionDiv.firstElementChild.style.backgroundColor = '';
     // console.log(selectionDiv.id);
@@ -356,6 +433,9 @@ function deselectTags(tag, flags, tagIcon, clearIcon, labelSelectionRow, counter
     labelSelectionRow.insertBefore(selectionDiv, labelSelectionRow.firstChild);
     counters.tagsSelected--;
 
+    //if there weren't any tags left in the selection window, add the selection divider '|'
+    //and remove the margin-left value and indicate that there's tags in the selection window
+    //MAKE THIS A FUNCTION
     if (flags.tagSelection === false) {
         tagSelectionDivider.style.display = 'flex';
         addDoneContainer.style.marginLeft = '';
