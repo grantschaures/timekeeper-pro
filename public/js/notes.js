@@ -174,6 +174,14 @@ document.addEventListener("DOMContentLoaded", function() {
         let target = event.target;
         state.generalTarget = target;
         // console.log(target);
+
+        // If user shift-clicks on label and quickly moves mouse to outside,
+        // it catches that movement in case the labelSelectionRow mouseover
+        // event listener missed it and resets color and jiggle class
+        if ((!((target.classList.contains('tag-text')) && (flags.shiftPressed) && (target !== selectionDoneDiv) && (target !== selectionDone) && (target !== addTagIcon)) && (state.lastSelectionElement !== null))) {
+            state.lastSelectionElement.style.backgroundColor = "";
+            state.lastSelectionElement.classList.remove('deleteJiggling');
+        } 
     })
 
     labelSelectionRow.addEventListener('mouseover', function(event) {
