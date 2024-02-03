@@ -418,6 +418,10 @@
     transition: background-color 0.15s ease-in-out;
 }
 
+.tag-text:hover {
+    cursor: pointer;
+}
+
 .tag-text:not(#selection-done):not(.create-label):hover {
     background-color: rgba(255, 255, 255, 0.2);
 }
@@ -436,6 +440,12 @@
     justify-content: center; /* Center h4 horizontally */
 
     /* border: 1px solid yellow; */
+}
+
+.cancel-done-container {
+    margin: 5px;
+    display: flex;
+    justify-content: center; /* Center h4 horizontally */
 }
 
 .deleteJiggling {
@@ -462,7 +472,7 @@
     justify-content: center;
 }
 
-.tag:hover {
+#create-label-cancel, #create-label-done {
     cursor: pointer;
 }
 

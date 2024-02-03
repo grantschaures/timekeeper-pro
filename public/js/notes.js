@@ -32,6 +32,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const selectionDoneDiv = document.getElementById('selection-done-div');
     const selectionDone = document.getElementById('selection-done');
 
+    const addTagIcon = document.getElementById("add-tag-icon");
+
     // CONSOLE
     let notesFlags = {
         isClicked: false,
@@ -49,7 +51,9 @@ document.addEventListener("DOMContentLoaded", function() {
         currentNoteInputId: null,
         currentNoteTimeId: null,
         lastNotesLineTime: null,
-        currentLabelInputTagSize: 20
+        currentLabelInputTagSize: 20,
+        targetInSelectionWindow: null,
+        lastSelectionElement: null
     }
 
     let intervals = {
@@ -59,7 +63,8 @@ document.addEventListener("DOMContentLoaded", function() {
     let flags = {
         tagSelected: false,
         tagSelection: true,
-        clearIconClicked: false
+        clearIconClicked: false,
+        shiftPressed: false
     }
 
     fontSizeArr = ['20px', '19px', '18px', '17px', '16px', '15px', '14px', '13px', '12px'];
@@ -140,87 +145,158 @@ document.addEventListener("DOMContentLoaded", function() {
         promptContainer.style.zIndex = 3;
     })
 
+    document.addEventListener('keydown', function(event) {
+        if ((event.key === 'Shift') && (!flags.shiftPressed)) {
+            // console.log('Shift Key Pressed');
+            flags.shiftPressed = true;
+
+            let target = state.targetInSelectionWindow;
+            if ((target.classList.contains('tag-text')) && (flags.shiftPressed) && (target !== selectionDoneDiv) && (target !== selectionDone) && (target !== addTagIcon)) {
+
+                state.lastSelectionElement = target;
+
+                target.style.backgroundColor = "rgba(255, 0, 0, 0.2)";
+                target.classList.add('deleteJiggling');
+            }
+        }
+    })
+
+    document.addEventListener('keyup', function(event) {
+        if ((event.key === 'Shift') && (flags.shiftPressed)) {
+            // console.log('Shift Key Released');
+            flags.shiftPressed = false;
+
+            state.targetInSelectionWindow.style.backgroundColor = "";
+            state.targetInSelectionWindow.classList.remove('deleteJiggling');
+        }
+    })
+
+    labelSelectionRow.addEventListener('mouseover', function(event) {
+        // console.log("test")
+
+        // Consistently sets this state variable to contain current element in the
+        // label selection row
+        let target = event.target;
+        state.targetInSelectionWindow = target;
+
+        //if active element contains tag-selection class and enter is pressed
+        if ((target.classList.contains('tag-text')) && (flags.shiftPressed) && (target !== selectionDoneDiv) && (target !== selectionDone) && (target !== addTagIcon)) {
+
+            state.lastSelectionElement = target;
+
+            target.style.backgroundColor = "rgba(255, 0, 0, 0.2)";
+            target.classList.add('deleteJiggling');
+
+        } else if (state.lastSelectionElement !== null) {
+            state.lastSelectionElement.style.backgroundColor = "";
+            state.lastSelectionElement.classList.remove('deleteJiggling');
+        }
+    })
+
     labelSelectionRow.addEventListener('click', function(event) {
         var target = event.target;
 
-        if (target.className === 'selection-tag' || ((target.className === 'tag-text') && (target.innerText !== "Done"))) {
+        if (target.className === 'selection-tag' || (((target.className === 'tag-text') || (target.className === 'tag-text deleteJiggling')) && (target.innerText !== "Done"))) {
 
-            // this limit can be changed if needed (refer to user feedback, if there is any)
-            if (counters.tagsSelected === 5) {
-                alert("You've reached your max limit of 5 labels")
-            } else {
-                //if more than 1 selected tag, adds a '|' divider to left
-                counters.tagsSelected++;
-                if (counters.tagsSelected > 1) {
-                    let dividerElement = document.createElement('h4');
-                    dividerElement.className = 'tag-divider unselectable';
-                    dividerElement.innerText = '|';
-                    labelInputContainer.append(dividerElement);
-                }
-    
-                // initialize vars
-                let selectionTagId;
-                let innerHTML;
-                let selectedBackgroundColor = 'rgba(255, 255, 255, 0.2)';
-    
-                if (target.className === 'tag-text') {
-                    selectionTagId = target.parentElement.id;
-                    innerHTML = target.parentElement.innerHTML;
+            if (flags.shiftPressed) {
+                let toDeleteTagId;
+                if (target.className === 'tag-text deleteJiggling') {
+                    toDeleteTagId = target.parentElement.id;
                 } else {
-                    selectionTagId = target.id;
-                    innerHTML = target.innerHTML;
+                    toDeleteTagId = target.id;
                 }
 
-                // Remove tag from selection window
-                document.getElementById(selectionTagId).remove();
-    
-                // Add tag to label input container
-                let selectedDiv = document.createElement('div');
-                selectedDiv.className = 'tag unselectable selected-tag';
-                selectedDiv.innerHTML = innerHTML;
-                selectedDiv.id = selectionTagId;
-                selectedDiv.firstElementChild.style.backgroundColor = selectedBackgroundColor;
-    
-                labelInputContainer.appendChild(selectedDiv);
-    
-                if (flags.tagSelected === false) {
-                    flags.tagSelected = true;
-                    tagIcon.style.marginLeft = '5px';
-                    tagIcon.classList.add('tagToLeftSide');
-                    promptContainer.style.width = '100%';
+                document.getElementById(toDeleteTagId).remove();
 
-                    clearIcon.style.display = 'flex';
-                }
-    
+                // MAKE THIS A FUNCTION
                 if (!addDoneContainer.previousElementSibling) {
                     tagSelectionDivider.style.display = 'none';
                     addDoneContainer.style.marginLeft = '7px';
                     flags.tagSelection = false;
                 }
+                // MAKE THIS A FUNCTION
 
-                if ((labelInputContainer.scrollWidth > labelInputContainer.clientWidth) || (state.currentLabelInputTagSize < 20)) {
-                    
-                    console.log(labelInputContainer.scrollWidth - labelInputContainer.clientWidth);
-                    
-                    
-                    // MAKE FUNCTION
-                    let tagDivs = document.querySelectorAll('.selected-tag .tag-text');
-                    let fontArrIndex = 0;
-                    do {
-                        tagDivs.forEach(tag => {
-                            tag.style.fontSize = fontSizeArr[fontArrIndex];
-                            state.currentLabelInputTagSize = fontNumArr[fontArrIndex];
-                        })
-                        console.log(fontSizeArr[fontArrIndex]);
-                        fontArrIndex++;
-                    } while (((labelInputContainer.scrollWidth - labelInputContainer.clientWidth) > 0) && (fontArrIndex < 9))
-                    // MAKE FUNCTION
-
-                    if (labelInputContainer.scrollWidth > labelInputContainer.clientWidth) {
-                        labelInputContainer.style.justifyContent = 'left';
+            } else {
+                // this limit can be changed if needed (refer to user feedback, if there is any)
+                if (counters.tagsSelected === 5) {
+                    alert("You've reached your max limit of 5 labels")
+                } else {
+                    //if more than 1 selected tag, adds a '|' divider to left
+                    counters.tagsSelected++;
+                    if (counters.tagsSelected > 1) {
+                        let dividerElement = document.createElement('h4');
+                        dividerElement.className = 'tag-divider unselectable';
+                        dividerElement.innerText = '|';
+                        labelInputContainer.append(dividerElement);
+                    }
+        
+                    // initialize vars
+                    let selectionTagId;
+                    let innerHTML;
+                    let selectedBackgroundColor = 'rgba(255, 255, 255, 0.2)';
+        
+                    if (target.className === 'tag-text') {
+                        selectionTagId = target.parentElement.id;
+                        innerHTML = target.parentElement.innerHTML;
+                    } else {
+                        selectionTagId = target.id;
+                        innerHTML = target.innerHTML;
+                    }
+    
+                    // Remove tag from selection window
+                    document.getElementById(selectionTagId).remove();
+        
+                    // Add tag to label input container
+                    let selectedDiv = document.createElement('div');
+                    selectedDiv.className = 'tag unselectable selected-tag';
+                    selectedDiv.innerHTML = innerHTML;
+                    selectedDiv.id = selectionTagId;
+                    selectedDiv.firstElementChild.style.backgroundColor = selectedBackgroundColor;
+        
+                    labelInputContainer.appendChild(selectedDiv);
+        
+                    if (flags.tagSelected === false) {
+                        flags.tagSelected = true;
+                        tagIcon.style.marginLeft = '5px';
+                        tagIcon.classList.add('tagToLeftSide');
+                        promptContainer.style.width = '100%';
+    
+                        clearIcon.style.display = 'flex';
+                    }
+        
+                    // MAKE THIS A FUNCTION
+                    if (!addDoneContainer.previousElementSibling) {
+                        tagSelectionDivider.style.display = 'none';
+                        addDoneContainer.style.marginLeft = '7px';
+                        flags.tagSelection = false;
+                    }
+                    // MAKE THIS A FUNCTION
+    
+                    if ((labelInputContainer.scrollWidth > labelInputContainer.clientWidth) || (state.currentLabelInputTagSize < 20)) {
+                        
+                        console.log(labelInputContainer.scrollWidth - labelInputContainer.clientWidth);
+                        
+                        
+                        // MAKE FUNCTION
+                        let tagDivs = document.querySelectorAll('.selected-tag .tag-text');
+                        let fontArrIndex = 0;
+                        do {
+                            tagDivs.forEach(tag => {
+                                tag.style.fontSize = fontSizeArr[fontArrIndex];
+                                state.currentLabelInputTagSize = fontNumArr[fontArrIndex];
+                            })
+                            console.log(fontSizeArr[fontArrIndex]);
+                            fontArrIndex++;
+                        } while (((labelInputContainer.scrollWidth - labelInputContainer.clientWidth) > 0) && (fontArrIndex < 9))
+                        // MAKE FUNCTION
+    
+                        if (labelInputContainer.scrollWidth > labelInputContainer.clientWidth) {
+                            labelInputContainer.style.justifyContent = 'left';
+                        }
                     }
                 }
             }
+
         } else if ((target.id === 'selection-done-div') || (target.id === 'selection-done')) {
             done();
             notesFlags.notesConsoleShowing = true;
@@ -292,7 +368,7 @@ document.addEventListener("DOMContentLoaded", function() {
         //clear the input
         createLabelInput.value = "";
         
-        backToLabelSelection(createLabelContainer, createLabelWindow, clearIcon, promptContainer, labelInputContainer, labelSelectionWindow);
+        backToLabelSelection(createLabelContainer, createLabelWindow, clearIcon, promptContainer, labelInputContainer, labelSelectionWindow, flags);
     })
     
     createLabelDone.addEventListener("click", function(event) {
@@ -342,8 +418,7 @@ document.addEventListener("DOMContentLoaded", function() {
         
         //go back to label selection window
         createLabelInput.value = "";
-        backToLabelSelection(createLabelContainer, createLabelWindow, clearIcon, promptContainer, labelInputContainer, labelSelectionWindow);
-
+        backToLabelSelection(createLabelContainer, createLabelWindow, clearIcon, promptContainer, labelInputContainer, labelSelectionWindow, flags);
     })
 
     // ---------------------
@@ -401,14 +476,19 @@ function containsNonSpaceChar(input) {
     return /[^\s]/.test(input);
 }
 
-function backToLabelSelection(createLabelContainer, createLabelWindow, clearIcon, promptContainer, labelInputContainer, labelSelectionWindow) {
+function backToLabelSelection(createLabelContainer, createLabelWindow, clearIcon, promptContainer, labelInputContainer, labelSelectionWindow, flags) {
     //hide create label container and window
     createLabelContainer.style.display = "none";
     createLabelWindow.style.display = "none";
 
     //reset back to label selection window and prompt container and label input container
-    //hide clear icon
-    clearIcon.style.display = "flex";
+    //hide or show clear icon depending on presence of labels in the label input area
+
+    if (flags.tagSelected) {
+        clearIcon.style.display = "flex";
+    } else {
+        clearIcon.style.display = "none";
+    }
     promptContainer.style.display = "flex";
     labelInputContainer.style.display = "flex";
     labelSelectionWindow.style.display = "block";
