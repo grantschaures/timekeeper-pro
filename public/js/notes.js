@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function() {
         currentNoteTimeId: null,
         lastNotesLineTime: null,
         currentLabelInputTagSize: 20,
-        targetInSelectionWindow: null,
+        generalTarget: null,
         lastSelectionElement: null
     }
 
@@ -150,11 +150,10 @@ document.addEventListener("DOMContentLoaded", function() {
             // console.log('Shift Key Pressed');
             flags.shiftPressed = true;
 
-            let target = state.targetInSelectionWindow;
+            let target = state.generalTarget;
             if ((target.classList.contains('tag-text')) && (flags.shiftPressed) && (target !== selectionDoneDiv) && (target !== selectionDone) && (target !== addTagIcon)) {
 
                 state.lastSelectionElement = target;
-
                 target.style.backgroundColor = "rgba(255, 0, 0, 0.2)";
                 target.classList.add('deleteJiggling');
             }
@@ -166,9 +165,15 @@ document.addEventListener("DOMContentLoaded", function() {
             // console.log('Shift Key Released');
             flags.shiftPressed = false;
 
-            state.targetInSelectionWindow.style.backgroundColor = "";
-            state.targetInSelectionWindow.classList.remove('deleteJiggling');
+            state.lastSelectionElement.style.backgroundColor = "";
+            state.lastSelectionElement.classList.remove('deleteJiggling');
         }
+    })
+
+    document.addEventListener('mouseover', function(event) {
+        let target = event.target;
+        state.generalTarget = target;
+        // console.log(target);
     })
 
     labelSelectionRow.addEventListener('mouseover', function(event) {
@@ -177,7 +182,6 @@ document.addEventListener("DOMContentLoaded", function() {
         // Consistently sets this state variable to contain current element in the
         // label selection row
         let target = event.target;
-        state.targetInSelectionWindow = target;
 
         //if active element contains tag-selection class and enter is pressed
         if ((target.classList.contains('tag-text')) && (flags.shiftPressed) && (target !== selectionDoneDiv) && (target !== selectionDone) && (target !== addTagIcon)) {
@@ -274,7 +278,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
                     if ((labelInputContainer.scrollWidth > labelInputContainer.clientWidth) || (state.currentLabelInputTagSize < 20)) {
                         
-                        console.log(labelInputContainer.scrollWidth - labelInputContainer.clientWidth);
+                        // console.log(labelInputContainer.scrollWidth - labelInputContainer.clientWidth);
                         
                         
                         // MAKE FUNCTION
@@ -285,7 +289,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                 tag.style.fontSize = fontSizeArr[fontArrIndex];
                                 state.currentLabelInputTagSize = fontNumArr[fontArrIndex];
                             })
-                            console.log(fontSizeArr[fontArrIndex]);
+                            // console.log(fontSizeArr[fontArrIndex]);
                             fontArrIndex++;
                         } while (((labelInputContainer.scrollWidth - labelInputContainer.clientWidth) > 0) && (fontArrIndex < 9))
                         // MAKE FUNCTION
