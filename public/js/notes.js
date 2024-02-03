@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     })
     
-    document.addEventListener('keydown', (event) => handleTaskEnter_or_n(event, clearIcon, promptContainer, counters, getCurrentTime(), state, notesConsole, notesFlags, state, notesContainer));
+    document.addEventListener('keydown', (event) => handleTaskEnter_or_n(event, counters, currentTime, state, notesConsole, notesFlags, state, notesContainer, createLabelInput, createLabelDone));
     
     clearIcon.addEventListener("click", async function() {
 
@@ -297,20 +297,33 @@ document.addEventListener("DOMContentLoaded", function() {
     
     createLabelDone.addEventListener("click", function(event) {
         //take user input and turn into a label selection element
-        if (createLabelInput.value !== "") {
-            // console.log("Something was entered");
-            
-            let labelName = createLabelInput.value;
-            let innerHTMLString = "<h4 class='tag-text'>" + labelName + "</h4>";
-            
-            let selectionDiv = document.createElement('div');
-            selectionDiv.className = 'tag unselectable selection-tag';
-            selectionDiv.innerHTML = innerHTMLString;
-            
-            counters.lastLabelIdNum += 1;
-            selectionDiv.id = "tag-" + (counters.lastLabelIdNum);
+        if ((createLabelInput.value !== "") && (containsNonSpaceChar(createLabelInput.value))) {
 
-            labelSelectionRow.insertBefore(selectionDiv, addDoneContainer);
+
+            let isUnique = true;
+            let currentSelectionTags = document.querySelectorAll('.selection-tag');
+            currentSelectionTags.forEach(tag => {
+                let labelName = tag.firstElementChild.textContent;
+                if (labelName === createLabelInput.value) {
+                    alert("The label '" + labelName + "' already exists!");
+                    isUnique = false;
+                }
+            })
+
+            if (isUnique) {
+                // Label Creation Process
+                let labelName = createLabelInput.value;
+                let innerHTMLString = "<h4 class='tag-text'>" + labelName + "</h4>";
+                
+                let selectionDiv = document.createElement('div');
+                selectionDiv.className = 'tag unselectable selection-tag';
+                selectionDiv.innerHTML = innerHTMLString;
+                
+                counters.lastLabelIdNum += 1;
+                selectionDiv.id = "tag-" + (counters.lastLabelIdNum);
+    
+                labelSelectionRow.insertBefore(selectionDiv, addDoneContainer);
+            }
         }
 
         //MAKE THIS A FUNCTION
@@ -377,6 +390,10 @@ document.addEventListener("DOMContentLoaded", function() {
 // ---------------------
 // HELPER FUNCTIONS 2
 // ---------------------
+function containsNonSpaceChar(input) {
+    return /[^\s]/.test(input);
+}
+
 function backToLabelSelection(createLabelContainer, createLabelWindow, clearIcon, promptContainer, labelInputContainer, labelSelectionWindow) {
     //hide create label container and window
     createLabelContainer.style.display = "none";
@@ -443,7 +460,7 @@ function deselectTags(tag, flags, tagIcon, clearIcon, labelSelectionRow, counter
     }
 }
 
-function handleTaskEnter_or_n(event, clearIcon, promptContainer, counters, currentTime, state, notesConsole, notesFlags, state, notesContainer) {
+function handleTaskEnter_or_n(event, counters, currentTime, state, notesConsole, notesFlags, state, notesContainer, createLabelInput, createLabelDone) {
     if (event.key === 'Enter') {
         event.preventDefault();
         
@@ -456,6 +473,8 @@ function handleTaskEnter_or_n(event, clearIcon, promptContainer, counters, curre
             }
             setNewConsoleLine(counters, currentTime, state);
             document.getElementById(state.currentNoteInputId).focus();
+        } else if (document.activeElement === createLabelInput) {
+            createLabelDone.click();
         }
     } else if ((event.key === 'n') && (!notesFlags.notesShowing)) {
         notesContainer.classList.add('fullsize');

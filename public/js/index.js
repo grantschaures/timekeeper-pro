@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const hyperChillLogoImage = document.getElementById("hyperChillLogoImage");
 
     // NOTES
-    const userInputTask = document.getElementById("userInputTask");
+    const createLabelInput = document.getElementById("create-label-input");
 
     // Favicons
     const greenFavicon = "/images/logo/HyperChillLogoGreen.png";
@@ -340,7 +340,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // ----------------
     // EVENT LISTENERS
     // ----------------
-    document.addEventListener('keydown', (event) => handleEnter(event, start_stop_btn, submit_change_btn, userInputTask, flags));
+    document.addEventListener('keydown', (event) => handleEnter(event, start_stop_btn, submit_change_btn, createLabelInput, flags));
 
     start_stop_btn.addEventListener("click", function() {
         
@@ -1978,14 +1978,14 @@ function playClick(clock_tick, flags) {
     }
 };
 
-function handleEnter(event, start_stop_btn, submit_change_btn, userInputTask, flags) {
+function handleEnter(event, start_stop_btn, submit_change_btn, createLabelInput, flags) {
 
     if (event.key === 'Enter') {
         event.preventDefault();
         
         if (document.activeElement.id === 'target-hours') {
             submit_change_btn.click();
-        } else if (document.activeElement === userInputTask) {
+        } else if (document.activeElement === createLabelInput) {
             // DO NOTHING - code for this event is implemented in notes.js instead
         }  else if (document.activeElement.className == "noteInput") {
             // DO NOTHING - code for this event is implemented in notes.js instead
