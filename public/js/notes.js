@@ -299,12 +299,11 @@ document.addEventListener("DOMContentLoaded", function() {
         //take user input and turn into a label selection element
         if ((createLabelInput.value !== "") && (containsNonSpaceChar(createLabelInput.value))) {
 
-
             let isUnique = true;
             let currentSelectionTags = document.querySelectorAll('.selection-tag');
             currentSelectionTags.forEach(tag => {
                 let labelName = tag.firstElementChild.textContent;
-                if (labelName === createLabelInput.value) {
+                if (labelName === (createLabelInput.value).trim()) {
                     alert("The label '" + labelName + "' already exists!");
                     isUnique = false;
                 }
