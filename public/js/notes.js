@@ -267,7 +267,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         tag.style.fontSize = fontSizeArr[fontArrIndex];
                         state.currentLabelInputTagSize = fontNumArr[fontArrIndex];
                     })
-                    console.log(fontSizeArr[fontArrIndex]);
+                    // console.log(fontSizeArr[fontArrIndex]);
                     fontArrIndex++;
                 } while (((labelInputContainer.scrollWidth - labelInputContainer.clientWidth) > 0) && (fontArrIndex < 9))
                 // MAKE FUNCTION
@@ -298,7 +298,7 @@ document.addEventListener("DOMContentLoaded", function() {
     createLabelDone.addEventListener("click", function(event) {
         //take user input and turn into a label selection element
         if (createLabelInput.value !== "") {
-            console.log("Something was entered");
+            // console.log("Something was entered");
             
             let labelName = createLabelInput.value;
             let innerHTMLString = "<h4 class='tag-text'>" + labelName + "</h4>";
@@ -349,7 +349,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function addNewTag() {
-        console.log("Adding new tag");
+        // console.log("Adding new tag");
         
         //hide clear icon
         clearIcon.style.display = "none";
