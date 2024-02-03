@@ -299,6 +299,7 @@ document.addEventListener("DOMContentLoaded", function() {
         //take user input and turn into a label selection element
         if ((createLabelInput.value !== "") && (containsNonSpaceChar(createLabelInput.value))) {
 
+            // Checking for uniqueness
             let isUnique = true;
             let currentSelectionTags = document.querySelectorAll('.selection-tag');
             currentSelectionTags.forEach(tag => {
@@ -309,7 +310,14 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             })
 
-            if (isUnique) {
+            // Ensuring entry is not more than 42 letters
+            let isShort = true;
+            if (((createLabelInput.value).trim()).length > 42) {
+                alert("Oops! Your label seems a bit too long. Could you please make it 42 characters or shorter? Thank you!");
+                isShort = false;
+            }
+
+            if ((isUnique) && (isShort)) {
                 // Label Creation Process
                 let labelName = createLabelInput.value;
                 let innerHTMLString = "<h4 class='tag-text'>" + labelName + "</h4>";
