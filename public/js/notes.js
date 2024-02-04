@@ -173,7 +173,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.addEventListener('mouseover', function(event) {
         let target = event.target;
         state.generalTarget = target;
-        // console.log(target);
+        console.log(target);
 
         // If user shift-clicks on label and quickly moves mouse to outside,
         // it catches that movement in case the labelSelectionRow mouseover
@@ -194,6 +194,11 @@ document.addEventListener("DOMContentLoaded", function() {
         //if active element contains tag-selection class and enter is pressed
         if ((target.classList.contains('tag-text')) && (flags.shiftPressed) && (target !== selectionDoneDiv) && (target !== selectionDone) && (target !== addTagIcon)) {
 
+            // if a previous element was selected for deletion, it's reset
+            if (state.lastSelectionElement !== null) {
+                state.lastSelectionElement.style.backgroundColor = "";
+                state.lastSelectionElement.classList.remove('deleteJiggling');
+            }
             state.lastSelectionElement = target;
 
             target.style.backgroundColor = "rgba(255, 0, 0, 0.2)";
