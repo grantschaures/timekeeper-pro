@@ -173,7 +173,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.addEventListener('mouseover', function(event) {
         let target = event.target;
         state.generalTarget = target;
-        console.log(target);
+        // console.log(target);
 
         // If user shift-clicks on label and quickly moves mouse to outside,
         // it catches that movement in case the labelSelectionRow mouseover
