@@ -511,7 +511,7 @@ document.addEventListener("DOMContentLoaded", function() {
             emojiContainer.style.display = "none";
             emojiContainer.style.opacity = '0';
             notesFlags.emojiContainerShowing = false;
-            // MAKE FUNCTION
+            // MAKE 
         }
     })
 
@@ -615,6 +615,8 @@ function setEmojiContainerPointLocation(innerWidth, emojiContainer, notesFlags, 
         let percentageStr = (45 + (((firstActionWidth - 1) - innerWidth) / 4.3)) + '%';
         emojiContainer.style.setProperty('--after-left', percentageStr);
         // console.log(percentageStr)
+    } else {
+        emojiContainer.style.setProperty('--after-left', '45%');
     }
 }
 
