@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const addTagIcon = document.getElementById("add-tag-icon");
 
-    const emojiBtn = document.getElementById("emoji-btn");
+    const emojiBtn = document.getElementById("emoji-btn"); // this is the div surrounding OGemoji
     const emojiImg = document.getElementById("OGemoji");
     const emojiContainer = document.getElementById("emoji-container");
 
@@ -60,7 +60,8 @@ document.addEventListener("DOMContentLoaded", function() {
         lastNotesLineTime: null,
         currentLabelInputTagSize: 20,
         generalTarget: null,
-        lastSelectionElement: null
+        lastSelectionElement: null,
+        lastSelectedEmojiId: null
     }
 
     let intervals = {
@@ -71,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function() {
         tagSelected: false,
         tagSelection: true,
         clearIconClicked: false,
-        shiftPressed: false
+        controlPressed: false
     }
 
     const emojiMap = {
@@ -88,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function() {
         "writing-emoji": "✍️",
         "notebook-emoji": "📓",
         "exercise-emoji": "🏋️",
-        "heaphones-emoji": "🎧",
+        "headphones-emoji": "🎧",
         "piano-emoji": "🎹",
         "brain-emoji": "🧠",
         "lightbulb-emoji": "💡",
@@ -181,12 +182,12 @@ document.addEventListener("DOMContentLoaded", function() {
     })
 
     document.addEventListener('keydown', function(event) {
-        if ((event.key === 'Shift') && (!flags.shiftPressed)) {
-            // console.log('Shift Key Pressed');
-            flags.shiftPressed = true;
+        if ((event.key === 'Control') && (!flags.controlPressed)) {
+            // console.log('control Key Pressed');
+            flags.controlPressed = true;
 
             let target = state.generalTarget;
-            if ((target.classList.contains('tag-text')) && (flags.shiftPressed) && (target !== selectionDoneDiv) && (target !== selectionDone) && (target !== addTagIcon)) {
+            if ((target.classList.contains('tag-text')) && (flags.controlPressed) && (target !== selectionDoneDiv) && (target !== selectionDone) && (target !== addTagIcon)) {
 
                 state.lastSelectionElement = target;
                 target.style.backgroundColor = "rgba(255, 0, 0, 0.2)";
@@ -196,9 +197,9 @@ document.addEventListener("DOMContentLoaded", function() {
     })
 
     document.addEventListener('keyup', function(event) {
-        if ((event.key === 'Shift') && (flags.shiftPressed)) {
-            // console.log('Shift Key Released');
-            flags.shiftPressed = false;
+        if ((event.key === 'Control') && (flags.controlPressed)) {
+            // console.log('control Key Released');
+            flags.controlPressed = false;
 
             state.lastSelectionElement.style.backgroundColor = "";
             state.lastSelectionElement.classList.remove('deleteJiggling');
@@ -210,10 +211,10 @@ document.addEventListener("DOMContentLoaded", function() {
         state.generalTarget = target;
         // console.log(target);
 
-        // If user shift-clicks on label and quickly moves mouse to outside,
+        // If user control-clicks on label and quickly moves mouse to outside,
         // it catches that movement in case the labelSelectionRow mouseover
         // event listener missed it and resets color and jiggle class
-        if ((!((target.classList.contains('tag-text')) && (flags.shiftPressed) && (target !== selectionDoneDiv) && (target !== selectionDone) && (target !== addTagIcon)) && (state.lastSelectionElement !== null))) {
+        if ((!((target.classList.contains('tag-text')) && (flags.controlPressed) && (target !== selectionDoneDiv) && (target !== selectionDone) && (target !== addTagIcon)) && (state.lastSelectionElement !== null))) {
             state.lastSelectionElement.style.backgroundColor = "";
             state.lastSelectionElement.classList.remove('deleteJiggling');
         } 
@@ -227,7 +228,7 @@ document.addEventListener("DOMContentLoaded", function() {
         let target = event.target;
 
         //if active element contains tag-selection class and enter is pressed
-        if ((target.classList.contains('tag-text')) && (flags.shiftPressed) && (target !== selectionDoneDiv) && (target !== selectionDone) && (target !== addTagIcon)) {
+        if ((target.classList.contains('tag-text')) && (flags.controlPressed) && (target !== selectionDoneDiv) && (target !== selectionDone) && (target !== addTagIcon)) {
 
             // if a previous element was selected for deletion, it's reset
             if (state.lastSelectionElement !== null) {
@@ -250,7 +251,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if (target.className === 'selection-tag' || (((target.className === 'tag-text') || (target.className === 'tag-text deleteJiggling')) && (target.innerText !== "Done"))) {
 
-            if (flags.shiftPressed) {
+            if (flags.controlPressed) {
                 let toDeleteTagId;
                 if (target.className === 'tag-text deleteJiggling') {
                     toDeleteTagId = target.parentElement.id;
@@ -445,13 +446,12 @@ document.addEventListener("DOMContentLoaded", function() {
             })
 
             // Ensuring entry is not more than 42 letters
-            let isShort = true;
             if (((createLabelInput.value).trim()).length > 42) {
                 alert("Oops! Your label seems a bit too long. Could you please make it 42 characters or shorter? Thank you!");
-                isShort = false;
+                return; //allows user to basically retry
             }
 
-            if ((isUnique) && (isShort)) {
+            if (isUnique) {
                 // Label Creation Process
                 let labelName = createLabelInput.value;
                 let innerHTMLString = "<h4 class='tag-text'>" + labelName + "</h4>";
@@ -464,6 +464,15 @@ document.addEventListener("DOMContentLoaded", function() {
                 selectionDiv.id = "tag-" + (counters.lastLabelIdNum);
     
                 labelSelectionRow.insertBefore(selectionDiv, addDoneContainer);
+
+
+                // REPLACES Emoji Btn Picture W/ Last Selected Emoji!
+                if (state.lastSelectedEmojiId !== null) {
+                    // get path of src for last selected emoji id
+                    // assign that path to the OGemoji id (represents the emoji btn)
+                    let emojiImgPath = document.getElementById(state.lastSelectedEmojiId).src;
+                    emojiImg.src = emojiImgPath;
+                }
             }
         }
 
@@ -487,7 +496,7 @@ document.addEventListener("DOMContentLoaded", function() {
     })
 
     emojiBtn.addEventListener("click", function() {
-        console.log("emoji btn was pressed");
+        // console.log("emoji btn was pressed");
 
         if (!notesFlags.emojiContainerShowing) {
             emojiContainer.style.display = "block";
@@ -517,6 +526,9 @@ document.addEventListener("DOMContentLoaded", function() {
             let targetEmojiId = symbol.id;
             let emojiToInsert = emojiMap[targetEmojiId];
             createLabelInput.value += emojiToInsert;
+
+            //keep track of last selected emoji
+            state.lastSelectedEmojiId = targetEmojiId;
 
             // then trigger close of menu
             emojiContainer.style.display = "none";
@@ -602,7 +614,7 @@ function setEmojiContainerPointLocation(innerWidth, emojiContainer, notesFlags, 
     if (innerWidth < firstActionWidth) {
         let percentageStr = (45 + (((firstActionWidth - 1) - innerWidth) / 4.3)) + '%';
         emojiContainer.style.setProperty('--after-left', percentageStr);
-        console.log(percentageStr)
+        // console.log(percentageStr)
     }
 }
 

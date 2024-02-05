@@ -180,7 +180,8 @@
     position: fixed;
     right: 15px;
     top: -160px;
-    border: 2px solid #cccccc;
+    border: 5px solid #cccccc;
+    /* border: 5px solid black; */
     border-radius: 8px;
     padding: 10px;
     width: 200px;
