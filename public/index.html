@@ -20,9 +20,9 @@
 
         <!-- CHANGE TO NON-MINIFIED VERSION DURING DEVELOPMENT -->
         <!-- CHANGE BACK TO MINIFIED VERSION FOR DEPLOYMENT -->
-        <script src='/js/index.min.js'></script>
-        <script src='/js/menu.min.js'></script>
-        <script src='/js/notes.min.js'></script>
+        <script src='/js/index.js'></script>
+        <script src='/js/menu.js'></script>
+        <script src='/js/notes.js'></script>
     </head>
 
     <!-- Google tag (gtag.js) -->
@@ -188,7 +188,7 @@
                                 <h4 class="tag-text">📚 Reading</h4>
                             </div>
                             <div id="tag-3" class="tag unselectable selection-tag">
-                                <h4 class="tag-text">🧘‍♂️ Meditation</h4>
+                                <h4 class="tag-text">🧘 Meditation</h4>
                             </div>
                             <div id="add-done-container">
                                 <h4 id="tag-selection-divider" class="unselectable" >|</h4>
@@ -200,8 +200,44 @@
                         </div>
                     </div>
                     <div id="create-label-window">
+                        <div id="emoji-container">
+                            <div id="emoji-row-1">
+                                <img id="studying-man-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/studying_man.png">
+                                <img id="studying-woman-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/studying_woman.png">
+                                <img id="meditation-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/meditation.png">
+                                <img id="meditation-woman-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/meditation_woman.png">
+                            </div>
+                            <div id="emoji-row-2">
+                                <img id="happy-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/happy.png">
+                                <img id="zany-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/zany.png">
+                                <img id="melting-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/melting.png">
+                                <img id="dead-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/dead.png">
+                            </div>
+                            <div id="emoji-row-3">
+                                <img id="document-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/document.png">
+                                <img id="memo-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/memo.png">
+                                <img id="writing-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/writing.png">
+                                <img id="notebook-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/notebook.png">
+                            </div>
+                            <div id="emoji-row-4">
+                                <img id="exercise-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/exercise.png">
+                                <img id="headphones-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/headphones.png">
+                                <img id="piano-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/piano.png">
+                                <img id="brain-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/brain.png">
+                            </div>
+                            <div id="emoji-row-5">
+                                <img id="lightbulb-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/light_bulb.png">
+                                <img id="calendar-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/calendar.png">
+                                <img id="clock-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/clock.png">
+                                <img id="books-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/books.png">
+                            </div>
+                        </div>
                         <div id="create-label">
                             <input type="text" id="create-label-input" placeholder="Enter Label Name">
+                            <div id="emoji-btn">
+                                <!-- <img id="OGemoji" src="images/notes/HyperChillLogo_notes.png"> -->
+                                <img id="OGemoji" src="images/notes/emoji-symbols/books.png">
+                            </div>
                         </div>
                         <div id="cancel-done-div" class="cancel-done-container unselectable">
                             <h4 id="create-label-cancel" class="tag-text create-label">Cancel</h4>
@@ -546,7 +582,7 @@
                                 <img src="images/icons/flowmodoroIcon.png" id="flowmodoroIcon" class="settingsIcon" draggable="false">
                             </div>
                             <div id="flowmodoroHeader" class="settingsHeader">
-                                <b>Flowmodoro</b>
+                                <b>Chill Time</b>
                             </div>
                         </div>
                         <div id="generalBtnContainer" class="settingsHeaderRow subCategory">
@@ -554,7 +590,7 @@
                                 <img src="images/icons/settingsIcon1.png" id="generalIcon" class="settingsIcon" draggable="false">
                             </div>
                             <div id="generalHeader" class="settingsHeader">
-                                <b>General</b>
+                                <b>Flow Time</b>
                             </div>
                         </div>
                         <div id="backgroundsBtnContainer" class="settingsHeaderRow">
@@ -713,14 +749,14 @@
 
                         <div id="flowmodoroSettingsContainer" class="settingsContentContainer">
                             <div id="flowmodoroContainer" class="settingsIconTextContainer">
-                                <h2>Flowmodoro</h2>
+                                <h2>Chill Time</h2>
                             </div>
                             <!-- <div class="horizontal"></div> -->
                             <div id="alertsNotificationsToggleContainer2" class="settingsCategory">
                                 <div id="flowmodoroNotificationsBlock">
                                     <div id="toggleFlowmodoroNotificationContainer" class="settingsMicroContainer">
                                         <div id="flowmodoroNotificationText" class="settingsText">
-                                            <p id="flowmodoroNotifications"><b class="settingsCategoryHeading">Flowmodoro Notifications</b></p>
+                                            <p id="flowmodoroNotifications"><b class="settingsCategoryHeading">Chill Time Notifications</b></p>
                                         </div>
                                         <div id="flowmodoroNotificationToggleContainer" class="toggleContainer">
                                             <input type="checkbox" id="flowmodoroNotificationToggle" class="toggle-checkbox">
@@ -820,12 +856,12 @@
 
                         <div id="generalSettingsContainer" class="settingsContentContainer">
                             <div id="generalContainer" class="settingsIconTextContainer">
-                                <h2>General</h2>
+                                <h2>Flow Time</h2>
                             </div>
                             <div id="flowTimeBreakNotificationBlock">
                                 <div id="toggleBreakSuggestionContainer" class="settingsMicroContainer">
                                     <div id="breakSuggestionText" class="settingsText">
-                                        <p id="flowTimeBreakNotification"><b class="settingsCategoryHeading">Flow Time Break Notifications</b></p>
+                                        <p id="flowTimeBreakNotification"><b class="settingsCategoryHeading">Flow Time Notifications</b></p>
                                     </div>
                                     <div id="breakSuggestionToggleContainer" class="toggleContainer">
                                         <input type="checkbox" id="breakSuggestionToggle" class="toggle-checkbox">

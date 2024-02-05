@@ -1,7 +1,7 @@
 #notes-container {
     position: relative;
     background-color: rgba(0, 0, 0, 0.35);
-    overflow: hidden;
+    /* overflow: hidden; */
 
     /* DARK GREY THEME BACKGROUND */
     /* background-color: rgba(32, 32, 32, 0.9); */
@@ -117,7 +117,7 @@
 }
 
 #create-label-input {
-    width:auto;
+    width: auto;
     height: 30px;
     border-radius: 50px;
     font-family: myFont2;
@@ -127,10 +127,97 @@
     color: white;
     outline: none;
     text-align: center;
+    margin-left: 45px;
 }
 
 #create-label-input::placeholder {
     color: rgba(255, 255, 255, 0.20);
+}
+
+#emoji-btn {
+    width: 35px;
+    height: 35px;
+    border-radius: 50px;
+    background-color: transparent;
+    /* border: 3px solid red; */
+    margin-left: 10px;
+
+    display: flex;
+    justify-content: center;
+
+    z-index: 16;
+}
+
+#emoji-btn:hover {
+    cursor: pointer;
+    /* transform: scale(0.95); */
+}
+
+@media (max-width: 450px) {
+    #emoji-btn {
+        display: none;
+    }
+    #create-label-input {
+        margin-left: 0px;
+    }
+}
+
+@keyframes emojiPopup {
+    0% {
+        transform: translateY(5px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.emojiPopup {
+    animation: emojiPopup 0.5s;
+}
+
+#emoji-container {
+    display: none;
+    position: fixed;
+    right: 15px;
+    top: -160px;
+    border: 2px solid #cccccc;
+    border-radius: 8px;
+    padding: 10px;
+    width: 200px;
+    height: 200px;
+    text-align: center;
+    background-color: #f9f9f9;
+
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    --after-left: 45%;
+
+    z-index: 15;
+}
+
+#emoji-container::after {
+    content: " ";
+    position: absolute;
+    bottom: -40px;
+    left: var(--after-left);
+    /* left: 75%; */
+    margin-left: -5px;
+    border-width: 20px;
+    border-style: solid;
+    border-color: #f9f9f9 transparent transparent transparent;
+}
+
+.emoji-symbol {
+    width: 30px;
+    height: 30px;
+    margin: 2px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.emoji-symbol:hover {
+    cursor: pointer;
+    transform: scale(0.90);
 }
 
 #create-label-cancel {

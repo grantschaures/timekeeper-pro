@@ -34,11 +34,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const addTagIcon = document.getElementById("add-tag-icon");
 
+    const emojiBtn = document.getElementById("emoji-btn");
+    const emojiImg = document.getElementById("OGemoji");
+    const emojiContainer = document.getElementById("emoji-container");
+
+    const emojiSymbols = document.querySelectorAll('.emoji-symbol')
+
     // CONSOLE
     let notesFlags = {
         isClicked: false,
         notesShowing: false,
-        notesConsoleShowing: true
+        notesConsoleShowing: true,
+        emojiContainerShowing: false
     }
 
     let counters = {
@@ -67,8 +74,33 @@ document.addEventListener("DOMContentLoaded", function() {
         shiftPressed: false
     }
 
+    const emojiMap = {
+        "studying-man-emoji": "👨‍💻",
+        "studying-woman-emoji": "👩‍💻",
+        "meditation-emoji": "🧘",
+        "meditation-woman-emoji": "🧘‍♀️",
+        "happy-emoji": "😄",
+        "zany-emoji": "🤪",
+        "melting-emoji": "🫠",
+        "dead-emoji": "💀",
+        "document-emoji": "📄",
+        "memo-emoji": "📝",
+        "writing-emoji": "✍️",
+        "notebook-emoji": "📓",
+        "exercise-emoji": "🏋️",
+        "heaphones-emoji": "🎧",
+        "piano-emoji": "🎹",
+        "brain-emoji": "🧠",
+        "lightbulb-emoji": "💡",
+        "calendar-emoji": "📅",
+        "clock-emoji": "🕒",
+        "books-emoji": "📚"
+    }
+
     fontSizeArr = ['20px', '19px', '18px', '17px', '16px', '15px', '14px', '13px', '12px'];
     fontNumArr = [20, 19, 18, 17, 16, 15, 14, 13, 12];
+
+    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
     let currentTime = getCurrentTime();
     
@@ -77,6 +109,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     //continually compare values
     intervals.notesTime = setInterval(() => compareNoteLineTime(state), 1000);
+
+    //set initial emoji container point location
+    setEmojiContainerPointLocation(window.innerWidth, emojiContainer, notesFlags, isMobile);
 
     notesBtn.addEventListener("click", function() {
         if (notesFlags.notesShowing === false) {
@@ -386,6 +421,12 @@ document.addEventListener("DOMContentLoaded", function() {
         createLabelInput.value = "";
         
         backToLabelSelection(createLabelContainer, createLabelWindow, clearIcon, promptContainer, labelInputContainer, labelSelectionWindow, flags);
+
+        // MAKE FUNCTION
+        emojiContainer.style.display = "none";
+        emojiContainer.style.opacity = '0';
+        notesFlags.emojiContainerShowing = false;
+        // MAKE FUNCTION
     })
     
     createLabelDone.addEventListener("click", function(event) {
@@ -432,11 +473,67 @@ document.addEventListener("DOMContentLoaded", function() {
             addDoneContainer.style.marginLeft = '';
             flags.tagSelection = true;
         }
+        //MAKE THIS A FUNCTION
+
+        // MAKE FUNCTION
+        emojiContainer.style.display = "none";
+        emojiContainer.style.opacity = '0';
+        notesFlags.emojiContainerShowing = false;
+        // MAKE FUNCTION
         
         //go back to label selection window
         createLabelInput.value = "";
         backToLabelSelection(createLabelContainer, createLabelWindow, clearIcon, promptContainer, labelInputContainer, labelSelectionWindow, flags);
     })
+
+    emojiBtn.addEventListener("click", function() {
+        console.log("emoji btn was pressed");
+
+        if (!notesFlags.emojiContainerShowing) {
+            emojiContainer.style.display = "block";
+            setTimeout(() => {
+                emojiContainer.classList.add('emojiPopup');
+                emojiContainer.style.opacity = '1';
+            }, 1);
+
+            notesFlags.emojiContainerShowing = true;
+        } else {
+            // MAKE FUNCTION
+            emojiContainer.style.display = "none";
+            emojiContainer.style.opacity = '0';
+            notesFlags.emojiContainerShowing = false;
+            // MAKE FUNCTION
+        }
+    })
+
+    createLabelWindow.addEventListener("click", function() {
+        createLabelInput.focus();
+    })
+
+    // setting up event listeners to insert emoji selected from emoji container
+    // into the label creation input
+    emojiSymbols.forEach(symbol => {
+        symbol.addEventListener("click", function() {
+            let targetEmojiId = symbol.id;
+            let emojiToInsert = emojiMap[targetEmojiId];
+            createLabelInput.value += emojiToInsert;
+
+            // then trigger close of menu
+            emojiContainer.style.display = "none";
+            notesFlags.emojiContainerShowing = false;
+        })
+    })
+
+    document.addEventListener("click", function(event) {
+        if ((!emojiContainer.contains(event.target)) && (event.target !== emojiImg) && (emojiContainer.style.display === "block")) {
+            emojiContainer.style.display = "none";
+            notesFlags.emojiContainerShowing = false;
+        }
+    })
+
+    window.addEventListener('resize', function() {
+        setEmojiContainerPointLocation(this.window.innerWidth, emojiContainer, notesFlags, isMobile);
+    });
 
     // ---------------------
     // HELPER FUNCTIONS 1
@@ -489,6 +586,26 @@ document.addEventListener("DOMContentLoaded", function() {
 // ---------------------
 // HELPER FUNCTIONS 2
 // ---------------------
+function setEmojiContainerPointLocation(innerWidth, emojiContainer, notesFlags, isMobile) {
+    let firstActionWidth;
+    if (isMobile) {
+        firstActionWidth = 600;
+    } else {
+        firstActionWidth = 616;
+    }
+
+    if (innerWidth < 450) {
+        emojiContainer.style.display = "none";
+        notesFlags.emojiContainerShowing = false;
+    }
+
+    if (innerWidth < firstActionWidth) {
+        let percentageStr = (45 + (((firstActionWidth - 1) - innerWidth) / 4.3)) + '%';
+        emojiContainer.style.setProperty('--after-left', percentageStr);
+        console.log(percentageStr)
+    }
+}
+
 function containsNonSpaceChar(input) {
     return /[^\s]/.test(input);
 }

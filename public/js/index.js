@@ -1003,10 +1003,6 @@ document.addEventListener("DOMContentLoaded", function() {
     totalDisplayWorker.onmessage = function(message) {
         totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, targetTime);
     }
-
-    // document.addEventListener("click", function(event) {
-    //     console.log(event.target);
-    // })
 });
 
 // ---------------------
