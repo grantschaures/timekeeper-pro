@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const progressBar = document.getElementById("progress-bar");
     const progressContainer = document.getElementById("progress-container");
     const display = document.getElementById("display");
+    const hyperChillTitle = document.getElementById("hyperChillTitle");
 
     // INTERRUPTIONS CONTAINER
     const interruptionsContainer = document.getElementById("interruptions-container");
@@ -303,7 +304,7 @@ document.addEventListener("DOMContentLoaded", function() {
         autoSwitchedModes: false,
         inRecoveryBreak: false,
         inRecoveryPom: false,
-        flowTimeAnimationToggle: true,
+        flowTimeAnimationToggle: false,
         chillTimeAnimationToggle: true,
         darkThemeActivated: false,
         modeChangeExecuted: false,
@@ -337,6 +338,44 @@ document.addEventListener("DOMContentLoaded", function() {
     if (isMobile) {
         // TBD
     }
+
+    hyperChillTitle.style.opacity = '1';
+    hyperChillTitle.classList.add('hyperChillTitleAnimation');
+    
+    const threeWayToggle = document.getElementById('threeWayToggle');
+
+    setTimeout(() => {
+        hyperChillTitle.classList.remove('hyperChillTitleAnimation');
+        hyperChillTitle.style.opacity = '0';
+        setTimeout(() => {
+            hyperChillTitle.style.display = 'none';
+            threeWayToggle.style.display = 'inline-flex';
+            setTimeout(() => {
+                threeWayToggle.style.opacity = '1';
+            }, 100)
+        }, 2000)
+    }, 3000)
+
+    document.body.setAttribute('data-dashboard-mode', 'home');
+
+    const ambientIcon = document.getElementById("ambient-icon");
+    const homeIcon = document.getElementById("home-icon");
+    const focusIcon = document.getElementById("focus-icon");
+    const blogMenuContainer = document.getElementById("blogMenuContainer");
+
+    ambientIcon.addEventListener("click", function() {
+        document.body.setAttribute('data-dashboard-mode', 'ambient');
+    })
+    homeIcon.addEventListener("click", function() {
+        document.body.setAttribute('data-dashboard-mode', 'home');
+    })
+    focusIcon.addEventListener("click", function() {
+        document.body.setAttribute('data-dashboard-mode', 'focus');
+        setTimeout(() => {
+            blogMenuContainer.click();
+        }, 0)
+    })
+    
 
     // ----------------
     // EVENT LISTENERS
@@ -937,9 +976,9 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    report_btn.addEventListener("click", function() {
-        alert("This feature is currently under development. Thank you for your patience.")
-    })
+    // report_btn.addEventListener("click", function() {
+    //     alert("This feature is currently under development. Thank you for your patience.")
+    // })
 
     end_session_btn.addEventListener("click", function() { //temporary function
         location.reload();
