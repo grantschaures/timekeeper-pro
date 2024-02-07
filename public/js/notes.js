@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
+    //Redesign edit
     const notesContainer = document.getElementById("notes-container");
     
     const taskContainer = document.getElementById("task-container");

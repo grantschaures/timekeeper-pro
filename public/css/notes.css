@@ -217,7 +217,7 @@
 
 .emoji-symbol:hover {
     cursor: pointer;
-    transform: scale(0.90);
+    transform: scale(1.15);
 }
 
 #create-label-cancel {

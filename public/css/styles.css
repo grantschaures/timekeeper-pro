@@ -19,7 +19,6 @@
     -moz-user-select: none;    /* Firefox */
     -ms-user-select: none;     /* Internet Explorer/Edge */
     user-select: none;         /* Non-prefixed version, currently supported by Chrome, Opera, and Edge */
-
     pointer-events: none;      /* This makes it so the image cannot be interacted with */
 }
 
@@ -28,10 +27,15 @@ body {
     overflow-y: scroll;
 }
 
+/* #sub-body-container {
+    transform: scale(0.85);
+    transform-origin: top;
+} */
+
 html, body {
     margin: 0;
     height: 100%;
-    /* background-image: url("../images/DALLE/DALLE6.png"); */
+    /* background-image: url("../images/pexels/pexels-dids-6273460.jpg"); */
     background-image: linear-gradient(to bottom, #3b8fe3, #1d60a3, #7f04c7);
     background-size: cover; /* This will cover the full area of the element */
     background-repeat: no-repeat;
@@ -266,7 +270,7 @@ main {
     
     height: 150px;
     
-    border: 1px rgba(0, 0, 0, 0.25);
+    /* border: 1px rgba(0, 0, 0, 0.25); */
     box-sizing: border-box;
     
     border-radius: 25px; /* Created corner curves */
@@ -389,7 +393,7 @@ main {
     
     height: 150px;
     
-    border: 1px rgba(0, 0, 0, 0.25);
+    /* border: 1px rgba(0, 0, 0, 0.25); */
     box-sizing: border-box;
     
     border-radius: 25px; /* Created corner curves */
