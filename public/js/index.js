@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const progressContainer = document.getElementById("progress-container");
     const display = document.getElementById("display");
     const hyperChillTitle = document.getElementById("hyperChillTitle");
+    const subMainContainer = document.getElementById("sub-main-container");
 
     // INTERRUPTIONS CONTAINER
     const interruptionsContainer = document.getElementById("interruptions-container");
@@ -339,22 +340,31 @@ document.addEventListener("DOMContentLoaded", function() {
         // TBD
     }
 
-    hyperChillTitle.style.opacity = '1';
-    hyperChillTitle.classList.add('hyperChillTitleAnimation');
+    setTimeout(() => {
+        hyperChillTitle.style.opacity = '1';
+        hyperChillTitle.classList.add('hyperChillTitleAnimation');
+
+    }, 0)
+
     
     const threeWayToggle = document.getElementById('threeWayToggle');
 
+    setTimeout(() => {
+        subMainContainer.style.opacity = '1';
+    }, 1000)
+    
     setTimeout(() => {
         hyperChillTitle.classList.remove('hyperChillTitleAnimation');
         hyperChillTitle.style.opacity = '0';
         setTimeout(() => {
             hyperChillTitle.style.display = 'none';
             threeWayToggle.style.display = 'inline-flex';
+            threeWayToggle.classList.add('threeWayToggleAnimation');
             setTimeout(() => {
                 threeWayToggle.style.opacity = '1';
             }, 100)
-        }, 2000)
-    }, 3000)
+        }, 1000)
+    }, 2000)
 
     document.body.setAttribute('data-dashboard-mode', 'home');
 

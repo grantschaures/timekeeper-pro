@@ -66,7 +66,7 @@
                             <div class="caption fade">
                                 <span data-mode="ambient">Report</span>
                                 <span data-mode="home">Home</span>
-                                <span data-mode="focus">Theory</span>
+                                <span data-mode="focus">Blog</span>
                             </div>
                         </span>
                     </div>
@@ -100,154 +100,156 @@
                 </div>
             </header>
 
-            <hr id="main_hr">
-
             <main>
-                <div id="target-hours-interruptions-container">
-                    <div id="target-hours-container">
-                        <div id="target-hours-sub-container">
-                            <!-- <h4 id="target-label">Target Hours </h4> -->
-                            <h4 id="target-label" style="font-size: 20px">Target Hours</h4>
-                            <div id="coolDiv-submit">
-                                <div id="coolDiv">
-                                    <input type="number" id="target-hours" class="glowing-effect" name="hours" min="0">
+                <div id="sub-main-container">
+                    <div id="target-hours-interruptions-container">
+                        <div id="target-hours-container">
+                            <div id="target-hours-sub-container">
+                                <!-- <h4 id="target-label">Target Hours </h4> -->
+                                <h4 id="target-label" style="font-size: 20px">Target Hours</h4>
+                                <div id="coolDiv-submit">
+                                    <div id="coolDiv">
+                                        <input type="number" id="target-hours" class="glowing-effect" name="hours" min="0">
+                                    </div>
+                                    <button type="submit" id="target-hours-submit">Submit</button>
                                 </div>
-                                <button type="submit" id="target-hours-submit">Submit</button>
+                            </div>
+                        </div>
+                        <div id="interruptions-container">
+                            <div id="interruptions-sub-container">
+                                <h4 id="interruptions-label" style="font-size: 20px"> Interruptions </h4>
+                                <div id="interruptions-change-container">
+                                    <button id="decBtn" class="interruptionsDivBtn">-</button>
+                                    <div id="coolerDiv">
+                                        <div id="interruptions_num">0</div>
+                                    </div>
+                                    <button id="incBtn" class="interruptionsDivBtn">+</button>
+                                </div>
+                            </div>
+                            <div id="suggestionBreakContainer">
+                                <h4 id="suggestionBreak-label"></h4>
+                                <h4 id="suggestionBreak-min"></h4>
+                            </div>
+                            <div id="completedPomodorosContainer">
+                                <h4 id="completedPomodoros-label"></h4>
+                                <div id="completedPomodoros-min"></div>
                             </div>
                         </div>
                     </div>
-                    <div id="interruptions-container">
-                        <div id="interruptions-sub-container">
-                            <h4 id="interruptions-label" style="font-size: 20px"> Interruptions </h4>
-                            <div id="interruptions-change-container">
-                                <button id="decBtn" class="interruptionsDivBtn">-</button>
-                                <div id="coolerDiv">
-                                    <div id="interruptions_num">0</div>
-                                </div>
-                                <button id="incBtn" class="interruptionsDivBtn">+</button>
+                        
+                    <div id="progress">
+                        <div id="progress-bar-container">
+                            <div id="progress-container">
+                                <div id="progress-bar"></div>
+                                <div id="progress-text" class="progress-text">00:00:00</div>
                             </div>
                         </div>
-                        <div id="suggestionBreakContainer">
-                            <h4 id="suggestionBreak-label"></h4>
-                            <h4 id="suggestionBreak-min"></h4>
-                        </div>
-                        <div id="completedPomodorosContainer">
-                            <h4 id="completedPomodoros-label"></h4>
-                            <div id="completedPomodoros-min"></div>
-                        </div>
                     </div>
-                </div>
-                    
-                <div id="progress-bar-container">
-                    <div id="progress-container">
-                        <div id="progress-bar"></div>
-                        <div id="progress-text" class="progress-text">00:00:00</div>
-                    </div>
-                </div>
 
-                <div id="timekeeping-container">
-                    <div class="mode-text">
-                        <h3 id="productivity-chill-mode" style="font-size: 24px">Press 'Start' to begin session</h3>
-                    </div>
-                    <div class="stopwatch">
-                        <div id="display">00:00:00</div>
-                    </div>
-                    <div class="lower-buttons">
-                        <div>
-                            <button id="notes">Notes</button>
+                    <div id="timekeeping-container">
+                        <div class="mode-text">
+                            <h3 id="productivity-chill-mode" style="font-size: 24px">Press 'Start' to begin session</h3>
                         </div>
-                        <div>
-                            <button id="start-stop">Start</button>
+                        <div class="stopwatch">
+                            <div id="display">00:00:00</div>
                         </div>
-                        <div>
-                            <button id="end-session"></button> <!-- Text inserted via JS -->
+                        <div class="lower-buttons">
+                            <div>
+                                <button id="notes">Notes</button>
+                            </div>
+                            <div>
+                                <button id="start-stop">Start</button>
+                            </div>
+                            <div>
+                                <button id="end-session"></button> <!-- Text inserted via JS -->
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div id="notes-container">
-                    <div id="task-container">
-                        <div id="clearDiv">
-                            <img src="images/icons/noun-reset-1033424-white.png" id="clearIcon">
-                        </div>
-                        <div id="prompt-container">
-                            <img id="tag-icon" src="images/icons/white_tag_icon.png">
-                            <div id="task-prompt">
-                                Select Task Labels
+                    <div id="notes-container">
+                        <div id="task-container">
+                            <div id="clearDiv">
+                                <img src="images/icons/noun-reset-1033424-white.png" id="clearIcon">
+                            </div>
+                            <div id="prompt-container">
+                                <img id="tag-icon" src="images/icons/white_tag_icon.png">
+                                <div id="task-prompt">
+                                    Select Task Labels
+                                </div>
+                            </div>
+                            <div id="label-input-container">
+                            </div>
+                            <div id="create-label-container">
+                                Create Label
                             </div>
                         </div>
-                        <div id="label-input-container">
+                        <hr id="notes-hr">
+                        <div id="notes-console">
                         </div>
-                        <div id="create-label-container">
-                            Create Label
-                        </div>
-                    </div>
-                    <hr id="notes-hr">
-                    <div id="notes-console">
-                    </div>
-                    <div id="label-selection-window">
-                        <div class="label-selection-row">
-                            <div id="tag-1" class="tag unselectable selection-tag">
-                                <h4 class="tag-text">✍️ Homework</h4>
-                            </div>
-                            <div id="tag-2" class="tag unselectable selection-tag">
-                                <h4 class="tag-text">📚 Reading</h4>
-                            </div>
-                            <div id="tag-3" class="tag unselectable selection-tag">
-                                <h4 class="tag-text">🧘 Meditation</h4>
-                            </div>
-                            <div id="add-done-container">
-                                <h4 id="tag-selection-divider" class="unselectable" >|</h4>
-                                <img id="add-tag-icon" src="images/icons/noun-exit-button-261420-white.png" draggable="false" class="unselectable">
-                                <div id="selection-done-div" class="tag unselectable">
-                                    <h4 id="selection-done" class="tag-text">Done</h4>
+                        <div id="label-selection-window">
+                            <div class="label-selection-row">
+                                <div id="tag-1" class="tag unselectable selection-tag">
+                                    <h4 class="tag-text">✍️ Homework</h4>
+                                </div>
+                                <div id="tag-2" class="tag unselectable selection-tag">
+                                    <h4 class="tag-text">📚 Reading</h4>
+                                </div>
+                                <div id="tag-3" class="tag unselectable selection-tag">
+                                    <h4 class="tag-text">🧘 Meditation</h4>
+                                </div>
+                                <div id="add-done-container">
+                                    <h4 id="tag-selection-divider" class="unselectable" >|</h4>
+                                    <img id="add-tag-icon" src="images/icons/noun-exit-button-261420-white.png" draggable="false" class="unselectable">
+                                    <div id="selection-done-div" class="tag unselectable">
+                                        <h4 id="selection-done" class="tag-text">Done</h4>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div id="create-label-window">
-                        <div id="emoji-container">
-                            <div id="emoji-row-1">
-                                <img id="studying-man-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/studying_man.png">
-                                <img id="studying-woman-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/studying_woman.png">
-                                <img id="meditation-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/meditation.png">
-                                <img id="meditation-woman-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/meditation_woman.png">
+                        <div id="create-label-window">
+                            <div id="emoji-container">
+                                <div id="emoji-row-1">
+                                    <img id="studying-man-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/studying_man.png">
+                                    <img id="studying-woman-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/studying_woman.png">
+                                    <img id="meditation-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/meditation.png">
+                                    <img id="meditation-woman-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/meditation_woman.png">
+                                </div>
+                                <div id="emoji-row-2">
+                                    <img id="happy-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/happy.png">
+                                    <img id="zany-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/zany.png">
+                                    <img id="melting-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/melting.png">
+                                    <img id="dead-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/dead.png">
+                                </div>
+                                <div id="emoji-row-3">
+                                    <img id="document-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/document.png">
+                                    <img id="memo-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/memo.png">
+                                    <img id="writing-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/writing.png">
+                                    <img id="notebook-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/notebook.png">
+                                </div>
+                                <div id="emoji-row-4">
+                                    <img id="exercise-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/exercise.png">
+                                    <img id="headphones-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/headphones.png">
+                                    <img id="piano-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/piano.png">
+                                    <img id="brain-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/brain.png">
+                                </div>
+                                <div id="emoji-row-5">
+                                    <img id="lightbulb-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/light_bulb.png">
+                                    <img id="calendar-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/calendar.png">
+                                    <img id="clock-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/clock.png">
+                                    <img id="books-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/books.png">
+                                </div>
                             </div>
-                            <div id="emoji-row-2">
-                                <img id="happy-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/happy.png">
-                                <img id="zany-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/zany.png">
-                                <img id="melting-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/melting.png">
-                                <img id="dead-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/dead.png">
+                            <div id="create-label">
+                                <input type="text" id="create-label-input" placeholder="Enter Label Name">
+                                <div id="emoji-btn">
+                                    <!-- <img id="OGemoji" src="images/notes/HyperChillLogo_notes.png"> -->
+                                    <img id="OGemoji" src="images/notes/emoji-symbols/books.png">
+                                </div>
                             </div>
-                            <div id="emoji-row-3">
-                                <img id="document-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/document.png">
-                                <img id="memo-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/memo.png">
-                                <img id="writing-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/writing.png">
-                                <img id="notebook-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/notebook.png">
+                            <div id="cancel-done-div" class="cancel-done-container unselectable">
+                                <h4 id="create-label-cancel" class="tag-text create-label">Cancel</h4>
+                                <h4 id="create-label-done" class="tag-text create-label">Done</h4>
                             </div>
-                            <div id="emoji-row-4">
-                                <img id="exercise-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/exercise.png">
-                                <img id="headphones-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/headphones.png">
-                                <img id="piano-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/piano.png">
-                                <img id="brain-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/brain.png">
-                            </div>
-                            <div id="emoji-row-5">
-                                <img id="lightbulb-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/light_bulb.png">
-                                <img id="calendar-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/calendar.png">
-                                <img id="clock-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/clock.png">
-                                <img id="books-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/books.png">
-                            </div>
-                        </div>
-                        <div id="create-label">
-                            <input type="text" id="create-label-input" placeholder="Enter Label Name">
-                            <div id="emoji-btn">
-                                <!-- <img id="OGemoji" src="images/notes/HyperChillLogo_notes.png"> -->
-                                <img id="OGemoji" src="images/notes/emoji-symbols/books.png">
-                            </div>
-                        </div>
-                        <div id="cancel-done-div" class="cancel-done-container unselectable">
-                            <h4 id="create-label-cancel" class="tag-text create-label">Cancel</h4>
-                            <h4 id="create-label-done" class="tag-text create-label">Done</h4>
                         </div>
                     </div>
                 </div>
