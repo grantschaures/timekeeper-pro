@@ -305,6 +305,9 @@ main {
     align-items: center;
     /* width: 100px; */
     width: 50px;
+
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
 }
 
 #menuIcon {

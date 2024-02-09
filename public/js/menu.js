@@ -55,6 +55,10 @@ document.addEventListener("DOMContentLoaded", function() {
         settingsBtnClicked: 0
     }
 
+    setTimeout(() => {
+        menu_btn.style.opacity = '1';
+    }, 1000)
+
     menu_btn.addEventListener("click", function() {
         //Cause the menu window to become visable
         if (popup_window.style.display == "flex") {
