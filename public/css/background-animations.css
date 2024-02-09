@@ -102,7 +102,7 @@
     height: 1200px;
     width: 100%;
     /* top: 300px; */
-    overflow: hidden;
+    /* overflow: hidden; */
     opacity: 0;
     animation-fill-mode: forwards;
     margin-top: -50px;
