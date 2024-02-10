@@ -200,7 +200,7 @@ document.addEventListener("DOMContentLoaded", function() {
             // console.log('shift Key Pressed');
             flags.shiftPressed = true;
 
-            if ((target.classList.contains('tag-text')) && (!(target.parentElement.classList.contains('selected-tag'))) && (flags.shiftPressed) && (target !== selectionDoneDiv) && (target !== selectionDone) && (target !== addTagIcon)) {
+            if ((target.classList.contains('tag-text')) && (!target.classList.contains('create-label')) && (!(target.parentElement.classList.contains('selected-tag'))) && (flags.shiftPressed) && (target !== selectionDoneDiv) && (target !== selectionDone) && (target !== addTagIcon)) {
                 state.lastSelectionElement = target;
 
                 if (flags.altPressed) {
@@ -214,7 +214,7 @@ document.addEventListener("DOMContentLoaded", function() {
             event.preventDefault();
             flags.altPressed = true;
             
-            if ((target.classList.contains('tag-text')) && (!(target.parentElement.classList.contains('selected-tag'))) && (flags.altPressed) && (target !== selectionDoneDiv) && (target !== selectionDone) && (target !== addTagIcon)) {
+            if ((target.classList.contains('tag-text')) && (!(target.parentElement.classList.contains('selected-tag'))) && (!target.classList.contains('create-label')) && (flags.altPressed) && (target !== selectionDoneDiv) && (target !== selectionDone) && (target !== addTagIcon)) {
                 state.lastSelectionElement = target;
                 
                 target.style.backgroundColor = "rgba(0, 255, 0, 0.2)";
