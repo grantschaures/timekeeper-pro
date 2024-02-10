@@ -133,6 +133,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // NOTES
     const createLabelInput = document.getElementById("create-label-input");
+    const updateLabelInput = document.getElementById("update-label-input");
     const emojiContainer = document.getElementById("emoji-container");
 
     // Favicons
@@ -366,31 +367,10 @@ document.addEventListener("DOMContentLoaded", function() {
         }, 1000)
     }, 2000)
 
-    document.body.setAttribute('data-dashboard-mode', 'home');
-
-    const ambientIcon = document.getElementById("ambient-icon");
-    const homeIcon = document.getElementById("home-icon");
-    const focusIcon = document.getElementById("focus-icon");
-    const blogMenuContainer = document.getElementById("blogMenuContainer");
-
-    ambientIcon.addEventListener("click", function() {
-        document.body.setAttribute('data-dashboard-mode', 'ambient');
-    })
-    homeIcon.addEventListener("click", function() {
-        document.body.setAttribute('data-dashboard-mode', 'home');
-    })
-    focusIcon.addEventListener("click", function() {
-        document.body.setAttribute('data-dashboard-mode', 'focus');
-        setTimeout(() => {
-            blogMenuContainer.click();
-        }, 0)
-    })
-    
-
     // ----------------
     // EVENT LISTENERS
     // ----------------
-    document.addEventListener('keydown', (event) => handleEnter(event, start_stop_btn, submit_change_btn, createLabelInput, flags));
+    document.addEventListener('keydown', (event) => handleEnter(event, start_stop_btn, submit_change_btn, createLabelInput, updateLabelInput, flags));
 
     start_stop_btn.addEventListener("click", function() {
         
@@ -2030,7 +2010,7 @@ function playClick(clock_tick, flags) {
     }
 };
 
-function handleEnter(event, start_stop_btn, submit_change_btn, createLabelInput, flags) {
+function handleEnter(event, start_stop_btn, submit_change_btn, createLabelInput, updateLabelInput, flags) {
 
     if (event.key === 'Enter') {
         event.preventDefault();
@@ -2039,7 +2019,9 @@ function handleEnter(event, start_stop_btn, submit_change_btn, createLabelInput,
             submit_change_btn.click();
         } else if (document.activeElement === createLabelInput) {
             // DO NOTHING - code for this event is implemented in notes.js instead
-        }  else if (document.activeElement.className == "noteInput") {
+        } else if (document.activeElement === updateLabelInput) {
+            // DO NOTHING - code for this event is implemented in notes.js instead
+        } else if (document.activeElement.className == "noteInput") {
             // DO NOTHING - code for this event is implemented in notes.js instead
         } else {
             flags.autoSwitchedModes = false;

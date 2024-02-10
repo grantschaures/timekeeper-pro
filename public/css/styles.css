@@ -118,7 +118,7 @@ h4 {
 #hyperChillLogoImage {
     height: 40px;
     width: 56.20px;
-    /* margin-right: 10px; */
+    margin-left: -5px;
 
     /* border: 1px solid red; */
     opacity: 0;
@@ -174,7 +174,7 @@ h4 {
     transform: scale(1.15)
 }
 
-body[data-dashboard-mode=ambient] .dash-mode::after {
+body[data-dashboard-mode=report] .dash-mode::after {
     translate: 0
 }
 
@@ -182,7 +182,7 @@ body[data-dashboard-mode=home] .dash-mode::after {
     translate: calc(var(--circ-size)/4*3.675)
 }
 
-body[data-dashboard-mode=focus] .dash-mode::after {
+body[data-dashboard-mode=blog] .dash-mode::after {
     translate: calc(var(--circ-size)/2*3.675)
 }
 
@@ -207,7 +207,7 @@ body[data-dashboard-mode=focus] .dash-mode::after {
     transition: color 375ms ease-in-out
 }
 
-body[data-dashboard-mode=ambient] .dash-mode .caption [data-mode=ambient] {
+body[data-dashboard-mode=report] .dash-mode .caption [data-mode=report] {
     display: block
 }
 
@@ -215,7 +215,7 @@ body[data-dashboard-mode=home] .dash-mode .caption [data-mode=home] {
     display: block
 }
 
-body[data-dashboard-mode=focus] .dash-mode .caption [data-mode=focus] {
+body[data-dashboard-mode=blog] .dash-mode .caption [data-mode=blog] {
     display: block
 }
 
@@ -299,15 +299,17 @@ main {
     /* border: 2px solid black; */
 }
 
+/* Could make this styling more consistent... */
 #menuBtn {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    /* width: 100px; */
     width: 50px;
+    transform: scale(0.75);
 
     opacity: 0;
     transition: opacity 1s ease-in-out;
+    border: 4px solid white;
 }
 
 #menuIcon {

@@ -132,6 +132,44 @@
     /* border: 3px solid rgb(255, 255, 255); */
 }
 
+#aboutContainer::-webkit-scrollbar {
+    width:10px;
+    height: 8px;
+}
+
+#aboutContainer::-webkit-scrollbar:hover {
+    cursor: pointer;
+}
+
+#aboutContainer::-webkit-scrollbar-track {
+    /* background: transparent; */
+    background: rgba(255, 255, 255, 0);
+}
+
+#aboutContainer::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+}
+
+#blogContainer::-webkit-scrollbar {
+    width:10px;
+    height: 8px;
+}
+
+#blogContainer::-webkit-scrollbar:hover {
+    cursor: pointer;
+}
+
+#blogContainer::-webkit-scrollbar-track {
+    /* background: transparent; */
+    background: rgba(255, 255, 255, 0);
+}
+
+#blogContainer::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+}
+
 #aboutWindow, #blogWindow {
     display: flex;
     position: relative;

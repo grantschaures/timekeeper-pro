@@ -81,7 +81,7 @@
     /* border: 3px solid purple; */
 }
 
-#create-label-container {
+#create-label-container, #update-label-container {
     display: none;
     z-index: 7;
     height: 100%;
@@ -96,7 +96,7 @@
     /* border: 3px solid cyan;   */
 }
 
-#create-label-window {
+#create-label-window, #update-label-window {
     display: none;
     font-family: myFont2;
     color: white;
@@ -107,7 +107,7 @@
     /* border: 3px solid cyan; */
 }
 
-#create-label {
+#create-label, #update-label {
     display: flex;
     height: 55%;
     align-items: center;
@@ -116,11 +116,11 @@
     /* border: 3px solid red; */
 }
 
-#cancel-done-div {
+#cancel-done-div, #cancel-done-div2 {
     display: flex;
 }
 
-#create-label-input {
+#create-label-input, #update-label-input {
     width: auto;
     height: 30px;
     border-radius: 50px;
@@ -138,7 +138,7 @@
     color: rgba(255, 255, 255, 0.20);
 }
 
-#emoji-btn {
+#emoji-btn, #emoji-btn2 {
     width: 35px;
     height: 35px;
     border-radius: 50px;
@@ -152,7 +152,7 @@
     z-index: 16;
 }
 
-#emoji-btn:hover {
+#emoji-btn:hover, #emoji-btn2:hover {
     cursor: pointer;
     /* transform: scale(0.95); */
 }
@@ -179,8 +179,9 @@
     animation: emojiPopup 0.5s;
 }
 
-#emoji-container {
+#emoji-container2 {
     display: none;
+    /* display: block; */
     position: fixed;
     right: 15px;
     top: -160px;
@@ -194,6 +195,30 @@
     background-color: #f9f9f9;
 
     opacity: 0;
+    /* opacity: 1; */
+    transition: opacity 0.15s ease;
+    --after-left: 45%;
+
+    z-index: 15;
+}
+
+#emoji-container {
+    display: none;
+    /* display: block; */
+    position: fixed;
+    right: 15px;
+    top: -160px;
+    border: 5px solid #cccccc;
+    /* border: 3px solid white; */
+    border-radius: 8px;
+    padding: 10px;
+    width: 200px;
+    height: 200px;
+    text-align: center;
+    background-color: #f9f9f9;
+
+    opacity: 0;
+    /* opacity: 1; */
     transition: opacity 0.15s ease;
     --after-left: 45%;
 
@@ -224,11 +249,11 @@
     transform: scale(1.15);
 }
 
-#create-label-cancel {
+#create-label-cancel, #update-label-cancel {
     margin-right: 5px;
 }
 
-#create-label-done {
+#create-label-done, #update-label-done {
     margin-left: 5px;
 }
 

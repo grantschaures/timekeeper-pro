@@ -39,6 +39,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const start_stop_btn = document.getElementById("start-stop");
 
+    const reportIcon = document.getElementById("report-icon");
+    const homeIcon = document.getElementById("home-icon");
+    const blogIcon = document.getElementById("blog-icon");
+    const blogMenuContainer = document.getElementById("blogMenuContainer");
+
     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
     //ADD TO THIS LIST WHEN YOU CREATE A NEW BLOG
@@ -55,9 +60,34 @@ document.addEventListener("DOMContentLoaded", function() {
         settingsBtnClicked: 0
     }
 
+    let state = {
+        lastSelectedMode: 'home'
+    }
+
+    // document.body.setAttribute('data-dashboard-mode', 'home');
+
     setTimeout(() => {
         menu_btn.style.opacity = '1';
     }, 1000)
+
+    reportIcon.addEventListener("click", function(event) {
+        document.body.setAttribute('data-dashboard-mode', 'report');
+        state.lastSelectedMode = 'report';
+    })
+    
+    homeIcon.addEventListener("click", function() {
+        document.body.setAttribute('data-dashboard-mode', 'home');
+        state.lastSelectedMode = 'home';
+    })
+    
+    blogIcon.addEventListener("click", function() {
+        document.body.setAttribute('data-dashboard-mode', 'blog');
+        state.lastSelectedMode = 'blog';
+        console.log(state.lastSelectedMode);
+        setTimeout(() => {
+            blogMenuContainer.click();
+        }, 0)
+    })
 
     menu_btn.addEventListener("click", function() {
         //Cause the menu window to become visable
@@ -75,7 +105,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function handleClickBlog(event) {
         main_elements.style.display = "none";
-    
+        document.body.setAttribute('data-dashboard-mode', 'blog');
+
         //Hide blogs
         if (flags.blogShowing == true) {
             blog_post_container.style.display = 'none';
@@ -127,10 +158,6 @@ document.addEventListener("DOMContentLoaded", function() {
     
         //show blog popup window
         settings_container.style.display = "block"; //EDIT: changed from flex to block
-
-        //show main elements if not showing (e.g. if we previously had blog or about containers displayed)
-        main_elements.style.display = "block";
-
     
         //Triggers reset animation once you enter for first time
         settings_exit.classList.add('resetRotation');
@@ -197,22 +224,57 @@ document.addEventListener("DOMContentLoaded", function() {
     })
 
     document.addEventListener("click", function(event) {
+
+        // if click is not on menu, hide menu
         if (!menu_btn.contains(event.target)) {
             popup_window.style.display = "none";
         }
+        
+        // hide about container if click is not on menu or about container, OR if the click is on the about exit btn
         if ((event.target !== about_btn && event.target !== about_icon && event.target !== about_menu_container && !about_container.contains(event.target) && !menu_btn.contains(event.target)) || event.target == about_exit) {
             about_container.style.display = "none";
         }
-        if ((event.target !== blog_btn && event.target !== blog_icon && event.target !== blog_menu_container && !blog_container.contains(event.target) && !blog_post_container.contains(event.target) && !menu_btn.contains(event.target)) || event.target == blog_exit) {
+
+
+        // hide blog container if click is not on menu or blog container, OR if the click is on the blog exit btn
+        if ((event.target !== blog_btn && event.target !== blog_icon && event.target !== blog_menu_container && event.target !== blogIcon && !blog_container.contains(event.target) && !blog_post_container.contains(event.target) && !menu_btn.contains(event.target)) || event.target == blog_exit) {
             blog_container.style.display = "none";
         }
+
+        // hide settings window if click is not in settings or on menu, OR if the click is on the settings exit btn
         if ((event.target !== settings_btn && event.target !== settings_icon && event.target !== settings_menu_container && event.target !== start_stop_btn && !settings_container.contains(event.target) && !menu_btn.contains(event.target)) || event.target == settings_exit) {
             settings_container.style.display = "none";
         }
 
+        // if the click is not any of the main menu windows or is an exit btn
         if ((event.target !== blog_btn && event.target !== blog_icon && event.target !== blog_menu_container && event.target !== about_btn && event.target !== about_icon  && event.target !== about_menu_container && !about_container.contains(event.target) && !blog_container.contains(event.target) && !menu_btn.contains(event.target)  && !blog_post_container.contains(event.target) && event.target !== settings_btn && event.target !== settings_icon && event.target !== settings_menu_container && !settings_container.contains(event.target) && event.target !== logInOut_btn && event.target !== login_icon && event.target !== login_menu_container) || (event.target == about_exit) || (event.target == blog_exit) || (event.target == blog_post_exit) || (event.target == settings_exit)) {
-            main_elements.style.display = "block";
-
+            // if user is exiting about or settings windows, make the setting the last one the user was on
+            if (reportIcon.contains(event.target)) {
+                document.body.setAttribute('data-dashboard-mode', 'report');
+                state.lastSelectedMode = 'report';
+                main_elements.style.display = "none";
+            } else if (homeIcon.contains(event.target)) {
+                document.body.setAttribute('data-dashboard-mode', 'home');
+                main_elements.style.display = "block";
+            } else if (blogIcon.contains(event.target)) {
+                document.body.setAttribute('data-dashboard-mode', 'blog');
+                blog_container.style.display = "flex";
+            } else if ((event.target === settings_exit) || (event.target === about_exit)) {
+                if (state.lastSelectedMode === 'report') {
+                    document.body.setAttribute('data-dashboard-mode', 'report');
+                } else if (state.lastSelectedMode === 'home') {
+                    document.body.setAttribute('data-dashboard-mode', 'home');
+                    main_elements.style.display = "block";
+                } else if (state.lastSelectedMode === 'blog') {
+                    document.body.setAttribute('data-dashboard-mode', 'blog');
+                    blog_container.style.display = "flex";
+                }
+            } else {
+                document.body.setAttribute('data-dashboard-mode', 'home');
+                main_elements.style.display = "block";
+                state.lastSelectedMode = 'home';
+            }
+            
             if (flags.blogShowing == true) {
                 blog_post_container.style.display = 'none';
 
@@ -220,7 +282,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 hideBlog(blogs);
             }
         }
-
     })
 });
 
