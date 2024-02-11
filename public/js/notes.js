@@ -313,7 +313,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 return;
             } else if ((flags.altPressed) || ((flags.altPressed) && (flags.shiftPressed))) {
                 // update label
-                // console.log(target);
                 updateLabel(target);
             } else {
                 // this limit can be changed if needed (refer to user feedback, if there is any)
@@ -789,12 +788,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
         //insert chosen label text into input
         let toUpdateTagId;
-        if (target.className === 'tag-text') {
+        if ((target.className === 'tag-text') || (target.className = 'tag-text deleteJiggling')) {
             toUpdateTagId = target.parentElement.id;
         } else {
             toUpdateTagId = target.id;
         }
-        
+
         updateLabelInput.value = (document.getElementById(toUpdateTagId).innerText).trim();
         state.elementToUpdateId = toUpdateTagId;
 

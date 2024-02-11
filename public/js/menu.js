@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function() {
     blogIcon.addEventListener("click", function() {
         document.body.setAttribute('data-dashboard-mode', 'blog');
         state.lastSelectedMode = 'blog';
-        console.log(state.lastSelectedMode);
+        // console.log(state.lastSelectedMode);
         setTimeout(() => {
             blogMenuContainer.click();
         }, 0)
