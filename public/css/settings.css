@@ -136,11 +136,11 @@
         /* border: 1px solid yellow; */
         width: 300px;
     }
-    #toggleTargetTimeAlertContainer, #togglePomodoroNotificationContainer, #toggleFlowmodoroNotificationContainer, #toggleNotesAutoSwitchContainer {
+    #toggleTargetTimeAlertContainer, #togglePomodoroNotificationContainer, #toggleFlowmodoroNotificationContainer {
         display: flex;
         flex-direction: column;
     }
-    #togglePomodoroNotificationContainer, #toggleFlowmodoroNotificationContainer, #toggleNotesAutoSwitchContainer {
+    #togglePomodoroNotificationContainer, #toggleFlowmodoroNotificationContainer {
         margin-bottom: -80px;
     }
     #toggleFlowmodoroNotificationContainer {
@@ -937,4 +937,8 @@
 .labelInfoContainer {
     margin-top: 10px;
     margin-bottom: 10px; /* Corrected from 10x to 10px */
+}
+
+#toggleNotesAutoSwitchContainer {
+    align-items: center;
 }
