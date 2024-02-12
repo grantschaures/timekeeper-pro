@@ -207,6 +207,9 @@
                                         <h4 id="selection-done" class="tag-text">Done</h4>
                                     </div>
                                 </div>
+                                <div id="infoBtnContainer">
+                                    <img id="aboutIconNotes" src="/images/icons/aboutIcon1.png">
+                                </div>
                             </div>
                         </div>
                         <div id="emoji-container">
@@ -256,7 +259,7 @@
                         </div>
                         <div id="update-label-window">
                             <div id="update-label">
-                                <input type="text" id="update-label-input">
+                                <input type="text" id="update-label-input" placeholder="Enter Label Name">
                                 <div id="emoji-btn2">
                                     <!-- <img id="OGemoji" src="images/notes/HyperChillLogo_notes.png"> -->
                                     <img id="OGemoji2" src="images/notes/emoji-symbols/books.png">
@@ -623,6 +626,14 @@
                             </div>
                             <div id="backgroundsHeader" class="settingsHeader">
                                 <b>Backgrounds & Themes</b>
+                            </div>
+                        </div>
+                        <div id="notesBtnContainer" class="settingsHeaderRow">
+                            <div class="settingsIconContainer">
+                                <img src="images/icons/whitepencil.png" id="notesIcon" class="settingsIcon" draggable="false">
+                            </div>
+                            <div id="notesHeader" class="settingsHeader">
+                                <b>Notes</b>
                             </div>
                         </div>
                         <div id="soundsBtnContainer" class="settingsHeaderRow">
@@ -1027,6 +1038,73 @@
                                         <label for="chillTimeAnimationToggle" id="chillTimeAnimationToggleLabel" class="toggle-label">
                                             <span id="chillTimeAnimationToggleBall" class="toggle-ball"></span>
                                         </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="notesSettingsContainer" class="settingsContentContainer">
+                            <div id="notesContainer" class="settingsIconTextContainer">
+                                <h2>Notes</h2>
+                            </div>
+                            <div id="notesAutoSwitchToggleContainer" class="settingsCategory">
+                                <div id="notesAutoSwitchBlock">
+                                    <div id="toggleNotesAutoSwitchContainer" class="settingsMicroContainer">
+                                        <div id="transitionNotesAutoSwitchText" class="settingsText">
+                                            <p id="notesAutoSwitch"><b class="settingsCategoryHeading">Auto Switch</b></p>
+                                        </div>
+                                        <div id="transitionNotesAutoSwitchToggleContainer" class="toggleContainer">
+                                            <input type="checkbox" id="transitionNotesAutoSwitchToggle" class="toggle-checkbox">
+                                            <label for="transitionNotesAutoSwitchToggle" id="transitionNotesAutoSwitchToggleLabel" class="toggle-label">
+                                                <span id="transitionNotesAutoSwitchToggleBall" class="toggle-ball"></span>
+                                            </label>
+                                        </div>
+                                        <div id="notesAutoSwitchInfoWindow" class="notificationInfoWindow">
+                                            Auto switch modes based on the addition or removal of labels once 'Done' is pressed
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div id="addingDeletingUpdatingLabelsInfoBlock">
+                                    <div id="addingDeletingUpdatingLabelsInfoContainer" class="settingsMicroContainer">
+                                        <div id="transitionNotesAutoSwitchText" class="settingsText">
+                                            <p id="notesAutoSwitch"><b class="settingsCategoryHeading">Adding, Deleting, and Updating Labels</b></p>
+                                        </div>
+                                    </div>
+                                    <div id="addingDeletingUpdatingInfoBox">
+                                        <div class="labelInfoContainer">
+                                            <div id="addingInfoBucket" class="labelInfoBucket">
+                                                <p id="adding" class="tutorialSectionHeading"><b>Adding a Label:</b></p>
+                                                <div id="addingImgContainer" class="tutorialImgContainer">
+                                                    <img src="images/tutorial/adding.png" class="tutorialImg">
+                                                    <div id="addingLabelInstructions" class="labelInstructions">
+                                                        <p><b>Click on Add Button</b></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="labelInfoContainer">
+                                            <div id="deletingInfoBucket" class="labelInfoBucket">
+                                                <p id="deleting" class="tutorialSectionHeading"><b>Deleting a Label:</b></p>
+                                                <div id="deletingImgContainer" class="tutorialImgContainer">
+                                                    <img src="images/tutorial/deleting.png" class="tutorialImg">
+                                                    <div id="deletingLabelInstructions" class="labelInstructions">
+                                                        <p><b>Shift + Click on Label</b></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="labelInfoContainer">
+                                            <div id="updatingInfoBucket" class="labelInfoBucket">
+                                                <p id="updating" class="tutorialSectionHeading"><b>Updating a Label:</b></p>
+                                                <div id="updatingImgContainer" class="tutorialImgContainer">
+                                                    <img src="images/tutorial/updating.png" class="tutorialImg">
+                                                    <div id="updatingLabelInstructions" class="labelInstructions">
+                                                        <p><b>Alt/ Option + Click on Label</b></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

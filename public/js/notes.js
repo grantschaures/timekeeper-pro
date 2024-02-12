@@ -19,34 +19,31 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const labelSelectionWindow = document.getElementById("label-selection-window");
     const labelSelectionRow = document.querySelector('.label-selection-row');
-
     const clearIcon = document.getElementById("clearIcon");
-
     const notesBtn = document.getElementById("notes");
-
     const notesConsole = document.getElementById("notes-console");
-
     const taskPrompt = document.getElementById("task-prompt");
-
     const tagIcon = document.getElementById("tag-icon");
-
     const tagSelection = document.querySelectorAll('.selection-tag');
-
     const tagSelectionDivider = document.getElementById('tag-selection-divider');
     const addDoneContainer = document.getElementById('add-done-container');
-
     const selectionDoneDiv = document.getElementById('selection-done-div');
     const selectionDone = document.getElementById('selection-done');
-
     const addTagIcon = document.getElementById("add-tag-icon");
-
     const emojiBtn = document.getElementById("emoji-btn");
     const emojiBtn2 = document.getElementById("emoji-btn2");
     const emojiImg = document.getElementById("OGemoji");
     const emojiImg2 = document.getElementById("OGemoji2");
     const emojiContainer = document.getElementById("emoji-container");
-
     const emojiSymbols = document.querySelectorAll('.emoji-symbol');
+
+    const transitionNotesAutoSwitchToggle = document.getElementById('transitionNotesAutoSwitchToggle');
+    const start_stop_btn = document.getElementById('start-stop');
+    const tutorialImgContainers = document.querySelectorAll('.tutorialImgContainer');
+    const aboutIconNotes = document.getElementById('aboutIconNotes');
+    const settings_menu_container = document.getElementById("settingsMenuContainer");
+    const notesBtnContainer = document.getElementById("notesBtnContainer");
+
 
     // CONSOLE
     let notesFlags = {
@@ -84,7 +81,8 @@ document.addEventListener("DOMContentLoaded", function() {
         shiftPressed: false,
         altPressed: false,
         createLabelWindowOpen: false,
-        updateLabelWindowOpen: false
+        updateLabelWindowOpen: false,
+        transitionNotesAutoSwitchToggle: false
     }
 
     const emojiMap = {
@@ -108,6 +106,12 @@ document.addEventListener("DOMContentLoaded", function() {
         "calendar-emoji": "📅",
         "clock-emoji": "🕒",
         "books-emoji": "📚"
+    }
+
+    const tutorialContainerMap = {
+        "addingImgContainer": "addingLabelInstructions",
+        "deletingImgContainer": "deletingLabelInstructions",
+        "updatingImgContainer": "updatingLabelInstructions"
     }
 
     fontSizeArr = ['20px', '19px', '18px', '17px', '16px', '15px', '14px', '13px', '12px'];
@@ -716,13 +720,43 @@ document.addEventListener("DOMContentLoaded", function() {
         setEmojiContainerPointLocation(this.window.innerWidth, emojiContainer, notesFlags, isMobile);
     });
 
+    transitionNotesAutoSwitchToggle.addEventListener('click', function() {
+        if (transitionNotesAutoSwitchToggle.checked) {
+            flags.transitionNotesAutoSwitchToggle = true;
+        } else {
+            flags.transitionNotesAutoSwitchToggle = false;
+        }
+    })
+
+    tutorialImgContainers.forEach(container => {
+        container.addEventListener('mouseover', function() {
+            let targetIdStr = container.id;
+            let labelInstructionsId = tutorialContainerMap[targetIdStr];
+
+            document.getElementById(labelInstructionsId).classList.add('fullOpacity');
+        })
+
+        container.addEventListener('mouseout', function() {
+            let targetIdStr = container.id; // or maybe just container.id??
+            let labelInstructionsId = tutorialContainerMap[targetIdStr];
+
+            document.getElementById(labelInstructionsId).classList.remove('fullOpacity');
+        })
+    })
+
+    aboutIconNotes.addEventListener("click", function() {
+        settings_menu_container.click();
+        setTimeout(() => {
+            notesBtnContainer.click();
+        }, 0)
+    });
+
     // ---------------------
     // HELPER FUNCTIONS 1
     // ---------------------
     function done() {
         notesConsole.style.display = "block";
         labelSelectionWindow.style.display = "none";
-
         if (counters.tagsSelected === 0) {
             tagIcon.style.marginLeft = '';
             tagIcon.classList.remove('tagToLeftSide');
@@ -731,8 +765,14 @@ document.addEventListener("DOMContentLoaded", function() {
             tagIcon.style.marginRight = '10px';
             promptContainer.style.zIndex = 5;
         }
-
         tagIcon.classList.remove('blink');
+
+        // If auto switch is turned on, auto switch modes based on presence of labels
+        if (flags.transitionNotesAutoSwitchToggle) {
+            if (((flags.tagSelected) && (start_stop_btn.innerText === "Start")) || ((!flags.tagSelected) && (start_stop_btn.innerText === "Stop"))) {
+                start_stop_btn.click();
+            }
+        }
 
         document.getElementById(state.currentNoteInputId).focus();
         notesFlags.notesConsoleShowing = true;

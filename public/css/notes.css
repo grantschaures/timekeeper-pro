@@ -134,7 +134,7 @@
     margin-left: 45px;
 }
 
-#create-label-input::placeholder {
+#create-label-input::placeholder, #update-label-input::placeholder {
     color: rgba(255, 255, 255, 0.20);
 }
 
@@ -627,4 +627,15 @@
 
 .blink {
     animation: blink 2s infinite;
+}
+
+#aboutIconNotes {
+    display: block;
+    position: absolute;
+    right: 20px;
+    bottom: 15px;
+}
+
+#aboutIconNotes:hover {
+    cursor: pointer;
 }

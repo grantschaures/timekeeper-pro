@@ -61,13 +61,16 @@ document.addEventListener("DOMContentLoaded", function() {
     const breakSuggestionToggle = document.getElementById("breakSuggestionToggle");
     const suggestionMinutesInput = document.getElementById("suggestionMinutesInput");
     const flowmodoroNotificationToggle = document.getElementById("flowmodoroNotificationToggle");
-    // const autoStartFlowTimeIntervalToggle = document.getElementById("autoStartFlowTimeIntervalToggle");
     const flowmodoroNotifications = document.getElementById("flowmodoroNotifications");
     const flowmodoroNotificationInfoWindow = document.getElementById("flowmodoroNotificationInfoWindow");
     const flowTimeBreakNotification = document.getElementById("flowTimeBreakNotification");
     const flowTimeBreakNotificationInfoWindow = document.getElementById("flowTimeBreakNotificationInfoWindow");
     const pomodoroNotifications = document.getElementById("pomodoroNotifications");
     const pomodoroNotificationInfoWindow = document.getElementById("pomodoroNotificationInfoWindow");
+
+    const notesAutoSwitch = document.getElementById("notesAutoSwitch");
+    const notesAutoSwitchInfoWindow = document.getElementById("notesAutoSwitchInfoWindow");
+
 
     const pomodoroNotificationToggle = document.getElementById("pomodoroNotificationToggle");
     const autoStartPomodoroIntervalToggle = document.getElementById("autoStartPomodoroIntervalToggle");
@@ -295,6 +298,7 @@ document.addEventListener("DOMContentLoaded", function() {
         showingPomodoroNotificationInfoWindow: false,
         showingFlowmodoroNotificationInfoWindow: false,
         showingFlowTimeBreakNotificationInfoWindow: false,
+        showingNotesAutoSwitchInfoWindow: false,
         generalThumbIsDragging: false,
         pomodoroThumbIsDragging: false,
         flowmodoroThumbIsDragging2: false,
@@ -323,9 +327,10 @@ document.addEventListener("DOMContentLoaded", function() {
         'flowmodoroBtnContainer': 'flowmodoroSettingsContainer',
         'generalBtnContainer': 'generalSettingsContainer',
         'backgroundsBtnContainer': 'backgroundsSettingsContainer',
+        'notesBtnContainer': 'notesSettingsContainer',
         'soundsBtnContainer': 'soundsSettingsContainer',
         'accountBtnContainer': 'accountSettingsContainer',
-        'supportAndFeedbackBtnContainer': 'supportAndFeedbackSettingsContainer' ,
+        'supportAndFeedbackBtnContainer': 'supportAndFeedbackSettingsContainer'
     };
 
     // ----------------
@@ -584,6 +589,10 @@ document.addEventListener("DOMContentLoaded", function() {
     flowTimeBreakNotification.addEventListener('click', function() {
         toggleInfoWindow(flowTimeBreakNotificationInfoWindow, 'showingFlowTimeBreakNotificationInfoWindow', flags);
     });
+
+    notesAutoSwitch.addEventListener('click', function() {
+        toggleInfoWindow(notesAutoSwitchInfoWindow, 'showingNotesAutoSwitchInfoWindow', flags);
+    })
 
     flowmodoroVolumeThumb.addEventListener('mousedown', (event) => {
         flags.flowmodoroThumbIsDragging = true;

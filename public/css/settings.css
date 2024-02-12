@@ -28,6 +28,27 @@
     overflow-y: auto;
 
     transition: background-color 0.6s ease-in-out;
+
+    overflow-y: scroll;
+}
+
+#settingsContainer::-webkit-scrollbar {
+    width:10px;
+    height: 8px;
+}
+
+#settingsContainer::-webkit-scrollbar:hover {
+    cursor: pointer;
+}
+
+#settingsContainer::-webkit-scrollbar-track {
+    /* background: transparent; */
+    background: rgba(255, 255, 255, 0);
+}
+
+#settingsContainer::-webkit-scrollbar-thumb {
+    background-color: #424242;
+    border-radius: 10px;
 }
 
 @media (max-width: 1200px) {
@@ -115,11 +136,11 @@
         /* border: 1px solid yellow; */
         width: 300px;
     }
-    #toggleTargetTimeAlertContainer, #togglePomodoroNotificationContainer, #toggleFlowmodoroNotificationContainer {
+    #toggleTargetTimeAlertContainer, #togglePomodoroNotificationContainer, #toggleFlowmodoroNotificationContainer, #toggleNotesAutoSwitchContainer {
         display: flex;
         flex-direction: column;
     }
-    #togglePomodoroNotificationContainer, #toggleFlowmodoroNotificationContainer {
+    #togglePomodoroNotificationContainer, #toggleFlowmodoroNotificationContainer, #toggleNotesAutoSwitchContainer {
         margin-bottom: -80px;
     }
     #toggleFlowmodoroNotificationContainer {
@@ -128,7 +149,7 @@
 }
 
 @media (min-width: 980px) {
-    #toggleTargetTimeAlertContainer, #togglePomodoroNotificationContainer, #toggleFlowmodoroNotificationContainer {
+    #toggleTargetTimeAlertContainer, #togglePomodoroNotificationContainer, #toggleFlowmodoroNotificationContainer, #toggleNotesAutoSwitchContainer {
         align-items: center;
     }
 }
@@ -344,21 +365,16 @@
     padding: 5px;
     
     transition: opacity 0.25s ease-in-out;
-}
-
-#flowmodoroNotificationInfoWindow, #pomodoroNotificationInfoWindow {
     width: 300px;
     opacity: 0;
 }
 
-#flowmodoroNotificationInfoWindow.infoWindowOpacity, #flowTimeBreakNotificationInfoWindow.infoWindowOpacity, #pomodoroNotificationInfoWindow.infoWindowOpacity {
+#flowmodoroNotificationInfoWindow.infoWindowOpacity, #flowTimeBreakNotificationInfoWindow.infoWindowOpacity, #pomodoroNotificationInfoWindow.infoWindowOpacity, #notesAutoSwitchInfoWindow.infoWindowOpacity {
     opacity: 1;
 }
 
 #flowTimeBreakNotificationInfoWindow {
     width: 350px;
-    opacity: 0;
-    /* position: absolute; */
 }
 
 #flowmodoro-break-submit {
@@ -467,6 +483,15 @@
 }
 
 #pomodoroNotificationToggle:checked + #pomodoroNotificationToggleLabel #pomodoroNotificationToggleBall {
+    left: 40px;
+}
+
+/* Notes Auto Switch Mode */
+#transitionNotesAutoSwitchToggle:checked + #transitionNotesAutoSwitchToggleLabel {
+    background-color: #53e658;
+}
+
+#transitionNotesAutoSwitchToggle:checked + #transitionNotesAutoSwitchToggleLabel #transitionNotesAutoSwitchToggleBall {
     left: 40px;
 }
 
@@ -849,4 +874,67 @@
         grid-template-rows: auto auto auto;
         /* width: 200px; */
     }
+}
+
+.tutorialImgContainer {
+    position: relative;
+    align-items: left;
+}
+
+.tutorialImgContainer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.95);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    border-radius: 13px;
+}
+
+.tutorialImgContainer:hover::after {
+    opacity: 1;
+}
+
+.tutorialImg {
+    border: 8px solid white;
+    border-radius: 15px;
+    display: block; /* Ensure img is treated as block level for proper positioning */
+}
+
+.labelInstructions {
+    display: block;
+    position: absolute;
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust the position to truly center based on its own size */
+    color: white; /* Ensures text is visible against a dark background */
+    text-align: center; /* Center the text inside the div */
+    z-index: 2;
+    width: 90%;
+    opacity: 0;
+
+    transition: opacity 0.3s ease-in-out;
+}
+
+.fullOpacity {
+    opacity: 1;
+}
+
+.labelInfoBucket {
+    display: flex;
+}
+
+.tutorialSectionHeading {
+    width: 200px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.labelInfoContainer {
+    margin-top: 10px;
+    margin-bottom: 10px; /* Corrected from 10x to 10px */
 }
