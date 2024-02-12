@@ -25,9 +25,8 @@
 body {
     font-family: myFont;
     overflow-y: scroll;
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
 }
-
 
 html, body {
     margin: 0;
