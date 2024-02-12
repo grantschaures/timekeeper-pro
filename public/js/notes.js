@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function() {
         "meditation-woman-emoji": "🧘‍♀️",
         "happy-emoji": "😄",
         "zany-emoji": "🤪",
-        "melting-emoji": "🫠",
+        "heart-emoji": "💖",
         "dead-emoji": "💀",
         "document-emoji": "📄",
         "memo-emoji": "📝",
