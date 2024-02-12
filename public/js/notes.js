@@ -43,6 +43,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const aboutIconNotes = document.getElementById('aboutIconNotes');
     const settings_menu_container = document.getElementById("settingsMenuContainer");
     const notesBtnContainer = document.getElementById("notesBtnContainer");
+    const notesSettingsHr = document.getElementById('notesSettingsHr');
+    const addingDeletingUpdatingLabelsInfoBlock = document.getElementById('addingDeletingUpdatingLabelsInfoBlock');
 
 
     // CONSOLE
@@ -132,6 +134,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if (isMobile) {
         aboutIconNotes.style.display = "none";
+        notesSettingsHr.style.display = "none";
+        addingDeletingUpdatingLabelsInfoBlock.style.display = "none";
+
     }
 
     notesBtn.addEventListener("click", function() {
