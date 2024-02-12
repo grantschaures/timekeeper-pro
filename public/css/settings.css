@@ -255,6 +255,14 @@
     /* border: 1px solid yellow; */
 }
 
+.settingsMicroContainer {
+    display: flex;
+    width: 100%;
+    align-items: left;
+    /* border: 2px solid yellow; */
+}
+
+
 @media (max-width: 650px) {
     #settingsHeaderColumn {
         display: none;
@@ -277,6 +285,9 @@
     }
     .vertical {
         display: none;
+    }
+    #toggleNotesAutoSwitchContainer {
+        display: block;
     }
 }
 
@@ -389,14 +400,7 @@
 
 #compare_chart {
     height: 50%;
-    width: 50%;
-}
-
-.settingsMicroContainer {
-    display: flex;
-    width: 100%;
-    align-items: left;
-    /* border: 2px solid yellow; */
+    width: 100px;
 }
 
 #suggestionMinutesText {
