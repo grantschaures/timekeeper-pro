@@ -130,6 +130,10 @@ document.addEventListener("DOMContentLoaded", function() {
     //set initial emoji container point location
     setEmojiContainerPointLocation(window.innerWidth, emojiContainer, notesFlags, isMobile);
 
+    if (isMobile) {
+        aboutIconNotes.style.display = "none";
+    }
+
     notesBtn.addEventListener("click", function() {
         if (notesFlags.notesShowing === false) {
             notesContainer.classList.add('fullsize');
