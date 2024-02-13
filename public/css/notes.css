@@ -347,6 +347,7 @@
 #notes-hr {
     margin: 0px;
     margin-bottom: -10px;
+    border: 1px solid white;
     /* display: none; */
 }
 
@@ -638,4 +639,102 @@
 
 #aboutIconNotes:hover {
     cursor: pointer;
+}
+
+#list-heading-container {
+    display: flex;
+    margin-top: 5px;
+    margin-bottom: 10px;
+
+}
+
+#list-title-container {
+    display: flex;
+    height: 40px;
+    width: 80%;
+    /* background-color:rgb(255, 255, 255, 0.5); */
+    border: 2px solid white;
+    border-radius: 15px;
+    text-align: left;
+    align-items: center;
+}
+
+#list-date-title {
+    color: white;
+    font-family: settingsHeaderFont;
+    font-size: 20px; 
+}
+
+#white-circle {
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+#add-note-task-svg {
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+#list-options-container {
+    display: flex;
+    margin-left: 10px;
+    width: 20%;
+
+    align-items: center;
+    /* border: 1px solid cyan; */
+    justify-content: center;
+}
+
+#list-options-btn {
+    /* border: 2px solid white; */
+    height: 100%;
+    width: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 15px;
+
+    transition: background-color 0.15s ease-in-out;
+}
+
+#list-options-btn:hover {
+    background-color:rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+}
+
+#list-notes-container {
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+}
+
+#add-note-task-container {
+    border: 2px dashed white;
+    border-radius: 15px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+}
+
+#add-note-task-container:hover {
+    background-color:rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+}
+
+#add-note-task {
+    font-family: settingsHeaderFont;
+}
+
+#note-task-input-container {
+    margin-top: 10px; /* TEMPORARY: DELETE THIS*/
+    border-radius: 15px;
+    height: 80px;
+    
+    display: flex;
+    align-items: center;
+
+    background-color: rgba(255, 255, 255, 0.2);
 }
