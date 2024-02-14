@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     //Redesign edit
+
     const notesContainer = document.getElementById("notes-container");
     
     const taskContainer = document.getElementById("task-container");
@@ -46,6 +47,14 @@ document.addEventListener("DOMContentLoaded", function() {
     const notesSettingsHr = document.getElementById('notesSettingsHr');
     const addingDeletingUpdatingLabelsInfoBlock = document.getElementById('addingDeletingUpdatingLabelsInfoBlock');
 
+    const addNoteTaskContainer = document.getElementById("add-note-task-container");
+    const noteTaskInputContainer = document.getElementById("note-task-input-container");
+    const noteTaskInputText = document.getElementById("note-task-input-text");
+    const noteInputCancelBtn = document.getElementById("note-input-cancel-btn");
+    const noteInputSaveBtn = document.getElementById("note-input-save-btn");
+    const taskCheckbox = document.getElementById('taskCheckbox');
+    const dynamicList = document.getElementById('dynamicList');
+
 
     // CONSOLE
     let notesFlags = {
@@ -58,7 +67,8 @@ document.addEventListener("DOMContentLoaded", function() {
     let counters = {
         notesLines: 0,
         tagsSelected: 0,
-        lastLabelIdNum: 3 //subject to change based on num of predefined labels for user (need to store in database)
+        lastLabelIdNum: 3, //subject to change based on num of predefined labels for user (need to store in database)
+        noteInputs: 0
     }
 
     let state = {
@@ -80,7 +90,8 @@ document.addEventListener("DOMContentLoaded", function() {
         altPressed: false,
         createLabelWindowOpen: false,
         updateLabelWindowOpen: false,
-        transitionNotesAutoSwitchToggle: false
+        transitionNotesAutoSwitchToggle: false,
+        noteTaskInputContainerShowing: false
     }
 
     const emojiMap = {
@@ -127,20 +138,98 @@ document.addEventListener("DOMContentLoaded", function() {
 
     }
 
+    // //
+    // //
+    // BEGINNING OF EVENT LISTENER SECTION
+    // //
+    // //
+
+    taskCheckbox.addEventListener('click', function() {
+        noteTaskInputText.focus();
+    })
+
+    noteInputSaveBtn.addEventListener('click', function() {
+        //gather the value of the input
+        //use as innerText content for new note/ task container
+
+        let inputStr = noteTaskInputText.value;
+
+        if (inputStr === "") {
+            noteInputCancel(noteTaskInputContainer, addNoteTaskContainer, flags, noteTaskInputText);
+            return;
+        }
+
+        let noteTaskDiv = document.createElement('div');
+        noteTaskDiv.classList.add('noteTask');
+
+        if (taskCheckbox.checked) {
+            // make a new task div
+            noteTaskDiv.innerText = inputStr;
+        } else {
+            // make a new note div
+            noteTaskDiv.innerText = inputStr;
+        }
+
+        dynamicList.appendChild(noteTaskDiv);
+
+        // Scroll the new noteTaskDiv into view
+        setTimeout(() => {
+            notesConsole.scrollTo({ top: notesConsole.scrollHeight, behavior: 'smooth' });
+        }, 0);
+
+        noteTaskInputText.value = "";
+        noteTaskInputText.focus();
+    })
+
+    noteInputCancelBtn.addEventListener('click', function() {
+        noteInputCancel(noteTaskInputContainer, addNoteTaskContainer, flags, noteTaskInputText);
+    })
+
+    addNoteTaskContainer.addEventListener('click', function() {
+        console.log('add note task container clicked');
+        addNoteTaskContainer.style.display = 'none';
+        noteTaskInputContainer.style.display = 'flex';
+
+        noteTaskInputText.focus();
+        flags.noteTaskInputContainerShowing = true;
+
+        setTimeout(() => {
+            notesConsole.scrollTo({ top: notesConsole.scrollHeight, behavior: 'smooth' });
+        }, 0);
+    })
+
+    const textarea = document.getElementById('note-task-input-text');
+    function autoExpand() {
+        textarea.style.height = '24px';
+        textarea.style.height = `${textarea.scrollHeight}px`;
+    }
+    textarea.addEventListener('input', autoExpand);
+    // autoExpand();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     notesBtn.addEventListener("click", function() {
         if (notesFlags.notesShowing === false) {
-            notesContainer.classList.add('fullsize');
-            notesContainer.classList.add('fullopacity');
-
-            notesFlags.notesShowing = true;
+            openNotesContainer(notesContainer, notesFlags);
         } else {
-            notesContainer.classList.remove('fullsize');
-            notesContainer.classList.remove('fullopacity');
-            notesFlags.notesShowing = false;
+            closeNotesContainer(notesContainer, notesFlags);
         }
     })
     
-    document.addEventListener('keydown', (event) => handleTaskEnter_or_n(event, counters, currentTime, state, notesConsole, notesFlags, state, notesContainer, createLabelInput, createLabelDone, updateLabelInput, updateLabelDone));
+    document.addEventListener('keydown', (event) => handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInput, createLabelDone, updateLabelInput, updateLabelDone, noteInputSaveBtn, noteTaskInputText, noteInputCancelBtn, addNoteTaskContainer, flags));
     
     clearIcon.addEventListener("click", async function() {
 
@@ -838,6 +927,26 @@ document.addEventListener("DOMContentLoaded", function() {
 // ---------------------
 // HELPER FUNCTIONS 2
 // ---------------------
+function closeNotesContainer(notesContainer, notesFlags) {
+    notesContainer.classList.remove('fullsize');
+    notesContainer.classList.remove('fullopacity');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    notesFlags.notesShowing = false;
+}
+
+function openNotesContainer(notesContainer, notesFlags) {
+    notesContainer.classList.add('fullsize');
+    notesContainer.classList.add('fullopacity');
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    notesFlags.notesShowing = true;
+}
+
+function noteInputCancel(noteTaskInputContainer, addNoteTaskContainer, flags, noteTaskInputText) {
+    noteTaskInputContainer.style.display = 'none';
+    addNoteTaskContainer.style.display = 'flex';
+    flags.noteTaskInputContainerShowing = false;
+    noteTaskInputText.value = "";
+}
 
 // Gets the current position of the caret within the input field and then using that position to insert the emoji.
 function insertAtCaret(inputField, textToInsert) {
@@ -956,7 +1065,7 @@ function deselectTags(tag, flags, tagIcon, clearIcon, labelSelectionRow, counter
     }
 }
 
-function handleTaskEnter_or_n(event, counters, currentTime, state, notesConsole, notesFlags, state, notesContainer, createLabelInput, createLabelDone, updateLabelInput, updateLabelDone) {
+function handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInput, createLabelDone, updateLabelInput, updateLabelDone, noteInputSaveBtn, noteTaskInputText, noteInputCancelBtn, addNoteTaskContainer, flags) {
     if (event.key === 'Enter') {
         event.preventDefault();
         
@@ -964,18 +1073,29 @@ function handleTaskEnter_or_n(event, counters, currentTime, state, notesConsole,
             createLabelDone.click();
         } else if (document.activeElement === updateLabelInput) {
             updateLabelDone.click();
+        } else if (document.activeElement === noteTaskInputText) {
+            noteInputSaveBtn.click();
         }
-    } else if ((event.key === 'n') && (!notesFlags.notesShowing)) {
-        notesContainer.classList.add('fullsize');
-        notesContainer.classList.add('fullopacity');
-        
-        notesFlags.notesShowing = true;
-    } else if ((event.key === 'Escape') && (notesFlags.notesShowing)) {
-        notesContainer.classList.remove('fullsize');
-        notesContainer.classList.remove('fullopacity');
-
-        // notesContainer.style.display = "none"; //old instant transition
-        notesFlags.notesShowing = false;
+    } else if (event.key === 'n') {
+        if (!notesFlags.notesShowing) {
+            openNotesContainer(notesContainer, notesFlags);
+        } else if (!flags.noteTaskInputContainerShowing) {
+            addNoteTaskContainer.click();
+            taskCheckbox.checked = false;
+            event.preventDefault();
+        }
+    }  else if ((event.key === 't') && (notesFlags.notesShowing) && (!flags.noteTaskInputContainerShowing)) {
+        addNoteTaskContainer.click();
+        taskCheckbox.checked = true;
+        event.preventDefault();
+    }
+    
+    else if ((event.key === 'Escape') && (notesFlags.notesShowing)) {
+        if (document.activeElement === noteTaskInputText) {
+            noteInputCancelBtn.click();
+        } else {
+            closeNotesContainer(notesContainer, notesFlags);
+        }
     }
 }
 

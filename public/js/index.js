@@ -342,6 +342,8 @@ document.addEventListener("DOMContentLoaded", function() {
     // INITIAL DOMContentLoaded FUNCTION CALLS
     setInitialEndSessionBtnText(initialViewportWidth, end_session_btn);
 
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // scroll to top
+
     if (isMobile) {
         // TBD
     }
@@ -2032,6 +2034,8 @@ function handleEnter(event, start_stop_btn, submit_change_btn, createLabelInput,
             // DO NOTHING - code for this event is implemented in notes.js instead
         } else if (document.activeElement.className == "noteInput") {
             // DO NOTHING - code for this event is implemented in notes.js instead
+        } else if (document.activeElement.id == "note-task-input-text") {
+            // DO NOTHING - code for this event is implemented in notes.js instead  
         } else {
             flags.autoSwitchedModes = false;
             start_stop_btn.click();

@@ -188,48 +188,59 @@
                         </div>
                         <hr id="notes-hr">
                         <div id="notes-console">
-                            <div id="list-heading-container">
+                            <!-- <div id="list-heading-container">
                                 <div id="list-title-container">
                                     <svg id="white-circle" width="15px" height="15px" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
                                         <circle cx="15" cy="15" r="15" fill="white" />
                                     </svg>
-                                    <div id="list-date-title"><b>Monday, February 12</b></div>
+                                    <div id="list-date-title"><b>Wednesday, February 14</b></div>
                                 </div>
                                 <div id="list-options-container">
                                     <div id="list-options-btn">
                                         <svg width="30" height="10" viewBox="0 0 30 10" xmlns="http://www.w3.org/2000/svg">
-                                            <!-- First dot -->
                                             <circle cx="5" cy="5" r="2.5" fill="white" />
-                                            <!-- Second dot -->
                                             <circle cx="15" cy="5" r="2.5" fill="white" />
-                                            <!-- Third dot -->
                                             <circle cx="25" cy="5" r="2.5" fill="white" />
                                         </svg>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div id="list-notes-container">
                                 <div id="list">
-                                    <div>
-
+                                    <div id="dynamicList" >
+                                        <!-- <div class="noteTask">
+                                            This is a note entry
+                                        </div> -->
                                     </div>
                                 </div>
                                 <div>
-                                    <div id="add-note-task-container">
+                                    <div id="add-note-task-container"> <!-- User clicks on this in order to open up the task/ note input container -->
                                         <svg id="add-note-task-svg" width="15" height="15" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
-                                            <path d="M 7.5 3 v 9" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                                            <path d="M 3 7.5 h 9" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                                            <path class="plus-svg-path" d="M 7.5 3 v 9" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                                            <path class="plus-svg-path" d="M 3 7.5 h 9" stroke="white" stroke-width="2" stroke-linecap="round"/>
                                         </svg>
-                                        <div id="add-note-task">Add note or task</div>
+                                        <div id="add-note-task">Add note (n) or task (t)</div>
                                     </div>
-                                    <div id="note-task-input-container">
-                                        <textarea></textarea>
-                                        <div id="save-cancel-container">
-                                            <div id="noteInputSave">
-
-                                            </div>
-                                            <div id="noteInputCancel">
-
+                                    <div id="note-task-input-container"> <!-- Opens once add-note-task-container is clicked -->
+                                        <div id="upper-half-note-task-input">
+                                            <textarea id="note-task-input-text" placeholder="Description"></textarea>
+                                        </div>
+                                        <div id="lower-half-note-task-input">
+                                            <div id="save-cancel-container">
+                                                <div id="note-input-save-container" class="save-cancel-task-container">
+                                                    <div id="note-input-save-btn">
+                                                        Save
+                                                    </div>
+                                                </div>
+                                                <div id="note-input-cancel-container" class="save-cancel-task-container">
+                                                    <div id="note-input-cancel-btn">
+                                                        Cancel
+                                                    </div>
+                                                </div>
+                                                <div id="task-checkbox-container" class="save-cancel-task-container">
+                                                    <input type="checkbox" id="taskCheckbox" name="taskCheckbox">
+                                                    <label for="taskCheckbox">Task</label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
