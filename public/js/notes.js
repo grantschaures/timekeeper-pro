@@ -164,10 +164,41 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if (taskCheckbox.checked) {
             // make a new task div
-            noteTaskDiv.innerText = inputStr;
+            let taskCircularCheckDiv = document.createElement('div');
+            taskCircularCheckDiv.classList.add('taskCircularCheck');
+            
+            let circularCheckDiv = document.createElement('div');
+            circularCheckDiv.classList.add('circularCheck');
+            
+            // Create the SVG element
+            var svgCheck = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svgCheck.setAttribute('width', '20');
+            svgCheck.setAttribute('height', '20');
+            svgCheck.setAttribute('viewBox', '0 0 20 20');
+            
+            // Create the path element
+            var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.classList.add('check');
+            path.setAttribute('class', 'check');
+            path.setAttribute('d', 'M4 10 L8 14 L16 6');
+            path.setAttribute('stroke', 'white');
+            path.setAttribute('stroke-width', '2');
+            path.setAttribute('fill', 'none');
+            path.setAttribute('stroke-linecap', 'round');
+            path.setAttribute('stroke-linejoin', 'round');
+            
+            // Append the path to the SVG
+            svgCheck.appendChild(path);
+            circularCheckDiv.appendChild(svgCheck);
+            taskCircularCheckDiv.appendChild(circularCheckDiv);
+            noteTaskDiv.appendChild(taskCircularCheckDiv);
+            
+            var taskText = document.createTextNode(inputStr);
+            noteTaskDiv.appendChild(taskText);
         } else {
             // make a new note div
             noteTaskDiv.innerText = inputStr;
+
         }
 
         dynamicList.appendChild(noteTaskDiv);

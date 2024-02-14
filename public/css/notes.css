@@ -811,3 +811,27 @@
     margin-bottom: 10px;
     padding-left: 10px;
 }
+
+.taskCircularCheck {
+    display: flex;
+    margin-right: 10px;
+    border: 2px solid white;
+    border-radius: 25px;
+    height: 20px;
+    width: 20px;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.circularCheck {
+    display: none;
+    /* display: flex; */
+    align-items: center;
+    justify-content: center;
+}
+
+.taskCircularCheck:hover .circularCheck{
+    cursor: pointer;
+    display: flex;
+}
