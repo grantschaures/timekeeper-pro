@@ -687,6 +687,14 @@
     flex-direction: column;
 }
 
+@media (max-width: 500px) {
+    #list-notes-container {
+        width: 95%;
+    }
+}
+
+
+
 #add-note-task-container {
     border: 2px dashed rgba(255, 255, 255, 0.50);
     color: rgba(255, 255, 255, 0.50);
@@ -822,16 +830,32 @@
 
     align-items: center;
     justify-content: center;
+    transition: background-color 0.15s ease-in-out;
+
 }
 
 .circularCheck {
-    display: none;
-    /* display: flex; */
+    /* display: none; */
+    display: flex;
+    opacity: 0;
     align-items: center;
     justify-content: center;
+    background-color: transparent;
+    transition: opacity 0.15s ease-in-out;
 }
 
 .taskCircularCheck:hover .circularCheck{
     cursor: pointer;
     display: flex;
+    opacity: 1;
+}
+
+/*
+    When taskCircularCheck is clicked on
+    turn background-color to #3ba43e
+    make check stroke-width = 3
+*/
+
+.completed-task {
+    text-decoration: line-through;
 }

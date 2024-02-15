@@ -68,7 +68,8 @@ document.addEventListener("DOMContentLoaded", function() {
         notesLines: 0,
         tagsSelected: 0,
         lastLabelIdNum: 3, //subject to change based on num of predefined labels for user (need to store in database)
-        noteInputs: 0
+        lastNoteInputIdNum: 0,
+        lastTaskInputIdNum: 0
     }
 
     let state = {
@@ -143,6 +144,34 @@ document.addEventListener("DOMContentLoaded", function() {
     // BEGINNING OF EVENT LISTENER SECTION
     // //
     // //
+    dynamicList.addEventListener('click', function(event) {
+        let target = event.target;
+
+        let targetId = target.id;
+
+        if ((target.className.baseVal === 'check') || (target.className.baseVal === 'svgCheck')) {
+            let idNum = getLastNumberFromId(targetId);
+            let noteTaskDiv = document.getElementById("noteTaskDiv" + idNum);
+            let check = document.getElementById("check" + idNum);
+
+            if (noteTaskDiv.classList.contains('completed-task')) {
+                noteTaskDiv.firstElementChild.style.backgroundColor = "";
+                
+                check.setAttribute('stroke-width', '2');
+                check.parentElement.parentElement.style.opacity = '';
+    
+                noteTaskDiv.classList.remove('completed-task');
+
+            } else if (!(noteTaskDiv.classList.contains('completed-task'))) {
+                noteTaskDiv.firstElementChild.style.backgroundColor = "#3ba43e";
+                
+                check.setAttribute('stroke-width', '3');
+                check.parentElement.parentElement.style.opacity = '1';
+    
+                noteTaskDiv.classList.add('completed-task');
+            }
+        }
+    })
 
     taskCheckbox.addEventListener('click', function() {
         noteTaskInputText.focus();
@@ -175,6 +204,8 @@ document.addEventListener("DOMContentLoaded", function() {
             svgCheck.setAttribute('width', '20');
             svgCheck.setAttribute('height', '20');
             svgCheck.setAttribute('viewBox', '0 0 20 20');
+            svgCheck.classList.add('svgCheck');
+            svgCheck.id = "svgCheck" + counters.lastTaskInputIdNum;
             
             // Create the path element
             var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -186,6 +217,7 @@ document.addEventListener("DOMContentLoaded", function() {
             path.setAttribute('fill', 'none');
             path.setAttribute('stroke-linecap', 'round');
             path.setAttribute('stroke-linejoin', 'round');
+            path.id = "check" + counters.lastTaskInputIdNum;
             
             // Append the path to the SVG
             svgCheck.appendChild(path);
@@ -195,10 +227,17 @@ document.addEventListener("DOMContentLoaded", function() {
             
             var taskText = document.createTextNode(inputStr);
             noteTaskDiv.appendChild(taskText);
+            noteTaskDiv.id = "noteTaskDiv" + counters.lastTaskInputIdNum;
+
+            counters.lastTaskInputIdNum += 1;
+            // console.log("Latest Task ID: " + counters.lastTaskInputIdNum);
         } else {
             // make a new note div
             noteTaskDiv.innerText = inputStr;
+            noteTaskDiv.id = "noteTaskDiv" + counters.lastNoteInputIdNum;
 
+            counters.lastNoteInputIdNum += 1;
+            // console.log("Latest Note ID: " + counters.lastNoteInputIdNum);
         }
 
         dynamicList.appendChild(noteTaskDiv);
@@ -217,7 +256,6 @@ document.addEventListener("DOMContentLoaded", function() {
     })
 
     addNoteTaskContainer.addEventListener('click', function() {
-        console.log('add note task container clicked');
         addNoteTaskContainer.style.display = 'none';
         noteTaskInputContainer.style.display = 'flex';
 
@@ -256,7 +294,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (notesFlags.notesShowing === false) {
             openNotesContainer(notesContainer, notesFlags);
         } else {
-            closeNotesContainer(notesContainer, notesFlags);
+            closeNotesContainer(notesContainer, notesFlags, flags, noteInputCancelBtn);
         }
     })
     
@@ -888,6 +926,10 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
 
+        if (flags.noteTaskInputContainerShowing) {
+            noteTaskInputText.focus();
+        }
+
         notesFlags.notesConsoleShowing = true;
     }
 
@@ -958,7 +1000,22 @@ document.addEventListener("DOMContentLoaded", function() {
 // ---------------------
 // HELPER FUNCTIONS 2
 // ---------------------
-function closeNotesContainer(notesContainer, notesFlags) {
+function getLastNumberFromId(targetId) {
+    const match = targetId.match(/\d+$/); // Match one or more digits at the end of the string
+    if (match) {
+        return parseInt(match[0], 10); // Convert the matched string to a number
+    } else {
+        return null; // or any other default value you see fit
+    }
+}
+
+function closeNotesContainer(notesContainer, notesFlags, flags, noteInputCancelBtn) {
+
+    if (flags.noteTaskInputContainerShowing) {
+        noteInputCancelBtn.click();
+        flags.noteTaskInputContainerShowing = false;
+    }
+
     notesContainer.classList.remove('fullsize');
     notesContainer.classList.remove('fullopacity');
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1125,7 +1182,7 @@ function handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInpu
         if (document.activeElement === noteTaskInputText) {
             noteInputCancelBtn.click();
         } else {
-            closeNotesContainer(notesContainer, notesFlags);
+            closeNotesContainer(notesContainer, notesFlags, flags, noteInputCancelBtn);
         }
     }
 }
