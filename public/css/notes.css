@@ -687,14 +687,6 @@
     flex-direction: column;
 }
 
-@media (max-width: 500px) {
-    #list-notes-container {
-        width: 94%;
-    }
-}
-
-
-
 #add-note-task-container {
     border: 2px dashed rgba(255, 255, 255, 0.50);
     color: rgba(255, 255, 255, 0.50);
@@ -858,4 +850,58 @@
 
 .completed-task {
     text-decoration: line-through;
+}
+
+
+
+
+/* 
+    ALL MEDIA STYLES
+*/
+
+
+
+@media (max-width: 500px) {
+    #list-notes-container {
+        width: 97%;
+    }
+}
+
+@media (max-width: 467px) {
+    #list-notes-container {
+        width: 96%;
+    }
+}
+
+@media (max-width: 433px) {
+    #list-notes-container {
+        width: 95%;
+    }
+}
+
+@media (max-width: 400px) {
+    #list-notes-container {
+        width: 94%; /* Perfect for mobile! */
+    }
+}
+
+@media (max-width: 260px) {
+    #task-prompt::before {
+        font-size: 20px;
+    }
+    #add-note-task {
+        display: none;
+    }
+    #add-note-task-container {
+        justify-content: center;
+    }
+    #save-cancel-container {
+        display: none;
+    }
+    #tag-icon {
+        margin-right: 0;
+    }
+    #note-task-input-text::placeholder {
+        font-size: 12px;
+    }
 }

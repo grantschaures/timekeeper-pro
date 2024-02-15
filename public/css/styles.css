@@ -786,7 +786,8 @@ button:hover {
     /* border: 1px solid yellow; */
     color: white;
     font-family: myFont3;
-    text-align: center;        /* Center the text horizontally */
+    text-align: center;
+    font-size: 24px;
 }
 
 #session-log {
@@ -926,39 +927,42 @@ button:hover {
     }
 }
 
-@media (max-width: 404px) {
+@media (max-width: 433px) {
     #display {
         font-size: 60px;
     }
 }
 
-@media (max-width: 350px) {
+@media (max-width: 372px) {
     #display {
         font-size: 55px;
     }
 }
 
-@media (max-width: 250px) {
+@media (max-width: 350px) {
     #display {
         font-size: 50px;
     }
+    #productivity-chill-mode {
+        font-size: 20px;
+    }
 }
 
-@media (max-width: 230px) {
+@media (max-width: 312px) {
     #display {
         font-size: 45px;
     }
 }
 
-@media (max-width: 215px) {
+@media (max-width: 285px) {
     #display {
         font-size: 40px;
     }
 }
 
-@media (max-width: 200px) {
+@media (max-width: 260px) {
     #display {
-        font-size: 30px;
+        font-size: 25px;
     }
 }
 

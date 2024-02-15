@@ -146,29 +146,28 @@ document.addEventListener("DOMContentLoaded", function() {
     // //
     dynamicList.addEventListener('click', function(event) {
         let target = event.target;
-
         let targetId = target.id;
 
         if ((target.className.baseVal === 'check') || (target.className.baseVal === 'svgCheck')) {
             let idNum = getLastNumberFromId(targetId);
-            let noteTaskDiv = document.getElementById("noteTaskDiv" + idNum);
+            let taskDiv = document.getElementById("taskDiv" + idNum);
             let check = document.getElementById("check" + idNum);
 
-            if (noteTaskDiv.classList.contains('completed-task')) {
-                noteTaskDiv.firstElementChild.style.backgroundColor = "";
+            if (taskDiv.classList.contains('completed-task')) {
+                taskDiv.firstElementChild.style.backgroundColor = "";
                 
                 check.setAttribute('stroke-width', '2');
                 check.parentElement.parentElement.style.opacity = '';
     
-                noteTaskDiv.classList.remove('completed-task');
+                taskDiv.classList.remove('completed-task');
 
-            } else if (!(noteTaskDiv.classList.contains('completed-task'))) {
-                noteTaskDiv.firstElementChild.style.backgroundColor = "#3ba43e";
+            } else if (!(taskDiv.classList.contains('completed-task'))) {
+                taskDiv.firstElementChild.style.backgroundColor = "#3ba43e";
                 
                 check.setAttribute('stroke-width', '3');
                 check.parentElement.parentElement.style.opacity = '1';
     
-                noteTaskDiv.classList.add('completed-task');
+                taskDiv.classList.add('completed-task');
             }
         }
     })
@@ -227,14 +226,14 @@ document.addEventListener("DOMContentLoaded", function() {
             
             var taskText = document.createTextNode(inputStr);
             noteTaskDiv.appendChild(taskText);
-            noteTaskDiv.id = "noteTaskDiv" + counters.lastTaskInputIdNum;
+            noteTaskDiv.id = "taskDiv" + counters.lastTaskInputIdNum;
 
             counters.lastTaskInputIdNum += 1;
             // console.log("Latest Task ID: " + counters.lastTaskInputIdNum);
         } else {
             // make a new note div
             noteTaskDiv.innerText = inputStr;
-            noteTaskDiv.id = "noteTaskDiv" + counters.lastNoteInputIdNum;
+            noteTaskDiv.id = "noteDiv" + counters.lastNoteInputIdNum;
 
             counters.lastNoteInputIdNum += 1;
             // console.log("Latest Note ID: " + counters.lastNoteInputIdNum);

@@ -946,3 +946,15 @@
 #toggleNotesAutoSwitchContainer {
     align-items: center;
 }
+
+@media (max-width: 785px) {
+    .tutorialSectionHeading {
+        display: none;
+    }
+}
+
+@media (max-width: 365px) {
+    .tutorialImg {
+        width: 200px;
+    }
+}
