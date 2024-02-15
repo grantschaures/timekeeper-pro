@@ -224,7 +224,8 @@ document.addEventListener("DOMContentLoaded", function() {
             taskCircularCheckDiv.appendChild(circularCheckDiv);
             noteTaskDiv.appendChild(taskCircularCheckDiv);
             
-            var taskText = document.createTextNode(inputStr);
+            var taskText = document.createElement('span');
+            taskText.textContent = inputStr;
             noteTaskDiv.appendChild(taskText);
             noteTaskDiv.id = "taskDiv" + counters.lastTaskInputIdNum;
 
@@ -232,7 +233,9 @@ document.addEventListener("DOMContentLoaded", function() {
             // console.log("Latest Task ID: " + counters.lastTaskInputIdNum);
         } else {
             // make a new note div
-            noteTaskDiv.innerText = inputStr;
+            var taskText = document.createElement('span');
+            taskText.textContent = inputStr;
+            noteTaskDiv.appendChild(taskText)
             noteTaskDiv.id = "noteDiv" + counters.lastNoteInputIdNum;
 
             counters.lastNoteInputIdNum += 1;
@@ -248,10 +251,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
         noteTaskInputText.value = "";
         noteTaskInputText.focus();
+        autoExpand();
     })
 
     noteInputCancelBtn.addEventListener('click', function() {
         noteInputCancel(noteTaskInputContainer, addNoteTaskContainer, flags, noteTaskInputText);
+        autoExpand();
     })
 
     addNoteTaskContainer.addEventListener('click', function() {

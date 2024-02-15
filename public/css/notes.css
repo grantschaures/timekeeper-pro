@@ -800,7 +800,7 @@
 .noteTask {
     border: 2px solid white;
     border-radius: 15px;
-    height: 40px;
+    min-height: 40px;
 
     font-family: settingsHeaderFont;
     font-size: 16px;
@@ -810,6 +810,13 @@
 
     margin-bottom: 10px;
     padding-left: 10px;
+    word-wrap: break-word; /* For older browsers */
+    overflow-wrap: break-word; /* Recommended for modern browsers */
+}
+
+/* Allows the span (containing the note or task text) to shrink, enabling text wrapping */
+.noteTask > span {
+    min-width: 0;
 }
 
 .taskCircularCheck {
@@ -859,8 +866,6 @@
     ALL MEDIA STYLES
 */
 
-
-
 @media (max-width: 500px) {
     #list-notes-container {
         width: 97%;
@@ -904,4 +909,8 @@
     #note-task-input-text::placeholder {
         font-size: 12px;
     }
+}
+
+#taskCheckbox:hover {
+    cursor: pointer;
 }
