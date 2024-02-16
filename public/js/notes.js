@@ -147,14 +147,16 @@ document.addEventListener("DOMContentLoaded", function() {
     dynamicList.addEventListener('click', function(event) {
         let target = event.target;
         let targetId = target.id;
+        console.log(targetId);
 
         if ((target.className.baseVal === 'check') || (target.className.baseVal === 'svgCheck')) {
             let idNum = getLastNumberFromId(targetId);
             let taskDiv = document.getElementById("taskDiv" + idNum);
             let check = document.getElementById("check" + idNum);
+            let taskCircularCheckElement = taskDiv.firstElementChild;
 
             if (taskDiv.classList.contains('completed-task')) {
-                taskDiv.firstElementChild.style.backgroundColor = "";
+                taskCircularCheckElement.style.backgroundColor = "";
                 
                 check.setAttribute('stroke-width', '2');
                 check.parentElement.parentElement.style.opacity = '';
@@ -162,12 +164,47 @@ document.addEventListener("DOMContentLoaded", function() {
                 taskDiv.classList.remove('completed-task');
 
             } else if (!(taskDiv.classList.contains('completed-task'))) {
-                taskDiv.firstElementChild.style.backgroundColor = "#3ba43e";
+                taskCircularCheckElement.style.backgroundColor = "#3ba43e";
                 
                 check.setAttribute('stroke-width', '3');
                 check.parentElement.parentElement.style.opacity = '1';
     
                 taskDiv.classList.add('completed-task');
+            }
+        } else if ((target.classList.contains("editRemoveBtn")) || (target.classList.contains("editRemoveSvg")) || (target.classList.contains("editCircle")) || (target.classList.contains("removePath"))) {
+
+            // Discriminate between edit btn and remove btn
+            let noteInputId;
+            let taskInputId;
+
+            let idNum;
+            if ((target.classList.contains('editBtn')) || (target.classList.contains('editSvg')) || (target.classList.contains('editCircle'))) {
+                console.log("Edit Btn Clicked");
+
+                idNum = getLastNumberFromId(targetId);
+                noteInputId = "noteDiv" + idNum;
+                taskInputId = "taskDiv" + idNum;
+
+                if (document.getElementById(noteInputId)) {
+                    document.getElementById(noteInputId).remove();
+                } else if (document.getElementById(taskInputId)) {
+                    document.getElementById(taskInputId).remove();
+                }
+                
+                
+            } else if ((target.classList.contains('removeBtn')) || (target.classList.contains('removeSvg')) || (target.classList.contains('removePath'))) {
+                console.log("Remove Btn Clicked");
+                
+                idNum = getLastNumberFromId(targetId);
+                noteInputId = "noteDiv" + idNum;
+                taskInputId = "taskDiv" + idNum;
+
+
+                if (document.getElementById(noteInputId)) {
+                    document.getElementById(noteInputId).remove();
+                } else if (document.getElementById(taskInputId)) {
+                    document.getElementById(taskInputId).remove();
+                }
             }
         }
     })
@@ -190,8 +227,9 @@ document.addEventListener("DOMContentLoaded", function() {
         let noteTaskDiv = document.createElement('div');
         noteTaskDiv.classList.add('noteTask');
 
+        let container;
+
         if (taskCheckbox.checked) {
-            // make a new task div
             let taskCircularCheckDiv = document.createElement('div');
             taskCircularCheckDiv.classList.add('taskCircularCheck');
             
@@ -229,6 +267,8 @@ document.addEventListener("DOMContentLoaded", function() {
             noteTaskDiv.appendChild(taskText);
             noteTaskDiv.id = "taskDiv" + counters.lastTaskInputIdNum;
 
+            container = appendEditRemoveContainer("Task", counters.lastTaskInputIdNum);
+
             counters.lastTaskInputIdNum += 1;
             // console.log("Latest Task ID: " + counters.lastTaskInputIdNum);
         } else {
@@ -238,9 +278,13 @@ document.addEventListener("DOMContentLoaded", function() {
             noteTaskDiv.appendChild(taskText)
             noteTaskDiv.id = "noteDiv" + counters.lastNoteInputIdNum;
 
+            container = appendEditRemoveContainer("Note", counters.lastNoteInputIdNum);
+
             counters.lastNoteInputIdNum += 1;
             // console.log("Latest Note ID: " + counters.lastNoteInputIdNum);
         }
+
+        noteTaskDiv.appendChild(container);
 
         dynamicList.appendChild(noteTaskDiv);
 
@@ -1004,6 +1048,116 @@ document.addEventListener("DOMContentLoaded", function() {
 // ---------------------
 // HELPER FUNCTIONS 2
 // ---------------------
+function appendEditRemoveContainer(inputType, lastIdNum) {
+    const container = document.createElement('div'); //for edit remove container
+    container.classList.add('editRemoveContainer');
+
+    let containerIdStr = "editRemoveContainer" + inputType + lastIdNum;
+    container.id = containerIdStr;
+
+
+    // Create edit button div
+    const editBtn = document.createElement('div');
+    editBtn.classList.add('editRemoveBtn');
+    editBtn.classList.add('editBtn');
+
+    let editBtnIdStr = "editBtn" + inputType + lastIdNum;
+    editBtn.setAttribute('id', editBtnIdStr);
+
+    // Create SVG for edit button
+    const dotsSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    dotsSvg.classList.add('editRemoveSvg');
+    dotsSvg.classList.add('editSvg');
+
+    let dotsSvgIdStr = "dotsSvg" + inputType + lastIdNum;
+    dotsSvg.setAttribute('id', dotsSvgIdStr);
+
+    dotsSvg.setAttribute('width', '30');
+    dotsSvg.setAttribute('height', '10');
+    dotsSvg.setAttribute('viewBox', '0 0 30 10');
+    const circle1 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+
+    // ID and Class
+    circle1.classList.add('editCircle');
+    let circle1IdStr = "circle1" + inputType + lastIdNum;
+    circle1.id = circle1IdStr;
+    // ID and Class
+    
+    circle1.setAttribute('cx', '5');
+    circle1.setAttribute('cy', '5');
+    circle1.setAttribute('r', '2.5');
+    circle1.setAttribute('fill', 'white');
+    dotsSvg.appendChild(circle1);
+    const circle2 = circle1.cloneNode();
+    
+    // ID and Class
+    circle2.classList.add('editCircle');
+    let circle2IdStr = "circle2" + inputType + lastIdNum;
+    circle2.id = circle2IdStr;
+    // ID and Class
+    
+    circle2.setAttribute('cx', '15');
+    dotsSvg.appendChild(circle2);
+    const circle3 = circle1.cloneNode();
+    
+    // ID and Class
+    circle3.classList.add('editCircle');
+    let circle3IdStr = "circle3" + inputType + lastIdNum;
+    circle3.id = circle3IdStr;
+    // ID and Class
+
+    circle3.setAttribute('cx', '25');
+    dotsSvg.appendChild(circle3);
+
+    // Append SVG to edit button div
+    editBtn.appendChild(dotsSvg);
+
+    // Create remove button div
+    const removeBtn = document.createElement('div');
+    removeBtn.classList.add('editRemoveBtn');
+    removeBtn.classList.add('removeBtn');
+
+    let removeBtnIdStr = "removeBtn" + inputType + lastIdNum;
+    removeBtn.setAttribute('id', removeBtnIdStr);
+
+    // Create SVG for remove button
+    const trashSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    trashSvg.classList.add('editRemoveSvg');
+    trashSvg.classList.add('removeSvg');
+
+    let trashSvgIdStr = "trashSvg" + inputType + lastIdNum;
+    trashSvg.setAttribute('id', trashSvgIdStr);
+
+    trashSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    trashSvg.setAttribute('width', '24');
+    trashSvg.setAttribute('height', '24');
+    trashSvg.setAttribute('viewBox', '0 0 24 24');
+    trashSvg.setAttribute('fill', 'none');
+    trashSvg.setAttribute('stroke', 'currentColor');
+    trashSvg.setAttribute('stroke-width', '2');
+    trashSvg.setAttribute('stroke-linecap', 'round');
+    trashSvg.setAttribute('stroke-linejoin', 'round');
+
+    let polylineIdStr = "polyline" + inputType + lastIdNum;
+    let pathIdStr = "path" + inputType + lastIdNum;
+    let line1IdStr = "line1" + inputType + lastIdNum;
+    let line2IdStr = "line2" + inputType + lastIdNum;
+
+    trashSvg.innerHTML = `<polyline id="${polylineIdStr}" class="removePath" points="3 6 5 6 21 6"></polyline>
+                        <path id="${pathIdStr}" class="removePath" d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        <line id="${line1IdStr}" class="removePath" x1="10" y1="11" x2="10" y2="17"></line>
+                        <line id="${line2IdStr}" class="removePath" x1="14" y1="11" x2="14" y2="17"></line>`;
+
+    // Append SVG to remove button div
+    removeBtn.appendChild(trashSvg);
+
+    // Append both buttons to the container
+    container.appendChild(editBtn);
+    container.appendChild(removeBtn);
+
+    return container;
+}
+
 function getLastNumberFromId(targetId) {
     const match = targetId.match(/\d+$/); // Match one or more digits at the end of the string
     if (match) {

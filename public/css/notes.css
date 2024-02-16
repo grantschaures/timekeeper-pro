@@ -812,10 +812,12 @@
     padding-left: 10px;
     word-wrap: break-word; /* For older browsers */
     overflow-wrap: break-word; /* Recommended for modern browsers */
+
+    position: relative;
 }
 
 /* Allows the span (containing the note or task text) to shrink, enabling text wrapping */
-.noteTask > span {
+.noteTask span {
     min-width: 0;
 }
 
@@ -849,18 +851,44 @@
     opacity: 1;
 }
 
-/*
-    When taskCircularCheck is clicked on
-    turn background-color to #3ba43e
-    make check stroke-width = 3
-*/
-
 .completed-task {
     text-decoration: line-through;
 }
 
+.editRemoveContainer {
+    display: flex;
+    /* border: 1px solid white; */
+    height: 40px;
+    position: absolute;
+    right: 5px;
+    align-items: center;
+}
 
+.editRemoveBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 25px;
+    margin-left: 5px;
+    margin-right: 5px;
+    transition: background-color 0.15s ease-in-out, opacity 0.15s ease-in-out;
+    opacity: 0;
+    width: 35px;
+    height: 35px;
+}
 
+.editRemoveBtn:hover {
+    cursor: pointer;
+}
+
+.editRemoveContainer:hover .editRemoveBtn {
+    background-color:rgba(0, 0, 0, 0.85);
+    opacity: 1;
+}
+
+#taskCheckbox:hover {
+    cursor: pointer;
+}
 
 /* 
     ALL MEDIA STYLES
@@ -909,8 +937,7 @@
     #note-task-input-text::placeholder {
         font-size: 12px;
     }
-}
-
-#taskCheckbox:hover {
-    cursor: pointer;
+    .editRemoveContainer {
+        display: none;
+    }
 }
