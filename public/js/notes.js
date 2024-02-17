@@ -186,9 +186,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 taskInputId = "taskDiv" + idNum;
 
                 if (document.getElementById(noteInputId)) {
-                    document.getElementById(noteInputId).remove();
+                    // Edit Note
                 } else if (document.getElementById(taskInputId)) {
-                    document.getElementById(taskInputId).remove();
+                    // Edit Task
                 }
                 
                 
