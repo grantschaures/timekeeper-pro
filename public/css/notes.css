@@ -710,7 +710,7 @@
     font-family: settingsHeaderFont;
 }
 
-#note-task-input-container {
+#note-task-input-container, #note-task-input-container-edit {
     margin-bottom: 10px;
     border-radius: 15px;
     height: 100%;
@@ -727,18 +727,18 @@
 
 /* NOTES */
 
-#upper-half-note-task-input {
+#upper-half-note-task-input, #upper-half-note-task-input-edit {
     /* border: 3px solid white; */
     width: 100%;
 }
 
-#lower-half-note-task-input {
+#lower-half-note-task-input, #lower-half-note-task-input-edit {
     /* border: 3px solid red; */
     width: 100%;
     height: 50px;
 }
 
-#note-task-input-text {
+#note-task-input-text, #note-task-input-text-edit {
     width: calc(100% - 20px);
     height: 24px;
     min-height: 24px;
@@ -758,11 +758,11 @@
     box-sizing: border-box;
 }
 
-#note-task-input-text::placeholder {
+#note-task-input-text::placeholder, #note-task-input-text-edit::placeholder {
     color: rgba(255, 255, 255, 0.5);
 }
 
-#save-cancel-container {
+#save-cancel-container, #save-cancel-container-edit {
     display: flex;
     height: 100%;
     align-items: center;
@@ -773,26 +773,26 @@
     margin-left: 10px;
 }
 
-#note-input-save-btn {
+#note-input-save-btn, #note-input-save-btn-edit {
     border: 3px solid white;
     padding: 5px;
     border-radius: 25px;
     transition: background-color 0.15s ease-in-out;
 }
 
-#note-input-save-btn:hover {
+#note-input-save-btn:hover, #note-input-save-btn-edit:hover {
     cursor: pointer;
     background-color: rgba(255, 255, 255, 0.2);
 }
 
-#note-input-cancel-btn {
+#note-input-cancel-btn, #note-input-cancel-btn-edit {
     /* border: 3px solid white; */
     padding: 5px;
     border-radius: 25px;
     transition: background-color 0.15s ease-in-out;
 }
 
-#note-input-cancel-btn:hover {
+#note-input-cancel-btn:hover, #note-input-cancel-btn-edit:hover {
     background-color: rgba(255, 255, 255, 0.2);
     cursor: pointer;
 }
@@ -886,8 +886,16 @@
     opacity: 1;
 }
 
-#taskCheckbox:hover {
+#taskCheckbox:hover, #taskCheckbox-edit:hover {
     cursor: pointer;
+}
+
+.editIcon {
+    position: relative;
+    width: 22px;
+    height: 22px;
+    z-index: 4;
+    opacity: 1.00;
 }
 
 /* 
@@ -935,6 +943,9 @@
         margin-right: 0;
     }
     #note-task-input-text::placeholder {
+        font-size: 12px;
+    }
+    #note-task-input-text-edit::placeholder {
         font-size: 12px;
     }
     .editRemoveContainer {

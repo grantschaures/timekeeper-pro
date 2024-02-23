@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
-    //Redesign edit
+    /**
+     * I just realized that you can make header comment like this now!
+     */
 
     const notesContainer = document.getElementById("notes-container");
     
@@ -55,7 +57,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const taskCheckbox = document.getElementById('taskCheckbox');
     const dynamicList = document.getElementById('dynamicList');
 
-
     // CONSOLE
     let notesFlags = {
         isClicked: false,
@@ -80,7 +81,8 @@ document.addEventListener("DOMContentLoaded", function() {
         generalTarget: null,
         lastSelectionElement: null,
         lastSelectedEmojiId: null,
-        elementToUpdateId: null
+        elementToUpdateId: null,
+        currentNoteTaskEditId: null
     }
 
     let flags = {
@@ -92,7 +94,8 @@ document.addEventListener("DOMContentLoaded", function() {
         createLabelWindowOpen: false,
         updateLabelWindowOpen: false,
         transitionNotesAutoSwitchToggle: false,
-        noteTaskInputContainerShowing: false
+        noteTaskInputContainerShowing: false,
+        noteTaskInputContainerEditShowing: false
     }
 
     const emojiMap = {
@@ -144,6 +147,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // BEGINNING OF EVENT LISTENER SECTION
     // //
     // //
+
     dynamicList.addEventListener('click', function(event) {
         let target = event.target;
         let targetId = target.id;
@@ -171,14 +175,13 @@ document.addEventListener("DOMContentLoaded", function() {
     
                 taskDiv.classList.add('completed-task');
             }
-        } else if ((target.classList.contains("editRemoveBtn")) || (target.classList.contains("editRemoveSvg")) || (target.classList.contains("editCircle")) || (target.classList.contains("removePath"))) {
+        } else if ((target.classList.contains("editRemoveBtn")) || (target.classList.contains("editRemoveSvg")) || (target.classList.contains("editIcon")) || (target.classList.contains("removePath"))) {
 
             // Discriminate between edit btn and remove btn
-            let noteInputId;
             let taskInputId;
 
             let idNum;
-            if ((target.classList.contains('editBtn')) || (target.classList.contains('editSvg')) || (target.classList.contains('editCircle'))) {
+            if ((target.classList.contains('editBtn')) || (target.classList.contains('editIcon'))) {
                 console.log("Edit Btn Clicked");
 
                 idNum = getLastNumberFromId(targetId);
@@ -187,11 +190,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 if (document.getElementById(noteInputId)) {
                     // Edit Note
+                    console.log("Editing " + targetId);
+                    // Hide the chosen note and display the note-task-input-container
+
+                    editNoteTask("note", noteInputId, state, flags);
                 } else if (document.getElementById(taskInputId)) {
                     // Edit Task
+                    console.log("Editing " + targetId);
+
+
+                    editNoteTask("task", taskInputId, state, flags);
                 }
-                
-                
             } else if ((target.classList.contains('removeBtn')) || (target.classList.contains('removeSvg')) || (target.classList.contains('removePath'))) {
                 console.log("Remove Btn Clicked");
                 
@@ -205,6 +214,28 @@ document.addEventListener("DOMContentLoaded", function() {
                 } else if (document.getElementById(taskInputId)) {
                     document.getElementById(taskInputId).remove();
                 }
+            }
+        } else if ((targetId === "note-input-save-btn-edit") || (targetId === "note-input-cancel-btn-edit") || (targetId === "taskCheckbox-edit")) {
+            if (targetId === "note-input-save-btn-edit") {
+                console.log("saved edit");
+                let inputEditStr = document.getElementById('note-task-input-container-edit').querySelector('textarea').value;
+
+                document.getElementById(state.currentNoteTaskEditId).querySelector('span').textContent = inputEditStr;
+                document.getElementById(state.currentNoteTaskEditId).style.display = "flex";
+                document.getElementById('note-task-input-container-edit').remove();
+
+                flags.noteTaskInputContainerEditShowing = false;
+                
+            } else if (targetId === "note-input-cancel-btn-edit") {
+                console.log("cancelled edit");
+                
+                
+                
+                document.getElementById('note-task-input-container-edit').remove();
+                document.getElementById(state.currentNoteTaskEditId).style.display = "flex";
+                
+                flags.noteTaskInputContainerEditShowing = false;
+
             }
         }
     })
@@ -295,17 +326,26 @@ document.addEventListener("DOMContentLoaded", function() {
 
         noteTaskInputText.value = "";
         noteTaskInputText.focus();
-        autoExpand();
+        autoExpand(); // resets input container to original size for next input
     })
 
     noteInputCancelBtn.addEventListener('click', function() {
         noteInputCancel(noteTaskInputContainer, addNoteTaskContainer, flags, noteTaskInputText);
-        autoExpand();
+        autoExpand(); // resets input container to original size for next input
     })
 
     addNoteTaskContainer.addEventListener('click', function() {
         addNoteTaskContainer.style.display = 'none';
         noteTaskInputContainer.style.display = 'flex';
+
+
+        console.log(flags.noteTaskInputContainerEditShowing);
+        if (flags.noteTaskInputContainerEditShowing) {
+            document.getElementById('note-task-input-container-edit').remove();
+            flags.noteTaskInputContainerEditShowing = false;
+
+            document.getElementById(state.currentNoteTaskEditId).style.display = "flex";
+        }
 
         noteTaskInputText.focus();
         flags.noteTaskInputContainerShowing = true;
@@ -321,7 +361,6 @@ document.addEventListener("DOMContentLoaded", function() {
         textarea.style.height = `${textarea.scrollHeight}px`;
     }
     textarea.addEventListener('input', autoExpand);
-    // autoExpand();
 
 
 
@@ -978,6 +1017,10 @@ document.addEventListener("DOMContentLoaded", function() {
             noteTaskInputText.focus();
         }
 
+        if (flags.noteTaskInputContainerEditShowing) {
+            document.getElementById('note-task-input-text-edit').focus();
+        }
+
         notesFlags.notesConsoleShowing = true;
     }
 
@@ -1048,13 +1091,121 @@ document.addEventListener("DOMContentLoaded", function() {
 // ---------------------
 // HELPER FUNCTIONS 2
 // ---------------------
+function autoExpandEdit(textarea) {
+    console.log("input")
+    textarea.style.height = '24px';
+    textarea.style.height = `${textarea.scrollHeight}px`;
+}
+
+function buildNoteTaskInputContainerEdit(noteTaskDivContent) {
+    // Create the main container
+    const noteTaskInputContainer = document.createElement('div');
+    noteTaskInputContainer.id = "note-task-input-container-edit";
+
+    // Create upper half container
+    const upperHalfNoteTaskInput = document.createElement('div');
+    upperHalfNoteTaskInput.id = "upper-half-note-task-input-edit";
+
+    // Create the textarea
+    const noteTaskInputText = document.createElement('textarea');
+    noteTaskInputText.id = "note-task-input-text-edit";
+    noteTaskInputText.placeholder = "Description";
+    noteTaskInputText.value = noteTaskDivContent;
+
+    // Append textarea to upper half container
+    upperHalfNoteTaskInput.appendChild(noteTaskInputText);
+
+    // Create lower half container
+    const lowerHalfNoteTaskInput = document.createElement('div');
+    lowerHalfNoteTaskInput.id = "lower-half-note-task-input-edit";
+
+    // Create save-cancel container
+    const saveCancelContainer = document.createElement('div');
+    saveCancelContainer.id = "save-cancel-container-edit";
+
+    // Create note input save container
+    const noteInputSaveContainer = document.createElement('div');
+    noteInputSaveContainer.id = "note-input-save-container-edit";
+    noteInputSaveContainer.classList.add("save-cancel-task-container");
+
+    // Create save button
+    const noteInputSaveBtn = document.createElement('div');
+    noteInputSaveBtn.id = "note-input-save-btn-edit";
+    noteInputSaveBtn.textContent = "Save";
+
+    // Append save button to its container
+    noteInputSaveContainer.appendChild(noteInputSaveBtn);
+
+    // Create note input cancel container
+    const noteInputCancelContainer = document.createElement('div');
+    noteInputCancelContainer.id = "note-input-cancel-container-edit";
+    noteInputCancelContainer.classList.add("save-cancel-task-container");
+
+    // Create cancel button
+    const noteInputCancelBtn = document.createElement('div');
+    noteInputCancelBtn.id = "note-input-cancel-btn-edit";
+    noteInputCancelBtn.textContent = "Cancel";
+
+    // Append cancel button to its container
+    noteInputCancelContainer.appendChild(noteInputCancelBtn);
+
+    // Append all containers to the save-cancel container
+    saveCancelContainer.appendChild(noteInputSaveContainer);
+    saveCancelContainer.appendChild(noteInputCancelContainer);
+
+    lowerHalfNoteTaskInput.appendChild(saveCancelContainer);
+
+    // Append upper and lower halves to the main container
+    noteTaskInputContainer.appendChild(upperHalfNoteTaskInput);
+    noteTaskInputContainer.appendChild(lowerHalfNoteTaskInput);
+
+    // Finally, append the main container to the body or another element in your document
+    return noteTaskInputContainer;
+}
+
+/** 
+ * @param {string} inputType === "note" or "task"
+ */
+function editNoteTask(inputType, noteTaskId, state, flags) {
+    // Hide noteDiv or taskDiv
+    state.currentNoteTaskEditId = noteTaskId;
+    const noteTaskDiv = document.getElementById(noteTaskId);
+    let noteTaskDivContent = (document.getElementById(noteTaskId)).querySelector('span').innerText;
+
+    noteTaskDiv.style.display = "none";
+
+    let noteTaskInputContainer = buildNoteTaskInputContainerEdit(noteTaskDivContent);
+    noteTaskInputContainer.style.display = "flex";
+
+    // Get the element just above the one you want to hide
+    let elementAbove = noteTaskDiv.previousElementSibling;
+
+    // If there's an element above, insert the container after this element
+    if (elementAbove) {
+        elementAbove.parentNode.insertBefore(noteTaskInputContainer, elementAbove.nextSibling);
+    } else {
+        // If there is no element above, it means the noteTaskDiv is the first child
+        // Insert the noteTaskInputContainer at the beginning of the parent container
+        noteTaskDiv.parentNode.insertBefore(noteTaskInputContainer, noteTaskDiv);
+    }
+
+    flags.noteTaskInputContainerEditShowing = true;
+
+    // ensuring textarea changes height dynamically at start and w/ each input
+    document.getElementById('note-task-input-text-edit').addEventListener('input', function(event) {
+        autoExpandEdit(document.getElementById('note-task-input-text-edit'));
+    });
+    autoExpandEdit(document.getElementById('note-task-input-text-edit'));
+
+    noteTaskInputContainer.querySelector('textarea').focus();
+}
+
 function appendEditRemoveContainer(inputType, lastIdNum) {
     const container = document.createElement('div'); //for edit remove container
     container.classList.add('editRemoveContainer');
 
     let containerIdStr = "editRemoveContainer" + inputType + lastIdNum;
     container.id = containerIdStr;
-
 
     // Create edit button div
     const editBtn = document.createElement('div');
@@ -1064,53 +1215,18 @@ function appendEditRemoveContainer(inputType, lastIdNum) {
     let editBtnIdStr = "editBtn" + inputType + lastIdNum;
     editBtn.setAttribute('id', editBtnIdStr);
 
-    // Create SVG for edit button
-    const dotsSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    dotsSvg.classList.add('editRemoveSvg');
-    dotsSvg.classList.add('editSvg');
+    // Create IMG for edit button
+    const editImg = document.createElement('img');
 
-    let dotsSvgIdStr = "dotsSvg" + inputType + lastIdNum;
-    dotsSvg.setAttribute('id', dotsSvgIdStr);
+    let editImgIdStr = "editIcon" + inputType + lastIdNum;
+    editImg.id = editImgIdStr;
 
-    dotsSvg.setAttribute('width', '30');
-    dotsSvg.setAttribute('height', '10');
-    dotsSvg.setAttribute('viewBox', '0 0 30 10');
-    const circle1 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-
-    // ID and Class
-    circle1.classList.add('editCircle');
-    let circle1IdStr = "circle1" + inputType + lastIdNum;
-    circle1.id = circle1IdStr;
-    // ID and Class
-    
-    circle1.setAttribute('cx', '5');
-    circle1.setAttribute('cy', '5');
-    circle1.setAttribute('r', '2.5');
-    circle1.setAttribute('fill', 'white');
-    dotsSvg.appendChild(circle1);
-    const circle2 = circle1.cloneNode();
-    
-    // ID and Class
-    circle2.classList.add('editCircle');
-    let circle2IdStr = "circle2" + inputType + lastIdNum;
-    circle2.id = circle2IdStr;
-    // ID and Class
-    
-    circle2.setAttribute('cx', '15');
-    dotsSvg.appendChild(circle2);
-    const circle3 = circle1.cloneNode();
-    
-    // ID and Class
-    circle3.classList.add('editCircle');
-    let circle3IdStr = "circle3" + inputType + lastIdNum;
-    circle3.id = circle3IdStr;
-    // ID and Class
-
-    circle3.setAttribute('cx', '25');
-    dotsSvg.appendChild(circle3);
+    editImg.classList.add("editIcon");
+    editImg.src = 'images/icons/whitepencil.png';
+    editImg.draggable = false;
 
     // Append SVG to edit button div
-    editBtn.appendChild(dotsSvg);
+    editBtn.appendChild(editImg);
 
     // Create remove button div
     const removeBtn = document.createElement('div');
@@ -1321,6 +1437,8 @@ function handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInpu
             updateLabelDone.click();
         } else if (document.activeElement === noteTaskInputText) {
             noteInputSaveBtn.click();
+        } else if (document.activeElement.id === 'note-task-input-text-edit') {
+            document.getElementById('note-input-save-btn-edit').click();
         }
     } else if (event.key === 'n') {
         if (!notesFlags.notesShowing) {
