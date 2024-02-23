@@ -188,18 +188,23 @@ document.addEventListener("DOMContentLoaded", function() {
                 noteInputId = "noteDiv" + idNum;
                 taskInputId = "taskDiv" + idNum;
 
+                // IDs
+                // Note: editBtnNote[n]
+                // Task: editBtnTask[n]
+
                 if (flags.noteTaskInputContainerShowing) {
                     noteTaskInputContainer.style.display = 'none';
                     addNoteTaskContainer.style.display = 'flex';
                 }
 
-                if (document.getElementById(noteInputId)) {
+                console.log(getTypeFromId(targetId))
+                if (getTypeFromId(targetId) === "Note") {
                     // Edit Note
                     console.log("Editing " + targetId);
                     // Hide the chosen note and display the note-task-input-container
 
                     editNoteTask("note", noteInputId, state, flags);
-                } else if (document.getElementById(taskInputId)) {
+                } else if (getTypeFromId(targetId) === "Task") {
                     // Edit Task
                     console.log("Editing " + targetId);
 
@@ -1096,6 +1101,19 @@ document.addEventListener("DOMContentLoaded", function() {
 // ---------------------
 // HELPER FUNCTIONS 2
 // ---------------------
+function getTypeFromId(id) {
+    // Regular expression to match "editBtn" or "editIcon" followed by "Note" or "Task" and then by any number of digits
+    const match = id.match(/(editBtn|editIcon)(Note|Task)\d+/);
+  
+    // If there's a match, return the part that corresponds to "Note" or "Task"
+    if (match && match[2]) {
+      return match[2];
+    } else {
+      // Return null or an appropriate value if the ID doesn't match the expected pattern
+      return null;
+    }
+}
+
 function autoExpandEdit(textarea) {
     console.log("input")
     textarea.style.height = '24px';
