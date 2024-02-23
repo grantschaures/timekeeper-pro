@@ -1448,12 +1448,12 @@ function handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInpu
     } else if (event.key === 'n') {
         if (!notesFlags.notesShowing) {
             openNotesContainer(notesContainer, notesFlags);
-        } else if (!flags.noteTaskInputContainerShowing) {
+        } else if ((!flags.noteTaskInputContainerShowing) && (!flags.noteTaskInputContainerEditShowing)) {
             addNoteTaskContainer.click();
             taskCheckbox.checked = false;
             event.preventDefault();
         }
-    }  else if ((event.key === 't') && (notesFlags.notesShowing) && (!flags.noteTaskInputContainerShowing)) {
+    }  else if ((event.key === 't') && (notesFlags.notesShowing) && (!flags.noteTaskInputContainerShowing) && (!flags.noteTaskInputContainerEditShowing)) {
         addNoteTaskContainer.click();
         taskCheckbox.checked = true;
         event.preventDefault();
