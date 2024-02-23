@@ -188,6 +188,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 noteInputId = "noteDiv" + idNum;
                 taskInputId = "taskDiv" + idNum;
 
+                if (flags.noteTaskInputContainerShowing) {
+                    noteTaskInputContainer.style.display = 'none';
+                    addNoteTaskContainer.style.display = 'flex';
+                }
+
                 if (document.getElementById(noteInputId)) {
                     // Edit Note
                     console.log("Editing " + targetId);
