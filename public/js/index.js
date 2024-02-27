@@ -278,7 +278,6 @@ document.addEventListener("DOMContentLoaded", function() {
         pomodorosCompleted: 0
     }
 
-
     //STORAGE
     savedInterruptionsArr = [];
 

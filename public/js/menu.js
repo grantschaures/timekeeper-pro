@@ -72,15 +72,16 @@ document.addEventListener("DOMContentLoaded", function() {
         menu_btn.style.opacity = '1';
     }, 1000)
 
-    reportIcon.addEventListener("click", function(event) {
-        document.body.setAttribute('data-dashboard-mode', 'report');
-        state.lastSelectedMode = 'report';
-    })
+    // reportIcon.addEventListener("click", function(event) {
+    //     alert("This feature is currently under development. Thank you for your patience.");
+    //     document.body.setAttribute('data-dashboard-mode', 'report');
+    //     state.lastSelectedMode = 'report';
+    // })
     
-    homeIcon.addEventListener("click", function() {
-        document.body.setAttribute('data-dashboard-mode', 'home');
-        state.lastSelectedMode = 'home';
-    })
+    // homeIcon.addEventListener("click", function() {
+    //     document.body.setAttribute('data-dashboard-mode', 'home');
+    //     state.lastSelectedMode = 'home';
+    // })
     
     blogIcon.addEventListener("click", function() {
         document.body.setAttribute('data-dashboard-mode', 'blog');
@@ -237,7 +238,6 @@ document.addEventListener("DOMContentLoaded", function() {
             about_container.style.display = "none";
         }
 
-
         // hide blog container if click is not on menu or blog container, OR if the click is on the blog exit btn
         if ((event.target !== blog_btn && event.target !== blog_icon && event.target !== blog_menu_container && event.target !== blogIcon && !blog_container.contains(event.target) && !blog_post_container.contains(event.target) && !menu_btn.contains(event.target)) || event.target == blog_exit) {
             blog_container.style.display = "none";
@@ -252,9 +252,10 @@ document.addEventListener("DOMContentLoaded", function() {
         if ((event.target !== blog_btn && event.target !== blog_icon && event.target !== blog_menu_container && event.target !== about_btn && event.target !== about_icon  && event.target !== about_menu_container && !about_container.contains(event.target) && !blog_container.contains(event.target) && !menu_btn.contains(event.target)  && !blog_post_container.contains(event.target) && event.target !== settings_btn && event.target !== settings_icon && event.target !== settings_menu_container && !settings_container.contains(event.target) && event.target !== logInOut_btn && event.target !== login_icon && event.target !== login_menu_container) || (event.target == about_exit) || (event.target == blog_exit) || (event.target == blog_post_exit) || (event.target == settings_exit)) {
             // if user is exiting about or settings windows, make the setting the last one the user was on
             if (reportIcon.contains(event.target)) {
-                document.body.setAttribute('data-dashboard-mode', 'report');
-                state.lastSelectedMode = 'report';
-                main_elements.style.display = "none";
+                alert("This feature is currently under development. Thank you for your patience.");
+                // document.body.setAttribute('data-dashboard-mode', 'report');
+                // state.lastSelectedMode = 'report';
+                // main_elements.style.display = "none";
             } else if (homeIcon.contains(event.target)) {
                 document.body.setAttribute('data-dashboard-mode', 'home');
                 main_elements.style.display = "block";

@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", function() {
     dynamicList.addEventListener('click', function(event) {
         let target = event.target;
         let targetId = target.id;
-        console.log(targetId);
+        // console.log(targetId);
 
         if ((target.className.baseVal === 'check') || (target.className.baseVal === 'svgCheck')) {
             let idNum = getLastNumberFromId(targetId);
@@ -182,7 +182,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             let idNum;
             if ((target.classList.contains('editBtn')) || (target.classList.contains('editIcon'))) {
-                console.log("Edit Btn Clicked");
+                // console.log("Edit Btn Clicked");
 
                 idNum = getLastNumberFromId(targetId);
                 noteInputId = "noteDiv" + idNum;
@@ -197,22 +197,22 @@ document.addEventListener("DOMContentLoaded", function() {
                     addNoteTaskContainer.style.display = 'flex';
                 }
 
-                console.log(getTypeFromId(targetId))
+                // console.log(getTypeFromId(targetId))
                 if (getTypeFromId(targetId) === "Note") {
                     // Edit Note
-                    console.log("Editing " + targetId);
+                    // console.log("Editing " + targetId);
                     // Hide the chosen note and display the note-task-input-container
 
                     editNoteTask("note", noteInputId, state, flags);
                 } else if (getTypeFromId(targetId) === "Task") {
                     // Edit Task
-                    console.log("Editing " + targetId);
+                    // console.log("Editing " + targetId);
 
 
                     editNoteTask("task", taskInputId, state, flags);
                 }
             } else if ((target.classList.contains('removeBtn')) || (target.classList.contains('removeSvg')) || (target.classList.contains('removePath'))) {
-                console.log("Remove Btn Clicked");
+                // console.log("Remove Btn Clicked");
                 
                 idNum = getLastNumberFromId(targetId);
                 noteInputId = "noteDiv" + idNum;
@@ -227,7 +227,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         } else if ((targetId === "note-input-save-btn-edit") || (targetId === "note-input-cancel-btn-edit") || (targetId === "taskCheckbox-edit")) {
             if (targetId === "note-input-save-btn-edit") {
-                console.log("saved edit");
+                // console.log("saved edit");
                 let inputEditStr = document.getElementById('note-task-input-container-edit').querySelector('textarea').value;
 
                 document.getElementById(state.currentNoteTaskEditId).querySelector('span').textContent = inputEditStr;
@@ -237,7 +237,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 flags.noteTaskInputContainerEditShowing = false;
                 
             } else if (targetId === "note-input-cancel-btn-edit") {
-                console.log("cancelled edit");
+                // console.log("cancelled edit");
                 
                 
                 
@@ -894,7 +894,7 @@ document.addEventListener("DOMContentLoaded", function() {
     })
 
     emojiBtn2.addEventListener("click", function() {
-        console.log("emoji btn 2 was pressed");
+        // console.log("emoji btn 2 was pressed");
 
         if (!notesFlags.emojiContainerShowing) {
             emojiContainer.style.display = "block";
@@ -906,7 +906,7 @@ document.addEventListener("DOMContentLoaded", function() {
             notesFlags.emojiContainerShowing = true;
         } else {
 
-            console.log("else statement executed");
+            // console.log("else statement executed");
             // MAKE FUNCTION
             emojiContainer.style.display = "none";
             emojiContainer.style.opacity = '0';
@@ -1115,7 +1115,7 @@ function getTypeFromId(id) {
 }
 
 function autoExpandEdit(textarea) {
-    console.log("input")
+    // console.log("input");
     textarea.style.height = '24px';
     textarea.style.height = `${textarea.scrollHeight}px`;
 }
