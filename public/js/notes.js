@@ -391,11 +391,11 @@ document.addEventListener("DOMContentLoaded", function() {
         if (notesFlags.notesShowing === false) {
             openNotesContainer(notesContainer, notesFlags);
         } else {
-            closeNotesContainer(notesContainer, notesFlags, flags, noteInputCancelBtn);
+            closeNotesContainer(notesContainer, notesFlags, flags, noteInputCancelBtn, isMobile);
         }
     })
     
-    document.addEventListener('keydown', (event) => handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInput, createLabelDone, updateLabelInput, updateLabelDone, noteInputSaveBtn, noteTaskInputText, noteInputCancelBtn, addNoteTaskContainer, flags));
+    document.addEventListener('keydown', (event) => handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInput, createLabelDone, updateLabelInput, updateLabelDone, noteInputSaveBtn, noteTaskInputText, noteInputCancelBtn, addNoteTaskContainer, flags, isMobile));
     
     clearIcon.addEventListener("click", async function() {
 
@@ -1306,7 +1306,7 @@ function getLastNumberFromId(targetId) {
     }
 }
 
-function closeNotesContainer(notesContainer, notesFlags, flags, noteInputCancelBtn) {
+function closeNotesContainer(notesContainer, notesFlags, flags, noteInputCancelBtn, isMobile) {
 
     if (flags.noteTaskInputContainerShowing) {
         noteInputCancelBtn.click();
@@ -1453,7 +1453,7 @@ function deselectTags(tag, flags, tagIcon, clearIcon, labelSelectionRow, counter
     }
 }
 
-function handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInput, createLabelDone, updateLabelInput, updateLabelDone, noteInputSaveBtn, noteTaskInputText, noteInputCancelBtn, addNoteTaskContainer, flags) {
+function handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInput, createLabelDone, updateLabelInput, updateLabelDone, noteInputSaveBtn, noteTaskInputText, noteInputCancelBtn, addNoteTaskContainer, flags, isMobile) {
     if (event.key === 'Enter') {
         event.preventDefault();
         
@@ -1484,7 +1484,7 @@ function handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInpu
         if (document.activeElement === noteTaskInputText) {
             noteInputCancelBtn.click();
         } else {
-            closeNotesContainer(notesContainer, notesFlags, flags, noteInputCancelBtn);
+            closeNotesContainer(notesContainer, notesFlags, flags, noteInputCancelBtn, isMobile);
         }
     }
 }
