@@ -1315,7 +1315,10 @@ function closeNotesContainer(notesContainer, notesFlags, flags, noteInputCancelB
 
     notesContainer.classList.remove('fullsize');
     notesContainer.classList.remove('fullopacity');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (!isMobile) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
     notesFlags.notesShowing = false;
 }
 
