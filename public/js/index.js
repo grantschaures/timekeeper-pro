@@ -961,12 +961,12 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             
         } else if (document.visibilityState === 'visible') { //user returns to tab
-            if (flags.inHyperFocus) {
+            if ((flags.inHyperFocus) && (flags.flowTimeAnimationToggle)) {
                 setTimeout(() => {
                     flowAnimation.style.display = 'block';
                     flowAnimation.classList.add('intoOpacityTransition');
                 }, 500);
-            } else {
+            } else if ((!flags.inHyperFocus) && (flags.chillTimeAnimationToggle)) {
                 if (counters.startStop > 0) {
                     setTimeout(() => {
                         chillAnimation.style.display = 'flex';

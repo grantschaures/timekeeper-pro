@@ -349,7 +349,7 @@ document.addEventListener("DOMContentLoaded", function() {
         noteTaskInputContainer.style.display = 'flex';
 
 
-        console.log(flags.noteTaskInputContainerEditShowing);
+        // console.log(flags.noteTaskInputContainerEditShowing);
         if (flags.noteTaskInputContainerEditShowing) {
             document.getElementById('note-task-input-container-edit').remove();
             flags.noteTaskInputContainerEditShowing = false;
