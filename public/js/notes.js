@@ -1,10 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-    /**
-     * I just realized that you can make header comment like this now!
-     */
-
     const notesContainer = document.getElementById("notes-container");
-    
     const taskContainer = document.getElementById("task-container");
     const promptContainer = document.getElementById("prompt-container");
     const labelInputContainer = document.getElementById("label-input-container");
@@ -151,100 +146,25 @@ document.addEventListener("DOMContentLoaded", function() {
     dynamicList.addEventListener('click', function(event) {
         let target = event.target;
         let targetId = target.id;
-        // console.log(targetId);
 
         if ((target.className.baseVal === 'check') || (target.className.baseVal === 'svgCheck')) {
-            let idNum = getLastNumberFromId(targetId);
-            let taskDiv = document.getElementById("taskDiv" + idNum);
-            let check = document.getElementById("check" + idNum);
-            let taskCircularCheckElement = taskDiv.firstElementChild;
+            checkOrUncheckTask(targetId);
 
-            if (taskDiv.classList.contains('completed-task')) {
-                taskCircularCheckElement.style.backgroundColor = "";
-                
-                check.setAttribute('stroke-width', '2');
-                check.parentElement.parentElement.style.opacity = '';
-    
-                taskDiv.classList.remove('completed-task');
-
-            } else if (!(taskDiv.classList.contains('completed-task'))) {
-                taskCircularCheckElement.style.backgroundColor = "#3ba43e";
-                
-                check.setAttribute('stroke-width', '3');
-                check.parentElement.parentElement.style.opacity = '1';
-    
-                taskDiv.classList.add('completed-task');
-            }
         } else if ((target.classList.contains("editRemoveBtn")) || (target.classList.contains("editRemoveSvg")) || (target.classList.contains("editIcon")) || (target.classList.contains("removePath"))) {
 
-            // Discriminate between edit btn and remove btn
-            let taskInputId;
-
-            let idNum;
             if ((target.classList.contains('editBtn')) || (target.classList.contains('editIcon'))) {
-                // console.log("Edit Btn Clicked");
+                handleEditBtnClick(targetId, flags, noteTaskInputContainer, addNoteTaskContainer, state);
 
-                idNum = getLastNumberFromId(targetId);
-                noteInputId = "noteDiv" + idNum;
-                taskInputId = "taskDiv" + idNum;
-
-                // IDs
-                // Note: editBtnNote[n]
-                // Task: editBtnTask[n]
-
-                if (flags.noteTaskInputContainerShowing) {
-                    noteTaskInputContainer.style.display = 'none';
-                    addNoteTaskContainer.style.display = 'flex';
-                }
-
-                // console.log(getTypeFromId(targetId))
-                if (getTypeFromId(targetId) === "Note") {
-                    // Edit Note
-                    // console.log("Editing " + targetId);
-                    // Hide the chosen note and display the note-task-input-container
-
-                    editNoteTask("note", noteInputId, state, flags);
-                } else if (getTypeFromId(targetId) === "Task") {
-                    // Edit Task
-                    // console.log("Editing " + targetId);
-
-
-                    editNoteTask("task", taskInputId, state, flags);
-                }
             } else if ((target.classList.contains('removeBtn')) || (target.classList.contains('removeSvg')) || (target.classList.contains('removePath'))) {
-                // console.log("Remove Btn Clicked");
-                
-                idNum = getLastNumberFromId(targetId);
-                noteInputId = "noteDiv" + idNum;
-                taskInputId = "taskDiv" + idNum;
+                handleRemoveBtnClick(targetId);
 
-
-                if (document.getElementById(noteInputId)) {
-                    document.getElementById(noteInputId).remove();
-                } else if (document.getElementById(taskInputId)) {
-                    document.getElementById(taskInputId).remove();
-                }
             }
-        } else if ((targetId === "note-input-save-btn-edit") || (targetId === "note-input-cancel-btn-edit") || (targetId === "taskCheckbox-edit")) {
+        } else if ((targetId === "note-input-save-btn-edit") || (targetId === "note-input-cancel-btn-edit")) {
             if (targetId === "note-input-save-btn-edit") {
-                // console.log("saved edit");
-                let inputEditStr = document.getElementById('note-task-input-container-edit').querySelector('textarea').value;
-
-                document.getElementById(state.currentNoteTaskEditId).querySelector('span').textContent = inputEditStr;
-                document.getElementById(state.currentNoteTaskEditId).style.display = "flex";
-                document.getElementById('note-task-input-container-edit').remove();
-
-                flags.noteTaskInputContainerEditShowing = false;
+                noteInputSaveBtnClick_editMode(state, flags);
                 
             } else if (targetId === "note-input-cancel-btn-edit") {
-                // console.log("cancelled edit");
-                
-                
-                
-                document.getElementById('note-task-input-container-edit').remove();
-                document.getElementById(state.currentNoteTaskEditId).style.display = "flex";
-                
-                flags.noteTaskInputContainerEditShowing = false;
+                noteInputCancelBtnClick_editMode(state, flags)
 
             }
         }
@@ -255,78 +175,28 @@ document.addEventListener("DOMContentLoaded", function() {
     })
 
     noteInputSaveBtn.addEventListener('click', function() {
-        //gather the value of the input
-        //use as innerText content for new note/ task container
-
         let inputStr = noteTaskInputText.value;
-
         if (inputStr === "") {
             noteInputCancel(noteTaskInputContainer, addNoteTaskContainer, flags, noteTaskInputText);
             return;
         }
 
+        let container;
         let noteTaskDiv = document.createElement('div');
         noteTaskDiv.classList.add('noteTask');
 
-        let container;
-
         if (taskCheckbox.checked) {
-            let taskCircularCheckDiv = document.createElement('div');
-            taskCircularCheckDiv.classList.add('taskCircularCheck');
-            
-            let circularCheckDiv = document.createElement('div');
-            circularCheckDiv.classList.add('circularCheck');
-            
-            // Create the SVG element
-            var svgCheck = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-            svgCheck.setAttribute('width', '20');
-            svgCheck.setAttribute('height', '20');
-            svgCheck.setAttribute('viewBox', '0 0 20 20');
-            svgCheck.classList.add('svgCheck');
-            svgCheck.id = "svgCheck" + counters.lastTaskInputIdNum;
-            
-            // Create the path element
-            var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-            path.classList.add('check');
-            path.setAttribute('class', 'check');
-            path.setAttribute('d', 'M4 10 L8 14 L16 6');
-            path.setAttribute('stroke', 'white');
-            path.setAttribute('stroke-width', '2');
-            path.setAttribute('fill', 'none');
-            path.setAttribute('stroke-linecap', 'round');
-            path.setAttribute('stroke-linejoin', 'round');
-            path.id = "check" + counters.lastTaskInputIdNum;
-            
-            // Append the path to the SVG
-            svgCheck.appendChild(path);
-            circularCheckDiv.appendChild(svgCheck);
-            taskCircularCheckDiv.appendChild(circularCheckDiv);
+            // Create check element and attach to div
+            let taskCircularCheckDiv = createCheckElements(counters);
             noteTaskDiv.appendChild(taskCircularCheckDiv);
-            
-            var taskText = document.createElement('span');
-            taskText.textContent = inputStr;
-            noteTaskDiv.appendChild(taskText);
-            noteTaskDiv.id = "taskDiv" + counters.lastTaskInputIdNum;
 
-            container = appendEditRemoveContainer("Task", counters.lastTaskInputIdNum);
-
-            counters.lastTaskInputIdNum += 1;
-            // console.log("Latest Task ID: " + counters.lastTaskInputIdNum);
+            container = createNote(inputStr, noteTaskDiv, counters, container);
         } else {
             // make a new note div
-            var taskText = document.createElement('span');
-            taskText.textContent = inputStr;
-            noteTaskDiv.appendChild(taskText)
-            noteTaskDiv.id = "noteDiv" + counters.lastNoteInputIdNum;
-
-            container = appendEditRemoveContainer("Note", counters.lastNoteInputIdNum);
-
-            counters.lastNoteInputIdNum += 1;
-            // console.log("Latest Note ID: " + counters.lastNoteInputIdNum);
+            container = createNote(inputStr, noteTaskDiv, counters, container);
         }
 
         noteTaskDiv.appendChild(container);
-
         dynamicList.appendChild(noteTaskDiv);
 
         // Scroll the new noteTaskDiv into view
@@ -372,21 +242,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     textarea.addEventListener('input', autoExpand);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     notesBtn.addEventListener("click", function() {
         if (notesFlags.notesShowing === false) {
             openNotesContainer(notesContainer, notesFlags);
@@ -414,7 +269,6 @@ document.addEventListener("DOMContentLoaded", function() {
         tagIcon.style.marginLeft = '';
         tagIcon.classList.remove('tagToLeftSide');
         promptContainer.style.width = '';
-
 
         if (notesFlags.notesConsoleShowing) {
             notesConsole.style.display = "none";
@@ -1101,6 +955,122 @@ document.addEventListener("DOMContentLoaded", function() {
 // ---------------------
 // HELPER FUNCTIONS 2
 // ---------------------
+function createNote(inputStr, noteTaskDiv, counters, container) {
+
+    var taskText = document.createElement('span');
+    taskText.textContent = inputStr;
+    noteTaskDiv.appendChild(taskText);
+    noteTaskDiv.id = "taskDiv" + counters.lastTaskInputIdNum;
+
+    container = appendEditRemoveContainer("Task", counters.lastTaskInputIdNum);
+
+    counters.lastTaskInputIdNum += 1;
+
+    return container;
+}
+
+function createCheckElements(counters) {
+    let taskCircularCheckDiv = document.createElement('div');
+    taskCircularCheckDiv.classList.add('taskCircularCheck');
+    
+    let circularCheckDiv = document.createElement('div');
+    circularCheckDiv.classList.add('circularCheck');
+    
+    // Create the SVG element
+    var svgCheck = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svgCheck.setAttribute('width', '20');
+    svgCheck.setAttribute('height', '20');
+    svgCheck.setAttribute('viewBox', '0 0 20 20');
+    svgCheck.classList.add('svgCheck');
+    svgCheck.id = "svgCheck" + counters.lastTaskInputIdNum;
+    
+    // Create the path element
+    var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.classList.add('check');
+    path.setAttribute('class', 'check');
+    path.setAttribute('d', 'M4 10 L8 14 L16 6');
+    path.setAttribute('stroke', 'white');
+    path.setAttribute('stroke-width', '2');
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke-linecap', 'round');
+    path.setAttribute('stroke-linejoin', 'round');
+    path.id = "check" + counters.lastTaskInputIdNum;
+    
+    // Append the path to the SVG
+    svgCheck.appendChild(path);
+    circularCheckDiv.appendChild(svgCheck);
+    taskCircularCheckDiv.appendChild(circularCheckDiv);
+
+    return taskCircularCheckDiv;
+}
+
+function noteInputCancelBtnClick_editMode(state, flags) {
+    document.getElementById('note-task-input-container-edit').remove();
+    document.getElementById(state.currentNoteTaskEditId).style.display = "flex";
+    
+    flags.noteTaskInputContainerEditShowing = false; 
+}
+
+function noteInputSaveBtnClick_editMode(state, flags) {
+    let inputEditStr = document.getElementById('note-task-input-container-edit').querySelector('textarea').value;
+
+    document.getElementById(state.currentNoteTaskEditId).querySelector('span').textContent = inputEditStr;
+    document.getElementById(state.currentNoteTaskEditId).style.display = "flex";
+    document.getElementById('note-task-input-container-edit').remove();
+
+    flags.noteTaskInputContainerEditShowing = false;
+}
+
+function handleRemoveBtnClick(targetId) {
+    let idNum = getLastNumberFromId(targetId);
+    let noteInputId = "noteDiv" + idNum;
+    let taskInputId = "taskDiv" + idNum;
+
+
+    if (document.getElementById(noteInputId)) {
+        document.getElementById(noteInputId).remove();
+    } else if (document.getElementById(taskInputId)) {
+        document.getElementById(taskInputId).remove();
+    }  
+}
+
+function handleEditBtnClick(targetId, flags, noteTaskInputContainer, addNoteTaskContainer, state) {
+    let idNum = getLastNumberFromId(targetId);
+    let noteInputId = "noteDiv" + idNum;
+    let taskInputId = "taskDiv" + idNum;
+
+    if (flags.noteTaskInputContainerShowing) {
+        noteTaskInputContainer.style.display = 'none';
+        addNoteTaskContainer.style.display = 'flex';
+    }
+
+    if (getTypeFromId(targetId) === "Note") {
+        editNoteTask("note", noteInputId, state, flags);
+    } else if (getTypeFromId(targetId) === "Task") {
+        editNoteTask("task", taskInputId, state, flags);
+    }
+}
+
+function checkOrUncheckTask(targetId) {
+    let idNum = getLastNumberFromId(targetId);
+    let taskDiv = document.getElementById("taskDiv" + idNum);
+    let check = document.getElementById("check" + idNum);
+    let taskCircularCheckElement = taskDiv.firstElementChild;
+
+    if (taskDiv.classList.contains('completed-task')) {
+        taskCircularCheckElement.style.backgroundColor = "";
+        check.setAttribute('stroke-width', '2');
+        check.parentElement.parentElement.style.opacity = '';
+        taskDiv.classList.remove('completed-task');
+
+    } else if (!(taskDiv.classList.contains('completed-task'))) {
+        taskCircularCheckElement.style.backgroundColor = "#3ba43e";
+        check.setAttribute('stroke-width', '3');
+        check.parentElement.parentElement.style.opacity = '1';
+        taskDiv.classList.add('completed-task');
+    }
+}
+
 function getTypeFromId(id) {
     // Regular expression to match "editBtn" or "editIcon" followed by "Note" or "Task" and then by any number of digits
     const match = id.match(/(editBtn|editIcon)(Note|Task)\d+/);
@@ -1445,6 +1415,7 @@ function deselectTags(tag, flags, tagIcon, clearIcon, labelSelectionRow, counter
 
     //if there weren't any tags left in the selection window, add the selection divider '|'
     //and remove the margin-left value and indicate that there's tags in the selection window
+
     //MAKE THIS A FUNCTION
     if (flags.tagSelection === false) {
         tagSelectionDivider.style.display = 'flex';

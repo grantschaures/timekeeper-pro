@@ -40,6 +40,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const start_stop_btn = document.getElementById("start-stop");
 
     const reportIcon = document.getElementById("report-icon");
+    const reportPath = document.getElementById("report-path");
+
     const homeIcon = document.getElementById("home-icon");
     const blogIcon = document.getElementById("blog-icon");
     const blogMenuContainer = document.getElementById("blogMenuContainer");
@@ -78,10 +80,10 @@ document.addEventListener("DOMContentLoaded", function() {
     //     state.lastSelectedMode = 'report';
     // })
     
-    // homeIcon.addEventListener("click", function() {
-    //     document.body.setAttribute('data-dashboard-mode', 'home');
-    //     state.lastSelectedMode = 'home';
-    // })
+    homeIcon.addEventListener("click", function() {
+        document.body.setAttribute('data-dashboard-mode', 'home');
+        state.lastSelectedMode = 'home';
+    })
     
     blogIcon.addEventListener("click", function() {
         document.body.setAttribute('data-dashboard-mode', 'blog');
@@ -239,7 +241,9 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         // hide blog container if click is not on menu or blog container, OR if the click is on the blog exit btn
-        if ((event.target !== blog_btn && event.target !== blog_icon && event.target !== blog_menu_container && event.target !== blogIcon && !blog_container.contains(event.target) && !blog_post_container.contains(event.target) && !menu_btn.contains(event.target)) || event.target == blog_exit) {
+        // eventually, remove event.target !== reportIcon && event.target !== reportPath
+        if ((event.target !== reportIcon && event.target !== reportPath && event.target !== blog_btn && event.target !== blog_icon && event.target !== blog_menu_container && event.target !== blogIcon && !blog_container.contains(event.target) && !blog_post_container.contains(event.target) && !menu_btn.contains(event.target)) || event.target == blog_exit) {
+            // console.log("test")
             blog_container.style.display = "none";
         }
 
