@@ -314,7 +314,8 @@ document.addEventListener("DOMContentLoaded", function() {
         darkThemeActivated: false,
         modeChangeExecuted: false,
         sentFlowmodoroNotification: false,
-        sentSuggestionMinutesNotification: false
+        sentSuggestionMinutesNotification: false,
+        enterKeyDown: false
     }
 
     tempStorage = {
@@ -377,6 +378,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // EVENT LISTENERS
     // ----------------
     document.addEventListener('keydown', (event) => handleEnter(event, start_stop_btn, submit_change_btn, createLabelInput, updateLabelInput, flags));
+    document.addEventListener('keyup', (event) => handleKeyUp(event, flags));
 
     start_stop_btn.addEventListener("click", function() {
         
@@ -2022,8 +2024,9 @@ function playClick(clock_tick, flags) {
 
 function handleEnter(event, start_stop_btn, submit_change_btn, createLabelInput, updateLabelInput, flags) {
 
-    if (event.key === 'Enter') {
+    if ((event.key === 'Enter') && (!flags.enterKeyDown)) {
         event.preventDefault();
+        flags.enterKeyDown = true;
         
         if (document.activeElement.id === 'target-hours') {
             submit_change_btn.click();
@@ -2043,6 +2046,12 @@ function handleEnter(event, start_stop_btn, submit_change_btn, createLabelInput,
         }
     }
 };
+
+function handleKeyUp(event, flags) {
+    if ((event.key === 'Enter') && (flags.enterKeyDown)) {
+        flags.enterKeyDown = false;
+    }
+}
 
 function totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, targetTime) {
     

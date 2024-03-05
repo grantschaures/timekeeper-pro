@@ -51,6 +51,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const noteInputSaveBtn = document.getElementById("note-input-save-btn");
     const taskCheckbox = document.getElementById('taskCheckbox');
     const dynamicList = document.getElementById('dynamicList');
+    const textarea = document.getElementById('note-task-input-text');
 
     // CONSOLE
     let notesFlags = {
@@ -175,38 +176,18 @@ document.addEventListener("DOMContentLoaded", function() {
     })
 
     noteInputSaveBtn.addEventListener('click', function() {
-        let inputStr = noteTaskInputText.value;
-        if (inputStr === "") {
-            noteInputCancel(noteTaskInputContainer, addNoteTaskContainer, flags, noteTaskInputText);
-            return;
-        }
 
-        let container;
-        let noteTaskDiv = document.createElement('div');
-        noteTaskDiv.classList.add('noteTask');
-
-        if (taskCheckbox.checked) {
-            // Create check element and attach to div
-            let taskCircularCheckDiv = createCheckElements(counters);
-            noteTaskDiv.appendChild(taskCircularCheckDiv);
-
-            container = createNote(inputStr, noteTaskDiv, counters, container);
-        } else {
-            // make a new note div
-            container = createNote(inputStr, noteTaskDiv, counters, container);
-        }
-
-        noteTaskDiv.appendChild(container);
-        dynamicList.appendChild(noteTaskDiv);
+        noteInputSave(noteTaskInputContainer, addNoteTaskContainer, flags, noteTaskInputText, taskCheckbox, counters);
 
         // Scroll the new noteTaskDiv into view
         setTimeout(() => {
             notesConsole.scrollTo({ top: notesConsole.scrollHeight, behavior: 'smooth' });
         }, 0);
 
+        // Reset noteTaskInput
         noteTaskInputText.value = "";
         noteTaskInputText.focus();
-        autoExpand(); // resets input container to original size for next input
+        autoExpand();
     })
 
     noteInputCancelBtn.addEventListener('click', function() {
@@ -218,8 +199,6 @@ document.addEventListener("DOMContentLoaded", function() {
         addNoteTaskContainer.style.display = 'none';
         noteTaskInputContainer.style.display = 'flex';
 
-
-        // console.log(flags.noteTaskInputContainerEditShowing);
         if (flags.noteTaskInputContainerEditShowing) {
             document.getElementById('note-task-input-container-edit').remove();
             flags.noteTaskInputContainerEditShowing = false;
@@ -235,7 +214,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }, 0);
     })
 
-    const textarea = document.getElementById('note-task-input-text');
     function autoExpand() {
         textarea.style.height = '24px';
         textarea.style.height = `${textarea.scrollHeight}px`;
@@ -255,7 +233,7 @@ document.addEventListener("DOMContentLoaded", function() {
     clearIcon.addEventListener("click", async function() {
 
         let tagDivs = document.querySelectorAll('.selected-tag .tag-text');
-        tagDivs.forEach(tag => {
+        tagDivs.forEach(tag => { // resetting font size back to default 20px
             tag.style.fontSize = '20px';
         })
 
@@ -369,6 +347,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         //if active element contains tag-selection class and ONLY shift is pressed
         if ((target.classList.contains('tag-text')) && ((flags.shiftPressed) && (!flags.altPressed)) && (target !== selectionDoneDiv) && (target !== selectionDone) && (target !== addTagIcon)) {
+            
             // if a previous element was selected for deletion, it's reset
             if (state.lastSelectionElement !== null) {
                 state.lastSelectionElement.style.backgroundColor = "";
@@ -397,104 +376,24 @@ document.addEventListener("DOMContentLoaded", function() {
 
     labelSelectionRow.addEventListener('click', function(event) {
         var target = event.target;
-
         if (target.className === 'selection-tag' || (((target.className === 'tag-text') || (target.className === 'tag-text deleteJiggling')) && (target.innerText !== "Done"))) {
-
             if ((flags.shiftPressed) && (!flags.altPressed)) {
-                let toDeleteTagId;
-                if (target.className === 'tag-text deleteJiggling') {
-                    toDeleteTagId = target.parentElement.id;
-                } else {
-                    toDeleteTagId = target.id;
-                }
-
-                document.getElementById(toDeleteTagId).remove();
-
-                // MAKE THIS A FUNCTION
-                if (!addDoneContainer.previousElementSibling) {
-                    tagSelectionDivider.style.display = 'none';
-                    addDoneContainer.style.marginLeft = '7px';
-                    flags.tagSelection = false;
-                }
-                // MAKE THIS A FUNCTION
+                deleteLabel(target, addDoneContainer, tagSelectionDivider, flags);
                 return;
             } else if ((flags.altPressed) || ((flags.altPressed) && (flags.shiftPressed))) {
-                // update label
                 updateLabel(target);
             } else {
-                // this limit can be changed if needed (refer to user feedback, if there is any)
                 if (counters.tagsSelected === 5) {
-                    alert("You've reached your max limit of 5 labels")
+                    alert("You've reached your max limit of 5 labels");
                 } else {
-                    //if more than 1 selected tag, adds a '|' divider to left
                     counters.tagsSelected++;
-                    if (counters.tagsSelected > 1) {
-                        let dividerElement = document.createElement('h4');
-                        dividerElement.className = 'tag-divider unselectable';
-                        dividerElement.innerText = '|';
-                        labelInputContainer.append(dividerElement);
-                    }
-        
-                    // initialize vars
-                    let selectionTagId;
-                    let innerHTML;
-                    let selectedBackgroundColor = 'rgba(255, 255, 255, 0.2)';
-        
-                    if (target.className === 'tag-text') {
-                        selectionTagId = target.parentElement.id;
-                        innerHTML = target.parentElement.innerHTML;
-                    } else {
-                        selectionTagId = target.id;
-                        innerHTML = target.innerHTML;
-                    }
-    
-                    // Remove tag from selection window
-                    document.getElementById(selectionTagId).remove();
-        
-                    // Add tag to label input container
-                    let selectedDiv = document.createElement('div');
-                    selectedDiv.className = 'tag unselectable selected-tag';
-                    selectedDiv.innerHTML = innerHTML;
-                    selectedDiv.id = selectionTagId;
-                    selectedDiv.firstElementChild.style.backgroundColor = selectedBackgroundColor;
-        
-                    labelInputContainer.appendChild(selectedDiv);
-        
-                    if (flags.tagSelected === false) {
-                        flags.tagSelected = true;
-                        tagIcon.style.marginLeft = '5px';
-                        tagIcon.classList.add('tagToLeftSide');
-                        promptContainer.style.width = '100%';
-    
-                        clearIcon.style.display = 'flex';
-                    }
-        
-                    // MAKE THIS A FUNCTION
-                    if (!addDoneContainer.previousElementSibling) {
-                        tagSelectionDivider.style.display = 'none';
-                        addDoneContainer.style.marginLeft = '7px';
-                        flags.tagSelection = false;
-                    }
-                    // MAKE THIS A FUNCTION
-    
+                    addLabelInputContainerTagDivider(counters, labelInputContainer);
+                    addLabel(target, labelInputContainer);
+                    addLabelInitialActions(flags, tagIcon, promptContainer, clearIcon);
+                    removeTagSelectionDivider(addDoneContainer, tagSelectionDivider, flags);
                     if ((labelInputContainer.scrollWidth > labelInputContainer.clientWidth) || (state.currentLabelInputTagSize < 20)) {
-                        
-                        // console.log(labelInputContainer.scrollWidth - labelInputContainer.clientWidth);
-                        
-                        
-                        // MAKE FUNCTION
-                        let tagDivs = document.querySelectorAll('.selected-tag .tag-text');
-                        let fontArrIndex = 0;
-                        do {
-                            tagDivs.forEach(tag => {
-                                tag.style.fontSize = fontSizeArr[fontArrIndex];
-                                state.currentLabelInputTagSize = fontNumArr[fontArrIndex];
-                            })
-                            // console.log(fontSizeArr[fontArrIndex]);
-                            fontArrIndex++;
-                        } while (((labelInputContainer.scrollWidth - labelInputContainer.clientWidth) > 0) && (fontArrIndex < 9))
-                        // MAKE FUNCTION
-    
+                        adjustLabelFontSize(state, fontSizeArr, fontNumArr, labelInputContainer);
+
                         if (labelInputContainer.scrollWidth > labelInputContainer.clientWidth) {
                             labelInputContainer.style.justifyContent = 'left';
                         }
@@ -538,20 +437,7 @@ document.addEventListener("DOMContentLoaded", function() {
             
             // resets size of no overflow in labelInputContainer
             if (labelInputContainer.scrollWidth <= labelInputContainer.clientWidth) {
-                
-                
-                // MAKE FUNCTION
-                let tagDivs = document.querySelectorAll('.selected-tag .tag-text');
-                let fontArrIndex = 0;
-                do {
-                    tagDivs.forEach(tag => {
-                        tag.style.fontSize = fontSizeArr[fontArrIndex];
-                        state.currentLabelInputTagSize = fontNumArr[fontArrIndex];
-                    })
-                    // console.log(fontSizeArr[fontArrIndex]);
-                    fontArrIndex++;
-                } while (((labelInputContainer.scrollWidth - labelInputContainer.clientWidth) > 0) && (fontArrIndex < 9))
-                // MAKE FUNCTION
+                adjustLabelFontSize(state, fontSizeArr, fontNumArr, labelInputContainer);
             }
 
             if (labelInputContainer.scrollWidth <= labelInputContainer.clientWidth) {
@@ -575,11 +461,7 @@ document.addEventListener("DOMContentLoaded", function() {
         
         backToLabelSelection(createLabelContainer, createLabelWindow, clearIcon, promptContainer, labelInputContainer, labelSelectionWindow, flags);
 
-        // MAKE FUNCTION
-        emojiContainer.style.display = "none";
-        emojiContainer.style.opacity = '0';
-        notesFlags.emojiContainerShowing = false;
-        // MAKE FUNCTION
+        hideEmojiContainer(emojiContainer, notesFlags);
 
         flags.createLabelWindowOpen = false;
     })
@@ -590,11 +472,7 @@ document.addEventListener("DOMContentLoaded", function() {
         
         backToLabelSelection(updateLabelContainer, updateLabelWindow, clearIcon, promptContainer, labelInputContainer, labelSelectionWindow, flags);
 
-        // MAKE FUNCTION
-        emojiContainer.style.display = "none";
-        emojiContainer.style.opacity = '0';
-        notesFlags.emojiContainerShowing = false;
-        // MAKE FUNCTION
+        hideEmojiContainer(emojiContainer, notesFlags);
 
         flags.updateLabelWindowOpen = false;
     })
@@ -603,16 +481,7 @@ document.addEventListener("DOMContentLoaded", function() {
         //take user input and turn into a label selection element
         if ((createLabelInput.value !== "") && (containsNonSpaceChar(createLabelInput.value))) {
 
-            // Checking for uniqueness
-            let isUnique = true;
-            let currentSelectionTags = document.querySelectorAll('.selection-tag');
-            currentSelectionTags.forEach(tag => {
-                let labelName = tag.firstElementChild.textContent;
-                if (labelName === (createLabelInput.value).trim()) {
-                    alert("The label '" + labelName + "' already exists!");
-                    isUnique = false;
-                }
-            })
+            let isUnique = checkLabelIsUnique(createLabelInput);
 
             // Ensuring entry is not more than 42 letters
             if (((createLabelInput.value).trim()).length > 42) {
@@ -621,46 +490,16 @@ document.addEventListener("DOMContentLoaded", function() {
             }
 
             if (isUnique) {
-                // Label Creation Process
-                let labelName = createLabelInput.value;
-                let innerHTMLString = "<h4 class='tag-text'>" + labelName + "</h4>";
-                
-                let selectionDiv = document.createElement('div');
-                selectionDiv.className = 'tag unselectable selection-tag';
-                selectionDiv.innerHTML = innerHTMLString;
-                
-                counters.lastLabelIdNum += 1;
-                selectionDiv.id = "tag-" + (counters.lastLabelIdNum);
-    
-                labelSelectionRow.insertBefore(selectionDiv, addDoneContainer);
-
-
-                // REPLACES Emoji Btn Picture W/ Last Selected Emoji!
-                if (state.lastSelectedEmojiId !== null) {
-                    // get path of src for last selected emoji id
-                    // assign that path to the OGemoji id (represents the emoji btn)
-                    let emojiImgPath = document.getElementById(state.lastSelectedEmojiId).src;
-                    emojiImg.src = emojiImgPath; // for add label container
-                    emojiImg2.src = emojiImgPath; // for update label container
-                }
+                createLabel(createLabelInput, counters, labelSelectionRow, addDoneContainer);
+                replaceEmoji(state, emojiImg, emojiImg2);
             }
 
             flags.createLabelWindowOpen = false;
         }
 
-        //MAKE THIS A FUNCTION
-        if (flags.tagSelection === false) {
-            tagSelectionDivider.style.display = 'flex';
-            addDoneContainer.style.marginLeft = '';
-            flags.tagSelection = true;
-        }
-        //MAKE THIS A FUNCTION
+        showTagSelectionDivider(flags, tagSelectionDivider, addDoneContainer);
 
-        // MAKE FUNCTION
-        emojiContainer.style.display = "none";
-        emojiContainer.style.opacity = '0';
-        notesFlags.emojiContainerShowing = false;
-        // MAKE FUNCTION
+        hideEmojiContainer(emojiContainer, notesFlags);
         
         //go back to label selection window
         createLabelInput.value = "";
@@ -671,17 +510,7 @@ document.addEventListener("DOMContentLoaded", function() {
         //take user input and turn into a label selection element
         if ((updateLabelInput.value !== "") && (containsNonSpaceChar(updateLabelInput.value))) {
 
-            // Checking for uniqueness
-            let isUnique = true;
-            let elementToUpdateName = (document.getElementById(state.elementToUpdateId)).innerText.trim();
-            let currentSelectionTags = document.querySelectorAll('.selection-tag');
-            currentSelectionTags.forEach(tag => {
-                let labelName = tag.firstElementChild.textContent;
-                if ((labelName === (updateLabelInput.value).trim()) && (elementToUpdateName !== (updateLabelInput.value).trim())) {
-                    alert("The label '" + labelName + "' already exists!");
-                    isUnique = false;
-                }
-            })
+            let isUnique = checkIfUpdatedLabelIsUnique(state, updateLabelInput);
 
             if (isUnique === false) {
                 return;
@@ -696,31 +525,14 @@ document.addEventListener("DOMContentLoaded", function() {
             // Label Update Process
             document.getElementById(state.elementToUpdateId).firstElementChild.textContent = (updateLabelInput.value).trim();
 
-            // REPLACES Emoji Btn Picture W/ Last Selected Emoji!
-            if (state.lastSelectedEmojiId !== null) {
-                // get path of src for last selected emoji id
-                // assign that path to the OGemoji id (represents the emoji btn)
-                let emojiImgPath = document.getElementById(state.lastSelectedEmojiId).src;
-                emojiImg.src = emojiImgPath; // for add label container
-                emojiImg2.src = emojiImgPath; // for update label container
-            }
+            replaceEmoji(state, emojiImg, emojiImg2);
 
             flags.updateLabelWindowOpen = false;
         }
 
-        //MAKE THIS A FUNCTION
-        if (flags.tagSelection === false) {
-            tagSelectionDivider.style.display = 'flex';
-            addDoneContainer.style.marginLeft = '';
-            flags.tagSelection = true;
-        }
-        //MAKE THIS A FUNCTION
+        showTagSelectionDivider(flags, tagSelectionDivider, addDoneContainer);
 
-        // MAKE FUNCTION
-        emojiContainer.style.display = "none";
-        emojiContainer.style.opacity = '0';
-        notesFlags.emojiContainerShowing = false;
-        // MAKE FUNCTION
+        hideEmojiContainer(emojiContainer, notesFlags);
         
         //go back to label selection window
         updateLabelInput.value = "";
@@ -739,11 +551,7 @@ document.addEventListener("DOMContentLoaded", function() {
             
             notesFlags.emojiContainerShowing = true;
         } else {
-            // MAKE FUNCTION
-            emojiContainer.style.display = "none";
-            emojiContainer.style.opacity = '0';
-            notesFlags.emojiContainerShowing = false;
-            // MAKE 
+            hideEmojiContainer(emojiContainer, notesFlags);
         }
     })
 
@@ -761,11 +569,8 @@ document.addEventListener("DOMContentLoaded", function() {
         } else {
 
             // console.log("else statement executed");
-            // MAKE FUNCTION
-            emojiContainer.style.display = "none";
-            emojiContainer.style.opacity = '0';
-            notesFlags.emojiContainerShowing = false;
-            // MAKE 
+
+            hideEmojiContainer(emojiContainer, notesFlags);
         }
     })
 
@@ -955,6 +760,184 @@ document.addEventListener("DOMContentLoaded", function() {
 // ---------------------
 // HELPER FUNCTIONS 2
 // ---------------------
+function hideEmojiContainer(emojiContainer, notesFlags) {
+    emojiContainer.style.display = "none";
+    emojiContainer.style.opacity = '0';
+    notesFlags.emojiContainerShowing = false;
+}
+
+function showTagSelectionDivider(flags, tagSelectionDivider, addDoneContainer) {
+    if (flags.tagSelection === false) {
+        tagSelectionDivider.style.display = 'flex';
+        addDoneContainer.style.marginLeft = '';
+        flags.tagSelection = true;
+    }
+}
+
+function replaceEmoji(state, emojiImg, emojiImg2) {
+    // REPLACES Emoji Btn Picture W/ Last Selected Emoji!
+    if (state.lastSelectedEmojiId !== null) {
+        // get path of src for last selected emoji id
+        // assign that path to the OGemoji id (represents the emoji btn)
+        let emojiImgPath = document.getElementById(state.lastSelectedEmojiId).src;
+        emojiImg.src = emojiImgPath; // for add label container
+        emojiImg2.src = emojiImgPath; // for update label container
+    }
+}
+
+function createLabel(createLabelInput, counters, labelSelectionRow, addDoneContainer) {
+    // Label Creation Process
+    let labelName = createLabelInput.value;
+    let innerHTMLString = "<h4 class='tag-text'>" + labelName + "</h4>";
+    
+    let selectionDiv = document.createElement('div');
+    selectionDiv.className = 'tag unselectable selection-tag';
+    selectionDiv.innerHTML = innerHTMLString;
+    
+    counters.lastLabelIdNum += 1;
+    selectionDiv.id = "tag-" + (counters.lastLabelIdNum);
+
+    labelSelectionRow.insertBefore(selectionDiv, addDoneContainer);
+}
+
+function checkLabelIsUnique(createLabelInput) {
+    let isUnique = true;
+    let currentSelectionTags = document.querySelectorAll('.selection-tag');
+    currentSelectionTags.forEach(tag => {
+        let labelName = tag.firstElementChild.textContent;
+        if (labelName === (createLabelInput.value).trim()) {
+            alert("The label '" + labelName + "' already exists!");
+            isUnique = false;
+        }
+    })
+
+    return isUnique;
+}
+
+function checkIfUpdatedLabelIsUnique(state, updateLabelInput) {
+    let isUnique = true;
+    let elementToUpdateName = (document.getElementById(state.elementToUpdateId)).innerText.trim();
+    let currentSelectionTags = document.querySelectorAll('.selection-tag');
+    currentSelectionTags.forEach(tag => {
+        let labelName = tag.firstElementChild.textContent;
+        if ((labelName === (updateLabelInput.value).trim()) && (elementToUpdateName !== (updateLabelInput.value).trim())) {
+            alert("The label '" + labelName + "' already exists!");
+            isUnique = false;
+        }
+    })
+
+    return isUnique;
+}
+
+function noteInputSave(noteTaskInputContainer, addNoteTaskContainer, flags, noteTaskInputText, taskCheckbox, counters) {
+    let inputStr = noteTaskInputText.value;
+    if (inputStr === "") {
+        noteInputCancel(noteTaskInputContainer, addNoteTaskContainer, flags, noteTaskInputText);
+        return;
+    }
+
+    let container;
+    let noteTaskDiv = document.createElement('div');
+    noteTaskDiv.classList.add('noteTask');
+
+    if (taskCheckbox.checked) {
+        // Create check element and attach to div
+        let taskCircularCheckDiv = createCheckElements(counters);
+        noteTaskDiv.appendChild(taskCircularCheckDiv);
+
+        container = createNote(inputStr, noteTaskDiv, counters, container);
+    } else {
+        // make a new note div
+        container = createNote(inputStr, noteTaskDiv, counters, container);
+    }
+
+    noteTaskDiv.appendChild(container);
+    dynamicList.appendChild(noteTaskDiv);
+}
+
+function addLabelInitialActions(flags, tagIcon, promptContainer, clearIcon) {
+    // initial actions if adding first label to label input container
+    if (flags.tagSelected === false) {
+        flags.tagSelected = true;
+        tagIcon.style.marginLeft = '5px';
+        tagIcon.classList.add('tagToLeftSide');
+        promptContainer.style.width = '100%';
+
+        clearIcon.style.display = 'flex';
+    }
+}
+
+function addLabel(target, labelInputContainer) {
+    // initialize vars
+    let selectionTagId;
+    let innerHTML;
+    let selectedBackgroundColor = 'rgba(255, 255, 255, 0.2)';
+
+    if (target.className === 'tag-text') {
+        selectionTagId = target.parentElement.id;
+        innerHTML = target.parentElement.innerHTML;
+    } else {
+        selectionTagId = target.id;
+        innerHTML = target.innerHTML;
+    }
+
+    // Remove tag from selection window
+    document.getElementById(selectionTagId).remove();
+
+    // Add tag to label input container
+    let selectedDiv = document.createElement('div');
+    selectedDiv.className = 'tag unselectable selected-tag';
+    selectedDiv.innerHTML = innerHTML;
+    selectedDiv.id = selectionTagId;
+    selectedDiv.firstElementChild.style.backgroundColor = selectedBackgroundColor;
+
+    labelInputContainer.appendChild(selectedDiv);
+}
+
+function addLabelInputContainerTagDivider(counters, labelInputContainer) {
+
+    //if more than 1 selected tag, adds a '|' divider to left
+    if (counters.tagsSelected > 1) {
+        let dividerElement = document.createElement('h4');
+        dividerElement.className = 'tag-divider unselectable';
+        dividerElement.innerText = '|';
+        labelInputContainer.append(dividerElement);
+    }
+}
+
+function adjustLabelFontSize(state, fontSizeArr, fontNumArr, labelInputContainer) {
+    let tagDivs = document.querySelectorAll('.selected-tag .tag-text');
+    let fontArrIndex = 0;
+    do {
+        tagDivs.forEach(tag => {
+            tag.style.fontSize = fontSizeArr[fontArrIndex];
+            state.currentLabelInputTagSize = fontNumArr[fontArrIndex];
+        })
+        fontArrIndex++;
+    } while (((labelInputContainer.scrollWidth - labelInputContainer.clientWidth) > 0) && (fontArrIndex < 9))
+}
+
+function deleteLabel(target, addDoneContainer, tagSelectionDivider, flags) {
+    let toDeleteTagId;
+
+    if (target.className === 'tag-text deleteJiggling') {
+        toDeleteTagId = target.parentElement.id;
+    } else {
+        toDeleteTagId = target.id;
+    }
+
+    document.getElementById(toDeleteTagId).remove();
+    removeTagSelectionDivider(addDoneContainer, tagSelectionDivider, flags);
+}
+
+function removeTagSelectionDivider(addDoneContainer, tagSelectionDivider, flags) {
+    if (!addDoneContainer.previousElementSibling) {
+        tagSelectionDivider.style.display = 'none';
+        addDoneContainer.style.marginLeft = '7px';
+        flags.tagSelection = false;
+    }
+}
+
 function createNote(inputStr, noteTaskDiv, counters, container) {
 
     var taskText = document.createElement('span');
@@ -1416,12 +1399,7 @@ function deselectTags(tag, flags, tagIcon, clearIcon, labelSelectionRow, counter
     //if there weren't any tags left in the selection window, add the selection divider '|'
     //and remove the margin-left value and indicate that there's tags in the selection window
 
-    //MAKE THIS A FUNCTION
-    if (flags.tagSelection === false) {
-        tagSelectionDivider.style.display = 'flex';
-        addDoneContainer.style.marginLeft = '';
-        flags.tagSelection = true;
-    }
+    showTagSelectionDivider(flags, tagSelectionDivider, addDoneContainer);
 }
 
 function handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInput, createLabelDone, updateLabelInput, updateLabelDone, noteInputSaveBtn, noteTaskInputText, noteInputCancelBtn, addNoteTaskContainer, flags, isMobile) {
