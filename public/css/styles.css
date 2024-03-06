@@ -38,12 +38,25 @@ html, body {
     
     
     animation: animateBackground 30s ease infinite;
-    background: linear-gradient(270deg, #3b8fe3, #1d60a3, #7f04c7);
+    /* background: linear-gradient(270deg, #3b8fe3, #1d60a3, #7f04c7); */
+
     background-size: 400% 400%;
 
     /* border: 3px solid white; */
     
     /* overflow-x: hidden; */
+}
+
+#background-video {
+    position: fixed; /* or absolute */
+    right: 0;
+    bottom: 0;
+    min-width: 100%; 
+    min-height: 100%;
+    width: auto; 
+    height: auto;
+    z-index: -100; /* Ensures the video stays in the background */
+    background-size: cover;
 }
 
 html::-webkit-scrollbar {

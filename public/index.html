@@ -20,9 +20,9 @@
 
         <!-- CHANGE TO NON-MINIFIED VERSION DURING DEVELOPMENT -->
         <!-- CHANGE BACK TO MINIFIED VERSION FOR DEPLOYMENT -->
-        <script src='/js/index.js'></script>
-        <script src='/js/menu.js'></script>
-        <script src='/js/notes.js'></script>
+        <script src='/js/index.min.js'></script>
+        <script src='/js/menu.min.js'></script>
+        <script src='/js/notes.min.js'></script>
     </head>
 
     <!-- Google tag (gtag.js) -->
@@ -35,6 +35,12 @@
     </script>
 
     <body data-dashboard-mode="home"> <!-- enclose all elements and content to be rendered in the browser -->
+        <video autoplay muted loop playsinline id="background-video">
+            <!-- <source id="background-video-source" src="videos/blue_gradient_480p.mp4" type="video/mp4"> -->
+            <!-- <source id="background-video-source" src="videos/cyan_gradient_480p.mp4" type="video/mp4"> -->
+            <source id="background-video-source" src="videos/purplepink_gradient_480p.mp4" type="video/mp4">
+        </video>
+
         <div id="animationContainer" class="wave-container">
             <div id="flowAnimation" class="wave">
                 <img id="sineWaveBack" src="images/animations/sine-wave-FINAL-LONG_small.png" class="no-select" draggable="false">
@@ -55,8 +61,8 @@
                         <h1 id="hyperChillTitle" class="no-select">HyperChill.io</h1>
                         <span id="threeWayToggle" class="dash-mode">
                             <svg id="report-icon" data-mode="report" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" data-clickable>
-                                <path id="report-path" d="M 18.7612 27 C 17.4629 26.8575 16.224 26.5092 15.0444 25.955 C 13.8648 25.4008 12.8317 24.6488 11.945 23.6987 C 11.0583 22.7487 10.3498 21.6206 9.81937 20.3144 C 9.28896 19.0081 9.01583 17.5396 9 15.9088 C 10.52 15.9246 11.8817 16.174 13.085 16.6569 C 14.2883 17.1398 15.3096 17.8444 16.1487 18.7706 C 16.9879 19.6969 17.6331 20.8488 18.0844 22.2262 C 18.5356 23.6038 18.7612 25.195 18.7612 27 Z M 18.4762 19.685 C 18.0171 18.8933 17.55 18.2442 17.075 17.7375 C 16.6 17.2308 15.9429 16.7083 15.1037 16.17 C 15.1671 15.4733 15.2977 14.7569 15.4956 14.0206 C 15.6935 13.2844 15.9429 12.56 16.2438 11.8475 C 16.5446 11.135 16.885 10.4462 17.265 9.78125 C 17.645 9.11625 18.0487 8.5225 18.4762 8 C 18.9037 8.5225 19.3115 9.11229 19.6994 9.76937 C 20.0873 10.4265 20.4356 11.1231 20.7444 11.8594 C 21.0531 12.5956 21.3065 13.3398 21.5044 14.0919 C 21.7023 14.844 21.8329 15.5763 21.8962 16.2887 C 21.1996 16.6054 20.5583 17.0725 19.9725 17.69 C 19.3867 18.3075 18.8879 18.9725 18.4762 19.685 Z M 20.1862 26.6437 C 20.1388 25.6304 20.0437 24.6488 19.9012 23.6987 C 19.7587 22.7487 19.5529 21.9254 19.2837 21.2288 C 19.9646 19.6929 21.0967 18.4065 22.68 17.3694 C 24.2633 16.3323 26.0367 15.8296 28 15.8612 C 27.8733 18.7113 27.1292 21.0427 25.7675 22.8556 C 24.4058 24.6685 22.5454 25.9312 20.1862 26.6437 Z" fill="white"></path>
-                            </svg>
+                                <path id="report-path" d="M 12 26 L 12 23 L 16 23 L 16 26 Z M 18 26 L 18 18 L 22 18 L 22 26 Z M 24 26 L 24 12 L 28 12 L 28 26 Z" fill="white"></path>
+                            </svg>                                                                              
                             <svg id="home-icon" data-mode="home" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" data-clickable>
                                 <path id="home-path" d="M 10 27 V 14.3333 L 18.4444 8 L 26.8889 14.3333 V 27 H 20.5556 V 19.6111 H 16.3333 V 27 H 10 Z" fill="white"></path>
                             </svg>

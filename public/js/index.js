@@ -122,6 +122,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const chilltimeBackgroundCells = document.querySelectorAll('.chilltimeBackgroundCell');
     // const autoStartChillTimeIntervalToggle = document.getElementById("autoStartChillTimeIntervalToggle");
 
+    var backgroundVideoSource = document.getElementById('background-video-source');
+    const backgroundVideo = document.getElementById('background-video');
+
     // Audio
     const chime = new Audio('sounds/alerts/LEX_LM_77_bell_loop_vinyl_night_F.wav');
     const bell = new Audio('sounds/alerts/ESM_Christmas_Glockenspiel_Bell_Pluck_Hit_Single_9_Wet_Perc_Tonal.wav');
@@ -424,6 +427,9 @@ document.addEventListener("DOMContentLoaded", function() {
             if (counters.startStop > 1) { // runs first during first chill time interval
                 elapsedTime.chillTime += Date.now() - startTimes.chillTime;
             }
+
+            // backgroundVideoSource.src = "videos/cyan_gradient_480p.mp4";
+            // backgroundVideo.load();
 
         } else { // --> CHILL TIME
             // console.log(getCurrentTime() + " --> Entering Chill Time");
