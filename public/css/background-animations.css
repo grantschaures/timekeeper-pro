@@ -32,10 +32,10 @@
     margin-top: 30px;
     top: 200px;
     z-index: 0;
-    opacity: 0.10;
+    opacity: 0.15;
     margin-left: 0px;
     margin-top: -35px;
-    animation: slideBack 30s linear infinite, alteropacityback 30s linear infinite;
+    animation: slideBack 30s linear infinite;
 }
 
 #sineWaveFront {
@@ -213,41 +213,5 @@
     }
     100% {
         opacity: 0.05
-    }
-}
-
-@keyframes alteropacityback {
-    0% {
-        opacity: 0.15;
-    }
-    20% {
-        opacity: 0.05;
-    }
-    40% {
-        opacity: 0.25;
-    }
-    60% {
-        opacity: 0.10;
-    }
-    80% {
-        opacity: 0.05;
-    }
-}
-
-@keyframes alteropacityfront {
-    0% {
-        opacity: 0.05;
-    }
-    20% {
-        opacity: 0.25;
-    }
-    45% {
-        opacity: 0.05;
-    }
-    80% {
-        opacity: 0.25;
-    }
-    100% {
-        opacity: 0.05;
     }
 }
