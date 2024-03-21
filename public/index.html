@@ -20,9 +20,9 @@
 
         <!-- CHANGE TO NON-MINIFIED VERSION DURING DEVELOPMENT -->
         <!-- CHANGE BACK TO MINIFIED VERSION FOR DEPLOYMENT -->
-        <script src='/js/index.min.js'></script>
-        <script src='/js/menu.min.js'></script>
-        <script src='/js/notes.min.js'></script>
+        <script src='/js/index.js'></script>
+        <script src='/js/menu.js'></script>
+        <script src='/js/notes.js'></script>
     </head>
 
     <!-- Google tag (gtag.js) -->
@@ -35,11 +35,11 @@
     </script>
 
     <body data-dashboard-mode="home"> <!-- enclose all elements and content to be rendered in the browser -->
-        <video autoplay muted loop playsinline id="background-video">
+        <!-- <video autoplay muted loop playsinline id="background-video"> -->
             <!-- <source id="background-video-source" src="videos/blue_gradient_480p.mp4" type="video/mp4"> -->
             <!-- <source id="background-video-source" src="videos/cyan_gradient_480p.mp4" type="video/mp4"> -->
             <!-- <source id="background-video-source" src="videos/purplepink_gradient_480p.mp4" type="video/mp4"> -->
-        </video>
+        <!-- </video> -->
 
         <div id="animationContainer" class="wave-container">
             <div id="flowAnimation" class="wave">
@@ -172,10 +172,10 @@
                         </div>
                     </div>
 
-                    <div id="notes-container">
+                    <div data-testid="notes-container" id="notes-container">
                         <div id="task-container">
                             <div id="clearDiv">
-                                <img src="images/icons/noun-reset-1033424-white.png" id="clearIcon" class="no-select">
+                                <img src="images/icons/noun-reset-1033424-white.png" id="clearIcon"  data-testid="clearIcon" class="no-select">
                             </div>
                             <div id="prompt-container">
                                 <img id="tag-icon" src="images/icons/white_tag_icon.png" class="no-select">
@@ -183,7 +183,7 @@
                                     Select Task Labels
                                 </div>
                             </div>
-                            <div id="label-input-container">
+                            <div id="label-input-container" data-testid="label-input-container">
                             </div>
                             <div id="create-label-container">
                                 Create Label
@@ -213,7 +213,7 @@
                             </div> -->
                             <div id="list-notes-container">
                                 <div id="list">
-                                    <div id="dynamicList">
+                                    <div id="dynamicList" data-testid="dynamicList">
                                         <!-- <div class="noteTask">
                                             <div class="taskCircularCheck">
                                                 <div class="circularCheck">
@@ -251,11 +251,11 @@
                                     </div>
                                     <div id="note-task-input-container"> <!-- Opens once add-note-task-container is clicked -->
                                         <div id="upper-half-note-task-input">
-                                            <textarea id="note-task-input-text" placeholder="Description"></textarea>
+                                            <textarea data-testid="note-task-input-text" id="note-task-input-text" placeholder="Description"></textarea>
                                         </div>
                                         <div id="lower-half-note-task-input">
                                             <div id="save-cancel-container">
-                                                <div id="note-input-save-container" class="save-cancel-task-container">
+                                                <div id="note-input-save-container" data-testid="note-input-save-container" class="save-cancel-task-container">
                                                     <div id="note-input-save-btn">
                                                         Save
                                                     </div>
@@ -266,7 +266,7 @@
                                                     </div>
                                                 </div>
                                                 <div id="task-checkbox-container" class="save-cancel-task-container">
-                                                    <input type="checkbox" id="taskCheckbox" name="taskCheckbox">
+                                                    <input data-testid="taskCheckbox" type="checkbox" id="taskCheckbox" name="taskCheckbox">
                                                     <label for="taskCheckbox">Task</label>
                                                 </div>
                                             </div>
@@ -276,7 +276,7 @@
                             </div>
                         </div>
                         <div id="label-selection-window">
-                            <div class="label-selection-row">
+                            <div class="label-selection-row" data-testid="label-selection-row">
                                 <div id="tag-1" class="tag unselectable selection-tag">
                                     <h4 class="tag-text">✍️ Homework</h4>
                                 </div>
@@ -286,9 +286,9 @@
                                 <div id="tag-3" class="tag unselectable selection-tag">
                                     <h4 class="tag-text">🧘 Meditation</h4>
                                 </div>
-                                <div id="add-done-container">
+                                <div id="add-done-container" data-testid="add-done-container">
                                     <h4 id="tag-selection-divider" class="unselectable" >|</h4>
-                                    <img id="add-tag-icon" src="images/icons/noun-exit-button-261420-white.png" draggable="false" class="unselectable">
+                                    <img id="add-tag-icon" data-testid="add-tag-icon" src="images/icons/noun-exit-button-261420-white.png" draggable="false" class="unselectable">
                                     <div id="selection-done-div" class="tag unselectable">
                                         <h4 id="selection-done" class="tag-text">Done</h4>
                                     </div>
@@ -332,20 +332,20 @@
                         </div>
                         <div id="create-label-window">
                             <div id="create-label">
-                                <input type="text" id="create-label-input" placeholder="Enter Label Name">
+                                <input type="text" id="create-label-input" data-testid="create-label-input" placeholder="Enter Label Name">
                                 <div id="emoji-btn">
                                     <!-- <img id="OGemoji" src="images/notes/HyperChillLogo_notes.png"> -->
                                     <img id="OGemoji" src="images/notes/emoji-symbols/books.png">
                                 </div>
                             </div>
                             <div id="cancel-done-div" class="cancel-done-container unselectable">
-                                <h4 id="create-label-cancel" class="tag-text create-label">Cancel</h4>
-                                <h4 id="create-label-done" class="tag-text create-label">Done</h4>
+                                <h4 id="create-label-cancel" data-testid="create-label-cancel" class="tag-text create-label">Cancel</h4>
+                                <h4 id="create-label-done" data-testid="create-label-done" class="tag-text create-label">Done</h4>
                             </div>
                         </div>
                         <div id="update-label-window">
                             <div id="update-label">
-                                <input type="text" id="update-label-input" placeholder="Enter Label Name">
+                                <input type="text" id="update-label-input" data-testid="update-label-input" placeholder="Enter Label Name">
                                 <div id="emoji-btn2">
                                     <!-- <img id="OGemoji" src="images/notes/HyperChillLogo_notes.png"> -->
                                     <img id="OGemoji2" src="images/notes/emoji-symbols/books.png">

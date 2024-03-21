@@ -1,0 +1,5 @@
+This directory is used to store static data that can be used in your tests.
+Fixtures are often used to represent the data that your application might expect
+to receive from external sources. For example, you might have JSON files representing
+mocked API responses. This allows you to write tests that are not dependent on external
+systems and can be run reliably in any environment.

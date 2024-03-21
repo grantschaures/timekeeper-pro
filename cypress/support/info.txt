@@ -1,0 +1,5 @@
+The support folder contains files that are automatically included by Cypress before every test run.
+This is a great place to put reusable behavior such as custom commands or global overrides.
+For example, you might define custom commands in commands.js for actions that are used frequently
+across many tests. The support folder helps you avoid repeating the same code in multiple test
+files, promoting DRY (Don't Repeat Yourself) principles.

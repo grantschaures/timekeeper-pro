@@ -4,10 +4,12 @@
   "description": "A timekeeping web app aimed at helping users maximize productivity",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
     "minify": "node minify.js",
-    "build": "npm run minify"
+    "build": "npm run minify",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "test": "start-server-and-test start http://localhost:3000 cy:run"
   },
   "author": "Grant Schaures",
   "license": "ISC",
@@ -23,7 +25,15 @@
     "ws": "^8.15.1"
   },
   "devDependencies": {
+    "@testing-library/cypress": "^10.0.1",
+    "@testing-library/dom": "^9.3.4",
+    "@testing-library/jest-dom": "^6.4.2",
+    "@testing-library/user-event": "^14.5.2",
     "concurrently": "^8.2.2",
+    "cypress": "^13.7.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "jsdom": "^24.0.0",
     "uglify-js": "^3.17.4"
   }
 }

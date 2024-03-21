@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function() {
         notesLines: 0,
         tagsSelected: 0,
         lastLabelIdNum: 3, //subject to change based on num of predefined labels for user (need to store in database)
-        lastNoteInputIdNum: 0,
+        lastNoteInputIdNum: 0, // not being used
         lastTaskInputIdNum: 0
     }
 
@@ -840,13 +840,13 @@ function noteInputSave(noteTaskInputContainer, addNoteTaskContainer, flags, note
     let noteTaskDiv = document.createElement('div');
     noteTaskDiv.classList.add('noteTask');
 
-    if (taskCheckbox.checked) {
+    if (taskCheckbox.checked) { // TASK
         // Create check element and attach to div
         let taskCircularCheckDiv = createCheckElements(counters);
         noteTaskDiv.appendChild(taskCircularCheckDiv);
 
         container = createNote(inputStr, noteTaskDiv, counters, container);
-    } else {
+    } else { // NOTE
         // make a new note div
         container = createNote(inputStr, noteTaskDiv, counters, container);
     }
@@ -943,7 +943,11 @@ function createNote(inputStr, noteTaskDiv, counters, container) {
     var taskText = document.createElement('span');
     taskText.textContent = inputStr;
     noteTaskDiv.appendChild(taskText);
-    noteTaskDiv.id = "taskDiv" + counters.lastTaskInputIdNum;
+
+    let noteTaskDivIdStr = "taskDiv" + counters.lastTaskInputIdNum;
+    noteTaskDiv.id = noteTaskDivIdStr;
+    noteTaskDiv.setAttribute('data-testid', noteTaskDivIdStr);
+    console.log(noteTaskDiv.id);
 
     container = appendEditRemoveContainer("Task", counters.lastTaskInputIdNum);
 
@@ -1085,6 +1089,7 @@ function buildNoteTaskInputContainerEdit(noteTaskDivContent) {
     // Create the textarea
     const noteTaskInputText = document.createElement('textarea');
     noteTaskInputText.id = "note-task-input-text-edit";
+    noteTaskInputText.setAttribute('data-testid', "note-task-input-text-edit");
     noteTaskInputText.placeholder = "Description";
     noteTaskInputText.value = noteTaskDivContent;
 
@@ -1190,6 +1195,7 @@ function appendEditRemoveContainer(inputType, lastIdNum) {
 
     let editBtnIdStr = "editBtn" + inputType + lastIdNum;
     editBtn.setAttribute('id', editBtnIdStr);
+    editBtn.setAttribute('data-testid', editBtnIdStr);
 
     // Create IMG for edit button
     const editImg = document.createElement('img');
@@ -1211,6 +1217,7 @@ function appendEditRemoveContainer(inputType, lastIdNum) {
 
     let removeBtnIdStr = "removeBtn" + inputType + lastIdNum;
     removeBtn.setAttribute('id', removeBtnIdStr);
+    removeBtn.setAttribute('data-testid', removeBtnIdStr);
 
     // Create SVG for remove button
     const trashSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -1418,12 +1425,12 @@ function handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInpu
     } else if (event.key === 'n') {
         if (!notesFlags.notesShowing) {
             openNotesContainer(notesContainer, notesFlags);
-        } else if ((!flags.noteTaskInputContainerShowing) && (!flags.noteTaskInputContainerEditShowing)) {
+        } else if ((!flags.noteTaskInputContainerShowing) && (!flags.noteTaskInputContainerEditShowing) && (notesFlags.notesConsoleShowing)) {
             addNoteTaskContainer.click();
             taskCheckbox.checked = false;
             event.preventDefault();
         }
-    }  else if ((event.key === 't') && (notesFlags.notesShowing) && (!flags.noteTaskInputContainerShowing) && (!flags.noteTaskInputContainerEditShowing)) {
+    }  else if ((event.key === 't') && (notesFlags.notesShowing) && (notesFlags.notesConsoleShowing) && (!flags.noteTaskInputContainerShowing) && (!flags.noteTaskInputContainerEditShowing)) {
         addNoteTaskContainer.click();
         taskCheckbox.checked = true;
         event.preventDefault();
