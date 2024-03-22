@@ -161,15 +161,15 @@ describe('Adding, Removing, Editing Labels', () => {
   })
 })
 
-// describe('Auto Switch Functionality', () => {
-//   beforeEach(() => {
-//     cy.visit('http://localhost:3000')
-//     cy.contains('button', 'Notes').click();
-//     cy.contains("Select Task Labels").click();
-//   })
+describe('Auto Switch Functionality', () => {
+  beforeEach(() => {
+    cy.visit('http://localhost:3000')
+    cy.contains('button', 'Notes').click();
+    cy.contains("Select Task Labels").click();
+  })
 
-//   it('Opening Label Window', () => {
-//     cy.get('[data-testid="add-done-container"]').should("exist");
-//     cy.contains("Done").should('exist');
-//   })
-// })
+  it('Opening Label Window', () => {
+    cy.get('[data-testid="aboutIconNotes"]').click();
+    cy.get('[data-testid="transitionNotesAutoSwitchToggle"]').click({force: true});
+  })
+})

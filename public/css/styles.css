@@ -348,7 +348,7 @@ button:hover {
 /* Could make this styling more consistent... */
 #menuBtn {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     width: 50px;
     transform: scale(0.75);
@@ -363,6 +363,7 @@ button:hover {
     width: 30px;
     height: 30px;
     display: flex;
+    /* border: 1px solid yellow; */
 }
 
 #menuIcon-black {
