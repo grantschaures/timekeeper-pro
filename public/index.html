@@ -78,7 +78,7 @@
                     </div>
 
                     <div class="header-btns">
-                        <button id="menuBtn" class="no-select">
+                        <button id="menuBtn" data-testid="menuBtn" class="no-select">
                             <img id="menuIcon"src="/images/icons/noun-menu-6192580-white.png">
                             <img id="menuIcon-black"src="/images/icons/noun-menu-6192580.png">
                         </button>
@@ -138,7 +138,7 @@
                             </div>
                             <div id="completedPomodorosContainer">
                                 <h4 id="completedPomodoros-label"></h4>
-                                <div id="completedPomodoros-min"></div>
+                                <div id="completedPomodoros-min" data-testid="completedPomodoros-min"></div>
                             </div>
                         </div>
                     </div>
@@ -147,24 +147,24 @@
                         <div id="progress-bar-container">
                             <div id="progress-container">
                                 <div id="progress-bar"></div>
-                                <div id="progress-text" class="progress-text no-select">00:00:00</div>
+                                <div id="progress-text" data-testid="progress-text" class="progress-text no-select">00:00:00</div>
                             </div>
                         </div>
                     </div>
 
                     <div id="timekeeping-container">
                         <div class="mode-text">
-                            <h3 id="productivity-chill-mode" class="no-select">Press 'Start' to begin session</h3>
+                            <h3 id="productivity-chill-mode" data-testid="productivity-chill-mode" class="no-select">Press 'Start' to begin session</h3>
                         </div>
                         <div class="stopwatch">
-                            <div id="display" class="no-select">00:00:00</div>
+                            <div id="display" data-testid="display" class="no-select">00:00:00</div>
                         </div>
                         <div class="lower-buttons">
                             <div>
                                 <button id="notes" class="no-select">Notes</button>
                             </div>
                             <div>
-                                <button id="start-stop" class="no-select">Start</button>
+                                <button id="start-stop" data-testid="start-stop" class="no-select">Start</button>
                             </div>
                             <div>
                                 <button id="end-session"></button> <!-- Text inserted via JS -->
@@ -669,7 +669,7 @@
 
             <div id="settingsContainer">
                 <div id="settingsHeader">
-                    <img class="exitIcon" id="settingsExit" src="images/icons/noun-exit-button-261420-white.png" draggable="false">
+                    <img class="exitIcon" id="settingsExit" data-testid="settingsExit" src="images/icons/noun-exit-button-261420-white.png" draggable="false">
                     <h1>Settings</h1>
                 </div>
                 <div class="settings" id="settingsWindow">
@@ -762,11 +762,11 @@
                                         </div>
                                         <div id="pomodoroNotificationToggleContainer" class="toggleContainer">
                                             <input type="checkbox" id="pomodoroNotificationToggle" class="toggle-checkbox">
-                                            <label for="pomodoroNotificationToggle" id="pomodoroNotificationToggleLabel" class="toggle-label">
+                                            <label for="pomodoroNotificationToggle" data-testid="pomodoroNotificationToggle" id="pomodoroNotificationToggleLabel" class="toggle-label">
                                                 <span id="pomodoroNotificationToggleBall" class="toggle-ball"></span>
                                             </label>
                                         </div>
-                                        <div id="pomodoroNotificationInfoWindow" class="notificationInfoWindow">
+                                        <div id="pomodoroNotificationInfoWindow" data-testid="pomodoroNotificationInfoWindow" class="notificationInfoWindow">
                                             This will notify you after each interval specified for Pomodoro, Short Break, and Long Break
                                         </div>  
                                     </div>
@@ -785,7 +785,7 @@
                                                     <p><b>Pomodoro</b></p>
                                                 </div>
                                                 <div class="pomodoroNotificationContainer">
-                                                    <input type="number" id="pomodoroInput" value="25" class="pomodoroInterval" name="minutes" min="1" max="720" step="1">
+                                                    <input type="number" id="pomodoroInput" data-testid="pomodoroInput" value="25" class="pomodoroInterval" name="minutes" min="1" max="720" step="1">
                                                 </div>
                                             </div>
                                             <div id="minutesImageBucket2" class="imageBucket">
@@ -793,7 +793,7 @@
                                                     <p><b>Short Break</b></p>
                                                 </div>
                                                 <div class="pomodoroNotificationContainer">
-                                                    <input type="number" id="shortBreakInput" value="5" class="pomodoroInterval" name="minutes" min="1" max="720" step="1">
+                                                    <input type="number" id="shortBreakInput" data-testid="shortBreakInput" value="5" class="pomodoroInterval" name="minutes" min="1" max="720" step="1">
                                                 </div>
                                             </div>
                                             <div id="minutesImageBucket3" class="imageBucket">
@@ -801,7 +801,7 @@
                                                     <p><b>Long Break</b></p>
                                                 </div>
                                                 <div class="pomodoroNotificationContainer">
-                                                    <input type="number" id="longBreakInput" value="15" class="pomodoroInterval" name="minutes" min="1" max="720" step="1">
+                                                    <input type="number" id="longBreakInput" data-testid="longBreakInput" value="15" class="pomodoroInterval" name="minutes" min="1" max="720" step="1">
                                                 </div>
                                             </div>
                                         </div>

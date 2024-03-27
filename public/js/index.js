@@ -1067,6 +1067,7 @@ function timeRecovery(flags, counters, startTimes, elapsedTime, pomodoroInterval
             flags.autoSwitchedModes = false;
             flowTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, startTimes, start_stop_btn, recoverBreakState, chime, bell, alertSounds, alertVolumes);
         }
+        
         // console.log("Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000: " + ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000)));
     } else {
         if ((flags.flowmodoroNotificationToggle) && (!flags.inHyperFocus) && ((counters.currentFlowmodoroNotification * 60 * 1000) < ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000)) && (!flags.sentFlowmodoroNotification)) {
@@ -1368,12 +1369,14 @@ function sendPomodoroDelayNotification(startTimes, counters, pomodoroIntervalArr
         } else {
             notificationString = "It's been " + counters.currentPomodoroNotification + " minutes! Are you ready to take a short break?";
         }
+        counters.pomodorosCompleted++;
     } else if (counters.currentPomodoroIntervalOrderIndex == 6) { // 4th pomodoro
         if (pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] == 1) {
             notificationString = "It's been " + counters.currentPomodoroNotification + " minute! Are you ready to take a long break?";
         } else {
             notificationString = "It's been " + counters.currentPomodoroNotification + " minutes! Are you ready to take a long break?";
         }
+        counters.pomodorosCompleted++;
     } else { // any of the breaks
         if (pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] == 1) {
             notificationString = "It's been " + counters.currentPomodoroNotification + " minute! Are you ready to start your Pomodoro Interval?";

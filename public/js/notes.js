@@ -942,12 +942,15 @@ function createNote(inputStr, noteTaskDiv, counters, container) {
 
     var taskText = document.createElement('span');
     taskText.textContent = inputStr;
+    let taskTextId = "spanText" + counters.lastTaskInputIdNum;
+    taskText.setAttribute('data-testid', taskTextId)
+    console.log(taskTextId);
     noteTaskDiv.appendChild(taskText);
 
     let noteTaskDivIdStr = "taskDiv" + counters.lastTaskInputIdNum;
     noteTaskDiv.id = noteTaskDivIdStr;
     noteTaskDiv.setAttribute('data-testid', noteTaskDivIdStr);
-    console.log(noteTaskDiv.id);
+    // console.log(noteTaskDiv.id);
 
     container = appendEditRemoveContainer("Task", counters.lastTaskInputIdNum);
 
@@ -969,7 +972,10 @@ function createCheckElements(counters) {
     svgCheck.setAttribute('height', '20');
     svgCheck.setAttribute('viewBox', '0 0 20 20');
     svgCheck.classList.add('svgCheck');
-    svgCheck.id = "svgCheck" + counters.lastTaskInputIdNum;
+
+    let svgCheckId = "svgCheck" + counters.lastTaskInputIdNum;
+    svgCheck.id = svgCheckId;
+    svgCheck.setAttribute('data-testid', svgCheckId);
     
     // Create the path element
     var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');

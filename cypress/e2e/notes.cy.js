@@ -1,6 +1,7 @@
 describe('Adding, Removing, Editing Notes and Tasks', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000')
+    cy.get('#sub-main-container').invoke('css', 'opacity', '1');
     cy.contains('button', 'Notes').click();
   })
 
@@ -89,6 +90,20 @@ describe('Adding, Removing, Editing Notes and Tasks', () => {
     // assertion (ensures no children in list)
     cy.get('[data-testid="dynamicList"]').children().should('have.length', 0);
   })
+
+  it('Check Off Task', () => {
+    // create task
+    cy.contains('div', 'Add note (n) or task (t)').click();
+    cy.get('[data-testid="note-task-input-text"]').type("This is a task, and it will get checked off.");
+    cy.get('[data-testid="taskCheckbox"]').click();
+    cy.saveAndCloseNoteInputContainer();
+    
+    cy.get('[data-testid="svgCheck0"]').click();
+    cy.get('[data-testid="taskDiv0"]').should($span => {
+      const style = window.getComputedStyle($span[0]);
+      expect(style.textDecoration).to.include('line-through');
+    })
+  })
 })
 
 /**
@@ -99,6 +114,7 @@ describe('Adding, Removing, Editing Notes and Tasks', () => {
 describe('Adding, Removing, Editing Labels', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000')
+    cy.get('#sub-main-container').invoke('css', 'opacity', '1');
     cy.contains('button', 'Notes').click();
     cy.contains("Select Task Labels").click();
   })
@@ -164,12 +180,22 @@ describe('Adding, Removing, Editing Labels', () => {
 describe('Auto Switch Functionality', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000')
+    cy.get('#sub-main-container').invoke('css', 'opacity', '1');
     cy.contains('button', 'Notes').click();
     cy.contains("Select Task Labels").click();
   })
 
-  it('Opening Label Window', () => {
+  it('Auto Switch to Flow Time and Chill Time', () => {
     cy.get('[data-testid="aboutIconNotes"]').click();
     cy.get('[data-testid="transitionNotesAutoSwitchToggle"]').click({force: true});
+    cy.get('[data-testid="settingsExit"]').click();
+
+    cy.contains("✍️ Homework").click();
+    cy.contains('h4', 'Done').click();
+    cy.get('[data-testid="productivity-chill-mode"]').should('contain', "Flow Time");
+    
+    cy.get('[data-testid="clearIcon"]').click();
+    cy.contains('h4', 'Done').click();
+    cy.get('[data-testid="productivity-chill-mode"]').should('contain', "Chill Time");
   })
 })
