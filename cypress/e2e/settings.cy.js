@@ -15,7 +15,7 @@ describe('Pomodoro Settings', () => {
         cy.contains("This will notify you after each interval specified for Pomodoro, Short Break, and Long Break").should('not.be.visible');
     })
 
-    it('1 Min, Pom, SB and LB', () => {
+    it('1 Min, Pom, SB and LB | No Auto Start', () => {
         let pomMinutes = 1;
         let sbMinutes = 1;
         let lbMinutes = 1;
@@ -26,7 +26,7 @@ describe('Pomodoro Settings', () => {
         cy.pomodoroInterval(pomMinutes, sbMinutes, lbMinutes, "00:01:00", "00:01:00", "00:01:00", "00:04:00");
     })
 
-    it('25 min Pom, 5 min SB, 15 min LB', () => {
+    it('25 min Pom, 5 min SB, 15 min LB | No Auto Start', () => {
         let pomMinutes = 25;
         let sbMinutes = 5;
         let lbMinutes = 15;
@@ -37,7 +37,7 @@ describe('Pomodoro Settings', () => {
         cy.pomodoroInterval(pomMinutes, sbMinutes, lbMinutes, "00:25:00", "00:05:00", "00:15:00", "01:40:00");
     })
 
-    it('720 min Pom, 720 min SB, 720 min LB', () => {
+    it('720 min Pom, 720 min SB, 720 min LB | No Auto Start', () => {
         let pomMinutes = 720;
         let sbMinutes = 720;
         let lbMinutes = 720;
@@ -47,4 +47,6 @@ describe('Pomodoro Settings', () => {
         cy.clock();
         cy.pomodoroInterval(pomMinutes, sbMinutes, lbMinutes, "12:00:00", "12:00:00", "12:00:00", "48:00:00");
     })
+
+    
 })

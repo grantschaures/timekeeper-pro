@@ -23,10 +23,10 @@
 
 body {
     font-family: myFont;
-    overflow-y: scroll;
+    overflow-y: hidden;
+    /* overflow-y: scroll; */
     /* overflow-x: hidden; */
 }
-
 
 html, body {
     margin: 0;
@@ -354,8 +354,7 @@ button:hover {
     transform: scale(0.75);
 
     opacity: 0;
-    transition: opacity 1s ease-in-out;
-    transition: background-color 0.25s ease;
+    transition: opacity 1s ease-in-out, background-color 0.25s ease;
     border: 4px solid white;
 }
 

@@ -47,6 +47,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const blogMenuContainer = document.getElementById("blogMenuContainer");
 
     const aboutIconNotes = document.getElementById('aboutIconNotes');
+    const body = document.body;
 
     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
@@ -69,6 +70,10 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // document.body.setAttribute('data-dashboard-mode', 'home');
+
+    if (isMobile) {
+        body.style.overflowY = 'scroll';
+    }
 
     setTimeout(() => {
         menu_btn.style.opacity = '1';
@@ -163,6 +168,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
         //show blog popup window
         settings_container.style.display = "block"; //EDIT: changed from flex to block
+        
+        body.style.overflowY = 'hidden';
     
         //Triggers reset animation once you enter for first time
         settings_exit.classList.add('resetRotation');
@@ -250,6 +257,9 @@ document.addEventListener("DOMContentLoaded", function() {
         // hide settings window if click is not in settings or on menu, OR if the click is on the settings exit btn
         if ((event.target !== settings_btn && event.target !== settings_icon && event.target !== settings_menu_container && event.target !== start_stop_btn && event.target !== aboutIconNotes && !settings_container.contains(event.target) && !menu_btn.contains(event.target)) || event.target == settings_exit) {
             settings_container.style.display = "none";
+            if (isMobile) {
+                body.style.overflowY = 'scroll';
+            }
         }
 
         // if the click is not any of the main menu windows or is an exit btn
