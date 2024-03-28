@@ -38,14 +38,25 @@ html, body {
     background-position: center center; /* This keeps the image centered */
     
     
-    animation: animateBackground 30s ease infinite;
+    animation: animateBackground 15s ease infinite;
     background: linear-gradient(270deg, #3b8fe3, #1d60a3, #7f04c7);
-    
     background-size: 400% 400%;
     
     /* border: 2px solid white; */
     
     /* overflow-x: hidden; */
+}
+
+@keyframes animateBackground {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 /* #background-video {
@@ -79,17 +90,6 @@ html::-webkit-scrollbar-thumb {
     border-radius: 10px;
 }
 
-@keyframes animateBackground {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
 
 h1 {
     font-size: 30px;
@@ -495,9 +495,9 @@ button:hover {
     }
 }
 
-#suggestionBreakContainer {
+/* Combined styles for both elements */
+#suggestionBreakContainer, #completedPomodorosContainer {
     display: none;
-    /* border: 1px solid purple; */
     text-align: center;
     align-items: center;
     justify-content: center;
@@ -505,14 +505,21 @@ button:hover {
     max-width: 225px;
 }
 
-#completedPomodorosContainer {
+/* #quoteContainer {
     display: none;
-    /* border: 1px solid purple; */
     text-align: center;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     max-width: 225px;
+}
+
+#quoteText {
+    font-size: 14px;
+} */
+
+/* Unique style for #completedPomodorosContainer */
+#completedPomodorosContainer {
     margin-bottom: 30px;
     margin-top: 6px;
 }

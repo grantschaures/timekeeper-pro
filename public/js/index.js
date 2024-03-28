@@ -150,26 +150,26 @@ document.addEventListener("DOMContentLoaded", function() {
     const initialViewportWidth = window.innerWidth || document.documentElement.clientWidth;
 
     const flowtimeBackgrounds = {
-        "green-default": "linear-gradient(to bottom, #5dd44d, #50b350, #004400)",
-        "red-flowtime": "linear-gradient(to bottom, #ff595e, #ff595e, #ff595e)",
-        "yellow-flowtime": "linear-gradient(to bottom, #ffca3a, #ffca3a, #ffca3a)",
-        "blue-flowtime": "linear-gradient(to bottom, #1982c4, #1982c4, #1982c4)",
-        "purple-flowtime": "linear-gradient(to bottom, #6a4c93, #6a4c93, #6a4c93)",
-        "black-flowtime": "linear-gradient(to bottom, #202020, #202020, #202020)"
+        "green-default": "linear-gradient(270deg, #3ec500, #37c400, #00c59a)",
+        "red-flowtime": "linear-gradient(270deg, #c50000, #c44800, #c58000)",
+        "yellow-flowtime": "linear-gradient(270deg, #b8c500, #90c400, #5fc500)",
+        "blue-flowtime": "linear-gradient(270deg, #3b8fe3, #1d60a3, #7f04c7)",
+        "purple-flowtime": "linear-gradient(270deg, #7f04c7, #b004c7, #c004c7)",
+        "black-flowtime": "linear-gradient(270deg, #202020, #202020, #202020)"
     }
 
     const chilltimeBackgrounds = {
-        "blue-default": "linear-gradient(to bottom, #3b8fe3, #1d60a3, #7f04c7)",
-        "red-chilltime": "linear-gradient(to bottom, #ff595e, #ff595e, #ff595e)",
-        "yellow-chilltime": "linear-gradient(to bottom, #ffca3a, #ffca3a, #ffca3a)",
-        "green-chilltime": "linear-gradient(to bottom, #5dd44d, #5dd44d, #5dd44d)",
-        "purple-chilltime": "linear-gradient(to bottom, #6a4c93, #6a4c93, #6a4c93)",
-        "black-chilltime": "linear-gradient(to bottom, #202020, #202020, #202020)"
+        "green-chilltime": "linear-gradient(270deg, #3ec500, #37c400, #00c59a)",
+        "red-chilltime": "linear-gradient(270deg, #c50000, #c44800, #c58000)",
+        "yellow-chilltime": "linear-gradient(270deg, #b8c500, #90c400, #5fc500)",
+        "blue-default": "linear-gradient(270deg, #3b8fe3, #1d60a3, #7f04c7)",
+        "purple-chilltime": "linear-gradient(270deg, #7f04c7, #b004c7, #c004c7)",
+        "black-chilltime": "linear-gradient(270deg, #202020, #202020, #202020)"
     }
 
     const selectedBackground = {
-        "flowtime": "linear-gradient(to bottom, #5dd44d, #50b350, #004400)",
-        "chilltime": "linear-gradient(to bottom, #3b8fe3, #1d60a3, #7f04c7)"
+        "flowtime": "linear-gradient(270deg, #3ec500, #37c400, #00c59a)",
+        "chilltime": "linear-gradient(270deg, #3b8fe3, #1d60a3, #7f04c7)"
     }
 
     const selectedBackgroundIdTemp = {
@@ -312,7 +312,7 @@ document.addEventListener("DOMContentLoaded", function() {
         autoSwitchedModes: false,
         inRecoveryBreak: false,
         inRecoveryPom: false,
-        flowTimeAnimationToggle: false,
+        flowTimeAnimationToggle: true,
         chillTimeAnimationToggle: true,
         darkThemeActivated: false,
         modeChangeExecuted: false,

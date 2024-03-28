@@ -709,7 +709,7 @@
     border-radius: 15px;
     padding: 10px 20px;
     color: white;
-    display: block; /* Or block, depending on your layout */
+    display: block;
     text-align: center;
     width: 150px;
     height: 85px;
@@ -718,30 +718,32 @@
     border: 0px solid white;
     transition: border 0.10s ease-in-out;
     box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.5);
+    animation: animateBackground 15s ease infinite;
+    background-size: 400% 400%;
 }
 
 .flowtimeBackgroundCell:hover, .chilltimeBackgroundCell:hover, .themeCell:hover {
     cursor: pointer;
 }
 
-#green-default {
-    background-image: linear-gradient(to bottom, #5dd44d, #50b350, #004400);
+#green-default, #green-chilltime {
+    background-image: linear-gradient(270deg, #00c510, #00c431, #00c59a);
 }
 
 #red-flowtime, #red-chilltime {
-    background-color: #ff595e;
+    background-image: linear-gradient(270deg, #c50000, #c44800, #c58000);
 }
 
 #yellow-flowtime, #yellow-chilltime {
-    background-color: #ffca3a;
+    background-image: linear-gradient(270deg, #b8c500, #90c400, #5fc500);
 }
 
-#blue-flowtime {
-    background-color: #1982c4;
+#blue-default, #blue-flowtime {
+    background-image: linear-gradient(270deg, #3b8fe3, #1d60a3, #7f04c7);
 }
 
 #purple-flowtime, #purple-chilltime {
-    background-color: #6a4c93;
+    background-image: linear-gradient(270deg, #7f04c7, #b004c7, #c004c7);
 }
 
 #black-flowtime, #black-chilltime {
@@ -754,6 +756,18 @@
     grid-template-rows: auto auto;
     width: 600px;
     /* border: 1px solid yellow; */
+}
+
+@keyframes animateBackground {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 @media (max-width: 892px) {
@@ -779,13 +793,6 @@
     }
 } */
 
-#blue-default {
-    background-image: linear-gradient(to bottom, #3b8fe3, #1d60a3, #7f04c7);
-}
-
-#green-chilltime {
-    background-color: #5dd44d;
-}
 
 .selected-background {
     border: 3px solid white;
