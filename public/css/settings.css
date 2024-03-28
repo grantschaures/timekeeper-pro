@@ -66,6 +66,7 @@
     overflow-y: hidden;
     /* border: 2px solid red; */
     min-height: calc(100vh - 90px);
+    width: 100%;
 }
 
 #settingsHeaderColumn {
@@ -312,9 +313,7 @@
     max-height: 92vh;
     overflow-y: auto;
     overflow-x: hidden;
-    
-    width: 80%;
-    margin-right: 20px;
+    width: 100%;
 }
 
 .settings h2 {
