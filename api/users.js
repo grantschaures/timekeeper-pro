@@ -34,7 +34,7 @@ router.post('/emailsignup', async (req, res) => {
             user = new User({
                 email: email,
                 token: generateToken(),
-                tokenExpire: new Date(new Date().getTime() + 5000),
+                tokenExpire: new Date(new Date().getTime() + 60 * 60 * 1000),
                 emailVerified: false
             });
         }

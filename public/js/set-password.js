@@ -28,8 +28,11 @@ addEventListener("DOMContentLoaded", function () {
                     });
 
                     if (response.ok) { // If the response is OK (status code in the range 200-299)
+                        passwordInputSignup.value = "";
+                        confirmPasswordInputSignup.value = "";
                         const result = await response.json(); // Assuming the server responds with JSON
                         console.log(result); // Handle success, maybe redirect or show a success message
+
                     } else {
                         // Server responded with a status outside the 200 range, handle error
                         console.error('Failed to submit password:', response.statusText);
