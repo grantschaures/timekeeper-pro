@@ -1047,3 +1047,9 @@ header {
         font-size: 18px;
     }
 }
+
+@media screen and (max-height: 750px) {
+    body {
+      overflow-y: scroll;
+    }
+}

@@ -38,7 +38,13 @@ async function createUser(email) {
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error(`Server returned ${response.status} ${response.statusText}`);
+            return response.json().then(data => {
+                // `data` is now a JavaScript object you can work with.
+                // For example, if the server returns a JSON object with a "message" field,
+                // you can access it here.
+                alert(data.message);
+                throw new Error(data.message); // Throws an error with your custom message
+            });
         }
     })
     .catch(error => {

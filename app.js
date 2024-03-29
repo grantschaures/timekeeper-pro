@@ -68,6 +68,11 @@ app.get("/signup", (req, res) => {
     res.sendFile(filePath);
 });
 
+app.get("/invalid-token", (req, res) => {
+    const filePath = path.join(__dirname, 'public', 'invalid-token.html')
+    res.sendFile(filePath);
+});
+
 // Token verification endpoint
 app.get("/set-password/:token", async (req, res) => {
   const { token } = req.params; // Get the token from URL parameters
@@ -77,13 +82,17 @@ app.get("/set-password/:token", async (req, res) => {
           tokenExpire: { $gt: new Date() } // Ensure the token is not expired
       });
       if (!user) {
-          return res.status(404).send("Token is invalid or expired.");
+        // If no user or token is invalid/expired, send the invalid token page
+        const filePath = path.join(__dirname, 'public', 'invalid-token.html');
+        return res.sendFile(filePath); // Use return here to stop execution after sending the response
       }
-      // Token is valid, you can optionally send back some user info if needed
-      const filePath = path.join(__dirname, 'public', 'set-password.html')
-      res.sendFile(filePath);
+      // If the token is valid, send the set password page
+      const filePath = path.join(__dirname, 'public', 'set-password.html');
+      res.sendFile(filePath); // It's fine to not return here since this is the last action
   } catch (err) {
-      res.status(500).send("An error occurred while verifying the token.");
+      // Handle any errors that occur during the process
+      console.error(err); // Log the error for debugging
+      return res.status(500).send("An error occurred while verifying the token."); // Use return here
   }
 });
 
