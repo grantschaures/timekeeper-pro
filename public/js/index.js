@@ -1024,9 +1024,9 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    registerHereText.addEventListener("click", function() {
-        window.location.href = "/signup";
-    })
+    // registerHereText.addEventListener('click', function() {
+    //     window.location.href = "/signup";
+    // });
 
     // report_btn.addEventListener("click", function() {
     //     alert("This feature is currently under development. Thank you for your patience.")
@@ -1081,12 +1081,13 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     
     displayWorker.onmessage = function(message) {
+        console.log(message)
         const timeDiff = Date.now() - startTimes.local;
+
     
         let hours = Math.floor(timeDiff / timeConvert.msPerHour);
         let minutes = Math.floor((timeDiff - hours * timeConvert.msPerHour) / timeConvert.msPerMin);
         let seconds = Math.floor((timeDiff - hours * timeConvert.msPerHour - minutes * timeConvert.msPerMin) / timeConvert.msPerSec);
-        console.log('test')
         // Format the time values
         hours = hours.toString().padStart(2, '0');
         minutes = minutes.toString().padStart(2, '0');
@@ -2122,7 +2123,6 @@ function handleKeyUp(event, flags) {
 }
 
 function totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, targetTime) {
-    
     let timeDiff = getTotalElapsed(flags, elapsedTime.hyperFocus, startTimes);
     
     let hours = Math.floor(timeDiff / timeConvert.msPerHour);
