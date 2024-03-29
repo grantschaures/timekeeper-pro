@@ -1086,7 +1086,7 @@ document.addEventListener("DOMContentLoaded", function() {
         let hours = Math.floor(timeDiff / timeConvert.msPerHour);
         let minutes = Math.floor((timeDiff - hours * timeConvert.msPerHour) / timeConvert.msPerMin);
         let seconds = Math.floor((timeDiff - hours * timeConvert.msPerHour - minutes * timeConvert.msPerMin) / timeConvert.msPerSec);
-        
+        console.log('test')
         // Format the time values
         hours = hours.toString().padStart(2, '0');
         minutes = minutes.toString().padStart(2, '0');

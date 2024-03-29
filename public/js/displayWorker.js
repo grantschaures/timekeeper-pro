@@ -11,7 +11,7 @@ onmessage = function(message) {
         // console.log("display increment1 " + Date.now())
         workerInterval2 = this.setInterval(() => {
             this.postMessage("display increment");
-            // console.log("display increment" + Date.now())
+            console.log("display increment" + Date.now())
         }, 1000)
     }   
 }
