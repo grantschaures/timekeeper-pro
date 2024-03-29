@@ -4,6 +4,7 @@ require('dotenv').config();
 const express = require("express");
 const mongoose = require('mongoose');
 const path = require('path');
+const User = require("./models/user");
 
 // initialization of a new express application
 const app = express();
@@ -67,13 +68,26 @@ app.get("/signup", (req, res) => {
     res.sendFile(filePath);
 });
 
-app.get("/set-password/:token", (req, res) => {
-    const filePath = path.join(__dirname, 'public', 'set-password.html')
-    res.sendFile(filePath);
+// Token verification endpoint
+app.get("/set-password/:token", async (req, res) => {
+  const { token } = req.params; // Get the token from URL parameters
+  try {
+      const user = await User.findOne({
+          token: token,
+          tokenExpire: { $gt: new Date() } // Ensure the token is not expired
+      });
+      if (!user) {
+          return res.status(404).send("Token is invalid or expired.");
+      }
+      // Token is valid, you can optionally send back some user info if needed
+      const filePath = path.join(__dirname, 'public', 'set-password.html')
+      res.sendFile(filePath);
+  } catch (err) {
+      res.status(500).send("An error occurred while verifying the token.");
+  }
 });
 
 app.use("/api/users", require("./api/users"));
-
 app.use('/api/api', require('./api/api'));
 
 const PORT = process.env.PORT || 3000;
