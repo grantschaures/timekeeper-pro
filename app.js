@@ -67,6 +67,11 @@ app.get("/signup", (req, res) => {
     res.sendFile(filePath);
 });
 
+app.get("/set-password/:token", (req, res) => {
+    const filePath = path.join(__dirname, 'public', 'set-password.html')
+    res.sendFile(filePath);
+});
+
 app.use("/api/users", require("./api/users"));
 
 app.use('/api/api', require('./api/api'));
