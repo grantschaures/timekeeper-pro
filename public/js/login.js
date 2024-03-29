@@ -22,7 +22,7 @@ async function addUser() {
             password: password
         };
 
-        const response = await fetch("/api/api", {
+        const response = await fetch("/api/api/validateUser", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(user)

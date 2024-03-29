@@ -2,9 +2,9 @@ describe('Pomodoro Settings', () => {
     beforeEach(() => {
         cy.visit('http://localhost:3000')
         cy.get('#sub-main-container').invoke('css', 'opacity', '1');
-      cy.get('[data-testid="menuBtn"]').click();
-      cy.contains("Settings").click();
-      cy.contains("Pomodoro").click();
+        cy.get('[data-testid="menuBtn"]').click();
+        cy.contains("Settings").click();
+        cy.contains("Pomodoro").click();
     })
   
     it('Pomodoro Info Window Shows Up', () => {
@@ -48,5 +48,42 @@ describe('Pomodoro Settings', () => {
         cy.pomodoroInterval(pomMinutes, sbMinutes, lbMinutes, "12:00:00", "12:00:00", "12:00:00", "48:00:00");
     })
 
-    
+    it('1 Min, Pom, SB and LB | Auto Start', () => {
+        let pomMinutes = 1;
+        let sbMinutes = 1;
+        let lbMinutes = 1;
+
+        cy.get('[data-testid="pomodoroNotificationToggle"]').click();
+        cy.get('[data-testid="autoStartPomodoroIntervalToggleLabel"]').click();
+        cy.get('[data-testid="autoStartBreakIntervalToggleLabel"]').click();
+        cy.setPomodoroIntervalTimes(pomMinutes, sbMinutes, lbMinutes);
+        cy.clock();
+        cy.pomodoroIntervalAutoSwitch(pomMinutes, sbMinutes, lbMinutes, "00:04:00");
+    })
+
+    it('25 min Pom, 5 min SB, 15 min LB | Auto Start', () => {
+        let pomMinutes = 25;
+        let sbMinutes = 5;
+        let lbMinutes = 15;
+
+        cy.get('[data-testid="pomodoroNotificationToggle"]').click();
+        cy.get('[data-testid="autoStartPomodoroIntervalToggleLabel"]').click();
+        cy.get('[data-testid="autoStartBreakIntervalToggleLabel"]').click();
+        cy.setPomodoroIntervalTimes(pomMinutes, sbMinutes, lbMinutes);
+        cy.clock();
+        cy.pomodoroIntervalAutoSwitch(pomMinutes, sbMinutes, lbMinutes, "01:40:00");
+    })
+
+    it('720 min Pom, 720 min SB, 720 min LB | Auto Start', () => {
+        let pomMinutes = 720;
+        let sbMinutes = 720;
+        let lbMinutes = 720;
+
+        cy.get('[data-testid="pomodoroNotificationToggle"]').click();
+        cy.get('[data-testid="autoStartPomodoroIntervalToggleLabel"]').click();
+        cy.get('[data-testid="autoStartBreakIntervalToggleLabel"]').click();
+        cy.setPomodoroIntervalTimes(pomMinutes, sbMinutes, lbMinutes);
+        cy.clock();
+        cy.pomodoroIntervalAutoSwitch(pomMinutes, sbMinutes, lbMinutes, "48:00:00");
+    })
 })

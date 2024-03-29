@@ -1081,7 +1081,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     
     displayWorker.onmessage = function(message) {
-        console.log(message)
         const timeDiff = Date.now() - startTimes.local;
 
     

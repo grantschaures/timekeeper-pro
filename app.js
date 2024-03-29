@@ -69,6 +69,8 @@ app.get("/signup", (req, res) => {
 
 app.use("/api/users", require("./api/users"));
 
+app.use('/api/api', require('./api/api'));
+
 const PORT = process.env.PORT || 3000;
 // Start the web server
 app.listen(PORT, function() {

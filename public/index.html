@@ -25,6 +25,18 @@
         <script src='/js/notes.min.js'></script>
     </head>
 
+    <!-- For future, before pushing:
+            Comment Out:
+            (1) registerHereText btn event listener
+            (2) Account settings page HTML for login/ registration
+
+            Uncomment:
+            (3)'feature currently under developemnt' text
+
+            Change:
+            (4) index.js, menu.js, notes.js -> to -> index.min.js, menu.min.js, notes.min.js
+    -->
+
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-E3SBGG3VKK"></script>
     <script>
@@ -817,7 +829,7 @@
                                         </div>
                                         <div id="autoStartPomodoroIntervalToggleContainer" class="toggleContainer">
                                             <input type="checkbox" id="autoStartPomodoroIntervalToggle" class="toggle-checkbox">
-                                            <label for="autoStartPomodoroIntervalToggle" id="autoStartPomodoroIntervalToggleLabel" class="toggle-label">
+                                            <label for="autoStartPomodoroIntervalToggle" data-testid="autoStartPomodoroIntervalToggleLabel" id="autoStartPomodoroIntervalToggleLabel" class="toggle-label">
                                                 <span id="autoStartPomodoroIntervalToggleBall" class="toggle-ball"></span>
                                             </label>
                                         </div>
@@ -828,7 +840,7 @@
                                         </div>
                                         <div id="autoStartBreakIntervalToggleContainer" class="toggleContainer">
                                             <input type="checkbox" id="autoStartBreakIntervalToggle" class="toggle-checkbox">
-                                            <label for="autoStartBreakIntervalToggle" id="autoStartBreakIntervalToggleLabel" class="toggle-label">
+                                            <label for="autoStartBreakIntervalToggle" data-testid="autoStartBreakIntervalToggleLabel" id="autoStartBreakIntervalToggleLabel" class="toggle-label">
                                                 <span id="autoStartBreakIntervalToggleBall" class="toggle-ball"></span>
                                             </label>
                                         </div>
