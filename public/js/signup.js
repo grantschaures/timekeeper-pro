@@ -11,7 +11,7 @@ addEventListener("DOMContentLoaded", function () {
             await createUser(userEmail);
             document.getElementById("emailInputSignup").value = "";
         } else {
-            alert("Invalid email address");
+            alert("Invalid email address. Please try again.");
         }
     });
 

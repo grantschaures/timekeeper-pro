@@ -53,6 +53,11 @@ document.addEventListener("DOMContentLoaded", function() {
     const dynamicList = document.getElementById('dynamicList');
     const textarea = document.getElementById('note-task-input-text');
 
+    const settingsContainer = document.getElementById('settingsContainer');
+    const aboutContainer = document.getElementById('aboutContainer');
+    const blogContainer = document.getElementById('blogContainer');
+    const main_elements = document.querySelector("main");
+
     // CONSOLE
     let notesFlags = {
         isClicked: false,
@@ -228,7 +233,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     })
     
-    document.addEventListener('keydown', (event) => handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInput, createLabelDone, updateLabelInput, updateLabelDone, noteInputSaveBtn, noteTaskInputText, noteInputCancelBtn, addNoteTaskContainer, flags, isMobile));
+    document.addEventListener('keydown', (event) => handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInput, createLabelDone, updateLabelInput, updateLabelDone, noteInputSaveBtn, noteTaskInputText, noteInputCancelBtn, addNoteTaskContainer, flags, isMobile, settingsContainer, aboutContainer, blogContainer, main_elements));
     
     clearIcon.addEventListener("click", async function() {
 
@@ -944,7 +949,6 @@ function createNote(inputStr, noteTaskDiv, counters, container) {
     taskText.textContent = inputStr;
     let taskTextId = "spanText" + counters.lastTaskInputIdNum;
     taskText.setAttribute('data-testid', taskTextId)
-    console.log(taskTextId);
     noteTaskDiv.appendChild(taskText);
 
     let noteTaskDivIdStr = "taskDiv" + counters.lastTaskInputIdNum;
@@ -1415,7 +1419,7 @@ function deselectTags(tag, flags, tagIcon, clearIcon, labelSelectionRow, counter
     showTagSelectionDivider(flags, tagSelectionDivider, addDoneContainer);
 }
 
-function handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInput, createLabelDone, updateLabelInput, updateLabelDone, noteInputSaveBtn, noteTaskInputText, noteInputCancelBtn, addNoteTaskContainer, flags, isMobile) {
+function handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInput, createLabelDone, updateLabelInput, updateLabelDone, noteInputSaveBtn, noteTaskInputText, noteInputCancelBtn, addNoteTaskContainer, flags, isMobile, settingsContainer, aboutContainer, blogContainer, main_elements) {
     if (event.key === 'Enter') {
         event.preventDefault();
         
@@ -1428,7 +1432,7 @@ function handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInpu
         } else if (document.activeElement.id === 'note-task-input-text-edit') {
             document.getElementById('note-input-save-btn-edit').click();
         }
-    } else if (event.key === 'n') {
+    } else if ((event.key === 'n') && (canOpenNotes(blogContainer, aboutContainer, settingsContainer, main_elements))) {
         if (!notesFlags.notesShowing) {
             openNotesContainer(notesContainer, notesFlags);
         } else if ((!flags.noteTaskInputContainerShowing) && (!flags.noteTaskInputContainerEditShowing) && (notesFlags.notesConsoleShowing)) {
@@ -1453,4 +1457,15 @@ function handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInpu
 
 function delay(milliseconds) {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
+}
+
+function canOpenNotes(blogContainer, aboutContainer, settingsContainer, main_elements) {
+    let containerArr = [blogContainer, aboutContainer, settingsContainer];
+
+    if ((blogContainer.style.display === "") && (aboutContainer.style.display === "") && (settingsContainer.style.display === "")) {
+        return true; //if very first action is hitting 'n'
+    } else {
+        return ((containerArr.every(container => container.style.display === "none") && (main_elements.style.display !== "none")));
+    }
+
 }

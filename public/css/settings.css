@@ -970,3 +970,66 @@
         width: 200px;
     }
 }
+
+#emailPasswordLoginContainer {
+    width: 100%;
+}
+
+#enterEmailContainer {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+#enterPasswordContainer {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+#forgotPasswordContainer {
+    margin-bottom: 25px;
+    color: white;
+    font-family: settingsHeaderFont;
+    font-size: 14px;
+    color: rgb(216, 216, 216);
+}
+
+#forgotPasswordContainer:hover {
+    cursor: pointer;
+}
+
+.loginLabel {
+    margin-bottom: -10px;
+}
+
+.loginInput {
+    width: 400px;
+    height: 30px;
+
+    background-color: transparent;
+    border: 2px solid grey;
+    border-radius: 5px; /* Adjust this value to control the curvature */
+    outline-color: white;
+
+    caret-color: white;
+    padding-left: 5px;
+    color: white;
+    font-family: settingsHeaderFont;
+    font-weight: bold;
+    font-size: 16px;
+    letter-spacing: 1px;
+}
+
+@media (max-width: 670px) {
+    .loginInput {
+        width: 90%;
+    }
+    
+}
+
+#registerHereText:hover {
+    cursor: pointer;
+    color: rgb(216, 216, 216);
+}

@@ -45,17 +45,14 @@ router.post('/emailsignup', (req, res) => {
         email: 'noreply@hyperchill.io',
         name: 'HyperChill.io',
       },
-      subject: 'Verify email and set password',
+      subject: 'Please set your password',
       text: 'Visit hyperchill.io/login',
-      html: '<strong>Visit hyperchill.io/login</strong>', //change this to add a button and so forth
-      // headers: {
-      //   'X-SMTPAPI': {
-      //     'category': 'example_category'
-      //   },
-      //   'Sender': 'HyperChill.io noreply@hyperchill.io',
-      //   'X-Sent-Using': 'SendGrid-API',
-      //   'X-Transport': 'web'
-      // }
+      html: `<div style="text-align: center;">
+              <img src="localhost:3000/images/email/logoImageSmall.png">
+              <hr style="margin: 20px 0;">
+              <strong>Please set a new password for your account.</strong><br>
+              <a href="https://hyperchill.io/set-password" style="background-color: #004A99; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; margin-top: 10px;">Set Password</a>
+             </div>`
     }
     sgMail
       .send(msg)

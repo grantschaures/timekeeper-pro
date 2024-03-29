@@ -122,6 +122,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const chilltimeBackgroundCells = document.querySelectorAll('.chilltimeBackgroundCell');
     // const autoStartChillTimeIntervalToggle = document.getElementById("autoStartChillTimeIntervalToggle");
 
+    const registerHereText = document.getElementById("registerHereText");
+
     var backgroundVideoSource = document.getElementById('background-video-source');
     const backgroundVideo = document.getElementById('background-video');
 
@@ -1021,6 +1023,10 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
     });
+
+    registerHereText.addEventListener("click", function() {
+        window.location.href = "/signup";
+    })
 
     // report_btn.addEventListener("click", function() {
     //     alert("This feature is currently under development. Thank you for your patience.")
