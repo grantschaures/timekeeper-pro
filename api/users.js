@@ -47,13 +47,17 @@ router.post('/emailsignup', (req, res) => {
       },
       subject: 'Please set your password',
       text: 'Visit hyperchill.io/login',
-      html: `<div style="text-align: center;">
-              <img src="localhost:3000/images/email/logoImageSmall.png">
-              <hr style="margin: 20px 0;">
-              <strong>Please set a new password for your account.</strong><br>
-              <a href="https://hyperchill.io/set-password" style="background-color: #004A99; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; margin-top: 10px;">Set Password</a>
-             </div>`
+      html:`<div style="text-align: center;">
+              <img src="https://hyperchill.io/images/email/logoImageSmall.png">
+              <hr style="margin: 20px auto; width: 500px;"> <!-- Adjusted margin here -->
+              <strong style="font-size: 24px;">Please set a new password for your account</strong><br>
+              <a href="https://hyperchill.io/set-password" style="background-color: #00af2c; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; margin-top: 50px;">Set Password</a>
+            </div>`
     }
+
+
+  
+
     sgMail
       .send(msg)
       .then(() => {
