@@ -168,3 +168,12 @@
 #signUpEmail {
     margin-bottom: 30px;
 }
+
+/* SET NEW PASSWORD PAGE */
+#setNewPasswordInputWindow {
+    height: 300px;
+}
+
+#signUpPassword {
+    margin-top: 10px;
+}
