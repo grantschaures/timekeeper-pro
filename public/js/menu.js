@@ -166,7 +166,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         counters.settingsBtnClicked++;
 
-        //show blog popup window
         settings_container.style.display = "block"; //EDIT: changed from flex to block
         
         body.style.overflowY = 'hidden';

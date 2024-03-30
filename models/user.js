@@ -11,4 +11,3 @@ const User = db.model("User", {
 }, 'Users');
 
 module.exports = User;
-  

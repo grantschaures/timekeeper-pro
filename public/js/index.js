@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const pomodoroRadios = document.querySelectorAll('.pomodoroAlert');
     const flowtimeBackgroundCells = document.querySelectorAll('.flowtimeBackgroundCell');
     const chilltimeBackgroundCells = document.querySelectorAll('.chilltimeBackgroundCell');
-    // const autoStartChillTimeIntervalToggle = document.getElementById("autoStartChillTimeIntervalToggle");
+    const settings_menu_container = document.getElementById("settingsMenuContainer");
 
     const registerHereText = document.getElementById("registerHereText");
 
@@ -550,9 +550,9 @@ document.addEventListener("DOMContentLoaded", function() {
         suggestionMinutesInput.value = validatedFinalInputVal;
 
         flags.sentSuggestionMinutesNotification = false;
-        start_stop_btn.classList.remove('glowing-effect');
-
+        
         if (flags.breakSuggestionToggle) {
+            start_stop_btn.classList.remove('glowing-effect');
             setSuggestionMinutes(startTimes, flags, elapsedTime, validatedFinalInputVal, intervals, alertSounds, alertVolumes, chime, bell, start_stop_btn);
         }
     })
@@ -719,22 +719,25 @@ document.addEventListener("DOMContentLoaded", function() {
             }
 
             if ((counters.currentFlowmodoroBreakIndex === 0) && (event.target.id === "flowmodoroBreakInput1")) {
-                start_stop_btn.classList.remove('glowing-effect');
-                flags.sentFlowmodoroNotification = false;
+                removeGlowingEffect();
             } else if ((counters.currentFlowmodoroBreakIndex === 1) && (event.target.id === "flowmodoroBreakInput2")) {
-                start_stop_btn.classList.remove('glowing-effect');
-                flags.sentFlowmodoroNotification = false;
+                removeGlowingEffect();
             } else if ((counters.currentFlowmodoroBreakIndex === 2) && (event.target.id === "flowmodoroBreakInput3")) {
-                start_stop_btn.classList.remove('glowing-effect');
-                flags.sentFlowmodoroNotification = false;
+                removeGlowingEffect();
             } else if ((counters.currentFlowmodoroBreakIndex === 3) && (event.target.id === "flowmodoroBreakInput4")) {
-                start_stop_btn.classList.remove('glowing-effect');
-                flags.sentFlowmodoroNotification = false;
+                removeGlowingEffect();
             }
 
             suggestionBreak_min.textContent = counters.currentFlowmodoroNotification + " min";
         })
     })
+
+    function removeGlowingEffect() {
+        if (flags.flowmodoroNotificationToggle) {
+            start_stop_btn.classList.remove('glowing-effect');
+        }
+        flags.sentFlowmodoroNotification = false;
+    }
 
     pomodoroInputs.forEach(input => {
         input.addEventListener('change', function(event) {
@@ -990,8 +993,6 @@ document.addEventListener("DOMContentLoaded", function() {
         activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popup_window, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer);
     })
 
-    window.addEventListener("resize", handleViewportWidthChange(settingsMappings, tempStorage, isMobile));
-
     window.addEventListener("resize", function() {
         handleViewportWidthChange(settingsMappings, tempStorage, isMobile);
     });
@@ -1022,6 +1023,18 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             }
         }
+    });
+
+    /**
+     * setTimeout delay of 0 allows the event listener callback function in menu.js
+     * dealing with opening the settings menu to execute first before
+     * handleViewportWidthChange() is called so that handleViewportWidthChange()
+     * recognizes that the display style of settingsContainer is === "block"
+     */
+    settings_menu_container.addEventListener("click", function() {
+        setTimeout(() => {
+            handleViewportWidthChange(settingsMappings, tempStorage, isMobile);
+        }, 0);
     });
 
     // registerHereText.addEventListener('click', function() {
@@ -1808,12 +1821,14 @@ function handleViewportWidthChange(settingsMappings, tempStorage, isMobile) {
     } else {
         for (const [buttonId, containerId] of Object.entries(settingsMappings)) {
             document.getElementById(buttonId).addEventListener('click', function() {
+                // console.log(buttonId);
                 hideAllSettingsContainers(settingsMappings);
                 document.getElementById(containerId).style.display = 'block';
                 this.classList.add('selected');
             });
         }
 
+        // console.log(document.getElementById("settingsContainer").style.display);
         if (document.getElementById("settingsContainer").style.display === 'block') {
             document.getElementById(tempStorage.lastSettingsSelectionId).click();
         }
