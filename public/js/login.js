@@ -29,11 +29,12 @@ async function addUser() {
         });
         
         if (!response.ok) {
+            alert("Your email or password is incorrect. Please try again.");
             throw new Error(`HTTP error! Status: ${response.status}`);
         } else {
             document.getElementById("emailInputSignin").value = "";
             document.getElementById("passwordInput").value = "";
-            // window.location.href = "/";
+            window.location.href = "/";
         }
         
         // const results = await response.json();
