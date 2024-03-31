@@ -1,4 +1,9 @@
 /* LOGIN AND SIGNUP PAGES */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 .login-signup-window {
     height: 80%;
@@ -176,4 +181,10 @@
 
 #signUpPassword {
     margin-top: 10px;
+}
+
+#activationLinkSentWindow {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-in;
 }

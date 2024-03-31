@@ -9,7 +9,7 @@ addEventListener("DOMContentLoaded", function () {
         if (isValidEmail(userEmail)) {
             // Make an HTTP request to your server
             await createUser(userEmail);
-            document.getElementById("emailInputSignup").value = "";
+            document.getElementById("emailInputSignup").value = "";            
         } else {
             alert("Invalid email address. Please try again.");
         }
@@ -45,10 +45,21 @@ async function createUser(email) {
                 alert(data.message);
                 throw new Error(data.message); // Throws an error with your custom message
             });
+        } else {
+            activationLinkSent();
         }
     })
     .catch(error => {
         console.error('Error during fetch operation:', error.message);
         // Handle errors
     });
+}
+
+function activationLinkSent() {
+    document.getElementById('signupWindow').style.display = "none";
+    document.getElementById('activationLinkSentWindow').style.display = "flex";
+
+    setTimeout(() => {
+        document.getElementById('activationLinkSentWindow').style.opacity = "1";
+    }, 10)
 }

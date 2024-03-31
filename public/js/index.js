@@ -549,11 +549,24 @@ document.addEventListener("DOMContentLoaded", function() {
         let validatedFinalInputVal = validateAndSetNotificationInput(suggestionMinutes);
         suggestionMinutesInput.value = validatedFinalInputVal;
 
+        if (counters.startStop === 0) {
+            secondsPassed = 0;
+        } else {
+            secondsPassed = Math.round((Date.now() - startTimes.hyperFocus) / 1000);
+        }
+
         flags.sentSuggestionMinutesNotification = false;
         
         if (flags.breakSuggestionToggle) {
-            start_stop_btn.classList.remove('glowing-effect');
             setSuggestionMinutes(startTimes, flags, elapsedTime, validatedFinalInputVal, intervals, alertSounds, alertVolumes, chime, bell, start_stop_btn);
+            
+            if ((validatedFinalInputVal * 60 ) > (secondsPassed)) {
+                flags.sentSuggestionMinutesNotification = false;
+                start_stop_btn.classList.remove('glowing-effect');
+            } else {
+                flags.sentSuggestionMinutesNotification = true;
+                start_stop_btn.classList.add('glowing-effect');
+            }
         }
     })
 
@@ -711,6 +724,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             if ((counters.startStop === 0) || (flags.inHyperFocus)) {
                 elapsedTime.flowmodoroNotificationSeconds = (counters.currentFlowmodoroNotification * 60);
+                secondsPassed = 0;
             } else {
                 secondsPassed = Math.round((Date.now() - startTimes.chillTime) / 1000);
                 elapsedTime.flowmodoroNotificationSeconds = ((counters.currentFlowmodoroNotification * 60) - secondsPassed);
@@ -719,26 +733,31 @@ document.addEventListener("DOMContentLoaded", function() {
             }
 
             if ((counters.currentFlowmodoroBreakIndex === 0) && (event.target.id === "flowmodoroBreakInput1")) {
-                removeGlowingEffect();
+                removeGlowingEffect(flags, breakTimeSuggestionsArr, secondsPassed, start_stop_btn);
             } else if ((counters.currentFlowmodoroBreakIndex === 1) && (event.target.id === "flowmodoroBreakInput2")) {
-                removeGlowingEffect();
+                removeGlowingEffect(flags, breakTimeSuggestionsArr, secondsPassed, start_stop_btn);
             } else if ((counters.currentFlowmodoroBreakIndex === 2) && (event.target.id === "flowmodoroBreakInput3")) {
-                removeGlowingEffect();
+                removeGlowingEffect(flags, breakTimeSuggestionsArr, secondsPassed, start_stop_btn);
             } else if ((counters.currentFlowmodoroBreakIndex === 3) && (event.target.id === "flowmodoroBreakInput4")) {
-                removeGlowingEffect();
+                removeGlowingEffect(flags, breakTimeSuggestionsArr, secondsPassed, start_stop_btn);
             }
 
             suggestionBreak_min.textContent = counters.currentFlowmodoroNotification + " min";
         })
     })
 
-    function removeGlowingEffect() {
-        if (flags.flowmodoroNotificationToggle) {
-            start_stop_btn.classList.remove('glowing-effect');
+    function removeGlowingEffect(flags, breakTimeSuggestionsArr, secondsPassed, start_stop_btn) {
+        if ((flags.flowmodoroNotificationToggle) && (counters.startStop > 1) && (!flags.inHyperFocus)) {
+            if ((breakTimeSuggestionsArr[counters.currentFlowmodoroBreakIndex] * 60) > (secondsPassed)) {
+                start_stop_btn.classList.remove('glowing-effect');
+                flags.sentFlowmodoroNotification = false;
+            } else {
+                start_stop_btn.classList.add('glowing-effect');
+                flags.sentFlowmodoroNotification = true;
+            }
         }
-        flags.sentFlowmodoroNotification = false;
     }
-
+        
     pomodoroInputs.forEach(input => {
         input.addEventListener('change', function(event) {
             let finalInputVal = Math.round(event.target.value);
@@ -747,20 +766,21 @@ document.addEventListener("DOMContentLoaded", function() {
 
             if (flags.inHyperFocus) {
                 secondsPassed = Math.round((Date.now() - startTimes.hyperFocus) / 1000);
+                // console.log(secondsPassed);
 
-                if (event.target.id === "pomodoroInput") {
-                    start_stop_btn.classList.remove('glowing-effect');
+                if ((event.target.id === "pomodoroInput")) { //and new time is higher than current time
                     flags.modeChangeExecuted = false;
+                    addRemoveGlowingEffect(validatedFinalInputVal, secondsPassed, start_stop_btn);
                 }
             } else {
                 secondsPassed = Math.round((Date.now() - startTimes.chillTime) / 1000);
 
                 if ((event.target.id === "shortBreakInput") && (counters.currentPomodoroIntervalIndex === 1)) {
-                    start_stop_btn.classList.remove('glowing-effect');
                     flags.modeChangeExecuted = false;
+                    addRemoveGlowingEffect(validatedFinalInputVal, secondsPassed, start_stop_btn);
                 } else if ((event.target.id === "longBreakInput") && (counters.currentPomodoroIntervalIndex === 2)) { // long break
-                    start_stop_btn.classList.remove('glowing-effect');
                     flags.modeChangeExecuted = false;
+                    addRemoveGlowingEffect(validatedFinalInputVal, secondsPassed, start_stop_btn);
                 }
             }
 
@@ -774,10 +794,16 @@ document.addEventListener("DOMContentLoaded", function() {
                 pomodoroWorker.postMessage("clearInterval");
                 pomodoroWorker.postMessage(elapsedTime.pomodoroNotificationSeconds);
             }
-
-            suggestionBreak_min.textContent = counters.currentPomodoroNotification + " min";
         })
     })
+
+    function addRemoveGlowingEffect(validatedFinalInputVal, secondsPassed, start_stop_btn) {
+        if ((validatedFinalInputVal * 60) > (secondsPassed)) {
+            start_stop_btn.classList.remove('glowing-effect');
+        } else {
+            start_stop_btn.classList.add('glowing-effect');
+        }
+    }
 
     radioGroups.forEach(group => {
         group.radios.forEach(radio => {
@@ -1263,7 +1289,11 @@ function setBothBreakIntervalText(counters, pomodoroIntervalArr) {
         breakString  = "Short Break #3 | " + (pomodoroIntervalArr[1]).toString() + " min";
     } else if (counters.currentPomodoroIntervalOrderIndex === 7) {
         breakString  = "Long Break | " + (pomodoroIntervalArr[2]).toString() + " min";
+    } else {
+        breakString = "You are in Break Mode";
     }
+
+    console.log(counters.currentFlowmodoroBreakIndex);
 
     return breakString;
 }
