@@ -9,16 +9,19 @@ router.use(express.json());
 // Add a new User to the database
 //async functionality seems to be unecessary
 router.post("/validateUser", async function(req, res) {
+    const { email, password } = req.body;
     try {
-        const user = new User(req.body);
-        await user.save(); //stores user in database
-        res.status(201).json(user);
-        console.log("");
-        console.log("User Email: " + user.email);
-        console.log("User Password: " + user.password);
-        console.log("");
+        const user = await User.findOne({ email: email });
+        if (user && await bcrypt.compare(password, user.password)) {
+            user.logins++;
+            user.save();
+            res.status(200).json({ message: "Login successful", user: { email: user.email } });
+        } else {
+            // Authentication failed
+            res.status(401).json({ message: "Invalid email or password" });
+        }
     } catch (err) {
-        res.status(400).send(err);
+        res.status(500).send(err);
     }
 });
 

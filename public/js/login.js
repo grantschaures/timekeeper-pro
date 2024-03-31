@@ -30,16 +30,18 @@ async function addUser() {
         
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
+        } else {
+            document.getElementById("emailInputSignin").value = "";
+            document.getElementById("passwordInput").value = "";
+            // window.location.href = "/";
         }
         
-        const results = await response.json();
+        // const results = await response.json();
         // console.log("Added user with ID: " + results._id); //testing
 
-        document.getElementById("emailInputSignin").value = "";
-        document.getElementById("passwordInput").value = "";
 
     } catch (error) {
-        console.error("Error:", error);
+        console.error(error);
         // Handle the error (e.g., display an error message to the user).
     }
 }

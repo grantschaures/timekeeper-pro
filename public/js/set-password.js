@@ -30,9 +30,11 @@ addEventListener("DOMContentLoaded", function () {
                     if (response.ok) { // If the response is OK (status code in the range 200-299)
                         passwordInputSignup.value = "";
                         confirmPasswordInputSignup.value = "";
-                        const result = await response.json(); // Assuming the server responds with JSON
-                        console.log(result); // Handle success, maybe redirect or show a success message
 
+                        // inform user that they've successfully verified their account
+                        accountVerified();
+
+                        // const result = await response.json();
                     } else {
                         // Server responded with a status outside the 200 range, handle error
                         console.error('Failed to submit password:', response.statusText);
@@ -92,4 +94,12 @@ function validatePassword(password) {
 
 function passwordMatchCheck(password, confirmPassword) {
     return password.value === confirmPassword.value;
+}
+
+function accountVerified() {
+    document.getElementById('setNewPasswordWindow').style.display = "none";
+    document.getElementById('accountVerifiedWindow').style.display = "flex";
+    setTimeout(() => {
+        document.getElementById('accountVerifiedWindow').style.opacity = "1";
+    }, 10)
 }

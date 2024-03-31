@@ -183,8 +183,8 @@ body {
     margin-top: 10px;
 }
 
-#activationLinkSentWindow {
+#activationLinkSentWindow, #accountVerifiedWindow {
     display: none;
     opacity: 0;
-    transition: opacity 0.5s ease-in;
+    transition: opacity 1s ease-in;
 }

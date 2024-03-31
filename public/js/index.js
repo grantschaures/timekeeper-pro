@@ -1076,6 +1076,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     pomodoroWorker.onmessage = function(message) {
+        console.log("test")
         if (!flags.modeChangeExecuted) {
             flags.modeChangeExecuted = true;
     
