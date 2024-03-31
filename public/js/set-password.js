@@ -28,9 +28,6 @@ addEventListener("DOMContentLoaded", function () {
                     });
 
                     if (response.ok) { // If the response is OK (status code in the range 200-299)
-                        passwordInputSignup.value = "";
-                        confirmPasswordInputSignup.value = "";
-
                         // inform user that they've successfully verified their account
                         accountVerified();
 
