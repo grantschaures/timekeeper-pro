@@ -6,6 +6,8 @@ module.exports = defineConfig({
     //   // implement node event listeners here
     // },
 
-    baseUrl: "http://localhost:3000"
+    baseUrl: "http://localhost:3000",
+
+    supportFile: 'cypress/support/supportentry.js'
   },
 });

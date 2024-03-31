@@ -1286,8 +1286,10 @@ function closeNotesContainer(notesContainer, notesFlags, flags, noteInputCancelB
     notesContainer.classList.remove('fullsize');
     notesContainer.classList.remove('fullopacity');
 
+    
     if (!isMobile) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
+        document.body.style.overflowY = "hidden"; // removes scroll bar
     }
     notesFlags.notesShowing = false;
 }
@@ -1297,6 +1299,8 @@ function openNotesContainer(notesContainer, notesFlags) {
     notesContainer.classList.add('fullopacity');
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     notesFlags.notesShowing = true;
+    
+    document.body.style.overflowY = "scroll";  // adds scroll bar
 }
 
 function noteInputCancel(noteTaskInputContainer, addNoteTaskContainer, flags, noteTaskInputText) {
