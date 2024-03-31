@@ -1293,7 +1293,7 @@ function setBothBreakIntervalText(counters, pomodoroIntervalArr) {
         breakString = "You are in Break Mode";
     }
 
-    console.log(counters.currentFlowmodoroBreakIndex);
+    // console.log(counters.currentFlowmodoroBreakIndex);
 
     return breakString;
 }
