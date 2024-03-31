@@ -460,11 +460,11 @@ document.addEventListener("DOMContentLoaded", function() {
             let previousHyperFocusElapsedTime = elapsedTime.hyperFocus;
             elapsedTime.hyperFocus += Date.now() - startTimes.hyperFocus;
             
-            setCurrentPomodoroNotification(counters, pomodoroIntervalArr);
-
+            
             if (flags.pomodoroNotificationToggle) {
                 showPomodorosCompletedContainer(completedPomodorosContainer, completedPomodoros_label, completedPomodoros_min, counters);
                 setHyperFocusElapsedTime(previousHyperFocusElapsedTime, pomodoroIntervalArr, counters, flags, elapsedTime);
+                setCurrentPomodoroNotification(counters, pomodoroIntervalArr);
                 recoverToBreakUpdateProgressBarAndTotalElapsed(flags, targetTime, startTimes, elapsedTime, progressBar, progressContainer);
                 setPomodoroNotificationSeconds(flags, elapsedTime, counters, recoverBreakState, pomodoroWorker);
                 setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", setBothBreakIntervalText(counters, pomodoroIntervalArr));
@@ -1254,6 +1254,7 @@ function setHyperFocusElapsedTime(previousHyperFocusElapsedTime, pomodoroInterva
     if (flags.autoSwitchedModes) {
         elapsedTime.hyperFocus = predictedTime;
     }
+    // console.log(predictedTime);
     var milliseconds = elapsedTime.hyperFocus;
     elapsedTime.hyperFocus = Math.round(milliseconds / 1000) * 1000;   
 }
@@ -1317,6 +1318,8 @@ function setBreakIntervalText(counters, pomodoroIntervalArr) {
         breakString  = "Short Break #2 | " + (pomodoroIntervalArr[1]).toString() + " min";
     } else if (counters.currentPomodoroIntervalOrderIndex === 5) {
         breakString  = "Short Break #3 | " + (pomodoroIntervalArr[1]).toString() + " min";
+    } else {
+        breakString = "You are in Break Mode";
     }
 
     return breakString;
@@ -1332,6 +1335,8 @@ function setPomodoroIntervalText(counters, pomodoroIntervalArr) {
         pomodoroString = "Pomodoro #3 | " + (pomodoroIntervalArr[0]).toString() + " min";
     } else if (counters.currentPomodoroIntervalOrderIndex === 6) {
         pomodoroString = "Pomodoro #4 | " + (pomodoroIntervalArr[0]).toString() + " min";
+    } else {
+        pomodoroString = "You are in Pomodoro Mode";
     }
 
     return pomodoroString;
