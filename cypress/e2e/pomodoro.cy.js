@@ -1,4 +1,4 @@
-describe('Pomodoro Settings', () => {
+describe('Pomodoro | Auto and non-auto start', () => {
     beforeEach(() => {
         cy.visit('http://localhost:3000')
         cy.get('#sub-main-container').invoke('css', 'opacity', '1');
@@ -115,8 +115,140 @@ describe('Pomodoro Settings', () => {
         cy.clock();
 
         cy.get('[data-testid="start-stop"]').click(); // initial triggering of session
-
+        
         cy.pomodoroIntervalAutoSwitch(pomMin, "Pomodoro #1 | 25 min", "00:00:00", "00:25:00"); // FIRST POMODORO
         cy.shortBreakIntervalAutoSwitch(sbMin, "Short Break #1 | 5 min", "00:25:00", "1"); // FIRST SHORT BREAK
+    })
+})
+
+describe('Addition and removal of glowing-effect on start-stop btn', () => {
+    beforeEach(() => {
+        cy.visit('http://localhost:3000')
+        cy.get('#sub-main-container').invoke('css', 'opacity', '1');
+        cy.get('[data-testid="menuBtn"]').click();
+        cy.contains("Settings").click();
+        cy.contains("Pomodoro").click();
+    })
+    
+    it("Changing pomodoro notification time during pomodoro interval correctly adds or removes glowing-effect", () => {
+        // INITIAL CONDITIONS
+        cy.get('body').invoke('css', 'overflow-y', 'scroll');
+        
+        // VARIABLE INITIALIZATION
+        let pomMin = 25;
+        let sbMin = 5;
+        let lbMin = 15;
+        
+        /**
+         * MAIN TESTING LOGIC
+        */
+       cy.get('[data-testid="pomodoroNotificationToggle"]').click(); // turn on pomodoro notifications
+       cy.setPomodoroIntervalTimes(pomMin, sbMin, lbMin); // set times for pomodoro, sb and lb
+       cy.clock(); // start cypress clock
+       
+       cy.get('[data-testid="start-stop"]').click(); // initial triggering of session
+
+       cy.tick(25 * 60 * 1000); // simulate passing of 25 minutes
+       cy.get('#start-stop').should('have.class', 'glowing-effect'); // ensure start-stop btn is glowing
+
+       // Update pomodoro notification time to be below current time
+       cy.get('[data-testid="menuBtn"]').click();
+       cy.contains("Settings").click();
+       cy.get('[data-testid="pomodoroInput"]').clear();
+       cy.get('[data-testid="pomodoroInput"]').type(24);
+       cy.get('[data-testid="settingsExit"]').click();
+       cy.get('#start-stop').should('have.class', 'glowing-effect'); // ensure start-stop btn is still glowing
+
+       // Update pomodoro notification time to be after current time
+       cy.get('[data-testid="menuBtn"]').click();
+       cy.contains("Settings").click();
+       cy.get('[data-testid="pomodoroInput"]').clear();
+       cy.get('[data-testid="pomodoroInput"]').type(26);
+       cy.get('[data-testid="settingsExit"]').click();
+       cy.get('#start-stop').should('not.have.class', 'glowing-effect'); // ensure start-stop btn is still glowing
+    })
+
+    it("Changing short break notification time during short break interval correctly adds or removes glowing-effect", () => {
+        // INITIAL CONDITIONS
+        cy.get('body').invoke('css', 'overflow-y', 'scroll');
+        
+        // VARIABLE INITIALIZATION
+        let pomMin = 25;
+        let sbMin = 5;
+        let lbMin = 15;
+        
+        /**
+         * MAIN TESTING LOGIC
+        */
+       cy.get('[data-testid="pomodoroNotificationToggle"]').click(); // turn on pomodoro notifications
+       cy.setPomodoroIntervalTimes(pomMin, sbMin, lbMin); // set times for pomodoro, sb and lb
+       cy.clock(); // start cypress clock
+       
+       cy.get('[data-testid="start-stop"]').click(); // initial triggering of session
+       cy.get('[data-testid="start-stop"]').click(); // immediately start first break
+
+       cy.tick(5 * 60 * 1000); // simulate passing of 5 minutes
+       cy.get('#start-stop').should('have.class', 'glowing-effect'); // ensure start-stop btn is glowing
+
+       // Update pomodoro notification time to be below current time
+       cy.get('[data-testid="menuBtn"]').click();
+       cy.contains("Settings").click();
+       cy.get('[data-testid="shortBreakInput"]').clear();
+       cy.get('[data-testid="shortBreakInput"]').type(4);
+       cy.get('[data-testid="settingsExit"]').click();
+       cy.get('#start-stop').should('have.class', 'glowing-effect'); // ensure start-stop btn is still glowing
+
+       // Update pomodoro notification time to be after current time
+       cy.get('[data-testid="menuBtn"]').click();
+       cy.contains("Settings").click();
+       cy.get('[data-testid="shortBreakInput"]').clear();
+       cy.get('[data-testid="shortBreakInput"]').type(6);
+       cy.get('[data-testid="settingsExit"]').click();
+       cy.get('#start-stop').should('not.have.class', 'glowing-effect'); // ensure start-stop btn is still glowing
+    })
+
+    it("Changing long break notification time during long break interval correctly adds or removes glowing-effect", () => {
+        // INITIAL CONDITIONS
+        cy.get('body').invoke('css', 'overflow-y', 'scroll');
+        
+        // VARIABLE INITIALIZATION
+        let pomMin = 25;
+        let sbMin = 5;
+        let lbMin = 15;
+        
+        /**
+         * MAIN TESTING LOGIC
+        */
+       cy.get('[data-testid="pomodoroNotificationToggle"]').click(); // turn on pomodoro notifications
+       cy.setPomodoroIntervalTimes(pomMin, sbMin, lbMin); // set times for pomodoro, sb and lb
+       cy.clock(); // start cypress clock
+       
+       cy.get('[data-testid="start-stop"]').click(); // begin pomodoro #1
+       cy.get('[data-testid="start-stop"]').click(); // begin short break #1
+       cy.get('[data-testid="start-stop"]').click(); // begin pomodoro #2
+       cy.get('[data-testid="start-stop"]').click(); // begin short break #2
+       cy.get('[data-testid="start-stop"]').click(); // begin pomodoro #3
+       cy.get('[data-testid="start-stop"]').click(); // begin short break #3
+       cy.get('[data-testid="start-stop"]').click(); // begin pomodoro #4
+       cy.get('[data-testid="start-stop"]').click(); // begin long break
+
+       cy.tick(15 * 60 * 1000); // simulate passing of 15 minutes
+       cy.get('#start-stop').should('have.class', 'glowing-effect'); // ensure start-stop btn is glowing
+
+       // Update pomodoro notification time to be below current time
+       cy.get('[data-testid="menuBtn"]').click();
+       cy.contains("Settings").click();
+       cy.get('[data-testid="longBreakInput"]').clear();
+       cy.get('[data-testid="longBreakInput"]').type(14);
+       cy.get('[data-testid="settingsExit"]').click();
+       cy.get('#start-stop').should('have.class', 'glowing-effect'); // ensure start-stop btn is still glowing
+
+       // Update pomodoro notification time to be after current time
+       cy.get('[data-testid="menuBtn"]').click();
+       cy.contains("Settings").click();
+       cy.get('[data-testid="longBreakInput"]').clear();
+       cy.get('[data-testid="longBreakInput"]').type(16);
+       cy.get('[data-testid="settingsExit"]').click();
+       cy.get('#start-stop').should('not.have.class', 'glowing-effect'); // ensure start-stop btn is still glowing
     })
 })
