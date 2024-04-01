@@ -97,7 +97,7 @@ describe('Pomodoro Settings', () => {
         cy.shortBreakIntervalAutoSwitch(sbMin, "Short Break #1 | 5 min", "00:25:00", "1");  // FIRST SHORT BREAK
     })
 
-    it('Pom #1 --> SB #1 --> Pom #2 | Auto Start Break', () => {
+    it('Pom #1 --> SB #1 | Auto Start Break', () => {
         // INITIAL CONDITIONS
         cy.get('body').invoke('css', 'overflow-y', 'scroll');
 

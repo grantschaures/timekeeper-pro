@@ -680,6 +680,10 @@
     /* border: 2px solid yellow; */
 }
 
+#generalIcon {
+    height: 12px;
+}
+
 #pomodoroIcon {
     width: 20px;
     height: 22px;

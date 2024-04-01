@@ -1,5 +1,5 @@
 // cypress/support/supportentry
 
 import './pomodoro.js';
-import './timer.js';
+import './main.js';
 import './notes.js';
