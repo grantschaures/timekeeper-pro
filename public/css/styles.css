@@ -39,8 +39,7 @@ html, body {
     
     
     animation: animateBackground 15s ease infinite;
-    /* background: linear-gradient(270deg, #3b8fe3, #1d60a3, #7f04c7); */
-    background: linear-gradient(270deg, #c42700, #c56900, #c58000);
+    background: linear-gradient(270deg, #3b8fe3, #1d60a3, #7f04c7);
     background-size: 400% 400%;
     
     /* border: 2px solid white; */
