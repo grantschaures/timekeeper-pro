@@ -1,23 +1,18 @@
 document.addEventListener("DOMContentLoaded", function() {
     const menu_btn = document.getElementById("menuBtn");
     const popup_window = document.getElementById("popup-menu");
-
     const blog_btn = document.getElementById("blogBtn");
     const blog_icon = document.getElementById("blogIcon");
     const blog_menu_container = document.getElementById("blogMenuContainer");
-
     const about_btn = document.getElementById("aboutBtn");
     const about_icon = document.getElementById("aboutIcon");
     const about_menu_container = document.getElementById("aboutMenuContainer");
-
     const settings_btn = document.getElementById("settingsBtn");
     const settings_icon = document.getElementById("settingsIcon");
     const settings_menu_container = document.getElementById("settingsMenuContainer");
-
     const logInOut_btn = document.getElementById("logInOutBtn");
     const login_icon = document.getElementById("loginIcon");
     const login_menu_container = document.getElementById("loginMenuContainer");
-
     const about_exit = document.getElementById("aboutExit");
     const blog_exit = document.getElementById("blogExit");
     const blog_post_exit = document.getElementById("blogPostExit");
@@ -31,27 +26,24 @@ document.addEventListener("DOMContentLoaded", function() {
     const blog_post_container = document.getElementById("blogPostContainer");
     const blog_cells = document.querySelectorAll(".blog_cell");
     const blogs = document.querySelectorAll(".blog");
-
     const settings_exit = document.getElementById("settingsExit");
-
     const pomodoroBtnContainer = document.getElementById("pomodoroBtnContainer");
     const backgroundsBtnContainer = document.getElementById("backgroundsBtnContainer");
-
     const start_stop_btn = document.getElementById("start-stop");
-
     const reportIcon = document.getElementById("report-icon");
     const reportPath = document.getElementById("report-path");
-
     const homeIcon = document.getElementById("home-icon");
     const blogIcon = document.getElementById("blog-icon");
     const blogMenuContainer = document.getElementById("blogMenuContainer");
-
     const aboutIconNotes = document.getElementById('aboutIconNotes');
     const body = document.body;
 
     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-    //ADD TO THIS LIST WHEN YOU CREATE A NEW BLOG
+    /**
+     * OBJECTS
+     */
+    
     const blogIdList = {
         'blog_1': 'blogPost1'
         // 'blog_2': 'blogPost2'
@@ -59,6 +51,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let flags = {
         blogShowing: false,
+        popupWindowShowing: false
     }
 
     let counters = {
@@ -69,38 +62,34 @@ document.addEventListener("DOMContentLoaded", function() {
         lastSelectedMode: 'home'
     }
 
-    // document.body.setAttribute('data-dashboard-mode', 'home');
-
+    /**
+     * INITIAL ACTIONS
+     */
+    
     setTimeout(() => {
         menu_btn.style.opacity = '1';
     }, 1000)
-
-    // reportIcon.addEventListener("click", function(event) {
-    //     alert("This feature is currently under development. Thank you for your patience.");
-    //     document.body.setAttribute('data-dashboard-mode', 'report');
-    //     state.lastSelectedMode = 'report';
-    // })
     
-    homeIcon.addEventListener("click", function() {
-        document.body.setAttribute('data-dashboard-mode', 'home');
-        state.lastSelectedMode = 'home';
-    })
-    
+    /**
+     * EVENT LISTENERS
+     */
     blogIcon.addEventListener("click", function() {
         document.body.setAttribute('data-dashboard-mode', 'blog');
         state.lastSelectedMode = 'blog';
-        // console.log(state.lastSelectedMode);
         setTimeout(() => {
             blogMenuContainer.click();
         }, 0)
     })
 
     menu_btn.addEventListener("click", function() {
-        //Cause the menu window to become visable
-        if (popup_window.style.display == "flex") {
+        if (flags.popupWindowShowing) {
+            flags.popupWindowShowing = false;
             popup_window.style.opacity = '0';
-            popup_window.style.display = "none"
+            setTimeout(() => {
+                popup_window.style.display = "none"
+            }, 150)
         } else {
+            flags.popupWindowShowing = true;
             popup_window.style.display = "flex";
             setTimeout(() => {
                 popup_window.classList.add('menuLanding');
@@ -175,7 +164,7 @@ document.addEventListener("DOMContentLoaded", function() {
         alert("This feature is currently under development. Thank you for your patience.");
     
         //eventually uncomment this out to continue w/ login-signup development
-        //window.location.href = "/login";
+        // window.location.href = "/login";
     }
     login_menu_container.addEventListener("click", handleClickLogInOut);
 
@@ -234,7 +223,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // if click is not on menu, hide menu
         if (!menu_btn.contains(event.target)) {
-            popup_window.style.display = "none";
+            popup_window.style.opacity = '0';
+            setTimeout(() => {
+                popup_window.style.display = "none"
+            }, 150)
         }
         
         // hide about container if click is not on menu or about container, OR if the click is on the about exit btn
@@ -287,8 +279,6 @@ document.addEventListener("DOMContentLoaded", function() {
             
             if (flags.blogShowing == true) {
                 blog_post_container.style.display = 'none';
-
-                //ensure that any visible blog becomes hidden when clicking out
                 hideBlog(blogs);
             }
         }
