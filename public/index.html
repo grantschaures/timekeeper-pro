@@ -20,9 +20,9 @@
 
         <!-- CHANGE TO NON-MINIFIED VERSION DURING DEVELOPMENT -->
         <!-- CHANGE BACK TO MINIFIED VERSION FOR DEPLOYMENT -->
-        <script src='/js/index.min.js'></script>
-        <script src='/js/menu.min.js'></script>
-        <script src='/js/notes.min.js'></script>
+        <script src='/js/index.js'></script>
+        <script src='/js/menu.js'></script>
+        <script src='/js/notes.js'></script>
     </head>
 
     <!-- For future, before pushing:
@@ -127,9 +127,9 @@
                                 <h4 id="target-label" style="font-size: 20px" class="no-select">Target Hours</h4>
                                 <div id="coolDiv-submit">
                                     <div id="coolDiv">
-                                        <input type="number" id="target-hours" class="glowing-effect" name="hours" min="0">
+                                        <input type="number" id="target-hours" data-testid="target-hours" class="glowing-effect" name="hours" min="0">
                                     </div>
-                                    <button type="submit" id="target-hours-submit" class="no-select">Submit</button>
+                                    <button type="submit" id="target-hours-submit" data-testid="target-hours-submit" class="no-select">Submit</button>
                                 </div>
                             </div>
                         </div>
@@ -145,22 +145,19 @@
                                 </div>
                             </div>
                             <div id="suggestionBreakContainer">
-                                <h4 id="suggestionBreak-label"></h4>
-                                <h4 id="suggestionBreak-min"></h4>
+                                <h4 id="suggestionBreak-label" data-testid="suggestionBreak-label"></h4>
+                                <h4 id="suggestionBreak-min" data-testid="suggestionBreak-min"></h4>
                             </div>
                             <div id="completedPomodorosContainer">
                                 <h4 id="completedPomodoros-label"></h4>
                                 <div id="completedPomodoros-min" data-testid="completedPomodoros-min"></div>
                             </div>
-                            <!-- <div id="quoteContainer">
-                                <h4 id="quoteText">Seek Limbic Friction.</h4>
-                            </div> -->
                         </div>
                     </div>
                         
                     <div id="progress">
-                        <div id="progress-bar-container">
-                            <div id="progress-container">
+                        <div id="progress-bar-container" data-testid="progress-bar-container">
+                            <div id="progress-container" data-testid="progress-container">
                                 <div id="progress-bar"></div>
                                 <div id="progress-text" data-testid="progress-text" class="progress-text no-select">00:00:00</div>
                             </div>
@@ -705,7 +702,7 @@
                                 <b>Pomodoro</b>
                             </div>
                         </div>
-                        <div id="flowmodoroBtnContainer" class="settingsHeaderRow subCategory">
+                        <div id="flowmodoroBtnContainer" data-testid="flowmodoroBtnContainer" class="settingsHeaderRow subCategory">
                             <div class="settingsIconContainer">
                                 <img src="images/icons/circlesIcon.png" id="flowmodoroIcon" class="settingsIcon" draggable="false">
                             </div>
@@ -713,7 +710,7 @@
                                 <b>Chill Time</b>
                             </div>
                         </div>
-                        <div id="generalBtnContainer" class="settingsHeaderRow subCategory">
+                        <div id="generalBtnContainer" data-testid="generalBtnContainer" class="settingsHeaderRow subCategory">
                             <div class="settingsIconContainer">
                                 <img src="images/icons/sineIcon.png" id="generalIcon" class="settingsIcon" draggable="false">
                             </div>
@@ -896,7 +893,7 @@
                                         </div>
                                         <div id="flowmodoroNotificationToggleContainer" class="toggleContainer">
                                             <input type="checkbox" id="flowmodoroNotificationToggle" class="toggle-checkbox">
-                                            <label for="flowmodoroNotificationToggle" id="flowmodoroNotificationToggleLabel" class="toggle-label">
+                                            <label for="flowmodoroNotificationToggle" data-testid="flowmodoroNotificationToggle" id="flowmodoroNotificationToggleLabel" class="toggle-label">
                                                 <span id="flowmodoroNotificationToggleBall" class="toggle-ball"></span>
                                             </label>
                                         </div>
@@ -920,7 +917,7 @@
                                                         <p><b>&lt; 25 min</b></p>
                                                     </div>
                                                     <div class="chillTimeNotificationContainer">
-                                                        <input type="number" id="flowmodoroBreakInput1" value="5" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1">
+                                                        <input type="number" id="flowmodoroBreakInput1" data-testid="flowmodoroBreakInput1" value="5" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1">
                                                     </div>
                                                 </div>
                                                 <div id="minutesImageBucket2" class="imageBucket">
@@ -928,7 +925,7 @@
                                                         <p><b>&lt; 50 min</b></p>
                                                     </div>
                                                     <div class="chillTimeNotificationContainer">
-                                                        <input type="number" id="flowmodoroBreakInput2" value="8" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1">
+                                                        <input type="number" id="flowmodoroBreakInput2" data-testid="flowmodoroBreakInput2" value="8" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1">
                                                     </div>
                                                 </div>
                                             </div>
@@ -938,7 +935,7 @@
                                                         <p><b>&lt; 90 min</b></p>
                                                     </div>
                                                     <div class="chillTimeNotificationContainer">
-                                                        <input type="number" id="flowmodoroBreakInput3" value="10" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1">
+                                                        <input type="number" id="flowmodoroBreakInput3" data-testid="flowmodoroBreakInput3" value="10" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1">
                                                     </div>
                                                 </div>
                                                 <div id="minutesImageBucket4" class="imageBucket">
@@ -946,7 +943,7 @@
                                                         <p><b>&gt;= 90 min</b></p>
                                                     </div>
                                                     <div class="chillTimeNotificationContainer">
-                                                        <input type="number" id="flowmodoroBreakInput4" value="15" class="flowmodoroBreak" name="minutes" min="1" step="1">
+                                                        <input type="number" id="flowmodoroBreakInput4" data-testid="flowmodoroBreakInput4" value="15" class="flowmodoroBreak" name="minutes" min="1" step="1">
                                                     </div>
                                                 </div>
                                             </div>
@@ -1001,7 +998,7 @@
                                     </div>
                                     <div id="breakSuggestionToggleContainer" class="toggleContainer">
                                         <input type="checkbox" id="breakSuggestionToggle" class="toggle-checkbox">
-                                        <label for="breakSuggestionToggle" id="breakSuggestionToggleLabel" class="toggle-label">
+                                        <label for="breakSuggestionToggle" data-testid="breakSuggestionToggle" id="breakSuggestionToggleLabel" class="toggle-label">
                                             <span id="breakSuggestionToggleBall" class="toggle-ball"></span>
                                         </label>
                                     </div>
@@ -1015,7 +1012,7 @@
                                     </div>
                                     <div id="suggestionMinutesInputContainer" class="toggleContainer">
                                         <div id="coolDiv2">
-                                            <input type="number" id="suggestionMinutesInput" value = '90' name="minutes" min="1" max="720">
+                                            <input type="number" id="suggestionMinutesInput" data-testid="suggestionMinutesInput" value = '90' name="minutes" min="1" max="720">
                                         </div>
                                     </div>
                                 </div>

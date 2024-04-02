@@ -1076,7 +1076,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     pomodoroWorker.onmessage = function(message) {
-        console.log("test")
+        // console.log("test")
         if (!flags.modeChangeExecuted) {
             flags.modeChangeExecuted = true;
     
@@ -1437,7 +1437,7 @@ function deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timek
 
 function sendSuggestionBreakNotification(suggestionMinutes, startTimes, chime, bell, alertSounds, alertVolumes) {
     let notificationString;
-    if (suggestionMinutes !== 1) {
+    if (suggestionMinutes > 1) {
         notificationString = "Need a break? You've been hard at work for " + suggestionMinutes.toString() + " minutes!";
     } else {
         notificationString = "Need a break? You've been hard at work for " + suggestionMinutes.toString() + " minute!";

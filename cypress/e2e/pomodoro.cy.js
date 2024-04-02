@@ -204,7 +204,7 @@ describe('Addition and removal of glowing-effect on start-stop btn', () => {
        cy.get('[data-testid="shortBreakInput"]').clear();
        cy.get('[data-testid="shortBreakInput"]').type(6);
        cy.get('[data-testid="settingsExit"]').click();
-       cy.get('#start-stop').should('not.have.class', 'glowing-effect'); // ensure start-stop btn is still glowing
+       cy.get('#start-stop').should('not.have.class', 'glowing-effect'); // ensure start-stop btn is not glowing
     })
 
     it("Changing long break notification time during long break interval correctly adds or removes glowing-effect", () => {
@@ -250,5 +250,72 @@ describe('Addition and removal of glowing-effect on start-stop btn', () => {
        cy.get('[data-testid="longBreakInput"]').type(16);
        cy.get('[data-testid="settingsExit"]').click();
        cy.get('#start-stop').should('not.have.class', 'glowing-effect'); // ensure start-stop btn is still glowing
+    })
+
+    it("Pomodoro on --> Reach time --> Set Flow Time notification to same time, then turn on toggle --> Turns on glowing effect", () => {
+        // INITIAL CONDITIONS
+        cy.get('body').invoke('css', 'overflow-y', 'scroll');
+        
+        // VARIABLE INITIALIZATION
+        let pomMin = 25;
+        let sbMin = 5;
+        let lbMin = 15;
+        
+        /**
+         * MAIN TESTING LOGIC
+        */
+       cy.get('[data-testid="pomodoroNotificationToggle"]').click(); // turn on pomodoro notifications
+       cy.setPomodoroIntervalTimes(pomMin, sbMin, lbMin); // set times for pomodoro, sb and lb
+       cy.clock(); // start cypress clock
+       
+       cy.get('[data-testid="start-stop"]').click(); // begin pomodoro #1
+
+       cy.tick(25 * 60 * 1000); // simulate passing of 25 minutes
+       cy.get('#start-stop').should('have.class', 'glowing-effect'); // ensure start-stop btn is glowing
+
+       // Turn on Flow Time notification, set to 25 min, and turn on toggle
+       cy.get('[data-testid="menuBtn"]').click();
+       cy.contains("Settings").click();
+       cy.get('[data-testid="generalBtnContainer"]').click();
+       cy.get('[data-testid="suggestionMinutesInput"]').clear();
+       cy.get('[data-testid="suggestionMinutesInput"]').type(25);
+       cy.get('[data-testid="breakSuggestionToggle"]').click( {force: true} );
+
+       cy.tick(1 * 60 * 1000); // simulate passing of one more minute
+
+       cy.get('[data-testid="settingsExit"]').click();
+       cy.get('#start-stop').should('have.class', 'glowing-effect'); // ensure start-stop btn is still glowing
+    })
+
+    it("Pomodoro on --> Reach time --> Turn on toggle, set Flow Time notification to 1  --> Turns on glowing effect", () => {
+        // INITIAL CONDITIONS
+        cy.get('body').invoke('css', 'overflow-y', 'scroll');
+        
+        // VARIABLE INITIALIZATION
+        let pomMin = 25;
+        let sbMin = 5;
+        let lbMin = 15;
+        
+        /**
+         * MAIN TESTING LOGIC
+        */
+       cy.get('[data-testid="pomodoroNotificationToggle"]').click(); // turn on pomodoro notifications
+       cy.setPomodoroIntervalTimes(pomMin, sbMin, lbMin); // set times for pomodoro, sb and lb
+       cy.clock(); // start cypress clock
+       
+       cy.get('[data-testid="start-stop"]').click(); // begin pomodoro #1
+
+       cy.tick(25 * 60 * 1000); // simulate passing of 25 minutes
+       cy.get('#start-stop').should('have.class', 'glowing-effect'); // ensure start-stop btn is glowing
+
+       cy.get('[data-testid="menuBtn"]').click();
+       cy.contains("Settings").click();
+       cy.get('[data-testid="generalBtnContainer"]').click();
+       cy.get('[data-testid="breakSuggestionToggle"]').click( {force: true} );
+       cy.get('#start-stop').should('not.have.class', 'glowing-effect'); // ensure start-stop btn is not glowing
+       cy.get('[data-testid="suggestionMinutesInput"]').clear();
+       cy.get('[data-testid="suggestionMinutesInput"]').type(1);
+       cy.get('[data-testid="settingsExit"]').click();
+       cy.get('#start-stop').should('have.class', 'glowing-effect'); // ensure start-stop btn is glowing
     })
 })

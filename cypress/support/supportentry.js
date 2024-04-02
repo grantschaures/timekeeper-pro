@@ -3,3 +3,4 @@
 import './pomodoro.js';
 import './main.js';
 import './notes.js';
+import './flowmodoro.js';
