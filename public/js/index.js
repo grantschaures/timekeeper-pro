@@ -1,11 +1,11 @@
 //
 //  JavaScript code for main event handling
 //
-const pomodoroWorker = new Worker('/js/pomodoroWorker.js');
-const suggestionWorker = new Worker('/js/suggestionWorker.js');
-const flowmodoroWorker = new Worker('/js/flowmodoroWorker.js');
-const displayWorker = new Worker('/js/displayWorker.js');
-const totalDisplayWorker = new Worker('/js/totalDisplayWorker.js');
+const pomodoroWorker = new Worker('/js/displayWorkers/pomodoroWorker.js');
+const suggestionWorker = new Worker('/js/displayWorkers/suggestionWorker.js');
+const flowmodoroWorker = new Worker('/js/displayWorkers/flowmodoroWorker.js');
+const displayWorker = new Worker('/js/displayWorkers/displayWorker.js');
+const totalDisplayWorker = new Worker('/js/displayWorkers/totalDisplayWorker.js');
 
 document.addEventListener("DOMContentLoaded", function() {
     // ------------------------------

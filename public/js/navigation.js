@@ -71,10 +71,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // document.body.setAttribute('data-dashboard-mode', 'home');
 
-    if (isMobile) {
-        body.style.overflowY = 'scroll';
-    }
-
     setTimeout(() => {
         menu_btn.style.opacity = '1';
     }, 1000)
@@ -256,9 +252,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // hide settings window if click is not in settings or on menu, OR if the click is on the settings exit btn
         if ((event.target !== settings_btn && event.target !== settings_icon && event.target !== settings_menu_container && event.target !== start_stop_btn && event.target !== aboutIconNotes && !settings_container.contains(event.target) && !menu_btn.contains(event.target)) || event.target == settings_exit) {
             settings_container.style.display = "none";
-            if (isMobile) {
-                body.style.overflowY = 'scroll';
-            }
+            body.style.overflowY = 'scroll';
         }
 
         // if the click is not any of the main menu windows or is an exit btn
