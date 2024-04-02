@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const flowtimeBackgrounds = {
         "green-default": "linear-gradient(270deg, #3ec500, #37c400, #00c59a)",
-        "red-flowtime": "linear-gradient(270deg, #c50000, #c44800, #c58000)",
+        "red-flowtime": "linear-gradient(270deg, #c42700, #c56900, #c58000)",
         "yellow-flowtime": "linear-gradient(270deg, #b8c500, #90c400, #5fc500)",
         "blue-flowtime": "linear-gradient(270deg, #3b8fe3, #1d60a3, #7f04c7)",
         "purple-flowtime": "linear-gradient(270deg, #7f04c7, #b004c7, #c004c7)",
@@ -162,7 +162,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const chilltimeBackgrounds = {
         "green-chilltime": "linear-gradient(270deg, #3ec500, #37c400, #00c59a)",
-        "red-chilltime": "linear-gradient(270deg, #c50000, #c44800, #c58000)",
+        "red-chilltime": "linear-gradient(270deg, #c42700, #c56900, #c58000)",
         "yellow-chilltime": "linear-gradient(270deg, #b8c500, #90c400, #5fc500)",
         "blue-default": "linear-gradient(270deg, #3b8fe3, #1d60a3, #7f04c7)",
         "purple-chilltime": "linear-gradient(270deg, #7f04c7, #b004c7, #c004c7)",
