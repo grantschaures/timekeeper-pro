@@ -87,18 +87,18 @@ document.addEventListener("DOMContentLoaded", function() {
             popup_window.style.opacity = '0';
             setTimeout(() => {
                 popup_window.style.display = "none"
-            }, 150)
+            }, 50)
         } else {
             flags.popupWindowShowing = true;
             popup_window.style.display = "flex";
             setTimeout(() => {
                 popup_window.classList.add('menuLanding');
                 popup_window.style.opacity = '1';
-            }, 1);
+            }, 100);
         }
     })
 
-    function handleClickBlog(event) {
+    blog_menu_container.addEventListener("click", function(event) {
         main_elements.style.display = "none";
         document.body.setAttribute('data-dashboard-mode', 'blog');
 
@@ -115,10 +115,9 @@ document.addEventListener("DOMContentLoaded", function() {
     
         //Triggers reset animation once you enter for first time
         blog_exit.classList.add('resetRotation');
-    }
-    blog_menu_container.addEventListener("click", handleClickBlog);
+    });
 
-    function handleClickAbout(event) {
+    about_menu_container.addEventListener("click", function() {
         //Hide main elements
         main_elements.style.display = "none";
     
@@ -135,10 +134,9 @@ document.addEventListener("DOMContentLoaded", function() {
     
         //Triggers reset animation once you enter for first time
         about_exit.classList.add('resetRotation');
-    }
-    about_menu_container.addEventListener("click", handleClickAbout);
+    });
 
-    function handleClickSettings(event) {
+    settings_menu_container.addEventListener("click", function() {
         // We don't necessarily need to hide the main elements
         let viewportWidth = window.innerWidth || document.documentElement.clientWidth;
 
@@ -157,16 +155,14 @@ document.addEventListener("DOMContentLoaded", function() {
     
         //Triggers reset animation once you enter for first time
         settings_exit.classList.add('resetRotation');
-    }
-    settings_menu_container.addEventListener("click", handleClickSettings);
+    });
 
-    function handleClickLogInOut(event) {
+    login_menu_container.addEventListener("click", function() {
         alert("This feature is currently under development. Thank you for your patience.");
     
         //eventually uncomment this out to continue w/ login-signup development
         // window.location.href = "/login";
-    }
-    login_menu_container.addEventListener("click", handleClickLogInOut);
+    });
 
     exit_icons.forEach(function(icon) {
         icon.addEventListener('mouseover', function() {
@@ -223,10 +219,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // if click is not on menu, hide menu
         if (!menu_btn.contains(event.target)) {
+            flags.popupWindowShowing = false;
             popup_window.style.opacity = '0';
             setTimeout(() => {
                 popup_window.style.display = "none"
-            }, 150)
+            }, 50)
         }
         
         // hide about container if click is not on menu or about container, OR if the click is on the about exit btn
