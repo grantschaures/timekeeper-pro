@@ -11,7 +11,7 @@ files.forEach(file => {
         const minified = UglifyJS.minify(code).code;
         
         // Construct the new path within the minified directory
-        const minifiedDir = path.join(path.dirname(file), 'minified');
+        const minifiedDir = path.join(path.dirname(file), '../minified');
         const minifiedFilePath = path.join(minifiedDir, path.basename(file).replace('.js', '.min.js'));
         
         // Ensure the minified directory exists
