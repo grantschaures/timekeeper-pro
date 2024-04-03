@@ -73,7 +73,14 @@ document.addEventListener("DOMContentLoaded", function() {
     /**
      * EVENT LISTENERS
      */
-
+    // reportIcon.addEventListener("click", function() {
+    //     document.body.setAttribute("data-dashboard-mode", "report"),
+    //     state.lastSelectedMode = "report"
+    // })
+    homeIcon.addEventListener("click", function() {
+        document.body.setAttribute("data-dashboard-mode", "home"),
+        state.lastSelectedMode = "home"
+    })
     // Open blog container when blog icon is clicked
     blogIcon.addEventListener("click", function() {
         document.body.setAttribute('data-dashboard-mode', 'blog');
