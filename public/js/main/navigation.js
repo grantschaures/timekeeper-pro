@@ -73,6 +73,8 @@ document.addEventListener("DOMContentLoaded", function() {
     /**
      * EVENT LISTENERS
      */
+
+    // Open blog container when blog icon is clicked
     blogIcon.addEventListener("click", function() {
         document.body.setAttribute('data-dashboard-mode', 'blog');
         state.lastSelectedMode = 'blog';

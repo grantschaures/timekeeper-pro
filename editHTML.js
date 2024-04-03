@@ -7,7 +7,7 @@ fs.readFile(filePath, 'utf8', (err, data) => {
         return;
     }
 
-    // Sequentially replace each minified JS file reference with the non-minified version
+    // Sequentially replace each minified JS file reference with the minified version
     let result = data.replace(/\/js\/index\.js/g, '/js/minified/index.min.js');
     result = result.replace(/\/js\/navigation\.js/g, '/js/minified/navigation.min.js');
     result = result.replace(/\/js\/notes\.js/g, '/js/minified/notes.min.js');
