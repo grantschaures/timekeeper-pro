@@ -2,7 +2,7 @@ const UglifyJS = require('uglify-js');
 const fs = require('fs');
 const path = require('path'); // Require the path module to handle file paths
 
-let files = ['public/js/index.js', 'public/js/menu.js', 'public/js/notes.js']; // List of files to minify
+let files = ['public/js/main/index.js', 'public/js/main/menu.js', 'public/js/main/notes.js']; // List of files to minify
 
 files.forEach(file => {
     try {
