@@ -1,9 +1,8 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const menu_btn = document.getElementById("menuBtn");
+    const menuBtn = document.getElementById("menuBtn");
     const popup_window = document.getElementById("popup-menu");
-    const blog_btn = document.getElementById("blogBtn");
-    const blog_icon = document.getElementById("blogIcon");
-    const blog_menu_container = document.getElementById("blogMenuContainer");
+    const blogBtn = document.getElementById("blogBtn");
+    const blog_icon = document.getElementById("blogIcon"); // icon in popup-menu
     const about_btn = document.getElementById("aboutBtn");
     const about_icon = document.getElementById("aboutIcon");
     const about_menu_container = document.getElementById("aboutMenuContainer");
@@ -32,8 +31,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const start_stop_btn = document.getElementById("start-stop");
     const reportIcon = document.getElementById("report-icon");
     const reportPath = document.getElementById("report-path");
+    const blogIcon = document.getElementById("blog-icon"); // icon in three way toggle
     const homeIcon = document.getElementById("home-icon");
-    const blogIcon = document.getElementById("blog-icon");
     const blogMenuContainer = document.getElementById("blogMenuContainer");
     const aboutIconNotes = document.getElementById('aboutIconNotes');
     const body = document.body;
@@ -67,30 +66,14 @@ document.addEventListener("DOMContentLoaded", function() {
      */
     
     setTimeout(() => {
-        menu_btn.style.opacity = '1';
+        menuBtn.style.opacity = '1';
     }, 1000)
     
     /**
      * EVENT LISTENERS
      */
-    // reportIcon.addEventListener("click", function() {
-    //     document.body.setAttribute("data-dashboard-mode", "report"),
-    //     state.lastSelectedMode = "report"
-    // })
-    homeIcon.addEventListener("click", function() {
-        document.body.setAttribute("data-dashboard-mode", "home"),
-        state.lastSelectedMode = "home"
-    })
-    // Open blog container when blog icon is clicked
-    blogIcon.addEventListener("click", function() {
-        document.body.setAttribute('data-dashboard-mode', 'blog');
-        state.lastSelectedMode = 'blog';
-        setTimeout(() => {
-            blogMenuContainer.click();
-        }, 0)
-    })
 
-    menu_btn.addEventListener("click", function() {
+    menuBtn.addEventListener("click", function() {
         if (flags.popupWindowShowing) {
             flags.popupWindowShowing = false;
             popup_window.style.opacity = '0';
@@ -107,9 +90,10 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     })
 
-    blog_menu_container.addEventListener("click", function(event) {
+    blogMenuContainer.addEventListener("click", function(event) {
         main_elements.style.display = "none";
         document.body.setAttribute('data-dashboard-mode', 'blog');
+        state.lastSelectedMode = 'blog';
 
         //Hide blogs
         if (flags.blogShowing == true) {
@@ -226,35 +210,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.addEventListener("click", function(event) {
 
-        // if click is not on menu, hide menu
-        if (!menu_btn.contains(event.target)) {
-            flags.popupWindowShowing = false;
-            popup_window.style.opacity = '0';
-            setTimeout(() => {
-                popup_window.style.display = "none"
-            }, 50)
-        }
-        
-        // hide about container if click is not on menu or about container, OR if the click is on the about exit btn
-        if ((event.target !== about_btn && event.target !== about_icon && event.target !== about_menu_container && !about_container.contains(event.target) && !menu_btn.contains(event.target)) || event.target == about_exit) {
-            about_container.style.display = "none";
-        }
-
-        // hide blog container if click is not on menu or blog container, OR if the click is on the blog exit btn
-        // eventually, remove event.target !== reportIcon && event.target !== reportPath
-        if ((event.target !== reportIcon && event.target !== reportPath && event.target !== blog_btn && event.target !== blog_icon && event.target !== blog_menu_container && event.target !== blogIcon && !blog_container.contains(event.target) && !blog_post_container.contains(event.target) && !menu_btn.contains(event.target)) || event.target == blog_exit) {
-            // console.log("test")
-            blog_container.style.display = "none";
-        }
-
-        // hide settings window if click is not in settings or on menu, OR if the click is on the settings exit btn
-        if ((event.target !== settings_btn && event.target !== settings_icon && event.target !== settings_menu_container && event.target !== start_stop_btn && event.target !== aboutIconNotes && !settings_container.contains(event.target) && !menu_btn.contains(event.target)) || event.target == settings_exit) {
-            settings_container.style.display = "none";
-            body.style.overflowY = 'scroll';
-        }
+        isClickNotOnMenuElements(event, menuBtn, flags, popup_window);
+        isClickNotOnAboutElements(event, about_menu_container, about_container, menuBtn, about_exit, reportIcon, reportPath);
+        isClickNotOnBlogElements(event, blogIcon, blogMenuContainer, blog_container, blog_post_container, menuBtn, blog_exit, reportIcon, reportPath);
+        isClickNotOnSettingsElements(event, settings_menu_container, start_stop_btn, aboutIconNotes, settings_container, menuBtn, settings_exit);
 
         // if the click is not any of the main menu windows or is an exit btn
-        if ((event.target !== blog_btn && event.target !== blog_icon && event.target !== blog_menu_container && event.target !== about_btn && event.target !== about_icon  && event.target !== about_menu_container && !about_container.contains(event.target) && !blog_container.contains(event.target) && !menu_btn.contains(event.target)  && !blog_post_container.contains(event.target) && event.target !== settings_btn && event.target !== settings_icon && event.target !== settings_menu_container && !settings_container.contains(event.target) && event.target !== logInOut_btn && event.target !== login_icon && event.target !== login_menu_container) || (event.target == about_exit) || (event.target == blog_exit) || (event.target == blog_post_exit) || (event.target == settings_exit)) {
+        if ((event.target !== blogBtn && event.target !== blog_icon && event.target !== blogMenuContainer && event.target !== about_btn && event.target !== about_icon  && event.target !== about_menu_container && !about_container.contains(event.target) && !blog_container.contains(event.target) && !menuBtn.contains(event.target)  && !blog_post_container.contains(event.target) && event.target !== settings_btn && event.target !== settings_icon && event.target !== settings_menu_container && !settings_container.contains(event.target) && event.target !== logInOut_btn && event.target !== login_icon && event.target !== login_menu_container) || (event.target == about_exit) || (event.target == blog_exit) || (event.target == blog_post_exit) || (event.target == settings_exit)) {
             // if user is exiting about or settings windows, make the setting the last one the user was on
             if (reportIcon.contains(event.target)) {
                 alert("This feature is currently under development. Thank you for your patience.");
@@ -264,9 +226,11 @@ document.addEventListener("DOMContentLoaded", function() {
             } else if (homeIcon.contains(event.target)) {
                 document.body.setAttribute('data-dashboard-mode', 'home');
                 main_elements.style.display = "block";
+                state.lastSelectedMode = "home"
+
             } else if (blogIcon.contains(event.target)) {
-                document.body.setAttribute('data-dashboard-mode', 'blog');
-                blog_container.style.display = "flex";
+                blogMenuContainer.click();
+
             } else if ((event.target === settings_exit) || (event.target === about_exit)) {
                 if (state.lastSelectedMode === 'report') {
                     document.body.setAttribute('data-dashboard-mode', 'report');
@@ -310,3 +274,40 @@ function hideBlog(blogs) {
         }
     })
 };
+
+function isClickNotOnAboutElements(event, about_menu_container, about_container, menuBtn, about_exit, reportIcon, reportPath) {
+    let aboutElementsArr = [about_menu_container, about_container, menuBtn, reportIcon, reportPath];
+
+    // Check if event.target is not contained within any of the aboutElementsArr
+    // or if the event.target is the about_exit
+    if (!aboutElementsArr.some(element => element.contains(event.target)) || event.target === about_exit) {
+        about_container.style.display = "none";
+    }
+}
+
+function isClickNotOnMenuElements(event, menuBtn, flags, popup_window) {
+    // if click is not on menu, hide menu
+    if (!menuBtn.contains(event.target)) {
+        flags.popupWindowShowing = false;
+        popup_window.style.opacity = '0';
+        setTimeout(() => {
+            popup_window.style.display = "none"
+        }, 50)
+    }
+}
+
+function isClickNotOnBlogElements(event, blogIcon, blogMenuContainer, blog_container, blog_post_container, menuBtn, blog_exit, reportIcon, reportPath) {
+    let blogElementsArr = [blogIcon, blogMenuContainer, blog_container, blog_post_container, menuBtn, blog_exit, reportIcon, reportPath];
+
+    if (!blogElementsArr.some(element => element.contains(event.target)) || event.target === blog_exit) {
+        blog_container.style.display = "none";
+    }
+}
+
+function isClickNotOnSettingsElements(event, settings_menu_container, start_stop_btn, aboutIconNotes, settings_container, menuBtn, settings_exit) {
+    let settingsElementsArr = [settings_menu_container, settings_container, menuBtn];
+
+    if ((!settingsElementsArr.some(element => element.contains(event.target)) && (event.target !== start_stop_btn) && (event.target !== aboutIconNotes)) || event.target === settings_exit) {
+        settings_container.style.display = "none";
+    }
+}
