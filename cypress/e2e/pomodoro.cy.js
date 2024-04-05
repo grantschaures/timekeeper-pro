@@ -4,7 +4,7 @@ describe('Pomodoro | Auto and non-auto start', () => {
         cy.get('#sub-main-container').invoke('css', 'opacity', '1');
         cy.get('[data-testid="menuBtn"]').click();
         cy.contains("Settings").click();
-        cy.contains("Pomodoro").click();
+        cy.contains("Pomodoro").click();        
     })
     
     it('Pomodoro Info Window Shows Up', () => {
@@ -16,6 +16,7 @@ describe('Pomodoro | Auto and non-auto start', () => {
         cy.contains("This will notify you after each interval specified for Pomodoro, Short Break, and Long Break").should('not.be.visible');
     })
     
+    // BASIC USE
     it('25 min Pom, 5 min SB, 15 min LB | No Auto Start', () => {
         // INITIAL CONDITIONS
         cy.get('body').invoke('css', 'overflow-y', 'scroll');
@@ -44,7 +45,94 @@ describe('Pomodoro | Auto and non-auto start', () => {
 
         cy.get('[data-testid="start-stop"]').click(); // click start btn to reset
     })
-    
+
+    it('(1) Set Pom to 1 min, (2) Start Interval, (3) Increment Time Past 1 min, (4) Turn on Toggle | Pomodoro | No Auto Start', () => {
+        cy.get('[data-testid="pomodoroInput"]').clear();
+        cy.get('[data-testid="pomodoroInput"]').type(1); // click start btn to reset
+        cy.get('[data-testid="settingsExit"]').click();
+
+        cy.clock(); // start cypress clock
+        cy.get('[data-testid="start-stop"]').click(); // click start btn to reset
+        cy.tick(5 * 60 * 1000); // simulate passing of 5 min
+
+        cy.openPomodoroSettings();
+        cy.get('[data-testid="pomodoroNotificationToggle"]').click();
+        cy.get('[data-testid="settingsExit"]').click();
+
+        cy.get('#start-stop').should('have.class', 'glowing-effect'); // check if start-stop btn is glowing
+
+        cy.openPomodoroSettings();
+        cy.get('[data-testid="pomodoroInput"]').clear();
+        cy.get('[data-testid="pomodoroInput"]').type(6); // click start btn to reset
+        cy.get('[data-testid="settingsExit"]').click();
+        cy.get('#start-stop').should('not.have.class', 'glowing-effect'); // check if start-stop btn is glowing
+    })
+
+    it('(1) Turn on Toggle, (2) Start Interval, (3) Let Time Pass 1 min, (4) Set Pom to 1 min | Pomodoro | No Auto Start', () => {
+        cy.get('[data-testid="pomodoroNotificationToggle"]').click();
+        cy.get('[data-testid="settingsExit"]').click();
+
+        cy.clock(); // start cypress clock
+        cy.get('[data-testid="start-stop"]').click(); // click start btn to reset
+        cy.tick(5 * 60 * 1000); // simulate passing of 5 min
+
+        cy.openPomodoroSettings();
+        cy.get('[data-testid="pomodoroInput"]').clear();
+        cy.get('[data-testid="pomodoroInput"]').type(1); // click start btn to reset
+        cy.get('[data-testid="settingsExit"]').click();
+
+        cy.get('#start-stop').should('have.class', 'glowing-effect'); // check if start-stop btn is glowing
+
+        cy.openPomodoroSettings();
+        cy.get('[data-testid="pomodoroInput"]').clear();
+        cy.get('[data-testid="pomodoroInput"]').type(6); // click start btn to reset
+        cy.get('[data-testid="settingsExit"]').click();
+        cy.get('#start-stop').should('not.have.class', 'glowing-effect'); // check if start-stop btn is glowing
+    })
+
+    it('(1) Turn on Toggle, (2) Start Interval, (3) Let Time Pass 1 min, (4) Set SB to 1 min | Short Break | No Auto Start', () => {
+        cy.get('[data-testid="pomodoroNotificationToggle"]').click();
+        cy.get('[data-testid="settingsExit"]').click();
+
+        cy.clock(); // start cypress clock
+        cy.get('[data-testid="start-stop"]').click(); // --> Pomodoro
+        cy.get('[data-testid="start-stop"]').click(); // --> Short Break
+        cy.tick(5 * 60 * 1000); // simulate passing of 5 min
+
+        cy.openPomodoroSettings();
+        cy.get('[data-testid="shortBreakInput"]').clear();
+        cy.get('[data-testid="shortBreakInput"]').type(1); // click start btn to reset
+        cy.get('[data-testid="settingsExit"]').click();
+
+        cy.get('#start-stop').should('have.class', 'glowing-effect'); // check if start-stop btn is glowing
+
+        cy.openPomodoroSettings();
+        cy.get('[data-testid="shortBreakInput"]').clear();
+        cy.get('[data-testid="shortBreakInput"]').type(6); // click start btn to reset
+        cy.get('[data-testid="settingsExit"]').click();
+        cy.get('#start-stop').should('not.have.class', 'glowing-effect'); // check if start-stop btn is glowing
+    })
+
+    // Testing cause of undefined error
+    it('Test to ensure that changing pomodoro input after toggling on pom notis in chill time does not alter mode header text until next switch', () => {
+        cy.get('[data-testid="settingsExit"]').click();
+
+        cy.clock(); // start cypress clock
+        cy.get('[data-testid="start-stop"]').click(); // --> Flow Time
+        cy.get('[data-testid="start-stop"]').click(); // --> Chill Time
+        cy.tick(5 * 60 * 1000); // simulate passing of 5 min
+        
+        cy.openPomodoroSettings();
+        cy.get('[data-testid="pomodoroNotificationToggle"]').click();
+        cy.get('[data-testid="pomodoroInput"]').clear();
+        cy.get('[data-testid="pomodoroInput"]').type(30); // click start btn to reset
+        cy.get('[data-testid="settingsExit"]').click();
+        cy.get('[data-testid="productivity-chill-mode"]').should('contain', "Chill Time");
+        
+        cy.get('[data-testid="start-stop"]').click(); // --> Flow Time
+        cy.get('[data-testid="productivity-chill-mode"]').should('contain', "Pomodoro #1 | 30 min");
+    })
+
     it('25 min Pom, 5 min SB, 15 min LB | Auto Start Pomodoro & Break', () => {
         // INITIAL CONDITIONS
         cy.get('body').invoke('css', 'overflow-y', 'scroll');

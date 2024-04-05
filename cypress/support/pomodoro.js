@@ -26,6 +26,12 @@
 
 require("@testing-library/cypress/add-commands")
 
+Cypress.Commands.add('openPomodoroSettings', function() {
+    cy.get('[data-testid="menuBtn"]').click();
+    cy.contains("Settings").click();
+    cy.get('[data-testid="pomodoroBtnContainer"]').click();
+})
+
 Cypress.Commands.add('setPomodoroIntervalTimes', function(pomTime, sbTime, lbTime) {
     cy.get('[data-testid="pomodoroInput"]').clear();
     cy.get('[data-testid="pomodoroInput"]').type(pomTime);
@@ -93,7 +99,7 @@ Cypress.Commands.add('pomodoroIntervalAutoSwitch', function(pomMin, HeaderStr, i
     cy.get('[data-testid="productivity-chill-mode"]').should('contain', HeaderStr); // check mode header
     cy.contains('Interruptions').should('be.visible'); // ensure interruptions container is showing
     
-    cy.tick(pomMin * 60 * 1000); // simulate passing of 25 minutes
+    cy.tick(((pomMin + 1) * 60 * 1000)); // simulate passing of 26 minutes
     
     cy.get('#start-stop').should('not.have.class', 'glowing-effect'); // check if start-stop btn is glowing
     cy.get('[data-testid="progress-text"]').should('contain', finalTotalTimeStr); // ensure correct total display time

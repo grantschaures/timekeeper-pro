@@ -1076,7 +1076,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     pomodoroWorker.onmessage = function(message) {
-        // console.log("test")
+        // console.log("pomodoroWorker.onmessage")
         if (!flags.modeChangeExecuted) {
             flags.modeChangeExecuted = true;
     
@@ -1292,7 +1292,7 @@ function setBothBreakIntervalText(counters, pomodoroIntervalArr) {
     } else if (counters.currentPomodoroIntervalOrderIndex === 7) {
         breakString  = "Long Break | " + (pomodoroIntervalArr[2]).toString() + " min";
     } else {
-        breakString = "You are in Break Mode";
+        breakString = "Break Mode"; // catch all
     }
 
     // console.log(counters.currentFlowmodoroBreakIndex);
@@ -1320,7 +1320,7 @@ function setBreakIntervalText(counters, pomodoroIntervalArr) {
     } else if (counters.currentPomodoroIntervalOrderIndex === 5) {
         breakString  = "Short Break #3 | " + (pomodoroIntervalArr[1]).toString() + " min";
     } else {
-        breakString = "You are in Break Mode";
+        breakString = "Break Mode"; // catch all
     }
 
     return breakString;
@@ -1337,7 +1337,7 @@ function setPomodoroIntervalText(counters, pomodoroIntervalArr) {
     } else if (counters.currentPomodoroIntervalOrderIndex === 6) {
         pomodoroString = "Pomodoro #4 | " + (pomodoroIntervalArr[0]).toString() + " min";
     } else {
-        pomodoroString = "You are in Pomodoro Mode";
+        pomodoroString = "Pomodoro Mode"; // catch all
     }
 
     return pomodoroString;
@@ -1471,6 +1471,7 @@ function sendPomodoroDelayNotification(startTimes, counters, pomodoroIntervalArr
         }
         if (!flags.pomodoroCountIncremented) {
             counters.pomodorosCompleted++;
+            // console.log(counters.pomodorosCompleted);
             flags.pomodoroCountIncremented = true;
         }
     } else if (counters.currentPomodoroIntervalOrderIndex == 6) { // 4th pomodoro
@@ -1538,7 +1539,10 @@ function chillTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, st
         currentPomodoro.intervalOrderIndex++;
         setCurrentPomodoroNotificationRecovery(currentPomodoro, pomodoroIntervalArr);
         if (displayTime >= pomodoroIntervalArr[currentPomodoro.intervalIndex]) {
-            pomodorosCompleted++;
+            if (!flags.pomodoroCountIncremented) {
+                pomodorosCompleted++;
+                flags.pomodoroCountIncremented = true
+            }
         }
         localStartTime = Date.now() - displayTime;
         startTimes.hyperFocus = localStartTime;
@@ -1549,6 +1553,8 @@ function chillTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, st
         // This evaluates when a the computer sleeps and then awakens during the same interval when autoswitchtobreak isn't turned on
         pomodoroWorker.postMessage("clearInterval");
         sendPomodoroDelayNotification(startTimes, counters, pomodoroIntervalArr, chime, bell, alertSounds, alertVolumes, flags);
+        start_stop_btn.classList.add('glowing-effect');
+    } else {
         start_stop_btn.classList.add('glowing-effect');
     }
 
@@ -1561,6 +1567,7 @@ function chillTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, st
 */
 function flowTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, startTimes, start_stop_btn, recoverBreakState, chime, bell, alertSounds, alertVolumes) {
     // INITIALIZING VARS
+    // console.log("flowtime recovery initiated")
     let displayTime = Date.now() - startTimes.local;
 
     const currentPomodoro = {
@@ -1579,19 +1586,26 @@ function flowTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, sta
     if ((flags.autoStartPomodoroInterval) && (flags.autoStartBreakInterval)) {
         if (displayTime >= (pomodoroIntervalArr[currentPomodoro.intervalIndex] * 60 * 1000)) {
             displayTime -= pomodoroIntervalArr[currentPomodoro.intervalIndex] * 60 * 1000;
-            pomodorosCompleted++;
+            // console.log(flags.pomodoroCountIncremented);
+            if (!flags.pomodoroCountIncremented) {
+                pomodorosCompleted++;
+                flags.pomodoroCountIncremented = true;
+            }
             currentPomodoro.intervalOrderIndex++;
             setCurrentPomodoroNotificationRecovery(currentPomodoro, pomodoroIntervalArr);
         }
         
         hyperFocusElapsedTime -= displayTime; //for total display in chill time
         localStartTime = Date.now(); //effectively resets display time
-
+        
         setRecoverBreakState(recoverBreakState, displayTime, pomodorosCompleted, hyperFocusElapsedTime, localStartTime, counters, flags, start_stop_btn);
         setPomodoroIndexes(counters, currentPomodoro);
     } else if (flags.autoStartBreakInterval) { //pomodoro --> sleep --> break end state (only one jump ahead)
         displayTime -= pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60 * 1000;
-        pomodorosCompleted++;
+        if (!flags.pomodoroCountIncremented) {
+            pomodorosCompleted++;
+            flags.pomodoroCountIncremented = true;
+        }
         hyperFocusElapsedTime -= displayTime;
         currentPomodoro.intervalOrderIndex++;
         localStartTime = Date.now() - displayTime;
@@ -1604,6 +1618,12 @@ function flowTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, sta
         pomodoroWorker.postMessage("clearInterval");
         sendPomodoroDelayNotification(startTimes, counters, pomodoroIntervalArr, chime, bell, alertSounds, alertVolumes, flags);
         start_stop_btn.classList.add('glowing-effect');
+    } else { // when pom toggle turned after after time has passed pom interval time
+        start_stop_btn.classList.add('glowing-effect');
+        if (!flags.pomodoroCountIncremented) {
+            counters.pomodorosCompleted++;
+            flags.pomodoroCountIncremented = true;
+        }
     }
 
     // recoveryDebuggingOutput(displayTime, currentPomodoro, pomodorosCompleted, hyperFocusElapsedTime, localStartTime);
@@ -1626,7 +1646,9 @@ function setRecoverBreakState(recoverBreakState, displayTime, pomodorosCompleted
     recoverBreakState.hyperFocusElapsedTime = hyperFocusElapsedTime;
     recoverBreakState.localStartTime = localStartTime;
     
-    counters.pomodorosCompleted = recoverBreakState.pomodorosCompleted;
+    if ((counters.pomodorosCompleted) < (recoverBreakState.pomodorosCompleted)) {
+        counters.pomodorosCompleted = recoverBreakState.pomodorosCompleted;
+    }
     flags.inRecoveryBreak = true;
     start_stop_btn.click();
 }
@@ -1722,7 +1744,7 @@ function setCurrentPomodoroNotificationRecovery(currentPomodoro, pomodoroInterva
 function setPomodoroIntervalArr(event, pomodoroIntervalArr, validatedFinalInputVal, counters, productivity_chill_mode, flags) {
     if (event.target.id === 'pomodoroInput') {
         pomodoroIntervalArr[0] = validatedFinalInputVal;
-        if ((counters.currentPomodoroIntervalIndex === 0) && (counters.startStop !== 0) && (flags.pomodoroNotificationToggle)) {
+        if ((counters.currentPomodoroIntervalIndex === 0) && (counters.startStop !== 0) && (flags.pomodoroNotificationToggle) && (flags.inHyperFocus)) {
             productivity_chill_mode.innerText = setPomodoroIntervalText(counters, pomodoroIntervalArr);
         }
     } else if (event.target.id === 'shortBreakInput') {
