@@ -213,7 +213,7 @@ document.addEventListener("DOMContentLoaded", function() {
         isClickNotOnMenuElements(event, menuBtn, flags, popup_window);
         isClickNotOnAboutElements(event, about_menu_container, about_container, menuBtn, about_exit, reportIcon, reportPath);
         isClickNotOnBlogElements(event, blogIcon, blogMenuContainer, blog_container, blog_post_container, menuBtn, blog_exit, reportIcon, reportPath);
-        isClickNotOnSettingsElements(event, settings_menu_container, start_stop_btn, aboutIconNotes, settings_container, menuBtn, settings_exit);
+        isClickNotOnSettingsElements(event, settings_menu_container, start_stop_btn, aboutIconNotes, settings_container, menuBtn, settings_exit, body);
 
         // if the click is not any of the main menu windows or is an exit btn
         if ((event.target !== blogBtn && event.target !== blog_icon && event.target !== blogMenuContainer && event.target !== about_btn && event.target !== about_icon  && event.target !== about_menu_container && !about_container.contains(event.target) && !blog_container.contains(event.target) && !menuBtn.contains(event.target)  && !blog_post_container.contains(event.target) && event.target !== settings_btn && event.target !== settings_icon && event.target !== settings_menu_container && !settings_container.contains(event.target) && event.target !== logInOut_btn && event.target !== login_icon && event.target !== login_menu_container) || (event.target == about_exit) || (event.target == blog_exit) || (event.target == blog_post_exit) || (event.target == settings_exit)) {
@@ -304,10 +304,11 @@ function isClickNotOnBlogElements(event, blogIcon, blogMenuContainer, blog_conta
     }
 }
 
-function isClickNotOnSettingsElements(event, settings_menu_container, start_stop_btn, aboutIconNotes, settings_container, menuBtn, settings_exit) {
+function isClickNotOnSettingsElements(event, settings_menu_container, start_stop_btn, aboutIconNotes, settings_container, menuBtn, settings_exit, body) {
     let settingsElementsArr = [settings_menu_container, settings_container, menuBtn];
 
     if ((!settingsElementsArr.some(element => element.contains(event.target)) && (event.target !== start_stop_btn) && (event.target !== aboutIconNotes)) || event.target === settings_exit) {
         settings_container.style.display = "none";
+        body.style.overflowY = 'scroll';
     }
 }
