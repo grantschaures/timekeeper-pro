@@ -390,6 +390,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.addEventListener('keyup', (event) => handleKeyUp(event, flags));
 
     start_stop_btn.addEventListener("click", function() {
+        console.log(counters.pomodorosCompleted);
         
         counters.startStop++; //keep track of button presses (doesn't account for time recovery iterations)
         playClick(clock_tick, flags);
@@ -451,7 +452,7 @@ document.addEventListener("DOMContentLoaded", function() {
             hideInterruptionsSubContainer(interruptionsSubContainer);
             setBackground(selectedBackground.chilltime);
 
-            // There's an automatic transition to Chill Time either starting at 0 (if both toggles are on)
+            // There's an automatic transition to Chill Time either starting at Date.now() (if both toggles are on)
             // or starting at Date.now() - displayTime (only auto start break is on)
             if (flags.inRecoveryBreak) {
                 elapsedTime.hyperFocus = recoverBreakState.hyperFocusElapsedTime;
@@ -1516,17 +1517,15 @@ function chillTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, st
     }
 
     if ((flags.autoStartPomodoroInterval) && (flags.autoStartBreakInterval)) {
-        if (displayTime >= (pomodoroIntervalArr[currentPomodoro.intervalIndex] * 60 * 1000)) {
-            displayTime -= pomodoroIntervalArr[currentPomodoro.intervalIndex] * 60 * 1000;
+        displayTime -= pomodoroIntervalArr[currentPomodoro.intervalIndex] * 60 * 1000;
 
-            if (currentPomodoro.intervalOrderIndex === 7) {
-                currentPomodoro.intervalOrderIndex = 0;
-            } else {
-                currentPomodoro.intervalOrderIndex++;
-            }
-
-            setCurrentPomodoroNotificationRecovery(currentPomodoro, pomodoroIntervalArr);
+        if (currentPomodoro.intervalOrderIndex === 7) {
+            currentPomodoro.intervalOrderIndex = 0;
+        } else {
+            currentPomodoro.intervalOrderIndex++;
         }
+
+        setCurrentPomodoroNotificationRecovery(currentPomodoro, pomodoroIntervalArr);
 
         localStartTime = Date.now();
         startTimes.hyperFocus = localStartTime;
@@ -1538,12 +1537,6 @@ function chillTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, st
         displayTime -= pomodoroIntervalArr[currentPomodoro.intervalIndex] * 60 * 1000;
         currentPomodoro.intervalOrderIndex++;
         setCurrentPomodoroNotificationRecovery(currentPomodoro, pomodoroIntervalArr);
-        if (displayTime >= pomodoroIntervalArr[currentPomodoro.intervalIndex]) {
-            if (!flags.pomodoroCountIncremented) {
-                pomodorosCompleted++;
-                flags.pomodoroCountIncremented = true
-            }
-        }
         localStartTime = Date.now() - displayTime;
         startTimes.hyperFocus = localStartTime;
 
@@ -1586,7 +1579,6 @@ function flowTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, sta
 
     if ((flags.autoStartPomodoroInterval) && (flags.autoStartBreakInterval)) {
         displayTime -= pomodoroIntervalArr[currentPomodoro.intervalIndex] * 60 * 1000;
-        // console.log(flags.pomodoroCountIncremented);
         if (!flags.pomodoroCountIncremented) {
             pomodorosCompleted++;
             flags.pomodoroCountIncremented = true;
@@ -1605,11 +1597,12 @@ function flowTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, sta
             pomodorosCompleted++;
             flags.pomodoroCountIncremented = true;
         }
-        hyperFocusElapsedTime -= displayTime;
         currentPomodoro.intervalOrderIndex++;
+        setCurrentPomodoroNotificationRecovery(currentPomodoro, pomodoroIntervalArr);
+        
+        hyperFocusElapsedTime -= displayTime;
         localStartTime = Date.now() - displayTime;
 
-        setCurrentPomodoroNotificationRecovery(currentPomodoro, pomodoroIntervalArr);
         setRecoverBreakState(recoverBreakState, displayTime, pomodorosCompleted, hyperFocusElapsedTime, localStartTime, counters, flags, start_stop_btn);
         setPomodoroIndexes(counters, currentPomodoro);
     } else if ((((Math.round(displayTime / 1000)) - (pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60)) <= 2) && (((Date.now() - startTimes.lastPomNotification) / 1000) > 30)) {
