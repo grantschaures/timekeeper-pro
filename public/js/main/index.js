@@ -1585,16 +1585,14 @@ function flowTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, sta
     }
 
     if ((flags.autoStartPomodoroInterval) && (flags.autoStartBreakInterval)) {
-        if (displayTime >= (pomodoroIntervalArr[currentPomodoro.intervalIndex] * 60 * 1000)) {
-            displayTime -= pomodoroIntervalArr[currentPomodoro.intervalIndex] * 60 * 1000;
-            // console.log(flags.pomodoroCountIncremented);
-            if (!flags.pomodoroCountIncremented) {
-                pomodorosCompleted++;
-                flags.pomodoroCountIncremented = true;
-            }
-            currentPomodoro.intervalOrderIndex++;
-            setCurrentPomodoroNotificationRecovery(currentPomodoro, pomodoroIntervalArr);
+        displayTime -= pomodoroIntervalArr[currentPomodoro.intervalIndex] * 60 * 1000;
+        // console.log(flags.pomodoroCountIncremented);
+        if (!flags.pomodoroCountIncremented) {
+            pomodorosCompleted++;
+            flags.pomodoroCountIncremented = true;
         }
+        currentPomodoro.intervalOrderIndex++;
+        setCurrentPomodoroNotificationRecovery(currentPomodoro, pomodoroIntervalArr);
         
         hyperFocusElapsedTime -= displayTime; //for total display in chill time
         localStartTime = Date.now(); //effectively resets display time
