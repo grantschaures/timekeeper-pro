@@ -390,7 +390,6 @@ document.addEventListener("DOMContentLoaded", function() {
     document.addEventListener('keyup', (event) => handleKeyUp(event, flags));
 
     start_stop_btn.addEventListener("click", function() {
-        console.log(counters.pomodorosCompleted);
         
         counters.startStop++; //keep track of button presses (doesn't account for time recovery iterations)
         playClick(clock_tick, flags);
@@ -415,7 +414,11 @@ document.addEventListener("DOMContentLoaded", function() {
             // console.log(getCurrentTime() + " --> Entering Flow Time");
             flags.inHyperFocus = true;
             flags.sentFlowmodoroNotification = false;
-            startTimes.hyperFocus = Date.now();
+
+            if (!flags.inRecoveryPom) {
+                startTimes.hyperFocus = Date.now();
+            }
+            
             totalDisplayWorker.postMessage("startInterval");
             setFavicon(greenFavicon);
             flowTimeAnimationActions(counters, flags, chillAnimation, flowAnimation);
@@ -460,7 +463,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
             let previousHyperFocusElapsedTime = elapsedTime.hyperFocus;
             elapsedTime.hyperFocus += Date.now() - startTimes.hyperFocus;
-            
+
+            console.log("2: " + startTimes.hyperFocus);
+            // console.log("startTimes.local: " + startTimes.local)
+
+            console.log("Date.now() - startTimes.hyperFocus: " + (Date.now() - startTimes.hyperFocus))
+            console.log("Modified elapsedTime.hyperFocus: " + elapsedTime.hyperFocus)
             
             if (flags.pomodoroNotificationToggle) {
                 showPomodorosCompletedContainer(completedPomodorosContainer, completedPomodoros_label, completedPomodoros_min, counters);
@@ -1501,6 +1509,7 @@ function sendPomodoroDelayNotification(startTimes, counters, pomodoroIntervalArr
 
 function chillTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, startTimes, start_stop_btn, recoverPomState, targetTime, total_time_display, timeConvert, progressBar, progressContainer, chime, bell, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min) {
     // INITIALIZING VARS
+    console.log("chilltime recovery initiated")
     let displayTime = Date.now() - startTimes.local;
     const currentPomodoro = {
         intervalIndex: counters.currentPomodoroIntervalIndex,
@@ -1537,8 +1546,11 @@ function chillTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, st
         displayTime -= pomodoroIntervalArr[currentPomodoro.intervalIndex] * 60 * 1000;
         currentPomodoro.intervalOrderIndex++;
         setCurrentPomodoroNotificationRecovery(currentPomodoro, pomodoroIntervalArr);
+
         localStartTime = Date.now() - displayTime;
+        // console.log(Date.now() - (Date.now() - displayTime))
         startTimes.hyperFocus = localStartTime;
+        console.log("1: " + startTimes.hyperFocus);
 
         setRecoverPomState(recoverPomState, displayTime, pomodorosCompleted, hyperFocusElapsedTime, localStartTime, counters, flags, start_stop_btn);
         setPomodoroIndexes(counters, currentPomodoro);
@@ -1601,7 +1613,9 @@ function flowTimeRecovery(flags, counters, elapsedTime, pomodoroIntervalArr, sta
         setCurrentPomodoroNotificationRecovery(currentPomodoro, pomodoroIntervalArr);
         
         hyperFocusElapsedTime -= displayTime;
+        console.log("hyperFocusElapsedTime (flowTimeRecovery): " + hyperFocusElapsedTime);
         localStartTime = Date.now() - displayTime;
+        // console.log(Date.now() - (Date.now() - displayTime))
 
         setRecoverBreakState(recoverBreakState, displayTime, pomodorosCompleted, hyperFocusElapsedTime, localStartTime, counters, flags, start_stop_btn);
         setPomodoroIndexes(counters, currentPomodoro);
