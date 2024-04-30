@@ -69,13 +69,13 @@
                     <div id="titleToggleContainer">
                         <h1 id="hyperChillTitle" class="no-select">HyperChill.io</h1>
                         <span id="threeWayToggle" class="dash-mode">
-                            <svg id="report-icon" data-mode="report" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" data-clickable>
+                            <svg id="report-icon" data-testid="report-icon" data-mode="report" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" data-clickable>
                                 <path id="report-path" d="M 12 26 L 12 23 L 16 23 L 16 26 Z M 18 26 L 18 18 L 22 18 L 22 26 Z M 24 26 L 24 12 L 28 12 L 28 26 Z" fill="white"></path>
                             </svg>                                                                              
-                            <svg id="home-icon" data-mode="home" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" data-clickable>
+                            <svg id="home-icon" data-testid="home-icon" data-mode="home" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" data-clickable>
                                 <path id="home-path" d="M 10 27 V 14.3333 L 18.4444 8 L 26.8889 14.3333 V 27 H 20.5556 V 19.6111 H 16.3333 V 27 H 10 Z" fill="white"></path>
                             </svg>
-                            <svg id="blog-icon" data-mode="blog" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" data-clickable>
+                            <svg id="blog-icon" data-testid="blog-icon" data-mode="blog" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" data-clickable>
                                 <path id="blog-path" d="M 17.9767 28 C 17.4496 28 17.0039 27.8178 16.6395 27.4535 C 16.2752 27.0891 16.093 26.6434 16.093 26.1163 H 19.8605 C 19.8605 26.6434 19.6783 27.0891 19.314 27.4535 C 18.9496 27.8178 18.5039 28 17.9767 28 Z M 14.2093 24.6744 V 23.2791 H 21.7442 V 24.6744 H 14.2093 Z M 14.3256 21.8605 C 13.3023 21.1938 12.4922 20.3605 11.8953 19.3605 C 11.2984 18.3605 11 17.2326 11 15.9767 C 11 14.0853 11.6899 12.4496 13.0698 11.0698 C 14.4496 9.68992 16.0853 9 17.9767 9 C 19.8682 9 21.5039 9.68992 22.8837 11.0698 C 24.2636 12.4496 24.9535 14.0853 24.9535 15.9767 C 24.9535 17.2326 24.6589 18.3605 24.0698 19.3605 C 23.4806 20.3605 22.6667 21.1938 21.6279 21.8605 H 14.3256 Z" fill="white"></path>
                             </svg>
                             <div class="caption fade">
@@ -92,11 +92,11 @@
                             <img id="menuIcon-black"src="/images/icons/noun-menu-6192580.png">
                         </button>
                         <div id="popup-menu">
-                            <div id="blogMenuContainer" class="menuContainer"> 
+                            <div id="blogMenuContainer" data-testid="blogMenuContainer" class="menuContainer"> 
                                 <img id="blogIcon" src="/images/icons/blogIcon1.png" class="menuIcon">
                                 <div id="blogBtn">Blog</div>
                             </div>
-                            <div id="aboutMenuContainer" class="menuContainer">
+                            <div id="aboutMenuContainer" data-testid="aboutMenuContainer" class="menuContainer">
                                 <img id="aboutIcon" src="/images/icons/aboutIcon1.png" class="menuIcon">
                                 <div id="aboutBtn">About</div>
                             </div>
@@ -115,7 +115,7 @@
                 </div>
             </header>
 
-            <main>
+            <main data-testid="main">
                 <div id="sub-main-container">
                     <div id="target-hours-interruptions-container">
                         <div id="target-hours-container">
@@ -370,8 +370,8 @@
             </main>
 
             <!--ADD NEW BLOG GRID CONTAINER HERE-->
-            <div id="blogContainer">
-                <img class="exitIcon" id="blogExit" src="images/icons/noun-exit-button-261420-white.png" draggable="false">
+            <div id="blogContainer" data-testid="blogContainer">
+                <img class="exitIcon" id="blogExit" data-testid="blogExit" src="images/icons/noun-exit-button-261420-white.png" draggable="false">
                 <div id="blogWindow">
                     <h1>Blog</h1>
                     <div id="blog_grid_container">
@@ -628,8 +628,8 @@
                 </div> -->
             </div>
 
-            <div id="aboutContainer">
-                <img class="exitIcon" id="aboutExit" src="images/icons/noun-exit-button-261420-white.png" draggable="false">
+            <div id="aboutContainer" data-testid="aboutContainer">
+                <img class="exitIcon" id="aboutExit" data-testid="aboutExit" src="images/icons/noun-exit-button-261420-white.png" draggable="false">
                 <div id="aboutWindow">
                     <h1>About</h1>
                     <div>
@@ -676,7 +676,7 @@
                 </div>
             </div>
 
-            <div id="settingsContainer">
+            <div id="settingsContainer" data-testid="settingsContainer">
                 <div id="settingsHeader">
                     <img class="exitIcon" id="settingsExit" data-testid="settingsExit" src="images/icons/noun-exit-button-261420-white.png" draggable="false">
                     <h1>Settings</h1>

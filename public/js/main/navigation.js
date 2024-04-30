@@ -105,7 +105,9 @@ document.addEventListener("DOMContentLoaded", function() {
     
         //show blog popup window
         blog_container.style.display = "flex";
-    
+
+        body.style.overflowY = 'hidden';
+
         //Triggers reset animation once you enter for first time
         blog_exit.classList.add('resetRotation');
     });
@@ -124,7 +126,9 @@ document.addEventListener("DOMContentLoaded", function() {
     
         //show blog popup window
         about_container.style.display = "flex";
-    
+
+        body.style.overflowY = 'hidden';
+
         //Triggers reset animation once you enter for first time
         about_exit.classList.add('resetRotation');
     });
@@ -213,47 +217,57 @@ document.addEventListener("DOMContentLoaded", function() {
         isClickNotOnMenuElements(event, menuBtn, flags, popup_window);
         isClickNotOnAboutElements(event, about_menu_container, about_container, menuBtn, about_exit, reportIcon, reportPath);
         isClickNotOnBlogElements(event, blogIcon, blogMenuContainer, blog_container, blog_post_container, menuBtn, blog_exit, reportIcon, reportPath);
-        isClickNotOnSettingsElements(event, settings_menu_container, start_stop_btn, aboutIconNotes, settings_container, menuBtn, settings_exit, body);
+        isClickNotOnSettingsElements(event, settings_menu_container, start_stop_btn, aboutIconNotes, settings_container, menuBtn, settings_exit, body, state, about_container);
 
-        // if the click is not any of the main menu windows or is an exit btn
-        if ((event.target !== blogBtn && event.target !== blog_icon && event.target !== blogMenuContainer && event.target !== about_btn && event.target !== about_icon  && event.target !== about_menu_container && !about_container.contains(event.target) && !blog_container.contains(event.target) && !menuBtn.contains(event.target)  && !blog_post_container.contains(event.target) && event.target !== settings_btn && event.target !== settings_icon && event.target !== settings_menu_container && !settings_container.contains(event.target) && event.target !== logInOut_btn && event.target !== login_icon && event.target !== login_menu_container) || (event.target == about_exit) || (event.target == blog_exit) || (event.target == blog_post_exit) || (event.target == settings_exit)) {
-            // if user is exiting about or settings windows, make the setting the last one the user was on
-            if (reportIcon.contains(event.target)) {
-                alert("This feature is currently under development. Thank you for your patience.");
-                // document.body.setAttribute('data-dashboard-mode', 'report');
-                // state.lastSelectedMode = 'report';
-                // main_elements.style.display = "none";
-            } else if (homeIcon.contains(event.target)) {
-                document.body.setAttribute('data-dashboard-mode', 'home');
-                main_elements.style.display = "block";
-                state.lastSelectedMode = "home"
+        const excludeTargets = [blogBtn, blog_icon, blogMenuContainer, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container];
+        const containers = [about_container, blog_container, menuBtn, blog_post_container, settings_container];
+        const exitTargets = [about_exit, blog_exit, blog_post_exit, settings_exit];
 
-            } else if (blogIcon.contains(event.target)) {
-                blogMenuContainer.click();
-
-            } else if ((event.target === settings_exit) || (event.target === about_exit)) {
-                if (state.lastSelectedMode === 'report') {
-                    document.body.setAttribute('data-dashboard-mode', 'report');
-                } else if (state.lastSelectedMode === 'home') {
-                    document.body.setAttribute('data-dashboard-mode', 'home');
-                    main_elements.style.display = "block";
-                } else if (state.lastSelectedMode === 'blog') {
-                    document.body.setAttribute('data-dashboard-mode', 'blog');
-                    blog_container.style.display = "flex";
-                }
-            } else {
-                document.body.setAttribute('data-dashboard-mode', 'home');
-                main_elements.style.display = "block";
-                state.lastSelectedMode = 'home';
-            }
-            
-            if (flags.blogShowing == true) {
-                blog_post_container.style.display = 'none';
-                hideBlog(blogs);
-            }
-        }
+        dealWithClick(excludeTargets, containers, exitTargets, event, reportIcon, homeIcon, main_elements, state, blogIcon, blogMenuContainer, blog_container, flags, blog_post_container, settings_exit, about_exit, body);
     })
 });
+
+function dealWithClick(excludeTargets, containers, exitTargets, event, reportIcon, homeIcon, main_elements, state, blogIcon, blogMenuContainer, blog_container, flags, blog_post_container, settings_exit, about_exit, body) {
+    // if the click is not any of the main menu windows or is an exit btn
+    if ((!excludeTargets.includes(event.target) && !containers.some(container => container.contains(event.target))) || exitTargets.includes(event.target)) {
+        // if user is exiting about or settings windows, make the setting the last one the user was on
+        if (reportIcon.contains(event.target)) {
+            alert("This feature is currently under development. Thank you for your patience.");
+            // document.body.setAttribute('data-dashboard-mode', 'report');
+            // state.lastSelectedMode = 'report';
+            // main_elements.style.display = "none";
+        } else if (homeIcon.contains(event.target)) {
+            document.body.setAttribute('data-dashboard-mode', 'home');
+            main_elements.style.display = "block";
+            state.lastSelectedMode = "home"
+            body.style.overflowY = 'scroll';
+
+        } else if (blogIcon.contains(event.target)) {
+            blogMenuContainer.click();
+
+        } else if ((event.target === settings_exit) || (event.target === about_exit)) {
+            if (state.lastSelectedMode === 'report') {
+                document.body.setAttribute('data-dashboard-mode', 'report');
+            } else if (state.lastSelectedMode === 'home') {
+                document.body.setAttribute('data-dashboard-mode', 'home');
+                main_elements.style.display = "block";
+            } else if (state.lastSelectedMode === 'blog') {
+                document.body.setAttribute('data-dashboard-mode', 'blog');
+                blog_container.style.display = "flex";
+            }
+        } else {
+            document.body.setAttribute('data-dashboard-mode', 'home');
+            main_elements.style.display = "block";
+            state.lastSelectedMode = 'home';
+            body.style.overflowY = 'scroll';
+        }
+        
+        if (flags.blogShowing == true) {
+            blog_post_container.style.display = 'none';
+            hideBlog(blogs);
+        }
+    }
+}
 
 function showBlog(blog_id, blog_container, blog_post_container, blogIdList, flags) {
     //Hide the blog container
@@ -304,11 +318,14 @@ function isClickNotOnBlogElements(event, blogIcon, blogMenuContainer, blog_conta
     }
 }
 
-function isClickNotOnSettingsElements(event, settings_menu_container, start_stop_btn, aboutIconNotes, settings_container, menuBtn, settings_exit, body) {
+function isClickNotOnSettingsElements(event, settings_menu_container, start_stop_btn, aboutIconNotes, settings_container, menuBtn, settings_exit, body, state, about_container) {
     let settingsElementsArr = [settings_menu_container, settings_container, menuBtn];
 
     if ((!settingsElementsArr.some(element => element.contains(event.target)) && (event.target !== start_stop_btn) && (event.target !== aboutIconNotes)) || event.target === settings_exit) {
         settings_container.style.display = "none";
-        body.style.overflowY = 'scroll';
+
+        if ((state.lastSelectedMode === "home") && (about_container.style.display !== "flex")) {
+            body.style.overflowY = 'scroll';
+        }
     }
 }
