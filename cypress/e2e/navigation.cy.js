@@ -3,7 +3,7 @@
 describe('Navigation', () => {
     beforeEach(() => {
       cy.visit('http://localhost:3000')
-      cy.get('#sub-main-container').invoke('css', 'opacity', '1');
+      cy.get('#subMainContainer').invoke('css', 'opacity', '1');
     })
 
     it('Home --> Blog Icon Click --> Home Icon Click', () => {

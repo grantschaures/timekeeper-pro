@@ -1,7 +1,7 @@
 describe('Adding, Removing, Editing Notes and Tasks', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000')
-    cy.get('#sub-main-container').invoke('css', 'opacity', '1');
+    cy.get('#subMainContainer').invoke('css', 'opacity', '1');
     cy.contains('button', 'Notes').click();
   })
 
@@ -114,7 +114,7 @@ describe('Adding, Removing, Editing Notes and Tasks', () => {
 describe('Adding, Removing, Editing Labels', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000')
-    cy.get('#sub-main-container').invoke('css', 'opacity', '1');
+    cy.get('#subMainContainer').invoke('css', 'opacity', '1');
     cy.contains('button', 'Notes').click();
     cy.contains("Select Task Labels").click();
   })
@@ -180,7 +180,7 @@ describe('Adding, Removing, Editing Labels', () => {
 describe('Auto Switch Functionality', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000')
-    cy.get('#sub-main-container').invoke('css', 'opacity', '1');
+    cy.get('#subMainContainer').invoke('css', 'opacity', '1');
     cy.contains('button', 'Notes').click();
     cy.contains("Select Task Labels").click();
   })

@@ -1,91 +1,26 @@
+import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, about_container, blog_container, settings_container, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, blogIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile } from '../modules/dom-elements.js';
+
+import { blogIdList, flags, counters, state } from '../modules/navigation-objects.js';
+
 document.addEventListener("DOMContentLoaded", function() {
-    const menuBtn = document.getElementById("menuBtn");
-    const popup_window = document.getElementById("popup-menu");
-    const blogBtn = document.getElementById("blogBtn");
-    const blog_icon = document.getElementById("blogIcon"); // icon in popup-menu
-    const about_btn = document.getElementById("aboutBtn");
-    const about_icon = document.getElementById("aboutIcon");
-    const about_menu_container = document.getElementById("aboutMenuContainer");
-    const settings_btn = document.getElementById("settingsBtn");
-    const settings_icon = document.getElementById("settingsIcon");
-    const settings_menu_container = document.getElementById("settingsMenuContainer");
-    const logInOut_btn = document.getElementById("logInOutBtn");
-    const login_icon = document.getElementById("loginIcon");
-    const login_menu_container = document.getElementById("loginMenuContainer");
-    const about_exit = document.getElementById("aboutExit");
-    const blog_exit = document.getElementById("blogExit");
-    const blog_post_exit = document.getElementById("blogPostExit");
-    const blog_post_back = document.getElementById("blogPostBack");
-    const back_icons = document.querySelectorAll(".backIcon");
-    const exit_icons = document.querySelectorAll(".exitIcon");
-    const main_elements = document.querySelector("main");
-    const about_container = document.getElementById("aboutContainer");
-    const blog_container = document.getElementById("blogContainer");
-    const settings_container = document.getElementById("settingsContainer");
-    const blog_post_container = document.getElementById("blogPostContainer");
-    const blog_cells = document.querySelectorAll(".blog_cell");
-    const blogs = document.querySelectorAll(".blog");
-    const settings_exit = document.getElementById("settingsExit");
-    const pomodoroBtnContainer = document.getElementById("pomodoroBtnContainer");
-    const backgroundsBtnContainer = document.getElementById("backgroundsBtnContainer");
-    const start_stop_btn = document.getElementById("start-stop");
-    const reportIcon = document.getElementById("report-icon");
-    const reportPath = document.getElementById("report-path");
-    const blogIcon = document.getElementById("blog-icon"); // icon in three way toggle
-    const homeIcon = document.getElementById("home-icon");
-    const blogMenuContainer = document.getElementById("blogMenuContainer");
-    const aboutIconNotes = document.getElementById('aboutIconNotes');
-    const body = document.body;
-
-    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-    /**
-     * OBJECTS
-     */
-    
-    const blogIdList = {
-        'blog_1': 'blogPost1'
-        // 'blog_2': 'blogPost2'
-    }
-
-    let flags = {
-        blogShowing: false,
-        popupWindowShowing: false
-    }
-
-    let counters = {
-        settingsBtnClicked: 0
-    }
-
-    let state = {
-        lastSelectedMode: 'home'
-    }
-
-    /**
-     * INITIAL ACTIONS
-     */
-    
     setTimeout(() => {
         menuBtn.style.opacity = '1';
     }, 1000)
     
-    /**
-     * EVENT LISTENERS
-     */
-
+    // event listeners
     menuBtn.addEventListener("click", function() {
         if (flags.popupWindowShowing) {
             flags.popupWindowShowing = false;
-            popup_window.style.opacity = '0';
+            popupMenu.style.opacity = '0';
             setTimeout(() => {
-                popup_window.style.display = "none"
+                popupMenu.style.display = "none"
             }, 50)
         } else {
             flags.popupWindowShowing = true;
-            popup_window.style.display = "flex";
+            popupMenu.style.display = "flex";
             setTimeout(() => {
-                popup_window.classList.add('menuLanding');
-                popup_window.style.opacity = '1';
+                popupMenu.classList.add('menuLanding');
+                popupMenu.style.opacity = '1';
             }, 100);
         }
     })
@@ -214,7 +149,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.addEventListener("click", function(event) {
 
-        isClickNotOnMenuElements(event, menuBtn, flags, popup_window);
+        isClickNotOnMenuElements(event, menuBtn, flags, popupMenu);
         isClickNotOnAboutElements(event, about_menu_container, about_container, menuBtn, about_exit, reportIcon, reportPath);
         isClickNotOnBlogElements(event, blogIcon, blogMenuContainer, blog_container, blog_post_container, menuBtn, blog_exit, reportIcon, reportPath);
         isClickNotOnSettingsElements(event, settings_menu_container, start_stop_btn, aboutIconNotes, settings_container, menuBtn, settings_exit, body, state, about_container);
@@ -299,13 +234,13 @@ function isClickNotOnAboutElements(event, about_menu_container, about_container,
     }
 }
 
-function isClickNotOnMenuElements(event, menuBtn, flags, popup_window) {
+function isClickNotOnMenuElements(event, menuBtn, flags, popupMenu) {
     // if click is not on menu, hide menu
     if (!menuBtn.contains(event.target)) {
         flags.popupWindowShowing = false;
-        popup_window.style.opacity = '0';
+        popupMenu.style.opacity = '0';
         setTimeout(() => {
-            popup_window.style.display = "none"
+            popupMenu.style.display = "none"
         }, 50)
     }
 }

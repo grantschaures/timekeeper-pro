@@ -1,7 +1,7 @@
 describe('Pomodoro | Auto and non-auto start', () => {
     beforeEach(() => {
         cy.visit('http://localhost:3000')
-        cy.get('#sub-main-container').invoke('css', 'opacity', '1');
+        cy.get('#subMainContainer').invoke('css', 'opacity', '1');
         cy.get('[data-testid="menuBtn"]').click();
         cy.contains("Settings").click();
         cy.contains("Pomodoro").click();        
@@ -212,7 +212,7 @@ describe('Pomodoro | Auto and non-auto start', () => {
 describe('Addition and removal of glowing-effect on start-stop btn', () => {
     beforeEach(() => {
         cy.visit('http://localhost:3000')
-        cy.get('#sub-main-container').invoke('css', 'opacity', '1');
+        cy.get('#subMainContainer').invoke('css', 'opacity', '1');
         cy.get('[data-testid="menuBtn"]').click();
         cy.contains("Settings").click();
         cy.contains("Pomodoro").click();
@@ -411,7 +411,7 @@ describe('Addition and removal of glowing-effect on start-stop btn', () => {
 describe('Pomodoro | Auto and non-auto start', () => {
     beforeEach(() => {
         cy.visit('http://localhost:3000')
-        cy.get('#sub-main-container').invoke('css', 'opacity', '1');
+        cy.get('#subMainContainer').invoke('css', 'opacity', '1');
         cy.get('[data-testid="menuBtn"]').click();
         cy.contains("Settings").click();
         cy.contains("Pomodoro").click();       

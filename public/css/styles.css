@@ -254,7 +254,7 @@ main {
     /* border: 3px solid red; */
 }
 
-#sub-main-container {
+#subMainContainer {
     display: flex;
     flex-direction: column;
     /* justify-content: center; */
@@ -268,7 +268,7 @@ main {
     /* overflow-x: hidden; */
 }
 
-#main-container {
+#mainContainer {
     /* Fixed dimensions */
     position: relative;
     width: 100%;
@@ -288,13 +288,13 @@ main {
 }
 
 @media (max-width: 504px) {
-    #target-hours-interruptions-container {
+    #targetHoursInterruptionsContainer {
         flex-direction: column;
         align-items: center;
         /* border: 1px solid yellow; */
         height: 325px;
     }
-    #target-hours-container {
+    #targetHoursContainer {
         margin-right: 0px;
     }
     #chillAnimation {
@@ -305,7 +305,7 @@ main {
     }
 }
 
-.header-btns {
+.headerBtns {
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -379,7 +379,7 @@ button:hover {
     display: flex;
 }
 
-.header-btns button {
+.headerBtns button {
     width: 100px;
 }
 
@@ -396,7 +396,7 @@ button:hover {
     #menuIcon {
         display: flex;
     }
-    .header-btns button {
+    .headerBtns button {
         width: 50px;
     }
     #reportBtn:hover #reportIcon {
@@ -407,7 +407,7 @@ button:hover {
     }
 }
 
-#target-hours-interruptions-container {
+#targetHoursInterruptionsContainer {
     display: flex;
     justify-content: space-between;
     /* justify-content: center; */
@@ -420,7 +420,7 @@ button:hover {
 }
 
 @media (max-width: 635px) {
-    #target-hours-interruptions-container {
+    #targetHoursInterruptionsContainer {
         width: 100%;
     }
 }
@@ -457,7 +457,7 @@ button:hover {
 
 }
 
-#target-hours-container {
+#targetHoursContainer {
     display: flex;
     align-items: center;
 
@@ -489,7 +489,7 @@ button:hover {
     #interruptions-container {
         max-width: 275px;
     }
-    #target-hours-container {
+    #targetHoursContainer {
         max-width: 275px;
         margin-right: 15px;
     }
@@ -617,7 +617,7 @@ button:hover {
     color: white;
 }
 
-#target-hours-sub-container {
+#targetHoursSubContainer {
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -640,7 +640,7 @@ button:hover {
     margin-right: 25px;
 }
 
-#target-label {
+#targetLabel {
     /* border: 1px solid yellow; */
     display: flex;
     justify-content: center;
@@ -735,7 +735,7 @@ button:hover {
         align-items: center;
         justify-content: center;
     }
-    #target-hours-interruptions-container {
+    #targetHoursInterruptionsContainer {
         display: none;
     }
     #progress-text {

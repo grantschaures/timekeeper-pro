@@ -1,6 +1,10 @@
-//
-//  JavaScript code for main event handling
-//
+import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selectedBackgroundIdTemp, selectedBackgroundId, timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, alertVolumes, alertSounds, counters, flags, tempStorage, settingsMappings, savedInterruptionsArr } from '../modules/index-objects.js';
+
+import {
+    start_stop_btn, submit_change_btn, end_session_btn, report_btn, total_time_display, productivity_chill_mode, progressBarContainer, progressBar, progressContainer, display, hyperChillTitle, subMainContainer, interruptionsContainer, interruptionsSubContainer, decBtn, incBtn, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, completedPomodoros_label, completedPomodoros_min, targetHoursContainer, timekeepingContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, targetTimeReachedToggle, breakSuggestionToggle, suggestionMinutesInput, flowmodoroNotificationToggle,flowmodoroNotifications, flowmodoroNotificationInfoWindow, flowTimeBreakNotification, flowTimeBreakNotificationInfoWindow, pomodoroNotifications, pomodoroNotificationInfoWindow, notesAutoSwitch, notesAutoSwitchInfoWindow, pomodoroNotificationToggle, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, defaultThemeContainer, defaultTheme, darkThemeContainer, darkGrayTheme, targetTimeReachedAlert, transitionClockSoundToggle, flowTimeAnimationToggle, chillTimeAnimationToggle, pomodoroVolumeContainer, pomodoroVolumeBar, pomodoroVolumeThumb, flowmodoroVolumeContainer, flowmodoroVolumeBar, flowmodoroVolumeThumb, generalVolumeContainer, generalVolumeBar, generalVolumeThumb, pomodoroVolumeContainer2, pomodoroVolumeBar2, pomodoroVolumeThumb2, flowmodoroVolumeContainer2, flowmodoroVolumeBar2, flowmodoroVolumeThumb2, generalVolumeContainer2, generalVolumeBar2, generalVolumeThumb2, flowmodoroRadios, flowmodoroInputs, generalRadios, pomodoroInputs, pomodoroRadios,flowtimeBackgroundCells, chilltimeBackgroundCells, settings_menu_container, registerHereText, backgroundVideoSource, backgroundVideo, flowAnimation, chillAnimation, hyperChillLogoImage,createLabelInput, updateLabelInput, emojiContainer
+} from '../modules/dom-elements.js';
+
+
 const pomodoroWorker = new Worker('/js/displayWorkers/pomodoroWorker.js');
 const suggestionWorker = new Worker('/js/displayWorkers/suggestionWorker.js');
 const flowmodoroWorker = new Worker('/js/displayWorkers/flowmodoroWorker.js');
@@ -8,141 +12,10 @@ const displayWorker = new Worker('/js/displayWorkers/displayWorker.js');
 const totalDisplayWorker = new Worker('/js/displayWorkers/totalDisplayWorker.js');
 
 document.addEventListener("DOMContentLoaded", function() {
-    // ------------------------------
-    // DOM ELEMENTS & INITIAL SETUP
-    // ------------------------------
-    const start_stop_btn = document.getElementById("start-stop");
-    const submit_change_btn = document.getElementById("target-hours-submit");
-    const end_session_btn = document.getElementById("end-session");
-    const report_btn = document.getElementById("reportBtn");
-    const total_time_display = document.getElementById("progress-text");
-    const productivity_chill_mode = document.getElementById("productivity-chill-mode");
-    const progressBarContainer = document.getElementById("progress-bar-container");
-    const progressBar = document.getElementById("progress-bar");
-    const progressContainer = document.getElementById("progress-container");
-    const display = document.getElementById("display");
-    const hyperChillTitle = document.getElementById("hyperChillTitle");
-    const subMainContainer = document.getElementById("sub-main-container");
-
-    // INTERRUPTIONS CONTAINER
-    const interruptionsContainer = document.getElementById("interruptions-container");
-    const interruptionsSubContainer = document.getElementById("interruptions-sub-container");
-    const decBtn = document.getElementById("decBtn");
-    const incBtn = document.getElementById("incBtn");
-
-    const interruptionsNum = document.getElementById("interruptions_num");
-
-    const suggestionBreakContainer = document.getElementById("suggestionBreakContainer");
-    const suggestionBreak_label = document.getElementById("suggestionBreak-label");
-    const suggestionBreak_min = document.getElementById("suggestionBreak-min");
-
-    const completedPomodorosContainer = document.getElementById("completedPomodorosContainer");
-    const completedPomodoros_label = document.getElementById("completedPomodoros-label");
-    const completedPomodoros_min = document.getElementById("completedPomodoros-min");
-
-    const targetHoursContainer = document.getElementById("target-hours-container");
-
-    const timekeepingContainer = document.getElementById("timekeeping-container");
-
-    const popup_window = document.getElementById("popup-menu");
-
-    const settingsContainer = document.getElementById("settingsContainer");
-
-    const notesContainer = document.getElementById("notes-container");
-
-    const aboutContainer = document.getElementById("aboutContainer");
-    const blogContainer = document.getElementById("blogContainer");
-
-    const blackFlowtimeBackground = document.getElementById("black-flowtime");
-    const blackChilltimeBackground = document.getElementById("black-chilltime");
-
-    // SETTINGS
-    const targetTimeReachedToggle = document.getElementById("targetTimeReachedToggle");
-    const breakSuggestionToggle = document.getElementById("breakSuggestionToggle");
-    const suggestionMinutesInput = document.getElementById("suggestionMinutesInput");
-    const flowmodoroNotificationToggle = document.getElementById("flowmodoroNotificationToggle");
-    const flowmodoroNotifications = document.getElementById("flowmodoroNotifications");
-    const flowmodoroNotificationInfoWindow = document.getElementById("flowmodoroNotificationInfoWindow");
-    const flowTimeBreakNotification = document.getElementById("flowTimeBreakNotification");
-    const flowTimeBreakNotificationInfoWindow = document.getElementById("flowTimeBreakNotificationInfoWindow");
-    const pomodoroNotifications = document.getElementById("pomodoroNotifications");
-    const pomodoroNotificationInfoWindow = document.getElementById("pomodoroNotificationInfoWindow");
-
-    const notesAutoSwitch = document.getElementById("notesAutoSwitch");
-    const notesAutoSwitchInfoWindow = document.getElementById("notesAutoSwitchInfoWindow");
-
-
-    const pomodoroNotificationToggle = document.getElementById("pomodoroNotificationToggle");
-    const autoStartPomodoroIntervalToggle = document.getElementById("autoStartPomodoroIntervalToggle");
-    const autoStartBreakIntervalToggle = document.getElementById("autoStartBreakIntervalToggle");
-
-    const defaultThemeContainer = document.getElementById("defaultThemeContainer");
-    const defaultTheme = document.getElementById("defaultTheme");
-
-    const darkThemeContainer = document.getElementById("darkThemeContainer");
-    const darkGrayTheme = document.getElementById("darkGrayTheme");
-
-    let hoverTimer;
-    const targetTimeReachedAlert = document.getElementById("targetTimeReachedAlert");
-    const transitionClockSoundToggle = document.getElementById("transitionClockSoundToggle");
-
-    const flowTimeAnimationToggle = document.getElementById("flowTimeAnimationToggle");
-    const chillTimeAnimationToggle = document.getElementById("chillTimeAnimationToggle");
-
-    const pomodoroVolumeContainer = document.getElementById("pomodoroVolumeContainer");
-    const pomodoroVolumeBar = document.getElementById('pomodoroVolumeBar');
-    const pomodoroVolumeThumb = document.getElementById('pomodoroVolumeThumb');
-
-    const flowmodoroVolumeContainer = document.getElementById("flowmodoroVolumeContainer");
-    const flowmodoroVolumeBar = document.getElementById('flowmodoroVolumeBar');
-    const flowmodoroVolumeThumb = document.getElementById('flowmodoroVolumeThumb');
-
-    const generalVolumeContainer = document.getElementById("generalVolumeContainer");
-    const generalVolumeBar = document.getElementById('generalVolumeBar');
-    const generalVolumeThumb = document.getElementById('generalVolumeThumb');
-
-    const pomodoroVolumeContainer2 = document.getElementById("pomodoroVolumeContainer2");
-    const pomodoroVolumeBar2 = document.getElementById('pomodoroVolumeBar2');
-    const pomodoroVolumeThumb2 = document.getElementById('pomodoroVolumeThumb2');
-
-    const flowmodoroVolumeContainer2 = document.getElementById("flowmodoroVolumeContainer2");
-    const flowmodoroVolumeBar2 = document.getElementById('flowmodoroVolumeBar2');
-    const flowmodoroVolumeThumb2 = document.getElementById('flowmodoroVolumeThumb2');
-
-    const generalVolumeContainer2 = document.getElementById("generalVolumeContainer2");
-    const generalVolumeBar2 = document.getElementById('generalVolumeBar2');
-    const generalVolumeThumb2 = document.getElementById('generalVolumeThumb2');
-
-    const flowmodoroRadios = document.querySelectorAll('.flowmodoroAlert');
-    const flowmodoroInputs = document.querySelectorAll('.flowmodoroBreak');
-    const generalRadios = document.querySelectorAll('.generalAlert');
-    const pomodoroInputs = document.querySelectorAll('.pomodoroInterval')
-    const pomodoroRadios = document.querySelectorAll('.pomodoroAlert');
-    const flowtimeBackgroundCells = document.querySelectorAll('.flowtimeBackgroundCell');
-    const chilltimeBackgroundCells = document.querySelectorAll('.chilltimeBackgroundCell');
-    const settings_menu_container = document.getElementById("settingsMenuContainer");
-
-    const registerHereText = document.getElementById("registerHereText");
-
-    var backgroundVideoSource = document.getElementById('background-video-source');
-    const backgroundVideo = document.getElementById('background-video');
-
     // Audio
     const chime = new Audio('sounds/alerts/LEX_LM_77_bell_loop_vinyl_night_F.wav');
     const bell = new Audio('sounds/alerts/ESM_Christmas_Glockenspiel_Bell_Pluck_Hit_Single_9_Wet_Perc_Tonal.wav');
     const clock_tick = new Audio('sounds/new_clock_tick.wav');
-
-    // Background Animations
-    const flowAnimation = document.getElementById("flowAnimation");
-    const chillAnimation = document.getElementById("chillAnimation");
-
-    // Logo
-    const hyperChillLogoImage = document.getElementById("hyperChillLogoImage");
-
-    // NOTES
-    const createLabelInput = document.getElementById("create-label-input");
-    const updateLabelInput = document.getElementById("update-label-input");
-    const emojiContainer = document.getElementById("emoji-container");
 
     // Favicons
     const greenFavicon = "/images/logo/HyperChillLogoGreen.png";
@@ -151,112 +24,14 @@ document.addEventListener("DOMContentLoaded", function() {
     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     const initialViewportWidth = window.innerWidth || document.documentElement.clientWidth;
 
-    const flowtimeBackgrounds = {
-        "green-default": "linear-gradient(270deg, #3ec500, #37c400, #00c59a)",
-        "red-flowtime": "linear-gradient(270deg, #c42700, #c56900, #c58000)",
-        "yellow-flowtime": "linear-gradient(270deg, #b8c500, #90c400, #5fc500)",
-        "blue-flowtime": "linear-gradient(270deg, #3b8fe3, #1d60a3, #7f04c7)",
-        "purple-flowtime": "linear-gradient(270deg, #7f04c7, #b004c7, #c004c7)",
-        "black-flowtime": "linear-gradient(270deg, #202020, #202020, #202020)"
-    }
-
-    const chilltimeBackgrounds = {
-        "green-chilltime": "linear-gradient(270deg, #3ec500, #37c400, #00c59a)",
-        "red-chilltime": "linear-gradient(270deg, #c42700, #c56900, #c58000)",
-        "yellow-chilltime": "linear-gradient(270deg, #b8c500, #90c400, #5fc500)",
-        "blue-default": "linear-gradient(270deg, #3b8fe3, #1d60a3, #7f04c7)",
-        "purple-chilltime": "linear-gradient(270deg, #7f04c7, #b004c7, #c004c7)",
-        "black-chilltime": "linear-gradient(270deg, #202020, #202020, #202020)"
-    }
-
-    const selectedBackground = {
-        "flowtime": "linear-gradient(270deg, #3ec500, #37c400, #00c59a)",
-        "chilltime": "linear-gradient(270deg, #3b8fe3, #1d60a3, #7f04c7)"
-    }
-
-    const selectedBackgroundIdTemp = {
-        "flowtime": null,
-        "chilltime": null
-    }
-
-    const selectedBackgroundId = {
-        "flowtime": "green-default",
-        "chilltime": "blue-default"
-    }
-
-    const timeConvert = {
-        msPerHour: 3600000,
-        msPerMin: 60000,
-        msPerSec: 1000
-    };
-
-    //INTERVALS
-    let intervals = {
-        main: null, //progress bar interval
-        total: null,
-        local: null, //interval for time display
-        suggestion: null,
-        chillTimeBreak: null,
-        pomodoro: null
-    };
-    
-    //START TIMES
-    let startTimes = {
-        hyperFocus: undefined, //startTime of current hyper focus session
-        chillTime: undefined, //startTime of current chill time session
-        local: undefined, //local start time for current display
-        beginning: undefined, //very first start time of entire session
-        lastPomNotification: undefined,
-        lastFlowmodoroNotification: 0, //not used
-        lastBreakSuggestionNotification: 0 //not used
-    };
-
-    //RECOVERY
-    let recoverBreakState = {
-        displayTime: null,
-        pomodorosCompleted: null,
-        hyperFocusElapsedTime: null,
-        localStartTime: null
-    }
-
-    let recoverPomState = {
-        displayTime: null,
-        pomodorosCompleted: null,
-        hyperFocusElapsedTime: null,
-        localStartTime: null
-    }
+    // not used; initialized for reference
+    let pomodoroIntervalOrderArr = ['pom1', 'shortbreak1', 'pom2', 'shortbreak2', 'pom3', 'shortbreak3', 'pom4', 'longbreak'];
 
     //TIME AMOUNTS
     let targetTime = null; //Target amount of time in ms
     let breakTimeSuggestionsArr = [5, 8, 10, 15];
     let suggestionMinutes = null; //Suggestion minutes
     let pomodoroIntervalArr = [25, 5, 15];
-
-    // not used; initialized for reference
-    let pomodoroIntervalOrderArr = ['pom1', 'shortbreak1', 'pom2', 'shortbreak2', 'pom3', 'shortbreak3', 'pom4', 'longbreak'];
-
-    let elapsedTime = {
-        hyperFocus: 0, //Accumulated time from each productivity interval
-        chillTime: 0, //time elapsed during each Chill Time mode
-        suggestionSeconds: 0,
-        flowmodoroNotificationSeconds: 0,
-        lastHyperFocusIntervalMin: 0,
-        pomodoroNotificationSeconds: 0
-    }
-
-    //Alert volumes
-    let alertVolumes = {
-        pomodoro: 0.5,
-        flowmodoro: 0.5,
-        general: 0.5
-    }
-
-    // values include 'none', 'bell', and 'chime'
-    let alertSounds = {
-        pomodoro: 'none',
-        flowmodoro: 'none',
-        general: 'none'
-    }
 
     // RADIO BTN SOUND MAPPING
     const soundMap = {
@@ -270,74 +45,6 @@ document.addEventListener("DOMContentLoaded", function() {
         { radios: generalRadios, type: 'general' },
         { radios: pomodoroRadios, type: 'pomodoro' }
     ];
-
-    //STATE-RELATED FLAGS AND COUNTERS
-    let counters = {
-        startStop: 0, //tracks number of times start/stop is pressed
-        interruptions: 0,
-        currentFlowmodoroNotification: 0,
-        currentFlowmodoroBreakIndex: 0,
-        currentPomodoroNotification: 0,
-        currentPomodoroIntervalIndex: 0,
-        currentPomodoroIntervalOrderIndex: 0,
-        pomodorosCompleted: 0
-    }
-
-    //STORAGE
-    savedInterruptionsArr = [];
-
-    let flags = {
-        hitTarget: false, //Flag: target time has been reached
-        submittedTarget: false, //Flag: if target time has been submitted
-        inHyperFocus: false, //Flag: check if in hyper focus mode
-        targetReachedToggle: false, //Flag: changes based on user setting (alerts user when target reached)
-        breakSuggestionToggle: false,
-        submittedSuggestionMinutes: false,
-        transitionClockSoundToggle: false,
-        flowmodoroNotificationToggle: false,
-        progressBarContainerIsSmall: false,
-        flowmodoroThumbIsDragging: false,
-        autoStartFlowTimeInterval: false,
-        autoStartChillTimeInterval: false,
-        showingPomodoroNotificationInfoWindow: false,
-        showingFlowmodoroNotificationInfoWindow: false,
-        showingFlowTimeBreakNotificationInfoWindow: false,
-        showingNotesAutoSwitchInfoWindow: false,
-        generalThumbIsDragging: false,
-        pomodoroThumbIsDragging: false,
-        flowmodoroThumbIsDragging2: false,
-        generalThumbIsDragging2: false,
-        pomodoroThumbIsDragging2: false,
-        pomodoroNotificationToggle: false,
-        autoStartPomodoroInterval: false,
-        autoStartBreakInterval: false,
-        autoSwitchedModes: false,
-        inRecoveryBreak: false,
-        inRecoveryPom: false,
-        flowTimeAnimationToggle: true,
-        chillTimeAnimationToggle: true,
-        darkThemeActivated: true,
-        modeChangeExecuted: false,
-        sentFlowmodoroNotification: false,
-        sentSuggestionMinutesNotification: false,
-        enterKeyDown: false,
-        pomodoroCountIncremented: false
-    }
-
-    tempStorage = {
-        lastSettingsSelectionId: 'pomodoroBtnContainer'
-    }
-
-    const settingsMappings = {
-        'pomodoroBtnContainer': 'pomodoroSettingsContainer',
-        'flowmodoroBtnContainer': 'flowmodoroSettingsContainer',
-        'generalBtnContainer': 'generalSettingsContainer',
-        'backgroundsBtnContainer': 'backgroundsSettingsContainer',
-        'notesBtnContainer': 'notesSettingsContainer',
-        'soundsBtnContainer': 'soundsSettingsContainer',
-        'accountBtnContainer': 'accountSettingsContainer',
-        'supportAndFeedbackBtnContainer': 'supportAndFeedbackSettingsContainer'
-    };
 
     // ----------------
     // MAIN CODE (Runs after DOM content is loaded)
@@ -355,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // activate dark theme by default
-    activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popup_window, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer);
+    activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer);
 
     setTimeout(() => {
         hyperChillTitle.style.opacity = '1';
@@ -553,6 +260,7 @@ document.addEventListener("DOMContentLoaded", function() {
         suggestionMinutes = Math.round(parseFloat(inputSuggestionMinutes));
         let validatedFinalInputVal = validateAndSetNotificationInput(suggestionMinutes);
         suggestionMinutesInput.value = validatedFinalInputVal;
+        let secondsPassed;
 
         if (counters.startStop === 0) {
             secondsPassed = 0;
@@ -723,6 +431,7 @@ document.addEventListener("DOMContentLoaded", function() {
             let finalInputVal = Math.round(event.target.value);
             let validatedFinalInputVal = validateAndSetNotificationInput(finalInputVal);
             document.getElementById(event.target.id).value = validatedFinalInputVal;
+            let secondsPassed;
             
             setBreakTimeSuggestionsArr(event, breakTimeSuggestionsArr, validatedFinalInputVal, counters);
             setCurrentFlowmodoroNotification(flags, counters, breakTimeSuggestionsArr);
@@ -768,6 +477,7 @@ document.addEventListener("DOMContentLoaded", function() {
             let finalInputVal = Math.round(event.target.value);
             let validatedFinalInputVal = validateAndSetNotificationInput(finalInputVal);
             document.getElementById(event.target.id).value = validatedFinalInputVal;
+            let secondsPassed;
 
             if (flags.inHyperFocus) {
                 secondsPassed = Math.round((Date.now() - startTimes.hyperFocus) / 1000);
@@ -1013,7 +723,7 @@ document.addEventListener("DOMContentLoaded", function() {
         defaultTheme.classList.add('selected-background');
         flags.darkThemeActivated = false;
 
-        deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popup_window, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer);
+        deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer);
     })
 
     darkThemeContainer.addEventListener("click", function() {
@@ -1021,7 +731,7 @@ document.addEventListener("DOMContentLoaded", function() {
         darkGrayTheme.classList.add('selected-background');
         flags.darkThemeActivated = true;
 
-        activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popup_window, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer);
+        activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer);
     })
 
     window.addEventListener("resize", function() {
@@ -1383,9 +1093,9 @@ function chillTimeToFirstPomodoro(flags, productivity_chill_mode, counters) {
     } 
 }
 
-function activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popup_window, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer) {
+function activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer) {
     let componentArr1 = [interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, notesContainer, aboutContainer, blogContainer];
-    let componentArr2 = [popup_window, settingsContainer, emojiContainer];
+    let componentArr2 = [popupMenu, settingsContainer, emojiContainer];
 
     let darkBackgroundTranslucent = "rgba(32, 32, 32, 0.9)";
     let darkBackground = "rgba(32, 32, 32, 1)";
@@ -1409,9 +1119,9 @@ function activateDarkTheme(interruptionsContainer, targetHoursContainer, timekee
     blackChilltimeBackground.click();
 }
 
-function deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popup_window, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer) {
+function deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer) {
     let componentArr1 = [interruptionsContainer, targetHoursContainer, timekeepingContainer, notesContainer, aboutContainer, blogContainer];
-    let componentArr2 = [popup_window, settingsContainer];
+    let componentArr2 = [popupMenu, settingsContainer];
 
     let darkBackgroundTranslucent = "rgba(0, 0, 0, 0.35)";
     let darkBackground = "rgb(0, 0, 0)";

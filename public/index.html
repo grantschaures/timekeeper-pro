@@ -20,9 +20,9 @@
 
         <!-- CHANGE TO NON-MINIFIED VERSION DURING DEVELOPMENT -->
         <!-- CHANGE BACK TO MINIFIED VERSION FOR DEPLOYMENT -->
-        <script src='/js/main/index.js'></script>
-        <script src='/js/main/navigation.js'></script>
-        <script src='/js/main/notes.js'></script>
+        <script type="module" src='/js/main/index.js'></script>
+        <script type="module" src='/js/main/navigation.js'></script>
+        <script type="module" src='/js/main/notes.js'></script>
     </head>
 
     <!-- For future, before pushing:
@@ -62,7 +62,7 @@
             </div>
         </div>
 
-        <div id="main-container">
+        <div id="mainContainer">
             <header>
                 <div class="container">
                     <img id="hyperChillLogoImage" src="images/logo/HyperChillLogo_smallest.png" class="no-select" draggable="false">
@@ -86,12 +86,12 @@
                         </span>
                     </div>
 
-                    <div class="header-btns">
+                    <div class="headerBtns">
                         <button id="menuBtn" data-testid="menuBtn" class="no-select">
                             <img id="menuIcon"src="/images/icons/noun-menu-6192580-white.png">
                             <img id="menuIcon-black"src="/images/icons/noun-menu-6192580.png">
                         </button>
-                        <div id="popup-menu">
+                        <div id="popupMenu">
                             <div id="blogMenuContainer" data-testid="blogMenuContainer" class="menuContainer"> 
                                 <img id="blogIcon" src="/images/icons/blogIcon1.png" class="menuIcon">
                                 <div id="blogBtn">Blog</div>
@@ -116,12 +116,11 @@
             </header>
 
             <main data-testid="main">
-                <div id="sub-main-container">
-                    <div id="target-hours-interruptions-container">
-                        <div id="target-hours-container">
-                            <div id="target-hours-sub-container">
-                                <!-- <h4 id="target-label">Target Hours </h4> -->
-                                <h4 id="target-label" style="font-size: 20px" class="no-select">Target Hours</h4>
+                <div id="subMainContainer">
+                    <div id="targetHoursInterruptionsContainer">
+                        <div id="targetHoursContainer">
+                            <div id="targetHoursSubContainer">
+                                <h4 id="targetLabel" style="font-size: 20px" class="no-select">Target Hours</h4>
                                 <div id="coolDiv-submit">
                                     <div id="coolDiv">
                                         <input type="number" id="target-hours" data-testid="target-hours" class="glowing-effect" name="hours" min="0">

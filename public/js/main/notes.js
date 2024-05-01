@@ -1,138 +1,10 @@
+import {
+    notesContainer, taskContainer, promptContainer, labelInputContainer, createLabelContainer, createLabelWindow, createLabelInput, createLabelDone, createLabelCancel, updateLabelContainer, updateLabelWindow, updateLabelInput, updateLabelCancel, updateLabelDone, labelSelectionWindow, labelSelectionRow, clearIcon, notesBtn, notesConsole, taskPrompt, tagIcon, tagSelection, tagSelectionDivider, addDoneContainer, selectionDoneDiv, selectionDone, addTagIcon, emojiBtn, emojiBtn2, emojiImg, emojiImg2, emojiContainer, emojiSymbols, transitionNotesAutoSwitchToggle, start_stop_btn, tutorialImgContainers, aboutIconNotes, settings_menu_container, notesBtnContainer, notesSettingsHr, addingDeletingUpdatingLabelsInfoBlock, addNoteTaskContainer, noteTaskInputContainer, noteTaskInputText, noteInputCancelBtn, noteInputSaveBtn, taskCheckbox, dynamicList, textarea, settingsContainer, aboutContainer, blogContainer, main_elements, isMobile
+} from '../modules/dom-elements.js';
+
+import { notesFlags, counters, state, flags, emojiMap, tutorialContainerMap, fontSizeArr, fontNumArr } from '../modules/notes-objects.js';
+
 document.addEventListener("DOMContentLoaded", function() {
-    const notesContainer = document.getElementById("notes-container");
-    const taskContainer = document.getElementById("task-container");
-    const promptContainer = document.getElementById("prompt-container");
-    const labelInputContainer = document.getElementById("label-input-container");
-    const createLabelContainer = document.getElementById("create-label-container");
-    const createLabelWindow = document.getElementById("create-label-window");
-    const createLabelInput = document.getElementById("create-label-input");
-    const createLabelDone = document.getElementById("create-label-done");
-    const createLabelCancel = document.getElementById("create-label-cancel");
-
-    const updateLabelContainer = document.getElementById("update-label-container");
-    const updateLabelWindow = document.getElementById("update-label-window");
-    const updateLabelInput = document.getElementById("update-label-input");
-    const updateLabelCancel = document.getElementById('update-label-cancel');
-    const updateLabelDone = document.getElementById('update-label-done');
-
-    const labelSelectionWindow = document.getElementById("label-selection-window");
-    const labelSelectionRow = document.querySelector('.label-selection-row');
-    const clearIcon = document.getElementById("clearIcon");
-    const notesBtn = document.getElementById("notes");
-    const notesConsole = document.getElementById("notes-console");
-    const taskPrompt = document.getElementById("task-prompt");
-    const tagIcon = document.getElementById("tag-icon");
-    const tagSelection = document.querySelectorAll('.selection-tag');
-    const tagSelectionDivider = document.getElementById('tag-selection-divider');
-    const addDoneContainer = document.getElementById('add-done-container');
-    const selectionDoneDiv = document.getElementById('selection-done-div');
-    const selectionDone = document.getElementById('selection-done');
-    const addTagIcon = document.getElementById("add-tag-icon");
-    const emojiBtn = document.getElementById("emoji-btn");
-    const emojiBtn2 = document.getElementById("emoji-btn2");
-    const emojiImg = document.getElementById("OGemoji");
-    const emojiImg2 = document.getElementById("OGemoji2");
-    const emojiContainer = document.getElementById("emoji-container");
-    const emojiSymbols = document.querySelectorAll('.emoji-symbol');
-
-    const transitionNotesAutoSwitchToggle = document.getElementById('transitionNotesAutoSwitchToggle');
-    const start_stop_btn = document.getElementById('start-stop');
-    const tutorialImgContainers = document.querySelectorAll('.tutorialImgContainer');
-    const aboutIconNotes = document.getElementById('aboutIconNotes');
-    const settings_menu_container = document.getElementById("settingsMenuContainer");
-    const notesBtnContainer = document.getElementById("notesBtnContainer");
-    const notesSettingsHr = document.getElementById('notesSettingsHr');
-    const addingDeletingUpdatingLabelsInfoBlock = document.getElementById('addingDeletingUpdatingLabelsInfoBlock');
-
-    const addNoteTaskContainer = document.getElementById("add-note-task-container");
-    const noteTaskInputContainer = document.getElementById("note-task-input-container");
-    const noteTaskInputText = document.getElementById("note-task-input-text");
-    const noteInputCancelBtn = document.getElementById("note-input-cancel-btn");
-    const noteInputSaveBtn = document.getElementById("note-input-save-btn");
-    const taskCheckbox = document.getElementById('taskCheckbox');
-    const dynamicList = document.getElementById('dynamicList');
-    const textarea = document.getElementById('note-task-input-text');
-
-    const settingsContainer = document.getElementById('settingsContainer');
-    const aboutContainer = document.getElementById('aboutContainer');
-    const blogContainer = document.getElementById('blogContainer');
-    const main_elements = document.querySelector("main");
-
-    // CONSOLE
-    let notesFlags = {
-        isClicked: false,
-        notesShowing: false,
-        notesConsoleShowing: true,
-        emojiContainerShowing: false
-    }
-
-    let counters = {
-        notesLines: 0,
-        tagsSelected: 0,
-        lastLabelIdNum: 3, //subject to change based on num of predefined labels for user (need to store in database)
-        lastNoteInputIdNum: 0, // not being used
-        lastTaskInputIdNum: 0
-    }
-
-    let state = {
-        currentNoteInputId: null,
-        currentNoteTimeId: null,
-        lastNotesLineTime: null,
-        currentLabelInputTagSize: 20,
-        generalTarget: null,
-        lastSelectionElement: null,
-        lastSelectedEmojiId: null,
-        elementToUpdateId: null,
-        currentNoteTaskEditId: null
-    }
-
-    let flags = {
-        tagSelected: false,
-        tagSelection: true,
-        clearIconClicked: false,
-        shiftPressed: false,
-        altPressed: false,
-        createLabelWindowOpen: false,
-        updateLabelWindowOpen: false,
-        transitionNotesAutoSwitchToggle: false,
-        noteTaskInputContainerShowing: false,
-        noteTaskInputContainerEditShowing: false
-    }
-
-    const emojiMap = {
-        "studying-man-emoji": "👨‍💻",
-        "studying-woman-emoji": "👩‍💻",
-        "meditation-emoji": "🧘",
-        "meditation-woman-emoji": "🧘‍♀️",
-        "happy-emoji": "😄",
-        "zany-emoji": "🤪",
-        "heart-emoji": "💖",
-        "dead-emoji": "💀",
-        "document-emoji": "📄",
-        "memo-emoji": "📝",
-        "writing-emoji": "✍️",
-        "notebook-emoji": "📓",
-        "exercise-emoji": "🏋️",
-        "headphones-emoji": "🎧",
-        "piano-emoji": "🎹",
-        "brain-emoji": "🧠",
-        "lightbulb-emoji": "💡",
-        "calendar-emoji": "📅",
-        "clock-emoji": "🕒",
-        "books-emoji": "📚"
-    }
-
-    const tutorialContainerMap = {
-        "addingImgContainer": "addingLabelInstructions",
-        "deletingImgContainer": "deletingLabelInstructions",
-        "updatingImgContainer": "updatingLabelInstructions"
-    }
-
-    fontSizeArr = ['20px', '19px', '18px', '17px', '16px', '15px', '14px', '13px', '12px'];
-    fontNumArr = [20, 19, 18, 17, 16, 15, 14, 13, 12];
-
-    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
     //set initial emoji container point location
     setEmojiContainerPointLocation(window.innerWidth, emojiContainer, notesFlags, isMobile);
 
@@ -142,11 +14,8 @@ document.addEventListener("DOMContentLoaded", function() {
         addingDeletingUpdatingLabelsInfoBlock.style.display = "none";
 
     }
-
-    // //
     // //
     // BEGINNING OF EVENT LISTENER SECTION
-    // //
     // //
 
     dynamicList.addEventListener('click', function(event) {

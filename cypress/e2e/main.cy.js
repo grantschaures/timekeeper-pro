@@ -1,7 +1,7 @@
 describe('Target Hours', () => {
     beforeEach(() => {
       cy.visit('http://localhost:3000')
-      cy.get('#sub-main-container').invoke('css', 'opacity', '1');
+      cy.get('#subMainContainer').invoke('css', 'opacity', '1');
     })
   
     it('Target Hours Input Behavior | Pre-session', () => {
@@ -45,7 +45,7 @@ describe('Target Hours', () => {
 describe('Basic Interval Switching Functionality', () => {
     beforeEach(() => {
       cy.visit('http://localhost:3000')
-      cy.get('#sub-main-container').invoke('css', 'opacity', '1');
+      cy.get('#subMainContainer').invoke('css', 'opacity', '1');
     })
   
     it('Beginning --> Flow Time --> Chill Time', () => {

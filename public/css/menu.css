@@ -3,7 +3,7 @@
     src: url("../fonts/TTNormsProRegular.otf");
 }
 
-#popup-menu {
+#popupMenu {
     position: absolute;
     font-family: menuFont;
     color: rgb(187, 187, 187);
@@ -39,7 +39,7 @@
     flex-direction: column;
 }
 
-#popup-menu > div {
+#popupMenu > div {
     position: relative;
     height: 30px;
 
@@ -52,7 +52,7 @@
     border-radius: 8px;
 }
 
-#popup-menu > div:hover {
+#popupMenu > div:hover {
     background-color: rgba(255, 255, 255, 0.25);
     color: white;
     cursor: pointer;

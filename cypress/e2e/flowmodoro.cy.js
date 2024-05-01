@@ -1,7 +1,7 @@
 describe('Flowmodoro (Chill Time Notification) Testing', () => {
     beforeEach(() => {
         cy.visit('http://localhost:3000')
-        cy.get('#sub-main-container').invoke('css', 'opacity', '1');
+        cy.get('#subMainContainer').invoke('css', 'opacity', '1');
         cy.openFlowmodoroSettingsContainer();
     })
     
@@ -98,7 +98,7 @@ describe('Flowmodoro (Chill Time Notification) Testing', () => {
 describe('Flow Time Notification Testing', () => {
     beforeEach(() => {
         cy.visit('http://localhost:3000')
-        cy.get('#sub-main-container').invoke('css', 'opacity', '1');
+        cy.get('#subMainContainer').invoke('css', 'opacity', '1');
         cy.openFlowTimeSettingsContainer();
     })
 
