@@ -1,0 +1,57 @@
+@font-face {
+    font-family: myFont2;
+    src: url("../fonts/CPMono_v07_Bold.woff");
+}
+
+@font-face {
+    font-family: mainFont;
+    src: url("../fonts/TTNormsProRegular.otf");
+}
+
+.logo {
+    display: flex;
+}
+
+#circularLogo {
+    transform: scale(0.75)
+}
+
+p {
+    font-family: mainFont;
+    font-size: 20px;
+    color: gray;
+}
+
+b {
+    color: black;
+}
+
+h2 {
+    font-family: mainFont;
+    font-size: 24px;
+}
+
+#header {
+    font-size: 32px;
+    font-family: myFont2;
+}
+
+img {
+    align-self: center;
+    margin-right: 5px;
+}
+
+.block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#mainContent {
+    width: 750px;
+    /* border: 1px solid red; */
+}
+
+.mainText {
+    font-family: mainFont;
+}

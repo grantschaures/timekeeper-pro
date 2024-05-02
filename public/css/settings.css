@@ -1034,7 +1034,7 @@
     
 }
 
-#registerHereText:hover {
+#registerHereText:hover, #loginWithGoogleText:hover {
     cursor: pointer;
     color: rgb(216, 216, 216);
 }

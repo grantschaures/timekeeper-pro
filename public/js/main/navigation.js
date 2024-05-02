@@ -90,10 +90,10 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     login_menu_container.addEventListener("click", function() {
-        alert("This feature is currently under development. Thank you for your patience.");
+        // alert("This feature is currently under development. Thank you for your patience.");
     
         //eventually uncomment this out to continue w/ login-signup development
-        // window.location.href = "/login";
+        window.location.href = "/login";
     });
 
     exit_icons.forEach(function(icon) {

@@ -1,6 +1,7 @@
 addEventListener("DOMContentLoaded", function () {
     const logBackInBtn = document.getElementById("logBackIn2_h3");
     const signUpSubmitBtn = document.getElementById("signupSubmitBtn");
+    const googleSignUpBtn = document.getElementById("googleSignUpBtn");
 
     signUpSubmitBtn.addEventListener("click", async function() {
         const userEmail = document.getElementById("emailInputSignup").value;
@@ -16,6 +17,10 @@ addEventListener("DOMContentLoaded", function () {
 
     logBackInBtn.addEventListener("click", async function() {
         window.location.href = "/login";
+    })
+
+    googleSignUpBtn.addEventListener("click", async function() {
+        alert("You just selected Google sign in.")
     })
 });
 

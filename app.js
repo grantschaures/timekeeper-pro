@@ -68,6 +68,16 @@ app.get("/signup", (req, res) => {
     res.sendFile(filePath);
 });
 
+app.get("/privacy-policy", (req, res) => {
+    const filePath = path.join(__dirname, 'public', 'privacy-policy.html')
+    res.sendFile(filePath);
+});
+
+app.get("/terms-and-conditions", (req, res) => {
+    const filePath = path.join(__dirname, 'public', 'terms-and-conditions.html')
+    res.sendFile(filePath);
+});
+
 app.get("/invalid-token", (req, res) => {
     const filePath = path.join(__dirname, 'public', 'invalid-token.html')
     res.sendFile(filePath);

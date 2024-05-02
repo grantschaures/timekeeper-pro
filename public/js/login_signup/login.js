@@ -2,6 +2,7 @@ addEventListener("DOMContentLoaded", function () {
     const loginSubmitBtn = document.getElementById("loginSubmitBtn");
     const forgotPasswordBtn = document.getElementById("forgotPassword_h3");
     const createAccountBtn = document.getElementById("createAccount2_h3");
+    const googleSignInBtn = document.getElementById("googleSignInBtn");
 
     loginSubmitBtn.addEventListener("click", async function() {
         await addUser();
@@ -9,6 +10,11 @@ addEventListener("DOMContentLoaded", function () {
 
     createAccountBtn.addEventListener("click", async function() {
         window.location.href = "/signup";
+    })
+
+    googleSignInBtn.addEventListener("click", async function() {
+        alert("You just selected Google sign in!");
+        // trigger google sign in
     })
 });
 

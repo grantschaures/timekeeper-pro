@@ -1030,6 +1030,27 @@ header {
     margin-bottom: 25px;
 }
 
+.hr_or_hr_block {
+    width: 410px;
+    display: flex;
+    flex-direction: row;
+    align-items: center; /* Center items vertically */
+    margin-top: 10px;
+}
+
+.or {
+    padding-left: 10px;
+    padding-right: 10px;
+    font-family: myFont2;
+    font-size: 14px;
+    color: white;
+}
+
+.or_hr {
+    width: 110px;
+    border-color: #ffffff;
+}
+
 @media (max-width: 1000px) {
     h2 {
         font-size: 20px;
