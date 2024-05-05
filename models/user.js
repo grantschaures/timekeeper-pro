@@ -8,6 +8,7 @@ const User = db.model("User", {
   token: { type: String, required: false },
   tokenExpire: { type: Date, required: false },
   emailVerified: { type: Boolean, required: true},
+  googleAccountLinked: { type: Boolean, required: false},
   logins: { type: Number, required: true, default: 0 },
 }, 'Users');
 

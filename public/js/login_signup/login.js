@@ -12,9 +12,13 @@ addEventListener("DOMContentLoaded", function () {
         window.location.href = "/signup";
     })
 
-    googleSignInBtn.addEventListener("click", async function() {
-        alert("You just selected Google sign in!");
-        // trigger google sign in
+    // googleSignInBtn.addEventListener("click", async function() {
+    //     alert("You just selected Google sign in!");
+    //     // trigger google sign in
+    // })
+
+    forgotPasswordBtn.addEventListener("click", function() {
+        window.location.href = "/reset-password";
     })
 });
 

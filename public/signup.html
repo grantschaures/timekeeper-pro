@@ -12,6 +12,9 @@
         <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
         <script src='/js/login_signup/signup.js'></script>
+
+        <script src="/js/api/google-signin.js" defer></script>
+        <script src="https://accounts.google.com/gsi/client" async defer></script> <!-- Client Library -->
     </head>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-E3SBGG3VKK"></script>
@@ -34,12 +37,19 @@
                 </div>
                 <div id="signupInputWindow" class="login-signup-input-window">
                     <div id="googleSignUpBlock" class="google-signin-signup-block">
-                        <button id="googleSignUpBtn" class="google-signin-signup-btn">
+                        <div id="g_id_onload"
+                            data-client_id="234799271389-bk46do1l3pnvci922g3dmmf5cc8cfpfb.apps.googleusercontent.com"
+                            data-login_uri="https://hyperchill.io"
+                            data-context="signup"
+                            data-callback="handleCredentialResponse">
+                        </div>
+                        <div class="g_id_signin" data-type="standard"></div>
+                        <!-- <button id="googleSignUpBtn" class="google-signin-signup-btn">
                             <img class="googleIcon" src="/images/icons/google.256x256.png">
                             <div>
                                 Sign up with Google
                             </div>
-                        </button>
+                        </button> -->
                     </div>
                     <div class="hr_or_hr_block">
                         <hr class="or_hr">

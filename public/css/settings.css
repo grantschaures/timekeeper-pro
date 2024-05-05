@@ -1031,10 +1031,18 @@
     .loginInput {
         width: 90%;
     }
-    
 }
 
 #registerHereText:hover, #loginWithGoogleText:hover {
     cursor: pointer;
     color: rgb(216, 216, 216);
+}
+
+#settingsGoogleLogin {
+    /* border: 1px solid white; */
+    width: 410px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8px;
 }

@@ -2,6 +2,7 @@ const express = require("express");
 const User = require("../models/user");
 const router = require("express").Router();
 const bcrypt = require('bcrypt');
+const { OAuth2Client } = require('google-auth-library');
 
 // telling the router to use the JSON parsing middleware for all routes under this router
 router.use(express.json());
@@ -57,6 +58,42 @@ router.post("/verifyPassword", async function(req, res) {
     } catch (err) {
         console.error(err);
         res.status(500).send("An error occurred while updating the password.");
+    }
+});
+
+const CLIENT_ID = '234799271389-bk46do1l3pnvci922g3dmmf5cc8cfpfb.apps.googleusercontent.com';
+const client = new OAuth2Client(CLIENT_ID);
+
+router.post("/verifyIdToken", async function(req, res) {
+    try {
+        console.log("/verifyIdToken endpoint has been reached")
+        const token = req.body.idToken;
+        const ticket = await client.verifyIdToken({
+            idToken: token,
+            audience: CLIENT_ID,
+        });
+        const payload = ticket.getPayload();
+        res.json({ user: payload });
+
+        const email = payload.email; // Extracting email from payload
+        let user = await User.findOne({ email: email });
+        if (user) {
+            user.googleAccountLinked = true;
+            user.logins++;
+        } else {
+            // If no user exists, create a new one
+            user = new User({
+                email: email,
+                emailVerified: false,
+                logins: 0,
+                googleAccountLinked: true
+            });
+            user.logins++;
+        }
+        await user.save();
+
+    } catch (error) {
+        res.status(400).json({ error: 'Invalid ID token' });
     }
 });
 

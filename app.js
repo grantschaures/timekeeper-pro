@@ -68,6 +68,11 @@ app.get("/signup", (req, res) => {
     res.sendFile(filePath);
 });
 
+app.get("/reset-password", (req, res) => {
+    const filePath = path.join(__dirname, 'public', 'reset-password.html')
+    res.sendFile(filePath);
+});
+
 app.get("/privacy-policy", (req, res) => {
     const filePath = path.join(__dirname, 'public', 'privacy-policy.html')
     res.sendFile(filePath);

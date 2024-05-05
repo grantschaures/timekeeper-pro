@@ -42,6 +42,11 @@ body {
     padding-bottom: 10px;
 }
 
+#resetPasswordInputWindow {
+    height: 200px;
+    padding-bottom: 10px;
+}
+
 .emailBlock,
 .passwordBlock {
     margin-bottom: 15px; /* Add some spacing between the blocks */
@@ -114,7 +119,8 @@ body {
     padding-left: 10px;
     padding-right: 10px;
     font-family: myFont2;
-    font-size: 14px;
+    font-size: 14px; 
+    color: gray;
 }
 
 .or_hr {
@@ -150,7 +156,7 @@ body {
     cursor: pointer;
 }
 
-#createAccountContainer, #logBackInContainer {
+#createAccountContainer, #logBackInContainer, #needToGoBackContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -162,11 +168,11 @@ body {
     font-size: 14px;
 }
 
-#createAccount2_h3:hover, #logBackIn2_h3:hover{
+#createAccount2_h3:hover, #logBackIn2_h3:hover, #needToGoBackText2_h3:hover{
     cursor: pointer;
 }
 
-#noAccountText, #logBackInText {
+#noAccountText, #logBackInText, #needToGoBackText {
     margin-bottom: -20px;
 }
 
@@ -183,8 +189,12 @@ body {
     margin-top: 10px;
 }
 
-#activationLinkSentWindow, #accountVerifiedWindow {
+#activationLinkSentWindow, #accountVerifiedWindow, #resetPasswordEmailSentWindow {
     display: none;
     opacity: 0;
     transition: opacity 1s ease-in;
+}
+
+#resetPasswordEmail {
+    margin-bottom: 35px;
 }

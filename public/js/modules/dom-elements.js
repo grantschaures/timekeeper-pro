@@ -171,7 +171,8 @@ export const loginEmailInput = document.getElementById("loginEmailInput");
 export const loginPasswordInput = document.getElementById("loginPasswordInput");
 export const forgotPasswordContainer = document.getElementById("forgotPasswordContainer");
 export const loginBtnContainer = document.getElementById("loginBtnContainer");
-
+export const loginBtn = document.getElementById("loginBtn");
+export const forgotPasswordSettings = document.getElementById("forgotPasswordSettings");
 
 export let hoverTimer;
 export var backgroundVideoSource = document.getElementById('background-video-source');
