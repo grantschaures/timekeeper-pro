@@ -198,3 +198,8 @@ body {
 #resetPasswordEmail {
     margin-bottom: 35px;
 }
+
+/* Overrides btn hover style set in styles.css */
+#loginSubmitBtn:hover, #signupSubmitBtn:hover {
+    color: white;
+}
