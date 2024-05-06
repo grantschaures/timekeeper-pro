@@ -6,7 +6,6 @@ const mongoose = require('mongoose');
 const path = require('path');
 const User = require("./models/user");
 const cookieParser = require('cookie-parser');
-const axios = require('axios');
 
 // initialization of a new express application
 const app = express();
@@ -72,22 +71,8 @@ app.use(express.static("public")); //app.use() function is used to mount middlew
 // A middleware function (or just middleware) is a function that examines or modifies the request and/or response objects. A middleware function has three parameters: req, res, and next
 // app.use(express.json());
 
-app.post('/', async (req, res) => {
-  try {
-      const idToken = req.body.idToken; // Or however you get the token
-
-      // Making the internal POST request
-      const response = await axios.post('https://hyperchill.io/api/api/verifyIdToken', {
-          idToken: idToken
-      });
-
-      // Handling the response from the internal request
-      console.log('Response from /api/api/verifyIdToken:', response.data);
-      res.send(response.data);
-  } catch (error) {
-      console.error('Error in making internal request:', error);
-      res.status(500).send('Internal Server Error');
-  }
+app.post("/", (req, res) => {
+  res.redirect('/'); 
 });
 
 app.get("/login", (req, res) => {
