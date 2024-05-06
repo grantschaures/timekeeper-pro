@@ -21,5 +21,5 @@ function handleCredentialResponse(response) {
         console.error("Error verifying ID token:", error);
     });
 
-    // window.location.href = "/";
+    window.location.href = "/";
 }
