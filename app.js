@@ -5,7 +5,7 @@ const express = require("express");
 const mongoose = require('mongoose');
 const path = require('path');
 const User = require("./models/user");
-// const cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 
 // initialization of a new express application
 const app = express();
