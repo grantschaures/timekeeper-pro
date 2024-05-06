@@ -77,7 +77,7 @@ app.post('/', async (req, res) => {
       const idToken = req.body.idToken; // Or however you get the token
 
       // Making the internal POST request
-      const response = await axios.post('/api/api/verifyIdToken', {
+      const response = await axios.post('https://hyperchill.io/api/api/verifyIdToken', {
           idToken: idToken
       });
 
