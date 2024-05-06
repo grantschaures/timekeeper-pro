@@ -1,6 +1,7 @@
 // response.credential is the JWT web token
 // handleCredentialResponse callback triggered when Google sign-in is successful
 function handleCredentialResponse(response) {
+    console.log("handleCredentialResponse Called")
     // Send the ID token (response.credential) to the backend for verification
     const idToken = response.credential;
 
