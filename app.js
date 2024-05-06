@@ -84,7 +84,7 @@ app.post("/", (req, res) => {
   const idToken = req.body.credential;
 
   // Verify the ID token by making a POST request to your internal endpoint
-  axios.post('http://localhost:3000/api/api/verifyIdToken', { idToken: idToken })
+  axios.post('http://hyperchill.io/api/api/verifyIdToken', { idToken: idToken })
   .then(response => {
       // Handle successful token verification
       res.redirect('/');
