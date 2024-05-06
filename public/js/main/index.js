@@ -813,7 +813,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 alert("Your email or password is incorrect. Please try again.");
                 throw new Error(`HTTP error! Status: ${response.status}`);
             } else {
-                window.location.href = "/";
+                const data = await response.json(); // Parses the JSON response body
+                console.log("Server response:", data);
+                // window.location.href = "/";
             }
             
             // const results = await response.json();
@@ -829,10 +831,6 @@ document.addEventListener("DOMContentLoaded", function() {
     forgotPasswordSettings.addEventListener("click", function() {
         window.location.href = "/reset-password";
     })
-
-
-
-
 
 
     // DISPLAY WORKERS

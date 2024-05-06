@@ -4,6 +4,9 @@ const router = require("express").Router();
 const bcrypt = require('bcrypt');
 const { OAuth2Client } = require('google-auth-library');
 
+const { v4: uuidv4 } = require('uuid'); // UUID library to generate unique session IDs
+const sessionStore = new Map(); // Example in-memory store
+
 // telling the router to use the JSON parsing middleware for all routes under this router
 router.use(express.json());
 
@@ -16,7 +19,8 @@ router.post("/validateUser", async function(req, res) {
         if (user && await bcrypt.compare(password, user.password)) {
             user.logins++;
             user.save();
-            res.status(200).json({ message: "Login successful", user: { email: user.email } });
+
+            beginSession(user, res);
         } else {
             // Authentication failed
             res.status(401).json({ message: "Invalid email or password" });
@@ -73,7 +77,8 @@ router.post("/verifyIdToken", async function(req, res) {
             audience: CLIENT_ID,
         });
         const payload = ticket.getPayload();
-        res.json({ user: payload });
+
+        console.log(payload)
 
         const email = payload.email; // Extracting email from payload
         let user = await User.findOne({ email: email });
@@ -85,16 +90,42 @@ router.post("/verifyIdToken", async function(req, res) {
             user = new User({
                 email: email,
                 emailVerified: false,
-                logins: 0,
+                logins: 1,
                 googleAccountLinked: true
             });
-            user.logins++;
         }
         await user.save();
 
+        beginSession(user, res);
+
     } catch (error) {
         res.status(400).json({ error: 'Invalid ID token' });
+        console.error('Error during ID token verification:', error);
     }
 });
+
+function beginSession(user, res) {
+    // Generate a unique session ID
+    const sessionId = uuidv4();
+
+    // Store user and session data in your session store
+    sessionStore.set(sessionId, { userId: user._id, email: user.email });
+
+    // Set session ID in HttpOnly cookie
+    res.cookie('sessionId', sessionId, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'Strict',
+        maxAge: 3600000 // 1 hour in milliseconds
+    });
+
+    // Redirect user or send a successful response
+    res.json({
+        message: 'Login successful',
+        // user: {
+        //     id: user._id
+        // }
+    });
+}
 
 module.exports = router;
