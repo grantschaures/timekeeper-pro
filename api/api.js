@@ -78,7 +78,9 @@ router.post("/verifyIdToken", async function(req, res) {
         });
         const payload = ticket.getPayload();
 
-        console.log(payload)
+        // console.log("payload start")
+        // console.log(payload)
+        // console.log("payload end")
 
         const email = payload.email; // Extracting email from payload
         let user = await User.findOne({ email: email });

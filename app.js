@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 const User = require("./models/user");
 const cookieParser = require('cookie-parser');
+const axios = require('axios');
 
 // initialization of a new express application
 const app = express();
@@ -64,6 +65,9 @@ app.get('/', (req, res, next) => {
     next();
 });
 
+// Middleware to parse URL-encoded bodies
+app.use(express.urlencoded({ extended: true }));
+
 // Serve static files from the public dir
 app.use(express.static("public")); //app.use() function is used to mount middleware functions at a specific path
 //express.static() is a built in middleware function in express to serve static files such as images, CS files, and JS files
@@ -72,7 +76,24 @@ app.use(express.static("public")); //app.use() function is used to mount middlew
 // app.use(express.json());
 
 app.post("/", (req, res) => {
-  res.redirect('/'); 
+  // console.log("req.body start")
+  // console.log(req.body);
+  // console.log("req.body end")
+
+  // The ID token is expected to be in the `credential` key as per Google's documentation
+  const idToken = req.body.credential;
+
+  // Verify the ID token by making a POST request to your internal endpoint
+  axios.post('http://localhost:3000/api/api/verifyIdToken', { idToken: idToken })
+  .then(response => {
+      // Handle successful token verification
+      res.redirect('/');
+  })
+  .catch(error => {
+      // Handle errors
+      console.error('Error during token verification:', error);
+      res.status(500).json({ error: 'Internal server error' });
+  });
 });
 
 app.get("/login", (req, res) => {
