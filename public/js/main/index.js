@@ -815,7 +815,7 @@ document.addEventListener("DOMContentLoaded", function() {
             } else {
                 const data = await response.json(); // Parses the JSON response body
                 console.log("Server response:", data);
-                // window.location.href = "/";
+                window.location.href = "/";
             }
             
             // const results = await response.json();

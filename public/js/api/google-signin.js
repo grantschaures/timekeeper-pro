@@ -16,10 +16,10 @@ function handleCredentialResponse(response) {
     .then(data => {
         // Process the response from the server
         console.log("Server response:", data); //display user data from backend
+        window.location.href = "/";
     })
     .catch(error => {
         console.error("Error verifying ID token:", error);
     });
 
-    // window.location.href = "/";
 }
