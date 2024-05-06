@@ -122,9 +122,9 @@ function beginSession(user, res) {
     // Redirect user or send a successful response
     res.json({
         message: 'Login successful',
-        // user: {
-        //     id: user._id
-        // }
+        user: {
+            id: user._id
+        }
     });
 }
 
