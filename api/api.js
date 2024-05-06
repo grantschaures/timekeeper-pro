@@ -20,7 +20,7 @@ router.post("/validateUser", async function(req, res) {
             user.logins++;
             user.save();
 
-            // beginSession(user, res);
+            beginSession(user, res);
         } else {
             // Authentication failed
             res.status(401).json({ message: "Invalid email or password" });
@@ -96,7 +96,7 @@ router.post("/verifyIdToken", async function(req, res) {
         }
         await user.save();
 
-        // beginSession(user, res);
+        beginSession(user, res);
 
     } catch (error) {
         res.status(400).json({ error: 'Invalid ID token' });
