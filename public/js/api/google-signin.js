@@ -16,7 +16,7 @@ function handleCredentialResponse(response) {
     .then(response => response.json())
     .then(data => {
         // Process the response from the server
-        console.log("Server response:", data); //display user data from backend
+        // console.log("Server response:", data);
         // window.location.href = "/";
     })
     .catch(error => {
