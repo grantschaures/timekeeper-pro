@@ -5,7 +5,7 @@ const express = require("express");
 const mongoose = require('mongoose');
 const path = require('path');
 const User = require("./models/user");
-const cookieParser = require('cookie-parser');
+// const cookieParser = require('cookie-parser');
 
 // initialization of a new express application
 const app = express();
@@ -52,17 +52,17 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-app.use(cookieParser()); // Use cookieParser middleware to parse cookies
-app.get('/', (req, res, next) => {
-    const sessionId = req.cookies['sessionId']; // Accessing the sessionId cookie
-    if (sessionId) {
-        // Handle your session validation and other logic here
-      console.log("Session ID received: " + sessionId);
-    } else {
-      console.log("No session ID found");
-    }
-    next();
-});
+// app.use(cookieParser()); // Use cookieParser middleware to parse cookies
+// app.get('/', (req, res, next) => {
+//     const sessionId = req.cookies['sessionId']; // Accessing the sessionId cookie
+//     if (sessionId) {
+//         // Handle your session validation and other logic here
+//       console.log("Session ID received: " + sessionId);
+//     } else {
+//       console.log("No session ID found");
+//     }
+//     next();
+// });
 
 // Serve static files from the public dir
 app.use(express.static("public")); //app.use() function is used to mount middleware functions at a specific path

@@ -794,44 +794,43 @@ document.addEventListener("DOMContentLoaded", function() {
     })
 
     async function addUser() {
-        // try {
-        //     const email = loginEmailInput.value;
-        //     const password = loginPasswordInput.value;
+        try {
+            const email = loginEmailInput.value;
+            const password = loginPasswordInput.value;
     
-        //     const user = {
-        //         email: email,
-        //         password: password
-        //     };
+            const user = {
+                email: email,
+                password: password
+            };
     
-        //     const response = await fetch("/api/api/validateUser", {
-        //         method: "POST",
-        //         headers: { "Content-Type": "application/json" },
-        //         body: JSON.stringify(user)
-        //     });
+            const response = await fetch("/api/api/validateUser", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(user)
+            });
             
-        //     if (!response.ok) {
-        //         alert("Your email or password is incorrect. Please try again.");
-        //         throw new Error(`HTTP error! Status: ${response.status}`);
-        //     } else {
-        //         const data = await response.json(); // Parses the JSON response body
-        //         console.log("Server response:", data);
-        //         // window.location.href = "/";
-        //     }
+            if (!response.ok) {
+                alert("Your email or password is incorrect. Please try again.");
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            } else {
+                const data = await response.json(); // Parses the JSON response body
+                console.log("Server response:", data);
+                // window.location.href = "/";
+            }
             
-        //     // const results = await response.json();
-        //     // console.log("Added user with ID: " + results._id); //testing
+            // const results = await response.json();
+            // console.log("Added user with ID: " + results._id); //testing
     
     
-        // } catch (error) {
-        //     console.error(error);
-        //     // Handle the error (e.g., display an error message to the user).
-        // }
+        } catch (error) {
+            console.error(error);
+            // Handle the error (e.g., display an error message to the user).
+        }
     }
 
     forgotPasswordSettings.addEventListener("click", function() {
         window.location.href = "/reset-password";
     })
-
 
     // DISPLAY WORKERS
 
