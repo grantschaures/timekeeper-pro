@@ -6,7 +6,6 @@ const mongoose = require('mongoose');
 const path = require('path');
 const User = require("./models/user");
 const cookieParser = require('cookie-parser');
-const axios = require('axios');
 
 // initialization of a new express application
 const app = express();
@@ -76,24 +75,7 @@ app.use(express.static("public")); //app.use() function is used to mount middlew
 // app.use(express.json());
 
 app.post("/", (req, res) => {
-  // console.log("req.body start")
-  // console.log(req.body);
-  // console.log("req.body end")
-
-  // The ID token is expected to be in the `credential` key as per Google's documentation
-  const idToken = req.body.credential;
-
-  // Verify the ID token by making a POST request to your internal endpoint
-  axios.post('https://hyperchill.io/api/api/verifyIdToken', { idToken: idToken })
-  .then(response => {
-      // Handle successful token verification
-      res.redirect('/');
-  })
-  .catch(error => {
-      // Handle errors
-      console.error('Error during token verification:', error);
-      res.status(500).json({ error: 'Internal server error' });
-  });
+  res.redirect('/');
 });
 
 app.get("/login", (req, res) => {

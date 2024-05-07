@@ -22,35 +22,34 @@ addEventListener("DOMContentLoaded", function () {
     })
 });
 
-async function addUser() {
-    try {
-        const email = document.getElementById("emailInputSignin").value;
-        const password = document.getElementById("passwordInput").value;
+function addUser() {
+    const email = document.getElementById("emailInputSignin").value;
+    const password = document.getElementById("passwordInput").value;
 
-        const user = {
-            email: email,
-            password: password
-        };
+    const user = {
+        email: email,
+        password: password
+    };
 
-        const response = await fetch("/api/api/validateUser", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(user)
-        });
-        
+    fetch("/api/api/validateUser", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(user)
+    })
+    .then(response => {
         if (!response.ok) {
             alert("Your email or password is incorrect. Please try again.");
             throw new Error(`HTTP error! Status: ${response.status}`);
-        } else {
-            window.location.href = "/";
         }
-        
-        // const results = await response.json();
-        // console.log("Added user with ID: " + results._id); //testing
-
-
-    } catch (error) {
+        // console.log("Server response:", response);
+        return response.json();  // Assuming you want to process JSON response
+    })
+    .then(data => {
+        console.log("Server response:", data);
+        // window.location.href = "/";
+    })
+    .catch(error => {
         console.error(error);
         // Handle the error (e.g., display an error message to the user).
-    }
+    });
 }
