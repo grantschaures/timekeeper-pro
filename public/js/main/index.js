@@ -816,8 +816,8 @@ document.addEventListener("DOMContentLoaded", function() {
             return response.json();  // Assuming you want to process JSON response
         })
         .then(data => {
-            console.log("Server response:", data);
-            // window.location.href = "/";
+            // console.log("Server response:", data);
+            window.location.href = "/";
         })
         .catch(error => {
             console.error(error);

@@ -16,8 +16,8 @@ function handleCredentialResponse(response) {
     .then(response => response.json())
     .then(data => {
         // Process the response from the server
-        console.log("Server response:", data);
-        // window.location.href = "/";
+        // console.log("Server response:", data);
+        window.location.href = "/";
     })
     .catch(error => {
         console.error("Error verifying ID token:", error);

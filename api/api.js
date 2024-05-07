@@ -3,9 +3,7 @@ const User = require("../models/user");
 const router = require("express").Router();
 const bcrypt = require('bcrypt');
 const { OAuth2Client } = require('google-auth-library');
-
 const { v4: uuidv4 } = require('uuid'); // UUID library to generate unique session IDs
-const sessionStore = new Map(); // Example in-memory store
 
 // telling the router to use the JSON parsing middleware for all routes under this router
 router.use(express.json());
@@ -65,6 +63,7 @@ router.post("/verifyPassword", async function(req, res) {
     }
 });
 
+const sessionStore = new Map(); // Example in-memory store
 const CLIENT_ID = '234799271389-bk46do1l3pnvci922g3dmmf5cc8cfpfb.apps.googleusercontent.com';
 const client = new OAuth2Client(CLIENT_ID);
 
@@ -118,7 +117,7 @@ function beginSession(user, res) {
         httpOnly: true,
         secure: true,
         sameSite: 'Strict',
-        maxAge: 3600000 // 1 hour in milliseconds
+        maxAge: 24 * 60 * 60 * 1000 // 1 day in milliseconds
     });
 
     // Redirect user or send a successful response
