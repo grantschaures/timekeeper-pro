@@ -4,6 +4,8 @@ const router = require("express").Router();
 const bcrypt = require('bcrypt');
 const { OAuth2Client } = require('google-auth-library');
 const { v4: uuidv4 } = require('uuid'); // UUID library to generate unique session IDs
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 // telling the router to use the JSON parsing middleware for all routes under this router
 router.use(express.json());
@@ -106,16 +108,24 @@ router.post("/verifyIdToken", async function(req, res) {
 });
 
 function beginSession(user, res) {
-    // Generate a unique session ID
-    const sessionId = uuidv4();
+    const SECRET_KEY = process.env.SECRET_KEY;
 
-    // Store user and session data in your session store
-    sessionStore.set(sessionId, { userId: user._id, email: user.email });
+    // Create a JWT payload
+    const payload = {
+        userId: user._id,
+        email: user.email
+    };
 
-    // Set session ID in HttpOnly cookie
-    res.cookie('sessionId', sessionId, {
+    // Set token expiration time
+    const expiresIn = '24h'; // 24 hours
+
+    // Generate a JWT token
+    const token = jwt.sign(payload, SECRET_KEY, { expiresIn });
+
+    // Set token in an HttpOnly cookie
+    res.cookie('token', token, {
         httpOnly: true,
-        secure: true,
+        secure: true, // Ensure this is set to true in production if using HTTPS
         sameSite: 'Strict',
         maxAge: 24 * 60 * 60 * 1000 // 1 day in milliseconds
     });
@@ -123,9 +133,7 @@ function beginSession(user, res) {
     // Redirect user or send a successful response
     res.json({
         message: 'Login successful',
-        user: {
-            id: user._id
-        }
+        login_success: true
     });
 }
 

@@ -1,11 +1,13 @@
-addEventListener("DOMContentLoaded", function () {
+import { initializeGUI } from '../utility/initialize_gui.js'
+
+document.addEventListener("DOMContentLoaded", function () {
     const loginSubmitBtn = document.getElementById("loginSubmitBtn");
     const forgotPasswordBtn = document.getElementById("forgotPassword_h3");
     const createAccountBtn = document.getElementById("createAccount2_h3");
     const googleSignInBtn = document.getElementById("googleSignInBtn");
 
     loginSubmitBtn.addEventListener("click", async function() {
-        await addUser();
+        addUser();
     });
 
     createAccountBtn.addEventListener("click", async function() {
@@ -22,7 +24,7 @@ addEventListener("DOMContentLoaded", function () {
     })
 });
 
-function addUser() {
+window.addUser = function() {
     const email = document.getElementById("emailInputSignin").value;
     const password = document.getElementById("passwordInput").value;
 
@@ -46,7 +48,12 @@ function addUser() {
     })
     .then(data => {
         // console.log("Server response:", data);
-        window.location.href = "/";
+        if (data.login_success === true) {
+            console.log("Login was successful!!!")
+            initializeGUI();
+            
+        }
+        // window.location.href = "/";
     })
     .catch(error => {
         console.error(error);
