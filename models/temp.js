@@ -1,7 +1,7 @@
-const db = require("../db");
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+// Define sub-schema for Pomodoro settings
 const pomodoroSchema = new Schema({
   notificationToggle: { type: Boolean, default: false },
   intervalArr: {
@@ -14,6 +14,7 @@ const pomodoroSchema = new Schema({
   alertSound: { type: String, default: "none" }
 });
 
+// Repeat similar structure for other settings like chillTime, flowTime, etc.
 const chillTimeSchema = new Schema({
   notificationToggle: { type: Boolean, default: false },
     intervalArr: {
@@ -48,16 +49,15 @@ const soundsSchema = new Schema({
   transitionClockSound:  { type: Boolean, default: false }
 });
 
-// User model from the schema
-const User = db.model("User", {
-  email:    { type: String, required: true },
-  password: { type: String, required: false },
-  // Adding temporary secure token and its expiration
-  token: { type: String, required: false },
-  tokenExpire: { type: Date, required: false },
-  emailVerified: { type: Boolean, required: true},
-  googleAccountLinked: { type: Boolean, required: false},
-  logins: { type: Number, required: true, default: 0 },
+// Main User schema
+const userSchema = new Schema({
+  email: { type: String, required: true },
+  password: { type: String },
+  token: { type: String },
+  tokenExpire: { type: Date },
+  emailVerified: { type: Boolean, required: true },
+  googleAccountLinked: { type: Boolean },
+  logins: { type: Number, default: 0 },
   settings: {
     pomodoro: pomodoroSchema,
     chillTime: chillTimeSchema,
@@ -66,6 +66,8 @@ const User = db.model("User", {
     notes: notesSchema,
     sounds: soundsSchema
   }
-}, 'Users');
+}, { collection: 'Users' });
+
+const User = mongoose.model('User', userSchema);
 
 module.exports = User;
