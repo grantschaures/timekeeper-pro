@@ -134,6 +134,7 @@ app.get("/set-password/:token", async (req, res) => {
 app.use('/api/api', require('./api/api'));
 app.use('/api/user', require('./api/user'));
 app.use("/api/users", require("./api/users"));
+app.use("/api/state", require("./api/state"));
 
 const PORT = process.env.PORT || 3000;
 // Start the web server

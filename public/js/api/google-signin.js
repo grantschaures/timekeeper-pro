@@ -13,8 +13,8 @@ window.handleCredentialResponse = function(response) {
     })
     .then(response => response.json())
     .then(data => {
-        if (data.login_success === true) {
-            console.log("Login was successful!!!");
+        if (data.loginSuccess === true) {
+            console.log("Login was successful");
             initializeGUI();
         }
     })

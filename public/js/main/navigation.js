@@ -2,6 +2,8 @@ import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_me
 
 import { blogIdList, flags, counters, state } from '../modules/navigation-objects.js';
 
+import { sessionState } from '../modules/state-objects.js';
+
 document.addEventListener("DOMContentLoaded", function() {
     setTimeout(() => {
         menuBtn.style.opacity = '1';
@@ -93,8 +95,24 @@ document.addEventListener("DOMContentLoaded", function() {
         // alert("This feature is currently under development. Thank you for your patience.");
     
         //eventually uncomment this out to continue w/ login-signup development
-        window.location.href = "/login";
+        if (sessionState.loggedIn === false) {
+            window.location.href = "/login";
+        } else {
+            logoutUser(sessionState);
+        }
     });
+
+    function logoutUser() {
+        fetch('/api/state/logout', {
+            method: 'POST'
+        })
+        .then(() => {
+            sessionState.loggedIn = false;
+            window.location.href = "/";
+            console.log("Logged out successfully.");
+        })
+        .catch(error => console.error('Logout failed', error));
+    }
 
     exit_icons.forEach(function(icon) {
         icon.addEventListener('mouseover', function() {

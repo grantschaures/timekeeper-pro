@@ -1,54 +1,6 @@
 const db = require("../db");
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-const pomodoroSchema = new Schema({
-  notificationToggle: { type: Boolean, default: false },
-  intervalArr: {
-    type: [Number],
-    default: [25, 5, 15]
-  },
-  autoStartPomToggle: { type: Boolean, default: false },
-  autoStartBreakToggle: { type: Boolean, default: false },
-  alertVolume: { type: Number, default: 0.5 },
-  alertSound: { type: String, default: "none" }
-});
-
-const chillTimeSchema = new Schema({
-  notificationToggle: { type: Boolean, default: false },
-    intervalArr: {
-      type: [Number],
-      default: [5, 8, 10, 15]
-    },
-    alertVolume: { type: Number, default: 0.5},
-    alertSound: { type: String, default: "none" }
-});
-
-const flowTimeSchema = new Schema({
-  notificationToggle: { type: Boolean, default: false },
-  suggestionMinutes: { type: Number, default: 90 },
-  alertVolume: { type: Number, default: 0.5},
-  alertSound: { type: String, default: "none" },
-  targetTimeReachedToggle: { type: Boolean, default: false }
-});
-
-const backgroundsThemesSchema = new Schema({
-  flowTimeBackground: { type: String, default: "green-default"},
-  chillTimeBackground: { type: String, default: "blue-default"},
-  darkThemeActivated: { type: Boolean, default: true },
-  flowTimeAnimation:  { type: Boolean, default: true },
-  chillTimeAnimation: { type: Boolean, default: true }
-});
-
-const notesSchema = new Schema({
-  autoSwitchToggle: { type: Boolean, default: false }
-});
-
-const soundsSchema = new Schema({
-  transitionClockSound:  { type: Boolean, default: false }
-});
-
-// User model from the schema
+// User model from the schema (we're just gonna have to roll w/ this nesting :P)
 const User = db.model("User", {
   email:    { type: String, required: true },
   password: { type: String, required: false },
@@ -59,12 +11,46 @@ const User = db.model("User", {
   googleAccountLinked: { type: Boolean, required: false},
   logins: { type: Number, required: true, default: 0 },
   settings: {
-    pomodoro: pomodoroSchema,
-    chillTime: chillTimeSchema,
-    flowTime: flowTimeSchema,
-    backgroundsThemes: backgroundsThemesSchema,
-    notes: notesSchema,
-    sounds: soundsSchema
+    pomodoro: {
+      notificationToggle: { type: Boolean, default: false },
+      intervalArr: { 
+        type: [Number], // Defines an array of numbers
+        default: [25, 5, 15]  // Default array provided
+      },
+      autoStartPomToggle: { type: Boolean, default: false },
+      autoStartBreakToggle: { type: Boolean, default: false },
+      alertVolume: { type: Number, default: 0.5},
+      alertSound: { type: String, default: "none" }
+    },
+    chillTime: {
+      notificationToggle: { type: Boolean, default: false },
+      intervalArr: {
+        type: [Number],
+        default: [5, 8, 10, 15]
+      },
+      alertVolume: { type: Number, default: 0.5},
+      alertSound: { type: String, default: "none" }
+    },
+    flowTime: {
+      notificationToggle: { type: Boolean, default: false },
+      suggestionMinutes: { type: Number, default: 90 },
+      alertVolume: { type: Number, default: 0.5},
+      alertSound: { type: String, default: "none" },
+      targetTimeReachedToggle: { type: Boolean, default: false }
+    },
+    backgroundsThemes: {
+      flowTimeBackground: { type: String, default: "green-default"},
+      chillTimeBackground: { type: String, default: "blue-default"},
+      darkThemeActivated: { type: Boolean, default: true },
+      flowTimeAnimation:  { type: Boolean, default: true },
+      chillTimeAnimation: { type: Boolean, default: true }
+    },
+    notes: {
+      autoSwitchToggle: { type: Boolean, default: false }
+    },
+    sounds: {
+      transitionClockSound:  { type: Boolean, default: false }
+    }
   }
 }, 'Users');
 

@@ -795,6 +795,7 @@ document.addEventListener("DOMContentLoaded", function() {
         addUser();
     })
 
+    // similar function present in login.js
     function addUser() {
         const email = loginEmailInput.value;
         const password = loginPasswordInput.value;
@@ -818,12 +819,12 @@ document.addEventListener("DOMContentLoaded", function() {
             return response.json();  // Assuming you want to process JSON response
         })
         .then(data => {
+            
             // console.log("Server response:", data);
-            if (data.login_success === true) {
-                console.log("Login was successful!!!")
+            if (data.loginSuccess === true) {
+                console.log("Login was successful")
                 initializeGUI();
             }
-            // window.location.href = "/";
         })
         .catch(error => {
             console.error(error);

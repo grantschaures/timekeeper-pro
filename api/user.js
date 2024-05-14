@@ -1,12 +1,8 @@
 require('dotenv').config();
 const express = require('express');
 const router = require("express").Router();
-const User = require("../models/user");
-const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-const cookieParser = require('cookie-parser');
 
-// telling the router to use the JSON parsing middleware for all routes under this router
 router.use(express.json());
 
 // Middleware to authenticate JWT token
@@ -27,9 +23,7 @@ function authenticateToken(req, res, next) {
 
 router.get('/data', authenticateToken, async (req, res) => {
     try {
-      const user = await User.findById(req.user.userId);
-      console.log(req.user.userId)
-      res.json({ user: user });
+      res.json({ tokenVerified: true })
     } catch (error) {
       res.status(500).json({ message: 'Internal server error', error: error.message });
     }

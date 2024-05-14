@@ -13,6 +13,7 @@ router.use(express.json());
 // Add a new User to the database
 //async functionality seems to be unecessary
 router.post("/validateUser", async function(req, res) {
+
     const { email, password } = req.body;
     try {
         const user = await User.findOne({ email: email });
@@ -65,11 +66,11 @@ router.post("/verifyPassword", async function(req, res) {
     }
 });
 
-const sessionStore = new Map(); // Example in-memory store
 const CLIENT_ID = '234799271389-bk46do1l3pnvci922g3dmmf5cc8cfpfb.apps.googleusercontent.com';
 const client = new OAuth2Client(CLIENT_ID);
 
 router.post("/verifyIdToken", async function(req, res) {
+    
     try {
         console.log("/verifyIdToken endpoint has been reached")
         const token = req.body.idToken;
@@ -78,11 +79,7 @@ router.post("/verifyIdToken", async function(req, res) {
             audience: CLIENT_ID,
         });
         const payload = ticket.getPayload();
-
-        // console.log("payload start")
-        // console.log(payload)
-        // console.log("payload end")
-
+        
         const email = payload.email; // Extracting email from payload
         let user = await User.findOne({ email: email });
         if (user) {
@@ -95,10 +92,11 @@ router.post("/verifyIdToken", async function(req, res) {
                 emailVerified: false,
                 logins: 1,
                 googleAccountLinked: true
+                // settings are added w/ default values based on defined schema
             });
         }
         await user.save();
-
+        
         beginSession(user, res);
 
     } catch (error) {
@@ -109,19 +107,17 @@ router.post("/verifyIdToken", async function(req, res) {
 
 function beginSession(user, res) {
     const SECRET_KEY = process.env.SECRET_KEY;
-
+    
     // Create a JWT payload
     const payload = {
         userId: user._id,
-        email: user.email
+        iat: Math.floor(Date.now() / 1000),
+        exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60) // expires 24 hours from now
     };
-
-    // Set token expiration time
-    const expiresIn = '24h'; // 24 hours
-
+    
     // Generate a JWT token
-    const token = jwt.sign(payload, SECRET_KEY, { expiresIn });
-
+    const token = jwt.sign(payload, SECRET_KEY);
+    
     // Set token in an HttpOnly cookie
     res.cookie('token', token, {
         httpOnly: true,
@@ -129,11 +125,11 @@ function beginSession(user, res) {
         sameSite: 'Strict',
         maxAge: 24 * 60 * 60 * 1000 // 1 day in milliseconds
     });
-
+    
     // Redirect user or send a successful response
     res.json({
         message: 'Login successful',
-        login_success: true
+        loginSuccess: true
     });
 }
 

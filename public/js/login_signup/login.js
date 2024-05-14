@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const loginSubmitBtn = document.getElementById("loginSubmitBtn");
     const forgotPasswordBtn = document.getElementById("forgotPassword_h3");
     const createAccountBtn = document.getElementById("createAccount2_h3");
-    const googleSignInBtn = document.getElementById("googleSignInBtn");
 
     loginSubmitBtn.addEventListener("click", async function() {
         addUser();
@@ -24,6 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
     })
 });
 
+// similar function present in index.js
 window.addUser = function() {
     const email = document.getElementById("emailInputSignin").value;
     const password = document.getElementById("passwordInput").value;
@@ -48,12 +48,10 @@ window.addUser = function() {
     })
     .then(data => {
         // console.log("Server response:", data);
-        if (data.login_success === true) {
-            console.log("Login was successful!!!")
+        if (data.loginSuccess === true) {
+            console.log("Login was successful!")
             initializeGUI();
-            
         }
-        // window.location.href = "/";
     })
     .catch(error => {
         console.error(error);
