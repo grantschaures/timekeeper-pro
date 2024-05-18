@@ -8,6 +8,7 @@ import {
 
 import { initializeGUI } from '../utility/initialize_gui.js'
 import { sessionState } from '../modules/state-objects.js';
+import { updateUserSettings } from '../modules/update-settings.js';
 
 const pomodoroWorker = new Worker('/js/displayWorkers/pomodoroWorker.js');
 const suggestionWorker = new Worker('/js/displayWorkers/suggestionWorker.js');
@@ -461,11 +462,12 @@ document.addEventListener("DOMContentLoaded", function() {
     }
         
     pomodoroInputs.forEach(input => {
-        input.addEventListener('change', function(event) {
+        input.addEventListener('change', async function(event) {
             let finalInputVal = Math.round(event.target.value);
             let validatedFinalInputVal = validateAndSetNotificationInput(finalInputVal);
             document.getElementById(event.target.id).value = validatedFinalInputVal;
             let secondsPassed;
+            let newIntervalArr = [...timeAmount.pomodoroIntervalArr];
 
             if (flags.inHyperFocus) {
                 secondsPassed = Math.round((Date.now() - startTimes.hyperFocus) / 1000);
@@ -487,7 +489,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             }
 
-            setPomodoroIntervalArr(event, timeAmount, validatedFinalInputVal, counters, productivity_chill_mode, flags);
+            setPomodoroIntervalArr(event, timeAmount, validatedFinalInputVal, counters, productivity_chill_mode, flags, newIntervalArr);
             setCurrentPomodoroNotification(counters, timeAmount);
 
             if (counters.startStop === 0) {
@@ -611,7 +613,7 @@ document.addEventListener("DOMContentLoaded", function() {
         changeSuggestionBreakContainerHeader(flags, suggestionBreak_label, suggestionBreak_min, counters);
     })
 
-    pomodoroNotificationToggle.addEventListener("click", function() {
+    pomodoroNotificationToggle.addEventListener("click", async function() {
         if (pomodoroNotificationToggle.checked) {
             enableNotifications(breakSuggestionToggle, flowmodoroNotificationToggle, pomodoroNotificationToggle, flags);
             resetPomodoroCounters(counters);
@@ -633,8 +635,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 elapsedTime.pomodoroNotificationSeconds = ((counters.currentPomodoroNotification * 60) - elapsedTimeInHyperfocus);
                 pomodoroWorker.postMessage(elapsedTime.pomodoroNotificationSeconds);
             }
-
+            
             flags.pomodoroNotificationToggle = true;
+
         } else {
             flags.pomodoroNotificationToggle = false;
             pomodoroWorker.postMessage("clearInterval");
@@ -649,6 +652,15 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         changeSuggestionBreakContainerHeader(flags, suggestionBreak_label, suggestionBreak_min, counters);
+
+        // Send asynchronous request to server to store user data if user logged in
+        if (sessionState.loggedIn) {
+            await updateUserSettings({
+                pomodoro: {
+                    notificationToggle: flags.pomodoroNotificationToggle
+                }
+            });
+        }
     })
 
     autoStartPomodoroIntervalToggle.addEventListener("click", function() {
@@ -1476,22 +1488,33 @@ function setCurrentPomodoroNotificationRecovery(currentPomodoro, timeAmount) {
     }
 }
 
-function setPomodoroIntervalArr(event, timeAmount, validatedFinalInputVal, counters, productivity_chill_mode, flags) {
+async function setPomodoroIntervalArr(event, timeAmount, validatedFinalInputVal, counters, productivity_chill_mode, flags, newIntervalArr) {
     if (event.target.id === 'pomodoroInput') {
+        newIntervalArr[0] = validatedFinalInputVal;
         timeAmount.pomodoroIntervalArr[0] = validatedFinalInputVal;
         if ((counters.currentPomodoroIntervalIndex === 0) && (counters.startStop !== 0) && (flags.pomodoroNotificationToggle) && (flags.inHyperFocus)) {
             productivity_chill_mode.innerText = setPomodoroIntervalText(counters, timeAmount);
         }
     } else if (event.target.id === 'shortBreakInput') {
+        newIntervalArr[1] = validatedFinalInputVal;
         timeAmount.pomodoroIntervalArr[1] = validatedFinalInputVal;
         if ((counters.currentPomodoroIntervalIndex === 1) && (counters.startStop !== 0) && (flags.pomodoroNotificationToggle)) {
             productivity_chill_mode.innerText = setBreakIntervalText(counters, timeAmount);
         }
     } else if (event.target.id === 'longBreakInput') {
+        newIntervalArr[2] = validatedFinalInputVal;
         timeAmount.pomodoroIntervalArr[2] = validatedFinalInputVal;
         if ((counters.currentPomodoroIntervalIndex === 2) && (counters.startStop !== 0) && (flags.pomodoroNotificationToggle)) {
             productivity_chill_mode.innerText = "Long Break | " + (timeAmount.pomodoroIntervalArr[2]).toString() + " min";
         }
+    }
+
+    if (sessionState.loggedIn) {
+        await updateUserSettings({
+            pomodoro: {
+                intervalArr: newIntervalArr
+            }
+        });
     }
 }
 

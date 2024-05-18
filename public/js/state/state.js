@@ -25,7 +25,6 @@ function checkUserSession() {
         if (data.isLoggedIn) {
             sessionState.loggedIn = true;
             updateGUIForLoggedInUser(data.user);
-            console.log(data)
         }
     })
     .catch(error => console.error('Error validating user session:', error));
