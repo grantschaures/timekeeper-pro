@@ -8,7 +8,7 @@ export const notesFlags = {
 export const counters = {
     notesLines: 0,
     tagsSelected: 0,
-    lastLabelIdNum: 3, //subject to change based on num of predefined labels for user (need to store in database)
+    lastLabelIdNum: 0, //subject to change based on num of predefined labels for user (need to store in database)
     lastNoteInputIdNum: 0, // not being used
     lastTaskInputIdNum: 0
 }

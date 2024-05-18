@@ -12,11 +12,13 @@ document.addEventListener("DOMContentLoaded", function() {
     //set initial emoji container point location
     setEmojiContainerPointLocation(window.innerWidth, emojiContainer, notesFlags, isMobile);
 
+    // populates task label container w/ default labels
+    populateTaskLabelContainer();
+
     if (isMobile) {
         aboutIconNotes.style.display = "none";
         notesSettingsHr.style.display = "none";
         addingDeletingUpdatingLabelsInfoBlock.style.display = "none";
-
     }
     // //
     // BEGINNING OF EVENT LISTENER SECTION
@@ -646,6 +648,16 @@ document.addEventListener("DOMContentLoaded", function() {
 // ---------------------
 // HELPER FUNCTIONS 2
 // ---------------------
+function populateTaskLabelContainer() {
+    let initialLabelValues = ["✍️ Homework", "📚 Reading", "🧘 Meditation", "asdf"];
+
+    for (let i = 0; i < initialLabelValues.length; i++) {
+        let initialLabelInput = document.createElement('input');
+        initialLabelInput.value = initialLabelValues[i];
+        createLabel(initialLabelInput, counters, labelSelectionRow, addDoneContainer);
+    }
+}
+
 function hideEmojiContainer(emojiContainer, notesFlags) {
     emojiContainer.style.display = "none";
     emojiContainer.style.opacity = '0';
