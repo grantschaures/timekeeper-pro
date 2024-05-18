@@ -609,7 +609,7 @@
     border-radius: 50%; /* Makes it a circle */
     top: 50%;
     transform: translate(-50%, -50%);
-    left: 50%; /* Adjust this to set the initial thumb position */
+    left: 50%;
     cursor: pointer;
 }
 
@@ -1045,4 +1045,17 @@
     align-items: center;
     justify-content: center;
     margin-top: 8px;
+}
+
+#loginBtnContainer {
+    display: flex;
+}
+
+#logoutBtnContainer {
+    display: none;
+}
+
+#userEmailContainer {
+    margin-bottom: 5px;
+    display: none;
 }

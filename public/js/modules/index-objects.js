@@ -83,7 +83,7 @@ export const elapsedTime = {
 }
 
 //Alert volumes
-export const alertVolumes = {
+export const alertVolumes = { // settings
     pomodoro: 0.5,
     flowmodoro: 0.5,
     general: 0.5
@@ -113,10 +113,10 @@ export const flags = {
     submittedTarget: false, //Flag: if target time has been submitted
     inHyperFocus: false, //Flag: check if in hyper focus mode
     targetReachedToggle: false, //Flag: changes based on user setting (alerts user when target reached)
-    breakSuggestionToggle: false,
+    breakSuggestionToggle: false, // settings
     submittedSuggestionMinutes: false,
     transitionClockSoundToggle: false,
-    flowmodoroNotificationToggle: false,
+    flowmodoroNotificationToggle: false, // settings
     progressBarContainerIsSmall: false,
     flowmodoroThumbIsDragging: false,
     autoStartFlowTimeInterval: false,
@@ -130,9 +130,9 @@ export const flags = {
     flowmodoroThumbIsDragging2: false,
     generalThumbIsDragging2: false,
     pomodoroThumbIsDragging2: false,
-    pomodoroNotificationToggle: false,
-    autoStartPomodoroInterval: false,
-    autoStartBreakInterval: false,
+    pomodoroNotificationToggle: false, // settings
+    autoStartPomodoroInterval: false, // settings
+    autoStartBreakInterval: false, // settings
     autoSwitchedModes: false,
     inRecoveryBreak: false,
     inRecoveryPom: false,
@@ -163,3 +163,10 @@ export const settingsMappings = {
 
 //STORAGE
 export const savedInterruptionsArr = [];
+
+export const timeAmount = {
+    targetTime: null,
+    breakTimeSuggestionsArr: [5, 8, 10, 15],
+    suggestionMinutes: 90,
+    pomodoroIntervalArr: [25, 5, 15]
+}

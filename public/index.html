@@ -1063,7 +1063,7 @@
                                 </div>
                             </div>
                             <div id="flowTimeBackgroundsContainer" class="settingsMicroContainer backgroundsContainer">
-                                <div id="green-default" class="flowtimeBackgroundCell selected-background"></div>
+                                <div id="green-default" class="flowtimeBackgroundCell"></div>
                                 <div id="red-flowtime" class="flowtimeBackgroundCell"></div>
                                 <div id="yellow-flowtime" class="flowtimeBackgroundCell"></div>
                                 <div id="blue-flowtime" class="flowtimeBackgroundCell"></div>
@@ -1079,7 +1079,7 @@
                                 <div id="green-chilltime" class="chilltimeBackgroundCell"></div>
                                 <div id="red-chilltime" class="chilltimeBackgroundCell"></div>
                                 <div id="yellow-chilltime" class="chilltimeBackgroundCell"></div>
-                                <div id="blue-default" class="chilltimeBackgroundCell selected-background"></div>
+                                <div id="blue-default" class="chilltimeBackgroundCell"></div>
                                 <div id="purple-chilltime" class="chilltimeBackgroundCell"></div>
                                 <div id="black-chilltime" class="chilltimeBackgroundCell"></div>
                             </div>
@@ -1251,7 +1251,7 @@
                             <div id="flowmodoroAlertSoundBlock2">
                                 <div id="flowmodoroAlertSoundContainer2" class="settingsMicroContainer">
                                     <div id="flowmodoroAlertSoundText2" class="settingsText">
-                                        <p><b>Flowmodoro Alert Volume</b></p>
+                                        <p><b>Chill Time Alert Volume</b></p>
                                     </div>
                                     <div id="flowmodoroAlertSoundVolumeContainer2" class="toggleContainer">
                                         <div id="flowmodoroVolumeContainer2" class="volume-container">
@@ -1325,7 +1325,7 @@
                             <div id="noAccountText" class="settingsMicroContainer">
                                 <p><b>Don't have an account yet? <u id="registerHereText">Register Here!</u></b></p>
                             </div>
-                            <div class="hr_or_hr_block">
+                            <div id="accountOr1" class="hr_or_hr_block">
                                 <hr class="or_hr">
                                 <div class="or">
                                     or
@@ -1333,12 +1333,6 @@
                                 <hr class="or_hr">
                             </div>
                             <div id="settingsGoogleLogin" class="settingsMicroContainer">
-                                <!-- <p><b>Click <u id="loginWithGoogleText">Here</u> to login with Google</b></p> -->
-                                <!-- <div id="g_id_onload"
-                                    data-client_id="234799271389-bk46do1l3pnvci922g3dmmf5cc8cfpfb.apps.googleusercontent.com"
-                                    data-context="login"
-                                    data-callback="handleCredentialResponse">
-                                </div> -->
                                 <div id="g_id_onload"
                                     data-client_id="234799271389-bk46do1l3pnvci922g3dmmf5cc8cfpfb.apps.googleusercontent.com"
                                     data-context="login"
@@ -1347,14 +1341,14 @@
                                 </div>
                                 <div class="g_id_signin" data-type="standard"></div>
                             </div>
-                            <div class="hr_or_hr_block">
+                            <div id="accountOr2" class="hr_or_hr_block">
                                 <hr class="or_hr">
                                 <div class="or">
                                     or
                                 </div>
                                 <hr class="or_hr">
                             </div>
-                            <div id="" class="settingsMicroContainer">
+                            <div id="emailPasswordLoginMainContainer" class="settingsMicroContainer">
                                 <div id="emailPasswordLoginContainer">
                                     <div id="enterEmailContainer" class="enterContainer">
                                         <label for="loginEmailInput" class="loginLabel"><p><b>Email</b></p></label>
@@ -1371,6 +1365,12 @@
                             </div>
                             <div id="loginBtnContainer" class="settingsMicroContainer">
                                 <button id="loginBtn">Log in</button>
+                            </div>
+                            <div id="userEmailContainer" class="settingsMicroContainer">
+                                <p><b id="userEmail"></b></p>
+                            </div>
+                            <div id="logoutBtnContainer" class="settingsMicroContainer">
+                                <button id="logoutBtn">Log Out</button>
                             </div>
                             <!-- <div id="" class="settingsMicroContainer">
                                 <p><b>This feature is currently under development. Thank you for your patience.</b></p>

@@ -102,6 +102,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+    // similar function in index.js
     function logoutUser() {
         fetch('/api/state/logout', {
             method: 'POST'

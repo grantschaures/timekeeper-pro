@@ -46,6 +46,7 @@ export const pomodoroNotificationInfoWindow = document.getElementById("pomodoroN
 export const notesAutoSwitch = document.getElementById("notesAutoSwitch");
 export const notesAutoSwitchInfoWindow = document.getElementById("notesAutoSwitchInfoWindow");
 export const pomodoroNotificationToggle = document.getElementById("pomodoroNotificationToggle");
+export const pomodoroNotificationToggleBall = document.getElementById("pomodoroNotificationToggleBall");
 export const autoStartPomodoroIntervalToggle = document.getElementById("autoStartPomodoroIntervalToggle");
 export const autoStartBreakIntervalToggle = document.getElementById("autoStartBreakIntervalToggle");
 export const defaultThemeContainer = document.getElementById("defaultThemeContainer");
@@ -172,6 +173,7 @@ export const loginPasswordInput = document.getElementById("loginPasswordInput");
 export const forgotPasswordContainer = document.getElementById("forgotPasswordContainer");
 export const loginBtnContainer = document.getElementById("loginBtnContainer");
 export const loginBtn = document.getElementById("loginBtn");
+export const logoutBtn = document.getElementById("logoutBtn");
 export const forgotPasswordSettings = document.getElementById("forgotPasswordSettings");
 
 export let hoverTimer;
