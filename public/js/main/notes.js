@@ -4,6 +4,10 @@ import {
 
 import { notesFlags, counters, state, flags, emojiMap, tutorialContainerMap, fontSizeArr, fontNumArr } from '../modules/notes-objects.js';
 
+import { sessionState } from '../modules/state-objects.js';
+
+import { updateUserSettings } from '../modules/update-settings.js';
+
 document.addEventListener("DOMContentLoaded", function() {
     //set initial emoji container point location
     setEmojiContainerPointLocation(window.innerWidth, emojiContainer, notesFlags, isMobile);
@@ -502,11 +506,19 @@ document.addEventListener("DOMContentLoaded", function() {
         setEmojiContainerPointLocation(this.window.innerWidth, emojiContainer, notesFlags, isMobile);
     });
 
-    transitionNotesAutoSwitchToggle.addEventListener('click', function() {
+    transitionNotesAutoSwitchToggle.addEventListener('click', async function() {
         if (transitionNotesAutoSwitchToggle.checked) {
             flags.transitionNotesAutoSwitchToggle = true;
         } else {
             flags.transitionNotesAutoSwitchToggle = false;
+        }
+
+        if (sessionState.loggedIn) {
+            await updateUserSettings({
+                notes: {
+                    autoSwitchToggle: flags.transitionNotesAutoSwitchToggle
+                }
+            });
         }
     })
 

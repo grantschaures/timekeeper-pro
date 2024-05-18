@@ -13,7 +13,7 @@ export async function updateUserSettings(settings) {
         }
 
         const data = await response.json();
-        console.log("Settings updated successfully:", data);
+        // console.log("Settings updated successfully:", data);
     } catch (error) {
         console.error('Failed to update settings:', error);
     }

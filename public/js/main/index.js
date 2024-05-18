@@ -243,11 +243,11 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    suggestionMinutesInput.addEventListener("change", function() {
+    suggestionMinutesInput.addEventListener("change", async function() {
         // Immediate actions w/ user's inputted value
         let inputSuggestionMinutes = suggestionMinutesInput.value;
         timeAmount.suggestionMinutes = Math.round(parseFloat(inputSuggestionMinutes));
-        let validatedFinalInputVal = validateAndSetNotificationInput(timeAmount);
+        let validatedFinalInputVal = validateAndSetNotificationInput(timeAmount.suggestionMinutes);
         suggestionMinutesInput.value = validatedFinalInputVal;
         let secondsPassed;
 
@@ -269,6 +269,14 @@ document.addEventListener("DOMContentLoaded", function() {
                 flags.sentSuggestionMinutesNotification = true;
                 start_stop_btn.classList.add('glowing-effect');
             }
+        }
+
+        if (sessionState.loggedIn) {
+            await updateUserSettings({
+                flowTime: {
+                    suggestionMinutes: validatedFinalInputVal
+                }
+            });
         }
     })
 
@@ -375,7 +383,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     })
 
-    document.addEventListener('mouseup', (event) => {
+    document.addEventListener('mouseup', async (event) => {
         if ((flags.flowmodoroThumbIsDragging) || (flags.flowmodoroThumbIsDragging2)) {
             if (alertSounds.flowmodoro === 'chime') {
                 pauseAndResetAlertSounds(bell, chime);
@@ -386,6 +394,14 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             flags.flowmodoroThumbIsDragging = false;
             flags.flowmodoroThumbIsDragging2 = false;
+
+            if (sessionState.loggedIn) {
+                await updateUserSettings({
+                    chillTime: {
+                        alertVolume: alertVolumes.flowmodoro
+                    }
+                });
+            }
         } else if ((flags.generalThumbIsDragging) || (flags.generalThumbIsDragging2)) {
             if (alertSounds.general === 'chime') {
                 pauseAndResetAlertSounds(bell, chime);
@@ -396,6 +412,14 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             flags.generalThumbIsDragging = false;
             flags.generalThumbIsDragging2 = false;
+
+            if (sessionState.loggedIn) {
+                await updateUserSettings({
+                    flowTime: {
+                        alertVolume: alertVolumes.general
+                    }
+                });
+            }
             
         } else if ((flags.pomodoroThumbIsDragging) || (flags.pomodoroThumbIsDragging2)) {
             if (alertSounds.pomodoro === 'chime') {
@@ -407,6 +431,14 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             flags.pomodoroThumbIsDragging = false;
             flags.pomodoroThumbIsDragging2 = false;
+
+            if (sessionState.loggedIn) {
+                await updateUserSettings({
+                    pomodoro: {
+                        alertVolume: alertVolumes.pomodoro
+                    }
+                });
+            }
             
         } else {
             if ((event.target.className !== 'flowmodoroAlert') && (event.target.className !== 'generalAlert') && (event.target.className !== 'pomodoroAlert') && (event.target.className !== 'volume-thumb') && (document.getElementById("settingsContainer").style.display === "block")) {
@@ -421,8 +453,9 @@ document.addEventListener("DOMContentLoaded", function() {
             let validatedFinalInputVal = validateAndSetNotificationInput(finalInputVal);
             document.getElementById(event.target.id).value = validatedFinalInputVal;
             let secondsPassed;
+            let newIntervalArr = [...timeAmount.breakTimeSuggestionsArr];
             
-            setBreakTimeSuggestionsArr(event, timeAmount, validatedFinalInputVal, counters);
+            setBreakTimeSuggestionsArr(event, timeAmount, validatedFinalInputVal, counters, newIntervalArr);
             setCurrentFlowmodoroNotification(flags, counters, timeAmount);
 
             if ((counters.startStop === 0) || (flags.inHyperFocus)) {
@@ -517,7 +550,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     flowtimeBackgroundCells.forEach(background => {
-        background.addEventListener('click', function(event) {
+        background.addEventListener('click', async function(event) {
             let newId = event.target.id;
             let priorId = selectedBackgroundId["flowtime"];
             document.getElementById(priorId).classList.remove('selected-background');
@@ -529,11 +562,19 @@ document.addEventListener("DOMContentLoaded", function() {
             if (flags.inHyperFocus) {
                 setBackground(selectedBackground.flowtime);
             }
+
+            if (sessionState.loggedIn) {
+                await updateUserSettings({
+                    backgroundsThemes: {
+                        flowTimeBackground: selectedBackgroundId.flowtime
+                    }
+                });
+            }
         })
     })
     
     chilltimeBackgroundCells.forEach(background => {
-        background.addEventListener('click', function(event) {
+        background.addEventListener('click', async function(event) {
             let newId = event.target.id;
             let priorId = selectedBackgroundId["chilltime"];
             document.getElementById(priorId).classList.remove('selected-background');
@@ -545,20 +586,37 @@ document.addEventListener("DOMContentLoaded", function() {
             if ((!flags.inHyperFocus)) {
                 setBackground(selectedBackground.chilltime);
             }
+
+            if (sessionState.loggedIn) {
+                await updateUserSettings({
+                    backgroundsThemes: {
+                        chillTimeBackground: selectedBackgroundId.chilltime
+                    }
+                });
+            }
         })
+
     })
 
     //Toggle is set to true by default
     //Further clicks will render the targetReachToggle flag true or false
-    targetTimeReachedToggle.addEventListener("click", function() {
+    targetTimeReachedToggle.addEventListener("click", async function() {
         if (targetTimeReachedToggle.checked) {
             flags.targetReachedToggle = true;
         } else {
             flags.targetReachedToggle = false;
         }
+
+        if (sessionState.loggedIn) {
+            await updateUserSettings({
+                flowTime: {
+                    targetTimeReachedToggle: flags.targetReachedToggle
+                }
+            });
+        }
     })
 
-    breakSuggestionToggle.addEventListener("click", function() {
+    breakSuggestionToggle.addEventListener("click", async function() {
         if (breakSuggestionToggle.checked) {
             enableNotifications(breakSuggestionToggle, flowmodoroNotificationToggle, pomodoroNotificationToggle, flags);
             flags.breakSuggestionToggle = true;
@@ -579,12 +637,21 @@ document.addEventListener("DOMContentLoaded", function() {
             setSuggestionMinutes(startTimes, flags, elapsedTime, timeAmount, intervals, alertSounds, alertVolumes, chime, bell, start_stop_btn);
 
         } else {
+            flags.breakSuggestionToggle = false;
             suggestionWorker.postMessage("clearInterval");
             start_stop_btn.classList.remove('glowing-effect');
         }
+
+        if (sessionState.loggedIn) {
+            await updateUserSettings({
+                flowTime: {
+                    notificationToggle: flags.breakSuggestionToggle
+                }
+            });
+        }
     })
 
-    flowmodoroNotificationToggle.addEventListener("click", function() {
+    flowmodoroNotificationToggle.addEventListener("click", async function() {
         if (flowmodoroNotificationToggle.checked) {
             enableNotifications(breakSuggestionToggle, flowmodoroNotificationToggle, pomodoroNotificationToggle, flags);
 
@@ -608,6 +675,14 @@ document.addEventListener("DOMContentLoaded", function() {
             flags.flowmodoroNotificationToggle = false;
             flowmodoroWorker.postMessage("clearInterval");
             start_stop_btn.classList.remove('glowing-effect');
+        }
+
+        if (sessionState.loggedIn) {
+            await updateUserSettings({
+                chillTime: {
+                    notificationToggle: flags.flowmodoroNotificationToggle
+                }
+            });
         }
 
         changeSuggestionBreakContainerHeader(flags, suggestionBreak_label, suggestionBreak_min, counters);
@@ -663,33 +738,57 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     })
 
-    autoStartPomodoroIntervalToggle.addEventListener("click", function() {
+    autoStartPomodoroIntervalToggle.addEventListener("click", async function() {
         if (!flags.autoStartPomodoroInterval) {
             flags.autoStartPomodoroInterval = true;
             flags.modeChangeExecuted = false;
         } else if (flags.autoStartPomodoroInterval) {
             flags.autoStartPomodoroInterval = false;
         }
+
+        if (sessionState.loggedIn) {
+            await updateUserSettings({
+                pomodoro: {
+                    autoStartPomToggle: flags.autoStartPomodoroInterval
+                }
+            });
+        }
     })
     
-    autoStartBreakIntervalToggle.addEventListener("click", function() {
+    autoStartBreakIntervalToggle.addEventListener("click", async function() {
         if (!flags.autoStartBreakInterval) {
             flags.autoStartBreakInterval = true;
             flags.modeChangeExecuted = false;
         } else if (flags.autoStartBreakInterval) {
             flags.autoStartBreakInterval = false;
         }
+
+        if (sessionState.loggedIn) {
+            await updateUserSettings({
+                pomodoro: {
+                    autoStartBreakToggle: flags.autoStartBreakInterval
+                }
+            });
+        }
     })
 
-    transitionClockSoundToggle.addEventListener("click", function() {
+    transitionClockSoundToggle.addEventListener("click", async function() {
         if (transitionClockSoundToggle.checked) {
             flags.transitionClockSoundToggle = true;
         } else {
             flags.transitionClockSoundToggle = false;
         }
+
+        if (sessionState.loggedIn) {
+            await updateUserSettings({
+                sounds: {
+                    transitionClockSound: flags.transitionClockSoundToggle
+                }
+            });
+        }
     })
 
-    flowTimeAnimationToggle.addEventListener("click", function() {
+    flowTimeAnimationToggle.addEventListener("click", async function() {
         if (flowTimeAnimationToggle.checked) {
             flags.flowTimeAnimationToggle = true;
             if (flags.inHyperFocus) {
@@ -702,9 +801,17 @@ document.addEventListener("DOMContentLoaded", function() {
                 animationsFadeOut(flowAnimation);
             }
         }
+
+        if (sessionState.loggedIn) {
+            await updateUserSettings({
+                backgroundsThemes: {
+                    flowTimeAnimation: flags.flowTimeAnimationToggle
+                }
+            });
+        }
     })
 
-    chillTimeAnimationToggle.addEventListener("click", function() {
+    chillTimeAnimationToggle.addEventListener("click", async function() {
         if (chillTimeAnimationToggle.checked) {
             flags.chillTimeAnimationToggle = true;
             if (!flags.inHyperFocus) {
@@ -716,22 +823,46 @@ document.addEventListener("DOMContentLoaded", function() {
                 animationsFadeOut(chillAnimation);
             }
         }
+
+        if (sessionState.loggedIn) {
+            await updateUserSettings({
+                backgroundsThemes: {
+                    chillTimeAnimation: flags.chillTimeAnimationToggle
+                }
+            });
+        }
     })
 
-    defaultThemeContainer.addEventListener("click", function() {
+    defaultThemeContainer.addEventListener("click", async function() {
         darkGrayTheme.classList.remove('selected-background');
         defaultTheme.classList.add('selected-background');
         flags.darkThemeActivated = false;
 
         deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer);
+
+        if (sessionState.loggedIn) {
+            await updateUserSettings({
+                backgroundsThemes: {
+                    darkThemeActivated: flags.darkThemeActivated // false
+                }
+            });
+        }
     })
 
-    darkThemeContainer.addEventListener("click", function() {
+    darkThemeContainer.addEventListener("click", async function() {
         defaultTheme.classList.remove('selected-background');
         darkGrayTheme.classList.add('selected-background');
         flags.darkThemeActivated = true;
 
         activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer);
+
+        if (sessionState.loggedIn) {
+            await updateUserSettings({
+                backgroundsThemes: {
+                    darkThemeActivated: flags.darkThemeActivated // true
+                }
+            });
+        }
     })
 
     window.addEventListener("resize", function() {
@@ -1005,8 +1136,42 @@ function handleRadioChange(event, alertType, soundMap, bell, chime, alertSounds,
                 document.getElementById(`${alertType}NoAlertInput`).checked = true;
                 document.getElementById(`${alertType}NoAlertInput2`).checked = true;
             }
+
+            setUserAlertSound(alertType, soundType);
         }
     });
+}
+
+async function setUserAlertSound(alertType, soundType) {
+    let newSoundType;
+
+    if ((soundType.toLowerCase() === "bell") || (soundType.toLowerCase() === "chime")) {
+        newSoundType = soundType.toLowerCase();
+    } else {
+        newSoundType = "none";
+    }
+
+    if (sessionState.loggedIn) {
+        if (alertType === "flowmodoro") {
+            await updateUserSettings({
+                chillTime: {
+                    alertSound: newSoundType
+                }
+            });
+        } else if (alertType === "general") {
+            await updateUserSettings({
+                flowTime: {
+                    alertSound: newSoundType
+                }
+            });
+        } else {
+            await updateUserSettings({
+                pomodoro: {
+                    alertSound: newSoundType
+                }
+            });
+        }
+    }
 }
 
 function setPomodoroNotificationSeconds(flags, elapsedTime, counters, recoverBreakState, pomodoroWorker) {
@@ -1326,7 +1491,7 @@ function flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, 
     let localStartTime = startTimes.local;
 
     // if autoStartBreakInterval toggled on, and display time is 2s or less past the set interval time, and there's been at least 30s since the last pomodoro notification
-    console.log((timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60));
+    // console.log((timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60));
     if ((flags.autoStartBreakInterval) && ((((Math.round(displayTime / 1000)) - (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60)) <= 2) && (((Date.now() - startTimes.lastPomNotification) / 1000) > 30))) {
         sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags);
     }
@@ -1581,7 +1746,7 @@ function pauseAndResetAlertSounds(bell, chime) {
 }
 
 // Function to hide all settings containers and remove 'selected' class from all buttons
-function alertVolumeChange(volumeContainerType, alertVolumes, volumeThumbType, volumeBarType, volumeThumbType2, volumeBarType2, event, flags) {
+async function alertVolumeChange(volumeContainerType, alertVolumes, volumeThumbType, volumeBarType, volumeThumbType2, volumeBarType2, event, flags) {
     const rect = volumeContainerType.getBoundingClientRect();
     let volumeLevel = (event.clientX - rect.left) / rect.width;
     volumeLevel = Math.max(0, Math.min(1, volumeLevel)); // Constrain between 0 and 1
@@ -1677,19 +1842,31 @@ function setCurrentFlowmodoroNotification(flags, counters, timeAmount) {
     }
 }
 
-function setBreakTimeSuggestionsArr(event, timeAmount, validatedFinalInputVal, counters) {
+async function setBreakTimeSuggestionsArr(event, timeAmount, validatedFinalInputVal, counters, newIntervalArr) {
     if (event.target.id === 'flowmodoroBreakInput1') {
+        newIntervalArr[0] = validatedFinalInputVal;
         timeAmount.breakTimeSuggestionsArr[0] = validatedFinalInputVal;
         counters.currentFlowmodoroBreakIndex = 0;
     } else if (event.target.id === 'flowmodoroBreakInput2') {
+        newIntervalArr[1] = validatedFinalInputVal;
         timeAmount.breakTimeSuggestionsArr[1] = validatedFinalInputVal;
         counters.currentFlowmodoroBreakIndex = 1;
     } else if (event.target.id === 'flowmodoroBreakInput3') {
+        newIntervalArr[2] = validatedFinalInputVal;
         timeAmount.breakTimeSuggestionsArr[2] = validatedFinalInputVal;
         counters.currentFlowmodoroBreakIndex = 2;
     } else if (event.target.id === 'flowmodoroBreakInput4') {
+        newIntervalArr[3] = validatedFinalInputVal;
         timeAmount.breakTimeSuggestionsArr[3] = validatedFinalInputVal;
         counters.currentFlowmodoroBreakIndex = 3;
+    }
+
+    if (sessionState.loggedIn) {
+        await updateUserSettings({
+            chillTime: {
+                intervalArr: newIntervalArr
+            }
+        });
     }
 }
 
