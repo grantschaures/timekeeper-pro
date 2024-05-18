@@ -649,7 +649,7 @@ document.addEventListener("DOMContentLoaded", function() {
 // HELPER FUNCTIONS 2
 // ---------------------
 function populateTaskLabelContainer() {
-    let initialLabelValues = ["✍️ Homework", "📚 Reading", "🧘 Meditation", "asdf"];
+    let initialLabelValues = ["✍️ Homework", "📚 Reading", "🧘 Meditation"];
 
     for (let i = 0; i < initialLabelValues.length; i++) {
         let initialLabelInput = document.createElement('input');

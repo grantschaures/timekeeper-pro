@@ -31,3 +31,19 @@ Cypress.Commands.add('saveAndCloseNoteInputContainer', function() {
     cy.contains('div', 'Save').click();
     cy.contains('div', 'Cancel').click();
 })
+
+Cypress.Commands.add('removeDefaultLabels', function() {
+    it('should remove every child element with class "selection tag"', () => {
+        cy.get('[data-testid="label-selection-row"]')
+          .children('.selection.tag')  // Select all children with the class "selection tag"
+          .each(($el) => {  // Iterate over each of these elements
+            cy.wrap($el).invoke('remove');  // Remove the element
+        });
+    });
+})
+
+Cypress.Commands.add('createLabel', function(labelValue) {
+    cy.get('[data-testid="add-tag-icon"]').click();
+    cy.get('[data-testid="create-label-input"]').type(labelValue);
+    cy.get('[data-testid="create-label-done"]').click();
+})

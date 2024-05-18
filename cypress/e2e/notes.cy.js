@@ -117,6 +117,14 @@ describe('Adding, Removing, Editing Labels', () => {
     cy.get('#subMainContainer').invoke('css', 'opacity', '1');
     cy.contains('button', 'Notes').click();
     cy.contains("Select Task Labels").click();
+
+    // remove all default labels
+    cy.removeDefaultLabels();
+
+    // add new labels
+    cy.createLabel("🧘 Meditation");
+    cy.createLabel("📚 Reading");
+    cy.createLabel("✍️ Homework");
   })
 
   it('Opening Label Window', () => {
