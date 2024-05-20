@@ -11,7 +11,6 @@ require('dotenv').config();
 router.use(express.json());
 
 // Add a new User to the database
-//async functionality seems to be unecessary
 router.post("/validateUser", async function(req, res) {
 
     const { email, password } = req.body;
@@ -70,7 +69,6 @@ const CLIENT_ID = '234799271389-bk46do1l3pnvci922g3dmmf5cc8cfpfb.apps.googleuser
 const client = new OAuth2Client(CLIENT_ID);
 
 router.post("/verifyIdToken", async function(req, res) {
-    
     try {
         console.log("/verifyIdToken endpoint has been reached")
         const token = req.body.idToken;
