@@ -1,20 +1,48 @@
 const fs = require('fs');
-const filePath = './public/index.html';
+const path = require('path');
 
-fs.readFile(filePath, 'utf8', (err, data) => {
-    if (err) {
-        console.error(err);
-        return;
-    }
+// Function to read a file and replace its content
+function readFileAndReplace(filePath, replacements, callback) {
+    fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+            console.error(err);
+            return;
+        }
 
-    // Sequentially replace each minified JS file reference with the minified version
-    let result = data.replace(/\/js\/main\/index\.js/g, '/js/minified/index.min.js');
-    result = result.replace(/\/js\/main\/navigation\.js/g, '/js/minified/navigation.min.js');
-    result = result.replace(/\/js\/main\/notes\.js/g, '/js/minified/notes.min.js');
+        let result = data;
+        replacements.forEach(({ pattern, replacement }) => {
+            result = result.replace(pattern, replacement);
+        });
 
-    // Write the final result back to the file
-    fs.writeFile(filePath, result, 'utf8', (err) => {
-        if (err) return console.log(err);
-        console.log('File updated successfully.');
+        fs.writeFile(filePath, result, 'utf8', (err) => {
+            if (err) return console.log(err);
+            console.log(`${filePath} updated successfully.`);
+            if (callback) callback();
+        });
     });
+}
+
+// Define the file paths and replacements
+const indexHtmlPath = './public/index.html';
+const stateJsPath = './public/js/state/state.js';
+
+// Define replacements for index.html
+const htmlReplacements = [
+    { pattern: /\/js\/main\/index\.js/g, replacement: '/js/minified/index.min.js' },
+    { pattern: /\/js\/main\/navigation\.js/g, replacement: '/js/minified/navigation.min.js' },
+    { pattern: /\/js\/main\/notes\.js/g, replacement: '/js/minified/notes.min.js' }
+];
+
+// Define replacements for state.js
+const stateReplacements = [
+    {
+        pattern: /import { setInitialBackgroundCellSelection, setBackground, deactivateDarkTheme } from '..\/main\/index.js';/g,
+        replacement: "import { setInitialBackgroundCellSelection, setBackground, deactivateDarkTheme } from '../minified/index.min.js';"
+    }
+];
+
+// Update index.html
+readFileAndReplace(indexHtmlPath, htmlReplacements, () => {
+    // Update state.js after index.html is updated
+    readFileAndReplace(stateJsPath, stateReplacements);
 });
