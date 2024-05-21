@@ -7,7 +7,6 @@ import { flags, timeAmount, alertVolumes, alertSounds, selectedBackgroundId, sel
 import { flags as notesflags } from '../modules/notes-objects.js';
 
 import { setInitialBackgroundCellSelection, setBackground, deactivateDarkTheme } from '../main/index.js';
-import { setInitialBackgroundCellSelection, setBackground, deactivateDarkTheme } from '../minified/index.min.js';
 
 document.addEventListener('defaultSettingsApplied', () => {
     checkUserSession();
