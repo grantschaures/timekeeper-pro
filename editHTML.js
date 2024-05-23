@@ -24,7 +24,7 @@ function readFileAndReplace(filePath, replacements, callback) {
 
 // Define the file paths and replacements
 const indexHtmlPath = './public/index.html';
-const stateJsPath = './public/js/state/state.js';
+const stateJsPath = './src/js/state/state.js';
 
 // Define replacements for index.html
 const htmlReplacements = [

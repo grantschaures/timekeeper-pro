@@ -43,8 +43,8 @@ router.post("/update-settings", async function(req, res) {
     }
 });
 
-function updateUserSettings() {
+// function updateUserSettings() {
 
-}
+// }
 
 module.exports = router;

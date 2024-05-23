@@ -31,7 +31,7 @@ function checkUserSession() {
 }
 
 function updateGUIForLoggedInUser(userData) {
-    
+
     // menu container (--> logged in version)
     updateMenuContainer(userData);
     

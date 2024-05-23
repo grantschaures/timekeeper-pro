@@ -11,6 +11,7 @@ const cookieParser = require('cookie-parser');
 const app = express();
 
 const PRIMARY_DOMAIN = 'hyperchill.io';
+// could add another domain for hyperchill-testing
 
 //CHECKING REQUESTS IN LOG
 const logRequest = function(req, res, next) {
@@ -54,12 +55,12 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use(cookieParser()); // Use cookieParser middleware to parse cookies
 app.get('/', (req, res, next) => {
-    const sessionId = req.cookies['sessionId']; // Accessing the sessionId cookie
-    if (sessionId) {
+    const token = req.cookies.token; // Accessing the cookie token
+    if (token) {
         // Handle your session validation and other logic here
-      console.log("Session ID received: " + sessionId);
+      console.log("Token received: " + token);
     } else {
-      console.log("No session ID found");
+      console.log("No Token found");
     }
     next();
 });
@@ -67,12 +68,11 @@ app.get('/', (req, res, next) => {
 // Middleware to parse URL-encoded bodies
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files from the public dir
-app.use(express.static("public")); //app.use() function is used to mount middleware functions at a specific path
-//express.static() is a built in middleware function in express to serve static files such as images, CS files, and JS files
+// Serve static files from the public directory
+app.use(express.static(path.join(__dirname, 'public')));
 
-// A middleware function (or just middleware) is a function that examines or modifies the request and/or response objects. A middleware function has three parameters: req, res, and next
-// app.use(express.json());
+// Serve static files from the src directory
+app.use(express.static(path.join(__dirname, 'src')));
 
 app.post("/", (req, res) => {
   res.redirect('/');
