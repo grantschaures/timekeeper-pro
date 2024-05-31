@@ -147,7 +147,10 @@ document.addEventListener("DOMContentLoaded", function() {
             startTimes.chillTime = Date.now();
             setFavicon(blueFavicon);
             chillTimeAnimationActions(flags, flowAnimation, chillAnimation);
-            saveResetInterruptions(interruptionsNum, counters, savedInterruptionsArr);
+
+            // EDIT: temporary change to see total interruptions for my own data collection
+            // saveResetInterruptions(interruptionsNum, counters, savedInterruptionsArr);
+
             hideInterruptionsSubContainer(interruptionsSubContainer);
             setBackground(selectedBackground.chilltime);
 
