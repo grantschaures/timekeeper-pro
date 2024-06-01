@@ -69,7 +69,7 @@ const stateReplacements = [
     }
 ];
 
-const googleSignInReplacements = [
+const initializeGuiEdits = [
     {
         pattern: /import { initializeGUI } from '..\/utility\/initialize_gui.js';/g,
         replacement: "import { initializeGUI } from '../minified/initialize_gui.min.js';"
@@ -92,6 +92,6 @@ readFileAndReplace(setPasswordHtmlPath, setPasswordHtmlReplacements);
 readFileAndReplace(resetPasswordHtmlPath, resetPasswordHtmlReplacements);
 
 readFileAndReplace(stateJsPath, stateReplacements);
-readFileAndReplace(googleSignInPath, googleSignInReplacements);
-readFileAndReplace(indexJsPath, googleSignInReplacements);
-readFileAndReplace(loginJsPath, googleSignInReplacements);
+readFileAndReplace(googleSignInPath, initializeGuiEdits);
+readFileAndReplace(indexJsPath, initializeGuiEdits);
+readFileAndReplace(loginJsPath, initializeGuiEdits);
