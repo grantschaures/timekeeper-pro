@@ -8,7 +8,15 @@ files.forEach(file => {
     try {
         console.log(`Minifying ${file}`);
         const code = fs.readFileSync(file, 'utf8');
-        const minified = UglifyJS.minify(code).code;
+        const minified = UglifyJS.minify(code, {
+            compress: {
+                drop_console: true // Option to drop console statements
+            }
+        });
+
+        if (minified.error) {
+            throw minified.error;
+        }
         
         // Construct the new path within the minified directory
         const minifiedDir = path.join(path.dirname(file), '../minified');
@@ -19,7 +27,7 @@ files.forEach(file => {
             fs.mkdirSync(minifiedDir);
         }
 
-        fs.writeFileSync(minifiedFilePath, minified);
+        fs.writeFileSync(minifiedFilePath, minified.code);
         console.log(`Successfully minified ${file} to ${minifiedFilePath}`);
     } catch (error) {
         console.error(`Error minifying ${file}: ${error}`);
