@@ -65,14 +65,14 @@ const resetPasswordHtmlReplacements = [
 // Define replacements for state.js
 const stateReplacements = [
     {
-        pattern: /import { setInitialBackgroundCellSelection, setBackground, deactivateDarkTheme } from '..\/main\/index.js';/g,
+        pattern: /import { setInitialBackgroundCellSelection, setBackground, deactivateDarkTheme } from "..\/main\/index.js";/g,
         replacement: "import { setInitialBackgroundCellSelection, setBackground, deactivateDarkTheme } from '../minified/index.min.js';"
     }
 ];
 
 const googleSignInReplacements = [
     {
-        pattern: /import { initializeGUI } from '..\/utility\/initialize_gui.js';/g,
+        pattern: /import { initializeGUI } from "..\/utility\/initialize_gui.js";/g,
         replacement: "import { initializeGUI } from '../minified/initialize_gui.min.js';"
     }
 ];
