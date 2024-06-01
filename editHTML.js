@@ -29,7 +29,10 @@ const signupHtmlPath = './public/signup.html';
 const setPasswordHtmlPath = './public/set-password.html';
 const resetPasswordHtmlPath = './public/reset-password.html';
 
-const stateJsPath = './src/js/state/state.js';
+const stateJsPath = './src/js/minified/state.min.js';
+const indexJsPath = './src/js/minified/index.min.js';
+const loginJsPath = './src/js/minified/login.min.js';
+
 const googleSignInPath = './src/js/api/google-signin.js';
 
 // Define replacements for index.html
@@ -90,4 +93,5 @@ readFileAndReplace(setPasswordHtmlPath, setPasswordHtmlReplacements);
 readFileAndReplace(resetPasswordHtmlPath, resetPasswordHtmlReplacements);
 
 readFileAndReplace(stateJsPath, stateReplacements);
-readFileAndReplace(stateJsPath, googleSignInReplacements);
+readFileAndReplace(indexJsPath, googleSignInReplacements);
+readFileAndReplace(loginJsPath, googleSignInReplacements);
