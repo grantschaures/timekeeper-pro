@@ -72,8 +72,8 @@ const stateReplacements = [
 
 const googleSignInReplacements = [
     {
-        pattern: /import { initializeGUI } from "..\/utility\/initialize_gui.js";/g,
-        replacement: "import { initializeGUI } from '../minified/initialize_gui.min.js';"
+        pattern: /import {initializeGUI} from "..\/utility\/initialize_gui.js";/g,
+        replacement: "import {initializeGUI} from '../minified/initialize_gui.min.js';"
     }
 ];
 
