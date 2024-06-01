@@ -25,6 +25,7 @@ function readFileAndReplace(filePath, replacements, callback) {
 // Define the file paths and replacements
 const indexHtmlPath = './public/index.html';
 const stateJsPath = './src/js/state/state.js';
+const googleSignInPath = './src/js/api/google-signin.js';
 
 // Define replacements for index.html
 const htmlReplacements = [
@@ -43,8 +44,15 @@ const stateReplacements = [
     }
 ];
 
+const googleSignInReplacements = [
+    {
+        pattern: /import { initializeGUI } from '..\/utility\/initialize_gui.js';/g,
+        replacement: "import { initializeGUI } from '../minified/initialize_gui.min.js';"
+    }
+];
+
 // Update index.html
 readFileAndReplace(indexHtmlPath, htmlReplacements, () => {
     // Update state.js after index.html is updated
-    readFileAndReplace(stateJsPath, stateReplacements);
+    readFileAndReplace(stateJsPath, googleSignInReplacements);
 });

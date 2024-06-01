@@ -2,7 +2,14 @@ const UglifyJS = require('uglify-js');
 const fs = require('fs');
 const path = require('path'); // Require the path module to handle file paths
 
-let files = ['src/js/main/index.js', 'src/js/main/navigation.js', 'src/js/main/notes.js', 'src/js/api/google-signin.js', 'src/js/state/state.js']; // List of files to minify
+let files = [
+    'src/js/main/index.js',
+    'src/js/main/navigation.js',
+    'src/js/main/notes.js',
+    'src/js/api/google-signin.js',
+    'src/js/state/state.js',
+    'src/js/utility/initialize_gui.js'
+]; // List of files to minify
 
 files.forEach(file => {
     try {
