@@ -1,4 +1,4 @@
-import { initializeGUI } from '../utility/initialize_gui.js'
+import { initializeGUI } from '../utility/initialize_gui.js';
 
 document.addEventListener("DOMContentLoaded", function () {
     const loginSubmitBtn = document.getElementById("loginSubmitBtn");
