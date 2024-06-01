@@ -8,7 +8,11 @@ let files = [
     'src/js/main/notes.js',
     'src/js/api/google-signin.js',
     'src/js/state/state.js',
-    'src/js/utility/initialize_gui.js'
+    'src/js/utility/initialize_gui.js',
+    'src/js/login_signup/login.js',
+    'src/js/login_signup/signup.js',
+    'src/js/login_signup/reset-password.js',
+    'src/js/login_signup/set-password.js',
 ]; // List of files to minify
 
 files.forEach(file => {
