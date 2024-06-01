@@ -30,7 +30,9 @@ const stateJsPath = './src/js/state/state.js';
 const htmlReplacements = [
     { pattern: /\/js\/main\/index\.js/g, replacement: '/js/minified/index.min.js' },
     { pattern: /\/js\/main\/navigation\.js/g, replacement: '/js/minified/navigation.min.js' },
-    { pattern: /\/js\/main\/notes\.js/g, replacement: '/js/minified/notes.min.js' }
+    { pattern: /\/js\/main\/notes\.js/g, replacement: '/js/minified/notes.min.js' },
+    { pattern: /\/js\/state\/state\.js/g, replacement: '/js/minified/state.min.js' },
+    { pattern: /\/js\/api\/google-signin\.js/g, replacement: '/js/minified/google-signin.min.js' }
 ];
 
 // Define replacements for state.js

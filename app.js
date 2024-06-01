@@ -11,6 +11,7 @@ const cookieParser = require('cookie-parser');
 const app = express();
 
 const PRIMARY_DOMAIN = 'hyperchill.io';
+const TESTING_DOMAIN = 'hyperchill-testing-df1b0f1f63d0.herokuapp.com';
 // could add another domain for hyperchill-testing
 
 //CHECKING REQUESTS IN LOG
@@ -38,7 +39,7 @@ connect();
 
 if (process.env.NODE_ENV === 'production') {
   app.use((req, res, next) => {
-    if (req.headers.host !== PRIMARY_DOMAIN) {
+    if ((req.headers.host !== PRIMARY_DOMAIN) && (req.headers.host !== TESTING_DOMAIN)) {
       // Redirect to the primary domain
       return res.redirect(301, `https://${PRIMARY_DOMAIN}${req.url}`);
     }
