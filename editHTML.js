@@ -29,9 +29,9 @@ const signupHtmlPath = './public/signup.html';
 const setPasswordHtmlPath = './public/set-password.html';
 const resetPasswordHtmlPath = './public/reset-password.html';
 
-const stateJsPath = './src/js/minified/state.min.js';
-const indexJsPath = './src/js/minified/index.min.js';
-const loginJsPath = './src/js/minified/login.min.js';
+const stateJsPath = './src/js/state/state.js';
+const indexJsPath = './src/js/main/index.js';
+const loginJsPath = './src/js/login_signup/login.js';
 
 const googleSignInPath = './src/js/api/google-signin.js';
 
@@ -65,15 +65,15 @@ const resetPasswordHtmlReplacements = [
 // Define replacements for state.js
 const stateReplacements = [
     {
-        pattern: /import { setInitialBackgroundCellSelection, setBackground, deactivateDarkTheme } from "..\/main\/index.js";/g,
+        pattern: /import { setInitialBackgroundCellSelection, setBackground, deactivateDarkTheme } from '..\/main\/index.js';/g,
         replacement: "import { setInitialBackgroundCellSelection, setBackground, deactivateDarkTheme } from '../minified/index.min.js';"
     }
 ];
 
 const googleSignInReplacements = [
     {
-        pattern: /import {initializeGUI} from "..\/utility\/initialize_gui.js";/g,
-        replacement: "import {initializeGUI} from '../minified/initialize_gui.min.js';"
+        pattern: /import { initializeGUI } from '..\/utility\/initialize_gui.js';/g,
+        replacement: "import { initializeGUI } from '../minified/initialize_gui.min.js';"
     }
 ];
 
