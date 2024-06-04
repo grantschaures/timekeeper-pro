@@ -1,11 +1,13 @@
 const express = require("express");
 const User = require("../models/user");
+const Note = require("../models/note");
 const router = require("express").Router();
 const bcrypt = require('bcrypt');
 const { OAuth2Client } = require('google-auth-library');
 const { v4: uuidv4 } = require('uuid'); // UUID library to generate unique session IDs
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
+const mongoose = require('mongoose');
 
 // telling the router to use the JSON parsing middleware for all routes under this router
 router.use(express.json());
@@ -70,6 +72,9 @@ const client = new OAuth2Client(CLIENT_ID);
 
 router.post("/verifyIdToken", async function(req, res) {
     try {
+        const session = await mongoose.startSession();
+        session.startTransaction();
+
         console.log("/verifyIdToken endpoint has been reached")
         const token = req.body.idToken;
         const ticket = await client.verifyIdToken({
@@ -80,6 +85,8 @@ router.post("/verifyIdToken", async function(req, res) {
         
         const email = payload.email; // Extracting email from payload
         let user = await User.findOne({ email: email });
+
+        let note;
         if (user) {
             user.googleAccountLinked = true;
             user.logins++;
@@ -92,8 +99,26 @@ router.post("/verifyIdToken", async function(req, res) {
                 googleAccountLinked: true
                 // settings are added w/ default values based on defined schema
             });
+            await user.save({ session });
+
+            // Create the notes entry
+            note = new Note({
+                userId: user._id,
+                labels: new Map([
+                    ["tag-1", "✍️ Homework"],
+                    ["tag-2", "📚 Reading"],
+                    ["tag-3", "🧘 Meditation"]
+                ]),
+                lastLabelIdNum: 3,  // Default value
+                lastSelectedEmojiId: "books-emoji"  // Default value
+            });
+            await note.save({ session });
+            console.log('Note saved for user.');
         }
-        await user.save();
+
+        // Commit the transaction
+        await session.commitTransaction();
+        session.endSession();
         
         beginSession(user, res);
 

@@ -2,11 +2,14 @@ import {
     notesContainer, taskContainer, promptContainer, labelInputContainer, createLabelContainer, createLabelWindow, createLabelInput, createLabelDone, createLabelCancel, updateLabelContainer, updateLabelWindow, updateLabelInput, updateLabelCancel, updateLabelDone, labelSelectionWindow, labelSelectionRow, clearIcon, notesBtn, notesConsole, taskPrompt, tagIcon, tagSelection, tagSelectionDivider, addDoneContainer, selectionDoneDiv, selectionDone, addTagIcon, emojiBtn, emojiBtn2, emojiImg, emojiImg2, emojiContainer, emojiSymbols, transitionNotesAutoSwitchToggle, start_stop_btn, tutorialImgContainers, aboutIconNotes, settings_menu_container, notesBtnContainer, notesSettingsHr, addingDeletingUpdatingLabelsInfoBlock, addNoteTaskContainer, noteTaskInputContainer, noteTaskInputText, noteInputCancelBtn, noteInputSaveBtn, taskCheckbox, dynamicList, textarea, settingsContainer, aboutContainer, blogContainer, main_elements, isMobile
 } from '../modules/dom-elements.js';
 
-import { notesFlags, counters, state, flags, emojiMap, tutorialContainerMap, fontSizeArr, fontNumArr } from '../modules/notes-objects.js';
+import { notesFlags, counters, state, flags, emojiMap, tutorialContainerMap, fontSizeArr, fontNumArr, labelDict, notesArr } from '../modules/notes-objects.js';
 
 import { sessionState } from '../modules/state-objects.js';
 
 import { updateUserSettings } from '../modules/update-settings.js';
+
+import { updateLabels } from '../modules/update-labels.js';
+import { updateNotes } from '../modules/update-notes.js';
 
 document.addEventListener("DOMContentLoaded", function() {
     //set initial emoji container point location
@@ -46,7 +49,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 
             } else if (targetId === "note-input-cancel-btn-edit") {
                 noteInputCancelBtnClick_editMode(state, flags)
-
             }
         }
     })
@@ -372,9 +374,16 @@ document.addEventListener("DOMContentLoaded", function() {
             if (isUnique) {
                 createLabel(createLabelInput, counters, labelSelectionRow, addDoneContainer);
                 replaceEmoji(state, emojiImg, emojiImg2);
+
+                if (sessionState.loggedIn) {
+                    const labelArr = [labelDict, counters.lastLabelIdNum, state.lastSelectedEmojiId];
+                    updateLabels(labelArr);
+                }
             }
 
             flags.createLabelWindowOpen = false;
+
+            // update database with label list including new addition
         }
 
         showTagSelectionDivider(flags, tagSelectionDivider, addDoneContainer);
@@ -408,6 +417,14 @@ document.addEventListener("DOMContentLoaded", function() {
             replaceEmoji(state, emojiImg, emojiImg2);
 
             flags.updateLabelWindowOpen = false;
+
+            // edit label dict
+            labelDict[state.elementToUpdateId] = updateLabelInput.value;
+
+            if (sessionState.loggedIn) {
+                const labelArr = [labelDict, counters.lastLabelIdNum, state.lastSelectedEmojiId];
+                updateLabels(labelArr);
+            }
         }
 
         showTagSelectionDivider(flags, tagSelectionDivider, addDoneContainer);
@@ -696,6 +713,8 @@ function createLabel(createLabelInput, counters, labelSelectionRow, addDoneConta
     selectionDiv.id = "tag-" + (counters.lastLabelIdNum);
 
     labelSelectionRow.insertBefore(selectionDiv, addDoneContainer);
+
+    labelDict[selectionDiv.id] = labelName;
 }
 
 function checkLabelIsUnique(createLabelInput) {
@@ -742,15 +761,38 @@ function noteInputSave(noteTaskInputContainer, addNoteTaskContainer, flags, note
         // Create check element and attach to div
         let taskCircularCheckDiv = createCheckElements(counters);
         noteTaskDiv.appendChild(taskCircularCheckDiv);
-
+        noteTaskDiv.classList.add('task');
+        
         container = createNote(inputStr, noteTaskDiv, counters, container);
     } else { // NOTE
         // make a new note div
+        noteTaskDiv.classList.add('note');
         container = createNote(inputStr, noteTaskDiv, counters, container);
     }
 
+    // save note or task to database
+
     noteTaskDiv.appendChild(container);
     dynamicList.appendChild(noteTaskDiv);
+
+    // id: noteTaskDiv.id
+    // classList: noteTaskDiv.classList
+    // content: inputStr
+    const notesArrObj = {
+        id: noteTaskDiv.id,
+        classList: [...noteTaskDiv.classList], // convert to string arr
+        content: inputStr
+    }
+    notesArr.push(notesArrObj);
+
+    let lastTaskInputIdNum = counters.lastTaskInputIdNum;
+    if (sessionState.loggedIn) {
+        const notesObj = {
+            notesArr,
+            lastTaskInputIdNum
+        }
+        updateNotes(notesObj);
+    }
 }
 
 function addLabelInitialActions(flags, tagIcon, promptContainer, clearIcon) {
@@ -826,6 +868,14 @@ function deleteLabel(target, addDoneContainer, tagSelectionDivider, flags) {
 
     document.getElementById(toDeleteTagId).remove();
     removeTagSelectionDivider(addDoneContainer, tagSelectionDivider, flags);
+
+    // edit label dict
+    delete labelDict[toDeleteTagId];
+
+    if (sessionState.loggedIn) {
+        const labelArr = [labelDict, counters.lastLabelIdNum, state.lastSelectedEmojiId];
+        updateLabels(labelArr);
+    }
 }
 
 function removeTagSelectionDivider(addDoneContainer, tagSelectionDivider, flags) {
@@ -856,7 +906,7 @@ function createNote(inputStr, noteTaskDiv, counters, container) {
     return container;
 }
 
-function createCheckElements(counters) {
+export function createCheckElements(counters) {
     let taskCircularCheckDiv = document.createElement('div');
     taskCircularCheckDiv.classList.add('taskCircularCheck');
     
@@ -909,24 +959,45 @@ function noteInputSaveBtnClick_editMode(state, flags) {
     document.getElementById('note-task-input-container-edit').remove();
 
     flags.noteTaskInputContainerEditShowing = false;
+
+    const indexToEdit = notesArr.findIndex(obj => obj.id === state.currentNoteTaskEditId);
+    notesArr[indexToEdit].content = inputEditStr;
+
+    let lastTaskInputIdNum = counters.lastTaskInputIdNum;
+    if (sessionState.loggedIn) {
+        const notesObj = {
+            notesArr,
+            lastTaskInputIdNum
+        }
+        updateNotes(notesObj);
+    }
 }
 
 function handleRemoveBtnClick(targetId) {
     let idNum = getLastNumberFromId(targetId);
-    let noteInputId = "noteDiv" + idNum;
     let taskInputId = "taskDiv" + idNum;
 
-
-    if (document.getElementById(noteInputId)) {
-        document.getElementById(noteInputId).remove();
-    } else if (document.getElementById(taskInputId)) {
+    if (document.getElementById(taskInputId)) {
         document.getElementById(taskInputId).remove();
-    }  
+    }
+
+    const indexToRemove = notesArr.findIndex(obj => obj.id === taskInputId);
+    if (indexToRemove !== -1) {
+        notesArr.splice(indexToRemove, 1);
+    }
+
+    let lastTaskInputIdNum = counters.lastTaskInputIdNum;
+    if (sessionState.loggedIn) {
+        const notesObj = {
+            notesArr,
+            lastTaskInputIdNum
+        }
+        updateNotes(notesObj);
+    }
 }
 
 function handleEditBtnClick(targetId, flags, noteTaskInputContainer, addNoteTaskContainer, state) {
     let idNum = getLastNumberFromId(targetId);
-    let noteInputId = "noteDiv" + idNum;
     let taskInputId = "taskDiv" + idNum;
 
     if (flags.noteTaskInputContainerShowing) {
@@ -934,16 +1005,16 @@ function handleEditBtnClick(targetId, flags, noteTaskInputContainer, addNoteTask
         addNoteTaskContainer.style.display = 'flex';
     }
 
-    if (getTypeFromId(targetId) === "Note") {
-        editNoteTask("note", noteInputId, state, flags);
-    } else if (getTypeFromId(targetId) === "Task") {
+    if (getTypeFromId(targetId) === "Task") {
         editNoteTask("task", taskInputId, state, flags);
     }
 }
 
 function checkOrUncheckTask(targetId) {
     let idNum = getLastNumberFromId(targetId);
-    let taskDiv = document.getElementById("taskDiv" + idNum);
+    let taskDivId = "taskDiv" + idNum;
+    let taskDiv = document.getElementById(taskDivId);
+    console.log(taskDivId);
     let check = document.getElementById("check" + idNum);
     let taskCircularCheckElement = taskDiv.firstElementChild;
 
@@ -958,6 +1029,18 @@ function checkOrUncheckTask(targetId) {
         check.setAttribute('stroke-width', '3');
         check.parentElement.parentElement.style.opacity = '1';
         taskDiv.classList.add('completed-task');
+    }
+
+    const indexToUpdate = notesArr.findIndex(obj => obj.id === taskDivId);
+    notesArr[indexToUpdate].classList = [...taskDiv.classList];
+
+    let lastTaskInputIdNum = counters.lastTaskInputIdNum;
+    if (sessionState.loggedIn) {
+        const notesObj = {
+            notesArr,
+            lastTaskInputIdNum
+        }
+        updateNotes(notesObj);
     }
 }
 
@@ -1084,7 +1167,7 @@ function editNoteTask(inputType, noteTaskId, state, flags) {
     noteTaskInputContainer.querySelector('textarea').focus();
 }
 
-function appendEditRemoveContainer(inputType, lastIdNum) {
+export function appendEditRemoveContainer(inputType, lastIdNum) {
     const container = document.createElement('div'); //for edit remove container
     container.classList.add('editRemoveContainer');
 
@@ -1160,7 +1243,7 @@ function appendEditRemoveContainer(inputType, lastIdNum) {
     return container;
 }
 
-function getLastNumberFromId(targetId) {
+export function getLastNumberFromId(targetId) {
     const match = targetId.match(/\d+$/); // Match one or more digits at the end of the string
     if (match) {
         return parseInt(match[0], 10); // Convert the matched string to a number

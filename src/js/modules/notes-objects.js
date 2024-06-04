@@ -20,7 +20,7 @@ export const state = {
     currentLabelInputTagSize: 20,
     generalTarget: null,
     lastSelectionElement: null,
-    lastSelectedEmojiId: null,
+    lastSelectedEmojiId: "books-emoji",
     elementToUpdateId: null,
     currentNoteTaskEditId: null
 }
@@ -69,3 +69,7 @@ export const tutorialContainerMap = {
 
 export const fontSizeArr = ['20px', '19px', '18px', '17px', '16px', '15px', '14px', '13px', '12px'];
 export const fontNumArr = [20, 19, 18, 17, 16, 15, 14, 13, 12];
+
+export const labelDict = {};
+
+export const notesArr = [];

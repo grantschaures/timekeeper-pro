@@ -1,12 +1,14 @@
-import { pomodoroNotificationToggle, pomodoroInputs, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, pomodoroVolumeThumb, pomodoroVolumeThumb2, pomodoroRadios, flowmodoroNotificationToggle, flowmodoroInputs, flowmodoroVolumeThumb, flowmodoroVolumeThumb2, flowmodoroRadios, breakSuggestionToggle, suggestionMinutesInput, generalRadios, targetTimeReachedToggle, darkGrayTheme, defaultTheme, interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, emojiContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, transitionClockSoundToggle } from '../modules/dom-elements.js';
+import { pomodoroNotificationToggle, pomodoroInputs, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, pomodoroVolumeThumb, pomodoroVolumeThumb2, pomodoroRadios, flowmodoroNotificationToggle, flowmodoroInputs, flowmodoroVolumeThumb, flowmodoroVolumeThumb2, flowmodoroRadios, breakSuggestionToggle, suggestionMinutesInput, generalRadios, targetTimeReachedToggle, darkGrayTheme, defaultTheme, interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, emojiContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, transitionClockSoundToggle, labelSelectionRow, emojiImg, emojiImg2, dynamicList } from '../modules/dom-elements.js';
 
 import { sessionState } from '../modules/state-objects.js';
 
 import { flags, timeAmount, alertVolumes, alertSounds, selectedBackgroundId, selectedBackground, flowtimeBackgrounds, chilltimeBackgrounds, selectedBackgroundIdTemp } from '../modules/index-objects.js';
 
-import { flags as notesflags } from '../modules/notes-objects.js';
+import { flags as notesflags, counters as notesCounters, state as notesState, labelDict, notesArr } from '../modules/notes-objects.js';
 
 import { setInitialBackgroundCellSelection, setBackground, deactivateDarkTheme } from '../main/index.js';
+
+import { appendEditRemoveContainer, createCheckElements, getLastNumberFromId } from '../main/notes.js';
 
 document.addEventListener('defaultSettingsApplied', () => {
     checkUserSession();
@@ -24,13 +26,13 @@ function checkUserSession() {
     .then(data => {
         if (data.isLoggedIn) {
             sessionState.loggedIn = true;
-            updateGUIForLoggedInUser(data.user);
+            updateGUIForLoggedInUser(data.user, data.note);
         }
     })
     .catch(error => console.error('Error validating user session:', error));
 }
 
-function updateGUIForLoggedInUser(userData) {
+function updateGUIForLoggedInUser(userData, noteData) {
 
     // menu container (--> logged in version)
     updateMenuContainer(userData);
@@ -40,6 +42,11 @@ function updateGUIForLoggedInUser(userData) {
 
     // settings (--> logged in version)
     updateSettings(userData);
+
+    // notes (--> logged in version)
+    updateUserLabels(noteData);
+
+    updateUserNotes(noteData);
 }
 
 function updateMenuContainer(userData) {
@@ -346,4 +353,111 @@ function updateTransitionClockSound(userData) {
     flags.transitionClockSoundToggle = transitionClockSound;
 
     transitionClockSoundToggle.checked = transitionClockSound;
+}
+
+function updateUserLabels(noteData) {
+    console.log(noteData);
+    console.log(noteData.labels);
+
+    // remove ALL default labels
+    const tags = labelSelectionRow.getElementsByClassName('selection-tag');
+    Array.from(tags).forEach(tag => {
+        tag.remove();
+        delete labelDict[tag.id]; // delete default tags from labelDict
+    });
+
+    // populate w/ noteData labels
+    for (const [key, value] of Object.entries(noteData.labels).reverse()) {
+        const newLabelElement = document.createElement('div');
+        newLabelElement.id = key;
+        newLabelElement.className = 'tag unselectable selection-tag';
+
+        const labelText = document.createElement('h4');
+        labelText.className = 'tag-text';
+        labelText.textContent = value; // Assuming value is the label text
+
+        //make labelText a child of  newLabelElement
+        newLabelElement.appendChild(labelText);
+        labelSelectionRow.insertBefore(newLabelElement, labelSelectionRow.firstChild);
+
+        // update labels dictionary (client-side)
+        labelDict[newLabelElement.id] = labelText.textContent;
+    }
+
+    // update lastLabelIdNum
+    notesCounters.lastLabelIdNum = noteData.lastLabelIdNum;
+
+    notesState.lastSelectedEmojiId = noteData.lastSelectedEmojiId;
+
+    // replace emoji w/ last selected one (overrides hardcoded html emoji) -- repeated code (from replaceEmoji() in notes.js), can refactor later :P
+    let emojiImgPath = document.getElementById(notesState.lastSelectedEmojiId).src;
+    emojiImg.src = emojiImgPath; // for add label container
+    emojiImg2.src = emojiImgPath; // for update label container
+}
+
+function updateUserNotes(noteData) {
+    let noteTaskArr = noteData.noteTasks;
+    console.log(noteTaskArr);
+
+    // remove ALL default labels
+    for (let i = 0; i < noteTaskArr.length; i++) {
+        // create new taskDiv
+        let noteTaskDiv = document.createElement('div');
+
+        // add id
+        let noteTaskDivIdStr = noteTaskArr[i].id;
+        noteTaskDiv.id = noteTaskDivIdStr;
+        noteTaskDiv.setAttribute('data-testid', noteTaskDivIdStr);
+        let idNum = getLastNumberFromId(noteTaskDiv.id);
+
+        // add classes
+        let noteTaskClasslist = noteTaskArr[i].classList;
+        for (let j = 0; j < noteTaskClasslist.length; j++) {
+            noteTaskDiv.classList.add(noteTaskClasslist[j]);
+        }
+
+        // add circular check if note (check if checked)
+        if (noteTaskClasslist.includes("task")) {
+            let dummyCounters = {
+                lastTaskInputIdNum: idNum
+            }
+            let taskCircularCheckDiv = createCheckElements(dummyCounters);
+            noteTaskDiv.appendChild(taskCircularCheckDiv);
+
+            // check circular check
+            let checkId = "check" + idNum;
+            let check = noteTaskDiv.querySelector('#' + checkId);
+            let taskCircularCheckElement = noteTaskDiv.firstElementChild;
+
+            if (noteTaskArr[i].classList.includes("completed-task")) {
+                taskCircularCheckElement.style.backgroundColor = "#3ba43e";
+                check.setAttribute('stroke-width', '3');
+                check.parentElement.parentElement.style.opacity = '1';
+                noteTaskDiv.classList.add('completed-task');
+            }
+        }
+
+        // add content
+        let taskText = document.createElement('span');
+        taskText.textContent = noteTaskArr[i].content;
+
+        let taskTextId = "spanText" + idNum;
+        taskText.setAttribute('data-testid', taskTextId);
+        noteTaskDiv.appendChild(taskText);
+
+        let container = appendEditRemoveContainer("Task", idNum);
+        noteTaskDiv.appendChild(container);
+        dynamicList.appendChild(noteTaskDiv);
+
+        // update notesArr
+        const notesArrObj = {
+            id: noteTaskDiv.id,
+            classList: [...noteTaskDiv.classList], // convert to string arr
+            content: taskText.textContent
+        }
+        notesArr.push(notesArrObj);
+    }
+
+    // update lastTaskInputIdNum
+    notesCounters.lastTaskInputIdNum = noteData.lastTaskInputIdNum;
 }

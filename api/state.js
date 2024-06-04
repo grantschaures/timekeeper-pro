@@ -1,5 +1,6 @@
 const express = require("express");
 const User = require("../models/user");
+const Note = require("../models/note");
 const router = express.Router();  // This is a slight refactor for clarity
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
@@ -19,8 +20,10 @@ router.post("/sessionValidation", async function(req, res) {
         const user = await User.findById(decoded.userId);
 
         if (user) {
+            const note = await Note.findOne({ userId: user._id });
             return res.json({ 
                 user: user,
+                note: note,
                 isLoggedIn: true
             });
         } else {

@@ -1,8 +1,10 @@
 const express = require("express");
 const User = require("../models/user");
+const Note = require("../models/note");
 const router = express.Router();
 const crypto = require('crypto');
 const sgMail = require('@sendgrid/mail');
+const mongoose = require('mongoose');
 
 router.use(express.json());
 
@@ -12,9 +14,12 @@ router.post('/emailsignup', async (req, res) => {
     const { email } = req.body;
     console.log('Received email:', email);
 
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
     try {
         // Check if the user already exists
-        let user = await User.findOne({ email: email });
+        let user = await User.findOne({ email: email }).session(session);
 
         if (user) {
             if (user.emailVerified) {
@@ -41,8 +46,26 @@ router.post('/emailsignup', async (req, res) => {
         }
 
         // Save the user (new or updated)
-        await user.save();
+        await user.save({ session });
         console.log('User saved successfully with expiration date for token.');
+        
+        // Create the notes entry
+        const note = new Note({
+            userId: user._id,
+            labels: new Map([
+                ["tag-1", "✍️ Homework"],
+                ["tag-2", "📚 Reading"],
+                ["tag-3", "🧘 Meditation"]
+            ]),
+            lastLabelIdNum: 3,  // Default value
+            lastSelectedEmojiId: "books-emoji"  // Default value
+        });
+        await note.save({ session });
+        console.log('Note saved for user.');
+
+        // Commit the transaction
+        await session.commitTransaction();
+        session.endSession();
 
         // Send verification email
         sgMail.setApiKey(process.env.SENDGRID_API_KEY);

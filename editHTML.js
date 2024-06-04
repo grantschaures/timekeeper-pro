@@ -66,6 +66,10 @@ const stateReplacements = [
     {
         pattern: /import { setInitialBackgroundCellSelection, setBackground, deactivateDarkTheme } from '..\/main\/index.js';/g,
         replacement: "import { setInitialBackgroundCellSelection, setBackground, deactivateDarkTheme } from '../minified/index.min.js';"
+    },
+    {
+        pattern: /import { appendEditRemoveContainer, createCheckElements, getLastNumberFromId } from '..\/main\/notes.js';/g,
+        replacement: "import { appendEditRemoveContainer, createCheckElements, getLastNumberFromId } from '../minified/notes.min.js';"
     }
 ];
 
@@ -92,6 +96,7 @@ readFileAndReplace(setPasswordHtmlPath, setPasswordHtmlReplacements);
 readFileAndReplace(resetPasswordHtmlPath, resetPasswordHtmlReplacements);
 
 readFileAndReplace(stateJsPath, stateReplacements);
+
 readFileAndReplace(googleSignInPath, initializeGuiEdits);
 readFileAndReplace(indexJsPath, initializeGuiEdits);
 readFileAndReplace(loginJsPath, initializeGuiEdits);
