@@ -20,11 +20,11 @@ document.addEventListener("DOMContentLoaded", function() {
     // populates task label container w/ default labels
     populateTaskLabelContainer();
 
-    if (isMobile) {
-        aboutIconNotes.style.display = "none";
-        notesSettingsHr.style.display = "none";
-        addingDeletingUpdatingLabelsInfoBlock.style.display = "none";
-    }
+    // if (isMobile) {
+    //     aboutIconNotes.style.display = "none";
+    //     notesSettingsHr.style.display = "none";
+    //     addingDeletingUpdatingLabelsInfoBlock.style.display = "none";
+    // }
     // //
     // BEGINNING OF EVENT LISTENER SECTION
     // //
@@ -106,10 +106,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     notesBtn.addEventListener("click", function() {
         if (notesFlags.notesShowing === false) {
-            alert("opening notes container")
             openNotesContainer(notesContainer, notesFlags);
         } else {
-            alert("closing notes container")
             closeNotesContainer(notesContainer, notesFlags, flags, noteInputCancelBtn, isMobile);
         }
     })
