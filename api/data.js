@@ -107,15 +107,17 @@ router.post("/update-notes", async function(req, res) {
     const token = req.cookies.token;  // Extract the JWT from cookies directly
     const { notesObj } = req.body;
 
+    console.log(notesObj);
+
     if (!token) {
         return res.status(401).json({ isLoggedIn: false });
     }
-
+    
     try {
         // Verify the token
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
         const user = await User.findById(decoded.userId);
-
+        
         if (!user) {
             return res.status(401).json({ 
                 isLoggedIn: false,

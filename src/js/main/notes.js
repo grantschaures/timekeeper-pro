@@ -1,5 +1,5 @@
 import {
-    notesContainer, taskContainer, promptContainer, labelInputContainer, createLabelContainer, createLabelWindow, createLabelInput, createLabelDone, createLabelCancel, updateLabelContainer, updateLabelWindow, updateLabelInput, updateLabelCancel, updateLabelDone, labelSelectionWindow, labelSelectionRow, clearIcon, notesBtn, notesConsole, taskPrompt, tagIcon, tagSelection, tagSelectionDivider, addDoneContainer, selectionDoneDiv, selectionDone, addTagIcon, emojiBtn, emojiBtn2, emojiImg, emojiImg2, emojiContainer, emojiSymbols, transitionNotesAutoSwitchToggle, start_stop_btn, tutorialImgContainers, aboutIconNotes, settings_menu_container, notesBtnContainer, notesSettingsHr, addingDeletingUpdatingLabelsInfoBlock, addNoteTaskContainer, noteTaskInputContainer, noteTaskInputText, noteInputCancelBtn, noteInputSaveBtn, taskCheckbox, dynamicList, textarea, settingsContainer, aboutContainer, blogContainer, main_elements, isMobile, propagateUnfinishedTasksToggle
+    notesContainer, taskContainer, promptContainer, labelInputContainer, createLabelContainer, createLabelWindow, createLabelInput, createLabelDone, createLabelCancel, updateLabelContainer, updateLabelWindow, updateLabelInput, updateLabelCancel, updateLabelDone, labelSelectionWindow, labelSelectionRow, clearIcon, notesBtn, notesConsole, taskPrompt, tagIcon, tagSelection, tagSelectionDivider, addDoneContainer, selectionDoneDiv, selectionDone, addTagIcon, emojiBtn, emojiBtn2, emojiImg, emojiImg2, emojiContainer, emojiSymbols, transitionNotesAutoSwitchToggle, start_stop_btn, tutorialImgContainers, aboutIconNotes, settings_menu_container, notesBtnContainer, notesSettingsHr, addingDeletingUpdatingLabelsInfoBlock, addNoteTaskContainer, noteTaskInputContainer, noteTaskInputText, noteInputCancelBtn, noteInputSaveBtn, taskCheckbox, dynamicList, textarea, settingsContainer, aboutContainer, blogContainer, main_elements, isMobile, propagateUnfinishedTasksToggle, clearNotesConsoleBtn
 } from '../modules/dom-elements.js';
 
 import { flags as indexflags } from '../modules/index-objects.js';
@@ -19,13 +19,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // populates task label container w/ default labels
     populateTaskLabelContainer();
-
-    // delete notes/ tasks if past 3 AM
-
-    let clockInterval;
-    if (sessionState.loggedIn) {
-        clockInterval = setInterval(resetNotesTasks, 1000);
-    }
 
     if (isMobile) {
         aboutIconNotes.style.display = "none";
@@ -589,6 +582,40 @@ document.addEventListener("DOMContentLoaded", function() {
         }, 0)
     });
 
+    clearNotesConsoleBtn.addEventListener("click", function() {
+        let reductionCounter = 0;
+
+        let notesArrLength = notesArr.length;
+        for (let i = notesArrLength - 1; i >= 0; i--) {
+            console.log(notesArr[i].id);
+
+            if (flags.propagateUnfinishedTasksToggle) {
+                if ((notesArr[i].classList.includes("completed-task")) || (notesArr[i].classList.includes("note"))) {
+                    removeNoteFromDocAndArr(notesArr[i].id);
+                    reductionCounter++;
+                }
+            } else {
+                removeNoteFromDocAndArr(notesArr[i].id);
+                reductionCounter++;
+            }
+        }
+
+        let lastTaskInputIdNum = counters.lastTaskInputIdNum;
+        if (sessionState.loggedIn) {
+            const notesObj = {
+                notesArr,
+                lastTaskInputIdNum
+            }
+            updateNotes(notesObj);
+        }
+
+        if (reductionCounter !== 0) {
+            new Notification("The notes console has been reset.");
+        } else {
+            new Notification("No changes were made to the notes console.");
+        }
+    })
+
     // ---------------------
     // HELPER FUNCTIONS 1
     // ---------------------
@@ -690,32 +717,6 @@ document.addEventListener("DOMContentLoaded", function() {
 // ---------------------
 // HELPER FUNCTIONS 2
 // ---------------------
-function resetNotesTasks() {
-    // const now = new Date();
-    // const hours = now.getHours();
-    // const minutes = now.getMinutes();
-    // const seconds = now.getSeconds();
-
-    // if (hours >= 3) {
-
-    //     if (!flags.resetTasks) {
-    //         flags.resetTasks = true;
-    //     }
-
-    //     if (!indexflags.sessionInProgress) {
-    //         if (!flags.propagateUnfinishedTasksToggle) {
-    //             // remove all notes and tasks created before 3AM
-
-    //         } else {
-    //             // remove only the checked tasks and notes created before 3AM
-
-    //         }
-
-    //         // reset resetTasks flag
-    //         flags.resetTasks = false;
-    //     }
-    // }
-}
 
 function populateTaskLabelContainer() {
     let initialLabelValues = ["✍️ Homework", "📚 Reading", "🧘 Meditation"];
@@ -1027,17 +1028,8 @@ function noteInputSaveBtnClick_editMode(state, flags) {
 }
 
 function handleRemoveBtnClick(targetId) {
-    let idNum = getLastNumberFromId(targetId);
-    let taskInputId = "taskDiv" + idNum;
 
-    if (document.getElementById(taskInputId)) {
-        document.getElementById(taskInputId).remove();
-    }
-
-    const indexToRemove = notesArr.findIndex(obj => obj.id === taskInputId);
-    if (indexToRemove !== -1) {
-        notesArr.splice(indexToRemove, 1);
-    }
+    removeNoteFromDocAndArr(targetId);
 
     let lastTaskInputIdNum = counters.lastTaskInputIdNum;
     if (sessionState.loggedIn) {
@@ -1046,6 +1038,23 @@ function handleRemoveBtnClick(targetId) {
             lastTaskInputIdNum
         }
         updateNotes(notesObj);
+    }
+}
+
+function removeNoteFromDocAndArr(targetId) {
+    let idNum = getLastNumberFromId(targetId);
+    let taskInputId = "taskDiv" + idNum;
+
+
+    // remove element from document
+    if (document.getElementById(taskInputId)) {
+        document.getElementById(taskInputId).remove();
+    }
+
+    // remove element from array
+    const indexToRemove = notesArr.findIndex(obj => obj.id === taskInputId);
+    if (indexToRemove !== -1) {
+        notesArr.splice(indexToRemove, 1);
     }
 }
 

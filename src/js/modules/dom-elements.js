@@ -170,6 +170,7 @@ export const noteInputSaveBtn = document.getElementById("note-input-save-btn");
 export const taskCheckbox = document.getElementById('taskCheckbox');
 export const dynamicList = document.getElementById('dynamicList');
 export const textarea = document.getElementById('note-task-input-text');
+export const clearNotesConsoleBtn = document.getElementById('clearNotesConsoleBtn');
 
 export const loginEmailInput = document.getElementById("loginEmailInput");
 export const loginPasswordInput = document.getElementById("loginPasswordInput");

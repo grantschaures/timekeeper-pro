@@ -1109,10 +1109,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="propagateUnfinishedTasksBlock">
+                            <hr id="notesSettingsHr1">
+                            <div id="clearNotesConsoleBlock">
                                 <div id="togglePropagateUnfinishedTasksContainer" class="settingsMicroContainer">
                                     <div id="propagateUnfinishedTasksText" class="settingsText">
-                                        <p id="propagateUnfinishedTasks"><b class="settingsCategoryHeading">Propagate Tasks</b></p>
+                                        <p id="propagateUnfinishedTasks"><b class="settingsCategoryHeading">Keep Unfinished Tasks</b></p>
                                     </div>
                                     <div id="propagateUnfinishedTasksToggleContainer" class="toggleContainer">
                                         <input type="checkbox" id="propagateUnfinishedTasksToggle" data-testid="propagateUnfinishedTasksToggle" class="toggle-checkbox">
@@ -1121,11 +1122,16 @@
                                         </label>
                                     </div>
                                     <div id="propagateUnfinishedTasksInfoWindow" class="notificationInfoWindow">
-                                        Propagate unfinished tasks into the next day
+                                        Don't delete unfinished tasks when clicking the 'Clear Notes Console' button
+                                    </div>
+                                </div>
+                                <div id="clearNotesConsoleContainer" class="settingsMicroContainer">
+                                    <div id="clearNotesConsoleBtnContainer" class="settingsMicroContainer settingsBtn">
+                                        <button id="clearNotesConsoleBtn">Clear Notes Console</button>
                                     </div>
                                 </div>
                             </div>
-                            <hr id="notesSettingsHr">
+                            <hr id="notesSettingsHr2">
                             <div id="addingDeletingUpdatingLabelsInfoBlock">
                                 <div id="addingDeletingUpdatingLabelsInfoContainer" class="settingsMicroContainer">
                                     <div id="transitionNotesAutoSwitchText" class="settingsText">
@@ -1344,7 +1350,7 @@
                             <div id="userEmailContainer" class="settingsMicroContainer">
                                 <p><b id="userEmail"></b></p>
                             </div>
-                            <div id="logoutBtnContainer" class="settingsMicroContainer">
+                            <div id="logoutBtnContainer" class="settingsMicroContainer settingsBtn">
                                 <button id="logoutBtn">Log Out</button>
                             </div>
                             <!-- <div id="" class="settingsMicroContainer">
