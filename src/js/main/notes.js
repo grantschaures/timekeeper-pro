@@ -106,8 +106,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
     notesBtn.addEventListener("click", function() {
         if (notesFlags.notesShowing === false) {
+            alert("opening notes container")
             openNotesContainer(notesContainer, notesFlags);
         } else {
+            alert("closing notes container")
             closeNotesContainer(notesContainer, notesFlags, flags, noteInputCancelBtn, isMobile);
         }
     })
