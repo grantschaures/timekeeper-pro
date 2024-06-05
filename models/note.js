@@ -16,7 +16,8 @@ const Note = db.model("Note", {
     {
       id: { type: String },
       classList: { type: [String] },
-      content: { type: String }
+      content: { type: String },
+      date: { type: Date, default: Date.now }
     }
   ],
   lastTaskInputIdNum: { type: Number, default: 0 }

@@ -34,8 +34,10 @@ export const flags = {
     createLabelWindowOpen: false,
     updateLabelWindowOpen: false,
     transitionNotesAutoSwitchToggle: false,
+    propagateUnfinishedTasksToggle: false,
     noteTaskInputContainerShowing: false,
-    noteTaskInputContainerEditShowing: false
+    noteTaskInputContainerEditShowing: false,
+    resetTasks: false
 }
 
 export const emojiMap = {
@@ -71,5 +73,4 @@ export const fontSizeArr = ['20px', '19px', '18px', '17px', '16px', '15px', '14p
 export const fontNumArr = [20, 19, 18, 17, 16, 15, 14, 13, 12];
 
 export const labelDict = {};
-
 export const notesArr = [];

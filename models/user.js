@@ -46,7 +46,8 @@ const User = db.model("User", {
       chillTimeAnimation: { type: Boolean, default: true }
     },
     notes: {
-      autoSwitchToggle: { type: Boolean, default: false }
+      autoSwitchToggle: { type: Boolean, default: false },
+      propagateUnfinishedTasksToggle: { type: Boolean, default: false }
     },
     sounds: {
       transitionClockSound:  { type: Boolean, default: false }

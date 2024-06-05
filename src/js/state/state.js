@@ -1,4 +1,4 @@
-import { pomodoroNotificationToggle, pomodoroInputs, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, pomodoroVolumeThumb, pomodoroVolumeThumb2, pomodoroRadios, flowmodoroNotificationToggle, flowmodoroInputs, flowmodoroVolumeThumb, flowmodoroVolumeThumb2, flowmodoroRadios, breakSuggestionToggle, suggestionMinutesInput, generalRadios, targetTimeReachedToggle, darkGrayTheme, defaultTheme, interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, emojiContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, transitionClockSoundToggle, labelSelectionRow, emojiImg, emojiImg2, dynamicList } from '../modules/dom-elements.js';
+import { pomodoroNotificationToggle, pomodoroInputs, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, pomodoroVolumeThumb, pomodoroVolumeThumb2, pomodoroRadios, flowmodoroNotificationToggle, flowmodoroInputs, flowmodoroVolumeThumb, flowmodoroVolumeThumb2, flowmodoroRadios, breakSuggestionToggle, suggestionMinutesInput, generalRadios, targetTimeReachedToggle, darkGrayTheme, defaultTheme, interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, emojiContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, transitionClockSoundToggle, labelSelectionRow, emojiImg, emojiImg2, dynamicList, propagateUnfinishedTasksToggle as propagateUnfinishedTasksToggleElement } from '../modules/dom-elements.js';
 
 import { sessionState } from '../modules/state-objects.js';
 
@@ -332,6 +332,7 @@ function updateAnimations(userData) {
 // NOTES
 function updateNotes(userData) {
     updateAutoSwitchToggle(userData);
+    updatePropagateTasksToggle(userData);
 }
 
 function updateAutoSwitchToggle(userData) {
@@ -340,6 +341,14 @@ function updateAutoSwitchToggle(userData) {
     notesflags.transitionNotesAutoSwitchToggle = autoSwitchToggle;
 
     transitionNotesAutoSwitchToggle.checked = autoSwitchToggle;
+}
+
+function updatePropagateTasksToggle(userData) {
+    const { propagateUnfinishedTasksToggle } = userData.settings.notes;
+
+    notesflags.propagateUnfinishedTasksToggle = propagateUnfinishedTasksToggle;
+
+    propagateUnfinishedTasksToggleElement.checked = propagateUnfinishedTasksToggle;
 }
 
 // Sounds
@@ -453,10 +462,13 @@ function updateUserNotes(noteData) {
         const notesArrObj = {
             id: noteTaskDiv.id,
             classList: [...noteTaskDiv.classList], // convert to string arr
-            content: taskText.textContent
+            content: taskText.textContent,
+            date: noteTaskArr[i].date
         }
         notesArr.push(notesArrObj);
     }
+
+    console.log(notesArr)
 
     // update lastTaskInputIdNum
     notesCounters.lastTaskInputIdNum = noteData.lastTaskInputIdNum;

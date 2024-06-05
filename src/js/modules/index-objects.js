@@ -125,6 +125,7 @@ export const flags = {
     showingFlowmodoroNotificationInfoWindow: false,
     showingFlowTimeBreakNotificationInfoWindow: false,
     showingNotesAutoSwitchInfoWindow: false,
+    showingPropagateUnfinishedTasksInfoWindow: false,
     generalThumbIsDragging: false,
     pomodoroThumbIsDragging: false,
     flowmodoroThumbIsDragging2: false,
@@ -143,7 +144,8 @@ export const flags = {
     sentFlowmodoroNotification: false,
     sentSuggestionMinutesNotification: false,
     enterKeyDown: false,
-    pomodoroCountIncremented: false
+    pomodoroCountIncremented: false,
+    sessionInProgress: false
 }
 
 export const tempStorage = {

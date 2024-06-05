@@ -1,6 +1,8 @@
 import {
-    notesContainer, taskContainer, promptContainer, labelInputContainer, createLabelContainer, createLabelWindow, createLabelInput, createLabelDone, createLabelCancel, updateLabelContainer, updateLabelWindow, updateLabelInput, updateLabelCancel, updateLabelDone, labelSelectionWindow, labelSelectionRow, clearIcon, notesBtn, notesConsole, taskPrompt, tagIcon, tagSelection, tagSelectionDivider, addDoneContainer, selectionDoneDiv, selectionDone, addTagIcon, emojiBtn, emojiBtn2, emojiImg, emojiImg2, emojiContainer, emojiSymbols, transitionNotesAutoSwitchToggle, start_stop_btn, tutorialImgContainers, aboutIconNotes, settings_menu_container, notesBtnContainer, notesSettingsHr, addingDeletingUpdatingLabelsInfoBlock, addNoteTaskContainer, noteTaskInputContainer, noteTaskInputText, noteInputCancelBtn, noteInputSaveBtn, taskCheckbox, dynamicList, textarea, settingsContainer, aboutContainer, blogContainer, main_elements, isMobile
+    notesContainer, taskContainer, promptContainer, labelInputContainer, createLabelContainer, createLabelWindow, createLabelInput, createLabelDone, createLabelCancel, updateLabelContainer, updateLabelWindow, updateLabelInput, updateLabelCancel, updateLabelDone, labelSelectionWindow, labelSelectionRow, clearIcon, notesBtn, notesConsole, taskPrompt, tagIcon, tagSelection, tagSelectionDivider, addDoneContainer, selectionDoneDiv, selectionDone, addTagIcon, emojiBtn, emojiBtn2, emojiImg, emojiImg2, emojiContainer, emojiSymbols, transitionNotesAutoSwitchToggle, start_stop_btn, tutorialImgContainers, aboutIconNotes, settings_menu_container, notesBtnContainer, notesSettingsHr, addingDeletingUpdatingLabelsInfoBlock, addNoteTaskContainer, noteTaskInputContainer, noteTaskInputText, noteInputCancelBtn, noteInputSaveBtn, taskCheckbox, dynamicList, textarea, settingsContainer, aboutContainer, blogContainer, main_elements, isMobile, propagateUnfinishedTasksToggle
 } from '../modules/dom-elements.js';
+
+import { flags as indexflags } from '../modules/index.objects.js';
 
 import { notesFlags, counters, state, flags, emojiMap, tutorialContainerMap, fontSizeArr, fontNumArr, labelDict, notesArr } from '../modules/notes-objects.js';
 
@@ -17,6 +19,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // populates task label container w/ default labels
     populateTaskLabelContainer();
+
+    // delete notes/ tasks if past 3 AM
+
+    let clockInterval;
+    if (sessionState.loggedIn) {
+        clockInterval = setInterval(resetNotesTasks, 1000);
+    }
 
     if (isMobile) {
         aboutIconNotes.style.display = "none";
@@ -541,6 +550,22 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     })
 
+    propagateUnfinishedTasksToggle.addEventListener('click', async function() {
+        if (propagateUnfinishedTasksToggle.checked) {
+            flags.propagateUnfinishedTasksToggle = true;
+        } else {
+            flags.propagateUnfinishedTasksToggle = false;
+        }
+
+        if (sessionState.loggedIn) {
+            await updateUserSettings({
+                notes: {
+                    propagateUnfinishedTasksToggle: flags.propagateUnfinishedTasksToggle
+                }
+            });
+        }
+    })
+
     tutorialImgContainers.forEach(container => {
         container.addEventListener('mouseover', function() {
             let targetIdStr = container.id;
@@ -665,6 +690,33 @@ document.addEventListener("DOMContentLoaded", function() {
 // ---------------------
 // HELPER FUNCTIONS 2
 // ---------------------
+function resetNotesTasks() {
+    // const now = new Date();
+    // const hours = now.getHours();
+    // const minutes = now.getMinutes();
+    // const seconds = now.getSeconds();
+
+    // if (hours >= 3) {
+
+    //     if (!flags.resetTasks) {
+    //         flags.resetTasks = true;
+    //     }
+
+    //     if (!indexflags.sessionInProgress) {
+    //         if (!flags.propagateUnfinishedTasksToggle) {
+    //             // remove all notes and tasks created before 3AM
+
+    //         } else {
+    //             // remove only the checked tasks and notes created before 3AM
+
+    //         }
+
+    //         // reset resetTasks flag
+    //         flags.resetTasks = false;
+    //     }
+    // }
+}
+
 function populateTaskLabelContainer() {
     let initialLabelValues = ["✍️ Homework", "📚 Reading", "🧘 Meditation"];
 
@@ -781,7 +833,8 @@ function noteInputSave(noteTaskInputContainer, addNoteTaskContainer, flags, note
     const notesArrObj = {
         id: noteTaskDiv.id,
         classList: [...noteTaskDiv.classList], // convert to string arr
-        content: inputStr
+        content: inputStr,
+        date: Date.now()
     }
     notesArr.push(notesArrObj);
 

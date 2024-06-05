@@ -1093,61 +1093,75 @@
                             <div id="notesContainer" class="settingsIconTextContainer">
                                 <h2>Notes</h2>
                             </div>
-                            <div id="notesAutoSwitchToggleContainer" class="settingsCategory">
-                                <div id="notesAutoSwitchBlock">
-                                    <div id="toggleNotesAutoSwitchContainer" class="settingsMicroContainer">
-                                        <div id="transitionNotesAutoSwitchText" class="settingsText">
-                                            <p id="notesAutoSwitch"><b class="settingsCategoryHeading">Auto Switch</b></p>
-                                        </div>
-                                        <div id="transitionNotesAutoSwitchToggleContainer" class="toggleContainer">
-                                            <input type="checkbox" id="transitionNotesAutoSwitchToggle" data-testid="transitionNotesAutoSwitchToggle" class="toggle-checkbox">
-                                            <label for="transitionNotesAutoSwitchToggle" id="transitionNotesAutoSwitchToggleLabel" class="toggle-label">
-                                                <span id="transitionNotesAutoSwitchToggleBall" class="toggle-ball"></span>
-                                            </label>
-                                        </div>
-                                        <div id="notesAutoSwitchInfoWindow" class="notificationInfoWindow">
-                                            Auto switch modes based on the addition or removal of labels once 'Done' is pressed
-                                        </div>
+                            <div id="notesAutoSwitchBlock">
+                                <div id="toggleNotesAutoSwitchContainer" class="settingsMicroContainer">
+                                    <div id="transitionNotesAutoSwitchText" class="settingsText">
+                                        <p id="notesAutoSwitch"><b class="settingsCategoryHeading">Auto Switch</b></p>
+                                    </div>
+                                    <div id="transitionNotesAutoSwitchToggleContainer" class="toggleContainer">
+                                        <input type="checkbox" id="transitionNotesAutoSwitchToggle" data-testid="transitionNotesAutoSwitchToggle" class="toggle-checkbox">
+                                        <label for="transitionNotesAutoSwitchToggle" id="transitionNotesAutoSwitchToggleLabel" class="toggle-label">
+                                            <span id="transitionNotesAutoSwitchToggleBall" class="toggle-ball"></span>
+                                        </label>
+                                    </div>
+                                    <div id="notesAutoSwitchInfoWindow" class="notificationInfoWindow">
+                                        Auto switch modes based on the addition or removal of labels once 'Done' is pressed
                                     </div>
                                 </div>
-                                <hr id="notesSettingsHr">
-                                <div id="addingDeletingUpdatingLabelsInfoBlock">
-                                    <div id="addingDeletingUpdatingLabelsInfoContainer" class="settingsMicroContainer">
-                                        <div id="transitionNotesAutoSwitchText" class="settingsText">
-                                            <p id="notesAutoSwitch"><b class="settingsCategoryHeading">Adding, Deleting, and Updating Labels</b></p>
+                            </div>
+                            <div id="propagateUnfinishedTasksBlock">
+                                <div id="togglePropagateUnfinishedTasksContainer" class="settingsMicroContainer">
+                                    <div id="propagateUnfinishedTasksText" class="settingsText">
+                                        <p id="propagateUnfinishedTasks"><b class="settingsCategoryHeading">Propagate Tasks</b></p>
+                                    </div>
+                                    <div id="propagateUnfinishedTasksToggleContainer" class="toggleContainer">
+                                        <input type="checkbox" id="propagateUnfinishedTasksToggle" data-testid="propagateUnfinishedTasksToggle" class="toggle-checkbox">
+                                        <label for="propagateUnfinishedTasksToggle" id="propagateUnfinishedTasksToggleLabel" class="toggle-label">
+                                            <span id="propagateUnfinishedTasksToggleBall" class="toggle-ball"></span>
+                                        </label>
+                                    </div>
+                                    <div id="propagateUnfinishedTasksInfoWindow" class="notificationInfoWindow">
+                                        Propagate unfinished tasks into the next day
+                                    </div>
+                                </div>
+                            </div>
+                            <hr id="notesSettingsHr">
+                            <div id="addingDeletingUpdatingLabelsInfoBlock">
+                                <div id="addingDeletingUpdatingLabelsInfoContainer" class="settingsMicroContainer">
+                                    <div id="transitionNotesAutoSwitchText" class="settingsText">
+                                        <p id="notesAutoSwitch"><b class="settingsCategoryHeading">Adding, Deleting, and Updating Labels</b></p>
+                                    </div>
+                                </div>
+                                <div id="addingDeletingUpdatingInfoBox">
+                                    <div class="labelInfoContainer">
+                                        <div id="addingInfoBucket" class="labelInfoBucket">
+                                            <p id="adding" class="tutorialSectionHeading"><b>Creating a Label:</b></p>
+                                            <div id="addingImgContainer" class="tutorialImgContainer">
+                                                <img src="images/tutorial/adding.png" class="tutorialImg">
+                                                <div id="addingLabelInstructions" class="labelInstructions">
+                                                    <p><b>Click on Create Label Button</b></p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div id="addingDeletingUpdatingInfoBox">
-                                        <div class="labelInfoContainer">
-                                            <div id="addingInfoBucket" class="labelInfoBucket">
-                                                <p id="adding" class="tutorialSectionHeading"><b>Creating a Label:</b></p>
-                                                <div id="addingImgContainer" class="tutorialImgContainer">
-                                                    <img src="images/tutorial/adding.png" class="tutorialImg">
-                                                    <div id="addingLabelInstructions" class="labelInstructions">
-                                                        <p><b>Click on Create Label Button</b></p>
-                                                    </div>
+                                    <div class="labelInfoContainer">
+                                        <div id="deletingInfoBucket" class="labelInfoBucket">
+                                            <p id="deleting" class="tutorialSectionHeading"><b>Deleting a Label:</b></p>
+                                            <div id="deletingImgContainer" class="tutorialImgContainer">
+                                                <img src="images/tutorial/deleting.png" class="tutorialImg">
+                                                <div id="deletingLabelInstructions" class="labelInstructions">
+                                                    <p><b>Shift + Click on Label</b></p>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="labelInfoContainer">
-                                            <div id="deletingInfoBucket" class="labelInfoBucket">
-                                                <p id="deleting" class="tutorialSectionHeading"><b>Deleting a Label:</b></p>
-                                                <div id="deletingImgContainer" class="tutorialImgContainer">
-                                                    <img src="images/tutorial/deleting.png" class="tutorialImg">
-                                                    <div id="deletingLabelInstructions" class="labelInstructions">
-                                                        <p><b>Shift + Click on Label</b></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="labelInfoContainer">
-                                            <div id="updatingInfoBucket" class="labelInfoBucket">
-                                                <p id="updating" class="tutorialSectionHeading"><b>Updating a Label:</b></p>
-                                                <div id="updatingImgContainer" class="tutorialImgContainer">
-                                                    <img src="images/tutorial/updating.png" class="tutorialImg">
-                                                    <div id="updatingLabelInstructions" class="labelInstructions">
-                                                        <p><b>Alt/ Option + Click on Label</b></p>
-                                                    </div>
+                                    </div>
+                                    <div class="labelInfoContainer">
+                                        <div id="updatingInfoBucket" class="labelInfoBucket">
+                                            <p id="updating" class="tutorialSectionHeading"><b>Updating a Label:</b></p>
+                                            <div id="updatingImgContainer" class="tutorialImgContainer">
+                                                <img src="images/tutorial/updating.png" class="tutorialImg">
+                                                <div id="updatingLabelInstructions" class="labelInstructions">
+                                                    <p><b>Alt/ Option + Click on Label</b></p>
                                                 </div>
                                             </div>
                                         </div>

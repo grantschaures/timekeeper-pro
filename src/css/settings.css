@@ -149,7 +149,7 @@
 }
 
 @media (min-width: 980px) {
-    #toggleTargetTimeAlertContainer, #togglePomodoroNotificationContainer, #toggleFlowmodoroNotificationContainer, #toggleNotesAutoSwitchContainer {
+    #toggleTargetTimeAlertContainer, #togglePomodoroNotificationContainer, #toggleFlowmodoroNotificationContainer, #toggleNotesAutoSwitchContainer, #togglePropagateUnfinishedTasksContainer {
         align-items: center;
     }
 }
@@ -290,6 +290,9 @@
     #toggleNotesAutoSwitchContainer {
         display: block;
     }
+    #togglePropagateUnfinishedTasksContainer {
+        display: block;
+    }
 }
 
 .settingsHeaderRow:not(#notificationsHeaderContainer):not(.selected):hover {
@@ -385,7 +388,7 @@
     opacity: 0;
 }
 
-#flowmodoroNotificationInfoWindow.infoWindowOpacity, #flowTimeBreakNotificationInfoWindow.infoWindowOpacity, #pomodoroNotificationInfoWindow.infoWindowOpacity, #notesAutoSwitchInfoWindow.infoWindowOpacity {
+#flowmodoroNotificationInfoWindow.infoWindowOpacity, #flowTimeBreakNotificationInfoWindow.infoWindowOpacity, #pomodoroNotificationInfoWindow.infoWindowOpacity, #notesAutoSwitchInfoWindow.infoWindowOpacity, #propagateUnfinishedTasksInfoWindow.infoWindowOpacity {
     opacity: 1;
 }
 
@@ -501,6 +504,15 @@
 }
 
 #transitionNotesAutoSwitchToggle:checked + #transitionNotesAutoSwitchToggleLabel #transitionNotesAutoSwitchToggleBall {
+    left: 40px;
+}
+
+/* Propagate unfinished tasks */
+#propagateUnfinishedTasksToggle:checked + #propagateUnfinishedTasksToggleLabel {
+    background-color: #53e658;
+}
+
+#propagateUnfinishedTasksToggle:checked + #propagateUnfinishedTasksToggleLabel #propagateUnfinishedTasksToggleBall {
     left: 40px;
 }
 
@@ -960,7 +972,7 @@
     margin-bottom: 10px; /* Corrected from 10x to 10px */
 }
 
-#toggleNotesAutoSwitchContainer {
+#toggleNotesAutoSwitchContainer, #togglePropagateUnfinishedTasksContainer {
     align-items: center;
 }
 
