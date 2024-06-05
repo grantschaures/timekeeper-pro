@@ -16,7 +16,7 @@ export async function updateNotes(notesObj) {
         }
 
         const data = await response.json();
-        console.log("notes updated successfully:", data);
+        // console.log("notes updated successfully:", data);
     } catch (error) {
         console.error('Failed to update notes:', error);
     }

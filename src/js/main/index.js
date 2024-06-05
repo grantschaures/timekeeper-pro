@@ -926,8 +926,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     end_session_btn.addEventListener("click", function() { //temporary function
         flags.sessionInProgress = false;
-        // console.log(flags.sessionInProgress)
-        location.reload();
+
+        // reset everything
+        
+
+        // location.reload();
     });
 
     logoutBtn.addEventListener("click", async function() {
