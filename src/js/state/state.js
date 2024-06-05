@@ -365,8 +365,8 @@ function updateTransitionClockSound(userData) {
 }
 
 function updateUserLabels(noteData) {
-    console.log(noteData);
-    console.log(noteData.labels);
+    // console.log(noteData);
+    // console.log(noteData.labels);
 
     // remove ALL default labels
     const tags = labelSelectionRow.getElementsByClassName('selection-tag');
@@ -406,7 +406,7 @@ function updateUserLabels(noteData) {
 
 function updateUserNotes(noteData) {
     let noteTaskArr = noteData.noteTasks;
-    console.log(noteTaskArr);
+    // console.log(noteTaskArr);
 
     // remove ALL default labels
     for (let i = 0; i < noteTaskArr.length; i++) {
@@ -468,7 +468,7 @@ function updateUserNotes(noteData) {
         notesArr.push(notesArrObj);
     }
 
-    console.log(notesArr)
+    // console.log(notesArr)
 
     // update lastTaskInputIdNum
     notesCounters.lastTaskInputIdNum = noteData.lastTaskInputIdNum;

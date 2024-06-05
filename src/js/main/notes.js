@@ -20,12 +20,12 @@ document.addEventListener("DOMContentLoaded", function() {
     // populates task label container w/ default labels
     populateTaskLabelContainer();
 
-    // if (isMobile) {
+    if (isMobile) {
         aboutIconNotes.style.display = "none";
         notesSettingsHr1.style.display = "none";
         notesSettingsHr2.style.display = "none";
         addingDeletingUpdatingLabelsInfoBlock.style.display = "none";
-    // }
+    }
     // //
     // BEGINNING OF EVENT LISTENER SECTION
     // //
@@ -588,7 +588,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         let notesArrLength = notesArr.length;
         for (let i = notesArrLength - 1; i >= 0; i--) {
-            console.log(notesArr[i].id);
+            // console.log(notesArr[i].id);
 
             if (flags.propagateUnfinishedTasksToggle) {
                 if ((notesArr[i].classList.includes("completed-task")) || (notesArr[i].classList.includes("note"))) {
@@ -1077,7 +1077,7 @@ function checkOrUncheckTask(targetId) {
     let idNum = getLastNumberFromId(targetId);
     let taskDivId = "taskDiv" + idNum;
     let taskDiv = document.getElementById(taskDivId);
-    console.log(taskDivId);
+    // console.log(taskDivId);
     let check = document.getElementById("check" + idNum);
     let taskCircularCheckElement = taskDiv.firstElementChild;
 

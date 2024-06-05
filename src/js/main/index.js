@@ -942,7 +942,7 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(() => {
             sessionState.loggedIn = false;
             window.location.href = "/";
-            console.log("Logged out successfully.");
+            // console.log("Logged out successfully.");
         })
         .catch(error => console.error('Logout failed', error));
     }
@@ -978,7 +978,7 @@ document.addEventListener("DOMContentLoaded", function() {
             
             // console.log("Server response:", data);
             if (data.loginSuccess === true) {
-                console.log("Login was successful")
+                // console.log("Login was successful")
                 initializeGUI();
             }
         })
