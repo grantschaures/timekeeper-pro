@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function() {
     window.scrollTo({ top: 0, behavior: 'smooth' }); // scroll to top
 
     if (isMobile) {
-        // TBD
+        popupMenu.style.backgroundColor = "rgb(0, 0, 0)"; // black
     }
 
     setInitialBackgroundCellSelection();
@@ -843,7 +843,7 @@ document.addEventListener("DOMContentLoaded", function() {
         defaultTheme.classList.add('selected-background');
         flags.darkThemeActivated = false;
 
-        deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer);
+        deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, isMobile);
 
         if (sessionState.loggedIn) {
             await updateUserSettings({
@@ -2183,8 +2183,8 @@ export function setBackground(background_color) {
     document.documentElement.style.backgroundImage = background_color;
 };
 
-export function deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer) {
-    let componentArr1 = [interruptionsContainer, targetHoursContainer, timekeepingContainer, notesContainer, aboutContainer, blogContainer, popupMenu];
+export function deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, isMobile) {
+    let componentArr1 = [interruptionsContainer, targetHoursContainer, timekeepingContainer, notesContainer, aboutContainer, blogContainer];
 
     let darkBackgroundTranslucent = "rgba(0, 0, 0, 0.8)"; // changed from 0.35 alpha value
     let darkBackground = "rgb(0, 0, 0)";
@@ -2196,6 +2196,14 @@ export function deactivateDarkTheme(interruptionsContainer, targetHoursContainer
         component.style.backgroundColor = darkBackgroundTranslucent;
         component.style.border = null;
     })
+
+    // dealing w/ popup menu
+    if (!isMobile) {
+        popupMenu.style.backgroundColor = darkBackgroundTranslucent;
+    } else {
+        popupMenu.style.backgroundColor = darkBackground;
+    }
+    popupMenu.style.border = null;
 
     progressBarContainer.style.backgroundColor = progressBarBackground;
     progressBarContainer.style.border = progressBarBorder;

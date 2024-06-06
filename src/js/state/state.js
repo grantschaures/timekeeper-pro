@@ -10,6 +10,8 @@ import { setInitialBackgroundCellSelection, setBackground, deactivateDarkTheme, 
 
 import { appendEditRemoveContainer, createCheckElements, getLastNumberFromId } from '../main/notes.js';
 
+var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
 document.addEventListener('defaultSettingsApplied', () => {
     checkUserSession();
 });
@@ -315,7 +317,7 @@ function updateThemes(userData) {
     if (!flags.darkThemeActivated) {
         darkGrayTheme.classList.remove('selected-background');
         defaultTheme.classList.add('selected-background');
-        deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer);
+        deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, isMobile);
     } else {
         darkGrayTheme.classList.add('selected-background');
         defaultTheme.classList.remove('selected-background');
