@@ -18,6 +18,8 @@ const totalDisplayWorker = new Worker('/js/displayWorkers/totalDisplayWorker.js'
 
 document.addEventListener("DOMContentLoaded", function() {
 
+    document.documentElement.requestFullscreen();
+
     // Favicons
     const greenFavicon = "/images/logo/HyperChillLogoGreen.png";
     const blueFavicon = "/images/logo/HyperChillLogoBlue.png";
@@ -50,9 +52,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     setInitialBackgroundCellSelection();
-
-    // activate dark theme by default
-    activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer);
 
     setTimeout(() => {
         hyperChillTitle.style.opacity = '1';
@@ -928,9 +927,9 @@ document.addEventListener("DOMContentLoaded", function() {
         flags.sessionInProgress = false;
 
         // reset everything
-        
 
-        // location.reload();
+
+        location.reload();
     });
 
     logoutBtn.addEventListener("click", async function() {
@@ -2212,14 +2211,13 @@ export function setBackground(background_color) {
 };
 
 export function deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer) {
-    let componentArr1 = [interruptionsContainer, targetHoursContainer, timekeepingContainer, notesContainer, aboutContainer, blogContainer];
-    let componentArr2 = [popupMenu, settingsContainer];
+    let componentArr1 = [interruptionsContainer, targetHoursContainer, timekeepingContainer, notesContainer, aboutContainer, blogContainer, popupMenu];
 
-    let darkBackgroundTranslucent = "rgba(0, 0, 0, 0.35)";
+    let darkBackgroundTranslucent = "rgba(0, 0, 0, 0.8)"; // changed from 0.35 alpha value
     let darkBackground = "rgb(0, 0, 0)";
     let progressBarBackground = "rgba(255, 255, 255, 0.25)";
     let progressBarBorder = "1px rgba(0, 0, 0, 0.25)";
-    let emojiContainerWhiteBackground = "#f9f9f9";
+    let emojiContainerBlackBackground = "#000000";
 
     componentArr1.forEach(function(component) {
         component.style.backgroundColor = darkBackgroundTranslucent;
@@ -2229,12 +2227,10 @@ export function deactivateDarkTheme(interruptionsContainer, targetHoursContainer
     progressBarContainer.style.backgroundColor = progressBarBackground;
     progressBarContainer.style.border = progressBarBorder;
 
-    componentArr2.forEach(function(component) {
-        component.style.backgroundColor = darkBackground;
-    })
+    settingsContainer.style.backgroundColor = darkBackground;
 
-    emojiContainer.style.backgroundColor = emojiContainerWhiteBackground;
-    emojiContainer.style.border = "5px solid #cccccc";
+    emojiContainer.style.backgroundColor = emojiContainerBlackBackground;
+    emojiContainer.style.border = "5px solid #FFFFFF";
 
     if ((selectedBackgroundId.flowtime === "black-flowtime") && (selectedBackgroundId.chilltime === "black-chilltime")) {
         document.getElementById(selectedBackgroundIdTemp.flowtime).click();

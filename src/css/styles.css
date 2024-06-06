@@ -31,20 +31,32 @@ body {
 html, body {
     margin: 0;
     height: 100%;
-    /* background-image: linear-gradient(to bottom, #3b8fe3, #1d60a3, #7f04c7); */
     background-size: cover; /* This will cover the full area of the element */
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center center; /* This keeps the image centered */
+    background-image: url("/images/iStock/iStock-1253862403-smaller.jpg");
     
-    
-    animation: animateBackground 15s ease infinite;
-    background: linear-gradient(270deg, #3b8fe3, #1d60a3, #7f04c7);
-    background-size: 400% 400%;
+    /* animation: animateBackground 15s ease infinite; */
+    /* background: linear-gradient(270deg, #3b8fe3, #1d60a3, #7f04c7); */
+    /* background-size: 400% 400%; */
+
     
     /* border: 2px solid white; */
     
     /* overflow-x: hidden; */
+}
+
+@keyframes animatePosition {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 @keyframes animateBackground {
@@ -59,7 +71,7 @@ html, body {
     }
 }
 
-/* #background-video {
+#background-video {
     position: fixed;
     right: 0;
     bottom: 0;
@@ -67,9 +79,9 @@ html, body {
     min-height: 100%;
     width: auto; 
     height: auto;
-    z-index: -100;
+    z-index: 0;
     background-size: cover;
-} */
+}
 
 html::-webkit-scrollbar {
     width: 0px;
@@ -437,7 +449,7 @@ button:hover {
 
     justify-content: center;
     
-    background-color: rgba(0, 0, 0, 0.35);
+    background-color: rgba(0, 0, 0, 0.8);
 
     /* DARK GREY THEME BACKGROUND */
     /* background-color: rgba(32, 32, 32, 0.9); */
@@ -463,7 +475,7 @@ button:hover {
 
     justify-content: center;
     
-    background-color: rgba(0, 0, 0, 0.35);
+    background-color: rgba(0, 0, 0, 0.8);
 
     /* DARK GREY THEME BACKGROUND */
     /* background-color: rgba(32, 32, 32, 0.9); */
@@ -682,7 +694,7 @@ button:hover {
     margin-top: 25px;
     margin-bottom: 25px;
 
-    background-color: rgba(0, 0, 0, 0.35);
+    background-color: rgba(0, 0, 0, 0.8);
 
     /* DARK GREY THEME BACKGROUND */
     /* background-color: rgba(32, 32, 32, 0.9); */

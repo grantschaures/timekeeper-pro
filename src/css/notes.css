@@ -1,6 +1,6 @@
 #notes-container {
     position: relative;
-    background-color: rgba(0, 0, 0, 0.35);
+    background-color: rgba(0, 0, 0, 0.8);
     /* overflow: hidden; */
 
     /* DARK GREY THEME BACKGROUND */
@@ -207,14 +207,19 @@
     position: fixed;
     right: 10px;
     top: -160px;
-    border: 5px solid #cccccc;
+
+    /* border: 5px solid #cccccc; */
+    border: 5px solid white;
+
     /* border: 3px solid white; */
     border-radius: 8px;
     padding: 10px;
     width: 200px;
     height: 200px;
     text-align: center;
-    background-color: #f9f9f9;
+
+    /* background-color: #f9f9f9; */
+    background-color: black;
 
     opacity: 0;
     /* opacity: 1; */
