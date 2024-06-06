@@ -587,7 +587,8 @@ document.addEventListener("DOMContentLoaded", function() {
             selectedBackgroundId.chilltime = newId;
             document.getElementById(event.target.id).classList.add('selected-background');
 
-            if ((!flags.inHyperFocus)) {
+            // if we're in chilltime (and not pre-session)
+            if ((!flags.inHyperFocus) && (counters.startStop >= 1)) {
                 setBackground(selectedBackground.chilltime);
             }
 

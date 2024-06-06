@@ -294,8 +294,9 @@ function updateBackgrounds(userData) {
     selectedBackgroundId.chilltime = chillTimeBackground;
     selectedBackground.chilltime = chilltimeBackgrounds[chillTimeBackground];
 
-    setBackground(selectedBackground.flowtime);
-    setBackground(selectedBackground.chilltime);
+    /** Default Background now same as non-logged in */
+    // setBackground(selectedBackground.flowtime);
+    // setBackground(selectedBackground.chilltime);
 
     // GUI updates
 
