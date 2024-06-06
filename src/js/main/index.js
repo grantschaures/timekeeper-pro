@@ -1335,32 +1335,6 @@ function chillTimeToFirstPomodoro(flags, productivity_chill_mode, counters) {
     } 
 }
 
-function activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer) {
-    let componentArr1 = [interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, notesContainer, aboutContainer, blogContainer];
-    let componentArr2 = [popupMenu, settingsContainer, emojiContainer];
-
-    let darkBackgroundTranslucent = "rgba(32, 32, 32, 0.9)";
-    let darkBackground = "rgba(32, 32, 32, 1)";
-    let border = "3px solid rgb(255, 255, 255)";
-
-    componentArr1.forEach(function(component) {
-        component.style.backgroundColor = darkBackgroundTranslucent;
-        component.style.border = border;
-    })
-
-    componentArr2.forEach(function(component) {
-        component.style.backgroundColor = darkBackground;
-    })
-
-    emojiContainer.style.border = "5px solid white";
-
-    selectedBackgroundIdTemp["flowtime"] = selectedBackgroundId.flowtime;
-    selectedBackgroundIdTemp["chilltime"] = selectedBackgroundId.chilltime;
-
-    blackFlowtimeBackground.click();
-    blackChilltimeBackground.click();
-}
-
 function sendSuggestionBreakNotification(timeAmount, startTimes, chime, bell, alertSounds, alertVolumes) {
     let notificationString;
     if (timeAmount.suggestionMinutes > 1) {
@@ -2236,3 +2210,29 @@ export function deactivateDarkTheme(interruptionsContainer, targetHoursContainer
         document.getElementById(selectedBackgroundIdTemp.chilltime).click();
     }
 };
+
+export function activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer) {
+    let componentArr1 = [interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, notesContainer, aboutContainer, blogContainer];
+    let componentArr2 = [popupMenu, settingsContainer, emojiContainer];
+
+    let darkBackgroundTranslucent = "rgba(32, 32, 32, 0.9)";
+    let darkBackground = "rgba(32, 32, 32, 1)";
+    let border = "3px solid rgb(255, 255, 255)";
+
+    componentArr1.forEach(function(component) {
+        component.style.backgroundColor = darkBackgroundTranslucent;
+        component.style.border = border;
+    })
+
+    componentArr2.forEach(function(component) {
+        component.style.backgroundColor = darkBackground;
+    })
+
+    emojiContainer.style.border = "5px solid white";
+
+    selectedBackgroundIdTemp["flowtime"] = selectedBackgroundId.flowtime;
+    selectedBackgroundIdTemp["chilltime"] = selectedBackgroundId.chilltime;
+
+    blackFlowtimeBackground.click();
+    blackChilltimeBackground.click();
+}

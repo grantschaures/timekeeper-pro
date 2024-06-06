@@ -64,8 +64,8 @@ const resetPasswordHtmlReplacements = [
 // Define replacements for state.js
 const stateReplacements = [
     {
-        pattern: /import { setInitialBackgroundCellSelection, setBackground, deactivateDarkTheme } from '..\/main\/index.js';/g,
-        replacement: "import { setInitialBackgroundCellSelection, setBackground, deactivateDarkTheme } from '../minified/index.min.js';"
+        pattern: /import { setInitialBackgroundCellSelection, setBackground, deactivateDarkTheme, activateDarkTheme } from '..\/main\/index.js';/g,
+        replacement: "import { setInitialBackgroundCellSelection, setBackground, deactivateDarkTheme, activateDarkTheme } from '../minified/index.min.js';"
     },
     {
         pattern: /import { appendEditRemoveContainer, createCheckElements, getLastNumberFromId } from '..\/main\/notes.js';/g,
