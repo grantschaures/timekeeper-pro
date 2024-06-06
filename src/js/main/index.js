@@ -18,8 +18,6 @@ const totalDisplayWorker = new Worker('/js/displayWorkers/totalDisplayWorker.js'
 
 document.addEventListener("DOMContentLoaded", function() {
 
-    document.documentElement.requestFullscreen();
-
     // Favicons
     const greenFavicon = "/images/logo/HyperChillLogoGreen.png";
     const blueFavicon = "/images/logo/HyperChillLogoBlue.png";
