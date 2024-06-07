@@ -39,6 +39,7 @@ html {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center center;
+    background-color: #3b8fe3; /* Fallback color */
     background-image: url("/images/iStock/iStock-1253862403-smaller.jpg");
     /* background-image: url("/images/iStock/guassian-blur-chillwave.png"); */
     
