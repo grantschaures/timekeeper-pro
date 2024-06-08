@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", function() {
             chillTimeAnimationActions(flags, flowAnimation, chillAnimation);
 
             // EDIT: temporary change to see total interruptions for my own data collection
-            // saveResetInterruptions(interruptionsNum, counters, savedInterruptionsArr);
+            saveResetInterruptions(interruptionsNum, counters, savedInterruptionsArr);
 
             hideInterruptionsSubContainer(interruptionsSubContainer);
             setBackground(selectedBackground.chilltime);
