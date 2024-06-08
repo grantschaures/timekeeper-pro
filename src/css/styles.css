@@ -41,7 +41,6 @@ html {
     background-position: center center;
     /* background-color: #411da3; */
     background-image: url("/images/iStock/iStock-1253862403-smaller.jpg");
-    /* background-image: url("/images/iStock/guassian-blur-chillwave.png"); */
     
     /* background-image: linear-gradient(0deg, #3b8fe3, #411da3, #b004c7); */
     /* animation: animateBackground 15s ease infinite; */
@@ -52,30 +51,19 @@ html {
 
 body::before {
     content: '';
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background-image: linear-gradient(0deg, #3b8fe3, #411da3, #b004c7);
     /* background-image: url("/images/iStock/iStock-1253862403-smaller.jpg"); */
-    background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center center;
     opacity: 1;
-    padding-bottom: 30px;
     animation: fadeInBackground 3s ease-in-out forwards;
     z-index: 0;
-}
-
-@keyframes minimizePadding {
-    from {
-        padding: 30px;
-    }
-    to {
-        opacity: 0px;
-    }
 }
 
 @keyframes fadeInBackground {

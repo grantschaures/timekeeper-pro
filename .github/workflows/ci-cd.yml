@@ -24,7 +24,7 @@ jobs:
       run: npm test
 
     - name: Edit HTML
-      run: npm run editHTML  # This will run your editHTML.js script
+      run: npm run editHTML
 
     - name: Minify js files
       run: npm run build
