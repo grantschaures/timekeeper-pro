@@ -1015,32 +1015,82 @@
                             <div id="backgroundsContainer" class="settingsIconTextContainer">
                                 <h2>Backgrounds & Themes</h2>
                             </div>
-                            <div id="flowTimeBackgrounds" class="settingsMicroContainer">
+
+                            <div id="flowTimeBackgroundsTextContainer" class="settingsMicroContainer">
                                 <div id="flowTimeBackgroundsText" class="settingsText">
                                     <p id="flowTimeBackgrounds"><b class="settingsCategoryHeading">Flow Time Background</b></p>
                                 </div>
                             </div>
-                            <div id="flowTimeBackgroundsContainer" class="settingsMicroContainer backgroundsContainer">
-                                <div id="green-default" class="flowtimeBackgroundCell"></div>
-                                <div id="red-flowtime" class="flowtimeBackgroundCell"></div>
-                                <div id="yellow-flowtime" class="flowtimeBackgroundCell"></div>
-                                <div id="blue-flowtime" class="flowtimeBackgroundCell"></div>
-                                <div id="purple-flowtime" class="flowtimeBackgroundCell"></div>
-                                <div id="black-flowtime" class="flowtimeBackgroundCell"></div>
+
+                            <div id="flowTimeGradientsBlock">
+                                <div class="settingsMicroContainer">
+                                    <div class="settingsText">
+                                        <p><b class="settingsCategoryHeading">HyperChill Gradients 😛</b></p>
+                                    </div>
+                                </div>
+                                <div id="flowTimeBackgroundsContainer" class="settingsMicroContainer backgroundsContainer">
+                                    <div id="green-default" class="flowtimeBackgroundCell"></div>
+                                    <div id="red-flowtime" class="flowtimeBackgroundCell"></div>
+                                    <div id="yellow-flowtime" class="flowtimeBackgroundCell"></div>
+                                    <div id="blue-flowtime" class="flowtimeBackgroundCell"></div>
+                                    <div id="purple-flowtime" class="flowtimeBackgroundCell"></div>
+                                    <div id="black-flowtime" class="flowtimeBackgroundCell"></div>
+                                </div>
                             </div>
+
+                            <div id="hyperChillWorldBlock-flowtime">
+                                <div id="hyperChillWorldContainer-flowtime" class="settingsMicroContainer">
+                                    <div id="hyperChillWorldText-flowtime" class="settingsText">
+                                        <p id="hyperChillWorld-flowtime"><b class="settingsCategoryHeading">HyperChill Worlds 😊</b></p>
+                                    </div>
+                                </div>
+                                <div id="flowtimeWorldsBackgroundsContainer" class="settingsMicroContainer backgroundsContainer">
+                                    <div id="hyperchillSunset-flowtime" class="flowtimeBackgroundWorldCell"></div>
+                                    <div id="hyperchillHands-flowtime" class="flowtimeBackgroundWorldCell"></div>
+                                    <div id="hyperchillTriangle-flowtime" class="flowtimeBackgroundWorldCell"></div>
+                                </div>
+                            </div>
+
+                            <hr>
+
                             <div id="chillTimeBackgrounds" class="settingsMicroContainer">
                                 <div id="chillTimeBackgroundsText" class="settingsText">
                                     <p id="chillTimeBackgrounds"><b class="settingsCategoryHeading">Chill Time Background</b></p>
                                 </div>
                             </div>
-                            <div id="chillTimeBackgroundsContainer" class="settingsMicroContainer backgroundsContainer">
-                                <div id="green-chilltime" class="chilltimeBackgroundCell"></div>
-                                <div id="red-chilltime" class="chilltimeBackgroundCell"></div>
-                                <div id="yellow-chilltime" class="chilltimeBackgroundCell"></div>
-                                <div id="blue-default" class="chilltimeBackgroundCell"></div>
-                                <div id="purple-chilltime" class="chilltimeBackgroundCell"></div>
-                                <div id="black-chilltime" class="chilltimeBackgroundCell"></div>
+
+                            <div id="chillTimeGradientsBlock">
+                                <div class="settingsMicroContainer">
+                                    <div class="settingsText">
+                                        <p><b class="settingsCategoryHeading">HyperChill Gradients 😛</b></p>
+                                    </div>
+                                </div>
+
+                                <div id="chillTimeBackgroundsContainer" class="settingsMicroContainer backgroundsContainer">
+                                    <div id="green-chilltime" class="chilltimeBackgroundCell"></div>
+                                    <div id="red-chilltime" class="chilltimeBackgroundCell"></div>
+                                    <div id="yellow-chilltime" class="chilltimeBackgroundCell"></div>
+                                    <div id="blue-default" class="chilltimeBackgroundCell"></div>
+                                    <div id="purple-chilltime" class="chilltimeBackgroundCell"></div>
+                                    <div id="black-chilltime" class="chilltimeBackgroundCell"></div>
+                                </div>
                             </div>
+
+                            <div id="hyperChillWorldBlock-chilltime">
+                                <div id="hyperChillWorldContainer-chilltime" class="settingsMicroContainer">
+                                    <div id="hyperChillWorldText-chilltime" class="settingsText">
+                                        <p id="hyperChillWorld-chilltime"><b class="settingsCategoryHeading">HyperChill Worlds 😊</b></p>
+                                    </div>
+                                </div>
+                                <div id="chilltimeWorldsBackgroundsContainer" class="settingsMicroContainer backgroundsContainer">
+                                    <div id="hyperchillSunset-chilltime" class="chilltimeBackgroundWorldCell"></div>
+                                    <div id="hyperchillHands-chilltime" class="chilltimeBackgroundWorldCell"></div>
+                                    <div id="hyperchillTriangle-chilltime" class="chilltimeBackgroundWorldCell"></div>
+                                </div>
+                            </div>
+
+                            <hr>
+
                             <div id="themesContainer" class="settingsMicroContainer">
                                 <div id="themesText" class="settingsText">
                                     <p id="themesHeader"><b class="settingsCategoryHeading">Themes</b></p>
@@ -1067,7 +1117,7 @@
                                         <p id="flowTimeAnimationHeader"><b>Flow Time</b></p>
                                     </div>
                                     <div id="flowTimeAnimationToggleContainer" class="toggleContainer">
-                                        <input type="checkbox" id="flowTimeAnimationToggle" class="toggle-checkbox" checked>
+                                        <input type="checkbox" id="flowTimeAnimationToggle" class="toggle-checkbox">
                                         <!-- <input type="checkbox" id="flowTimeAnimationToggle" class="toggle-checkbox"> -->
                                         <label for="flowTimeAnimationToggle" id="flowTimeAnimationToggleLabel" class="toggle-label">
                                             <span id="flowTimeAnimationToggleBall" class="toggle-ball"></span>
@@ -1079,7 +1129,7 @@
                                         <p id="chillTimeAnimationHeader"><b>Chill Time</b></p>
                                     </div>
                                     <div id="chillTimeAnimationToggleContainer" class="toggleContainer">
-                                        <input type="checkbox" id="chillTimeAnimationToggle" class="toggle-checkbox" checked>
+                                        <input type="checkbox" id="chillTimeAnimationToggle" class="toggle-checkbox">
                                         <label for="chillTimeAnimationToggle" id="chillTimeAnimationToggleLabel" class="toggle-label">
                                             <span id="chillTimeAnimationToggleBall" class="toggle-ball"></span>
                                         </label>

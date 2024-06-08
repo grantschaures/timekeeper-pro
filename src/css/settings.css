@@ -21,7 +21,7 @@
     right: 0;     /* Stretch to the right */
     bottom: 0;    /* Stretch to the bottom */
     
-    width: 1200px;
+    width: 1000px;
     height: 100%; /* Cover the full height */
     
     display: none; /* eventually make this none by default */
@@ -739,7 +739,30 @@
     background-size: 400% 400%;
 }
 
-.flowtimeBackgroundCell:hover, .chilltimeBackgroundCell:hover, .themeCell:hover {
+.flowtimeBackgroundWorldCell, .chilltimeBackgroundWorldCell {
+    border-radius: 15px;
+    padding: 10px 20px;
+    color: white;
+    display: block;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 85px;
+    margin: 10px;
+    box-sizing: border-box;
+    border: 0px solid white;
+    transition: border 0.10s ease-in-out;
+    box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.5);
+
+    background-size: contain; /* Ensure the image is zoomed out to fit the cell */
+    background-position: center; /* Center the image in the cell */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+
+    background-size: 110% 110%;
+}
+
+.flowtimeBackgroundCell:hover, .chilltimeBackgroundCell:hover, .flowtimeBackgroundWorldCell:hover, .chilltimeBackgroundWorldCell:hover, .themeCell:hover {
     cursor: pointer;
 }
 
@@ -752,22 +775,42 @@
 }
 
 #yellow-flowtime, #yellow-chilltime {
-    background-image: linear-gradient(270deg, #b8c500, #90c400, #5fc500);
+    background-image: linear-gradient(270deg, #e1ff00, #90c400, #00e908);
 }
 
 #blue-default, #blue-flowtime {
-    background-image: linear-gradient(270deg, #3b8fe3, #1d60a3, #7f04c7);
+    background-image: linear-gradient(270deg, #0f0cce, #700cce, #b004c7);
 }
 
 #purple-flowtime, #purple-chilltime {
-    background-image: linear-gradient(270deg, #7f04c7, #b004c7, #c004c7);
+    background-image: linear-gradient(270deg, #700cce, #b004c7, #f700ff);
 }
 
 #black-flowtime, #black-chilltime {
     background-color: #202020;
 }
 
-#flowTimeBackgroundsContainer, #chillTimeBackgroundsContainer {
+#hyperchillSunset-flowtime {
+    background-image: url("/images/iStock/iStock-1253862403-small.jpg");
+}
+
+#hyperchillSunset-chilltime {
+    background-image: url("/images/iStock/iStock-1253862403-small-orange.jpg");
+}
+
+#hyperchillHands-flowtime {
+    background-image: url("/images/iStock/iStock-1306875579-small.jpg");
+}
+
+#hyperchillHands-chilltime {
+    background-image: url("/images/iStock/iStock-1306875579-small-invert.jpg");
+}
+
+#hyperchillTriangle-flowtime, #hyperchillTriangle-chilltime {
+    background-image: url("/images/iStock/iStock-1394258416-small.jpg");
+}
+
+#flowTimeBackgroundsContainer, #chillTimeBackgroundsContainer, #flowtimeWorldsBackgroundsContainer, #chilltimeWorldsBackgroundsContainer {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: auto auto;
@@ -788,7 +831,7 @@
 }
 
 @media (max-width: 892px) {
-    #flowTimeBackgroundsContainer, #chillTimeBackgroundsContainer {
+    #flowTimeBackgroundsContainer, #chillTimeBackgroundsContainer, #flowtimeWorldsBackgroundsContainer, #chilltimeWorldsBackgroundsContainer {
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: auto auto auto;
         width: 400px;
@@ -882,7 +925,7 @@
         flex-direction: column;
         margin-bottom: 20px;
     }
-    #chillTimeBackgroundsContainer > div, #flowTimeBackgroundsContainer > div {
+    #chillTimeBackgroundsContainer > div, #flowTimeBackgroundsContainer > div, #flowtimeWorldsBackgroundsContainer > div, #chilltimeWorldsBackgroundsContainer > div {
         width: 80px;
     }
     #themesContainer {
@@ -901,7 +944,7 @@
         text-align: left;
         margin-left: 35px;
     }
-    #flowTimeBackgroundsContainer, #chillTimeBackgroundsContainer {
+    #flowTimeBackgroundsContainer, #chillTimeBackgroundsContainer, #flowtimeWorldsBackgroundsContainer, #chilltimeWorldsBackgroundsContainer {
         /* border: 1px solid white; */
         grid-template-columns: 130px 130px;
         grid-template-rows: auto auto auto;

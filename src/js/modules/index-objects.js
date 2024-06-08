@@ -1,24 +1,30 @@
 export const flowtimeBackgrounds = {
-    "green-default": "linear-gradient(270deg, #3ec500, #37c400, #00c59a)",
-    "red-flowtime": "linear-gradient(270deg, #c42700, #c56900, #c58000)",
-    "yellow-flowtime": "linear-gradient(270deg, #b8c500, #90c400, #5fc500)",
-    "blue-flowtime": "linear-gradient(270deg, #3b8fe3, #1d60a3, #7f04c7)",
-    "purple-flowtime": "linear-gradient(270deg, #7f04c7, #b004c7, #c004c7)",
-    "black-flowtime": "linear-gradient(270deg, #202020, #202020, #202020)"
+    "green-default": 'url("/images/hyperchill_gradients/blue-green-gradient.jpg")',
+    "red-flowtime": 'url("/images/hyperchill_gradients/red-orange-gradient.jpg")',
+    "yellow-flowtime": 'url("/images/hyperchill_gradients/lemon-lime-gradient.jpg")',
+    "blue-flowtime": 'url("/images/hyperchill_gradients/blue-purple-gradient.jpg")',
+    "purple-flowtime": 'url("/images/hyperchill_gradients/purple-pink-gradient.jpg")',
+    "black-flowtime": 'url("/images/hyperchill_gradients/black-gradient.jpg")',
+    "hyperchillSunset-flowtime": 'url("/images/iStock/iStock-1253862403-mid-edit.jpg")',
+    "hyperchillHands-flowtime": 'url("/images/iStock/iStock-1306875579-mid.jpg")',
+    "hyperchillTriangle-flowtime": 'url("/images/iStock/iStock-1394258416-mid-edit.jpg")',
 }
 
 export const chilltimeBackgrounds = {
-    "green-chilltime": "linear-gradient(270deg, #3ec500, #37c400, #00c59a)",
-    "red-chilltime": "linear-gradient(270deg, #c42700, #c56900, #c58000)",
-    "yellow-chilltime": "linear-gradient(270deg, #b8c500, #90c400, #5fc500)",
-    "blue-default": "linear-gradient(270deg, #3b8fe3, #1d60a3, #7f04c7)",
-    "purple-chilltime": "linear-gradient(270deg, #7f04c7, #b004c7, #c004c7)",
-    "black-chilltime": "linear-gradient(270deg, #202020, #202020, #202020)"
+    "green-chilltime": 'url("/images/hyperchill_gradients/blue-green-gradient.jpg")',
+    "red-chilltime": 'url("/images/hyperchill_gradients/red-orange-gradient.jpg")',
+    "yellow-chilltime": 'url("/images/hyperchill_gradients/lemon-lime-gradient.jpg")',
+    "blue-default": 'url("/images/hyperchill_gradients/blue-purple-gradient.jpg")',
+    "purple-chilltime": 'url("/images/hyperchill_gradients/purple-pink-gradient.jpg")',
+    "black-chilltime": 'url("/images/hyperchill_gradients/black-gradient.jpg")',
+    "hyperchillSunset-chilltime": 'url("/images/iStock/iStock-1253862403-mid-orange.jpg")',
+    "hyperchillHands-chilltime": 'url("/images/iStock/iStock-1306875579-mid-invert.jpg")',
+    "hyperchillTriangle-chilltime": 'url("/images/iStock/iStock-1394258416-mid-edit.jpg")',
 }
 
 export const selectedBackground = {
-    "flowtime": "linear-gradient(270deg, #3ec500, #37c400, #00c59a)",
-    "chilltime": "linear-gradient(270deg, #3b8fe3, #1d60a3, #7f04c7)"
+    "flowtime": 'url("/images/hyperchill_gradients/blue-green-gradient.jpg")',
+    "chilltime": 'url("/images/hyperchill_gradients/blue-purple-gradient.jpg")'
 }
 
 export const selectedBackgroundIdTemp = {
@@ -137,8 +143,8 @@ export const flags = {
     autoSwitchedModes: false,
     inRecoveryBreak: false,
     inRecoveryPom: false,
-    flowTimeAnimationToggle: true,
-    chillTimeAnimationToggle: true,
+    flowTimeAnimationToggle: false,
+    chillTimeAnimationToggle: false,
     darkThemeActivated: true,
     modeChangeExecuted: false,
     sentFlowmodoroNotification: false,
