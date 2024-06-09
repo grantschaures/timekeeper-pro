@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
         "/images/iStock/iStock-1394258416-small.jpg",
     ];
 
-    preloadImages(imgUrls);
+    // preloadImages(imgUrls);
 })
 
 function preloadImages(imageUrls) {
