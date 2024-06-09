@@ -81,7 +81,6 @@ document.addEventListener("DOMContentLoaded", function() {
     var startImg = new Image();
     startImg.src = '/images/iStock/iStock-1253862403-mid-edit.jpg';
     startImg.onload = function() {
-        console.log("image has been loaded");
         document.body.classList.add('fade-out-bg');
     }
 
