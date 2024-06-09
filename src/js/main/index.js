@@ -51,6 +51,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     setInitialBackgroundCellSelection();
 
+    // Initial Animations
     setTimeout(() => {
         hyperChillTitle.style.opacity = '1';
         hyperChillTitle.classList.add('hyperChillTitleAnimation');
@@ -76,10 +77,9 @@ document.addEventListener("DOMContentLoaded", function() {
         }, 1000)
     }, 2000)
 
+    // Fade out gradient once home image has loaded :P
     var startImg = new Image();
-
     startImg.src = '/images/iStock/iStock-1253862403-mid-edit.jpg';
-
     startImg.onload = function() {
         console.log("image has been loaded");
         document.body.classList.add('fade-out-bg');
