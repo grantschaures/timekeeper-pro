@@ -31,6 +31,7 @@ body {
     /* border: 2px solid white; */
 }
 
+/* Note: background image transition won't work on Firefox. Could potentially fix in the future. */
 html {
     margin: 0;
     width: 100%;

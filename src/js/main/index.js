@@ -84,6 +84,15 @@ document.addEventListener("DOMContentLoaded", function() {
         document.body.classList.add('fade-out-bg');
     }
 
+    // service worker registration
+    // if ('serviceWorker' in navigator) {
+    //     navigator.serviceWorker.register('/js/service_workers/sw.js').then(registration => {
+    //         console.log('Service Worker registered with scope:', registration.scope);
+    //     }).catch(error => {
+    //         console.log('Service Worker registration failed:', error);
+    //     });
+    // }
+
     // ----------------
     // EVENT LISTENERS
     // ----------------
@@ -829,7 +838,7 @@ document.addEventListener("DOMContentLoaded", function() {
     chillTimeAnimationToggle.addEventListener("click", async function() {
         if (chillTimeAnimationToggle.checked) {
             flags.chillTimeAnimationToggle = true;
-            if (!flags.inHyperFocus) {
+            if ((!flags.inHyperFocus) && (counters.startStop > 1)) {
                 animationsFadeIn(chillAnimation, 'flex');
             }
         } else {
