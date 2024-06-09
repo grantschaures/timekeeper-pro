@@ -7,7 +7,7 @@ export const flowtimeBackgrounds = {
     "black-flowtime": 'url("/images/hyperchill_gradients/black-gradient.jpg")',
     "hyperchillSunset-flowtime": 'url("/images/iStock/iStock-1253862403-mid-edit.jpg")',
     "hyperchillHands-flowtime": 'url("/images/iStock/iStock-1306875579-mid.jpg")',
-    "hyperchillTriangle-flowtime": 'url("/images/iStock/iStock-1394258416-mid-edit.jpg")',
+    "hyperchillTriangle-flowtime": 'url("/images/iStock/iStock-1394258314-mid.jpg")',
 }
 
 export const chilltimeBackgrounds = {
@@ -19,7 +19,7 @@ export const chilltimeBackgrounds = {
     "black-chilltime": 'url("/images/hyperchill_gradients/black-gradient.jpg")',
     "hyperchillSunset-chilltime": 'url("/images/iStock/iStock-1253862403-mid-orange.jpg")',
     "hyperchillHands-chilltime": 'url("/images/iStock/iStock-1306875579-mid-invert.jpg")',
-    "hyperchillTriangle-chilltime": 'url("/images/iStock/iStock-1394258416-mid-edit.jpg")',
+    "hyperchillTriangle-chilltime": 'url("/images/iStock/iStock-1394258314-mid-green-pixelated.jpg")',
 }
 
 export const selectedBackground = {

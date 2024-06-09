@@ -806,8 +806,12 @@
     background-image: url("/images/iStock/iStock-1306875579-small-invert.jpg");
 }
 
-#hyperchillTriangle-flowtime, #hyperchillTriangle-chilltime {
-    background-image: url("/images/iStock/iStock-1394258416-small.jpg");
+#hyperchillTriangle-flowtime {
+    background-image: url("/images/iStock/iStock-1394258314-small.jpg");
+}
+
+#hyperchillTriangle-chilltime {
+    background-image: url("/images/iStock/iStock-1394258314-small-green-pixelated.jpg");
 }
 
 #flowTimeBackgroundsContainer, #chillTimeBackgroundsContainer, #flowtimeWorldsBackgroundsContainer, #chilltimeWorldsBackgroundsContainer {
