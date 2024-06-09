@@ -70,8 +70,12 @@ body::before {
     background-attachment: fixed;
     background-position: center center;
     opacity: 1;
-    animation: fadeOutBackground 3s ease-in-out forwards;
+    /* animation: fadeOutBackground 3s ease-in-out forwards; */
     z-index: 0;
+}
+
+body.fade-out-bg::before {
+    animation: fadeOutBackground 3s ease-in-out forwards;
 }
 
 @keyframes fadeOutBackground {
