@@ -30,10 +30,8 @@ const setPasswordHtmlPath = './public/set-password.html';
 const resetPasswordHtmlPath = './public/reset-password.html';
 
 const stateJsPath = './src/js/state/state.js';
-const updateLabelsJsPath = './src/js/state/update-labels.js';
-const updateNotesJsPath = './src/js/state/update-notes.js';
-const updateSettingsJsPath = './src/js/state/update-settings.js';
 const indexJsPath = './src/js/main/index.js';
+const notesJsPath = './src/js/main/notes.js';
 const loginJsPath = './src/js/login_signup/login.js';
 const googleSignInPath = './src/js/api/google-signin.js';
 
@@ -87,6 +85,21 @@ const indexReplacements = [
     }
 ];
 
+const notesReplacements = [
+    {
+        pattern: /import { updateUserSettings } from '..\/state\/update-settings.js';/g,
+        replacement: "import { updateUserSettings } from '../minified/update-settings.min.js';"
+    },
+    {
+        pattern: /import { updateLabels } from '..\/state\/update-labels.js';/g,
+        replacement: "import { updateLabels } from '../minified/update-labels.min.js';"
+    },
+    {
+        pattern: /import { updateNotes } from '..\/state\/update-notes.js';/g,
+        replacement: "import { updateNotes } from '../minified/update-notes.min.js';"
+    },
+];
+
 const googleSignInReplacements = [
     {
         pattern: /import { initializeGUI } from '..\/utility\/initialize_gui.js';/g,
@@ -119,5 +132,6 @@ readFileAndReplace(resetPasswordHtmlPath, resetPasswordHtmlReplacements);
 // JS updates
 readFileAndReplace(stateJsPath, stateReplacements);
 readFileAndReplace(indexJsPath, indexReplacements);
+readFileAndReplace(notesJsPath, notesReplacements);
 readFileAndReplace(googleSignInPath, googleSignInReplacements);
 readFileAndReplace(loginJsPath, loginReplacements);
