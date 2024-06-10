@@ -30,6 +30,9 @@ const setPasswordHtmlPath = './public/set-password.html';
 const resetPasswordHtmlPath = './public/reset-password.html';
 
 const stateJsPath = './src/js/state/state.js';
+const updateLabelsJsPath = './src/js/state/update-labels.js';
+const updateNotesJsPath = './src/js/state/update-notes.js';
+const updateSettingsJsPath = './src/js/state/update-settings.js';
 const indexJsPath = './src/js/main/index.js';
 const loginJsPath = './src/js/login_signup/login.js';
 const googleSignInPath = './src/js/api/google-signin.js';
@@ -73,7 +76,25 @@ const stateReplacements = [
     }
 ];
 
-const initializeGuiEdits = [
+const indexReplacements = [
+    {
+        pattern: /import { initializeGUI } from '..\/utility\/initialize_gui.js';/g,
+        replacement: "import { initializeGUI } from '../minified/initialize_gui.min.js';"
+    },
+    {
+        pattern: /import { updateUserSettings } from '..\/state\/update-settings.js';/g,
+        replacement: "import { updateUserSettings } from '../minified/update-settings.min.js';"
+    }
+];
+
+const googleSignInReplacements = [
+    {
+        pattern: /import { initializeGUI } from '..\/utility\/initialize_gui.js';/g,
+        replacement: "import { initializeGUI } from '../minified/initialize_gui.min.js';"
+    }
+];
+
+const loginReplacements = [
     {
         pattern: /import { initializeGUI } from '..\/utility\/initialize_gui.js';/g,
         replacement: "import { initializeGUI } from '../minified/initialize_gui.min.js';"
@@ -95,8 +116,8 @@ readFileAndReplace(setPasswordHtmlPath, setPasswordHtmlReplacements);
 // Update reset-password.html
 readFileAndReplace(resetPasswordHtmlPath, resetPasswordHtmlReplacements);
 
+// JS updates
 readFileAndReplace(stateJsPath, stateReplacements);
-
-readFileAndReplace(googleSignInPath, initializeGuiEdits);
-readFileAndReplace(indexJsPath, initializeGuiEdits);
-readFileAndReplace(loginJsPath, initializeGuiEdits);
+readFileAndReplace(indexJsPath, indexReplacements);
+readFileAndReplace(googleSignInPath, googleSignInReplacements);
+readFileAndReplace(loginJsPath, loginReplacements);

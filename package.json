@@ -16,6 +16,11 @@
   "author": "Grant Schaures",
   "license": "ISC",
   "dependencies": {
+    "@babel/core": "^7.24.7",
+    "@babel/generator": "^7.24.7",
+    "@babel/parser": "^7.24.7",
+    "@babel/traverse": "^7.24.7",
+    "@babel/types": "^7.24.7",
     "@sendgrid/mail": "^7.7.0",
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",

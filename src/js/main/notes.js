@@ -8,10 +8,10 @@ import { notesFlags, counters, state, flags, emojiMap, tutorialContainerMap, fon
 
 import { sessionState } from '../modules/state-objects.js';
 
-import { updateUserSettings } from '../modules/update-settings.js';
+import { updateUserSettings } from '../state/update-settings.js';
 
-import { updateLabels } from '../modules/update-labels.js';
-import { updateNotes } from '../modules/update-notes.js';
+import { updateLabels } from '../state/update-labels.js';
+import { updateNotes } from '../state/update-notes.js';
 
 document.addEventListener("DOMContentLoaded", function() {
     //set initial emoji container point location
