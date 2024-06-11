@@ -1966,31 +1966,6 @@ function playAlertSoundCountdown(chime, bell, alertSoundType, alertVolumeType) {
     }
 }
 
-//Returns user's broswer type; (this function is not currently being used)
-function detectBrowser() {
-    var userAgent = navigator.userAgent;
-
-    if (userAgent.indexOf("Firefox") > -1) {
-        // alert("You are using Mozilla Firefox");
-        return "Firefox";
-    } else if (userAgent.indexOf("Safari") > -1 && userAgent.indexOf("Chrome") == -1) {
-        // alert("You are using Safari");
-        return "Safari"
-    } else if (userAgent.indexOf("Edg") > -1) {
-        // alert("You are using the Chromium-based Microsoft Edge");
-        return "Chromium-Edge";
-    } else if (userAgent.indexOf("Edge") > -1) {
-        // alert("You are using the Legacy Microsoft Edge");
-        return "Legacy Edge";
-    } else if (userAgent.indexOf("Chrome") > -1) {
-        // alert("You are using Chrome")
-        return "Chrome"
-    } else {
-        // alert("You are using another browser");
-        return "Another browser"
-    }
-}
-
 //For some reason, EDGE won't prompt the user to turn on notifications if they're set to default :/
 async function enableNotifications(breakSuggestionToggle, flowmodoroNotificationToggle, pomodoroNotificationToggle, flags) {
     // Check if notifications are supported
