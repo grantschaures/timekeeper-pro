@@ -33,5 +33,5 @@ jobs:
       uses: AkhileshNS/heroku-deploy@v3.13.15  # Use the latest version
       with:
         heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-        heroku_app_name: hyperchill-testing # timekeeper-pro or hyperchill-testing
+        heroku_app_name: timekeeper-pro # timekeeper-pro or hyperchill-testing
         heroku_email: ${{secrets.EMAIL}}  # Replace with your Heroku account email
