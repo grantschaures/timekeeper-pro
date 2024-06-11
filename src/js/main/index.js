@@ -957,35 +957,34 @@ document.addEventListener("DOMContentLoaded", function() {
         // (2) Reset everything to the default state
 
         // reset everything
-        clearInterval(intervals.main);
-        intervals.main = null;
+        // clearInterval(intervals.main);
+        // intervals.main = null;
 
-        // clear all intervals
-        pomodoroWorker.postMessage("clearInterval");
-        suggestionWorker.postMessage("clearInterval");
-        flowmodoroWorker.postMessage("clearInterval");
-        displayWorker.postMessage("clearInterval");
-        totalDisplayWorker.postMessage("clearInterval");
+        // // clear all intervals
+        // pomodoroWorker.postMessage("clearInterval");
+        // suggestionWorker.postMessage("clearInterval");
+        // flowmodoroWorker.postMessage("clearInterval");
+        // displayWorker.postMessage("clearInterval");
+        // totalDisplayWorker.postMessage("clearInterval");
 
-        // fade out animations
-        animationsFadeOut(chillAnimation);
-        animationsFadeOut(flowAnimation);
+        // // fade out animations
+        // animationsFadeOut(chillAnimation);
+        // animationsFadeOut(flowAnimation);
 
-        // reset displays to 00:00:00
-        resetDisplay(display);
-        resetTotalDisplay(total_time_display);
+        // // reset displays to 00:00:00
+        // resetDisplay(display);
+        // resetTotalDisplay(total_time_display);
 
-        // reset background to default
-        setBackground(defaultImgUrl);
+        // // reset background to default
+        // setBackground(defaultImgUrl);
 
-        // reset header text
-        setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", "Press 'Start' to begin session");
+        // // reset header text
+        // setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", "Press 'Start' to begin session");
 
-        resetActions(startTimes, hyperChillLogoImage, progressBarContainer, flags);
-        console.log(document.title)
+        // resetActions(startTimes, hyperChillLogoImage, progressBarContainer, flags);
+        // console.log(document.title)
 
-
-        // location.reload();
+        location.reload();
     });
 
     // similar function in navigation.js
