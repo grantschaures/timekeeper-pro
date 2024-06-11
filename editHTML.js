@@ -42,7 +42,7 @@ const indexHtmlReplacements = [
     { pattern: /\/js\/main\/notes\.js/g, replacement: '/js/minified/notes.min.js' },
     { pattern: /\/js\/state\/state\.js/g, replacement: '/js/minified/state.min.js' },
     { pattern: /\/js\/api\/google-signin\.js/g, replacement: '/js/minified/google-signin.min.js' },
-    { pattern: /\/js\/utilitiy\/preload\.js/g, replacement: '/js/minified/preload.min.js' }
+    { pattern: /\/js\/utility\/preload\.js/g, replacement: '/js/minified/preload.min.js' }
 ];
 
 const loginHtmlReplacements = [
