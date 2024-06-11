@@ -17,6 +17,9 @@ const flowmodoroWorker = new Worker('/js/displayWorkers/flowmodoroWorker.js');
 const displayWorker = new Worker('/js/displayWorkers/displayWorker.js');
 const totalDisplayWorker = new Worker('/js/displayWorkers/totalDisplayWorker.js');
 
+// Create a new mutation observer to watch for changes to the #display div
+const observer = new MutationObserver(setTabTitleFromDisplay);
+
 document.addEventListener("DOMContentLoaded", function() {
 
     // Favicons
@@ -79,8 +82,11 @@ document.addEventListener("DOMContentLoaded", function() {
     }, 2000)
 
     // Fade out gradient once home image has loaded :P
+    let defaultImgPath = "/images/iStock/iStock-1253862403-mid-edit.jpg";
+    let defaultImgUrl = 'url(' + defaultImgPath + ')';
+
     var startImg = new Image();
-    startImg.src = '/images/iStock/iStock-1253862403-mid-edit.jpg';
+    startImg.src = defaultImgPath;
     startImg.onload = function() {
         document.body.classList.add('fade-out-bg');
     }
@@ -945,10 +951,41 @@ document.addEventListener("DOMContentLoaded", function() {
     end_session_btn.addEventListener("click", function() { //temporary function
         flags.sessionInProgress = false;
 
+        // (1) Collect all necessary information about the session
+
+
+        // (2) Reset everything to the default state
+
         // reset everything
+        clearInterval(intervals.main);
+        intervals.main = null;
+
+        // clear all intervals
+        pomodoroWorker.postMessage("clearInterval");
+        suggestionWorker.postMessage("clearInterval");
+        flowmodoroWorker.postMessage("clearInterval");
+        displayWorker.postMessage("clearInterval");
+        totalDisplayWorker.postMessage("clearInterval");
+
+        // fade out animations
+        animationsFadeOut(chillAnimation);
+        animationsFadeOut(flowAnimation);
+
+        // reset displays to 00:00:00
+        resetDisplay(display);
+        resetTotalDisplay(total_time_display);
+
+        // reset background to default
+        setBackground(defaultImgUrl);
+
+        // reset header text
+        setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", "Press 'Start' to begin session");
+
+        resetActions(startTimes, hyperChillLogoImage, progressBarContainer, flags);
+        console.log(document.title)
 
 
-        location.reload();
+        // location.reload();
     });
 
     // similar function in navigation.js
@@ -2078,6 +2115,10 @@ function resetDisplay(display) {
     display.innerText = "00:00:00"; //immediately resets display w/ no lag time
 };
 
+function resetTotalDisplay(total_time_display) {
+    total_time_display.innerText  = "00:00:00";
+}
+
 function veryStartActions(startTimes, hyperChillLogoImage, progressBarContainer, flags) {
     startTimes.beginning = Date.now();
     flags.sessionInProgress = true;
@@ -2090,6 +2131,20 @@ function veryStartActions(startTimes, hyperChillLogoImage, progressBarContainer,
         flags.progressBarContainerIsSmall = true;
     }
 };
+
+function resetActions(startTimes, hyperChillLogoImage, progressBarContainer, flags) {
+    startTimes.beginning = null;
+    flags.sessionInProgress = false;
+    observer.disconnect();
+    document.title = "HyperChill.io | Online Productivity Time Tracker";
+    document.getElementById("target-hours").classList.add("glowing-effect");
+    hyperChillLogoImage.classList.remove("hyperChillLogoRotate");
+
+    if (progressBarContainer.classList.contains("small")) {
+        progressBarContainer.classList.toggle("small");
+    }
+    flags.progressBarContainerIsSmall = false;
+}
 
 function playClick(clock_tick, flags) {
     if (flags.transitionClockSoundToggle == true) {
@@ -2161,17 +2216,15 @@ function getTotalElapsed(flags, elapsedTime, startTimes) { //return current tota
     return flags.inHyperFocus ? (elapsedTime + (Date.now() - startTimes.local)) : elapsedTime;
 };
 
+function setTabTitleFromDisplay() {
+    document.title = document.getElementById("display").innerText;
+};
+
 function setBrowserTabTitle() {
     // Function to set the browser tab title based on the content of the #display div
-    function setTabTitleFromDisplay() {
-        document.title = document.getElementById("display").innerText;
-    };
 
     // Initially set the browser tab title
     document.title = document.getElementById("display").innerText;
-
-    // Create a new mutation observer to watch for changes to the #display div
-    const observer = new MutationObserver(setTabTitleFromDisplay);
 
     // Start observing the #display div for changes to its child nodes or subtree
     observer.observe(document.getElementById("display"), {
