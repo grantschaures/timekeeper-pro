@@ -469,6 +469,18 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     })
 
+    function removeGlowingEffect(flags, timeAmount, secondsPassed, start_stop_btn) {
+        if ((flags.flowmodoroNotificationToggle) && (counters.startStop > 1) && (!flags.inHyperFocus)) {
+            if ((timeAmount.breakTimeSuggestionsArr[counters.currentFlowmodoroBreakIndex] * 60) > (secondsPassed)) {
+                start_stop_btn.classList.remove('glowing-effect');
+                flags.sentFlowmodoroNotification = false;
+            } else {
+                start_stop_btn.classList.add('glowing-effect');
+                flags.sentFlowmodoroNotification = true;
+            }
+        }
+    }
+
     flowmodoroInputs.forEach(input => {
         input.addEventListener('change', function(event) {
             let finalInputVal = Math.round(event.target.value);
@@ -504,15 +516,11 @@ document.addEventListener("DOMContentLoaded", function() {
         })
     })
 
-    function removeGlowingEffect(flags, timeAmount, secondsPassed, start_stop_btn) {
-        if ((flags.flowmodoroNotificationToggle) && (counters.startStop > 1) && (!flags.inHyperFocus)) {
-            if ((timeAmount.breakTimeSuggestionsArr[counters.currentFlowmodoroBreakIndex] * 60) > (secondsPassed)) {
-                start_stop_btn.classList.remove('glowing-effect');
-                flags.sentFlowmodoroNotification = false;
-            } else {
-                start_stop_btn.classList.add('glowing-effect');
-                flags.sentFlowmodoroNotification = true;
-            }
+    function addRemoveGlowingEffect(validatedFinalInputVal, secondsPassed, start_stop_btn) {
+        if ((validatedFinalInputVal * 60) > (secondsPassed)) {
+            start_stop_btn.classList.remove('glowing-effect');
+        } else {
+            start_stop_btn.classList.add('glowing-effect');
         }
     }
         
@@ -556,14 +564,6 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         })
     })
-
-    function addRemoveGlowingEffect(validatedFinalInputVal, secondsPassed, start_stop_btn) {
-        if ((validatedFinalInputVal * 60) > (secondsPassed)) {
-            start_stop_btn.classList.remove('glowing-effect');
-        } else {
-            start_stop_btn.classList.add('glowing-effect');
-        }
-    }
 
     radioGroups.forEach(group => {
         group.radios.forEach(radio => {
@@ -730,7 +730,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // When toggle for break notification is turned on whilst in flow time
             if (flags.inHyperFocus) {
-                let pomodoroString = "Pomodoro #1 | " + (timeAmount.pomodoroIntervalArr[0]).toString() + " min";
+                let pomodoroString = "Pomodoro #1 | " + String(timeAmount.pomodoroIntervalArr[0]) + " min";
                 setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop", pomodoroString);
                 elapsedTime.pomodoroNotificationSeconds = ((counters.currentPomodoroNotification * 60) - elapsedTimeInHyperfocus);
                 pomodoroWorker.postMessage(elapsedTime.pomodoroNotificationSeconds);
@@ -951,10 +951,6 @@ document.addEventListener("DOMContentLoaded", function() {
         location.reload();
     });
 
-    logoutBtn.addEventListener("click", async function() {
-        logoutUser(sessionState);
-    })
-
     // similar function in navigation.js
     function logoutUser() {
         fetch('/api/state/logout', {
@@ -968,8 +964,8 @@ document.addEventListener("DOMContentLoaded", function() {
         .catch(error => console.error('Logout failed', error));
     }
 
-    loginBtn.addEventListener("click", async function() {
-        addUser();
+    logoutBtn.addEventListener("click", async function() {
+        logoutUser(sessionState);
     })
 
     // similar function present in login.js
@@ -1008,6 +1004,10 @@ document.addEventListener("DOMContentLoaded", function() {
             // Handle the error (e.g., display an error message to the user).
         });
     }
+
+    loginBtn.addEventListener("click", async function() {
+        addUser();
+    })
 
     forgotPasswordSettings.addEventListener("click", function() {
         window.location.href = "/reset-password";
@@ -1068,9 +1068,9 @@ document.addEventListener("DOMContentLoaded", function() {
         let minutes = Math.floor((timeDiff - hours * timeConvert.msPerHour) / timeConvert.msPerMin);
         let seconds = Math.floor((timeDiff - hours * timeConvert.msPerHour - minutes * timeConvert.msPerMin) / timeConvert.msPerSec);
         // Format the time values
-        hours = hours.toString().padStart(2, '0');
-        minutes = minutes.toString().padStart(2, '0');
-        seconds = seconds.toString().padStart(2, '0');
+        hours = String(hours).padStart(2, '0');
+        minutes = String(minutes).padStart(2, '0');
+        seconds = String(seconds).padStart(2, '0');
         
         display.textContent = `${hours}:${minutes}:${seconds}`;
 
@@ -1261,13 +1261,13 @@ function flowmodoroAndBreakSuggestionActions(flags, elapsedTime, counters, timeA
 function setBothBreakIntervalText(counters, timeAmount) {
     let breakString;
     if (counters.currentPomodoroIntervalOrderIndex === 1) {
-        breakString  = "Short Break #1 | " + (timeAmount.pomodoroIntervalArr[1]).toString() + " min";
+        breakString  = "Short Break #1 | " + String(timeAmount.pomodoroIntervalArr[1]) + " min";
     } else if (counters.currentPomodoroIntervalOrderIndex === 3) {
-        breakString  = "Short Break #2 | " + (timeAmount.pomodoroIntervalArr[1]).toString() + " min";
+        breakString  = "Short Break #2 | " + String(timeAmount.pomodoroIntervalArr[1]) + " min";
     } else if (counters.currentPomodoroIntervalOrderIndex === 5) {
-        breakString  = "Short Break #3 | " + (timeAmount.pomodoroIntervalArr[1]).toString() + " min";
+        breakString  = "Short Break #3 | " + String(timeAmount.pomodoroIntervalArr[1]) + " min";
     } else if (counters.currentPomodoroIntervalOrderIndex === 7) {
-        breakString  = "Long Break | " + (timeAmount.pomodoroIntervalArr[2]).toString() + " min";
+        breakString  = "Long Break | " + String(timeAmount.pomodoroIntervalArr[2]) + " min";
     } else {
         breakString = "Break Mode"; // catch all
     }
@@ -1291,11 +1291,11 @@ function setPomodoroWorker(flags, elapsedTime, counters, recoverPomState, pomodo
 function setBreakIntervalText(counters, timeAmount) {
     let breakString;
     if (counters.currentPomodoroIntervalOrderIndex === 1) {
-        breakString  = "Short Break #1 | " + (timeAmount.pomodoroIntervalArr[1]).toString() + " min";
+        breakString  = "Short Break #1 | " + String(timeAmount.pomodoroIntervalArr[1]) + " min";
     } else if (counters.currentPomodoroIntervalOrderIndex === 3) {
-        breakString  = "Short Break #2 | " + (timeAmount.pomodoroIntervalArr[1]).toString() + " min";
+        breakString  = "Short Break #2 | " + String(timeAmount.pomodoroIntervalArr[1]) + " min";
     } else if (counters.currentPomodoroIntervalOrderIndex === 5) {
-        breakString  = "Short Break #3 | " + (timeAmount.pomodoroIntervalArr[1]).toString() + " min";
+        breakString  = "Short Break #3 | " + String(timeAmount.pomodoroIntervalArr[1]) + " min";
     } else {
         breakString = "Break Mode"; // catch all
     }
@@ -1306,13 +1306,13 @@ function setBreakIntervalText(counters, timeAmount) {
 function setPomodoroIntervalText(counters, timeAmount) {
     let pomodoroString;
     if (counters.currentPomodoroIntervalOrderIndex === 0) {
-        pomodoroString = "Pomodoro #1 | " + (timeAmount.pomodoroIntervalArr[0]).toString() + " min";
+        pomodoroString = "Pomodoro #1 | " + String(timeAmount.pomodoroIntervalArr[0]) + " min";
     } else if (counters.currentPomodoroIntervalOrderIndex === 2) {
-        pomodoroString = "Pomodoro #2 | " + (timeAmount.pomodoroIntervalArr[0]).toString() + " min";
+        pomodoroString = "Pomodoro #2 | " + String(timeAmount.pomodoroIntervalArr[0]) + " min";
     } else if (counters.currentPomodoroIntervalOrderIndex === 4) {
-        pomodoroString = "Pomodoro #3 | " + (timeAmount.pomodoroIntervalArr[0]).toString() + " min";
+        pomodoroString = "Pomodoro #3 | " + String(timeAmount.pomodoroIntervalArr[0]) + " min";
     } else if (counters.currentPomodoroIntervalOrderIndex === 6) {
-        pomodoroString = "Pomodoro #4 | " + (timeAmount.pomodoroIntervalArr[0]).toString() + " min";
+        pomodoroString = "Pomodoro #4 | " + String(timeAmount.pomodoroIntervalArr[0]) + " min";
     } else {
         pomodoroString = "Pomodoro Mode"; // catch all
     }
@@ -1358,9 +1358,9 @@ function chillTimeToFirstPomodoro(flags, productivity_chill_mode, counters) {
 function sendSuggestionBreakNotification(timeAmount, startTimes, chime, bell, alertSounds, alertVolumes) {
     let notificationString;
     if (timeAmount.suggestionMinutes > 1) {
-        notificationString = "Need a break? You've been hard at work for " + timeAmount.suggestionMinutes.toString() + " minutes!";
+        notificationString = "Need a break? You've been hard at work for " + String(timeAmount.suggestionMinutes) + " minutes!";
     } else {
-        notificationString = "Need a break? You've been hard at work for " + timeAmount.suggestionMinutes.toString() + " minute!";
+        notificationString = "Need a break? You've been hard at work for " + String(timeAmount.suggestionMinutes) + " minute!";
     }
     new Notification(notificationString);
     startTimes.lastBreakSuggestionNotification = Date.now();
@@ -1674,7 +1674,7 @@ async function setPomodoroIntervalArr(event, timeAmount, validatedFinalInputVal,
         newIntervalArr[2] = validatedFinalInputVal;
         timeAmount.pomodoroIntervalArr[2] = validatedFinalInputVal;
         if ((counters.currentPomodoroIntervalIndex === 2) && (counters.startStop !== 0) && (flags.pomodoroNotificationToggle)) {
-            productivity_chill_mode.innerText = "Long Break | " + (timeAmount.pomodoroIntervalArr[2]).toString() + " min";
+            productivity_chill_mode.innerText = "Long Break | " + String(timeAmount.pomodoroIntervalArr[2]) + " min";
         }
     }
 
@@ -1910,7 +1910,7 @@ function getCurrentTime() {
 
     // Format the time parts
     const hours = date.getHours() % 12 || 12; // convert 24h to 12h format and handle 0 as 12
-    const minutes = date.getMinutes().toString().padStart(2, '0'); // ensure two digits
+    const minutes = String(date.getMinutes()).padStart(2, '0'); // ensure two digits
     const suffix = date.getHours() >= 12 ? 'PM' : 'AM';
 
     // Combine the parts into a time string
@@ -2137,9 +2137,9 @@ function totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConve
     let seconds = Math.floor((timeDiff - hours * timeConvert.msPerHour - minutes * timeConvert.msPerMin) / timeConvert.msPerSec);
 
     // Format the time values
-    hours = hours.toString().padStart(2, '0');
-    minutes = minutes.toString().padStart(2, '0');
-    seconds = seconds.toString().padStart(2, '0');
+    hours = String(hours).padStart(2, '0');
+    minutes = String(minutes).padStart(2, '0');
+    seconds = String(seconds).padStart(2, '0');
 
     if (flags.submittedTarget) {
         let percentage = timeDiff / timeAmount.targetTime;

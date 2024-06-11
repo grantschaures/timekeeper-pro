@@ -9,11 +9,107 @@ import { notesFlags, counters, state, flags, emojiMap, tutorialContainerMap, fon
 import { sessionState } from '../modules/state-objects.js';
 
 import { updateUserSettings } from '../state/update-settings.js';
-
 import { updateLabels } from '../state/update-labels.js';
 import { updateNotes } from '../state/update-notes.js';
 
 document.addEventListener("DOMContentLoaded", function() {
+      // ---------------------
+    // HELPER FUNCTIONS 1
+    // ---------------------
+    function done() {
+        notesConsole.style.display = "block";
+        labelSelectionWindow.style.display = "none";
+        if (counters.tagsSelected === 0) {
+            tagIcon.style.marginLeft = '';
+            tagIcon.classList.remove('tagToLeftSide');
+            promptContainer.style.width = '';
+            taskPrompt.style.display = "block";
+            tagIcon.style.marginRight = '10px';
+            promptContainer.style.zIndex = 5;
+        }
+        tagIcon.classList.remove('blink');
+
+        // If auto switch is turned on, auto switch modes based on presence of labels
+        if (flags.transitionNotesAutoSwitchToggle) {
+            if (((flags.tagSelected) && (start_stop_btn.innerText === "Start")) || ((!flags.tagSelected) && (start_stop_btn.innerText === "Stop"))) {
+                start_stop_btn.click();
+            }
+        }
+
+        if (flags.noteTaskInputContainerShowing) {
+            noteTaskInputText.focus();
+        }
+
+        if (flags.noteTaskInputContainerEditShowing) {
+            document.getElementById('note-task-input-text-edit').focus();
+        }
+
+        notesFlags.notesConsoleShowing = true;
+    }
+
+    function addNewTag() {
+        // console.log("Adding new tag");
+        
+        //hide clear icon
+        clearIcon.style.display = "none";
+        
+        //hide prompt container (also includes tag icon)
+        promptContainer.style.display = "none";
+        
+        //hide label-input-container
+        labelInputContainer.style.display = "none";
+        
+        //hide label-selection-window
+        labelSelectionWindow.style.display = "none";
+        
+        //show create-label-container
+        createLabelContainer.style.display = "flex";
+        
+        //show create-label-window
+        createLabelWindow.style.display = "block";
+        flags.createLabelWindowOpen = true;
+
+        //focus on input
+        createLabelInput.focus();
+    }
+
+    function updateLabel(target) {
+        // console.log(target);
+        
+        //hide clear icon
+        clearIcon.style.display = "none";
+
+        //hide prompt container (also includes tag icon)
+        promptContainer.style.display = "none";
+
+        //hide label-input-container
+        labelInputContainer.style.display = "none";
+
+        //hide label-selection-window
+        labelSelectionWindow.style.display = "none";
+
+        //show create-label-container
+        updateLabelContainer.style.display = "flex";
+
+        //show create-label-window
+        updateLabelWindow.style.display = "block";
+        flags.updateLabelWindowOpen = true;
+
+        //insert chosen label text into input
+        let toUpdateTagId;
+        if ((target.className === 'tag-text') || (target.className = 'tag-text deleteJiggling')) {
+            toUpdateTagId = target.parentElement.id;
+        } else {
+            toUpdateTagId = target.id;
+        }
+
+        updateLabelInput.value = (document.getElementById(toUpdateTagId).innerText).trim();
+        state.elementToUpdateId = toUpdateTagId;
+
+        //focus on input
+        updateLabelInput.focus();
+    }
+
     //set initial emoji container point location
     setEmojiContainerPointLocation(window.innerWidth, emojiContainer, notesFlags, isMobile);
 
@@ -60,6 +156,11 @@ document.addEventListener("DOMContentLoaded", function() {
         noteTaskInputText.focus();
     })
 
+    function autoExpand() {
+        textarea.style.height = '24px';
+        textarea.style.height = `${textarea.scrollHeight}px`;
+    }
+
     noteInputSaveBtn.addEventListener('click', function() {
 
         noteInputSave(noteTaskInputContainer, addNoteTaskContainer, flags, noteTaskInputText, taskCheckbox, counters);
@@ -99,10 +200,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }, 0);
     })
 
-    function autoExpand() {
-        textarea.style.height = '24px';
-        textarea.style.height = `${textarea.scrollHeight}px`;
-    }
     textarea.addEventListener('input', autoExpand);
 
     notesBtn.addEventListener("click", function() {
@@ -616,109 +713,11 @@ document.addEventListener("DOMContentLoaded", function() {
             new Notification("No changes were made to the notes console.");
         }
     })
-
-    // ---------------------
-    // HELPER FUNCTIONS 1
-    // ---------------------
-    function done() {
-        notesConsole.style.display = "block";
-        labelSelectionWindow.style.display = "none";
-        if (counters.tagsSelected === 0) {
-            tagIcon.style.marginLeft = '';
-            tagIcon.classList.remove('tagToLeftSide');
-            promptContainer.style.width = '';
-            taskPrompt.style.display = "block";
-            tagIcon.style.marginRight = '10px';
-            promptContainer.style.zIndex = 5;
-        }
-        tagIcon.classList.remove('blink');
-
-        // If auto switch is turned on, auto switch modes based on presence of labels
-        if (flags.transitionNotesAutoSwitchToggle) {
-            if (((flags.tagSelected) && (start_stop_btn.innerText === "Start")) || ((!flags.tagSelected) && (start_stop_btn.innerText === "Stop"))) {
-                start_stop_btn.click();
-            }
-        }
-
-        if (flags.noteTaskInputContainerShowing) {
-            noteTaskInputText.focus();
-        }
-
-        if (flags.noteTaskInputContainerEditShowing) {
-            document.getElementById('note-task-input-text-edit').focus();
-        }
-
-        notesFlags.notesConsoleShowing = true;
-    }
-
-    function addNewTag() {
-        // console.log("Adding new tag");
-        
-        //hide clear icon
-        clearIcon.style.display = "none";
-        
-        //hide prompt container (also includes tag icon)
-        promptContainer.style.display = "none";
-        
-        //hide label-input-container
-        labelInputContainer.style.display = "none";
-        
-        //hide label-selection-window
-        labelSelectionWindow.style.display = "none";
-        
-        //show create-label-container
-        createLabelContainer.style.display = "flex";
-        
-        //show create-label-window
-        createLabelWindow.style.display = "block";
-        flags.createLabelWindowOpen = true;
-
-        //focus on input
-        createLabelInput.focus();
-    }
-
-    function updateLabel(target) {
-        // console.log(target);
-        
-        //hide clear icon
-        clearIcon.style.display = "none";
-
-        //hide prompt container (also includes tag icon)
-        promptContainer.style.display = "none";
-
-        //hide label-input-container
-        labelInputContainer.style.display = "none";
-
-        //hide label-selection-window
-        labelSelectionWindow.style.display = "none";
-
-        //show create-label-container
-        updateLabelContainer.style.display = "flex";
-
-        //show create-label-window
-        updateLabelWindow.style.display = "block";
-        flags.updateLabelWindowOpen = true;
-
-        //insert chosen label text into input
-        let toUpdateTagId;
-        if ((target.className === 'tag-text') || (target.className = 'tag-text deleteJiggling')) {
-            toUpdateTagId = target.parentElement.id;
-        } else {
-            toUpdateTagId = target.id;
-        }
-
-        updateLabelInput.value = (document.getElementById(toUpdateTagId).innerText).trim();
-        state.elementToUpdateId = toUpdateTagId;
-
-        //focus on input
-        updateLabelInput.focus();
-    }
 })
 
 // ---------------------
 // HELPER FUNCTIONS 2
 // ---------------------
-
 function populateTaskLabelContainer() {
     let initialLabelValues = ["✍️ Homework", "📚 Reading", "🧘 Meditation"];
 

@@ -91,17 +91,6 @@ document.addEventListener("DOMContentLoaded", function() {
         settings_exit.classList.add('resetRotation');
     });
 
-    login_menu_container.addEventListener("click", function() {
-        // alert("This feature is currently under development. Thank you for your patience.");
-    
-        //eventually uncomment this out to continue w/ login-signup development
-        if (sessionState.loggedIn === false) {
-            window.location.href = "/login";
-        } else {
-            logoutUser(sessionState);
-        }
-    });
-
     // similar function in index.js
     function logoutUser() {
         fetch('/api/state/logout', {
@@ -114,6 +103,17 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .catch(error => console.error('Logout failed', error));
     }
+
+    login_menu_container.addEventListener("click", function() {
+        // alert("This feature is currently under development. Thank you for your patience.");
+    
+        //eventually uncomment this out to continue w/ login-signup development
+        if (sessionState.loggedIn === false) {
+            window.location.href = "/login";
+        } else {
+            logoutUser(sessionState);
+        }
+    });
 
     exit_icons.forEach(function(icon) {
         icon.addEventListener('mouseover', function() {
