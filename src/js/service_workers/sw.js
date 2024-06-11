@@ -1,4 +1,4 @@
-// Attempt to fix firefox image loading delay issues
+// Currently not being used
 
 const CACHE_NAME = 'image-cache-v1';
 const imagesToCache = [
