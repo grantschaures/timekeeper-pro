@@ -1,12 +1,12 @@
-import { pomodoroNotificationToggle, pomodoroInputs, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, pomodoroVolumeThumb, pomodoroVolumeThumb2, pomodoroRadios, flowmodoroNotificationToggle, flowmodoroInputs, flowmodoroVolumeThumb, flowmodoroVolumeThumb2, flowmodoroRadios, breakSuggestionToggle, suggestionMinutesInput, generalRadios, targetTimeReachedToggle, darkGrayTheme, defaultTheme, interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, emojiContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, transitionClockSoundToggle, labelSelectionRow, emojiImg, emojiImg2, dynamicList, propagateUnfinishedTasksToggle as propagateUnfinishedTasksToggleElement, blackFlowtimeBackground, blackChilltimeBackground } from '../modules/dom-elements.js';
+import { pomodoroNotificationToggle, pomodoroInputs, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, pomodoroVolumeThumb, pomodoroVolumeThumb2, pomodoroRadios, flowmodoroNotificationToggle, flowmodoroInputs, flowmodoroVolumeThumb, flowmodoroVolumeThumb2, flowmodoroRadios, breakSuggestionToggle, suggestionMinutesInput, generalRadios, targetTimeReachedToggle, darkGrayTheme, defaultTheme, interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, emojiContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, transitionClockSoundToggle, labelSelectionRow, emojiImg, emojiImg2, dynamicList, propagateUnfinishedTasksToggle as propagateUnfinishedTasksToggleElement, blackFlowtimeBackground, blackChilltimeBackground, total_time_display } from '../modules/dom-elements.js';
 
 import { sessionState } from '../modules/state-objects.js';
 
-import { flags, timeAmount, alertVolumes, alertSounds, selectedBackgroundId, selectedBackground, flowtimeBackgrounds, chilltimeBackgrounds, selectedBackgroundIdTemp } from '../modules/index-objects.js';
+import { flags, timeAmount, alertVolumes, alertSounds, selectedBackgroundId, selectedBackground, flowtimeBackgrounds, chilltimeBackgrounds, selectedBackgroundIdTemp, startTimes, elapsedTime, timeConvert } from '../modules/index-objects.js';
 
 import { flags as notesflags, counters as notesCounters, state as notesState, labelDict, notesArr } from '../modules/notes-objects.js';
 
-import { setInitialBackgroundCellSelection, setBackground, deactivateDarkTheme, activateDarkTheme } from '../main/index.js';
+import { setInitialBackgroundCellSelection, setBackground, deactivateDarkTheme, activateDarkTheme, replaceTargetHours, totalTimeDisplay } from '../main/index.js';
 
 import { appendEditRemoveContainer, createCheckElements, getLastNumberFromId } from '../main/notes.js';
 
@@ -45,10 +45,25 @@ function updateGUIForLoggedInUser(userData, noteData) {
     // settings (--> logged in version)
     updateSettings(userData);
 
+    updateTargetHours(userData);
+
     // notes (--> logged in version)
     updateUserLabels(noteData);
 
     updateUserNotes(noteData);
+}
+
+function updateTargetHours(userData) {
+    const targetHours = userData.targetHours;
+    // console.log(targetHours); // Int or undefined
+
+    if (targetHours !== undefined) {
+        timeAmount.targetTime = targetHours * 60 * 60 * 1000;
+
+        // update UI
+        replaceTargetHours(targetHours, timeAmount, flags);
+        totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount);
+    }
 }
 
 function updateMenuContainer(userData) {

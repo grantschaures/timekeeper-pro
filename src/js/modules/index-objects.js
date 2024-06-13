@@ -96,8 +96,8 @@ export const startTimes = {
     local: undefined, //local start time for current display
     beginning: undefined, //very first start time of entire session
     lastPomNotification: undefined,
-    lastFlowmodoroNotification: 0, //not used
-    lastBreakSuggestionNotification: 0 //not used
+    lastFlowmodoroNotification: undefined,
+    lastBreakSuggestionNotification: undefined
 };
 
 //RECOVERY
@@ -147,7 +147,9 @@ export const counters = {
     currentPomodoroNotification: 0,
     currentPomodoroIntervalIndex: 0,
     currentPomodoroIntervalOrderIndex: 0,
-    pomodorosCompleted: 0
+    pomodorosCompleted: 0,
+    flowTimeIntervals: 0,
+    chillTimeIntervals: 0
 }
 
 export const flags = {
@@ -205,15 +207,21 @@ export const settingsMappings = {
     'supportAndFeedbackBtnContainer': 'supportAndFeedbackSettingsContainer'
 };
 
-//STORAGE
-export const savedInterruptionsArr = [];
-
 export const timeAmount = {
     targetTime: null,
     breakTimeSuggestionsArr: [5, 8, 10, 15],
     suggestionMinutes: 90,
     pomodoroIntervalArr: [25, 5, 15]
 }
+
+//STORAGE
+export const savedInterruptionsArr = [];
+
+export const intervalArrs = {
+    flowTime: [],
+    chillTime: []
+}
+
 
 // ---------------------
 // HELPER FUNCTIONS

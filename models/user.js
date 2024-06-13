@@ -52,7 +52,8 @@ const User = db.model("User", {
     sounds: {
       transitionClockSound:  { type: Boolean, default: false }
     }
-  }
+  },
+  targetHours:  { type: Number, required: false },
 }, 'Users');
 
 module.exports = User;

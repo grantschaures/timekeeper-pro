@@ -7,10 +7,47 @@ require('dotenv').config();
 
 router.use(express.json());
 
+router.post("/update-target-hours", async function(req, res) {
+    // Assuming the JWT is sent automatically in cookie headers
+    const token = req.cookies.token;  // Extract the JWT from cookies directly
+    const { targetHours } = req.body;
+
+    if (!token) {
+        return res.status(401).json({ isLoggedIn: false });
+    }
+    console.log(targetHours);
+
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        const user = await User.findById(decoded.userId);
+
+        if (user) {
+            if (targetHours === 0) {
+                user.targetHours = undefined;
+            } else {
+                user.targetHours = targetHours;
+            }
+            await user.save();
+            res.json({ success: true, message: 'Target Hours updated successfully' });
+        } else {
+            return res.status(401).json({ 
+                isLoggedIn: false,
+                message: "User not found"
+            });
+        }
+    } catch (error) {
+        return res.status(401).json({
+            isLoggedIn: false,
+            message: "Session is not valid: " + error.message
+        });
+    }
+});
+
 router.post("/update-settings", async function(req, res) {
     // Assuming the JWT is sent automatically in cookie headers
     const token = req.cookies.token;  // Extract the JWT from cookies directly
     const { settings } = req.body;
+    console.log(settings);
 
     if (!token) {
         return res.status(401).json({ isLoggedIn: false });

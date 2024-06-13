@@ -1,4 +1,4 @@
-import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selectedBackgroundIdTemp, selectedBackgroundId, timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, alertVolumes, alertSounds, counters, flags, tempStorage, settingsMappings, savedInterruptionsArr, timeAmount } from '../modules/index-objects.js';
+import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selectedBackgroundIdTemp, selectedBackgroundId, timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, alertVolumes, alertSounds, counters, flags, tempStorage, settingsMappings, savedInterruptionsArr, timeAmount, intervalArrs } from '../modules/index-objects.js';
 
 import { chime, bell, clock_tick, soundMap } from '../modules/sound-map.js';
 
@@ -10,6 +10,7 @@ import { sessionState } from '../modules/state-objects.js';
 
 import { initializeGUI } from '../utility/initialize_gui.js'; // minified
 import { updateUserSettings } from '../state/update-settings.js'; // minified
+import { updateTargetHours } from '../state/update-target-hours.js'; // minified
 
 const pomodoroWorker = new Worker('/js/displayWorkers/pomodoroWorker.js');
 const suggestionWorker = new Worker('/js/displayWorkers/suggestionWorker.js');
@@ -25,6 +26,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Favicons
     const greenFavicon = "/images/logo/HyperChillLogoGreen.png";
     const blueFavicon = "/images/logo/HyperChillLogoBlue.png";
+    const defaultFavicon = "/images/logo/HyperChillLogo_circular_white_border.png";
 
     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     const initialViewportWidth = window.innerWidth || document.documentElement.clientWidth;
@@ -59,7 +61,6 @@ document.addEventListener("DOMContentLoaded", function() {
     setTimeout(() => {
         hyperChillTitle.style.opacity = '1';
         hyperChillTitle.classList.add('hyperChillTitleAnimation');
-
     }, 0)
     
     const threeWayToggle = document.getElementById('threeWayToggle');
@@ -131,9 +132,16 @@ document.addEventListener("DOMContentLoaded", function() {
             // console.log(getCurrentTime() + " --> Entering Flow Time");
             flags.inHyperFocus = true;
             flags.sentFlowmodoroNotification = false;
-
+            counters.flowTimeIntervals++;
+            
             if (!flags.inRecoveryPom) {
                 startTimes.hyperFocus = Date.now();
+            }
+
+            // figure out how in recovery pomodoro will affect this
+            if (counters.startStop > 2) { // if 2nd round of flow time (1 round of chill time has already happened)
+                let lastChillTimeInterval = Date.now() - startTimes.chillTime;
+                intervalArrs.chillTime.push(lastChillTimeInterval);
             }
 
             totalDisplayWorker.postMessage("startInterval");
@@ -166,8 +174,12 @@ document.addEventListener("DOMContentLoaded", function() {
             flags.inHyperFocus = false;
             flags.lastHyperFocusIntervalMin = Math.floor((Date.now() - startTimes.hyperFocus) / (1000 * 60));
             startTimes.chillTime = Date.now();
+            counters.chillTimeIntervals++;
             setFavicon(blueFavicon);
             chillTimeAnimationActions(flags, flowAnimation, chillAnimation);
+
+            let lastFlowTimeInterval = Date.now() - startTimes.hyperFocus;
+            intervalArrs.flowTime.push(lastFlowTimeInterval);
 
             // EDIT: temporary change to see total interruptions for my own data collection
             saveResetInterruptions(interruptionsNum, counters, savedInterruptionsArr);
@@ -207,6 +219,9 @@ document.addEventListener("DOMContentLoaded", function() {
             totalDisplayWorker.postMessage("clearInterval");
         }
 
+        // console.log(savedInterruptionsArr);
+        // console.log(intervalArrs);
+
         flags.inRecoveryBreak = false;
         flags.inRecoveryPom = false;
         flags.sentSuggestionMinutesNotification = false;
@@ -217,11 +232,10 @@ document.addEventListener("DOMContentLoaded", function() {
         }, 1000)
     });
     
-    submit_change_btn.addEventListener("click", function() {
+    submit_change_btn.addEventListener("click", async function() {
         if (!flags.submittedTarget) { //When submitting target hours
             
             let inputHours = document.getElementById("target-hours").value;
-            
             // Check if the input is empty or zero
             if(!targetHoursValidate(inputHours, timeConvert, startTimes, elapsedTime, flags, counters)) {
                 return;
@@ -230,27 +244,30 @@ document.addEventListener("DOMContentLoaded", function() {
             if (flags.hitTarget) { //remove glowing effect if we've hit the target time (regardless of mode)
                 progressContainer.classList.remove("glowing-effect");
             }
-
-            timeAmount.targetTime = replaceTargetHours(inputHours, timeAmount, flags); //sets targetTime
-
+                
+            let targetHours = replaceTargetHours(inputHours, timeAmount, flags); //sets targetTime
+            if (sessionState.loggedIn) {
+                await updateTargetHours(targetHours);
+            }
+            
             if (flags.progressBarContainerIsSmall) {
                 progressBarContainer.classList.toggle("small"); // make progress container large
                 flags.progressBarContainerIsSmall = false;
             }
-            
+                
             /* Update progress bar & percentage ONCE to demonstrate submitted change in Chill Time.
-                In Flow Time, this code makes the change happen just a little bit faster. */
+            In Flow Time, this code makes the change happen just a little bit faster. */
             updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer);
             totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount);
             
             flags.hitTarget = false;
-        }
-        else if (flags.submittedTarget) { //When changing target hours
+
+        } else if (flags.submittedTarget) { //When changing target hours
             if (flags.hitTarget) {
                 progressContainer.classList.remove("glowing-effect");
             }
 
-            changeTargetHours(flags);
+            changeTargetHours(flags, sessionState);
 
             /* Update progress bar & percentage ONCE to demonstrate submitted change in Chill Time.
                 In Flow Time, this code makes the change happen just a little bit faster. */
@@ -913,16 +930,12 @@ document.addEventListener("DOMContentLoaded", function() {
             
         } else if (document.visibilityState === 'visible') { //user returns to tab
             if ((flags.inHyperFocus) && (flags.flowTimeAnimationToggle)) {
-                setTimeout(() => {
-                    flowAnimation.style.display = 'block';
-                    flowAnimation.classList.add('intoOpacityTransition');
-                }, 500);
+                flowAnimation.style.display = 'block';
+                flowAnimation.classList.add('intoOpacityTransition');
             } else if ((!flags.inHyperFocus) && (flags.chillTimeAnimationToggle)) {
                 if (counters.startStop > 0) {
-                    setTimeout(() => {
-                        chillAnimation.style.display = 'flex';
-                        chillAnimation.classList.add('intoOpacityTransition');
-                    }, 500);
+                    chillAnimation.style.display = 'flex';
+                    chillAnimation.classList.add('intoOpacityTransition');
                 }
             }
         }
@@ -949,42 +962,98 @@ document.addEventListener("DOMContentLoaded", function() {
     // })
 
     end_session_btn.addEventListener("click", function() { //temporary function
-        flags.sessionInProgress = false;
+        if (flags.sessionInProgress) {
+            // (1) Collect all necessary information about the session
+            // if in flowtime, add interruptions count to the interruptions array
+            
+            // total time
+            let totalTime = getTotalElapsed(flags, elapsedTime.hyperFocus, startTimes);
+            let totalTimeStr = returnTotalTimeString(totalTime, timeConvert);
+            console.log("Total Time: " + totalTimeStr);
+            
+            // total interruptions
+            if (flags.inHyperFocus) {
+                savedInterruptionsArr.push(counters.interruptions);
+            }
+            let totalInterruptions = savedInterruptionsArr.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+            console.log("Total Interruptions: " + totalInterruptions);
+            
+            // focus score calculation
+            let totalMin = totalTime / timeConvert.msPerMin;
+            let result = (1 - (((totalInterruptions) / (totalMin)) / (0.5))) * 100;
+            let focusPercent = Math.floor(result);
+            if (focusPercent > 0) {
+                console.log('Focus Score: ' + focusPercent + '%');
+            } else {
+                console.log('Focus Score: ' + 0 + '%');
+            }
 
-        // (1) Collect all necessary information about the session
+            // flow & chill time intervals
+            console.log("Flow Time Intervals: " + counters.flowTimeIntervals);
+            console.log("Chill Time Intervals: " + counters.chillTimeIntervals);
+
+            // average length of flowTime Intervals
+            let timeInterval;
+            if (flags.inHyperFocus) {
+                timeInterval = Date.now() - startTimes.hyperFocus;
+                intervalArrs.flowTime.push(timeInterval);
+            } else {
+                timeInterval = Date.now() - startTimes.chillTime;
+                intervalArrs.chillTime.push(timeInterval);
+            }
+
+            let flowTimeIntervalArrSum = (intervalArrs.flowTime).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+            let flowTimeArrLength = (intervalArrs.flowTime).length;
+            let avgFlowTimeInterval = (flowTimeIntervalArrSum / flowTimeArrLength);
+            let avgFlowTimeIntervalStr = returnTotalTimeString(avgFlowTimeInterval, timeConvert);
+            console.log("Average Flow Time Interval Length: " + avgFlowTimeIntervalStr);
 
 
-        // (2) Reset everything to the default state
+            console.log(""); // new line
 
-        // reset everything
-        // clearInterval(intervals.main);
-        // intervals.main = null;
+            // (2) Reset everything to the default state
+            // reset internal logic
+            resetActions(hyperChillLogoImage, flags, intervals, recoverBreakState, recoverPomState, startTimes, elapsedTime, counters, savedInterruptionsArr, intervalArrs);
+    
+            // clear all intervals
+            pomodoroWorker.postMessage("clearInterval");
+            suggestionWorker.postMessage("clearInterval");
+            flowmodoroWorker.postMessage("clearInterval");
+            displayWorker.postMessage("clearInterval");
+            totalDisplayWorker.postMessage("clearInterval");
+    
+            // fade out animations
+            animationsFadeOut(chillAnimation);
+            animationsFadeOut(flowAnimation);
+    
+            // reset displays
+            resetDisplay(display);
+            updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer);
+            totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount);
 
-        // // clear all intervals
-        // pomodoroWorker.postMessage("clearInterval");
-        // suggestionWorker.postMessage("clearInterval");
-        // flowmodoroWorker.postMessage("clearInterval");
-        // displayWorker.postMessage("clearInterval");
-        // totalDisplayWorker.postMessage("clearInterval");
+            // reset background to default
+            setBackground(defaultImgUrl);
+    
+            // reset header text
+            setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", "Press 'Start' to begin session");
 
-        // // fade out animations
-        // animationsFadeOut(chillAnimation);
-        // animationsFadeOut(flowAnimation);
+            // get rid of glowing green on start/ stop btn and progress bar
+            start_stop_btn.classList.remove('glowing-effect');
+            progressContainer.classList.remove("glowing-effect");
 
-        // // reset displays to 00:00:00
-        // resetDisplay(display);
-        // resetTotalDisplay(total_time_display);
+            // reset containers
+            hideSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min);
+            hidePomodorosCompletedContainer(completedPomodorosContainer);
+            showInterruptionsSubContainer(interruptionsSubContainer);
 
-        // // reset background to default
-        // setBackground(defaultImgUrl);
+            // reset interruptions text to counters.interruptions, which has already been reset to 0
+            interruptionsNum.textContent = counters.interruptions;
 
-        // // reset header text
-        // setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", "Press 'Start' to begin session");
+            // reset favicon
+            setFavicon(defaultFavicon);
+        }
 
-        // resetActions(startTimes, hyperChillLogoImage, progressBarContainer, flags);
-        // console.log(document.title)
-
-        location.reload();
+        // location.reload();
     });
 
     // similar function in navigation.js
@@ -1984,9 +2053,11 @@ async function enableNotifications(breakSuggestionToggle, flowmodoroNotification
     return true;
 }
 
-function changeTargetHours(flags) {
+async function changeTargetHours(flags, sessionState) {
+    flags.submittedTarget = false;
+    
     document.getElementById("target-hours").remove();
-        
+    
     let enterHours = document.createElement('input');
     enterHours.type = "number";
     enterHours.id = "target-hours";
@@ -1994,29 +2065,13 @@ function changeTargetHours(flags) {
     enterHours.min = "0";
     enterHours.value = "";
     document.getElementById("coolDiv").appendChild(enterHours);
-
     enterHours.focus();
     
     document.getElementById('target-hours-submit').textContent = "Submit";
-    flags.submittedTarget = false;
-};
-
-function replaceTargetHours(inputHours, timeAmount, flags) {
-
-    let targetHours = Math.round((parseFloat(inputHours)) * 100) / 100; //return to 100 after testing
-    timeAmount.targetTime = targetHours * 60 * 60 * 1000; //converting hours -> milliseconds
-    document.getElementById("target-hours").remove();
-
-    let submitTarget = document.createElement('h4');
-    submitTarget.textContent = targetHours;
-    submitTarget.id = "target-hours";
-    submitTarget.className = "finalized-hours";
-    submitTarget.style.backgroundColor = "#5c5c5c"; //dark grey finalized background color
-    document.getElementById("coolDiv").appendChild(submitTarget);
-    document.getElementById('target-hours-submit').textContent = "Change";
-    flags.submittedTarget = true;
-
-    return timeAmount.targetTime;
+    
+    if (sessionState.loggedIn) {
+        await updateTargetHours(0);
+    }
 };
 
 function targetHoursValidate(inputHours, timeConvert, startTimes, elapsedTime, flags, counters) {
@@ -2047,6 +2102,7 @@ function setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, st
 
 function updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer) {
     let timeDiff;
+    // console.log(timeDiff)
     
     if (isNaN(timeAmount.targetTime) || timeAmount.targetTime === null || !flags.submittedTarget) { //if user doesn't input target time, break out
         if (progressBar.classList.contains('fullopacity1')) {
@@ -2089,10 +2145,6 @@ function resetDisplay(display) {
     display.innerText = "00:00:00"; //immediately resets display w/ no lag time
 };
 
-function resetTotalDisplay(total_time_display) {
-    total_time_display.innerText  = "00:00:00";
-}
-
 function veryStartActions(startTimes, hyperChillLogoImage, progressBarContainer, flags) {
     startTimes.beginning = Date.now();
     flags.sessionInProgress = true;
@@ -2106,18 +2158,67 @@ function veryStartActions(startTimes, hyperChillLogoImage, progressBarContainer,
     }
 };
 
-function resetActions(startTimes, hyperChillLogoImage, progressBarContainer, flags) {
-    startTimes.beginning = null;
-    flags.sessionInProgress = false;
+function resetActions(hyperChillLogoImage, flags, intervals, recoverBreakState, recoverPomState, startTimes, elapsedTime, counters, savedInterruptionsArr, intervalArrs) {
     observer.disconnect();
     document.title = "HyperChill.io | Online Productivity Time Tracker";
-    document.getElementById("target-hours").classList.add("glowing-effect");
-    hyperChillLogoImage.classList.remove("hyperChillLogoRotate");
+    hyperChillLogoImage.classList.remove('hyperChillLogoRotate'); // currently invisible FYI
 
-    if (progressBarContainer.classList.contains("small")) {
-        progressBarContainer.classList.toggle("small");
+    clearAllIntervals(intervals);
+    resetPropertiesToNull(recoverBreakState);
+    resetPropertiesToNull(recoverPomState);
+    resetPropertiesToUndefined(startTimes);
+    resetPropertiesToZero(elapsedTime);
+    resetPropertiesToZero(counters);
+    resetFlags(flags);
+    savedInterruptionsArr.splice(0, savedInterruptionsArr.length);
+    (intervalArrs.flowTime).splice(0, (intervalArrs.flowTime).length);
+    (intervalArrs.chillTime).splice(0, (intervalArrs.chillTime).length);
+}
+
+function clearAllIntervals(intervals) {
+    for (let key in intervals) {
+        if (intervals[key] !== null) {
+            clearInterval(intervals[key]);
+            intervals[key] = null;
+        }
     }
-    flags.progressBarContainerIsSmall = false;
+}
+
+function resetFlags(flags) {
+    flags.hitTarget = false;
+    flags.inHyperFocus = false;
+    flags.autoSwitchedModes = false;
+    flags.inRecoveryBreak = false;
+    flags.inRecoveryPom = false;
+    flags.modeChangeExecuted = false;
+    flags.sentFlowmodoroNotification = false;
+    flags.sentSuggestionMinutesNotification = false;
+    flags.pomodoroCountIncremented = false;
+    flags.sessionInProgress = false;
+}
+
+function resetPropertiesToZero(obj) {
+    for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            obj[key] = 0;
+        }
+    }
+}
+
+function resetPropertiesToUndefined(obj) {
+    for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            obj[key] = undefined;
+        }
+    }
+}
+
+function resetPropertiesToNull(obj) {
+    for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            obj[key] = null;
+        }
+    }
 }
 
 function playClick(clock_tick, flags) {
@@ -2158,30 +2259,20 @@ function handleKeyUp(event, flags) {
     }
 }
 
-function totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount) {
-    let timeDiff = getTotalElapsed(flags, elapsedTime.hyperFocus, startTimes);
-    
-    let hours = Math.floor(timeDiff / timeConvert.msPerHour);
-    let minutes = Math.floor((timeDiff - hours * timeConvert.msPerHour) / timeConvert.msPerMin);
-    let seconds = Math.floor((timeDiff - hours * timeConvert.msPerHour - minutes * timeConvert.msPerMin) / timeConvert.msPerSec);
+function returnTotalTimeString(totalMilliseconds, timeConvert) {
+    let hours = Math.floor(totalMilliseconds / timeConvert.msPerHour);
+    let minutes = Math.floor((totalMilliseconds - hours * timeConvert.msPerHour) / timeConvert.msPerMin);
+    let seconds = Math.floor((totalMilliseconds - hours * timeConvert.msPerHour - minutes * timeConvert.msPerMin) / timeConvert.msPerSec);
 
     // Format the time values
-    hours = String(hours).padStart(2, '0');
-    minutes = String(minutes).padStart(2, '0');
-    seconds = String(seconds).padStart(2, '0');
+    hours = String(hours);
+    minutes = String(minutes);
+    seconds = String(seconds);
 
-    if (flags.submittedTarget) {
-        let percentage = timeDiff / timeAmount.targetTime;
-        
-        if (percentage > 1) {
-            percentage = 1; //cap percentage at 100%
-        }
-
-        total_time_display.textContent = `${hours}:${minutes}:${seconds}` + " (" + Math.trunc(percentage * 100) + "%)";
-    } else {
-        total_time_display.textContent = `${hours}:${minutes}:${seconds}`;
-    }
-};
+    let combinedStr = hours + " hours, " + minutes + " minutes, " + seconds + " seconds";
+ 
+    return combinedStr;
+}
 
 function getTotalElapsed(flags, elapsedTime, startTimes) { //return current total hyper focus time
     // console.log("Elapsed Time: " + elapsedTime);
@@ -2290,3 +2381,49 @@ export function activateDarkTheme(interruptionsContainer, targetHoursContainer, 
     blackFlowtimeBackground.click();
     blackChilltimeBackground.click();
 }
+
+export function replaceTargetHours(inputHours, timeAmount, flags) {
+
+    let targetHours = Math.round((parseFloat(inputHours)) * 100) / 100; //return to 100 after testing
+    timeAmount.targetTime = targetHours * 60 * 60 * 1000; //converting hours -> milliseconds
+    document.getElementById("target-hours").remove();
+
+    let submitTarget = document.createElement('h4');
+    submitTarget.textContent = targetHours;
+    submitTarget.id = "target-hours";
+    submitTarget.className = "finalized-hours";
+    submitTarget.style.backgroundColor = "#5c5c5c"; //dark grey finalized background color
+    document.getElementById("coolDiv").appendChild(submitTarget);
+    document.getElementById('target-hours-submit').textContent = "Change";
+
+    flags.submittedTarget = true;
+
+    return targetHours;
+};
+
+export function totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount) {
+    let timeDiff = getTotalElapsed(flags, elapsedTime.hyperFocus, startTimes);
+    
+    let hours = Math.floor(timeDiff / timeConvert.msPerHour);
+    let minutes = Math.floor((timeDiff - hours * timeConvert.msPerHour) / timeConvert.msPerMin);
+    let seconds = Math.floor((timeDiff - hours * timeConvert.msPerHour - minutes * timeConvert.msPerMin) / timeConvert.msPerSec);
+
+    // Format the time values
+    hours = String(hours).padStart(2, '0');
+    minutes = String(minutes).padStart(2, '0');
+    seconds = String(seconds).padStart(2, '0');
+
+    // console.log(flags.submittedTarget);
+
+    if (flags.submittedTarget) {
+        let percentage = timeDiff / timeAmount.targetTime;
+        
+        if (percentage > 1) {
+            percentage = 1; //cap percentage at 100%
+        }
+
+        total_time_display.textContent = `${hours}:${minutes}:${seconds}` + " (" + Math.trunc(percentage * 100) + "%)";
+    } else {
+        total_time_display.textContent = `${hours}:${minutes}:${seconds}`;
+    }
+};

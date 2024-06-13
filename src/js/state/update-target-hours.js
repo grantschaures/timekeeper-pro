@@ -1,11 +1,11 @@
-export async function updateUserSettings(settings) {
+export async function updateTargetHours(targetHours) {
     try {
-        const response = await fetch('/api/data/update-settings', {
+        const response = await fetch('/api/data/update-target-hours', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ settings })
+            body: JSON.stringify({ targetHours })
         });
 
         if (!response.ok) {
@@ -13,8 +13,8 @@ export async function updateUserSettings(settings) {
         }
 
         const data = await response.json();
-        // console.log("User updated successfully:", data);
+        // console.log("Settings updated successfully:", data);
     } catch (error) {
-        console.error('Failed to update user:', error);
+        console.error('Failed to update settings:', error);
     }
 }
