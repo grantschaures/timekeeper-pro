@@ -9,6 +9,9 @@ export async function updateUserSettings(settings) {
         });
 
         if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Response status:', response.status);
+            console.error('Response body:', errorText);
             throw new Error('Network response was not ok');
         }
 

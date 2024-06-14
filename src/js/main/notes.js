@@ -12,8 +12,9 @@ import { updateUserSettings } from '../state/update-settings.js';
 import { updateLabels } from '../state/update-labels.js';
 import { updateNotes } from '../state/update-notes.js';
 
+// main event listener
 document.addEventListener("DOMContentLoaded", function() {
-      // ---------------------
+    // ---------------------
     // HELPER FUNCTIONS 1
     // ---------------------
     function done() {
@@ -140,14 +141,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
             } else if ((target.classList.contains('removeBtn')) || (target.classList.contains('removeSvg')) || (target.classList.contains('removePath'))) {
                 handleRemoveBtnClick(targetId);
-
             }
         } else if ((targetId === "note-input-save-btn-edit") || (targetId === "note-input-cancel-btn-edit")) {
             if (targetId === "note-input-save-btn-edit") {
                 noteInputSaveBtnClick_editMode(state, flags);
-                
             } else if (targetId === "note-input-cancel-btn-edit") {
-                noteInputCancelBtnClick_editMode(state, flags)
+                noteInputCancelBtnClick_editMode(state, flags);
             }
         }
     })
@@ -163,7 +162,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     noteInputSaveBtn.addEventListener('click', function() {
 
-        noteInputSave(noteTaskInputContainer, addNoteTaskContainer, flags, noteTaskInputText, taskCheckbox, counters);
+        noteInputSave(noteTaskInputContainer, addNoteTaskContainer, flags, noteTaskInputText, taskCheckbox, counters, dynamicList);
 
         // Scroll the new noteTaskDiv into view
         setTimeout(() => {
@@ -799,9 +798,16 @@ function checkIfUpdatedLabelIsUnique(state, updateLabelInput) {
     return isUnique;
 }
 
-function noteInputSave(noteTaskInputContainer, addNoteTaskContainer, flags, noteTaskInputText, taskCheckbox, counters) {
+function noteInputSave(noteTaskInputContainer, addNoteTaskContainer, flags, noteTaskInputText, taskCheckbox, counters, dynamicList) {
     let inputStr = noteTaskInputText.value;
     if (inputStr === "") {
+        noteInputCancel(noteTaskInputContainer, addNoteTaskContainer, flags, noteTaskInputText);
+        return;
+    }
+
+    // we're checking length of list before addition of new note/ task
+    if (dynamicList.children.length >= 100) {
+        alert("You've reached your limit of 100 notes/ tasks!");
         noteInputCancel(noteTaskInputContainer, addNoteTaskContainer, flags, noteTaskInputText);
         return;
     }

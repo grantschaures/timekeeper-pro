@@ -993,6 +993,7 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log("Chill Time Intervals: " + counters.chillTimeIntervals);
 
             // average length of flowTime Intervals
+            
             let timeInterval;
             if (flags.inHyperFocus) {
                 timeInterval = Date.now() - startTimes.hyperFocus;
@@ -1001,6 +1002,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 timeInterval = Date.now() - startTimes.chillTime;
                 intervalArrs.chillTime.push(timeInterval);
             }
+            console.log(intervalArrs.flowTime)
+            console.log(intervalArrs.chillTime)
 
             let flowTimeIntervalArrSum = (intervalArrs.flowTime).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
             let flowTimeArrLength = (intervalArrs.flowTime).length;
@@ -1030,6 +1033,12 @@ document.addEventListener("DOMContentLoaded", function() {
             resetDisplay(display);
             updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer);
             totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount);
+
+            // reset progress bar size
+            if (flags.progressBarContainerIsSmall) {
+                progressBarContainer.classList.toggle("small"); // make progress container large
+                flags.progressBarContainerIsSmall = false;
+            }
 
             // reset background to default
             setBackground(defaultImgUrl);
