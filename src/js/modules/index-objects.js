@@ -105,14 +105,16 @@ export const recoverBreakState = {
     displayTime: null,
     pomodorosCompleted: null,
     hyperFocusElapsedTime: null,
-    localStartTime: null
+    localStartTime: null,
+    pomIntervalTime: null
 }
 
 export const recoverPomState = {
     displayTime: null,
     pomodorosCompleted: null,
     hyperFocusElapsedTime: null,
-    localStartTime: null
+    localStartTime: null,
+    breakIntervalTime: null
 }
 
 export const elapsedTime = {
