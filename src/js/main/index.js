@@ -1140,7 +1140,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     pomodoroWorker.onmessage = function(message) {
         // console.log("pomodoroWorker.onmessage")
-        alert("message received");
+        // alert(flags.modeChangeExecuted);
         if (!flags.modeChangeExecuted) {
             flags.modeChangeExecuted = true;
     
@@ -1608,7 +1608,8 @@ function chillTimeRecovery(flags, counters, elapsedTime, startTimes, start_stop_
 */
 function flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, start_stop_btn, recoverBreakState, chime, bell, alertSounds, alertVolumes) {
     // INITIALIZING VARS
-    // console.log("flowtime recovery initiated")
+    console.log("flowtime recovery initiated")
+    alert("flowtime recovery initiated")
     let displayTime = Date.now() - startTimes.local; // display time in milliseconds
     let pomodorosCompleted = counters.pomodorosCompleted;
     let hyperFocusElapsedTime = elapsedTime.hyperFocus; // documented hyper focus time not including previous interval
