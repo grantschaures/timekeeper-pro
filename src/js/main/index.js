@@ -997,11 +997,10 @@ document.addEventListener("DOMContentLoaded", function() {
             } else {
                 console.log('Focus Score: ' + 0 + '%');
             }
-
+            
             // flow & chill time intervals
             console.log("Flow Time Intervals: " + counters.flowTimeIntervals);
             console.log("Chill Time Intervals: " + counters.chillTimeIntervals);
-
             
             // average length of flowTime Intervals
             let timeInterval;
@@ -1141,6 +1140,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     pomodoroWorker.onmessage = function(message) {
         // console.log("pomodoroWorker.onmessage")
+        alert("message received");
         if (!flags.modeChangeExecuted) {
             flags.modeChangeExecuted = true;
     
