@@ -1659,7 +1659,6 @@ function flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, 
         setPomodoroIndexes(counters, currentPomodoro);
     } else if ((((Math.round(displayTime / 1000)) - (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60)) <= 2) && (((Date.now() - startTimes.lastPomNotification) / 1000) > 30)) {
         // This evaluates when a the computer sleeps and then awakens during the same interval when autoswitchtobreak isn't turned on
-        alert("test1")
         pomodoroWorker.postMessage("clearInterval");
         sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags);
         start_stop_btn.classList.add('glowing-effect');
