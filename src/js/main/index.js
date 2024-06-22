@@ -1631,11 +1631,11 @@ function flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, 
     // if autoStartBreakInterval toggled on, and display time is 2s or less past the set interval time, and there's been at least 30s since the last pomodoro notification
     // console.log((timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60));
     if ((flags.autoStartBreakInterval) && ((((Math.round(displayTime / 1000)) - (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60)) <= 2) && (((Date.now() - startTimes.lastPomNotification) / 1000) > 30))) {
-        debuggingPopup();
         sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags);
     }
-
+    
     if ((flags.autoStartPomodoroInterval) && (flags.autoStartBreakInterval)) {
+        debuggingPopup();
         displayTime -= setPomIntervalTime;
         if (!flags.pomodoroCountIncremented) {
             pomodorosCompleted++;
