@@ -1140,32 +1140,32 @@ document.addEventListener("DOMContentLoaded", function() {
 
     pomodoroWorker.onmessage = function(message) {
         // console.log("pomodoroWorker.onmessage")
-        // alert(flags.modeChangeExecuted);
-        // if (!flags.modeChangeExecuted) {
-        //     flags.modeChangeExecuted = true;
+        alert(flags.modeChangeExecuted);
+        if (!flags.modeChangeExecuted) {
+            flags.modeChangeExecuted = true;
     
-        //     // new Notification(getPomodoroNotificationString(counters, timeAmount));
+            // new Notification(getPomodoroNotificationString(counters, timeAmount));
             
-        //     playAlertSoundCountdown(chime, bell, alertSounds.pomodoro, alertVolumes.pomodoro);
+            playAlertSoundCountdown(chime, bell, alertSounds.pomodoro, alertVolumes.pomodoro);
             
-        //     if ((counters.currentPomodoroIntervalIndex === 0) && (!flags.pomodoroCountIncremented)) {
-        //         counters.pomodorosCompleted++;
-        //         flags.pomodoroCountIncremented = true;
-        //     }
+            if ((counters.currentPomodoroIntervalIndex === 0) && (!flags.pomodoroCountIncremented)) {
+                counters.pomodorosCompleted++;
+                flags.pomodoroCountIncremented = true;
+            }
     
-        //     startTimes.lastPomNotification = Date.now();
+            startTimes.lastPomNotification = Date.now();
             
-        //     //IF AUTO START FLOW TIME INTERVAL OPTION IS SELECTED
-        //     if (((flags.inHyperFocus) && (flags.autoStartBreakInterval)) || ((!flags.inHyperFocus) && (flags.autoStartPomodoroInterval))) {
-        //         setTimeout(() => {
-        //             flags.autoSwitchedModes = true;
-        //             start_stop_btn.click();
-        //         }, 0)
-        //         return;
-        //     } else {
-        //         start_stop_btn.classList.add('glowing-effect');
-        //     }
-        // }
+            //IF AUTO START FLOW TIME INTERVAL OPTION IS SELECTED
+            if (((flags.inHyperFocus) && (flags.autoStartBreakInterval)) || ((!flags.inHyperFocus) && (flags.autoStartPomodoroInterval))) {
+                setTimeout(() => {
+                    flags.autoSwitchedModes = true;
+                    start_stop_btn.click();
+                }, 0)
+                return;
+            } else {
+                start_stop_btn.classList.add('glowing-effect');
+            }
+        }
     }
 
     suggestionWorker.onmessage = function(message) {
@@ -1536,7 +1536,7 @@ function sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, 
             notificationString = "It's been " + counters.currentPomodoroNotification + " minutes! Are you ready to start your Pomodoro Interval?";
         }
     }
-    new Notification(notificationString);
+    // new Notification(notificationString);
     
     playAlertSoundCountdown(chime, bell, alertSounds.pomodoro, alertVolumes.pomodoro);
 
