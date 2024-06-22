@@ -1568,7 +1568,9 @@ function chillTimeRecovery(flags, counters, elapsedTime, startTimes, start_stop_
         sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags);
     }
 
+    debuggingPopup("pink");
     if ((flags.autoStartPomodoroInterval) && (flags.autoStartBreakInterval)) {
+        debuggingPopup("red");
         displayTime -= setBreakIntervalTime;
 
         if (currentPomodoro.intervalOrderIndex === 7) {
