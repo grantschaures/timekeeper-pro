@@ -1629,6 +1629,7 @@ function flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, 
     }
 
     if ((flags.autoStartPomodoroInterval) && (flags.autoStartBreakInterval)) {
+        alert("test1")
         displayTime -= setPomIntervalTime;
         if (!flags.pomodoroCountIncremented) {
             pomodorosCompleted++;
