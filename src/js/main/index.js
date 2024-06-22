@@ -1630,12 +1630,13 @@ function flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, 
     
     // if autoStartBreakInterval toggled on, and display time is 2s or less past the set interval time, and there's been at least 30s since the last pomodoro notification
     // console.log((timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60));
-    if ((flags.autoStartBreakInterval) && ((((Math.round(displayTime / 1000)) - (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60)) <= 2) && (((Date.now() - startTimes.lastPomNotification) / 1000) > 30))) {
-        sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags);
-    }
+    // if ((flags.autoStartBreakInterval) && ((((Math.round(displayTime / 1000)) - (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60)) <= 2) && (((Date.now() - startTimes.lastPomNotification) / 1000) > 30))) {
+    //     sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags);
+    // }
     
+    debuggingPopup("blue");
     if ((flags.autoStartPomodoroInterval) && (flags.autoStartBreakInterval)) {
-        debuggingPopup();
+        debuggingPopup("green");
         displayTime -= setPomIntervalTime;
         if (!flags.pomodoroCountIncremented) {
             pomodorosCompleted++;
@@ -2339,7 +2340,7 @@ function setFavicon(faviconPath) {
     favicon2.href = faviconPath;
 }
 
-function debuggingPopup() {
+function debuggingPopup(color) {
     let mainContainer = document.getElementById('mainContainer');
 
     // Create a new div element
@@ -2348,7 +2349,7 @@ function debuggingPopup() {
     // Set the style properties of the new div
     newDiv.style.width = '50px';
     newDiv.style.height = '50px';
-    newDiv.style.backgroundColor = 'white';
+    newDiv.style.backgroundColor = color;
     newDiv.style.position = 'absolute';
     newDiv.style.innerText = 'Debugging Square';
 
