@@ -2353,7 +2353,7 @@ function debuggingPopup() {
     newDiv.style.innerText = 'Debugging Square';
 
     // Optionally, set the position of the div on the screen
-    newDiv.style.top = '100px'; // adjust as needed
+    newDiv.style.top = '500px'; // adjust as needed
     newDiv.style.left = '100px'; // adjust as needed
 
     // Append the new div to the body
