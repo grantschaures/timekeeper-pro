@@ -29,6 +29,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const defaultFavicon = "/images/logo/HyperChillLogo_circular_white_border.png";
 
     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    var isIpad = /iPad/i.test(navigator.userAgent);
     const initialViewportWidth = window.innerWidth || document.documentElement.clientWidth;
 
     // not used; initialized for reference
@@ -1140,11 +1141,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
     pomodoroWorker.onmessage = function(message) {
         // console.log("pomodoroWorker.onmessage")
-        alert(flags.modeChangeExecuted);
+        // alert(flags.modeChangeExecuted);
         if (!flags.modeChangeExecuted) {
             flags.modeChangeExecuted = true;
     
-            // new Notification(getPomodoroNotificationString(counters, timeAmount));
+            if (!(isMobile || isIpad)) {
+                new Notification(getPomodoroNotificationString(counters, timeAmount));
+            }
             
             playAlertSoundCountdown(chime, bell, alertSounds.pomodoro, alertVolumes.pomodoro);
             
@@ -1221,7 +1224,7 @@ function timeRecovery(flags, counters, startTimes, elapsedTime, start_stop_btn, 
         } else if ((flags.inHyperFocus) && ((counters.currentPomodoroNotification * 60 * 1000) < ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000)) && (!flags.modeChangeExecuted)) {
             flags.modeChangeExecuted = true;
             flags.autoSwitchedModes = false;
-            alert("timeRecovery")
+            // alert("timeRecovery")
             flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, start_stop_btn, recoverBreakState, chime, bell, alertSounds, alertVolumes);
         }
         
@@ -1536,7 +1539,10 @@ function sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, 
             notificationString = "It's been " + counters.currentPomodoroNotification + " minutes! Are you ready to start your Pomodoro Interval?";
         }
     }
-    // new Notification(notificationString);
+
+    if (!(isMobile || isIpad)) {
+        new Notification(notificationString);
+    }
     
     playAlertSoundCountdown(chime, bell, alertSounds.pomodoro, alertVolumes.pomodoro);
 
@@ -1610,7 +1616,7 @@ function chillTimeRecovery(flags, counters, elapsedTime, startTimes, start_stop_
 function flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, start_stop_btn, recoverBreakState, chime, bell, alertSounds, alertVolumes) {
     // INITIALIZING VARS
     // console.log("flowtime recovery initiated")
-    alert("flowtime recovery initiated")
+    // alert("flowtime recovery initiated")
 
     let displayTime = Date.now() - startTimes.local; // display time in milliseconds
     let pomodorosCompleted = counters.pomodorosCompleted;
@@ -1630,7 +1636,7 @@ function flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, 
     }
 
     if ((flags.autoStartPomodoroInterval) && (flags.autoStartBreakInterval)) {
-        alert("test1")
+        // alert("test1")
         displayTime -= setPomIntervalTime;
         if (!flags.pomodoroCountIncremented) {
             pomodorosCompleted++;
