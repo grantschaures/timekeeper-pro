@@ -1610,7 +1610,7 @@ function chillTimeRecovery(flags, counters, elapsedTime, startTimes, start_stop_
 function flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, start_stop_btn, recoverBreakState, chime, bell, alertSounds, alertVolumes) {
     // INITIALIZING VARS
     // console.log("flowtime recovery initiated")
-    // alert("flowtime recovery initiated")
+    alert("flowtime recovery initiated")
 
     let displayTime = Date.now() - startTimes.local; // display time in milliseconds
     let pomodorosCompleted = counters.pomodorosCompleted;
