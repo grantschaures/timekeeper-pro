@@ -1224,7 +1224,6 @@ function timeRecovery(flags, counters, startTimes, elapsedTime, start_stop_btn, 
         } else if ((flags.inHyperFocus) && ((counters.currentPomodoroNotification * 60 * 1000) < ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000)) && (!flags.modeChangeExecuted)) {
             flags.modeChangeExecuted = true;
             flags.autoSwitchedModes = false;
-            // alert("timeRecovery")
             flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, start_stop_btn, recoverBreakState, chime, bell, alertSounds, alertVolumes);
         }
         
@@ -1616,67 +1615,68 @@ function chillTimeRecovery(flags, counters, elapsedTime, startTimes, start_stop_
 function flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, start_stop_btn, recoverBreakState, chime, bell, alertSounds, alertVolumes) {
     // INITIALIZING VARS
     // console.log("flowtime recovery initiated")
-    alert("flowtime recovery initiated")
+    // alert("flowtime recovery initiated")
 
-    let displayTime = Date.now() - startTimes.local; // display time in milliseconds
-    let pomodorosCompleted = counters.pomodorosCompleted;
-    let hyperFocusElapsedTime = elapsedTime.hyperFocus; // documented hyper focus time not including previous interval
-    let localStartTime = startTimes.local;
-    const currentPomodoro = {
-        intervalIndex: counters.currentPomodoroIntervalIndex,
-        intervalOrderIndex: counters.currentPomodoroIntervalOrderIndex,
-        notification: counters.currentPomodoroNotification
-    }
-    let setPomIntervalTime = timeAmount.pomodoroIntervalArr[currentPomodoro.intervalIndex] * 60 * 1000; // in ms
-
-    // if autoStartBreakInterval toggled on, and display time is 2s or less past the set interval time, and there's been at least 30s since the last pomodoro notification
-    // console.log((timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60));
-    if ((flags.autoStartBreakInterval) && ((((Math.round(displayTime / 1000)) - (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60)) <= 2) && (((Date.now() - startTimes.lastPomNotification) / 1000) > 30))) {
-        sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags);
-    }
-
-    if ((flags.autoStartPomodoroInterval) && (flags.autoStartBreakInterval)) {
-        // alert("test1")
-        displayTime -= setPomIntervalTime;
-        if (!flags.pomodoroCountIncremented) {
-            pomodorosCompleted++;
-            flags.pomodoroCountIncremented = true;
+    setTimeout(() => {
+        let displayTime = Date.now() - startTimes.local; // display time in milliseconds
+        let pomodorosCompleted = counters.pomodorosCompleted;
+        let hyperFocusElapsedTime = elapsedTime.hyperFocus; // documented hyper focus time not including previous interval
+        let localStartTime = startTimes.local;
+        const currentPomodoro = {
+            intervalIndex: counters.currentPomodoroIntervalIndex,
+            intervalOrderIndex: counters.currentPomodoroIntervalOrderIndex,
+            notification: counters.currentPomodoroNotification
         }
-        currentPomodoro.intervalOrderIndex++;
-        setCurrentPomodoroNotificationRecovery(currentPomodoro, timeAmount);
-        
-        hyperFocusElapsedTime -= displayTime; //for total display in chill time
-        localStartTime = Date.now(); //effectively resets display time
-        
-        setRecoverBreakState(recoverBreakState, displayTime, pomodorosCompleted, hyperFocusElapsedTime, localStartTime, counters, flags, start_stop_btn, setPomIntervalTime);
-        setPomodoroIndexes(counters, currentPomodoro);
-    } else if (flags.autoStartBreakInterval) { //pomodoro --> sleep --> break end state (only one jump ahead)
-        displayTime -= setPomIntervalTime;
-        if (!flags.pomodoroCountIncremented) {
-            pomodorosCompleted++;
-            flags.pomodoroCountIncremented = true;
+        let setPomIntervalTime = timeAmount.pomodoroIntervalArr[currentPomodoro.intervalIndex] * 60 * 1000; // in ms
+    
+        // if autoStartBreakInterval toggled on, and display time is 2s or less past the set interval time, and there's been at least 30s since the last pomodoro notification
+        // console.log((timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60));
+        if ((flags.autoStartBreakInterval) && ((((Math.round(displayTime / 1000)) - (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60)) <= 2) && (((Date.now() - startTimes.lastPomNotification) / 1000) > 30))) {
+            sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags);
         }
-        currentPomodoro.intervalOrderIndex++;
-        setCurrentPomodoroNotificationRecovery(currentPomodoro, timeAmount);
-        
-        hyperFocusElapsedTime -= displayTime;
-        localStartTime = Date.now() - displayTime;
-        // console.log(Date.now() - (Date.now() - displayTime))
-
-        setRecoverBreakState(recoverBreakState, displayTime, pomodorosCompleted, hyperFocusElapsedTime, localStartTime, counters, flags, start_stop_btn, setPomIntervalTime);
-        setPomodoroIndexes(counters, currentPomodoro);
-    } else if ((((Math.round(displayTime / 1000)) - (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60)) <= 2) && (((Date.now() - startTimes.lastPomNotification) / 1000) > 30)) {
-        // This evaluates when a the computer sleeps and then awakens during the same interval when autoswitchtobreak isn't turned on
-        pomodoroWorker.postMessage("clearInterval");
-        sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags);
-        start_stop_btn.classList.add('glowing-effect');
-    } else { // when pom toggle turned after after time has passed pom interval time
-        start_stop_btn.classList.add('glowing-effect');
-        if (!flags.pomodoroCountIncremented) {
-            counters.pomodorosCompleted++;
-            flags.pomodoroCountIncremented = true;
+    
+        if ((flags.autoStartPomodoroInterval) && (flags.autoStartBreakInterval)) {
+            displayTime -= setPomIntervalTime;
+            if (!flags.pomodoroCountIncremented) {
+                pomodorosCompleted++;
+                flags.pomodoroCountIncremented = true;
+            }
+            currentPomodoro.intervalOrderIndex++;
+            setCurrentPomodoroNotificationRecovery(currentPomodoro, timeAmount);
+            
+            hyperFocusElapsedTime -= displayTime; //for total display in chill time
+            localStartTime = Date.now(); //effectively resets display time
+            
+            setRecoverBreakState(recoverBreakState, displayTime, pomodorosCompleted, hyperFocusElapsedTime, localStartTime, counters, flags, start_stop_btn, setPomIntervalTime);
+            setPomodoroIndexes(counters, currentPomodoro);
+        } else if (flags.autoStartBreakInterval) { //pomodoro --> sleep --> break end state (only one jump ahead)
+            displayTime -= setPomIntervalTime;
+            if (!flags.pomodoroCountIncremented) {
+                pomodorosCompleted++;
+                flags.pomodoroCountIncremented = true;
+            }
+            currentPomodoro.intervalOrderIndex++;
+            setCurrentPomodoroNotificationRecovery(currentPomodoro, timeAmount);
+            
+            hyperFocusElapsedTime -= displayTime;
+            localStartTime = Date.now() - displayTime;
+            // console.log(Date.now() - (Date.now() - displayTime))
+    
+            setRecoverBreakState(recoverBreakState, displayTime, pomodorosCompleted, hyperFocusElapsedTime, localStartTime, counters, flags, start_stop_btn, setPomIntervalTime);
+            setPomodoroIndexes(counters, currentPomodoro);
+        } else if ((((Math.round(displayTime / 1000)) - (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60)) <= 2) && (((Date.now() - startTimes.lastPomNotification) / 1000) > 30)) {
+            // This evaluates when a the computer sleeps and then awakens during the same interval when autoswitchtobreak isn't turned on
+            pomodoroWorker.postMessage("clearInterval");
+            sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags);
+            start_stop_btn.classList.add('glowing-effect');
+        } else { // when pom toggle turned after after time has passed pom interval time
+            start_stop_btn.classList.add('glowing-effect');
+            if (!flags.pomodoroCountIncremented) {
+                counters.pomodorosCompleted++;
+                flags.pomodoroCountIncremented = true;
+            }
         }
-    }
+    }, 1000)
 
     // recoveryDebuggingOutput(displayTime, currentPomodoro, pomodorosCompleted, hyperFocusElapsedTime, localStartTime);
 }
