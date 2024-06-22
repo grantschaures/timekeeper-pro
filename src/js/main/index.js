@@ -1221,6 +1221,7 @@ function timeRecovery(flags, counters, startTimes, elapsedTime, start_stop_btn, 
         } else if ((flags.inHyperFocus) && ((counters.currentPomodoroNotification * 60 * 1000) < ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000)) && (!flags.modeChangeExecuted)) {
             flags.modeChangeExecuted = true;
             flags.autoSwitchedModes = false;
+            alert("timeRecovery")
             flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, start_stop_btn, recoverBreakState, chime, bell, alertSounds, alertVolumes);
         }
         
