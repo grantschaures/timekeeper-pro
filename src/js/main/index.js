@@ -1144,7 +1144,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (!flags.modeChangeExecuted) {
             flags.modeChangeExecuted = true;
     
-            new Notification(getPomodoroNotificationString(counters, timeAmount));
+            // new Notification(getPomodoroNotificationString(counters, timeAmount));
             
             playAlertSoundCountdown(chime, bell, alertSounds.pomodoro, alertVolumes.pomodoro);
             
