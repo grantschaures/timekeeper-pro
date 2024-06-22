@@ -1616,8 +1616,7 @@ function flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, 
     // INITIALIZING VARS
     // console.log("flowtime recovery initiated")
     // alert("flowtime recovery initiated")
-    debuggingPopup();
-
+    
     let displayTime = Date.now() - startTimes.local; // display time in milliseconds
     let pomodorosCompleted = counters.pomodorosCompleted;
     let hyperFocusElapsedTime = elapsedTime.hyperFocus; // documented hyper focus time not including previous interval
@@ -1628,10 +1627,11 @@ function flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, 
         notification: counters.currentPomodoroNotification
     }
     let setPomIntervalTime = timeAmount.pomodoroIntervalArr[currentPomodoro.intervalIndex] * 60 * 1000; // in ms
-
+    
     // if autoStartBreakInterval toggled on, and display time is 2s or less past the set interval time, and there's been at least 30s since the last pomodoro notification
     // console.log((timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60));
     if ((flags.autoStartBreakInterval) && ((((Math.round(displayTime / 1000)) - (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60)) <= 2) && (((Date.now() - startTimes.lastPomNotification) / 1000) > 30))) {
+        debuggingPopup();
         sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags);
     }
 
