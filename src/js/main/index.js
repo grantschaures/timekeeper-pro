@@ -1140,7 +1140,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     pomodoroWorker.onmessage = function(message) {
         // console.log("pomodoroWorker.onmessage")
-        // alert(flags.modeChangeExecuted);
+        alert(flags.modeChangeExecuted);
         if (!flags.modeChangeExecuted) {
             flags.modeChangeExecuted = true;
     
