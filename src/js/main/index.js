@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const defaultFavicon = "/images/logo/HyperChillLogo_circular_white_border.png";
 
     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    var isIpad = isIpad();
+    var isIpad = isIpadCheck();
     const initialViewportWidth = window.innerWidth || document.documentElement.clientWidth;
 
     // not used; initialized for reference
@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function() {
     ];
 
     // This may actually detect all mobile + iPad devices
-    function isIpad() {
+    function isIpadCheck() {
         const userAgent = navigator.userAgent || window.opera;
         return /iPad/.test(userAgent) || (navigator.maxTouchPoints > 1);
     }
@@ -1146,35 +1146,34 @@ document.addEventListener("DOMContentLoaded", function() {
     // DISPLAY WORKERS
 
     pomodoroWorker.onmessage = function(message) {
-        // console.log("pomodoroWorker.onmessage")
-        // alert(flags.modeChangeExecuted);
-        // if (!flags.modeChangeExecuted) {
-        //     flags.modeChangeExecuted = true;
+        console.log("pomodoroWorker.onmessage")
+        if (!flags.modeChangeExecuted) {
+            flags.modeChangeExecuted = true;
     
-        //     if (!(isMobile || isIpad)) {
-        //         new Notification(getPomodoroNotificationString(counters, timeAmount));
-        //     }
+            if (!(isMobile || isIpad)) {
+                new Notification(getPomodoroNotificationString(counters, timeAmount));
+            }
             
-        //     playAlertSoundCountdown(chime, bell, alertSounds.pomodoro, alertVolumes.pomodoro);
+            playAlertSoundCountdown(chime, bell, alertSounds.pomodoro, alertVolumes.pomodoro);
             
-        //     if ((counters.currentPomodoroIntervalIndex === 0) && (!flags.pomodoroCountIncremented)) {
-        //         counters.pomodorosCompleted++;
-        //         flags.pomodoroCountIncremented = true;
-        //     }
+            if ((counters.currentPomodoroIntervalIndex === 0) && (!flags.pomodoroCountIncremented)) {
+                counters.pomodorosCompleted++;
+                flags.pomodoroCountIncremented = true;
+            }
     
-        //     startTimes.lastPomNotification = Date.now();
+            startTimes.lastPomNotification = Date.now();
             
-        //     //IF AUTO START FLOW TIME INTERVAL OPTION IS SELECTED
-        //     if (((flags.inHyperFocus) && (flags.autoStartBreakInterval)) || ((!flags.inHyperFocus) && (flags.autoStartPomodoroInterval))) {
-        //         setTimeout(() => {
-        //             flags.autoSwitchedModes = true;
-        //             start_stop_btn.click();
-        //         }, 0)
-        //         return;
-        //     } else {
-        //         start_stop_btn.classList.add('glowing-effect');
-        //     }
-        // }
+            //IF AUTO START FLOW TIME INTERVAL OPTION IS SELECTED
+            if (((flags.inHyperFocus) && (flags.autoStartBreakInterval)) || ((!flags.inHyperFocus) && (flags.autoStartPomodoroInterval))) {
+                setTimeout(() => {
+                    flags.autoSwitchedModes = true;
+                    start_stop_btn.click();
+                }, 0)
+                return;
+            } else {
+                start_stop_btn.classList.add('glowing-effect');
+            }
+        }
     }
 
     suggestionWorker.onmessage = function(message) {
