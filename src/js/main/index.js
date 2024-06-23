@@ -41,6 +41,7 @@ document.addEventListener("DOMContentLoaded", function() {
         { radios: pomodoroRadios, type: 'pomodoro' }
     ];
 
+    // This may actually detect all mobile + iPad devices
     function isIpad() {
         const userAgent = navigator.userAgent || window.opera;
         return /iPad/.test(userAgent) || (navigator.maxTouchPoints > 1);
@@ -1545,12 +1546,9 @@ function sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, 
         }
     }
 
-    alert(isMobile);
-    alert(isIpad);
-    debuggingPopup("cyan");
-    // if (!(isMobile || isIpad)) {
-    //     new Notification(notificationString);
-    // }
+    if (!(isMobile || isIpad)) {
+        new Notification(notificationString);
+    }
     
     playAlertSoundCountdown(chime, bell, alertSounds.pomodoro, alertVolumes.pomodoro);
 
