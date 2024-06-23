@@ -1227,7 +1227,7 @@ function timeRecovery(flags, counters, startTimes, elapsedTime, start_stop_btn, 
             flags.modeChangeExecuted = true;
             flags.autoSwitchedModes = false;
             // debuggingPopup("purple");
-            chillTimeRecovery(flags, counters, elapsedTime, startTimes, start_stop_btn, recoverPomState, timeAmount, total_time_display, timeConvert, progressBar, progressContainer, chime, bell, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min);
+            chillTimeRecovery(flags, counters, elapsedTime, startTimes, start_stop_btn, recoverPomState, timeAmount, total_time_display, timeConvert, progressBar, progressContainer, chime, bell, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min, isMobile, isIpad);
         } else if ((flags.inHyperFocus) && ((counters.currentPomodoroNotification * 60 * 1000) < ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000)) && (!flags.modeChangeExecuted)) {
             flags.modeChangeExecuted = true;
             flags.autoSwitchedModes = false;
@@ -1555,7 +1555,7 @@ function sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, 
     startTimes.lastPomNotification = Date.now();
 }
 
-function chillTimeRecovery(flags, counters, elapsedTime, startTimes, start_stop_btn, recoverPomState, timeAmount, total_time_display, timeConvert, progressBar, progressContainer, chime, bell, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min) {
+function chillTimeRecovery(flags, counters, elapsedTime, startTimes, start_stop_btn, recoverPomState, timeAmount, total_time_display, timeConvert, progressBar, progressContainer, chime, bell, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min, isMobile, isIpad) {
     // INITIALIZING VARS
     // console.log("chilltime recovery initiated")
     let displayTime = Date.now() - startTimes.local;
