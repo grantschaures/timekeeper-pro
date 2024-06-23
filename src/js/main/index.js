@@ -2071,10 +2071,20 @@ function playAlertSoundCountdown(chime, bell, alertSoundType, alertVolumeType) {
     pauseAndResetAlertSounds(bell, chime);
     if (alertSoundType === 'chime') {
         chime.volume = alertVolumeType;
-        chime.play();
+        chime.play().then(() => {
+            alert('Playback started successfully');
+        }).catch(error => {
+            alert('Playback was prevented:');
+            // Handle the error, possibly by showing a play button to the user
+        });
     } else if (alertSoundType === 'bell') {
         bell.volume = alertVolumeType;
-        bell.play();
+        bell.play().then(() => {
+            alert('Playback started successfully');
+        }).catch(error => {
+            alert('Playback was prevented:');
+            // Handle the error, possibly by showing a play button to the user
+        });
     }
 }
 
