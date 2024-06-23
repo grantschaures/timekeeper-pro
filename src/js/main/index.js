@@ -1540,8 +1540,8 @@ function sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, 
         }
     }
 
-    alert(isMobile)
-    alert(isIpad)
+    // alert(isMobile);
+    // alert(isIpad);
     if (!(isMobile || isIpad)) {
         debuggingPopup("cyan");
         new Notification(notificationString);
