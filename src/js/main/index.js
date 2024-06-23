@@ -1650,7 +1650,7 @@ function flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, 
         hyperFocusElapsedTime -= displayTime; //for total display in chill time
         localStartTime = Date.now(); //effectively resets display time
         
-        setRecoverBreakState(recoverBreakState, displayTime, pomodorosCompleted, hyperFocusElapsedTime, localStartTime, counters, flags, start_stop_btn, setPomIntervalTime);
+        setRecoverBreakState(recoverBreakState, displayTime, pomodorosCompleted, hyperFocusElapsedTime, localStartTime, counters, flags, start_stop_btn, setPomIntervalTime); // this switches modes
         setPomodoroIndexes(counters, currentPomodoro);
     } else if (flags.autoStartBreakInterval) { //pomodoro --> sleep --> break end state (only one jump ahead)
         displayTime -= setPomIntervalTime;
