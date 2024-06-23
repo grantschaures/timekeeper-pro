@@ -1569,9 +1569,9 @@ function chillTimeRecovery(flags, counters, elapsedTime, startTimes, start_stop_
     //     sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags);
     // }
     
-    debuggingPopup("pink");
+    // debuggingPopup("pink");
     if ((flags.autoStartPomodoroInterval) && (flags.autoStartBreakInterval)) {
-        debuggingPopup("red");
+        // debuggingPopup("red");
         displayTime -= setBreakIntervalTime;
 
         if (currentPomodoro.intervalOrderIndex === 7) {
@@ -1637,9 +1637,9 @@ function flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, 
     //     sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags);
     // }
     
-    debuggingPopup("blue");
+    // debuggingPopup("blue");
     if ((flags.autoStartPomodoroInterval) && (flags.autoStartBreakInterval)) {
-        debuggingPopup("green");
+        // debuggingPopup("green");
         displayTime -= setPomIntervalTime;
         if (!flags.pomodoroCountIncremented) {
             pomodorosCompleted++;
