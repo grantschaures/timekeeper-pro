@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if (counters.startStop === 1) {
             veryStartActions(startTimes, hyperChillLogoImage, progressBarContainer, flags);
-            triggerSilentAlertAudioMobile(chime, bell);
+            triggerSilentAlertAudioMobile(chime, bell); // will cause any external music playing to stop on mobile
             startTimes.lastPomNotification = Date.now();
         } else {
             chillTimeToFirstPomodoro(flags, productivity_chill_mode, counters);
@@ -1183,9 +1183,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     suggestionWorker.onmessage = function(message) {
         if (!flags.sentSuggestionMinutesNotification) {
-            sendSuggestionBreakNotification(timeAmount, startTimes, chime, bell, alertSounds, alertVolumes);
             flags.sentSuggestionMinutesNotification = true;
             start_stop_btn.classList.add('glowing-effect');
+            sendSuggestionBreakNotification(timeAmount, startTimes, chime, bell, alertSounds, alertVolumes);
         }
     }
     
@@ -2091,6 +2091,7 @@ function playAlertSoundCountdown(chime, bell, alertSoundType, alertVolumeType) {
     }
 }
 
+// needed to unlock the audio context to play the alert automatically on mobile
 function triggerSilentAlertAudioMobile(chime, bell) {
     // Set volume to 0
     chime.volume = 0;
