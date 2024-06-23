@@ -1540,9 +1540,10 @@ function sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, 
         }
     }
 
-    // if (!(isMobile || isIpad)) {
-    //     new Notification(notificationString);
-    // }
+    if (!(isMobile || isIpad)) {
+        debuggingPopup("cyan");
+        new Notification(notificationString);
+    }
     
     playAlertSoundCountdown(chime, bell, alertSounds.pomodoro, alertVolumes.pomodoro);
 
