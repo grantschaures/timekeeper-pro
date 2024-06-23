@@ -1510,35 +1510,35 @@ function sendFlowmodoroNotification(timeAmount, counters, startTimes, chime, bel
 }
 
 function sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags) {
-    // let notificationString;
-    // if (counters.currentPomodoroIntervalOrderIndex == 0 || counters.currentPomodoroIntervalOrderIndex == 2 || counters.currentPomodoroIntervalOrderIndex == 4) { // 1st-3rd pomodoro
-    //     if (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] == 1) {
-    //         notificationString = "It's been " + counters.currentPomodoroNotification + " minute! Are you ready to take a short break?";
-    //     } else {
-    //         notificationString = "It's been " + counters.currentPomodoroNotification + " minutes! Are you ready to take a short break?";
-    //     }
-    //     if (!flags.pomodoroCountIncremented) {
-    //         counters.pomodorosCompleted++;
-    //         // console.log(counters.pomodorosCompleted);
-    //         flags.pomodoroCountIncremented = true;
-    //     }
-    // } else if (counters.currentPomodoroIntervalOrderIndex == 6) { // 4th pomodoro
-    //     if (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] == 1) {
-    //         notificationString = "It's been " + counters.currentPomodoroNotification + " minute! Are you ready to take a long break?";
-    //     } else {
-    //         notificationString = "It's been " + counters.currentPomodoroNotification + " minutes! Are you ready to take a long break?";
-    //     }
-    //     if (!flags.pomodoroCountIncremented) {
-    //         counters.pomodorosCompleted++;
-    //         flags.pomodoroCountIncremented = true;
-    //     }
-    // } else { // any of the breaks
-    //     if (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] == 1) {
-    //         notificationString = "It's been " + counters.currentPomodoroNotification + " minute! Are you ready to start your Pomodoro Interval?";
-    //     } else {
-    //         notificationString = "It's been " + counters.currentPomodoroNotification + " minutes! Are you ready to start your Pomodoro Interval?";
-    //     }
-    // }
+    let notificationString;
+    if (counters.currentPomodoroIntervalOrderIndex == 0 || counters.currentPomodoroIntervalOrderIndex == 2 || counters.currentPomodoroIntervalOrderIndex == 4) { // 1st-3rd pomodoro
+        if (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] == 1) {
+            notificationString = "It's been " + counters.currentPomodoroNotification + " minute! Are you ready to take a short break?";
+        } else {
+            notificationString = "It's been " + counters.currentPomodoroNotification + " minutes! Are you ready to take a short break?";
+        }
+        if (!flags.pomodoroCountIncremented) {
+            counters.pomodorosCompleted++;
+            // console.log(counters.pomodorosCompleted);
+            flags.pomodoroCountIncremented = true;
+        }
+    } else if (counters.currentPomodoroIntervalOrderIndex == 6) { // 4th pomodoro
+        if (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] == 1) {
+            notificationString = "It's been " + counters.currentPomodoroNotification + " minute! Are you ready to take a long break?";
+        } else {
+            notificationString = "It's been " + counters.currentPomodoroNotification + " minutes! Are you ready to take a long break?";
+        }
+        if (!flags.pomodoroCountIncremented) {
+            counters.pomodorosCompleted++;
+            flags.pomodoroCountIncremented = true;
+        }
+    } else { // any of the breaks
+        if (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] == 1) {
+            notificationString = "It's been " + counters.currentPomodoroNotification + " minute! Are you ready to start your Pomodoro Interval?";
+        } else {
+            notificationString = "It's been " + counters.currentPomodoroNotification + " minutes! Are you ready to start your Pomodoro Interval?";
+        }
+    }
 
     // if (!(isMobile || isIpad)) {
     //     new Notification(notificationString);
