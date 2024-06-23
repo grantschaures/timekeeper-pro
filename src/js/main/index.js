@@ -2088,8 +2088,8 @@ function playAlertSoundCountdown(chime, bell, alertSoundType, alertVolumeType) {
 }
 
 function triggerSilentAlertAudioMobile(chime, bell) {
-    chime.volume = 0.0001;
-    bell.volume = 0.0001;
+    chime.volume = 0;
+    bell.volume = 0;
 
     setTimeout(() => {
         chime.play();
