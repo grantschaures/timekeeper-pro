@@ -1032,6 +1032,10 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log(""); // new line
 
             // (2) Reset everything to the default state
+
+            // reset alerts
+            pauseAndResetAlertSounds(bell, chime);
+
             // reset internal logic
             resetActions(hyperChillLogoImage, flags, intervals, recoverBreakState, recoverPomState, startTimes, elapsedTime, counters, savedInterruptionsArr, intervalArrs);
     
