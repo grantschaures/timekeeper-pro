@@ -1225,7 +1225,7 @@ function timeRecovery(flags, counters, startTimes, elapsedTime, start_stop_btn, 
         } else if ((flags.inHyperFocus) && ((counters.currentPomodoroNotification * 60 * 1000) < ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000)) && (!flags.modeChangeExecuted)) {
             flags.modeChangeExecuted = true;
             flags.autoSwitchedModes = false;
-            flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, start_stop_btn, recoverBreakState, chime, bell, alertSounds, alertVolumes);
+            flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, start_stop_btn, recoverBreakState, chime, bell, alertSounds, alertVolumes, isMobile, isIpad);
         }
         
         // console.log("Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000: " + ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000)));
@@ -1510,46 +1510,45 @@ function sendFlowmodoroNotification(timeAmount, counters, startTimes, chime, bel
 }
 
 function sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags, isMobile, isIpad) {
-    // let notificationString;
-    // if (counters.currentPomodoroIntervalOrderIndex == 0 || counters.currentPomodoroIntervalOrderIndex == 2 || counters.currentPomodoroIntervalOrderIndex == 4) { // 1st-3rd pomodoro
-    //     if (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] == 1) {
-    //         notificationString = "It's been " + counters.currentPomodoroNotification + " minute! Are you ready to take a short break?";
-    //     } else {
-    //         notificationString = "It's been " + counters.currentPomodoroNotification + " minutes! Are you ready to take a short break?";
-    //     }
-    //     if (!flags.pomodoroCountIncremented) {
-    //         counters.pomodorosCompleted++;
-    //         // console.log(counters.pomodorosCompleted);
-    //         flags.pomodoroCountIncremented = true;
-    //     }
-    // } else if (counters.currentPomodoroIntervalOrderIndex == 6) { // 4th pomodoro
-    //     if (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] == 1) {
-    //         notificationString = "It's been " + counters.currentPomodoroNotification + " minute! Are you ready to take a long break?";
-    //     } else {
-    //         notificationString = "It's been " + counters.currentPomodoroNotification + " minutes! Are you ready to take a long break?";
-    //     }
-    //     if (!flags.pomodoroCountIncremented) {
-    //         counters.pomodorosCompleted++;
-    //         flags.pomodoroCountIncremented = true;
-    //     }
-    // } else { // any of the breaks
-    //     if (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] == 1) {
-    //         notificationString = "It's been " + counters.currentPomodoroNotification + " minute! Are you ready to start your Pomodoro Interval?";
-    //     } else {
-    //         notificationString = "It's been " + counters.currentPomodoroNotification + " minutes! Are you ready to start your Pomodoro Interval?";
-    //     }
-    // }
+    let notificationString;
+    if (counters.currentPomodoroIntervalOrderIndex == 0 || counters.currentPomodoroIntervalOrderIndex == 2 || counters.currentPomodoroIntervalOrderIndex == 4) { // 1st-3rd pomodoro
+        if (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] == 1) {
+            notificationString = "It's been " + counters.currentPomodoroNotification + " minute! Are you ready to take a short break?";
+        } else {
+            notificationString = "It's been " + counters.currentPomodoroNotification + " minutes! Are you ready to take a short break?";
+        }
+        if (!flags.pomodoroCountIncremented) {
+            counters.pomodorosCompleted++;
+            // console.log(counters.pomodorosCompleted);
+            flags.pomodoroCountIncremented = true;
+        }
+    } else if (counters.currentPomodoroIntervalOrderIndex == 6) { // 4th pomodoro
+        if (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] == 1) {
+            notificationString = "It's been " + counters.currentPomodoroNotification + " minute! Are you ready to take a long break?";
+        } else {
+            notificationString = "It's been " + counters.currentPomodoroNotification + " minutes! Are you ready to take a long break?";
+        }
+        if (!flags.pomodoroCountIncremented) {
+            counters.pomodorosCompleted++;
+            flags.pomodoroCountIncremented = true;
+        }
+    } else { // any of the breaks
+        if (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] == 1) {
+            notificationString = "It's been " + counters.currentPomodoroNotification + " minute! Are you ready to start your Pomodoro Interval?";
+        } else {
+            notificationString = "It's been " + counters.currentPomodoroNotification + " minutes! Are you ready to start your Pomodoro Interval?";
+        }
+    }
 
-    // alert(isMobile);
-    // alert(isIpad);
-    // debuggingPopup("cyan");
+    alert(isMobile);
+    debuggingPopup("cyan");
     // if (!(isMobile || isIpad)) {
     //     new Notification(notificationString);
     // }
     
-    // playAlertSoundCountdown(chime, bell, alertSounds.pomodoro, alertVolumes.pomodoro);
+    playAlertSoundCountdown(chime, bell, alertSounds.pomodoro, alertVolumes.pomodoro);
 
-    // startTimes.lastPomNotification = Date.now();
+    startTimes.lastPomNotification = Date.now();
 }
 
 function chillTimeRecovery(flags, counters, elapsedTime, startTimes, start_stop_btn, recoverPomState, timeAmount, total_time_display, timeConvert, progressBar, progressContainer, chime, bell, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min) {
@@ -1619,7 +1618,7 @@ function chillTimeRecovery(flags, counters, elapsedTime, startTimes, start_stop_
     This function deals w/ the situation where the computer goes to sleep during a pomodoro interval
     and calculates the future state of the program based on which intervals should have occured.
 */
-function flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, start_stop_btn, recoverBreakState, chime, bell, alertSounds, alertVolumes) {
+function flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, start_stop_btn, recoverBreakState, chime, bell, alertSounds, alertVolumes, isMobile, isIpad) {
     // INITIALIZING VARS
     // console.log("flowtime recovery initiated")
     // alert("flowtime recovery initiated")
