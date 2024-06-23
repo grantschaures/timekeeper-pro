@@ -1540,6 +1540,8 @@ function sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, 
         }
     }
 
+    alert(isMobile)
+    alert(isIpad)
     if (!(isMobile || isIpad)) {
         debuggingPopup("cyan");
         new Notification(notificationString);
@@ -1567,7 +1569,7 @@ function chillTimeRecovery(flags, counters, elapsedTime, startTimes, start_stop_
     
     // When both auto start toggles are turned on
     if ((flags.autoStartPomodoroInterval) && ((((Math.round(displayTime / 1000)) - (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60)) <= 2) && (((Date.now() - startTimes.lastPomNotification) / 1000) > 30))) {
-        sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags);
+        sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags, isMobile, isIpad);
     }
     
     // debuggingPopup("pink");
@@ -1604,7 +1606,7 @@ function chillTimeRecovery(flags, counters, elapsedTime, startTimes, start_stop_
         // This evaluates when a the computer sleeps and then awakens during the same interval when autoswitchtobreak isn't turned on
         // debuggingPopup("black");
         pomodoroWorker.postMessage("clearInterval");
-        sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags);
+        sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags, isMobile, isIpad);
         start_stop_btn.classList.add('glowing-effect');
     } else {
         start_stop_btn.classList.add('glowing-effect');
@@ -1636,7 +1638,7 @@ function flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, 
     // if autoStartBreakInterval toggled on, and display time is 2s or less past the set interval time, and there's been at least 30s since the last pomodoro notification
     // console.log((timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60));
     if ((flags.autoStartBreakInterval) && ((((Math.round(displayTime / 1000)) - (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60)) <= 2) && (((Date.now() - startTimes.lastPomNotification) / 1000) > 30))) {
-        sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags);
+        sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags, isMobile, isIpad);
     }
     
     // debuggingPopup("blue");
@@ -1674,7 +1676,7 @@ function flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, 
         // This evaluates when a the computer sleeps and then awakens during the same interval when autoswitchtobreak isn't turned on
         // debuggingPopup("orange");
         pomodoroWorker.postMessage("clearInterval");
-        sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags);
+        sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags, isMobile, isIpad);
         start_stop_btn.classList.add('glowing-effect');
     } else { // when pom toggle turned after after time has passed pom interval time
         start_stop_btn.classList.add('glowing-effect');
