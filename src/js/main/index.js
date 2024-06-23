@@ -1220,7 +1220,7 @@ function timeRecovery(flags, counters, startTimes, elapsedTime, start_stop_btn, 
         if ((!flags.inHyperFocus) && ((counters.currentPomodoroNotification * 60 * 1000) < ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000)) && (!flags.modeChangeExecuted)) {
             flags.modeChangeExecuted = true;
             flags.autoSwitchedModes = false;
-            debuggingPopup("purple");
+            // debuggingPopup("purple");
             chillTimeRecovery(flags, counters, elapsedTime, startTimes, start_stop_btn, recoverPomState, timeAmount, total_time_display, timeConvert, progressBar, progressContainer, chime, bell, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min);
         } else if ((flags.inHyperFocus) && ((counters.currentPomodoroNotification * 60 * 1000) < ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000)) && (!flags.modeChangeExecuted)) {
             flags.modeChangeExecuted = true;
