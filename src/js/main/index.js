@@ -1547,9 +1547,9 @@ function sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, 
     //     new Notification(notificationString);
     // }
     
-    playAlertSoundCountdown(chime, bell, alertSounds.pomodoro, alertVolumes.pomodoro);
+    // playAlertSoundCountdown(chime, bell, alertSounds.pomodoro, alertVolumes.pomodoro);
 
-    startTimes.lastPomNotification = Date.now();
+    // startTimes.lastPomNotification = Date.now();
 }
 
 function chillTimeRecovery(flags, counters, elapsedTime, startTimes, start_stop_btn, recoverPomState, timeAmount, total_time_display, timeConvert, progressBar, progressContainer, chime, bell, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min) {
