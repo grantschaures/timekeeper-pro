@@ -1550,7 +1550,6 @@ function sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, 
 }
 
 function chillTimeRecovery(flags, counters, elapsedTime, startTimes, start_stop_btn, recoverPomState, timeAmount, total_time_display, timeConvert, progressBar, progressContainer, chime, bell, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min) {
-    debuggingPopup("pink");
     // INITIALIZING VARS
     // console.log("chilltime recovery initiated")
     let displayTime = Date.now() - startTimes.local;
@@ -1564,8 +1563,9 @@ function chillTimeRecovery(flags, counters, elapsedTime, startTimes, start_stop_
         notification: counters.currentPomodoroNotification
     }
     let setBreakIntervalTime = timeAmount.pomodoroIntervalArr[currentPomodoro.intervalIndex] * 60 * 1000;
-
+    
     // When both auto start toggles are turned on
+    debuggingPopup("pink");
     if ((flags.autoStartPomodoroInterval) && ((((Math.round(displayTime / 1000)) - (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60)) <= 2) && (((Date.now() - startTimes.lastPomNotification) / 1000) > 30))) {
         sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags);
     }
@@ -1633,9 +1633,9 @@ function flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, 
     
     // if autoStartBreakInterval toggled on, and display time is 2s or less past the set interval time, and there's been at least 30s since the last pomodoro notification
     // console.log((timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60));
-    // if ((flags.autoStartBreakInterval) && ((((Math.round(displayTime / 1000)) - (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60)) <= 2) && (((Date.now() - startTimes.lastPomNotification) / 1000) > 30))) {
-    //     sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags);
-    // }
+    if ((flags.autoStartBreakInterval) && ((((Math.round(displayTime / 1000)) - (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60)) <= 2) && (((Date.now() - startTimes.lastPomNotification) / 1000) > 30))) {
+        sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags);
+    }
     
     debuggingPopup("blue");
     if ((flags.autoStartPomodoroInterval) && (flags.autoStartBreakInterval)) {
