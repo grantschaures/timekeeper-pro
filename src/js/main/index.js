@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const defaultFavicon = "/images/logo/HyperChillLogo_circular_white_border.png";
 
     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    var isIpad = /iPad/i.test(navigator.userAgent);
+    var isIpad = isIpad();
     const initialViewportWidth = window.innerWidth || document.documentElement.clientWidth;
 
     // not used; initialized for reference
@@ -40,6 +40,11 @@ document.addEventListener("DOMContentLoaded", function() {
         { radios: generalRadios, type: 'general' },
         { radios: pomodoroRadios, type: 'pomodoro' }
     ];
+
+    function isIpad() {
+        const userAgent = navigator.userAgent || window.opera;
+        return /iPad/.test(userAgent) || (navigator.maxTouchPoints > 1);
+    }
 
     // ----------------
     // MAIN CODE (Runs after DOM content is loaded)
@@ -1543,7 +1548,6 @@ function sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, 
     alert(isMobile);
     alert(isIpad);
     debuggingPopup("cyan");
-    console.log("test")
     // if (!(isMobile || isIpad)) {
     //     new Notification(notificationString);
     // }
