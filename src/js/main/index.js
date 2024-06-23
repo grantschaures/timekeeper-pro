@@ -2088,13 +2088,13 @@ function playAlertSoundCountdown(chime, bell, alertSoundType, alertVolumeType) {
 }
 
 function triggerSilentAlertAudioMobile(chime, bell) {
-    chime.volume = 0.25;
-    bell.volume = 0.25;
+    chime.volume = 1;
+    bell.volume = 1;
 
     setTimeout(() => {
         chime.play();
         bell.play();
-    }, 5000)
+    }, 2000)
 }
 
 //For some reason, EDGE won't prompt the user to turn on notifications if they're set to default :/
