@@ -2068,8 +2068,7 @@ function getCurrentTime() {
 }
 
 function playAlertSoundCountdown(chime, bell, alertSoundType, alertVolumeType) {
-    alert(alertSoundType);
-    alert(alertVolumeType);
+    pauseAndResetAlertSounds(bell, chime);
     if (alertSoundType === 'chime') {
         chime.volume = alertVolumeType;
         chime.play();
