@@ -1509,7 +1509,7 @@ function sendFlowmodoroNotification(timeAmount, counters, startTimes, chime, bel
     playAlertSoundCountdown(chime, bell, alertSounds.flowmodoro, alertVolumes.flowmodoro);
 }
 
-function sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags) {
+function sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags, isMobile, isIpad) {
     let notificationString;
     if (counters.currentPomodoroIntervalOrderIndex == 0 || counters.currentPomodoroIntervalOrderIndex == 2 || counters.currentPomodoroIntervalOrderIndex == 4) { // 1st-3rd pomodoro
         if (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] == 1) {
@@ -1540,10 +1540,10 @@ function sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, 
         }
     }
 
-    // if (!(isMobile || isIpad)) {
-    //     debuggingPopup("cyan");
-    //     new Notification(notificationString);
-    // }
+    if (!(isMobile || isIpad)) {
+        debuggingPopup("cyan");
+        new Notification(notificationString);
+    }
     
     playAlertSoundCountdown(chime, bell, alertSounds.pomodoro, alertVolumes.pomodoro);
 
