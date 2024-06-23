@@ -151,7 +151,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 lastChillTimeInterval = startTimes.hyperFocus - startTimes.chillTime;
             }
 
-            // figure out how in recovery pomodoro will affect this
             if (counters.startStop > 2) { // if 2nd round of flow time (1 round of chill time has already happened)
                 intervalArrs.chillTime.push(lastChillTimeInterval);
             }
@@ -361,23 +360,6 @@ document.addEventListener("DOMContentLoaded", function() {
             this.classList.add('selected');
             tempStorage.lastSettingsSelectionId = buttonId;
         });
-    }
-
-    if (isMobile) {
-        document.getElementById("notificationsHeaderContainer").style.display = 'none';
-        document.getElementById("pomodoroBtnContainer").style.display = 'none';
-        document.getElementById("flowmodoroBtnContainer").style.display = 'none';
-        document.getElementById("generalBtnContainer").style.display = 'none';
-
-        document.getElementById("pomodoroSettingsContainer").style.display = 'none';
-        document.getElementById("flowmodoroSettingsContainer").style.display = 'none';
-        document.getElementById("generalSettingsContainer").style.display = 'none';
-
-        document.getElementById("pomodoroAlertSoundBlock2").style.display = 'none';
-        document.getElementById("flowmodoroAlertSoundBlock2").style.display = 'none';
-        document.getElementById("generalAlertSoundBlock2").style.display = 'none';
-
-        tempStorage.lastSettingsSelectionId = 'backgroundsBtnContainer';
     }
 
     pomodoroNotifications.addEventListener('click', function() {
@@ -1977,12 +1959,6 @@ function handleViewportWidthChange(settingsMappings, tempStorage, isMobile) {
             document.getElementById(tempStorage.lastSettingsSelectionId).click();
         }
     }
-
-    if (isMobile) {
-        document.getElementById("pomodoroSettingsContainer").style.display = 'none';
-        document.getElementById("flowmodoroSettingsContainer").style.display = 'none';
-        document.getElementById("generalSettingsContainer").style.display = 'none';
-    }
 }
 
 // Show suggestion break container AND sets current flowmodoro notification
@@ -2129,7 +2105,7 @@ function triggerSilentAlertAudioMobile(chime, bell) {
 async function enableNotifications(breakSuggestionToggle, flowmodoroNotificationToggle, pomodoroNotificationToggle, flags) {
     // Check if notifications are supported
     if (!("Notification" in window)) {
-        alert("This browser does not support desktop notifications or auto start functionality");
+        alert("This browser does not support push notifications");
         return false;
     }
     // Otherwise, we need to ask the user for permission
