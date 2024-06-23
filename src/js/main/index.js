@@ -1183,15 +1183,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
     suggestionWorker.onmessage = function(message) {
         if (!flags.sentSuggestionMinutesNotification) {
+            sendSuggestionBreakNotification(timeAmount, startTimes, chime, bell, alertSounds, alertVolumes, isMobile, isIpad);
             flags.sentSuggestionMinutesNotification = true;
             start_stop_btn.classList.add('glowing-effect');
-            sendSuggestionBreakNotification(timeAmount, startTimes, chime, bell, alertSounds, alertVolumes);
         }
     }
     
     flowmodoroWorker.onmessage = function(message) {
         if (!flags.sentFlowmodoroNotification) {
-            sendFlowmodoroNotification(timeAmount, counters, startTimes, chime, bell, alertSounds, alertVolumes);
+            sendFlowmodoroNotification(timeAmount, counters, startTimes, chime, bell, alertSounds, alertVolumes, isMobile, isIpad);
             flags.sentFlowmodoroNotification = true;
             start_stop_btn.classList.add('glowing-effect');
         }
@@ -1243,14 +1243,14 @@ function timeRecovery(flags, counters, startTimes, elapsedTime, start_stop_btn, 
         if ((flags.flowmodoroNotificationToggle) && (!flags.inHyperFocus) && ((counters.currentFlowmodoroNotification * 60 * 1000) < ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000)) && (!flags.sentFlowmodoroNotification)) {
             // console.log("TIME RECOVERY FOR FLOWMODORO")
             flowmodoroWorker.postMessage("clearInterval");
-            sendFlowmodoroNotification(timeAmount, counters, startTimes, chime, bell, alertSounds, alertVolumes);
+            sendFlowmodoroNotification(timeAmount, counters, startTimes, chime, bell, alertSounds, alertVolumes, isMobile, isIpad);
             flags.sentFlowmodoroNotification = true;
             start_stop_btn.classList.add('glowing-effect');
         }
         if ((flags.breakSuggestionToggle) && (flags.inHyperFocus) && ((timeAmount.suggestionMinutes * 60 * 1000) < ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000)) && (!flags.sentSuggestionMinutesNotification)) {
             // console.log("TIME RECOVERY FOR SUGGESTION MINUTES")
             suggestionWorker.postMessage("clearInterval");
-            sendSuggestionBreakNotification(timeAmount, startTimes, chime, bell, alertSounds, alertVolumes);
+            sendSuggestionBreakNotification(timeAmount, startTimes, chime, bell, alertSounds, alertVolumes, isMobile, isIpad);
             flags.sentSuggestionMinutesNotification = true;
             start_stop_btn.classList.add('glowing-effect');
         }
@@ -1493,29 +1493,35 @@ function chillTimeToFirstPomodoro(flags, productivity_chill_mode, counters) {
     } 
 }
 
-function sendSuggestionBreakNotification(timeAmount, startTimes, chime, bell, alertSounds, alertVolumes) {
+function sendSuggestionBreakNotification(timeAmount, startTimes, chime, bell, alertSounds, alertVolumes, isMobile, isIpad) {
     let notificationString;
     if (timeAmount.suggestionMinutes > 1) {
         notificationString = "Need a break? You've been hard at work for " + String(timeAmount.suggestionMinutes) + " minutes!";
     } else {
         notificationString = "Need a break? You've been hard at work for " + String(timeAmount.suggestionMinutes) + " minute!";
     }
-    new Notification(notificationString);
-    startTimes.lastBreakSuggestionNotification = Date.now();
 
+    if (!(isMobile || isIpad)) {
+        new Notification(notificationString);
+    }
+
+    startTimes.lastBreakSuggestionNotification = Date.now();
     playAlertSoundCountdown(chime, bell, alertSounds.general, alertVolumes.general);
 }
 
-function sendFlowmodoroNotification(timeAmount, counters, startTimes, chime, bell, alertSounds, alertVolumes) {
+function sendFlowmodoroNotification(timeAmount, counters, startTimes, chime, bell, alertSounds, alertVolumes, isMobile, isIpad) {
     let notificationString;
     if (timeAmount.breakTimeSuggestionsArr[counters.currentFlowmodoroBreakIndex] == 1) {
         notificationString = "It's been " + counters.currentFlowmodoroNotification + " minute! Are you ready to get back into Flow Time?";
     } else {
         notificationString = "It's been " + counters.currentFlowmodoroNotification + " minutes! Are you ready to get back into Flow Time?";
     }
-    new Notification(notificationString);
+
+    if (!(isMobile || isIpad)) {
+        new Notification(notificationString);
+    }
+
     startTimes.lastFlowmodoroNotification = Date.now();
-    
     playAlertSoundCountdown(chime, bell, alertSounds.flowmodoro, alertVolumes.flowmodoro);
 }
 
