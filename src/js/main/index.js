@@ -122,6 +122,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if (counters.startStop === 1) {
             veryStartActions(startTimes, hyperChillLogoImage, progressBarContainer, flags);
+            triggerSilentAlertAudioMobile(chime, bell);
             startTimes.lastPomNotification = Date.now();
         } else {
             chillTimeToFirstPomodoro(flags, productivity_chill_mode, counters);
@@ -2072,20 +2073,26 @@ function playAlertSoundCountdown(chime, bell, alertSoundType, alertVolumeType) {
     if (alertSoundType === 'chime') {
         chime.volume = alertVolumeType;
         chime.play().then(() => {
-            alert('Playback started successfully');
+            console.log('Playback started successfully');
         }).catch(error => {
-            alert('Playback was prevented:');
-            // Handle the error, possibly by showing a play button to the user
+            console.error('Playback was prevented:', error);
         });
     } else if (alertSoundType === 'bell') {
         bell.volume = alertVolumeType;
         bell.play().then(() => {
-            alert('Playback started successfully');
+            console.log('Playback started successfully');
         }).catch(error => {
-            alert('Playback was prevented:');
-            // Handle the error, possibly by showing a play button to the user
+            console.error('Playback was prevented:', error);
         });
     }
+}
+
+function triggerSilentAlertAudioMobile(chime, bell) {
+    chime.volume = 0;
+    chime.play();
+
+    bell.volume = 0;
+    bell.play();
 }
 
 //For some reason, EDGE won't prompt the user to turn on notifications if they're set to default :/
