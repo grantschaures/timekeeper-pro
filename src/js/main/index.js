@@ -1201,7 +1201,7 @@ document.addEventListener("DOMContentLoaded", function() {
         
         display.textContent = `${hours}:${minutes}:${seconds}`;
 
-        timeRecovery(flags, counters, startTimes, elapsedTime, start_stop_btn, recoverPomState, recoverBreakState, timeAmount, total_time_display, timeConvert, progressBar, progressContainer, chime, bell, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min, flowmodoroWorker, suggestionWorker);
+        timeRecovery(flags, counters, startTimes, elapsedTime, start_stop_btn, recoverPomState, recoverBreakState, timeAmount, total_time_display, timeConvert, progressBar, progressContainer, chime, bell, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min, flowmodoroWorker, suggestionWorker, isMobile, isIpad);
     }
 
     totalDisplayWorker.onmessage = function(message) {
@@ -1215,7 +1215,7 @@ document.addEventListener("DOMContentLoaded", function() {
 // HELPER FUNCTIONS
 // ---------------------
 
-function timeRecovery(flags, counters, startTimes, elapsedTime, start_stop_btn, recoverPomState, recoverBreakState, timeAmount, total_time_display, timeConvert, progressBar, progressContainer, chime, bell, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min, flowmodoroWorker, suggestionWorker) {
+function timeRecovery(flags, counters, startTimes, elapsedTime, start_stop_btn, recoverPomState, recoverBreakState, timeAmount, total_time_display, timeConvert, progressBar, progressContainer, chime, bell, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min, flowmodoroWorker, suggestionWorker, isMobile, isIpad) {
     if (flags.pomodoroNotificationToggle) {
         if ((!flags.inHyperFocus) && ((counters.currentPomodoroNotification * 60 * 1000) < ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000)) && (!flags.modeChangeExecuted)) {
             flags.modeChangeExecuted = true;
