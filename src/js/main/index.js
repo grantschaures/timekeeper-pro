@@ -1550,6 +1550,7 @@ function sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, 
 }
 
 function chillTimeRecovery(flags, counters, elapsedTime, startTimes, start_stop_btn, recoverPomState, timeAmount, total_time_display, timeConvert, progressBar, progressContainer, chime, bell, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min) {
+    debuggingPopup("pink");
     // INITIALIZING VARS
     // console.log("chilltime recovery initiated")
     let displayTime = Date.now() - startTimes.local;
@@ -1569,7 +1570,6 @@ function chillTimeRecovery(flags, counters, elapsedTime, startTimes, start_stop_
         sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags);
     }
 
-    debuggingPopup("pink");
     if ((flags.autoStartPomodoroInterval) && (flags.autoStartBreakInterval)) {
         debuggingPopup("red");
         displayTime -= setBreakIntervalTime;
