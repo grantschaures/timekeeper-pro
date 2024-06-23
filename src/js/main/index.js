@@ -1542,7 +1542,7 @@ function sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, 
 
     // alert(isMobile);
     // alert(isIpad);
-    debuggingPopup("cyan");
+    // debuggingPopup("cyan");
     // if (!(isMobile || isIpad)) {
     //     new Notification(notificationString);
     // }
@@ -1637,9 +1637,9 @@ function flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, 
     
     // if autoStartBreakInterval toggled on, and display time is 2s or less past the set interval time, and there's been at least 30s since the last pomodoro notification
     // console.log((timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60));
-    if ((flags.autoStartBreakInterval) && ((((Math.round(displayTime / 1000)) - (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60)) <= 2) && (((Date.now() - startTimes.lastPomNotification) / 1000) > 30))) {
-        sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags, isMobile, isIpad);
-    }
+    // if ((flags.autoStartBreakInterval) && ((((Math.round(displayTime / 1000)) - (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60)) <= 2) && (((Date.now() - startTimes.lastPomNotification) / 1000) > 30))) {
+    //     sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags, isMobile, isIpad);
+    // }
     
     // debuggingPopup("blue");
     if ((flags.autoStartPomodoroInterval) && (flags.autoStartBreakInterval)) {
