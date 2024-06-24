@@ -181,7 +181,13 @@ export const forgotPasswordContainer = document.getElementById("forgotPasswordCo
 export const loginBtnContainer = document.getElementById("loginBtnContainer");
 export const loginBtn = document.getElementById("loginBtn");
 export const logoutBtn = document.getElementById("logoutBtn");
+export const deleteAccountBtn = document.getElementById("deleteAccountBtn");
 export const forgotPasswordSettings = document.getElementById("forgotPasswordSettings");
+
+export const popupOverlay = document.getElementById("popupOverlay");
+export const deleteAccountPopup = document.getElementById("deleteAccountPopup");
+export const deleteAccountPopupYesBtn = document.getElementById("deleteAccountPopupYesBtn");
+export const deleteAccountPopupNoBtn = document.getElementById("deleteAccountPopupNoBtn");
 
 export let hoverTimer;
 export var backgroundVideoSource = document.getElementById('background-video-source');

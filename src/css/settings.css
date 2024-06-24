@@ -1123,3 +1123,23 @@
 .settingsBtn {
     margin-bottom: 25px;
 }
+
+#accountHr {
+    margin-bottom: 25px;
+    display: none;
+}
+
+#deleteAccountBtnContainer {
+    display: none;
+}
+
+#deleteAccountBtn {
+    color: red;
+    border-color: red;
+    transition: color 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
+}
+
+#deleteAccountBtn:hover {
+    color: black;
+    border-color: black;
+}

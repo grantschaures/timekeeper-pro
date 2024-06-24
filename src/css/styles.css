@@ -1091,7 +1091,7 @@ header {
     align-items: center; /* Center items vertically */
     margin-top: 10px;
 
-    border: 1px solid white;
+    /* border: 1px solid white; */
 }
 
 .or {
@@ -1107,8 +1107,54 @@ header {
     border-color: #ffffff;
 }
 
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 25;
+}
+
+.popup {
+    display: none;
+    background: white;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 25px;
+    text-align: center;
+    max-width: 500px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#deleteAccountPopupBtnContainer > button {
+    color: black;
+    border-color: black;
+}
+
+#deleteAccountPopupBtnContainer {
+    margin-bottom: 25px;
+}
+
+#deleteAccountPopupText {
+    font-family: 'settingsHeaderFont';
+    font-size: 24px;
+}
+
+#deleteAccountPopupYesBtn:hover {
+    background-color: red;
+}
+
+#deleteAccountPopupNoBtn:hover {
+    background-color: #53e658;
+}
+
 @media (max-width: 1000px) {
-    h2 {
+    .blogh2, .abouth2 {
         font-size: 20px;
     }
     li {
@@ -1117,7 +1163,7 @@ header {
 }
 
 @media (max-width: 480px) {
-    h2 {
+    .blogh2, .abouth2 {
         font-size: 18px;
     }
     li {

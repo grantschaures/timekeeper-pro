@@ -7,6 +7,42 @@ require('dotenv').config();
 
 router.use(express.json());
 
+router.delete("/delete-account", async function(req, res) {
+    // Assuming the JWT is sent automatically in cookie headers
+    const token = req.cookies.token;  // Extract the JWT from cookies directly
+    const { targetHours } = req.body;
+
+    if (!token) {
+        return res.status(401).json({ isLoggedIn: false });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        const userId = decoded.userId;
+        const user = await User.findById(userId);
+
+        if (user) {
+            // Delete the user document
+            await User.findByIdAndDelete(userId);
+
+            // Delete the corresponding note
+            await Note.findOneAndDelete({ userId: userId });
+
+            res.json({ success: true, message: 'delete-account endpoint reached successfully' });
+        } else {
+            return res.status(401).json({ 
+                isLoggedIn: false,
+                message: "User not found"
+            });
+        }
+    } catch (error) {
+        return res.status(401).json({
+            isLoggedIn: false,
+            message: "Session is not valid: " + error.message
+        });
+    }
+});
+
 router.post("/update-target-hours", async function(req, res) {
     // Assuming the JWT is sent automatically in cookie headers
     const token = req.cookies.token;  // Extract the JWT from cookies directly
@@ -15,7 +51,7 @@ router.post("/update-target-hours", async function(req, res) {
     if (!token) {
         return res.status(401).json({ isLoggedIn: false });
     }
-    console.log(targetHours);
+    // console.log(targetHours);
 
     try {
         const decoded = jwt.verify(token, process.env.SECRET_KEY);

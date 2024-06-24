@@ -74,7 +74,7 @@ function updateMenuContainer(userData) {
 
 function updateAccountSettingsTab(userData) {
     const hideElements = ['noAccountText', 'accountOr1', 'settingsGoogleLogin', 'accountOr2', 'emailPasswordLoginMainContainer', 'loginBtnContainer'];
-    const showElements = ['userEmailContainer', 'logoutBtnContainer'];
+    const showElements = ['userEmailContainer', 'logoutBtnContainer', 'accountHr', 'deleteAccountBtnContainer'];
 
     hideElements.forEach(id => document.getElementById(id).style.display = "none");
     showElements.forEach(id => document.getElementById(id).style.display = "flex");

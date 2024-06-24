@@ -1,4 +1,4 @@
-import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, about_container, blog_container, settings_container, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, blogIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile } from '../modules/dom-elements.js';
+import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, about_container, blog_container, settings_container, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, blogIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay } from '../modules/dom-elements.js';
 
 import { blogIdList, flags, counters, state } from '../modules/navigation-objects.js';
 
@@ -75,11 +75,7 @@ document.addEventListener("DOMContentLoaded", function() {
         let viewportWidth = window.innerWidth || document.documentElement.clientWidth;
 
         if ((counters.settingsBtnClicked === 0) && (viewportWidth > 650)) {
-            if (!isMobile) {
-                pomodoroBtnContainer.click();
-            } else {
-                backgroundsBtnContainer.click();
-            }
+            pomodoroBtnContainer.click();
         }
         counters.settingsBtnClicked++;
 
@@ -171,7 +167,7 @@ document.addEventListener("DOMContentLoaded", function() {
         isClickNotOnMenuElements(event, menuBtn, flags, popupMenu);
         isClickNotOnAboutElements(event, about_menu_container, about_container, menuBtn, about_exit, reportIcon, reportPath);
         isClickNotOnBlogElements(event, blogIcon, blogMenuContainer, blog_container, blog_post_container, menuBtn, blog_exit, reportIcon, reportPath);
-        isClickNotOnSettingsElements(event, settings_menu_container, start_stop_btn, aboutIconNotes, settings_container, menuBtn, settings_exit, body, state, about_container);
+        isClickNotOnSettingsElements(event, settings_menu_container, start_stop_btn, aboutIconNotes, settings_container, menuBtn, settings_exit, body, state, about_container, popupOverlay);
 
         const excludeTargets = [blogBtn, blog_icon, blogMenuContainer, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container];
         const containers = [about_container, blog_container, menuBtn, blog_post_container, settings_container];
@@ -209,7 +205,7 @@ function dealWithClick(excludeTargets, containers, exitTargets, event, reportIco
                 document.body.setAttribute('data-dashboard-mode', 'blog');
                 blog_container.style.display = "flex";
             }
-        } else {
+        } else if (event.target !== aboutIconNotes) {
             document.body.setAttribute('data-dashboard-mode', 'home');
             main_elements.style.display = "block";
             state.lastSelectedMode = 'home';
@@ -272,8 +268,8 @@ function isClickNotOnBlogElements(event, blogIcon, blogMenuContainer, blog_conta
     }
 }
 
-function isClickNotOnSettingsElements(event, settings_menu_container, start_stop_btn, aboutIconNotes, settings_container, menuBtn, settings_exit, body, state, about_container) {
-    let settingsElementsArr = [settings_menu_container, settings_container, menuBtn];
+function isClickNotOnSettingsElements(event, settings_menu_container, start_stop_btn, aboutIconNotes, settings_container, menuBtn, settings_exit, body, state, about_container, popupOverlay) {
+    let settingsElementsArr = [settings_menu_container, settings_container, menuBtn, popupOverlay];
 
     if ((!settingsElementsArr.some(element => element.contains(event.target)) && (event.target !== start_stop_btn) && (event.target !== aboutIconNotes)) || event.target === settings_exit) {
         settings_container.style.display = "none";
