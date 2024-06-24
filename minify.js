@@ -15,6 +15,7 @@ let files = [
     'src/js/state/update-notes.js',
     'src/js/state/update-settings.js',
     'src/js/state/update-target-hours.js',
+    'src/js/state/delete-account.js',
     'src/js/utility/initialize_gui.js',
     'src/js/utility/preload.js',
     'src/js/login_signup/login.js',
