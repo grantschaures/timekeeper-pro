@@ -462,6 +462,15 @@ document.addEventListener("DOMContentLoaded", function() {
         //take user input and turn into a label selection element
         if ((createLabelInput.value !== "") && (containsNonSpaceChar(createLabelInput.value))) {
 
+            // Ensure that there's no more than 100 labels
+            // if number of labels === 100, then alert user and return
+            let totalLabelCount = Object.keys(labelDict).length;
+            if (totalLabelCount >= 100) {
+                alert("You've reached your limit of 100 labels. If you'd like to add more labels, you can delete other labels by holding shift and clicking on the label you'd like to delete.");
+                createLabelCancel.click();
+                return;
+            }
+
             let isUnique = checkLabelIsUnique(createLabelInput);
 
             // Ensuring entry is not more than 42 letters
@@ -471,7 +480,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
 
             if (isUnique) {
-                createLabel(createLabelInput, counters, labelSelectionRow, addDoneContainer);
+                createLabel(createLabelInput, counters, labelSelectionRow, addDoneContainer); // where we actually add label to document + update labelDict
                 replaceEmoji(state, emojiImg, emojiImg2);
 
                 if (sessionState.loggedIn) {
@@ -766,6 +775,7 @@ function createLabel(createLabelInput, counters, labelSelectionRow, addDoneConta
 
     labelSelectionRow.insertBefore(selectionDiv, addDoneContainer);
 
+    // update dict
     labelDict[selectionDiv.id] = labelName;
 }
 
