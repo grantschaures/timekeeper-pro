@@ -67,8 +67,17 @@ addEventListener("DOMContentLoaded", function () {
             alert(message);
         }
     });
-    
+
+    document.addEventListener('keydown', (event) => handleSetPasswordEnter(event, confirmPasswordInputSignup, setNewPasswordSubmitBtn));
 });
+
+function handleSetPasswordEnter(event, confirmPasswordInputSignup, setNewPasswordSubmitBtn) {
+
+    if ((event.key === 'Enter') && (document.activeElement === confirmPasswordInputSignup)) {
+        event.preventDefault();
+        setNewPasswordSubmitBtn.click();
+    }
+};
 
 /**
  * Create Function to ensure password is strong

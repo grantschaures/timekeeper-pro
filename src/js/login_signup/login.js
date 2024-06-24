@@ -21,7 +21,17 @@ document.addEventListener("DOMContentLoaded", function () {
     forgotPasswordBtn.addEventListener("click", function() {
         window.location.href = "/reset-password";
     })
+
+    document.addEventListener('keydown', (event) => handleLoginEnter(event));
 });
+
+function handleLoginEnter(event) {
+
+    if ((event.key === 'Enter') && (document.activeElement.id === 'passwordInput')) {
+        event.preventDefault();
+        addUser();
+    }
+};
 
 // similar function present in index.js
 window.addUser = function() {

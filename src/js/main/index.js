@@ -2321,6 +2321,8 @@ function handleEnter(event, start_stop_btn, submit_change_btn, createLabelInput,
         
         if (document.activeElement.id === 'target-hours') {
             submit_change_btn.click();
+        } else if (document.activeElement === loginPasswordInput) {
+            loginBtn.click();
         } else if (document.activeElement === createLabelInput) {
             // DO NOTHING - code for this event is implemented in notes.js instead
         } else if (document.activeElement === updateLabelInput) {

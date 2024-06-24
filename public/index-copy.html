@@ -1,0 +1,1461 @@
+<!DOCTYPE html> <!-- Instructs web browser about type of document that follows -->
+<html lang="en">
+    <head>
+        <meta charset='utf-8'>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <meta name="description" content="HyperChill.io is a time tracker which documents the amount of time you spend productively on tasks.">
+        <title>HyperChill.io: Online Productivity Time Tracker</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <link rel='stylesheet' href='/css/styles.css'>
+        <link rel='stylesheet' href='/css/background-animations.css'>
+        <link rel='stylesheet' href='/css/settings.css'>
+        <link rel='stylesheet' href='/css/blog.css'>
+        <link rel='stylesheet' href='/css/icons.css'>
+        <link rel='stylesheet' href='/css/notes.css'>
+        <link rel='stylesheet' href='/css/menu.css'>
+        <link id="favicon1" rel="icon" href="/images/logo/HyperChillLogo_circular_white_border.png" type="image/x-icon">
+        <link id="favicon2" rel="icon" type="image/png" sizes="32x32" href="/images/logo/HyperChillLogo_circular_white_border.png">
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
+
+        <script src="https://accounts.google.com/gsi/client"></script>
+        <script src="/js/utility/preload.js" defer></script>
+        <script type="module" src="/js/api/google-signin.js"></script>
+        <script type="module" src='/js/state/state.js'></script>
+        <script type="module" src='/js/main/index.js'></script>
+        <script type="module" src='/js/main/navigation.js'></script>
+        <script type="module" src='/js/main/notes.js'></script>
+    </head>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E3SBGG3VKK"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-E3SBGG3VKK');
+    </script>
+
+    <body data-dashboard-mode="home"> <!-- enclose all elements and content to be rendered in the browser -->
+        <!-- <video autoplay muted loop playsinline id="background-video">
+            <source id="background-video-source" src="videos/istockphoto-1388209063-640_adpp_is.mp4" type="video/mp4">
+        </video> -->
+
+        <div id="popupOverlay" class="overlay">
+            <div id="deleteAccountPopup" class="popup">
+                <div id="deleteAccountPopupHeader">
+                    <h2 style="color: gray">💀 Delete Account 💀</h2>
+                </div>
+                <hr>
+                <p id="deleteAccountPopupText">This action will delete all of your saved data and cannot be undone. Are you sure you want to delete your account?</p>
+                <div id="deleteAccountPopupBtnContainer">
+                    <button id="deleteAccountPopupYesBtn">Yes</button>
+                    <button id="deleteAccountPopupNoBtn">No</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="animationContainer" class="wave-container">
+            <div id="flowAnimation" class="wave">
+                <img id="sineWaveBack" src="images/animations/sine-wave-FINAL-LONG_small.png" class="no-select" draggable="false">
+                <img id="sineWaveFront" src="images/animations/sine-wave-hella-long_smaller.png" class="no-select" draggable="false">
+            </div>
+            <div id="chillAnimation" class="circle">
+                <img id="circleOuter" src="images/animations/Circle-20pt_small.png" class="no-select" draggable="false"> 
+                <img id="circleMiddle" src="images/animations/Circle-20pt_small.png" class="no-select" draggable="false"> 
+                <img id="circleInner" src="images/animations/Circle-20pt_small.png" class="no-select" draggable="false"> 
+            </div>
+        </div>
+
+        <div id="mainContainer">
+            <header>
+                <div class="container">
+                    <img id="hyperChillLogoImage" src="images/logo/HyperChillLogo_smallest.png" class="no-select" draggable="false">
+                    <div id="titleToggleContainer">
+                        <h1 id="hyperChillTitle" class="no-select">HyperChill.io</h1>
+                        <span id="threeWayToggle" class="dash-mode">
+                            <svg id="report-icon" data-testid="report-icon" data-mode="report" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" data-clickable>
+                                <path id="report-path" d="M 12 26 L 12 23 L 16 23 L 16 26 Z M 18 26 L 18 18 L 22 18 L 22 26 Z M 24 26 L 24 12 L 28 12 L 28 26 Z" fill="white"></path>
+                            </svg>                                                                              
+                            <svg id="home-icon" data-testid="home-icon" data-mode="home" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" data-clickable>
+                                <path id="home-path" d="M 10 27 V 14.3333 L 18.4444 8 L 26.8889 14.3333 V 27 H 20.5556 V 19.6111 H 16.3333 V 27 H 10 Z" fill="white"></path>
+                            </svg>
+                            <svg id="blog-icon" data-testid="blog-icon" data-mode="blog" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" data-clickable>
+                                <path id="blog-path" d="M 17.9767 28 C 17.4496 28 17.0039 27.8178 16.6395 27.4535 C 16.2752 27.0891 16.093 26.6434 16.093 26.1163 H 19.8605 C 19.8605 26.6434 19.6783 27.0891 19.314 27.4535 C 18.9496 27.8178 18.5039 28 17.9767 28 Z M 14.2093 24.6744 V 23.2791 H 21.7442 V 24.6744 H 14.2093 Z M 14.3256 21.8605 C 13.3023 21.1938 12.4922 20.3605 11.8953 19.3605 C 11.2984 18.3605 11 17.2326 11 15.9767 C 11 14.0853 11.6899 12.4496 13.0698 11.0698 C 14.4496 9.68992 16.0853 9 17.9767 9 C 19.8682 9 21.5039 9.68992 22.8837 11.0698 C 24.2636 12.4496 24.9535 14.0853 24.9535 15.9767 C 24.9535 17.2326 24.6589 18.3605 24.0698 19.3605 C 23.4806 20.3605 22.6667 21.1938 21.6279 21.8605 H 14.3256 Z" fill="white"></path>
+                            </svg>
+                            <div class="caption fade">
+                                <span data-mode="report" class="no-select">Report</span>
+                                <span data-mode="home" class="no-select">Home</span>
+                                <span data-mode="blog" class="no-select">Blog</span>
+                            </div>
+                        </span>
+                    </div>
+
+                    <div class="headerBtns">
+                        <button id="menuBtn" data-testid="menuBtn" class="no-select">
+                            <img id="menuIcon"src="/images/icons/noun-menu-6192580-white.png">
+                            <img id="menuIcon-black"src="/images/icons/noun-menu-6192580.png">
+                        </button>
+                        <div id="popupMenu">
+                            <div id="blogMenuContainer" data-testid="blogMenuContainer" class="menuContainer"> 
+                                <img id="blogIcon" src="/images/icons/blogIcon1.png" class="menuIcon">
+                                <div id="blogBtn">Blog</div>
+                            </div>
+                            <div id="aboutMenuContainer" data-testid="aboutMenuContainer" class="menuContainer">
+                                <img id="aboutIcon" src="/images/icons/aboutIcon1.png" class="menuIcon">
+                                <div id="aboutBtn">About</div>
+                            </div>
+                            <div id="settingsMenuContainer" class="menuContainer">
+                                <img id="settingsIcon" src="/images/icons/settingsIcon1.png" class="menuIcon">
+                                <div id="settingsBtn">Settings</div>
+                            </div>
+                            <hr id="menu_hr">
+                            <div id="loginMenuContainer" class="menuContainer"> 
+                                <img id="loginIcon" src="/images/icons/loginIcon1.png" class="menuIcon">
+                                <img id="logoutIcon" src="/images/icons/logoutIcon.png" class="menuIcon">
+                                <div id="logInOutBtn">Log In</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <main data-testid="main">
+                <div id="subMainContainer">
+                    <div id="targetHoursInterruptionsContainer">
+                        <div id="targetHoursContainer">
+                            <div id="targetHoursSubContainer">
+                                <h4 id="targetLabel" style="font-size: 20px" class="no-select">Target Hours</h4>
+                                <div id="coolDiv-submit">
+                                    <div id="coolDiv">
+                                        <input type="number" id="target-hours" data-testid="target-hours" class="glowing-effect" name="hours" min="0">
+                                    </div>
+                                    <button type="submit" id="target-hours-submit" data-testid="target-hours-submit" class="no-select">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="interruptions-container">
+                            <div id="interruptions-sub-container" data-testid="interruptions-sub-container">
+                                <h4 id="interruptions-label" style="font-size: 20px" class="no-select"> Interruptions </h4>
+                                <div id="interruptions-change-container">
+                                    <button id="decBtn" class="interruptionsDivBtn no-select">-</button>
+                                    <div id="coolerDiv" class="no-select">
+                                        <div id="interruptions_num" class="no-select">0</div>
+                                    </div>
+                                    <button id="incBtn" class="interruptionsDivBtn no-select">+</button>
+                                </div>
+                            </div>
+                            <div id="suggestionBreakContainer">
+                                <h4 id="suggestionBreak-label" data-testid="suggestionBreak-label"></h4>
+                                <h4 id="suggestionBreak-min" data-testid="suggestionBreak-min"></h4>
+                            </div>
+                            <div id="completedPomodorosContainer">
+                                <h4 id="completedPomodoros-label"></h4>
+                                <div id="completedPomodoros-min" data-testid="completedPomodoros-min"></div>
+                            </div>
+                        </div>
+                    </div>
+                        
+                    <div id="progress">
+                        <div id="progress-bar-container" data-testid="progress-bar-container">
+                            <div id="progress-container" data-testid="progress-container">
+                                <div id="progress-bar"></div>
+                                <div id="progress-text" data-testid="progress-text" class="progress-text no-select">00:00:00</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="timekeeping-container">
+                        <div class="mode-text">
+                            <h3 id="productivity-chill-mode" data-testid="productivity-chill-mode" class="no-select">Press 'Start' to begin session</h3>
+                        </div>
+                        <div class="stopwatch">
+                            <div id="display" data-testid="display" class="no-select">00:00:00</div>
+                        </div>
+                        <div class="lower-buttons">
+                            <div>
+                                <button id="notes" class="no-select">Notes</button>
+                            </div>
+                            <div>
+                                <button id="start-stop" data-testid="start-stop" class="no-select">Start</button>
+                            </div>
+                            <div>
+                                <button id="end-session"></button> <!-- Text inserted via JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div data-testid="notes-container" id="notes-container">
+                        <div id="task-container">
+                            <div id="clearDiv">
+                                <img src="images/icons/noun-reset-1033424-white.png" id="clearIcon"  data-testid="clearIcon" class="no-select">
+                            </div>
+                            <div id="prompt-container">
+                                <img id="tag-icon" src="images/icons/white_tag_icon.png" class="no-select">
+                                <div id="task-prompt" class="no-select">
+                                    Select Task Labels
+                                </div>
+                            </div>
+                            <div id="label-input-container" data-testid="label-input-container">
+                            </div>
+                            <div id="create-label-container">
+                                Create Label
+                            </div>
+                            <div id="update-label-container">
+                                Update Label
+                            </div>
+                        </div>
+                        <hr id="notes-hr">
+                        <div id="notes-console">
+                            <div id="list-notes-container">
+                                <div id="list">
+                                    <div id="dynamicList" data-testid="dynamicList"> <!-- Where all the notes & tasks go -->
+                                    </div>
+                                </div>
+                                <div>
+                                    <div id="add-note-task-container"> <!-- User clicks on this in order to open up the task/ note input container -->
+                                        <svg id="add-note-task-svg" width="15" height="15" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
+                                            <path class="plus-svg-path" d="M 7.5 3 v 9" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                                            <path class="plus-svg-path" d="M 3 7.5 h 9" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                                        </svg>
+                                        <div id="add-note-task">Add note (n) or task (t)</div>
+                                    </div>
+                                    <div id="note-task-input-container"> <!-- Opens once add-note-task-container is clicked -->
+                                        <div id="upper-half-note-task-input">
+                                            <textarea data-testid="note-task-input-text" id="note-task-input-text" placeholder="Description"></textarea>
+                                        </div>
+                                        <div id="lower-half-note-task-input">
+                                            <div id="save-cancel-container">
+                                                <div id="note-input-save-container" data-testid="note-input-save-container" class="save-cancel-task-container">
+                                                    <div id="note-input-save-btn">
+                                                        Save
+                                                    </div>
+                                                </div>
+                                                <div id="note-input-cancel-container" class="save-cancel-task-container">
+                                                    <div id="note-input-cancel-btn">
+                                                        Cancel
+                                                    </div>
+                                                </div>
+                                                <div id="task-checkbox-container" class="save-cancel-task-container">
+                                                    <input data-testid="taskCheckbox" type="checkbox" id="taskCheckbox" name="taskCheckbox">
+                                                    <label for="taskCheckbox">Task</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="label-selection-window">
+                            <div class="label-selection-row" data-testid="label-selection-row">
+                                <!-- showing label location for demonstration purposes -->
+                                <!-- <div id="tag-1" class="tag unselectable selection-tag">
+                                    <h4 class="tag-text">✍️ Homework</h4>
+                                </div>
+                                <div id="tag-2" class="tag unselectable selection-tag">
+                                    <h4 class="tag-text">📚 Reading</h4>
+                                </div>
+                                <div id="tag-3" class="tag unselectable selection-tag">
+                                    <h4 class="tag-text">🧘 Meditation</h4>
+                                </div> -->
+                                <div id="add-done-container" data-testid="add-done-container">
+                                    <h4 id="tag-selection-divider" class="unselectable" >|</h4>
+                                    <img id="add-tag-icon" data-testid="add-tag-icon" src="images/icons/noun-exit-button-261420-white.png" draggable="false" class="unselectable">
+                                    <div id="selection-done-div" class="tag unselectable">
+                                        <h4 id="selection-done" class="tag-text">Done</h4>
+                                    </div>
+                                </div>
+                                <div id="infoBtnContainer">
+                                    <img id="aboutIconNotes" data-testid="aboutIconNotes" src="/images/icons/aboutIcon1.png">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="emoji-container">
+                            <div id="emoji-row-1">
+                                <img id="studying-man-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/studying_man.png">
+                                <img id="studying-woman-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/studying_woman.png">
+                                <img id="meditation-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/meditation.png">
+                                <img id="meditation-woman-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/meditation_woman.png">
+                            </div>
+                            <div id="emoji-row-2">
+                                <img id="happy-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/happy.png">
+                                <img id="zany-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/zany.png">
+                                <img id="heart-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/heart.png">
+                                <img id="dead-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/dead.png">
+                            </div>
+                            <div id="emoji-row-3">
+                                <img id="document-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/document.png">
+                                <img id="memo-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/memo.png">
+                                <img id="writing-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/writing.png">
+                                <img id="notebook-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/notebook.png">
+                            </div>
+                            <div id="emoji-row-4">
+                                <img id="exercise-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/exercise.png">
+                                <img id="headphones-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/headphones.png">
+                                <img id="piano-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/piano.png">
+                                <img id="brain-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/brain.png">
+                            </div>
+                            <div id="emoji-row-5">
+                                <img id="lightbulb-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/light_bulb.png">
+                                <img id="calendar-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/calendar.png">
+                                <img id="clock-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/clock.png">
+                                <img id="books-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/books.png">
+                            </div>
+                        </div>
+                        <div id="create-label-window">
+                            <div id="create-label">
+                                <input type="text" id="create-label-input" data-testid="create-label-input" placeholder="Enter Label Name">
+                                <div id="emoji-btn">
+                                    <!-- <img id="OGemoji" src="images/notes/HyperChillLogo_notes.png"> -->
+                                    <img id="OGemoji" src="images/notes/emoji-symbols/books.png">
+                                </div>
+                            </div>
+                            <div id="cancel-done-div" class="cancel-done-container unselectable">
+                                <h4 id="create-label-cancel" data-testid="create-label-cancel" class="tag-text create-label">Cancel</h4>
+                                <h4 id="create-label-done" data-testid="create-label-done" class="tag-text create-label">Done</h4>
+                            </div>
+                        </div>
+                        <div id="update-label-window">
+                            <div id="update-label">
+                                <input type="text" id="update-label-input" data-testid="update-label-input" placeholder="Enter Label Name">
+                                <div id="emoji-btn2">
+                                    <!-- <img id="OGemoji" src="images/notes/HyperChillLogo_notes.png"> -->
+                                    <img id="OGemoji2" src="images/notes/emoji-symbols/books.png">
+                                </div>
+                            </div>
+                            <div id="cancel-done-div2" class="cancel-done-container unselectable">
+                                <h4 id="update-label-cancel" class="tag-text create-label">Cancel</h4>
+                                <h4 id="update-label-done" class="tag-text create-label">Done</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!--ADD NEW BLOG GRID CONTAINER HERE-->
+            <div id="blogContainer" data-testid="blogContainer">
+                <img class="exitIcon" id="blogExit" data-testid="blogExit" src="images/icons/noun-exit-button-261420-white.png" draggable="false">
+                <div id="blogWindow">
+                    <h1>Blog</h1>
+                    <div id="blog_grid_container">
+                        <div class="blog_cell" id="blog_1">
+                            <div class="blogImage">
+                                <img src="images/blog/pexels-ariel-castillo-3563697.jpg">
+                            </div>
+                            <div>
+                                <h2 class="blogDescription">Daily Practices & Protocols to Improve Focus</h2>
+                            </div>
+                        </div>
+                        <!-- <div class="blog_cell" id="blog_2">
+                            <div class="blogImage">
+                                <img src="images/Sunglow-Sizzling-Red-Crayola-Blue-Color-Palette-Cropped.png">
+                            </div>
+                            <div>
+                                <h2 class="blogDescription">Template Blog w/ Header Picture</h2>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            
+            <!--ADD NEW BLOG CONTENT HERE-->
+            <div id="blogPostContainer">
+                <img class="backIcon" id="blogPostBack" src="images/icons/noun-left-arrow-261369.png" draggable="false">
+                <img class="exitIcon" id="blogPostExit" src="images/icons/noun-exit-button-261420.png" draggable="false">
+                <div class="blog hidden" id="blogPost1">
+                    <div class="iframe-container">
+                        <iframe src="https://www.youtube.com/embed/yb5zpo5WDG4?si=GT9uix2oPLBnFHrq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    </div>
+                    <script>
+                        // 2. This code loads the IFrame Player API code asynchronously.
+                        var tag = document.createElement('script');
+                  
+                        tag.src = "https://www.youtube.com/iframe_api";
+                        var firstScriptTag = document.getElementsByTagName('script')[0];
+                        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+                  
+                        // 3. This function creates an <iframe> (and YouTube player)
+                        //    after the API code downloads.
+                        var player;
+                        function onYouTubeIframeAPIReady() {
+                          player = new YT.Player('player', {
+                            events: {
+                              'onReady': onPlayerReady,
+                              'onStateChange': onPlayerStateChange
+                            }
+                          });
+                        }
+                  
+                        // 4. The API will call this function when the video player is ready.
+                        function onPlayerReady(event) {
+                            console.log("test")
+                          event.target.playVideo();
+                        }
+                  
+                        // 5. The API calls this function when the player's state changes.
+                        //    The function indicates that when playing a video (state=1),
+                        //    the player should play for six seconds and then stop.
+                        var done = false;
+                        function onPlayerStateChange(event) {
+                          if (event.data == YT.PlayerState.PLAYING && !done) {
+                            setTimeout(stopVideo, 6000);
+                            done = true;
+                          }
+                        }
+                        function stopVideo() {
+                          player.stopVideo();
+                        }
+                    </script>
+                    <div class="mainBlogContent">
+                        <h1>Daily Practices & Protocols to Improve Focus</h1>
+                        <h2 class="blogh2">A summary of Huberman Lab Podcast #88 | Focus Toolkit: Tools to Improve Your Focus & Concentration</h2>
+                        <hr>
+                        <p><strong>#1 Most Important Protocol:</strong> Get high quality sleep of sufficient duration (6-8 hours for most people). The effectiveness of all the other tools and protocols mentioned below depends on this.</p>
+                        <hr>
+                        <h3><strong>Protocols to Rapidly Increase Focus:</strong></h3>
+                        <p><b>1) Cold Exposure: </b> E.g. Cold Shower (1-5 min), Ice Bath</p>
+                        <ul>
+                            <li>Substantially increases dopamine, cortisol, and epinephrine levels</li>
+                            <li>Should be uncomfortably cold, but not so cold that it becomes unsafe to stay in for more than 5 minutes</li>
+                            <li><a href="https://www.youtube.com/watch?v=yb5zpo5WDG4&t=3347s" target="_blank">00:55:46 | Cold Exposure</a></li>
+                        </ul>
+                        <p><b>2) Visual Focus: </b> Overt or Covert Focused Visual Attention</p>
+                        <ul>
+                            <li>Visually focus on one location for 30 seconds to 3 minutes</li>
+                            <li>Target of attention could be anything in nearby vicinity</li>
+                            <li>Remain relaxed and try to limit the frequency of blinking</li>
+                            <li>IMPORTANT: Refocus on your chosen visual target when your attention drifts</li>
+                            <li>Do 5-10 minutes before an intense bout of focused effort</li>
+                            <li><a href="https://youtu.be/yb5zpo5WDG4?si=1UnxI467gyUdF48b&t=4606" target="_blank">01:16:46 | Overt Visual Focus</a></li>
+                            <li><a href="https://youtu.be/yb5zpo5WDG4?si=UbnT4cNnhK7mxKeH&t=4842" target="_blank">01:20:42 | Covert Visual Focus</a></li>
+                        </ul>
+                        <p><b>3) 40 Hz Binaural Beats</b></p>
+                        <ul>
+                            <li>Listen to binaural beats 5-10 minutes before an intense bout of focused effort</li>
+                            <li><a href="https://www.youtube.com/watch?v=1_G60OdEzXs" target="_blank">40 Hz Binaural Beats</a></li>
+                            <li><a href="https://youtu.be/yb5zpo5WDG4?si=bhwg49ZM-iJOCAoW&t=1091" target="_blank">00:18:11 | Binaural Beats</a></li>
+                        </ul>
+                        <p><b>4) White, Pink, and Brown Noise</b></p>
+                        <ul>
+                            <li>Listen to binaural beats 5-10 minutes before an intense bout of focused effort</li>
+                            <li>Improves ability to transition into concentrated states</li>
+                            <li>I've found Brown noise in particular to be a great tool for blocking out distracting noise during the actual focus bout</li>
+                            <li><a href="https://youtu.be/nMfPqeZjc2c?si=vO3Og1V4I_4jxDXO" target="_blank">White Noise</a></li>
+                            <li><a href="https://www.youtube.com/watch?v=2wgg7KtzTrU" target="_blank">Pink Noise</a></li>
+                            <li><a href="https://youtu.be/RqzGzwTY-6w?si=VcdfInQxSc40YEo5" target="_blank">Brown Noise (my personal favorite)</a></li>
+                            <li><a href="https://youtu.be/yb5zpo5WDG4?si=FlIo_ZT4YnXRynHa&t=1254" target="_blank">00:20:54 | White, Pink, and Brown Noise</a></li>
+                        </ul>
+                        <hr>
+                        <h3><strong>Daily Practices to Improve Natural Ability to Focus:</strong></h3>
+                        <!-- <div id="compare_chartContainer">
+                            <img class="chartImages" id="compare_chart" src="images/blog/compare_chart_big.png">
+                        </div> -->
+                        <p><b>1) Concentration Meditation: </b></p>
+                        <ul>
+                            <li>10-15 minutes in duration</li>
+                            <li>Sit or lay down</li>
+                            <li>Focus on your breathing and bring your attention to a point behind your forehead</li>
+                            <li>Your attention will most likely drift off at some point during the session, but this is ok</li>
+                            <li>The main objective here is to refocus your attention as needed back to the point behind your forehead</li>
+                            <li>Don't do this practice too close to bedtime since it can disrupt sleep in some individuals</li>
+                            <li><a href="https://youtu.be/yb5zpo5WDG4?si=ycuTPRLzYHy3BsFW&t=3679" target="_blank">01:01:19 | Concentration Meditation</a></li>
+                        </ul>
+                        <p><b>2) Non-Sleep Deep Rest (NSDR) or Yoga Nidra</b></p>
+                        <ul>
+                            <li>Varies from around 20 minutes to 1 hour in duration</li>
+                            <li>Do before bed to relax, or during the day to increase alertness if sleep deprived</li>
+                            <li>Can replenish sleep debt to a limited extent</li>
+                            <li><a href="https://youtu.be/8mM5Oks8yZc?si=Jo3MqFWvJUYuhCqK" target="_blank">30 Minute Yoga Nidra Session</a></li>
+                            <li><a href="https://youtu.be/yb5zpo5WDG4?si=VRvKrILI5gv4R-AP&t=4060" target="_blank">01:07:40 | Non-Sleep Deep Rest</a></li>
+                        </ul>
+                        <p><b>3) Hypnosis (Flow State)</b></p>
+                        <ul>
+                            <li>Combines the focus and alertness achieved via concentration mediation with the relaxation achieved via NSDR</li>
+                            <li>Defined as a state of deep immersive focus on a task</li>
+                            <li>Hypnosis, also referred to as 'Flow State', is the target mental state to reach while in Flow Time when using HyperChill.io</li>
+                            <li><a href="https://www.reveri.com/" target="_blank">Hypnosis App Recommended By Andrew Huberman</a></li>
+                            <li><a href="https://youtu.be/yb5zpo5WDG4?si=1uptj9aofINGMJdU&t=4333" target="_blank">01:12:13 | Hypnosis (Hyper Focus)</a></li>
+                        </ul>
+                        <hr>
+                        <h3><strong>Nutrition-Based Tools:</strong></h3>
+                        <p><b>1) Morning Fasting</b></p>
+                        <ul>
+                            <li>Do not eat (or limit your intake of) food for initial focus bouts</li>
+                            <li>It's ok to ingest water and caffeine during this period</li>
+
+                            <li><a href="https://youtu.be/yb5zpo5WDG4?si=2jVMrwe95SoO5f4R&t=2213" target="_blank">00:36:53 | Fasted & Fed States</a></li>
+                        </ul>
+                        <p><b>2) Avoid High Intake of Simple Sugars & Processed Foods</b></p>
+                        <ul>
+                            <li>Avoid foods such as ice cream, candy, soda, etc.</li>
+                            <li><a href="https://youtu.be/yb5zpo5WDG4?si=f0cXnsd86uIyECcF&t=2753" target="_blank">00:45:52 | Foods to Eliminate</a></li>
+                        </ul>
+                        <p><b>3) Eat a Small to Moderate Sized Lunch & Incorporate Foods Rich in Tyrosine</b></p>
+                        <ul>
+                            <li>You may experience a small dip in energy soon after eating, but your energy should rebound above baseline later on provided that you haven't overeaten</li>
+                            <li>Eat foods with a significant amount of tyrosine, E.g. Parmesan cheese, beef, soybeans, nuts, etc.</li>
+
+                            <li><a href="https://youtu.be/yb5zpo5WDG4?si=r6YEGtl2LHZWmKto&t=2786" target="_blank">00:46:26 | Foods to Improve Focus</a></li>
+                        </ul>
+                        <p><b>4) Don't overeat</b></p>
+                        <ul>
+                            <li>Eating too much will rapidly diminish your ability to focus due to the triggering of the parasympathetic nervous system</li>
+                            <li>In general, eating in moderation will provide your brain with the glucose necessary to perform optimally, while also retaining a certain degree of sympathetic activation (alertness)</li>
+
+                            <li><a href="https://youtu.be/yb5zpo5WDG4?si=OGHacgCX4-ZAIib2&t=2400" target="_blank">00:40:00 | Why Overeating Leads to Fatigue</a></li>
+                        </ul>
+                        <hr>
+                        <h3><strong>Supplement-Based Tools:</strong></h3>
+                        <p><b>1) Omega-3 essential fatty acids</b></p>
+                        <ul>
+                            <li>EPA fatty acids (1-3g/ day): Improves mood and cognitive function</li>
+                            <li>Sources: Fish oil, cod liver oil, salmon, etc.</li>
+                            <li><a href="https://youtu.be/yb5zpo5WDG4?si=ifd0AC-x0HOh_XIx&t=5083" target="_blank">01:24:43 | Omega-3 Essential Fatty Acids</a></li>
+                        </ul>
+                        <p><b>2) Creatine Monohydrate</b></p>
+                        <ul>
+                            <li>Acts as a fuel for neuron function</li>
+                            <li>Improves cognitive performance</li>
+                            <li>Most individuals ingest ~5g/ day</li>
+                            <li><a href="https://youtu.be/yb5zpo5WDG4?si=QiNC_jdBhoBAFjyC&t=5248" target="_blank">01:27:28 | Creatine Monohydrate</a></li>
+                        </ul>
+                        <p><b>3) Caffeine</b></p>
+                        <ul>
+                            <li>Boosts both mental and physical performance</li>
+                            <li>Increases density and efficacy of dopamine receptors in the brain</li>
+                            <li>Dosage depends on your current tolerance to caffeine</li>
+                            <li>General range of effectiveness: 100-400mg/ day</li>
+                            <li>Delay intake to 90-120 minutes after waking, unless working out immediately after waking</li>
+                            <li>Try to avoid ingesting caffeine after 1-2 pm to ensure sleep quality is unaffected</li>
+                            <li>Methods to ingest caffeine: Coffee, yerba mate, tea, capsule form, dark chocolate, etc.</li>
+                            <li>WORD OF CAUTION: Avoid the smoked version of yerba mate due to the presence of carcinogenic (cancer promoting) compounds</li>
+                            <li><a href="https://youtu.be/yb5zpo5WDG4?si=26a3D6NjlW6hEpiZ&t=2873" target="_blank">00:47:53 | Caffeine</a></li>
+                        </ul>
+                        <p><b>4) Acetylcholine</b></p>
+                        <ul>
+                            <li>Improves neuroplasticity (learning) by directly increasing focus</li>
+                            <li>Greatly increases one's ability to concentrate</li>
+                            <li>Ingest Alpha-GPC supplement to acutely increase acetylcholine (300-600mg/ day)</li>
+                            <li>Take 10-20 minutes before a workout or focus bout, and early in the day if possible</li>
+                            <li>Combine with caffeine for synergistic effect that maximizes focus</li>
+                            <li>WORD OF CAUTION: A recent study has suggested that Alpha-GPC may increase the risk of stroke via increases in TMAO (cardiovascular system related marker)</li>
+                            <li>Andrew Huberman believes data is inconclusive, but ingests 600mg of garlic along with Alpha-GPC to offset any potential increase in TMAO as an extra precautionary measure</li>
+                            <li><a href="https://youtu.be/yb5zpo5WDG4?si=-3vzpsQXSPbUTbQh&t=5350" target="_blank">01:29:10 | Acetylcholine</a></li>
+                        </ul>
+                        <p><b>5) L-Tyrosine</b></p>
+                        <ul>
+                            <li>Boosts concentration and focus by increasing dopamine transmission</li>
+                            <li>Ingest ~500mg/ day in capsule form</li>
+                            <li>Take early in the day</li>
+
+                            <li><a href="https://youtu.be/yb5zpo5WDG4?si=17vVRITUd-ac-OgR&t=5632" target="_blank">01:33:52 | L-Tyrosine</a></li>
+                        </ul>
+                        <p><b>6) Phenylethylamine</b></p>
+                        <ul>
+                            <li>Increases dopamine transmission similar to L-tyrosine, however can act as an alternative</li>
+                            <li>Ingest ~500mg/ day in capsule form</li>
+                            <li>Effects don't last as long as L-tyrosine, can take multiple times, E.g. Once at beginning of work session, and again in the middle</li>
+
+                            <li><a href="https://youtu.be/yb5zpo5WDG4?si=oqhVpw8x7f82FyMQ&t=6176" target="_blank">01:42:56 | Phenylethylamine</a></li>
+                        </ul>
+                        <hr>
+                        <h3><strong>End Notes:</strong></h3>
+                        <ul>
+                            <li>There is always a gradual ramping up of focus and concentration at the beginning of any focus bout</li>
+                            <li>Focus and concentration are abilities that can be improved through neuroplasticity (learning & practice)</li>
+                            <li>Andrew Huberman ingests 500mg of L-tyrosine, 300mg of Alpha-GPC, and a cup of coffee early in the day about 4 days/ week</li>
+                            <li>Andrew Huberman recommends not combining more than 2-3 tools/ protocols at any one time; however there are no strict requirements :)</li>
+                            <li>Utilize supplements to teach yourself how to focus and concentrate more deeply so that they're not a requirement for every focus bout</li>
+                            <li>For further information about nutrition and supplementation, check out <a href="https://examine.com/" target="_blank">examine.com</a></li>
+                        </ul>
+                    </div>               
+                </div>
+                <!-- <div class="blog hidden" id="blogPost2">
+                    <div class="blogHeaderImage">
+                        <img src="images/trees.jpg">
+                    </div>
+                    <div class="mainBlogContent">
+                        <h1>Main header</h1>
+                        <h2>Sub header</h2>
+                        <hr>
+                        <p><strong>[text]</strong> [text]</p>
+                        <hr>
+                        <h3><strong>[text]</strong></h3>
+                        <p><b>[text]</b></p>
+                        <ul>
+                            <li>[text]</li>
+                            <li>[text]</li>
+                            <li><a href="" target="_blank">[text]</a></li>
+                        </ul>
+                    </div>               
+                </div> -->
+            </div>
+
+            <div id="aboutContainer" data-testid="aboutContainer">
+                <img class="exitIcon" id="aboutExit" data-testid="aboutExit" src="images/icons/noun-exit-button-261420-white.png" draggable="false">
+                <div id="aboutWindow">
+                    <h1>About</h1>
+                    <div>
+                        <h1 style="font-size: 26px">How It Works</h1>
+                    </div>
+                    <div>
+                        <h2 class="abouth2">1. Optional - Set a target time (in hours) that you want for a studying session</h2>
+                        <h2 class="abouth2">2. Press 'Start' to start the session</h2>
+                        <h2 class="abouth2">3. After you've been studying for a while and need a break, press 'Stop' to enter 'Chill Time'</h2>
+                        <h2 class="abouth2">4. Press 'Start' once again to re-enter 'Flow Time'</h2>
+                        <h2 class="abouth2">5. Repeat steps 3-4 as needed until you're done with the session entirely, at which point you can hit 'End' or 'End Session'</h2>
+                    </div>
+                    <div>
+                        <h1 style="font-size: 26px">Benefits & Features</h1>
+                    </div>
+                    <div>
+                        <h2 class="abouth2">Defeat Procrastination:</h2>
+                            <ul>
+                                <li style="color: white">
+                                    <h2 class="abouth2">99% of the time, procrastination happens subconsciously. When you hit 'Start' or 'Stop', you're prompted to consciously acknowledge 
+                                        what you're doing so that you don't find yourself having spent 3 out of the past 4 hours on TikTok even though you intended to get all your
+                                        homework done.</h2>
+                                </li>
+                            </ul>
+                        
+                        </h2>
+                        <h2 class="abouth2">Track your Progress:</h2>
+                            <ul>
+                                <li style="color: white">
+                                    <h2 class="abouth2">Use the Report feature to explore a graphical representation of your Flow Time/ Chill Time intervals for each day, week, and month.
+                                        Use this information along with the Notes feature to detect patterns and make any necessary changes to maximize productivity.</h2>
+                                </li>
+                            </ul>
+                        </h2>
+                        <h2 class="abouth2">Discover Tips:</h2>
+                            <ul>
+                                <li style="color: white">
+                                    <h2 class="abouth2">Visit our Blog page to discover scientifically-informed protocols for maximizing productivity from leading voices such as
+                                    Andrew Huberman, Sam Harris, and more!</h2>
+                                </li>
+                            </ul>
+                        </h2>
+                    </div>
+                </div>
+            </div>
+
+            <div id="settingsContainer" data-testid="settingsContainer">
+                <div id="settingsHeader">
+                    <img class="exitIcon" id="settingsExit" data-testid="settingsExit" src="images/icons/noun-exit-button-261420-white.png" draggable="false">
+                    <h1>Settings</h1>
+                </div>
+                <div class="settings" id="settingsWindow">
+                    <div id="settingsHeaderColumn">
+                        <div id="notificationsHeaderContainer" class="settingsHeaderRow">
+                            <div class="settingsIconContainer">
+                                <img src="images/icons/noun-notifications-2548963-white.png" id="alertsNotificationsIcon" class="settingsIcon" draggable="false">
+                            </div>
+                            <div id="notificationsHeader" class="settingsHeader">
+                                <b>Notifications</b>
+                            </div>
+                        </div>
+                        <div id="pomodoroBtnContainer" data-testid="pomodoroBtnContainer" class="settingsHeaderRow subCategory">
+                            <div class="settingsIconContainer">
+                                <img src="images/icons/tomatoIcon.png" id="pomodoroIcon" class="settingsIcon" draggable="false">
+                            </div>
+                            <div id="pomodoroHeader" class="settingsHeader">
+                                <b>Pomodoro</b>
+                            </div>
+                        </div>
+                        <div id="flowmodoroBtnContainer" data-testid="flowmodoroBtnContainer" class="settingsHeaderRow subCategory">
+                            <div class="settingsIconContainer">
+                                <img src="images/icons/circlesIcon.png" id="flowmodoroIcon" class="settingsIcon" draggable="false">
+                            </div>
+                            <div id="flowmodoroHeader" class="settingsHeader">
+                                <b>Chill Time</b>
+                            </div>
+                        </div>
+                        <div id="generalBtnContainer" data-testid="generalBtnContainer" class="settingsHeaderRow subCategory">
+                            <div class="settingsIconContainer">
+                                <img src="images/icons/sineIcon.png" id="generalIcon" class="settingsIcon" draggable="false">
+                            </div>
+                            <div id="generalHeader" class="settingsHeader">
+                                <b>Flow Time</b>
+                            </div>
+                        </div>
+                        <div id="backgroundsBtnContainer" class="settingsHeaderRow">
+                            <div class="settingsIconContainer">
+                                <img src="images/icons/backgroundsIcon.png" id="backgroundsIcon" class="settingsIcon" draggable="false">
+                            </div>
+                            <div id="backgroundsHeader" class="settingsHeader">
+                                <b>Backgrounds & Themes</b>
+                            </div>
+                        </div>
+                        <div id="notesBtnContainer" class="settingsHeaderRow">
+                            <div class="settingsIconContainer">
+                                <img src="images/icons/whitepencil.png" id="notesIcon" class="settingsIcon" draggable="false">
+                            </div>
+                            <div id="notesHeader" class="settingsHeader">
+                                <b>Notes</b>
+                            </div>
+                        </div>
+                        <div id="soundsBtnContainer" class="settingsHeaderRow">
+                            <div class="settingsIconContainer">
+                                <img src="images/icons/noun-sound-3074860-white.png" id="soundsIcon" class="settingsIcon" draggable="false">
+                            </div>
+                            <div id="soundsHeader" class="settingsHeader">
+                                <b>Sounds</b>
+                            </div>
+                        </div>
+                        <div id="accountBtnContainer" class="settingsHeaderRow">
+                            <div class="settingsIconContainer">
+                                <img src="images/icons/accountIcon.png" id="accountIcon" class="settingsIcon" draggable="false">
+                            </div>
+                            <div id="accountHeader" class="settingsHeader">
+                                <b>Account</b>
+                            </div>
+                        </div>
+                        <div id="supportAndFeedbackBtnContainer" class="settingsHeaderRow">
+                            <div class="settingsIconContainer">
+                                <img src="images/icons/supportAndFeedbackIcon.png" id="supportAndFeedbackIcon" class="settingsIcon" draggable="false">
+                            </div>
+                            <div id="supportAndFeedbackHeader" class="settingsHeader">
+                                <b>Support & Feedback</b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vertical"></div>
+                    <div id="settingsContent">
+                        <div id="pomodoroSettingsContainer" class="settingsContentContainer">
+                            <div id="alertsNotificationsContainer" class="settingsIconTextContainer">
+                                <h2>Pomodoro</h2>
+                            </div>
+                            <!-- <div class="horizontal"></div> -->
+                            <div id="alertsNotificationsToggleContainer1" class="settingsCategory">
+                                <div id="pomodoroNotificationsBlock">
+                                    <div id="togglePomodoroNotificationContainer" class="settingsMicroContainer">
+                                        <div id="pomodoroNotificationText" class="settingsText">
+                                            <p id="pomodoroNotifications"><b class="settingsCategoryHeading">Pomodoro Notifications</b></p>
+                                        </div>
+                                        <div id="pomodoroNotificationToggleContainer" class="toggleContainer">
+                                            <input type="checkbox" id="pomodoroNotificationToggle" class="toggle-checkbox">
+                                            <label for="pomodoroNotificationToggle" data-testid="pomodoroNotificationToggle" id="pomodoroNotificationToggleLabel" class="toggle-label">
+                                                <span id="pomodoroNotificationToggleBall" class="toggle-ball"></span>
+                                            </label>
+                                        </div>
+                                        <div id="pomodoroNotificationInfoWindow" data-testid="pomodoroNotificationInfoWindow" class="notificationInfoWindow">
+                                            This will notify you after each interval specified for Pomodoro, Short Break, and Long Break
+                                        </div>  
+                                    </div>
+                                    <div id="flowTimeBreakDemoImages" class="settingsMicroContainer">
+                                        <div id="endOfBreakIntervals">
+                                            <div id="minutesImageBucket" class="imageBucketHeader">
+                                                <div>
+                                                    <p id="Interval"><b>Interval: </b></p>
+                                                </div>
+                                                <div>
+                                                    <p id="BreakTime"><b>Break Time: </b></p>
+                                                </div>
+                                            </div>
+                                            <div id="minutesImageBucket1" class="imageBucket">
+                                                <div>
+                                                    <p><b>Pomodoro</b></p>
+                                                </div>
+                                                <div class="pomodoroNotificationContainer">
+                                                    <input type="number" id="pomodoroInput" data-testid="pomodoroInput" value="25" class="pomodoroInterval" name="minutes" min="1" max="720" step="1">
+                                                </div>
+                                            </div>
+                                            <div id="minutesImageBucket2" class="imageBucket">
+                                                <div>
+                                                    <p><b>Short Break</b></p>
+                                                </div>
+                                                <div class="pomodoroNotificationContainer">
+                                                    <input type="number" id="shortBreakInput" data-testid="shortBreakInput" value="5" class="pomodoroInterval" name="minutes" min="1" max="720" step="1">
+                                                </div>
+                                            </div>
+                                            <div id="minutesImageBucket3" class="imageBucket">
+                                                <div>
+                                                    <p><b>Long Break</b></p>
+                                                </div>
+                                                <div class="pomodoroNotificationContainer">
+                                                    <input type="number" id="longBreakInput" data-testid="longBreakInput" value="15" class="pomodoroInterval" name="minutes" min="1" max="720" step="1">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr>
+
+                                <div id="autoStartIntervalsBlock">
+                                    <div id="autoStartPomodoroIntervalContainer" class="settingsMicroContainer">
+                                        <div id="autoStartPomodoroIntervalText" class="settingsText">
+                                            <p><b>Auto Start Pomodoro Interval</b></p>
+                                        </div>
+                                        <div id="autoStartPomodoroIntervalToggleContainer" class="toggleContainer">
+                                            <input type="checkbox" id="autoStartPomodoroIntervalToggle" class="toggle-checkbox">
+                                            <label for="autoStartPomodoroIntervalToggle" data-testid="autoStartPomodoroIntervalToggleLabel" id="autoStartPomodoroIntervalToggleLabel" class="toggle-label">
+                                                <span id="autoStartPomodoroIntervalToggleBall" class="toggle-ball"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div id="autoStartBreakIntervalContainer" class="settingsMicroContainer">
+                                        <div id="autoStartBreakIntervalText" class="settingsText">
+                                            <p><b>Auto Start Break Interval</b></p>
+                                        </div>
+                                        <div id="autoStartBreakIntervalToggleContainer" class="toggleContainer">
+                                            <input type="checkbox" id="autoStartBreakIntervalToggle" class="toggle-checkbox">
+                                            <label for="autoStartBreakIntervalToggle" data-testid="autoStartBreakIntervalToggleLabel" id="autoStartBreakIntervalToggleLabel" class="toggle-label">
+                                                <span id="autoStartBreakIntervalToggleBall" class="toggle-ball"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr>
+
+                                <div id="pomodoroAlertSoundBlock">
+                                    <div id="pomodoroAlertSoundContainer" class="settingsMicroContainer">
+                                        <div id="pomodoroAlertSoundText" class="settingsText">
+                                            <p><b>Alert Volume</b></p>
+                                        </div>
+                                        <div id="pomodoroAlertSoundVolumeContainer" class="toggleContainer">
+                                            <div id="pomodoroVolumeContainer" class="volume-container">
+                                                <div id="pomodoroVolumeBar" class="volume-bar">
+                                                </div>
+                                                <div id="pomodoroVolumeThumb" class="volume-thumb"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pickAlertSound">
+                                        <label id="pomodoroNoAlertContainer" class="pomodoroAlertContainer">
+                                            <input id="pomodoroNoAlertInput" type="radio" name="pomodoroAlert" class="pomodoroAlert" checked>
+                                            <span id="pomodoroNoAlertText" class="settingsHeader">
+                                                No Alert
+                                            </span>
+                                        </label>
+                                        <label id="pomodoroChimeAlertContainer" class="pomodoroAlertContainer">
+                                            <input id="pomodoroChimeInput" type="radio" name="pomodoroAlert" class="pomodoroAlert">
+                                            <span id="pomodoroChimeText" class="settingsHeader">
+                                                Chime
+                                            </span>
+                                        </label>
+                                        <label id="pomodoroBellContainer" class="pomodoroAlertContainer">
+                                            <input id="pomodoroBellInput" type="radio" name="pomodoroAlert" class="pomodoroAlert">
+                                            <span id="pomodoroBellText" class="settingsHeader">
+                                                Bell
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="flowmodoroSettingsContainer" class="settingsContentContainer">
+                            <div id="flowmodoroContainer" class="settingsIconTextContainer">
+                                <h2>Chill Time</h2>
+                            </div>
+                            <!-- <div class="horizontal"></div> -->
+                            <div id="alertsNotificationsToggleContainer2" class="settingsCategory">
+                                <div id="flowmodoroNotificationsBlock">
+                                    <div id="toggleFlowmodoroNotificationContainer" class="settingsMicroContainer">
+                                        <div id="flowmodoroNotificationText" class="settingsText">
+                                            <p id="flowmodoroNotifications"><b class="settingsCategoryHeading">Chill Time Notifications</b></p>
+                                        </div>
+                                        <div id="flowmodoroNotificationToggleContainer" class="toggleContainer">
+                                            <input type="checkbox" id="flowmodoroNotificationToggle" class="toggle-checkbox">
+                                            <label for="flowmodoroNotificationToggle" data-testid="flowmodoroNotificationToggle" id="flowmodoroNotificationToggleLabel" class="toggle-label">
+                                                <span id="flowmodoroNotificationToggleBall" class="toggle-ball"></span>
+                                            </label>
+                                        </div>
+                                        <div id="flowmodoroNotificationInfoWindow" class="notificationInfoWindow">
+                                            This will notify you after the specified number of minutes in Chill Time
+                                        </div>  
+                                    </div>
+                                    <div id="flowTimeBreakDemoImages" class="settingsMicroContainer">
+                                        <div id="endOfBreakIntervals">
+                                            <div id="minutesImageBucket" class="imageBucketHeader">
+                                                <div>
+                                                    <p id="FlowTime"><b>Flow Time: </b></p>
+                                                </div>
+                                                <div>
+                                                    <p id="ChillTime"><b>Chill Time: </b></p>
+                                                </div>
+                                            </div>
+                                            <div id="semiBlock1" class="semiBlock">
+                                                <div id="minutesImageBucket1" class="imageBucket">
+                                                    <div>
+                                                        <p><b>&lt; 25 min</b></p>
+                                                    </div>
+                                                    <div class="chillTimeNotificationContainer">
+                                                        <input type="number" id="flowmodoroBreakInput1" data-testid="flowmodoroBreakInput1" value="5" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1">
+                                                    </div>
+                                                </div>
+                                                <div id="minutesImageBucket2" class="imageBucket">
+                                                    <div>
+                                                        <p><b>&lt; 50 min</b></p>
+                                                    </div>
+                                                    <div class="chillTimeNotificationContainer">
+                                                        <input type="number" id="flowmodoroBreakInput2" data-testid="flowmodoroBreakInput2" value="8" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="semiBlock2" class="semiBlock">
+                                                <div id="minutesImageBucket3" class="imageBucket">
+                                                    <div>
+                                                        <p><b>&lt; 90 min</b></p>
+                                                    </div>
+                                                    <div class="chillTimeNotificationContainer">
+                                                        <input type="number" id="flowmodoroBreakInput3" data-testid="flowmodoroBreakInput3" value="10" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1">
+                                                    </div>
+                                                </div>
+                                                <div id="minutesImageBucket4" class="imageBucket">
+                                                    <div>
+                                                        <p><b>&gt;= 90 min</b></p>
+                                                    </div>
+                                                    <div class="chillTimeNotificationContainer">
+                                                        <input type="number" id="flowmodoroBreakInput4" data-testid="flowmodoroBreakInput4" value="15" class="flowmodoroBreak" name="minutes" min="1" step="1">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr>
+
+                                <div id="flowmodoroAlertSoundBlock">
+                                    <div id="flowmodoroAlertSoundContainer" class="settingsMicroContainer">
+                                        <div id="flowmodoroAlertSoundText" class="settingsText">
+                                            <p><b>Alert Volume</b></p>
+                                        </div>
+                                        <div id="flowmodoroAlertSoundVolumeContainer" class="toggleContainer">
+                                            <div id="flowmodoroVolumeContainer" class="volume-container">
+                                                <div id="flowmodoroVolumeBar" class="volume-bar">
+                                                </div>
+                                                <div id="flowmodoroVolumeThumb" class="volume-thumb"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pickAlertSound">
+                                        <label id="flowmodoroNoAlertContainer" class="flowmodoroAlertContainer">
+                                            <input id="flowmodoroNoAlertInput" type="radio" name="flowmodoroAlert" class="flowmodoroAlert" checked>
+                                            <span id="flowmodoroNoAlertText" class="settingsHeader">
+                                                No Alert
+                                            </span>
+                                        </label>
+                                        <label id="flowmodoroChimeAlertContainer" class="flowmodoroAlertContainer">
+                                            <input id="flowmodoroChimeInput" type="radio" name="flowmodoroAlert" class="flowmodoroAlert">
+                                            <span id="flowmodoroChimeText" class="settingsHeader">
+                                                Chime
+                                            </span>
+                                        </label>
+                                        <label id="flowmodoroBellContainer" class="flowmodoroAlertContainer">
+                                            <input id="flowmodoroBellInput" type="radio" name="flowmodoroAlert" class="flowmodoroAlert">
+                                            <span id="flowmodoroBellText" class="settingsHeader">
+                                                Bell
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="generalSettingsContainer" class="settingsContentContainer">
+                            <div id="generalContainer" class="settingsIconTextContainer">
+                                <h2>Flow Time</h2>
+                            </div>
+                            <div id="flowTimeBreakNotificationBlock">
+                                <div id="toggleBreakSuggestionContainer" class="settingsMicroContainer">
+                                    <div id="breakSuggestionText" class="settingsText">
+                                        <p id="flowTimeBreakNotification"><b class="settingsCategoryHeading">Flow Time Notifications</b></p>
+                                    </div>
+                                    <div id="breakSuggestionToggleContainer" class="toggleContainer">
+                                        <input type="checkbox" id="breakSuggestionToggle" class="toggle-checkbox">
+                                        <label for="breakSuggestionToggle" data-testid="breakSuggestionToggle" id="breakSuggestionToggleLabel" class="toggle-label">
+                                            <span id="breakSuggestionToggleBall" class="toggle-ball"></span>
+                                        </label>
+                                    </div>
+                                    <div id="flowTimeBreakNotificationInfoWindow" class="notificationInfoWindow">
+                                        Enter the time (in minutes) you'd like to pass while in Flow Time before getting a suggestion to take break
+                                    </div>  
+                                </div>
+                                <div id="suggestionMinutesContainer" class="settingsMicroContainer">
+                                    <div id="suggestionMinutesText">
+                                        <p><b>Suggestion Minutes: </b></p>
+                                    </div>
+                                    <div id="suggestionMinutesInputContainer" class="toggleContainer">
+                                        <div id="coolDiv2">
+                                            <input type="number" id="suggestionMinutesInput" data-testid="suggestionMinutesInput" value = '90' name="minutes" min="1" max="720">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div id="generalAlertSoundBlock">
+                                <div id="generalAlertSoundContainer" class="settingsMicroContainer">
+                                    <div id="generalAlertSoundText" class="settingsText">
+                                        <p><b>Alert Volume</b></p>
+                                    </div>
+                                    <div id="generalAlertSoundVolumeContainer" class="toggleContainer">
+                                        <div id="generalVolumeContainer" class="volume-container">
+                                            <div id="generalVolumeBar" class="volume-bar">
+                                            </div>
+                                            <div id="generalVolumeThumb" class="volume-thumb"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pickAlertSound">
+                                    <label id="generalNoAlertContainer" class="generalAlertContainer">
+                                        <input id="generalNoAlertInput" type="radio" name="generalAlert" class="generalAlert" checked>
+                                        <span id="generalNoAlertText" class="settingsHeader">
+                                            No Alert
+                                        </span>
+                                    </label>
+                                    <label id="generalChimeAlertContainer" class="generalAlertContainer">
+                                        <input id="generalChimeInput" type="radio" name="generalAlert" class="generalAlert">
+                                        <span id="generalChimeText" class="settingsHeader">
+                                            Chime
+                                        </span>
+                                    </label>
+                                    <label id="generalBellContainer" class="generalAlertContainer">
+                                        <input id="generalBellInput" type="radio" name="generalAlert" class="generalAlert">
+                                        <span id="generalBellText" class="settingsHeader">
+                                            Bell
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <hr>
+
+
+                            <div id="toggleTargetTimeAlertContainer" class="settingsMicroContainer">
+                                <div id="targetTimeReachedText" class="settingsText">
+                                    <p id="targetTimeReachedAlert"><b class="settingsCategoryHeading">Target Time Reached Notification</b></p>
+                                </div>
+                                <div id="targetTimeReachedToggleContainer" class="toggleContainer">
+                                    <input type="checkbox" id="targetTimeReachedToggle" class="toggle-checkbox">
+                                    <label for="targetTimeReachedToggle" id="targetTimeReachedToggleLabel" class="toggle-label">
+                                        <span id="targetTimeReachedToggleBall" class="toggle-ball"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="backgroundsSettingsContainer" class="settingsContentContainer">
+                            <div id="backgroundsContainer" class="settingsIconTextContainer">
+                                <h2>Backgrounds & Themes</h2>
+                            </div>
+
+                            <div id="flowTimeBackgroundsTextContainer" class="settingsMicroContainer">
+                                <div id="flowTimeBackgroundsText" class="settingsText">
+                                    <p id="flowTimeBackgrounds"><b class="settingsCategoryHeading">Flow Time Background</b></p>
+                                </div>
+                            </div>
+
+                            <div id="flowTimeGradientsBlock">
+                                <div class="settingsMicroContainer">
+                                    <div class="settingsText">
+                                        <p><b>Gradients 😊</b></p>
+                                    </div>
+                                </div>
+                                <div id="flowTimeBackgroundsContainer" class="settingsMicroContainer backgroundsContainer">
+                                    <div id="green-default" class="flowtimeBackgroundCell"></div>
+                                    <div id="red-flowtime" class="flowtimeBackgroundCell"></div>
+                                    <div id="yellow-flowtime" class="flowtimeBackgroundCell"></div>
+                                    <div id="blue-flowtime" class="flowtimeBackgroundCell"></div>
+                                    <div id="purple-flowtime" class="flowtimeBackgroundCell"></div>
+                                    <div id="black-flowtime" class="flowtimeBackgroundCell"></div>
+                                </div>
+                            </div>
+
+                            <div id="hyperChillWorldBlock-flowtime">
+                                <div id="hyperChillWorldContainer-flowtime" class="settingsMicroContainer">
+                                    <div id="hyperChillWorldText-flowtime" class="settingsText">
+                                        <p id="hyperChillWorld-flowtime"><b>Worlds 😛</b></p>
+                                    </div>
+                                </div>
+                                <div id="flowtimeWorldsBackgroundsContainer" class="settingsMicroContainer backgroundsContainer">
+                                    <div id="hyperchillSunset-flowtime" class="flowtimeBackgroundWorldCell"></div>
+                                    <div id="hyperchillHands-flowtime" class="flowtimeBackgroundWorldCell"></div>
+                                    <div id="hyperchillTriangle-flowtime" class="flowtimeBackgroundWorldCell"></div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div id="chillTimeBackgrounds" class="settingsMicroContainer">
+                                <div id="chillTimeBackgroundsText" class="settingsText">
+                                    <p id="chillTimeBackgrounds"><b class="settingsCategoryHeading">Chill Time Background</b></p>
+                                </div>
+                            </div>
+
+                            <div id="chillTimeGradientsBlock">
+                                <div class="settingsMicroContainer">
+                                    <div class="settingsText">
+                                        <p><b>Gradients 😊</b></p>
+                                    </div>
+                                </div>
+
+                                <div id="chillTimeBackgroundsContainer" class="settingsMicroContainer backgroundsContainer">
+                                    <div id="green-chilltime" class="chilltimeBackgroundCell"></div>
+                                    <div id="red-chilltime" class="chilltimeBackgroundCell"></div>
+                                    <div id="yellow-chilltime" class="chilltimeBackgroundCell"></div>
+                                    <div id="blue-default" class="chilltimeBackgroundCell"></div>
+                                    <div id="purple-chilltime" class="chilltimeBackgroundCell"></div>
+                                    <div id="black-chilltime" class="chilltimeBackgroundCell"></div>
+                                </div>
+                            </div>
+
+                            <div id="hyperChillWorldBlock-chilltime">
+                                <div id="hyperChillWorldContainer-chilltime" class="settingsMicroContainer">
+                                    <div id="hyperChillWorldText-chilltime" class="settingsText">
+                                        <p id="hyperChillWorld-chilltime"><b>Worlds 😛</b></p>
+                                    </div>
+                                </div>
+                                <div id="chilltimeWorldsBackgroundsContainer" class="settingsMicroContainer backgroundsContainer">
+                                    <div id="hyperchillSunset-chilltime" class="chilltimeBackgroundWorldCell"></div>
+                                    <div id="hyperchillHands-chilltime" class="chilltimeBackgroundWorldCell"></div>
+                                    <div id="hyperchillTriangle-chilltime" class="chilltimeBackgroundWorldCell"></div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div id="themesContainer" class="settingsMicroContainer">
+                                <div id="themesText" class="settingsText">
+                                    <p id="themesHeader"><b class="settingsCategoryHeading">Themes</b></p>
+                                </div>
+                            </div>
+                            <div id="themesContainer" class="settingsMicroContainer"> <!-- Take screenshots to demonstrate themes -->
+                                <div id="defaultThemeContainer" class="themeContainer">
+                                    <div id="defaultTheme" class="themeCell selected-background"></div>
+                                    <p id="defaultThemeP"><b>Default</b></p>
+                                </div>
+                                <div id="darkThemeContainer" class="themeContainer">
+                                    <div id="darkGrayTheme" class="themeCell"></div>
+                                    <p id="darkThemeP"><b>Dark</b></p>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div id="animationsHeaderContainer" class="settingsMicroContainer">
+                                <div id="animationsText" class="settingsText">
+                                    <p id="animationsHeader"><b class="settingsCategoryHeading">Animations</b></p>
+                                </div>
+                            </div>
+                            <div id="animationsContainer" class="settingsMicroContainer">
+                                <div id="flowTimeAnimationToggleContainer">
+                                    <div id="flowTimeAnimationText" class="settingsText">
+                                        <p id="flowTimeAnimationHeader"><b>Flow Time</b></p>
+                                    </div>
+                                    <div id="flowTimeAnimationToggleContainer" class="toggleContainer">
+                                        <input type="checkbox" id="flowTimeAnimationToggle" class="toggle-checkbox" checked>
+                                        <!-- <input type="checkbox" id="flowTimeAnimationToggle" class="toggle-checkbox"> -->
+                                        <label for="flowTimeAnimationToggle" id="flowTimeAnimationToggleLabel" class="toggle-label">
+                                            <span id="flowTimeAnimationToggleBall" class="toggle-ball"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div id="chillTimeAnimationToggleContainer">
+                                    <div id="chillTimeAnimationText" class="settingsText">
+                                        <p id="chillTimeAnimationHeader"><b>Chill Time</b></p>
+                                    </div>
+                                    <div id="chillTimeAnimationToggleContainer" class="toggleContainer">
+                                        <input type="checkbox" id="chillTimeAnimationToggle" class="toggle-checkbox" checked>
+                                        <label for="chillTimeAnimationToggle" id="chillTimeAnimationToggleLabel" class="toggle-label">
+                                            <span id="chillTimeAnimationToggleBall" class="toggle-ball"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="notesSettingsContainer" class="settingsContentContainer">
+                            <div id="notesContainer" class="settingsIconTextContainer">
+                                <h2>Notes</h2>
+                            </div>
+                            <div id="notesAutoSwitchBlock">
+                                <div id="toggleNotesAutoSwitchContainer" class="settingsMicroContainer">
+                                    <div id="transitionNotesAutoSwitchText" class="settingsText">
+                                        <p id="notesAutoSwitch"><b class="settingsCategoryHeading">Auto Switch</b></p>
+                                    </div>
+                                    <div id="transitionNotesAutoSwitchToggleContainer" class="toggleContainer">
+                                        <input type="checkbox" id="transitionNotesAutoSwitchToggle" data-testid="transitionNotesAutoSwitchToggle" class="toggle-checkbox">
+                                        <label for="transitionNotesAutoSwitchToggle" id="transitionNotesAutoSwitchToggleLabel" class="toggle-label">
+                                            <span id="transitionNotesAutoSwitchToggleBall" class="toggle-ball"></span>
+                                        </label>
+                                    </div>
+                                    <div id="notesAutoSwitchInfoWindow" class="notificationInfoWindow">
+                                        Auto switch modes based on the addition or removal of labels once 'Done' is pressed
+                                    </div>
+                                </div>
+                            </div>
+                            <hr id="notesSettingsHr1">
+                            <div id="clearNotesConsoleBlock">
+                                <div id="togglePropagateUnfinishedTasksContainer" class="settingsMicroContainer">
+                                    <div id="propagateUnfinishedTasksText" class="settingsText">
+                                        <p id="propagateUnfinishedTasks"><b class="settingsCategoryHeading">Keep Unfinished Tasks</b></p>
+                                    </div>
+                                    <div id="propagateUnfinishedTasksToggleContainer" class="toggleContainer">
+                                        <input type="checkbox" id="propagateUnfinishedTasksToggle" data-testid="propagateUnfinishedTasksToggle" class="toggle-checkbox">
+                                        <label for="propagateUnfinishedTasksToggle" id="propagateUnfinishedTasksToggleLabel" class="toggle-label">
+                                            <span id="propagateUnfinishedTasksToggleBall" class="toggle-ball"></span>
+                                        </label>
+                                    </div>
+                                    <div id="propagateUnfinishedTasksInfoWindow" class="notificationInfoWindow">
+                                        Don't delete unfinished tasks when clicking the 'Clear Notes Console' button
+                                    </div>
+                                </div>
+                                <div id="clearNotesConsoleContainer" class="settingsMicroContainer">
+                                    <div id="clearNotesConsoleBtnContainer" class="settingsMicroContainer settingsBtn">
+                                        <button id="clearNotesConsoleBtn">Clear Notes Console</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr id="notesSettingsHr2">
+                            <div id="addingDeletingUpdatingLabelsInfoBlock">
+                                <div id="addingDeletingUpdatingLabelsInfoContainer" class="settingsMicroContainer">
+                                    <div id="transitionNotesAutoSwitchText" class="settingsText">
+                                        <p id="notesAutoSwitch"><b class="settingsCategoryHeading">Adding, Deleting, and Updating Labels</b></p>
+                                    </div>
+                                </div>
+                                <div id="addingDeletingUpdatingInfoBox">
+                                    <div class="labelInfoContainer">
+                                        <div id="addingInfoBucket" class="labelInfoBucket">
+                                            <p id="adding" class="tutorialSectionHeading"><b>Creating a Label:</b></p>
+                                            <div id="addingImgContainer" class="tutorialImgContainer">
+                                                <img src="images/tutorial/adding.png" class="tutorialImg">
+                                                <div id="addingLabelInstructions" class="labelInstructions">
+                                                    <p><b>Click on Create Label Button</b></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="labelInfoContainer">
+                                        <div id="deletingInfoBucket" class="labelInfoBucket">
+                                            <p id="deleting" class="tutorialSectionHeading"><b>Deleting a Label:</b></p>
+                                            <div id="deletingImgContainer" class="tutorialImgContainer">
+                                                <img src="images/tutorial/deleting.png" class="tutorialImg">
+                                                <div id="deletingLabelInstructions" class="labelInstructions">
+                                                    <p><b>Shift + Click on Label</b></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="labelInfoContainer">
+                                        <div id="updatingInfoBucket" class="labelInfoBucket">
+                                            <p id="updating" class="tutorialSectionHeading"><b>Updating a Label:</b></p>
+                                            <div id="updatingImgContainer" class="tutorialImgContainer">
+                                                <img src="images/tutorial/updating.png" class="tutorialImg">
+                                                <div id="updatingLabelInstructions" class="labelInstructions">
+                                                    <p><b>Alt/ Option + Click on Label</b></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="soundsSettingsContainer" class="settingsContentContainer">
+                            <div id="soundsContainer" class="settingsIconTextContainer">
+                                <h2>Sounds</h2>
+                            </div>
+                            <div id="soundsToggleContainer" class="settingsCategory">
+                                <div id="toggleClockSoundContainer" class="settingsMicroContainer">
+                                    <div id="transitionClockSoundText" class="settingsText">
+                                        <p><b>Transition Clock Sound</b></p>
+                                    </div>
+                                    <div id="transitionClockSoundToggleContainer" class="toggleContainer">
+                                        <input type="checkbox" id="transitionClockSoundToggle" class="toggle-checkbox">
+                                        <label for="transitionClockSoundToggle" id="transitionClockSoundToggleLabel" class="toggle-label">
+                                            <span id="transitionClockSoundToggleBall" class="toggle-ball"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div id="pomodoroAlertSoundBlock2">
+                                <div id="pomodoroAlertSoundContainer2" class="settingsMicroContainer">
+                                    <div id="pomodoroAlertSoundText2" class="settingsText">
+                                        <p><b>Pomodoro Alert Volume</b></p>
+                                    </div>
+                                    <div id="pomodoroAlertSoundVolumeContainer2" class="toggleContainer">
+                                        <div id="pomodoroVolumeContainer2" class="volume-container">
+                                            <div id="pomodoroVolumeBar2" class="volume-bar">
+                                            </div>
+                                            <div id="pomodoroVolumeThumb2" class="volume-thumb"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pickAlertSound">
+                                    <label id="pomodoroNoAlertContainer2" class="pomodoroAlertContainer">
+                                        <input id="pomodoroNoAlertInput2" type="radio" name="pomodoroAlert2" class="pomodoroAlert" checked>
+                                        <span id="pomodoroNoAlertText2" class="settingsHeader">
+                                            No Alert
+                                        </span>
+                                    </label>
+                                    <label id="pomodoroChimeAlertContainer2" class="pomodoroAlertContainer">
+                                        <input id="pomodoroChimeInput2" type="radio" name="pomodoroAlert2" class="pomodoroAlert">
+                                        <span id="pomodoroChimeText2" class="settingsHeader">
+                                            Chime
+                                        </span>
+                                    </label>
+                                    <label id="pomodoroBellContainer2" class="pomodoroAlertContainer">
+                                        <input id="pomodoroBellInput2" type="radio" name="pomodoroAlert2" class="pomodoroAlert">
+                                        <span id="pomodoroBellText2" class="settingsHeader">
+                                            Bell
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div id="flowmodoroAlertSoundBlock2">
+                                <div id="flowmodoroAlertSoundContainer2" class="settingsMicroContainer">
+                                    <div id="flowmodoroAlertSoundText2" class="settingsText">
+                                        <p><b>Chill Time Alert Volume</b></p>
+                                    </div>
+                                    <div id="flowmodoroAlertSoundVolumeContainer2" class="toggleContainer">
+                                        <div id="flowmodoroVolumeContainer2" class="volume-container">
+                                            <div id="flowmodoroVolumeBar2" class="volume-bar">
+                                            </div>
+                                            <div id="flowmodoroVolumeThumb2" class="volume-thumb"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pickAlertSound">
+                                    <label id="flowmodoroNoAlertContainer2" class="flowmodoroAlertContainer">
+                                        <input id="flowmodoroNoAlertInput2" type="radio" name="flowmodoroAlert2" class="flowmodoroAlert" checked>
+                                        <span id="flowmodoroNoAlertText2" class="settingsHeader">
+                                            No Alert
+                                        </span>
+                                    </label>
+                                    <label id="flowmodoroChimeAlertContainer2" class="flowmodoroAlertContainer">
+                                        <input id="flowmodoroChimeInput2" type="radio" name="flowmodoroAlert2" class="flowmodoroAlert">
+                                        <span id="flowmodoroChimeText2" class="settingsHeader">
+                                            Chime
+                                        </span>
+                                    </label>
+                                    <label id="flowmodoroBellContainer2" class="flowmodoroAlertContainer">
+                                        <input id="flowmodoroBellInput2" type="radio" name="flowmodoroAlert2" class="flowmodoroAlert">
+                                        <span id="flowmodoroBellText2" class="settingsHeader">
+                                            Bell
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div id="generalAlertSoundBlock2">
+                                <div id="generalAlertSoundContainer2" class="settingsMicroContainer">
+                                    <div id="generalAlertSoundText2" class="settingsText">
+                                        <p><b>Flow Time Alert Volume</b></p>
+                                    </div>
+                                    <div id="generalAlertSoundVolumeContainer2" class="toggleContainer">
+                                        <div id="generalVolumeContainer2" class="volume-container">
+                                            <div id="generalVolumeBar2" class="volume-bar">
+                                            </div>
+                                            <div id="generalVolumeThumb2" class="volume-thumb"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pickAlertSound">
+                                    <label id="generalNoAlertContainer2" class="generalAlertContainer">
+                                        <input id="generalNoAlertInput2" type="radio" name="generalAlert2" class="generalAlert" checked>
+                                        <span id="generalNoAlertText2" class="settingsHeader">
+                                            No Alert
+                                        </span>
+                                    </label>
+                                    <label id="generalChimeAlertContainer2" class="generalAlertContainer">
+                                        <input id="generalChimeInput2" type="radio" name="generalAlert2" class="generalAlert">
+                                        <span id="generalChimeText2" class="settingsHeader">
+                                            Chime
+                                        </span>
+                                    </label>
+                                    <label id="generalBellContainer2" class="generalAlertContainer">
+                                        <input id="generalBellInput2" type="radio" name="generalAlert2" class="generalAlert">
+                                        <span id="generalBellText2" class="settingsHeader">
+                                            Bell
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="accountSettingsContainer" class="settingsContentContainer">
+                            <div id="accountContainer" class="settingsIconTextContainer">
+                                <h2>Account</h2>
+                            </div>
+                            <div id="noAccountText" class="settingsMicroContainer">
+                                <p><b>Don't have an account yet? <u id="registerHereText">Register Here!</u></b></p>
+                            </div>
+                            <div id="accountOr1" class="hr_or_hr_block">
+                                <hr class="or_hr">
+                                <div class="or">
+                                    or
+                                </div>
+                                <hr class="or_hr">
+                            </div>
+                            <div id="settingsGoogleLogin" class="settingsMicroContainer">
+                                <div id="g_id_onload"
+                                    data-client_id="234799271389-bk46do1l3pnvci922g3dmmf5cc8cfpfb.apps.googleusercontent.com"
+                                    data-context="login"
+                                    data-text="signin_with"
+                                    data-callback="handleCredentialResponse"
+                                    data-prompt="select_account"
+                                    data-auto_prompt="false">
+                                </div>
+                                <div class="g_id_signin" data-type="standard"></div>
+                            </div>
+                            <div id="accountOr2" class="hr_or_hr_block">
+                                <hr class="or_hr">
+                                <div class="or">
+                                    or
+                                </div>
+                                <hr class="or_hr">
+                            </div>
+                            <div id="emailPasswordLoginMainContainer" class="settingsMicroContainer">
+                                <div id="emailPasswordLoginContainer">
+                                    <div id="enterEmailContainer" class="enterContainer">
+                                        <label for="loginEmailInput" class="loginLabel"><p><b>Email</b></p></label>
+                                        <input type="email" id="loginEmailInput" class="loginInput" name="loginEmailInput">
+                                    </div>
+                                    <div id="enterPasswordContainer" class="enterContainer">
+                                        <label for="loginPasswordInput" class="loginLabel"><p><b>Password</b></p></label>
+                                        <input type="password" id="loginPasswordInput" class="loginInput" name="loginPasswordInput">
+                                    </div>
+                                    <div id="forgotPasswordContainer">
+                                        <u id="forgotPasswordSettings">Forgot Password?</u>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="loginBtnContainer" class="settingsMicroContainer">
+                                <button id="loginBtn">Log in</button>
+                            </div>
+
+                            <!-- User Logged In -->
+                            <div id="userEmailContainer" class="settingsMicroContainer">
+                                <p><b id="userEmail"></b></p>
+                            </div>
+                            <div id="logoutBtnContainer" class="settingsMicroContainer settingsBtn">
+                                <button id="logoutBtn">Log Out</button>
+                            </div>
+                            <hr id="accountHr">
+                            <div id="deleteAccountBtnContainer" class="settingsMicroContainer settingsBtn">
+                                <button id="deleteAccountBtn">Delete Account</button>
+                            </div>
+                        </div>
+                        
+                        <div id="supportAndFeedbackSettingsContainer" class="settingsContentContainer">
+                            <div id="supportAndFeedbackContainer" class="settingsIconTextContainer">
+                                <h2>Support & Feedback</h2>
+                            </div>
+                            <div id="" class="settingsMicroContainer">
+                                <p><b>This feature is currently under development. Thank you for your patience.</b></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

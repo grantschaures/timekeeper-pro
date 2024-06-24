@@ -29,6 +29,9 @@ jobs:
     - name: Minify js files
       run: npm run build
 
+    - name: Run HTML minification
+      run: node minifyHTML.js
+
     - name: Deploy to Heroku
       uses: AkhileshNS/heroku-deploy@v3.13.15  # Use the latest version
       with:

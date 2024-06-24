@@ -1,9 +1,10 @@
 addEventListener("DOMContentLoaded", function () {
     const needToGoBackBtn = document.getElementById("needToGoBackText2_h3");
     const resetPasswordSubmitBtn = document.getElementById("resetPasswordSubmitBtn");
+    const emailInputResetPassword = document.getElementById("emailInputResetPassword");
 
     resetPasswordSubmitBtn.addEventListener("click", async function() {
-        const userEmail = document.getElementById("emailInputResetPassword").value;
+        const userEmail = emailInputResetPassword.value;
 
         // Validate the email if needed
         if (isValidEmail(userEmail)) {
@@ -17,7 +18,17 @@ addEventListener("DOMContentLoaded", function () {
     needToGoBackBtn.addEventListener("click", async function() {
         window.location.href = "/login";
     })
+
+    document.addEventListener('keydown', (event) => handleResetPasswordEnter(event, emailInputResetPassword, resetPasswordSubmitBtn));
 });
+
+function handleResetPasswordEnter(event, email) {
+
+    if ((event.key === 'Enter') && (document.activeElement === email)) {
+        event.preventDefault();
+        resetPasswordSubmitBtn.click();
+    }
+};
 
 function isValidEmail(email) {
     // You can add your email validation logic here

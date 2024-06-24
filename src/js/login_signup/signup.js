@@ -1,9 +1,10 @@
 addEventListener("DOMContentLoaded", function () {
     const logBackInBtn = document.getElementById("logBackIn2_h3");
     const signUpSubmitBtn = document.getElementById("signupSubmitBtn");
+    const emailInputSignup = document.getElementById("emailInputSignup");
 
     signUpSubmitBtn.addEventListener("click", async function() {
-        const userEmail = document.getElementById("emailInputSignup").value;
+        const userEmail = emailInputSignup.value;
 
         // Validate the email if needed
         if (isValidEmail(userEmail)) {
@@ -17,7 +18,17 @@ addEventListener("DOMContentLoaded", function () {
     logBackInBtn.addEventListener("click", async function() {
         window.location.href = "/login";
     })
+
+    document.addEventListener('keydown', (event) => handleSignupEmailEnter(event, emailInputSignup, signUpSubmitBtn));
 });
+
+function handleSignupEmailEnter(event, email, signUpSubmitBtn) {
+
+    if ((event.key === 'Enter') && (document.activeElement === email)) {
+        event.preventDefault();
+        signUpSubmitBtn.click();
+    }
+};
 
 function isValidEmail(email) {
     // You can add your email validation logic here
