@@ -1100,7 +1100,7 @@
 
 #settingsGoogleLogin {
     /* border: 1px solid white; */
-    width: 410px;
+    max-width: 410px;
     display: flex;
     align-items: center;
     justify-content: center;

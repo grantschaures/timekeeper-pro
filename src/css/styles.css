@@ -1084,11 +1084,14 @@ header {
 }
 
 .hr_or_hr_block {
-    width: 410px;
+    max-width: 410px;
+    width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center; /* Center items vertically */
     margin-top: 10px;
+
+    border: 1px solid white;
 }
 
 .or {
@@ -1100,7 +1103,7 @@ header {
 }
 
 .or_hr {
-    width: 110px;
+    width: 100%;
     border-color: #ffffff;
 }
 
