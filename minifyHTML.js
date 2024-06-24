@@ -17,12 +17,11 @@ fs.readFile(inputFilePath, 'utf-8', (err, data) => {
         collapseWhitespace: true,
         removeComments: true,
         minifyCSS: true,
-        minifyJS: {
-            // Options for UglifyJS to ensure proper JavaScript minification
-            output: {
-                semicolons: true, // Ensure semicolons are preserved
-            }
-        }
+        // minifyJS: {
+        //     output: {
+        //         semicolons: true,
+        //     }
+        // }
     });
 
     // Overwrite the input HTML file with the minified content
