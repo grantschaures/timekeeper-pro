@@ -116,6 +116,9 @@ document.addEventListener("DOMContentLoaded", function() {
     document.addEventListener('keyup', (event) => handleKeyUp(event, flags));
 
     start_stop_btn.addEventListener("click", function() {
+
+        soundMap['Bell'].volume = 0.02;
+        soundMap['Bell'].play();
         
         counters.startStop++; //keep track of button presses (doesn't account for time recovery iterations)
         playClick(clock_tick, flags);
