@@ -1938,9 +1938,9 @@ function playAlertSound(soundType, notificationSettingType, alertVolumes) {
         soundType.volume = alertVolumes.general;
     } else if (notificationSettingType === "pomodoro") {
         soundType.volume = alertVolumes.pomodoro;
-        alert(soundType.volume);
     }
     soundType.play();
+    alert(soundType.volume);
 }
 
 function pauseAndResetAlertSounds(bell, chime) {
