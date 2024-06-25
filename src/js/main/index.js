@@ -1949,6 +1949,7 @@ function pauseAndResetAlertSounds(bell, chime) {
     chime.currentTime = 0;
 }
 
+let temp = false;
 // Function to hide all settings containers and remove 'selected' class from all buttons
 async function alertVolumeChange(volumeContainerType, alertVolumes, volumeThumbType, volumeBarType, volumeThumbType2, volumeBarType2, event, flags) {
     const rect = volumeContainerType.getBoundingClientRect();
@@ -1967,6 +1968,12 @@ async function alertVolumeChange(volumeContainerType, alertVolumes, volumeThumbT
         alertVolumes.general = volumeLevel;
     } else if ((flags.pomodoroThumbIsDragging) || (flags.pomodoroThumbIsDragging2)){
         alertVolumes.pomodoro = volumeLevel;
+        setTimeout(() => {
+            if (!temp) {
+                alert(alertVolumes.pomodoro);
+                temp = true;
+            }
+        }, 1000)
     }
 }
 
