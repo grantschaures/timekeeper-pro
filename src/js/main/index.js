@@ -383,115 +383,156 @@ document.addEventListener("DOMContentLoaded", function() {
         toggleInfoWindow(propagateUnfinishedTasksInfoWindow, 'showingPropagateUnfinishedTasksInfoWindow', flags);
     })
 
-    flowmodoroVolumeThumb.addEventListener('mousedown', (event) => {
-        flags.flowmodoroThumbIsDragging = true;
-        event.preventDefault();
-    })
+    // flowmodoroVolumeThumb.addEventListener('mousedown', (event) => {
+    //     flags.flowmodoroThumbIsDragging = true;
+    //     event.preventDefault();
+    // })
 
-    generalVolumeThumb.addEventListener('mousedown', (event) => {
-        flags.generalThumbIsDragging = true;
-        event.preventDefault();
-    })
+    // generalVolumeThumb.addEventListener('mousedown', (event) => {
+    //     flags.generalThumbIsDragging = true;
+    //     event.preventDefault();
+    // })
 
-    pomodoroVolumeThumb.addEventListener('mousedown', (event) => {
-        flags.pomodoroThumbIsDragging = true;
-        event.preventDefault();
-    })
+    // pomodoroVolumeThumb.addEventListener('mousedown', (event) => {
+    //     flags.pomodoroThumbIsDragging = true;
+    //     event.preventDefault();
+    // })
 
-    flowmodoroVolumeThumb2.addEventListener('mousedown', (event) => {
-        flags.flowmodoroThumbIsDragging2 = true;
-        event.preventDefault();
-    })
+    // flowmodoroVolumeThumb2.addEventListener('mousedown', (event) => {
+    //     flags.flowmodoroThumbIsDragging2 = true;
+    //     event.preventDefault();
+    // })
 
-    generalVolumeThumb2.addEventListener('mousedown', (event) => {
-        flags.generalThumbIsDragging2 = true;
-        event.preventDefault();
-    })
+    // generalVolumeThumb2.addEventListener('mousedown', (event) => {
+    //     flags.generalThumbIsDragging2 = true;
+    //     event.preventDefault();
+    // })
 
-    pomodoroVolumeThumb2.addEventListener('mousedown', (event) => {
-        flags.pomodoroThumbIsDragging2 = true;
-        event.preventDefault();
-    })
+    // pomodoroVolumeThumb2.addEventListener('mousedown', (event) => {
+    //     flags.pomodoroThumbIsDragging2 = true;
+    //     event.preventDefault();
+    // })
 
-    document.addEventListener('mousemove', (event) => {
-        if (flags.flowmodoroThumbIsDragging) {
-            alertVolumeChange(flowmodoroVolumeContainer, alertVolumes, flowmodoroVolumeThumb, flowmodoroVolumeBar, flowmodoroVolumeThumb2, flowmodoroVolumeBar2, event, flags);
-        } else if (flags.flowmodoroThumbIsDragging2) {
-            alertVolumeChange(flowmodoroVolumeContainer2, alertVolumes, flowmodoroVolumeThumb, flowmodoroVolumeBar, flowmodoroVolumeThumb2, flowmodoroVolumeBar2, event, flags);
-        } else if (flags.generalThumbIsDragging) {
-            alertVolumeChange(generalVolumeContainer, alertVolumes, generalVolumeThumb, generalVolumeBar,  generalVolumeThumb2, generalVolumeBar2, event, flags);
-        } else if (flags.generalThumbIsDragging2) {
-            alertVolumeChange(generalVolumeContainer2, alertVolumes, generalVolumeThumb, generalVolumeBar,  generalVolumeThumb2, generalVolumeBar2, event, flags);
-        } else if (flags.pomodoroThumbIsDragging) {
-            alertVolumeChange(pomodoroVolumeContainer, alertVolumes, pomodoroVolumeThumb, pomodoroVolumeBar,  pomodoroVolumeThumb2, pomodoroVolumeBar2, event, flags)
-        }  else if (flags.pomodoroThumbIsDragging2) {
-            alertVolumeChange(pomodoroVolumeContainer2, alertVolumes, pomodoroVolumeThumb, pomodoroVolumeBar, pomodoroVolumeThumb2, pomodoroVolumeBar2, event, flags)
-        }
-    })
+    // document.addEventListener('mousemove', (event) => {
+    //     if (flags.flowmodoroThumbIsDragging) {
+    //         alertVolumeChange(flowmodoroVolumeContainer, alertVolumes, flowmodoroVolumeThumb, flowmodoroVolumeBar, flowmodoroVolumeThumb2, flowmodoroVolumeBar2, event, flags);
+    //     } else if (flags.flowmodoroThumbIsDragging2) {
+    //         alertVolumeChange(flowmodoroVolumeContainer2, alertVolumes, flowmodoroVolumeThumb, flowmodoroVolumeBar, flowmodoroVolumeThumb2, flowmodoroVolumeBar2, event, flags);
+    //     } else if (flags.generalThumbIsDragging) {
+    //         alertVolumeChange(generalVolumeContainer, alertVolumes, generalVolumeThumb, generalVolumeBar,  generalVolumeThumb2, generalVolumeBar2, event, flags);
+    //     } else if (flags.generalThumbIsDragging2) {
+    //         alertVolumeChange(generalVolumeContainer2, alertVolumes, generalVolumeThumb, generalVolumeBar,  generalVolumeThumb2, generalVolumeBar2, event, flags);
+    //     } else if (flags.pomodoroThumbIsDragging) {
+    //         alertVolumeChange(pomodoroVolumeContainer, alertVolumes, pomodoroVolumeThumb, pomodoroVolumeBar,  pomodoroVolumeThumb2, pomodoroVolumeBar2, event, flags)
+    //     }  else if (flags.pomodoroThumbIsDragging2) {
+    //         alertVolumeChange(pomodoroVolumeContainer2, alertVolumes, pomodoroVolumeThumb, pomodoroVolumeBar, pomodoroVolumeThumb2, pomodoroVolumeBar2, event, flags)
+    //     }
+    // })
 
-    document.addEventListener('mouseup', async (event) => {
-        if ((flags.flowmodoroThumbIsDragging) || (flags.flowmodoroThumbIsDragging2)) {
-            if (alertSounds.flowmodoro === 'chime') {
-                pauseAndResetAlertSounds(bell, chime);
-                playAlertSound(chime, "flowmodoro", alertVolumes);
-            } else if (alertSounds.flowmodoro === 'bell') {
-                pauseAndResetAlertSounds(bell, chime);
-                playAlertSound(bell, "flowmodoro", alertVolumes);
-            }
-            flags.flowmodoroThumbIsDragging = false;
-            flags.flowmodoroThumbIsDragging2 = false;
+    // document.addEventListener('mouseup', async (event) => {
+    //     if ((flags.flowmodoroThumbIsDragging) || (flags.flowmodoroThumbIsDragging2)) {
+    //         if (alertSounds.flowmodoro === 'chime') {
+    //             pauseAndResetAlertSounds(bell, chime);
+    //             playAlertSound(chime, "flowmodoro", alertVolumes);
+    //         } else if (alertSounds.flowmodoro === 'bell') {
+    //             pauseAndResetAlertSounds(bell, chime);
+    //             playAlertSound(bell, "flowmodoro", alertVolumes);
+    //         }
+    //         flags.flowmodoroThumbIsDragging = false;
+    //         flags.flowmodoroThumbIsDragging2 = false;
 
-            if (sessionState.loggedIn) {
-                await updateUserSettings({
-                    chillTime: {
-                        alertVolume: alertVolumes.flowmodoro
-                    }
-                });
-            }
-        } else if ((flags.generalThumbIsDragging) || (flags.generalThumbIsDragging2)) {
-            if (alertSounds.general === 'chime') {
-                pauseAndResetAlertSounds(bell, chime);
-                playAlertSound(chime, "general", alertVolumes);
-            } else if (alertSounds.general === 'bell') {
-                pauseAndResetAlertSounds(bell, chime);
-                playAlertSound(bell, "general", alertVolumes);
-            }
-            flags.generalThumbIsDragging = false;
-            flags.generalThumbIsDragging2 = false;
+    //         if (sessionState.loggedIn) {
+    //             await updateUserSettings({
+    //                 chillTime: {
+    //                     alertVolume: alertVolumes.flowmodoro
+    //                 }
+    //             });
+    //         }
+    //     } else if ((flags.generalThumbIsDragging) || (flags.generalThumbIsDragging2)) {
+    //         if (alertSounds.general === 'chime') {
+    //             pauseAndResetAlertSounds(bell, chime);
+    //             playAlertSound(chime, "general", alertVolumes);
+    //         } else if (alertSounds.general === 'bell') {
+    //             pauseAndResetAlertSounds(bell, chime);
+    //             playAlertSound(bell, "general", alertVolumes);
+    //         }
+    //         flags.generalThumbIsDragging = false;
+    //         flags.generalThumbIsDragging2 = false;
 
-            if (sessionState.loggedIn) {
-                await updateUserSettings({
-                    flowTime: {
-                        alertVolume: alertVolumes.general
-                    }
-                });
-            }
+    //         if (sessionState.loggedIn) {
+    //             await updateUserSettings({
+    //                 flowTime: {
+    //                     alertVolume: alertVolumes.general
+    //                 }
+    //             });
+    //         }
             
-        } else if ((flags.pomodoroThumbIsDragging) || (flags.pomodoroThumbIsDragging2)) {
-            if (alertSounds.pomodoro === 'chime') {
-                pauseAndResetAlertSounds(bell, chime);
-                playAlertSound(chime, "pomodoro", alertVolumes);
-            } else if (alertSounds.pomodoro === 'bell') {
-                pauseAndResetAlertSounds(bell, chime);
-                playAlertSound(bell, "pomodoro", alertVolumes);
-            }
-            flags.pomodoroThumbIsDragging = false;
-            flags.pomodoroThumbIsDragging2 = false;
+    //     } else if ((flags.pomodoroThumbIsDragging) || (flags.pomodoroThumbIsDragging2)) {
+    //         if (alertSounds.pomodoro === 'chime') {
+    //             pauseAndResetAlertSounds(bell, chime);
+    //             playAlertSound(chime, "pomodoro", alertVolumes);
+    //         } else if (alertSounds.pomodoro === 'bell') {
+    //             pauseAndResetAlertSounds(bell, chime);
+    //             playAlertSound(bell, "pomodoro", alertVolumes);
+    //         }
+    //         flags.pomodoroThumbIsDragging = false;
+    //         flags.pomodoroThumbIsDragging2 = false;
 
-            if (sessionState.loggedIn) {
-                await updateUserSettings({
-                    pomodoro: {
-                        alertVolume: alertVolumes.pomodoro
-                    }
-                });
-            }
+    //         if (sessionState.loggedIn) {
+    //             await updateUserSettings({
+    //                 pomodoro: {
+    //                     alertVolume: alertVolumes.pomodoro
+    //                 }
+    //             });
+    //         }
             
-        } else {
-            if ((event.target.className !== 'flowmodoroAlert') && (event.target.className !== 'generalAlert') && (event.target.className !== 'pomodoroAlert') && (event.target.className !== 'volume-thumb') && (document.getElementById("settingsContainer").style.display === "block")) {
-                pauseAndResetAlertSounds(bell, chime);
-            }
-        }
-    })
+    //     } else {
+    //         if ((event.target.className !== 'flowmodoroAlert') && (event.target.className !== 'generalAlert') && (event.target.className !== 'pomodoroAlert') && (event.target.className !== 'volume-thumb') && (document.getElementById("settingsContainer").style.display === "block")) {
+    //             pauseAndResetAlertSounds(bell, chime);
+    //         }
+    //     }
+    // })
+
+    flowmodoroVolumeThumb.addEventListener('mousedown', (event) => handleMouseDown(event, 'flowmodoroThumbIsDragging'));
+    flowmodoroVolumeThumb.addEventListener('touchstart', (event) => handleMouseDown(event, 'flowmodoroThumbIsDragging'));
+    
+    generalVolumeThumb.addEventListener('mousedown', (event) => handleMouseDown(event, 'generalThumbIsDragging'));
+    generalVolumeThumb.addEventListener('touchstart', (event) => handleMouseDown(event, 'generalThumbIsDragging'));
+    
+    pomodoroVolumeThumb.addEventListener('mousedown', (event) => handleMouseDown(event, 'pomodoroThumbIsDragging'));
+    pomodoroVolumeThumb.addEventListener('touchstart', (event) => handleMouseDown(event, 'pomodoroThumbIsDragging'));
+    
+    flowmodoroVolumeThumb2.addEventListener('mousedown', (event) => handleMouseDown(event, 'flowmodoroThumbIsDragging2'));
+    flowmodoroVolumeThumb2.addEventListener('touchstart', (event) => handleMouseDown(event, 'flowmodoroThumbIsDragging2'));
+    
+    generalVolumeThumb2.addEventListener('mousedown', (event) => handleMouseDown(event, 'generalThumbIsDragging2'));
+    generalVolumeThumb2.addEventListener('touchstart', (event) => handleMouseDown(event, 'generalThumbIsDragging2'));
+    
+    pomodoroVolumeThumb2.addEventListener('mousedown', (event) => handleMouseDown(event, 'pomodoroThumbIsDragging2'));
+    pomodoroVolumeThumb2.addEventListener('touchstart', (event) => handleMouseDown(event, 'pomodoroThumbIsDragging2'));
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('touchmove', handleMouseMove);
+
+    document.addEventListener('mouseup', handleMouseUp);
+    document.addEventListener('touchend', handleMouseUp);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     function removeGlowingEffect(flags, timeAmount, secondsPassed, start_stop_btn) {
         if ((flags.flowmodoroNotificationToggle) && (counters.startStop > 1) && (!flags.inHyperFocus)) {
@@ -1928,6 +1969,100 @@ async function alertVolumeChange(volumeContainerType, alertVolumes, volumeThumbT
         alertVolumes.pomodoro = volumeLevel;
     }
 }
+
+function handleMouseDown(event, flagKey) {
+    flags[flagKey] = true;
+    event.preventDefault();
+}
+
+function handleMouseMove(event) {
+    // Convert touch event to mouse event
+    if (event.type === 'touchmove') {
+        event = event.touches[0];
+    }
+
+    if (flags.flowmodoroThumbIsDragging) {
+        alertVolumeChange(flowmodoroVolumeContainer, alertVolumes, flowmodoroVolumeThumb, flowmodoroVolumeBar, flowmodoroVolumeThumb2, flowmodoroVolumeBar2, event, flags);
+    } else if (flags.flowmodoroThumbIsDragging2) {
+        alertVolumeChange(flowmodoroVolumeContainer2, alertVolumes, flowmodoroVolumeThumb, flowmodoroVolumeBar, flowmodoroVolumeThumb2, flowmodoroVolumeBar2, event, flags);
+    } else if (flags.generalThumbIsDragging) {
+        alertVolumeChange(generalVolumeContainer, alertVolumes, generalVolumeThumb, generalVolumeBar, generalVolumeThumb2, generalVolumeBar2, event, flags);
+    } else if (flags.generalThumbIsDragging2) {
+        alertVolumeChange(generalVolumeContainer2, alertVolumes, generalVolumeThumb, generalVolumeBar, generalVolumeThumb2, generalVolumeBar2, event, flags);
+    } else if (flags.pomodoroThumbIsDragging) {
+        alertVolumeChange(pomodoroVolumeContainer, alertVolumes, pomodoroVolumeThumb, pomodoroVolumeBar, pomodoroVolumeThumb2, pomodoroVolumeBar2, event, flags);
+    } else if (flags.pomodoroThumbIsDragging2) {
+        alertVolumeChange(pomodoroVolumeContainer2, alertVolumes, pomodoroVolumeThumb, pomodoroVolumeBar, pomodoroVolumeThumb2, pomodoroVolumeBar2, event, flags);
+    }
+}
+
+function handleMouseUp(event) {
+    // Convert touch event to mouse event
+    if (event.type === 'touchend') {
+        event = event.changedTouches[0];
+    }
+
+    if (flags.flowmodoroThumbIsDragging || flags.flowmodoroThumbIsDragging2) {
+        handleAlertSoundAndUpdate('flowmodoro', 'flowmodoroThumbIsDragging', 'flowmodoroThumbIsDragging2');
+    } else if (flags.generalThumbIsDragging || flags.generalThumbIsDragging2) {
+        handleAlertSoundAndUpdate('general', 'generalThumbIsDragging', 'generalThumbIsDragging2');
+    } else if (flags.pomodoroThumbIsDragging || flags.pomodoroThumbIsDragging2) {
+        handleAlertSoundAndUpdate('pomodoro', 'pomodoroThumbIsDragging', 'pomodoroThumbIsDragging2');
+    } else {
+        if (event.target.className !== 'flowmodoroAlert' && event.target.className !== 'generalAlert' && event.target.className !== 'pomodoroAlert' && event.target.className !== 'volume-thumb' && document.getElementById("settingsContainer").style.display === "block") {
+            pauseAndResetAlertSounds(bell, chime);
+        }
+    }
+}
+
+async function handleAlertSoundAndUpdate(type, draggingFlag, draggingFlag2) {
+    if (alertSounds[type] === 'chime') {
+        pauseAndResetAlertSounds(bell, chime);
+        playAlertSound(chime, type, alertVolumes);
+    } else if (alertSounds[type] === 'bell') {
+        pauseAndResetAlertSounds(bell, chime);
+        playAlertSound(bell, type, alertVolumes);
+    }
+    flags[draggingFlag] = false;
+    flags[draggingFlag2] = false;
+
+    if (sessionState.loggedIn) {
+        let update = {};
+        update[type === 'pomodoro' ? 'pomodoro' : type === 'general' ? 'flowTime' : 'chillTime'] = {
+            alertVolume: alertVolumes[type]
+        };
+        await updateUserSettings(update);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function hideAllSettingsContainers(settingsMappings) {
     for (const [buttonId, containerId] of Object.entries(settingsMappings)) {
