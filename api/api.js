@@ -8,12 +8,28 @@ const { v4: uuidv4 } = require('uuid'); // UUID library to generate unique sessi
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const mongoose = require('mongoose');
+const rateLimit = require('express-rate-limit');
 
 // telling the router to use the JSON parsing middleware for all routes under this router
 router.use(express.json());
 
+const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes window
+    max: 5, // Limit each user to 5 requests per windowMs
+    message: 'You have exceeded your max number of login attempts, please try again after 15 minutes',
+    keyGenerator: (req, res) => {
+        // Use username or user ID from request body to identify the user
+        return req.body.email; // Ensure the username is unique
+    },
+    skipSuccessfulRequests: false, // Optional: only count failed login attempts
+    handler: (req, res) => {
+        console.log(`Rate limit exceeded for user: ${req.body.email}`);
+        res.status(429).json({ message: 'You have exceeded your max number of login attempts, please try again after 15 minutes' });
+    }
+});
+
 // Add a new User to the database
-router.post("/validateUser", async function(req, res) {
+router.post("/validateUser", loginLimiter, async function(req, res) {
 
     const { email, password } = req.body;
     try {

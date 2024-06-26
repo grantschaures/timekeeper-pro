@@ -50,10 +50,17 @@ window.addUser = function() {
     })
     .then(response => {
         if (!response.ok) {
-            alert("Your email or password is incorrect. Please try again.");
-            throw new Error(`HTTP error! Status: ${response.status}`);
+            if (response.status === 429) {
+                // Handle rate limit exceeded error
+                return response.json().then(data => {
+                    alert(data.message); // Display the rate limit exceeded message to the user
+                    throw new Error(`HTTP error! Status: ${response.status} - ${data.message}`);
+                });
+            } else {
+                alert("Your email or password is incorrect. Please try again.");
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
         }
-        // console.log("Server response:", response);
         return response.json();  // Assuming you want to process JSON response
     })
     .then(data => {

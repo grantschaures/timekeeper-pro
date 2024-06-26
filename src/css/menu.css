@@ -22,8 +22,6 @@
     /* POTENTIAL DESIGN ALTERNATIVE -- WHITE BORDER */
     /* border: 3px solid rgb(255, 255, 255); */
 
-    background-size: 300% 300%;
-
     /* background-image: linear-gradient(to bottom, #3b8fe3, #1d60a3, #7f04c7); */
     padding: 10px 10px;
     z-index: 100;
@@ -33,6 +31,29 @@
     top: 80px;
     /* border: 1px solid rgb(187, 187, 187); */
     border: 3px solid rgb(255, 255, 255);
+    display: none;
+    opacity: 0;
+    transition: opacity 0.15s ease-in, opacity 0.05s ease-out;
+
+    flex-direction: column;
+}
+
+#popupQuestionMenu {
+    position: absolute;
+    font-family: menuFont;
+    color: rgb(187, 187, 187);
+
+    letter-spacing: 1px;
+    font-size: 15px;
+    min-width: 210px;
+    height: 200px;
+    background-color: rgba(32, 32, 32, 1);
+
+    padding: 10px 10px;
+    z-index: 100;
+    border-radius: 15px;
+    right: 0;
+    top: -250px;
     display: none;
     opacity: 0;
     transition: opacity 0.15s ease-in, opacity 0.05s ease-out;
@@ -53,15 +74,46 @@
     border-radius: 8px;
 }
 
+#popupQuestionMenu > div {
+    position: relative;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: left; /* Change this to left if you want to add icons */
+    height: 45px;
+    
+    /* border: 1px solid white; */
+    border-radius: 8px;
+}
+
 #popupMenu > div:hover {
     background-color: rgba(255, 255, 255, 0.25);
     color: white;
     cursor: pointer;
 }
 
+#popupQuestionMenu > div:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    color: white;
+    cursor: pointer;
+}
+
+#questionIcon {
+    opacity: 0;
+    transform: scale(0.85);
+    transition: opacity 1s ease-in-out;
+    z-index: 1;
+}
+
+#questionIcon:hover {
+    cursor: pointer;
+}
+
 .menuContainer {
     display: flex;
     flex-direction: columns;
+    padding-right: 10px;
 }
 
 .menuIcon {
@@ -84,13 +136,19 @@
     height: 22px;
 }
 
-#loginIcon {
+#loginIcon, #loginIcon2 {
     width: 30px;
     height: 22px;
     display: flex;
-
+    
     /* Override padding for login icon cause it's hella wide :P */
     padding-right: 7px;
+}
+
+#accountIconFinal {
+    width: 22px;
+    height: 22px;
+    display: none;
 }
 
 #logoutIcon {
@@ -189,6 +247,11 @@
     /* border: 2px solid yellow; */
 }
 
+#privacyIcon, #termsIcon {
+    height: 20px;
+    width: 20px;
+}
+
 @keyframes menuLanding {
     0% {
         transform: translateY(-10px);
@@ -200,4 +263,26 @@
 
 .menuLanding {
     animation: menuLanding 0.5s;
+}
+
+@keyframes questionMenuLanding {
+    0% {
+        transform: translateY(10px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.questionMenuLanding {
+    animation: questionMenuLanding 0.5s;
+}
+
+@media (max-width: 725px) {
+    #questionIcon {
+        display: none;
+    }
+    #popupQuestionMenu {
+        display: none;
+    }
 }

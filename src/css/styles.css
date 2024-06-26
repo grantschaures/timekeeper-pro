@@ -297,9 +297,29 @@ body[data-dashboard-mode=blog] .dash-mode .caption [data-mode=blog] {
     margin-bottom: 20px;
 
     /* border: 3px solid rgb(0, 230, 0); */
-    height: 95%;
+    height: 95%; 
 
     align-items: center;
+}
+
+.bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    align-items: center;
+    
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    /* border: 3px solid rgb(230, 0, 220); */
+    height: auto; /* Adjust height as needed */
+    /* margin: 0; */
+    box-sizing: border-box; /* Ensure padding and border are included in the element's width and height */
+
+    margin: 25px;
+    z-index: 15; 
 }
 
 main {

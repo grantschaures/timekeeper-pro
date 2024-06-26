@@ -1,12 +1,24 @@
-import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, about_container, blog_container, settings_container, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, blogIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay } from '../modules/dom-elements.js';
+import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, about_container, blog_container, settings_container, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, blogIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer } from '../modules/dom-elements.js';
 
 import { blogIdList, flags, counters, state } from '../modules/navigation-objects.js';
 
 import { sessionState } from '../modules/state-objects.js';
 
 document.addEventListener("DOMContentLoaded", function() {
+
+    // This may actually detect all mobile + iPad devices
+    function isIpadCheck() {
+        const userAgent = navigator.userAgent || window.opera;
+        return /iPad/.test(userAgent) || (navigator.maxTouchPoints > 1);
+    }
+    let isIpad = isIpadCheck();
+
     setTimeout(() => {
         menuBtn.style.opacity = '1';
+
+        if (!(isMobile || isIpad)) {
+            questionIcon.style.opacity = '1';
+        }
     }, 1000)
     
     // event listeners
@@ -23,6 +35,23 @@ document.addEventListener("DOMContentLoaded", function() {
             setTimeout(() => {
                 popupMenu.classList.add('menuLanding');
                 popupMenu.style.opacity = '1';
+            }, 100);
+        }
+    })
+    
+    questionIcon.addEventListener("click", function() {
+        if (flags.popupQuestionWindowShowing) {
+            flags.popupQuestionWindowShowing = false;
+            popupQuestionMenu.style.opacity = '0';
+            setTimeout(() => {
+                popupQuestionMenu.style.display = "none"
+            }, 50)
+        } else {
+            flags.popupQuestionWindowShowing = true;
+            popupQuestionMenu.style.display = "flex";
+            setTimeout(() => {
+                popupQuestionMenu.classList.add('questionMenuLanding');
+                popupQuestionMenu.style.opacity = '1';
             }, 100);
         }
     })
@@ -87,6 +116,32 @@ document.addEventListener("DOMContentLoaded", function() {
         settings_exit.classList.add('resetRotation');
     });
 
+    // Question Menu
+
+    privacyPolicyContainer.addEventListener("click", function() {
+        const url = window.location.origin + '/privacy-policy';
+
+        // Open the specified URL in a new tab
+        window.open(url, '_blank');
+    })
+
+    termsAndConditionsContainer.addEventListener("click", function() {
+        const url = window.location.origin + '/terms-and-conditions';
+
+        // Open the specified URL in a new tab
+        window.open(url, '_blank');
+    })
+
+    window.addEventListener("resize", function() {
+        let viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+
+        if (viewportWidth <= 725) {
+            flags.popupQuestionWindowShowing = false;
+            popupQuestionMenu.style.opacity = '0';
+            popupQuestionMenu.style.display = "none"
+        }
+    });
+
     // similar function in index.js
     function logoutUser() {
         fetch('/api/state/logout', {
@@ -101,15 +156,21 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     login_menu_container.addEventListener("click", function() {
-        // alert("This feature is currently under development. Thank you for your patience.");
-    
-        //eventually uncomment this out to continue w/ login-signup development
         if (sessionState.loggedIn === false) {
             window.location.href = "/login";
         } else {
             logoutUser(sessionState);
         }
     });
+    
+    loginQuestionMenuContainer.addEventListener("click", function() {
+        if (sessionState.loggedIn === false) {
+            window.location.href = "/login";
+        } else {
+            // logoutUser(sessionState);
+            // show a popup menu w/ account info
+        }
+    })
 
     exit_icons.forEach(function(icon) {
         icon.addEventListener('mouseover', function() {
@@ -165,9 +226,10 @@ document.addEventListener("DOMContentLoaded", function() {
     document.addEventListener("click", function(event) {
 
         isClickNotOnMenuElements(event, menuBtn, flags, popupMenu);
+        isClickNotOnQuestionMenuElements(event, questionIcon, flags, popupQuestionMenu);
         isClickNotOnAboutElements(event, about_menu_container, about_container, menuBtn, about_exit, reportIcon, reportPath);
         isClickNotOnBlogElements(event, blogIcon, blogMenuContainer, blog_container, blog_post_container, menuBtn, blog_exit, reportIcon, reportPath);
-        isClickNotOnSettingsElements(event, settings_menu_container, start_stop_btn, aboutIconNotes, settings_container, menuBtn, settings_exit, body, state, about_container, popupOverlay);
+        isClickNotOnSettingsElements(event, settings_container, settings_exit, body, state, about_container);
 
         const excludeTargets = [blogBtn, blog_icon, blogMenuContainer, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container];
         const containers = [about_container, blog_container, menuBtn, blog_post_container, settings_container];
@@ -260,6 +322,17 @@ function isClickNotOnMenuElements(event, menuBtn, flags, popupMenu) {
     }
 }
 
+function isClickNotOnQuestionMenuElements(event, questionIcon, flags, popupQuestionMenu) {
+    // if click is not on menu, hide menu
+    if (!questionIcon.contains(event.target)) {
+        flags.popupQuestionWindowShowing = false;
+        popupQuestionMenu.style.opacity = '0';
+        setTimeout(() => {
+            popupQuestionMenu.style.display = "none"
+        }, 50)
+    }
+}
+
 function isClickNotOnBlogElements(event, blogIcon, blogMenuContainer, blog_container, blog_post_container, menuBtn, blog_exit, reportIcon, reportPath) {
     let blogElementsArr = [blogIcon, blogMenuContainer, blog_container, blog_post_container, menuBtn, blog_exit, reportIcon, reportPath];
 
@@ -268,10 +341,9 @@ function isClickNotOnBlogElements(event, blogIcon, blogMenuContainer, blog_conta
     }
 }
 
-function isClickNotOnSettingsElements(event, settings_menu_container, start_stop_btn, aboutIconNotes, settings_container, menuBtn, settings_exit, body, state, about_container, popupOverlay) {
-    let settingsElementsArr = [settings_menu_container, settings_container, menuBtn, popupOverlay];
+function isClickNotOnSettingsElements(event, settings_container, settings_exit, body, state, about_container) {
 
-    if ((!settingsElementsArr.some(element => element.contains(event.target)) && (event.target !== start_stop_btn) && (event.target !== aboutIconNotes)) || event.target === settings_exit) {
+    if (event.target === settings_exit) {
         settings_container.style.display = "none";
 
         if ((state.lastSelectedMode === "home") && (about_container.style.display !== "flex")) {

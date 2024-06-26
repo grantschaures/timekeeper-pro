@@ -3,7 +3,7 @@ import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selected
 import { chime, bell, clock_tick, soundMap } from '../modules/sound-map.js';
 
 import {
-    start_stop_btn, submit_change_btn, end_session_btn, report_btn, total_time_display, productivity_chill_mode, progressBarContainer, progressBar, progressContainer, display, hyperChillTitle, subMainContainer, interruptionsContainer, interruptionsSubContainer, decBtn, incBtn, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, completedPomodoros_label, completedPomodoros_min, targetHoursContainer, timekeepingContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, targetTimeReachedToggle, breakSuggestionToggle, suggestionMinutesInput, flowmodoroNotificationToggle,flowmodoroNotifications, flowmodoroNotificationInfoWindow, flowTimeBreakNotification, flowTimeBreakNotificationInfoWindow, pomodoroNotifications, pomodoroNotificationInfoWindow, notesAutoSwitch, notesAutoSwitchInfoWindow, pomodoroNotificationToggle, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, defaultThemeContainer, defaultTheme, darkThemeContainer, darkGrayTheme, targetTimeReachedAlert, transitionClockSoundToggle, flowTimeAnimationToggle, chillTimeAnimationToggle, pomodoroVolumeContainer, pomodoroVolumeBar, pomodoroVolumeThumb, flowmodoroVolumeContainer, flowmodoroVolumeBar, flowmodoroVolumeThumb, generalVolumeContainer, generalVolumeBar, generalVolumeThumb, pomodoroVolumeContainer2, pomodoroVolumeBar2, pomodoroVolumeThumb2, flowmodoroVolumeContainer2, flowmodoroVolumeBar2, flowmodoroVolumeThumb2, generalVolumeContainer2, generalVolumeBar2, generalVolumeThumb2, flowmodoroRadios, flowmodoroInputs, generalRadios, pomodoroInputs, pomodoroRadios,flowtimeBackgroundCells, chilltimeBackgroundCells, settings_menu_container, registerHereText, backgroundVideoSource, backgroundVideo, flowAnimation, chillAnimation, hyperChillLogoImage,createLabelInput, updateLabelInput, emojiContainer, loginEmailInput, loginPasswordInput, forgotPasswordContainer, loginBtnContainer, loginBtn, logoutBtn, deleteAccountBtn, forgotPasswordSettings, propagateUnfinishedTasks, propagateUnfinishedTasksInfoWindow, flowtimeBackgroundWorldCells, chilltimeBackgroundWorldCells, deleteAccountPopupYesBtn, deleteAccountPopupNoBtn, deleteAccountPopup, popupOverlay
+    start_stop_btn, submit_change_btn, end_session_btn, report_btn, total_time_display, productivity_chill_mode, progressBarContainer, progressBar, progressContainer, display, hyperChillTitle, subMainContainer, interruptionsContainer, interruptionsSubContainer, decBtn, incBtn, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, completedPomodoros_label, completedPomodoros_min, targetHoursContainer, timekeepingContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, targetTimeReachedToggle, breakSuggestionToggle, suggestionMinutesInput, flowmodoroNotificationToggle,flowmodoroNotifications, flowmodoroNotificationInfoWindow, flowTimeBreakNotification, flowTimeBreakNotificationInfoWindow, pomodoroNotifications, pomodoroNotificationInfoWindow, notesAutoSwitch, notesAutoSwitchInfoWindow, pomodoroNotificationToggle, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, defaultThemeContainer, defaultTheme, darkThemeContainer, darkGrayTheme, targetTimeReachedAlert, transitionClockSoundToggle, flowTimeAnimationToggle, chillTimeAnimationToggle, pomodoroVolumeContainer, pomodoroVolumeBar, pomodoroVolumeThumb, flowmodoroVolumeContainer, flowmodoroVolumeBar, flowmodoroVolumeThumb, generalVolumeContainer, generalVolumeBar, generalVolumeThumb, pomodoroVolumeContainer2, pomodoroVolumeBar2, pomodoroVolumeThumb2, flowmodoroVolumeContainer2, flowmodoroVolumeBar2, flowmodoroVolumeThumb2, generalVolumeContainer2, generalVolumeBar2, generalVolumeThumb2, flowmodoroRadios, flowmodoroInputs, generalRadios, pomodoroInputs, pomodoroRadios,flowtimeBackgroundCells, chilltimeBackgroundCells, settings_menu_container, registerHereText, backgroundVideoSource, backgroundVideo, flowAnimation, chillAnimation, hyperChillLogoImage,createLabelInput, updateLabelInput, emojiContainer, loginEmailInput, loginPasswordInput, forgotPasswordContainer, loginBtnContainer, loginBtn, logoutBtn, deleteAccountBtn, forgotPasswordSettings, propagateUnfinishedTasks, propagateUnfinishedTasksInfoWindow, flowtimeBackgroundWorldCells, chilltimeBackgroundWorldCells, deleteAccountPopupYesBtn, deleteAccountPopupNoBtn, deleteAccountPopup, popupOverlay, questionIcon
 } from '../modules/dom-elements.js';
 
 import { sessionState } from '../modules/state-objects.js';
@@ -116,9 +116,6 @@ document.addEventListener("DOMContentLoaded", function() {
     document.addEventListener('keyup', (event) => handleKeyUp(event, flags));
 
     start_stop_btn.addEventListener("click", function() {
-
-        soundMap['Bell'].volume = 0.02;
-        soundMap['Bell'].play();
         
         counters.startStop++; //keep track of button presses (doesn't account for time recovery iterations)
         playClick(clock_tick, flags);
@@ -386,116 +383,7 @@ document.addEventListener("DOMContentLoaded", function() {
         toggleInfoWindow(propagateUnfinishedTasksInfoWindow, 'showingPropagateUnfinishedTasksInfoWindow', flags);
     })
 
-    // flowmodoroVolumeThumb.addEventListener('mousedown', (event) => {
-    //     flags.flowmodoroThumbIsDragging = true;
-    //     event.preventDefault();
-    // })
-
-    // generalVolumeThumb.addEventListener('mousedown', (event) => {
-    //     flags.generalThumbIsDragging = true;
-    //     event.preventDefault();
-    // })
-
-    // pomodoroVolumeThumb.addEventListener('mousedown', (event) => {
-    //     flags.pomodoroThumbIsDragging = true;
-    //     event.preventDefault();
-    // })
-
-    // flowmodoroVolumeThumb2.addEventListener('mousedown', (event) => {
-    //     flags.flowmodoroThumbIsDragging2 = true;
-    //     event.preventDefault();
-    // })
-
-    // generalVolumeThumb2.addEventListener('mousedown', (event) => {
-    //     flags.generalThumbIsDragging2 = true;
-    //     event.preventDefault();
-    // })
-
-    // pomodoroVolumeThumb2.addEventListener('mousedown', (event) => {
-    //     flags.pomodoroThumbIsDragging2 = true;
-    //     event.preventDefault();
-    // })
-
-    // document.addEventListener('mousemove', (event) => {
-    //     if (flags.flowmodoroThumbIsDragging) {
-    //         alertVolumeChange(flowmodoroVolumeContainer, alertVolumes, flowmodoroVolumeThumb, flowmodoroVolumeBar, flowmodoroVolumeThumb2, flowmodoroVolumeBar2, event, flags);
-    //     } else if (flags.flowmodoroThumbIsDragging2) {
-    //         alertVolumeChange(flowmodoroVolumeContainer2, alertVolumes, flowmodoroVolumeThumb, flowmodoroVolumeBar, flowmodoroVolumeThumb2, flowmodoroVolumeBar2, event, flags);
-    //     } else if (flags.generalThumbIsDragging) {
-    //         alertVolumeChange(generalVolumeContainer, alertVolumes, generalVolumeThumb, generalVolumeBar,  generalVolumeThumb2, generalVolumeBar2, event, flags);
-    //     } else if (flags.generalThumbIsDragging2) {
-    //         alertVolumeChange(generalVolumeContainer2, alertVolumes, generalVolumeThumb, generalVolumeBar,  generalVolumeThumb2, generalVolumeBar2, event, flags);
-    //     } else if (flags.pomodoroThumbIsDragging) {
-    //         alertVolumeChange(pomodoroVolumeContainer, alertVolumes, pomodoroVolumeThumb, pomodoroVolumeBar,  pomodoroVolumeThumb2, pomodoroVolumeBar2, event, flags)
-    //     }  else if (flags.pomodoroThumbIsDragging2) {
-    //         alertVolumeChange(pomodoroVolumeContainer2, alertVolumes, pomodoroVolumeThumb, pomodoroVolumeBar, pomodoroVolumeThumb2, pomodoroVolumeBar2, event, flags)
-    //     }
-    // })
-
-    // document.addEventListener('mouseup', async (event) => {
-    //     if ((flags.flowmodoroThumbIsDragging) || (flags.flowmodoroThumbIsDragging2)) {
-    //         if (alertSounds.flowmodoro === 'chime') {
-    //             pauseAndResetAlertSounds(bell, chime);
-    //             playAlertSound(chime, "flowmodoro", alertVolumes);
-    //         } else if (alertSounds.flowmodoro === 'bell') {
-    //             pauseAndResetAlertSounds(bell, chime);
-    //             playAlertSound(bell, "flowmodoro", alertVolumes);
-    //         }
-    //         flags.flowmodoroThumbIsDragging = false;
-    //         flags.flowmodoroThumbIsDragging2 = false;
-
-    //         if (sessionState.loggedIn) {
-    //             await updateUserSettings({
-    //                 chillTime: {
-    //                     alertVolume: alertVolumes.flowmodoro
-    //                 }
-    //             });
-    //         }
-    //     } else if ((flags.generalThumbIsDragging) || (flags.generalThumbIsDragging2)) {
-    //         if (alertSounds.general === 'chime') {
-    //             pauseAndResetAlertSounds(bell, chime);
-    //             playAlertSound(chime, "general", alertVolumes);
-    //         } else if (alertSounds.general === 'bell') {
-    //             pauseAndResetAlertSounds(bell, chime);
-    //             playAlertSound(bell, "general", alertVolumes);
-    //         }
-    //         flags.generalThumbIsDragging = false;
-    //         flags.generalThumbIsDragging2 = false;
-
-    //         if (sessionState.loggedIn) {
-    //             await updateUserSettings({
-    //                 flowTime: {
-    //                     alertVolume: alertVolumes.general
-    //                 }
-    //             });
-    //         }
-            
-    //     } else if ((flags.pomodoroThumbIsDragging) || (flags.pomodoroThumbIsDragging2)) {
-    //         if (alertSounds.pomodoro === 'chime') {
-    //             pauseAndResetAlertSounds(bell, chime);
-    //             playAlertSound(chime, "pomodoro", alertVolumes);
-    //         } else if (alertSounds.pomodoro === 'bell') {
-    //             pauseAndResetAlertSounds(bell, chime);
-    //             playAlertSound(bell, "pomodoro", alertVolumes);
-    //         }
-    //         flags.pomodoroThumbIsDragging = false;
-    //         flags.pomodoroThumbIsDragging2 = false;
-
-    //         if (sessionState.loggedIn) {
-    //             await updateUserSettings({
-    //                 pomodoro: {
-    //                     alertVolume: alertVolumes.pomodoro
-    //                 }
-    //             });
-    //         }
-            
-    //     } else {
-    //         if ((event.target.className !== 'flowmodoroAlert') && (event.target.className !== 'generalAlert') && (event.target.className !== 'pomodoroAlert') && (event.target.className !== 'volume-thumb') && (document.getElementById("settingsContainer").style.display === "block")) {
-    //             pauseAndResetAlertSounds(bell, chime);
-    //         }
-    //     }
-    // })
-
+    // ALERT VOLUME TOGGLING FUNCTIONALITY
     flowmodoroVolumeThumb.addEventListener('mousedown', (event) => handleMouseDown(event, 'flowmodoroThumbIsDragging'));
     flowmodoroVolumeThumb.addEventListener('touchstart', (event) => handleMouseDown(event, 'flowmodoroThumbIsDragging'));
     
@@ -513,29 +401,13 @@ document.addEventListener("DOMContentLoaded", function() {
     
     pomodoroVolumeThumb2.addEventListener('mousedown', (event) => handleMouseDown(event, 'pomodoroThumbIsDragging2'));
     pomodoroVolumeThumb2.addEventListener('touchstart', (event) => handleMouseDown(event, 'pomodoroThumbIsDragging2'));
-
+    
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('touchmove', handleMouseMove);
 
     document.addEventListener('mouseup', handleMouseUp);
     document.addEventListener('touchend', handleMouseUp);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    // ALERT VOLUME TOGGLING FUNCTIONALITY
 
     function removeGlowingEffect(flags, timeAmount, secondsPassed, start_stop_btn) {
         if ((flags.flowmodoroNotificationToggle) && (counters.startStop > 1) && (!flags.inHyperFocus)) {
@@ -1156,7 +1028,7 @@ document.addEventListener("DOMContentLoaded", function() {
             email: email,
             password: password
         };
-    
+
         fetch("/api/api/validateUser", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -1164,17 +1036,23 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .then(response => {
             if (!response.ok) {
-                alert("Your email or password is incorrect. Please try again.");
-                throw new Error(`HTTP error! Status: ${response.status}`);
+                if (response.status === 429) {
+                    // Handle rate limit exceeded error
+                    return response.json().then(data => {
+                        alert(data.message); // Display the rate limit exceeded message to the user
+                        throw new Error(`HTTP error! Status: ${response.status} - ${data.message}`);
+                    });
+                } else {
+                    alert("Your email or password is incorrect. Please try again.");
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
             }
-            // console.log("Server response:", response);
             return response.json();  // Assuming you want to process JSON response
         })
         .then(data => {
-            
             // console.log("Server response:", data);
             if (data.loginSuccess === true) {
-                // console.log("Login was successful")
+                console.log("Login was successful!")
                 initializeGUI();
             }
         })
@@ -1934,6 +1812,7 @@ function validateAndSetNotificationInput(finalInputVal) {
     return finalInputVal;
 }
 
+// Volume toggle doesn't affect volume on mobile
 function playAlertSound(soundType, notificationSettingType, alertVolumes) {
     if (notificationSettingType === "flowmodoro") {
         soundType.volume = alertVolumes.flowmodoro;
@@ -1943,7 +1822,7 @@ function playAlertSound(soundType, notificationSettingType, alertVolumes) {
         soundType.volume = alertVolumes.pomodoro;
     }
     soundType.play();
-    alert(soundType.volume);
+    // alert(soundType.volume);
 }
 
 function pauseAndResetAlertSounds(bell, chime) {
@@ -2038,34 +1917,6 @@ async function handleAlertSoundAndUpdate(type, draggingFlag, draggingFlag2) {
         await updateUserSettings(update);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 function hideAllSettingsContainers(settingsMappings) {
@@ -2660,6 +2511,13 @@ export function replaceTargetHours(inputHours, timeAmount, flags) {
 
 export function totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount) {
     let timeDiff = getTotalElapsed(flags, elapsedTime.hyperFocus, startTimes);
+
+    // if 24 hours reached, end session
+    if (timeDiff >= 86400000) {
+        setTimeout(() => {
+            end_session_btn.click();
+        }, 0)
+    }
     
     let hours = Math.floor(timeDiff / timeConvert.msPerHour);
     let minutes = Math.floor((timeDiff - hours * timeConvert.msPerHour) / timeConvert.msPerMin);

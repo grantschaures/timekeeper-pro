@@ -37,8 +37,11 @@ function checkUserSession() {
 function updateGUIForLoggedInUser(userData, noteData) {
 
     // menu container (--> logged in version)
-    updateMenuContainer(userData);
-    
+    updateMenuContainer();
+
+    // menu question container (--> logged in version)
+    updateQuestionMenuContainer(userData);
+
     // account settings page (--> logged in version)
     updateAccountSettingsTab(userData);
 
@@ -66,10 +69,16 @@ function updateTargetHours(userData) {
     }
 }
 
-function updateMenuContainer(userData) {
+function updateMenuContainer() {
     document.getElementById('loginIcon').style.display = "none";
     document.getElementById('logoutIcon').style.display = "flex";
     document.getElementById('logInOutBtn').innerText = "Log Out";
+}
+
+function updateQuestionMenuContainer(userData) {
+    document.getElementById('loginIcon2').style.display = "none";
+    document.getElementById('accountIconFinal').style.display = "flex";
+    document.getElementById('logInOutBtn2').innerText = userData.email;
 }
 
 function updateAccountSettingsTab(userData) {

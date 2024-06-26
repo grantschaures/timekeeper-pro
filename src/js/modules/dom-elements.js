@@ -189,6 +189,14 @@ export const deleteAccountPopup = document.getElementById("deleteAccountPopup");
 export const deleteAccountPopupYesBtn = document.getElementById("deleteAccountPopupYesBtn");
 export const deleteAccountPopupNoBtn = document.getElementById("deleteAccountPopupNoBtn");
 
+export const questionIcon = document.getElementById("questionIcon");
+export const popupQuestionMenu = document.getElementById("popupQuestionMenu");
+
+export const loginQuestionMenuContainer = document.getElementById("loginQuestionMenuContainer");
+export const privacyPolicyContainer = document.getElementById("privacyPolicyContainer");
+export const termsAndConditionsContainer = document.getElementById("termsAndConditionsContainer");
+export const shortcutsContainer = document.getElementById("shortcutsContainer");
+
 export let hoverTimer;
 export var backgroundVideoSource = document.getElementById('background-video-source');
 export var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
