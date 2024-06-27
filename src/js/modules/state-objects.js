@@ -1,3 +1,4 @@
 export const sessionState = {
-    loggedIn: false
+    loggedIn: false,
+    updatingState: false
 }

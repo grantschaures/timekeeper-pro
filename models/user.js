@@ -41,6 +41,8 @@ const User = db.model("User", {
     backgroundsThemes: {
       flowTimeBackground: { type: String, default: "green-default"},
       chillTimeBackground: { type: String, default: "blue-default"},
+      flowTimeBackgroundTemp: { type: String, default: null },
+      chillTimeBackgroundTemp: { type: String, default: null },
       darkThemeActivated: { type: Boolean, default: false },
       flowTimeAnimation:  { type: Boolean, default: true },
       chillTimeAnimation: { type: Boolean, default: true }

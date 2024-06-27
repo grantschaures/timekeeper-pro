@@ -26,15 +26,21 @@ function checkUserSession() {
     })
     .then(response => response.json())
     .then(data => {
-        if (data.isLoggedIn) {
-            sessionState.loggedIn = true;
-            updateGUIForLoggedInUser(data.user, data.note);
-        }
+        updateUserSession(data);
     })
     .catch(error => console.error('Error validating user session:', error));
 }
 
-function updateGUIForLoggedInUser(userData, noteData) {
+async function updateUserSession(data) {
+    if (data.isLoggedIn) {
+        sessionState.loggedIn = true;
+        sessionState.updatingState = true;
+        await updateGUIForLoggedInUser(data.user, data.note);
+        sessionState.updatingState = false;
+    }
+}
+
+async function updateGUIForLoggedInUser(userData, noteData) {
 
     // menu container (--> logged in version)
     updateMenuContainer();
@@ -79,6 +85,15 @@ function updateQuestionMenuContainer(userData) {
     document.getElementById('loginIcon2').style.display = "none";
     document.getElementById('accountIconFinal').style.display = "flex";
     document.getElementById('logInOutBtn2').innerText = userData.email;
+
+    // account popup UI
+    document.getElementById('questionPopupUserEmail').innerText = userData.email;
+
+    if (userData.logins <= 1) {
+        document.getElementById('welcomeText').innerText = "Welcome! 😄";
+    } else {
+        document.getElementById('welcomeText').innerText = "Welcome Back! 😄";
+    }
 }
 
 function updateAccountSettingsTab(userData) {
@@ -305,30 +320,9 @@ function updateTargetTimeReachedToggle(userData, targetReachedToggle) {
 
 // BACKGROUNDS & THEMES
 function updateBackgroundsThemes(userData) {
-    updateBackgrounds(userData);
     updateThemes(userData);
+    updateBackgrounds(userData);
     updateAnimations(userData);
-}
-
-function updateBackgrounds(userData) {
-    const { flowTimeBackground, chillTimeBackground } = userData.settings.backgroundsThemes;
-
-    // programmatic updates
-    selectedBackgroundId.flowtime = flowTimeBackground;
-    selectedBackground.flowtime = flowtimeBackgrounds[flowTimeBackground];
-
-    selectedBackgroundId.chilltime = chillTimeBackground;
-    selectedBackground.chilltime = chilltimeBackgrounds[chillTimeBackground];
-
-    /** Default Background now same as non-logged in */
-    // setBackground(selectedBackground.flowtime);
-    // setBackground(selectedBackground.chilltime);
-
-    // GUI updates
-
-    document.getElementById("green-default").classList.remove('selected-background');
-    document.getElementById("blue-default").classList.remove('selected-background');
-    setInitialBackgroundCellSelection();
 }
 
 function updateThemes(userData) {
@@ -347,6 +341,26 @@ function updateThemes(userData) {
         defaultTheme.classList.remove('selected-background');
         activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer);
     }
+}
+
+function updateBackgrounds(userData) {
+    const { flowTimeBackground, chillTimeBackground, flowTimeBackgroundTemp, chillTimeBackgroundTemp } = userData.settings.backgroundsThemes;
+
+    // programmatic updates
+    selectedBackgroundId.flowtime = flowTimeBackground;
+    selectedBackground.flowtime = flowtimeBackgrounds[flowTimeBackground];
+
+    selectedBackgroundId.chilltime = chillTimeBackground;
+    selectedBackground.chilltime = chilltimeBackgrounds[chillTimeBackground];
+
+    selectedBackgroundIdTemp.flowtime = flowTimeBackgroundTemp;
+    selectedBackgroundIdTemp.chilltime = chillTimeBackgroundTemp;
+
+    // GUI updates
+
+    document.getElementById("green-default").classList.remove('selected-background');
+    document.getElementById("blue-default").classList.remove('selected-background');
+    setInitialBackgroundCellSelection();
 }
 
 function updateAnimations(userData) {

@@ -71,5 +71,5 @@ function activationLinkSent() {
 
     setTimeout(() => {
         document.getElementById('resetPasswordEmailSentWindow').style.opacity = "1";
-    }, 10)
+    }, 500)
 }

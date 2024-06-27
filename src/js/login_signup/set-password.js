@@ -107,5 +107,5 @@ function accountVerified() {
     document.getElementById('accountVerifiedWindow').style.display = "flex";
     setTimeout(() => {
         document.getElementById('accountVerifiedWindow').style.opacity = "1";
-    }, 10)
+    }, 500)
 }

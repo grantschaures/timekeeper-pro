@@ -197,6 +197,13 @@ export const privacyPolicyContainer = document.getElementById("privacyPolicyCont
 export const termsAndConditionsContainer = document.getElementById("termsAndConditionsContainer");
 export const shortcutsContainer = document.getElementById("shortcutsContainer");
 
+export const accountPopup = document.getElementById("accountPopup");
+export const goBackContainer = document.getElementById("goBackContainer");
+export const logoutBtnContainer2 = document.getElementById("logoutBtnContainer2");
+export const welcomeText = document.getElementById("welcomeText");
+export const goBackBtn = document.getElementById("goBackBtn");
+export const logoutBtn2 = document.getElementById("logoutBtn2");
+
 export let hoverTimer;
 export var backgroundVideoSource = document.getElementById('background-video-source');
 export var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);

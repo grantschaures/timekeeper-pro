@@ -32,6 +32,7 @@ const resetPasswordHtmlPath = './public/reset-password.html';
 const stateJsPath = './src/js/state/state.js';
 const indexJsPath = './src/js/main/index.js';
 const notesJsPath = './src/js/main/notes.js';
+const navigationJsPath = './src/js/main/navigation.js';
 const loginJsPath = './src/js/login_signup/login.js';
 const googleSignInPath = './src/js/api/google-signin.js';
 
@@ -87,10 +88,6 @@ const indexReplacements = [
     {
         pattern: /import { updateTargetHours } from '..\/state\/update-target-hours.js';/g,
         replacement: "import { updateTargetHours } from '../minified/update-target-hours.min.js';"
-    },
-    {
-        pattern: /import { deleteUserAccount } from '..\/state\/delete-account.js';/g,
-        replacement: "import { deleteUserAccount } from '../minified/delete-account.min.js';"
     }
 ];
 
@@ -108,6 +105,13 @@ const notesReplacements = [
         replacement: "import { updateNotes } from '../minified/update-notes.min.js';"
     },
 ];
+
+const navigationReplacements = [
+    {
+        pattern: /import { deleteUserAccount } from '..\/state\/delete-account.js';/g,
+        replacement: "import { deleteUserAccount } from '../minified/delete-account.min.js';"
+    }
+]
 
 const googleSignInReplacements = [
     {
@@ -142,5 +146,6 @@ readFileAndReplace(resetPasswordHtmlPath, resetPasswordHtmlReplacements);
 readFileAndReplace(stateJsPath, stateReplacements);
 readFileAndReplace(indexJsPath, indexReplacements);
 readFileAndReplace(notesJsPath, notesReplacements);
+readFileAndReplace(navigationJsPath, navigationReplacements);
 readFileAndReplace(googleSignInPath, googleSignInReplacements);
 readFileAndReplace(loginJsPath, loginReplacements);

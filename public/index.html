@@ -42,7 +42,7 @@
         </video> -->
 
         <div id="popupOverlay" class="overlay">
-            <div id="deleteAccountPopup" class="popup">
+            <div id="deleteAccountPopup">
                 <div id="deleteAccountPopupHeader">
                     <h2 style="color: gray">💀 Delete Account 💀</h2>
                 </div>
@@ -51,6 +51,18 @@
                 <div id="deleteAccountPopupBtnContainer">
                     <button id="deleteAccountPopupYesBtn">Yes</button>
                     <button id="deleteAccountPopupNoBtn">No</button>
+                </div>
+            </div>
+            <div id="accountPopup" class="accountPopup">
+                <div id="questionPopupUserEmailContainer">
+                    <!-- <img src="images/icons/accountIcon2.png" id="accountIcon2" draggable="false"> -->
+                    <h2 id="welcomeText" style="color: gray"></h2>
+                    <div id="questionPopupUserEmail"></div>
+                </div>
+                <hr>
+                <div id="accountPopupButtonsContainer">
+                    <button id="goBackBtn" >Go Back</button>
+                    <button id="logoutBtn2" >Log Out</button>
                 </div>
             </div>
         </div>
@@ -72,7 +84,7 @@
                 <div class="container">
                     <img id="hyperChillLogoImage" src="images/logo/HyperChillLogo_smallest.png" class="no-select" draggable="false">
                     <div id="titleToggleContainer">
-                        <h1 id="hyperChillTitle" class="no-select">HyperChill.io</h1>
+                        <h1 id="hyperChillTitle" class="no-select" >H Y P E R C H I L L . I O</h1>
                         <span id="threeWayToggle" class="dash-mode">
                             <svg id="report-icon" data-testid="report-icon" data-mode="report" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" data-clickable>
                                 <path id="report-path" d="M 12 26 L 12 23 L 16 23 L 16 26 Z M 18 26 L 18 18 L 22 18 L 22 26 Z M 24 26 L 24 12 L 28 12 L 28 26 Z" fill="white"></path>

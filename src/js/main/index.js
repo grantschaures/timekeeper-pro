@@ -3,7 +3,9 @@ import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selected
 import { chime, bell, clock_tick, soundMap } from '../modules/sound-map.js';
 
 import {
-    start_stop_btn, submit_change_btn, end_session_btn, report_btn, total_time_display, productivity_chill_mode, progressBarContainer, progressBar, progressContainer, display, hyperChillTitle, subMainContainer, interruptionsContainer, interruptionsSubContainer, decBtn, incBtn, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, completedPomodoros_label, completedPomodoros_min, targetHoursContainer, timekeepingContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, targetTimeReachedToggle, breakSuggestionToggle, suggestionMinutesInput, flowmodoroNotificationToggle,flowmodoroNotifications, flowmodoroNotificationInfoWindow, flowTimeBreakNotification, flowTimeBreakNotificationInfoWindow, pomodoroNotifications, pomodoroNotificationInfoWindow, notesAutoSwitch, notesAutoSwitchInfoWindow, pomodoroNotificationToggle, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, defaultThemeContainer, defaultTheme, darkThemeContainer, darkGrayTheme, targetTimeReachedAlert, transitionClockSoundToggle, flowTimeAnimationToggle, chillTimeAnimationToggle, pomodoroVolumeContainer, pomodoroVolumeBar, pomodoroVolumeThumb, flowmodoroVolumeContainer, flowmodoroVolumeBar, flowmodoroVolumeThumb, generalVolumeContainer, generalVolumeBar, generalVolumeThumb, pomodoroVolumeContainer2, pomodoroVolumeBar2, pomodoroVolumeThumb2, flowmodoroVolumeContainer2, flowmodoroVolumeBar2, flowmodoroVolumeThumb2, generalVolumeContainer2, generalVolumeBar2, generalVolumeThumb2, flowmodoroRadios, flowmodoroInputs, generalRadios, pomodoroInputs, pomodoroRadios,flowtimeBackgroundCells, chilltimeBackgroundCells, settings_menu_container, registerHereText, backgroundVideoSource, backgroundVideo, flowAnimation, chillAnimation, hyperChillLogoImage,createLabelInput, updateLabelInput, emojiContainer, loginEmailInput, loginPasswordInput, forgotPasswordContainer, loginBtnContainer, loginBtn, logoutBtn, deleteAccountBtn, forgotPasswordSettings, propagateUnfinishedTasks, propagateUnfinishedTasksInfoWindow, flowtimeBackgroundWorldCells, chilltimeBackgroundWorldCells, deleteAccountPopupYesBtn, deleteAccountPopupNoBtn, deleteAccountPopup, popupOverlay, questionIcon
+    start_stop_btn, submit_change_btn, end_session_btn, report_btn, total_time_display, productivity_chill_mode, progressBarContainer, progressBar, progressContainer, display, hyperChillTitle, subMainContainer, interruptionsContainer, interruptionsSubContainer, decBtn, incBtn, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, completedPomodoros_label, completedPomodoros_min, targetHoursContainer, timekeepingContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, targetTimeReachedToggle, breakSuggestionToggle, suggestionMinutesInput, flowmodoroNotificationToggle,flowmodoroNotifications, flowmodoroNotificationInfoWindow, flowTimeBreakNotification, flowTimeBreakNotificationInfoWindow, pomodoroNotifications, pomodoroNotificationInfoWindow, notesAutoSwitch, notesAutoSwitchInfoWindow, pomodoroNotificationToggle, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, defaultThemeContainer, defaultTheme, darkThemeContainer, darkGrayTheme, targetTimeReachedAlert, transitionClockSoundToggle, flowTimeAnimationToggle, chillTimeAnimationToggle, pomodoroVolumeContainer, pomodoroVolumeBar, pomodoroVolumeThumb, flowmodoroVolumeContainer, flowmodoroVolumeBar, flowmodoroVolumeThumb, generalVolumeContainer, generalVolumeBar, generalVolumeThumb, pomodoroVolumeContainer2, pomodoroVolumeBar2, pomodoroVolumeThumb2, flowmodoroVolumeContainer2, flowmodoroVolumeBar2, flowmodoroVolumeThumb2, generalVolumeContainer2, generalVolumeBar2, generalVolumeThumb2, flowmodoroRadios, flowmodoroInputs, generalRadios, pomodoroInputs, pomodoroRadios,flowtimeBackgroundCells, chilltimeBackgroundCells, settings_menu_container, registerHereText, backgroundVideoSource, backgroundVideo, flowAnimation, chillAnimation, hyperChillLogoImage,createLabelInput, updateLabelInput, emojiContainer, loginEmailInput, loginPasswordInput, forgotPasswordContainer, loginBtnContainer, loginBtn, logoutBtn, deleteAccountBtn, forgotPasswordSettings, propagateUnfinishedTasks, propagateUnfinishedTasksInfoWindow, flowtimeBackgroundWorldCells, chilltimeBackgroundWorldCells, deleteAccountPopupYesBtn, deleteAccountPopupNoBtn, deleteAccountPopup, popupOverlay, questionIcon,
+    logoutBtnContainer2,
+    logoutBtn2,
 } from '../modules/dom-elements.js';
 
 import { sessionState } from '../modules/state-objects.js';
@@ -11,7 +13,6 @@ import { sessionState } from '../modules/state-objects.js';
 import { initializeGUI } from '../utility/initialize_gui.js'; // minified
 import { updateUserSettings } from '../state/update-settings.js'; // minified
 import { updateTargetHours } from '../state/update-target-hours.js'; // minified
-import { deleteUserAccount } from '../state/delete-account.js'; // minified
 
 const pomodoroWorker = new Worker('/js/displayWorkers/pomodoroWorker.js');
 const suggestionWorker = new Worker('/js/displayWorkers/suggestionWorker.js');
@@ -67,8 +68,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Initial Animations
     setTimeout(() => {
-        hyperChillTitle.style.opacity = '1';
-        hyperChillTitle.classList.add('hyperChillTitleAnimation');
+        hyperChillTitle.style.opacity = '1'; // increases opacity
+        hyperChillTitle.classList.add('hyperChillTitleAnimation'); // moves it down
     }, 0)
     
     const threeWayToggle = document.getElementById('threeWayToggle');
@@ -1001,22 +1002,9 @@ document.addEventListener("DOMContentLoaded", function() {
     logoutBtn.addEventListener("click", async function() {
         logoutUser(sessionState);
     })
-
-    deleteAccountBtn.addEventListener("click", async function() {
-        showDeleteAccountPopup(popupOverlay, deleteAccountPopup);
-    })
-
-    deleteAccountPopupNoBtn.addEventListener("click", function() {
-        hideDeleteAccountPopup(popupOverlay, deleteAccountPopup);
-    })
-
-    deleteAccountPopupYesBtn.addEventListener("click", async function() {
-        // this condition isn't necessary since user would need to be
-        // logged in anyway in order to click on the deleteAccount button
-        if (sessionState.loggedIn) {
-            await deleteUserAccount();
-        }
-        window.location.href = "/";
+    
+    logoutBtn2.addEventListener("click", function() {
+        logoutUser(sessionState);
     })
 
     // similar function present in login.js
@@ -2405,16 +2393,6 @@ function debuggingPopup(color) {
     mainContainer.appendChild(newDiv);
 }
 
-function showDeleteAccountPopup(popupOverlay, deleteAccountPopup) {
-    popupOverlay.style.display = "flex"; 
-    deleteAccountPopup.style.display = "block";
-}
-
-function hideDeleteAccountPopup(popupOverlay, deleteAccountPopup) {
-    deleteAccountPopup.style.display = "none";
-    popupOverlay.style.display = "none";
-}
-
 // ---------------------
 // EXPORTED FUNCTIONS
 // ---------------------
@@ -2464,7 +2442,7 @@ export function deactivateDarkTheme(interruptionsContainer, targetHoursContainer
     }
 };
 
-export function activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer) {
+export async function activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer) {
     let componentArr1 = [interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, notesContainer, aboutContainer, blogContainer];
     let componentArr2 = [popupMenu, settingsContainer, emojiContainer];
 
@@ -2483,11 +2461,22 @@ export function activateDarkTheme(interruptionsContainer, targetHoursContainer, 
 
     emojiContainer.style.border = "5px solid white";
 
-    selectedBackgroundIdTemp["flowtime"] = selectedBackgroundId.flowtime;
-    selectedBackgroundIdTemp["chilltime"] = selectedBackgroundId.chilltime;
-
-    blackFlowtimeBackground.click();
-    blackChilltimeBackground.click();
+    if (!sessionState.updatingState) {
+        selectedBackgroundIdTemp["flowtime"] = selectedBackgroundId.flowtime;
+        selectedBackgroundIdTemp["chilltime"] = selectedBackgroundId.chilltime;
+    
+        if (sessionState.loggedIn) {
+            await updateUserSettings({
+                backgroundsThemes: {
+                    flowTimeBackgroundTemp: selectedBackgroundId.flowtime,
+                    chillTimeBackgroundTemp: selectedBackgroundId.chilltime
+                }
+            });
+        }
+        
+        blackFlowtimeBackground.click();
+        blackChilltimeBackground.click();
+    }
 }
 
 export function replaceTargetHours(inputHours, timeAmount, flags) {

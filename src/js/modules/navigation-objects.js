@@ -4,8 +4,10 @@ export const blogIdList = {
 
 export const flags = {
     blogShowing: false,
-    popupWindowShowing: false,
-    popupQuestionWindowShowing: false
+    popupWindowShowing: false, // main menu
+    popupQuestionWindowShowing: false,
+    accountWindowShowing: false,
+    deleteAccountWindowShowing: false
 }
 
 export const counters = {

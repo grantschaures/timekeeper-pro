@@ -1,8 +1,10 @@
-import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, about_container, blog_container, settings_container, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, blogIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer } from '../modules/dom-elements.js';
+import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, about_container, blog_container, settings_container, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, blogIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn } from '../modules/dom-elements.js';
 
 import { blogIdList, flags, counters, state } from '../modules/navigation-objects.js';
 
 import { sessionState } from '../modules/state-objects.js';
+
+import { deleteUserAccount } from '../state/delete-account.js'; // minified
 
 document.addEventListener("DOMContentLoaded", function() {
 
@@ -139,6 +141,8 @@ document.addEventListener("DOMContentLoaded", function() {
             flags.popupQuestionWindowShowing = false;
             popupQuestionMenu.style.opacity = '0';
             popupQuestionMenu.style.display = "none"
+
+            // accountPopup.style.display = "none";
         }
     });
 
@@ -162,15 +166,45 @@ document.addEventListener("DOMContentLoaded", function() {
             logoutUser(sessionState);
         }
     });
-    
+
     loginQuestionMenuContainer.addEventListener("click", function() {
         if (sessionState.loggedIn === false) {
             window.location.href = "/login";
         } else {
-            // logoutUser(sessionState);
-            // show a popup menu w/ account info
+            showAccountPopup(popupOverlay, accountPopup);
         }
     })
+
+    goBackBtn.addEventListener("click", function() {
+        hideAccountPopup(popupOverlay, accountPopup);
+    })
+    
+    popupOverlay.addEventListener("click", function(event) {
+        if ((flags.accountWindowShowing) && (!accountPopup.contains(event.target))) {
+            goBackBtn.click();
+        } else if ((flags.deleteAccountWindowShowing) && (!deleteAccountPopup.contains(event.target))) {
+            deleteAccountPopupNoBtn.click();
+        }
+    })
+
+    // delete account stuff
+    deleteAccountBtn.addEventListener("click", async function() {
+        showDeleteAccountPopup(popupOverlay, deleteAccountPopup);
+    })
+    
+    deleteAccountPopupNoBtn.addEventListener("click", function() {
+        hideDeleteAccountPopup(popupOverlay, deleteAccountPopup);
+    })
+    
+    deleteAccountPopupYesBtn.addEventListener("click", async function() {
+        // this condition isn't necessary since user would need to be
+        // logged in anyway in order to click on the deleteAccount button
+        if (sessionState.loggedIn) {
+            await deleteUserAccount();
+        }
+        window.location.href = "/";
+    })
+    // delete account stuff
 
     exit_icons.forEach(function(icon) {
         icon.addEventListener('mouseover', function() {
@@ -267,7 +301,7 @@ function dealWithClick(excludeTargets, containers, exitTargets, event, reportIco
                 document.body.setAttribute('data-dashboard-mode', 'blog');
                 blog_container.style.display = "flex";
             }
-        } else if (event.target !== aboutIconNotes) {
+        } else if ((event.target !== aboutIconNotes) && (!deleteAccountPopup.contains(event.target)) && (!accountPopup.contains(event.target)) && (!loginQuestionMenuContainer.contains(event.target)) && (event.target !== popupOverlay)) {
             document.body.setAttribute('data-dashboard-mode', 'home');
             main_elements.style.display = "block";
             state.lastSelectedMode = 'home';
@@ -350,4 +384,31 @@ function isClickNotOnSettingsElements(event, settings_container, settings_exit, 
             body.style.overflowY = 'scroll';
         }
     }
+}
+
+function showAccountPopup(popupOverlay, accountPopup) {
+    flags.accountWindowShowing = true;
+    popupOverlay.style.display = "flex"; 
+    accountPopup.style.display = "block";
+    document.body.style.overflowY = 'hidden';
+}
+
+function hideAccountPopup(popupOverlay, accountPopup) {
+    flags.accountWindowShowing = false;
+    accountPopup.style.display = "none";
+    popupOverlay.style.display = "none";
+}
+
+// delete account functions
+
+function showDeleteAccountPopup(popupOverlay, deleteAccountPopup) {
+    flags.deleteAccountWindowShowing = true;
+    popupOverlay.style.display = "flex"; 
+    deleteAccountPopup.style.display = "block";
+}
+
+function hideDeleteAccountPopup(popupOverlay, deleteAccountPopup) {
+    flags.deleteAccountWindowShowing = false;
+    deleteAccountPopup.style.display = "none";
+    popupOverlay.style.display = "none";
 }

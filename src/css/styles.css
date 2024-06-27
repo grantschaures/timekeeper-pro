@@ -825,11 +825,23 @@ button:hover {
 #hyperChillTitle {
     display: block;
     opacity: 0;
-    
+    font-family: 'myFont3', sans-serif; /* Fallback font added */
     transition: opacity 1s ease-in-out;
 }
 
-@media (max-width: 465px) {
+@media (max-width: 660px) {
+    #hyperChillTitle {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 550px) {
+    #hyperChillTitle {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 504px) {
     #hyperChillTitle {
         display: none;
     }
@@ -854,7 +866,7 @@ button:hover {
 }
 
 .hyperChillTitleAnimation {
-    animation: hyperChillTitleAnimation 2s;
+    animation: hyperChillTitleAnimation 1s;
 }
 
 .threeWayToggleAnimation {
@@ -1140,9 +1152,9 @@ header {
     z-index: 25;
 }
 
-.popup {
+#deleteAccountPopup {
     display: none;
-    background: white;
+    background: rgb(216, 216, 216);
     padding-left: 20px;
     padding-right: 20px;
     border-radius: 25px;
@@ -1151,9 +1163,24 @@ header {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-#deleteAccountPopupBtnContainer > button {
-    color: black;
-    border-color: black;
+/* Applies To: deleteAccountPopupYesBtn, deleteAccountPopupNoBtn*/
+#deleteAccountPopupBtnContainer > button, #accountPopupButtonsContainer > button {
+    color: white;
+    background-color: gray;
+    border: none;
+}
+
+#deleteAccountPopupYesBtn, #goBackBtn {
+    margin-right: 5px;
+}
+
+#deleteAccountPopupNoBtn, #logoutBtn2 {
+    margin-left: 5px;
+}
+
+#goBackBtn:hover, #logoutBtn2:hover {
+    background-color: black;
+    color: white;
 }
 
 #deleteAccountPopupBtnContainer {
@@ -1167,10 +1194,62 @@ header {
 
 #deleteAccountPopupYesBtn:hover {
     background-color: red;
+    border: none;
+    color: white;
 }
 
 #deleteAccountPopupNoBtn:hover {
     background-color: #53e658;
+    border: none;
+    color: white;
+}
+
+#accountPopup {
+    display: none;
+    background: rgb(216, 216, 216);
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 25px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    height: 250px;
+
+    border: 1px solid black;
+}
+
+#accountIcon2 {
+    transform: scale(0.4);
+}
+
+#questionPopupUserEmailContainer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    /* border: 2px solid red; */
+}
+
+#welcomeText {
+    font-family: myFont2;
+}
+
+#questionPopupUserEmail {
+    /* font-family: myFont3; */
+    font-family: myFontBlog;
+    font-size: 24px;
+    font-weight: 500px;
+    padding-bottom: 10px;
+    margin-right: 20px;
+
+    /* border: 1px solid green; */
+}
+
+#accountPopupButtonsContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 102px;
+
+    /* border: 1px solid purple; */
 }
 
 @media (max-width: 1000px) {

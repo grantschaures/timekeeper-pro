@@ -87,10 +87,10 @@ const CLIENT_ID = '234799271389-bk46do1l3pnvci922g3dmmf5cc8cfpfb.apps.googleuser
 const client = new OAuth2Client(CLIENT_ID);
 
 router.post("/verifyIdToken", async function(req, res) {
-    try {
-        const session = await mongoose.startSession();
-        session.startTransaction();
+    const session = await mongoose.startSession();
+    session.startTransaction();
 
+    try {
         console.log("/verifyIdToken endpoint has been reached")
         const token = req.body.idToken;
         const ticket = await client.verifyIdToken({
@@ -106,6 +106,7 @@ router.post("/verifyIdToken", async function(req, res) {
         if (user) {
             user.googleAccountLinked = true;
             user.logins++;
+            await user.save({ session });
         } else {
             // If no user exists, create a new one
             user = new User({
@@ -139,8 +140,17 @@ router.post("/verifyIdToken", async function(req, res) {
         beginSession(user, res);
 
     } catch (error) {
+        // Abort the transaction in case of an error
+        await session.abortTransaction();
+        session.endSession();
+
         res.status(400).json({ error: 'Invalid ID token' });
         console.error('Error during ID token verification:', error);
+    } finally {
+        // Ensure session is ended
+        if (session.inTransaction()) {
+            await session.endSession();
+        }
     }
 });
 
