@@ -1499,9 +1499,7 @@ function handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInpu
         addNoteTaskContainer.click();
         taskCheckbox.checked = true;
         event.preventDefault();
-    }
-    
-    else if ((event.key === 'Escape') && (notesFlags.notesShowing)) {
+    } else if ((event.key === 'Escape') && (notesFlags.notesShowing)) {
         if (document.activeElement === noteTaskInputText) {
             noteInputCancelBtn.click();
         } else {
@@ -1515,12 +1513,11 @@ function delay(milliseconds) {
 }
 
 function canOpenNotes(blogContainer, aboutContainer, settingsContainer, main_elements) {
-    let containerArr = [blogContainer, aboutContainer, settingsContainer];
 
     if ((blogContainer.style.display === "") && (aboutContainer.style.display === "") && (settingsContainer.style.display === "")) {
         return true; //if very first action is hitting 'n'
     } else {
-        return ((containerArr.every(container => container.style.display === "none") && (main_elements.style.display !== "none")));
+        return ((settingsContainer.style.display === "none" || settingsContainer.style.display === "") && (main_elements.style.display !== "none"));
     }
 
 }

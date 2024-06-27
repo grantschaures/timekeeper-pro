@@ -248,7 +248,7 @@ body[data-dashboard-mode=home] .dash-mode::after {
     translate: calc(var(--circ-size)/4*3.675)
 }
 
-body[data-dashboard-mode=blog] .dash-mode::after {
+body[data-dashboard-mode=space] .dash-mode::after {
     translate: calc(var(--circ-size)/2*3.675)
 }
 
@@ -281,7 +281,7 @@ body[data-dashboard-mode=home] .dash-mode .caption [data-mode=home] {
     display: block
 }
 
-body[data-dashboard-mode=blog] .dash-mode .caption [data-mode=blog] {
+body[data-dashboard-mode=space] .dash-mode .caption [data-mode=space] {
     display: block
 }
 
@@ -826,6 +826,7 @@ button:hover {
     display: block;
     opacity: 0;
     font-family: 'myFont3', sans-serif; /* Fallback font added */
+    transform: scaleX(1);
     transition: opacity 1s ease-in-out;
 }
 
@@ -847,13 +848,30 @@ button:hover {
     }
 }
 
-@keyframes hyperChillTitleAnimation {
+@keyframes hyperChillTitleAnimationTranslate {
     0% {
         transform: translateY(-10px);
     }
     100% {
         transform: translateY(0px);
     }
+}
+
+@keyframes hyperChillTitleAnimationScale {
+    0% {
+        transform: scaleX(1);
+    }
+    100% {
+        transform: scaleX(1.1);
+    }
+}
+
+.hyperChillTitleAnimationTranslate {
+    animation: hyperChillTitleAnimationTranslate 1s forwards;
+}
+
+.hyperChillTitleAnimationScale {
+    animation: hyperChillTitleAnimationScale 2s 1s forwards;
 }
 
 @keyframes threeWayToggleAnimation {
@@ -865,9 +883,6 @@ button:hover {
     }
 }
 
-.hyperChillTitleAnimation {
-    animation: hyperChillTitleAnimation 1s;
-}
 
 .threeWayToggleAnimation {
     animation: threeWayToggleAnimation 1s;

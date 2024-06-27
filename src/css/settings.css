@@ -24,7 +24,7 @@
     width: 1000px;
     height: 100%; /* Cover the full height */
     
-    display: none; /* eventually make this none by default */
+    display: none;
 
     transition: background-color 0.6s ease-in-out;
 

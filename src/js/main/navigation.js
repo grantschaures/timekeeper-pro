@@ -1,4 +1,4 @@
-import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, about_container, blog_container, settings_container, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, blogIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn } from '../modules/dom-elements.js';
+import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn } from '../modules/dom-elements.js';
 
 import { blogIdList, flags, counters, state } from '../modules/navigation-objects.js';
 
@@ -26,100 +26,84 @@ document.addEventListener("DOMContentLoaded", function() {
     // event listeners
     menuBtn.addEventListener("click", function() {
         if (flags.popupWindowShowing) {
-            flags.popupWindowShowing = false;
-            popupMenu.style.opacity = '0';
-            setTimeout(() => {
-                popupMenu.style.display = "none"
-            }, 50)
+            closeMenu(flags, popupMenu);
         } else {
-            flags.popupWindowShowing = true;
-            popupMenu.style.display = "flex";
-            setTimeout(() => {
-                popupMenu.classList.add('menuLanding');
-                popupMenu.style.opacity = '1';
-            }, 100);
+            openMenu(flags, popupMenu);
         }
     })
     
     questionIcon.addEventListener("click", function() {
         if (flags.popupQuestionWindowShowing) {
-            flags.popupQuestionWindowShowing = false;
-            popupQuestionMenu.style.opacity = '0';
-            setTimeout(() => {
-                popupQuestionMenu.style.display = "none"
-            }, 50)
+            closeQuestionMenu(flags, popupQuestionMenu);
         } else {
-            flags.popupQuestionWindowShowing = true;
-            popupQuestionMenu.style.display = "flex";
-            setTimeout(() => {
-                popupQuestionMenu.classList.add('questionMenuLanding');
-                popupQuestionMenu.style.opacity = '1';
-            }, 100);
+            openQuestionMenu(flags, popupQuestionMenu);
         }
     })
 
     blogMenuContainer.addEventListener("click", function(event) {
-        main_elements.style.display = "none";
-        document.body.setAttribute('data-dashboard-mode', 'blog');
-        state.lastSelectedMode = 'blog';
 
-        //Hide blogs
-        if (flags.blogShowing == true) {
+        // HIDING ELEMENTS
+        main_elements.style.display = "none"; // hide main elements
+        aboutContainer.style.display = "none"; // hide main blog container
+        closeMenu(flags, popupMenu); // hide main menu
+
+        if (flags.blogShowing) { // hide blog content
             blog_post_container.style.display = 'none';
-    
-            //ensure that any visible blog becomes hidden when clicking out
             hideBlog(blogs);
         }
     
-        //show blog popup window
-        blog_container.style.display = "flex";
+        // SHOWING ELEMENTS
+        blogContainer.style.display = "flex"; // show main blog container
 
-        body.style.overflowY = 'hidden';
-
-        //Triggers reset animation once you enter for first time
-        blog_exit.classList.add('resetRotation');
+        // OTHER CHANGES
+        body.style.overflowY = 'hidden'; // no scroll
+        blog_exit.classList.add('resetRotation'); // triggers reset animation
+        setDashboardMode("home", "none");
     });
 
     about_menu_container.addEventListener("click", function() {
-        //Hide main elements
-        main_elements.style.display = "none";
-    
-        //Hide blogs
-        if (flags.blogShowing == true) {
+
+        // HIDING ELEMENTS
+        main_elements.style.display = "none"; // hide main elements
+        blogContainer.style.display = "none"; // hide main blog container
+        closeMenu(flags, popupMenu); // hide main menu
+
+        if (flags.blogShowing == true) { // hide blog content
             blog_post_container.style.display = 'none';
-    
-            //ensure that any visible blog becomes hidden when clicking out
             hideBlog(blogs);
         }
-    
-        //show blog popup window
-        about_container.style.display = "flex";
 
-        body.style.overflowY = 'hidden';
+        // SHOWING ELEMENTS
+        aboutContainer.style.display = "flex"; // show about container
 
-        //Triggers reset animation once you enter for first time
-        about_exit.classList.add('resetRotation');
+        // OTHER CHANGES
+        body.style.overflowY = 'hidden'; // no scroll
+        about_exit.classList.add('resetRotation'); // triggers reset animation
+        setDashboardMode("home", "none");
     });
 
     settings_menu_container.addEventListener("click", function() {
-        // We don't necessarily need to hide the main elements
-        let viewportWidth = window.innerWidth || document.documentElement.clientWidth;
 
+        // HIDING ELEMENTS
+        blogContainer.style.display = "none"; // hide main blog container
+        aboutContainer.style.display = "none"; // hide main blog container
+        closeMenu(flags, popupMenu); // hide main menu
+
+        // SHOWING ELEMENTS
+        settingsContainer.style.display = "block";
+
+        // OTHER CHANGES
+        let viewportWidth = window.innerWidth || document.documentElement.clientWidth;
         if ((counters.settingsBtnClicked === 0) && (viewportWidth > 650)) {
             pomodoroBtnContainer.click();
         }
-        counters.settingsBtnClicked++;
 
-        settings_container.style.display = "block"; //EDIT: changed from flex to block
-        
-        body.style.overflowY = 'hidden';
-    
-        //Triggers reset animation once you enter for first time
-        settings_exit.classList.add('resetRotation');
+        counters.settingsBtnClicked++;
+        body.style.overflowY = 'hidden'; // no scroll    
+        settings_exit.classList.add('resetRotation'); // reset animation
     });
 
     // Question Menu
-
     privacyPolicyContainer.addEventListener("click", function() {
         const url = window.location.origin + '/privacy-policy';
 
@@ -141,8 +125,6 @@ document.addEventListener("DOMContentLoaded", function() {
             flags.popupQuestionWindowShowing = false;
             popupQuestionMenu.style.opacity = '0';
             popupQuestionMenu.style.display = "none"
-
-            // accountPopup.style.display = "none";
         }
     });
 
@@ -239,7 +221,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
 
             //show blog popup window
-            blog_container.style.display = "flex";
+            blogContainer.style.display = "flex";
 
             flags.blogShowing = false;
         })
@@ -250,7 +232,7 @@ document.addEventListener("DOMContentLoaded", function() {
     blog_cells.forEach(function(blog_cell) {
         blog_cell.addEventListener('click', function() {
             blog_id = blog_cell.id;
-            showBlog(blog_id, blog_container, blog_post_container, blogIdList, flags);
+            showBlog(blog_id, blogContainer, blog_post_container, blogIdList, flags);
 
             blog_post_exit.classList.add('resetRotation');
             blog_post_back.classList.add('resetBounce');
@@ -261,53 +243,70 @@ document.addEventListener("DOMContentLoaded", function() {
 
         isClickNotOnMenuElements(event, menuBtn, flags, popupMenu);
         isClickNotOnQuestionMenuElements(event, questionIcon, flags, popupQuestionMenu);
-        isClickNotOnAboutElements(event, about_menu_container, about_container, menuBtn, about_exit, reportIcon, reportPath);
-        isClickNotOnBlogElements(event, blogIcon, blogMenuContainer, blog_container, blog_post_container, menuBtn, blog_exit, reportIcon, reportPath);
-        isClickNotOnSettingsElements(event, settings_container, settings_exit, body, state, about_container);
-
-        const excludeTargets = [blogBtn, blog_icon, blogMenuContainer, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container];
-        const containers = [about_container, blog_container, menuBtn, blog_post_container, settings_container];
-        const exitTargets = [about_exit, blog_exit, blog_post_exit, settings_exit];
-
-        dealWithClick(excludeTargets, containers, exitTargets, event, reportIcon, homeIcon, main_elements, state, blogIcon, blogMenuContainer, blog_container, flags, blog_post_container, settings_exit, about_exit, body);
+        isClickNotOnAboutElements(event, about_menu_container, aboutContainer, menuBtn, about_exit, reportIcon, reportPath);
+        isClickNotOnBlogElements(event, blogMenuContainer, blog_post_container, menuBtn, blog_exit);
+        isClickNotOnSettingsElements(event, settingsContainer, settings_exit, body);
+    
+        const excludeTargets = [blogBtn, blog_icon, blogMenuContainer, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, aboutIconNotes, popupOverlay]; // all stuff in the main menu and question menu + others
+        const containers = [aboutContainer, blogContainer, menuBtn, questionIcon, blog_post_container, settingsContainer, popupQuestionMenu, deleteAccountPopup, accountPopup, loginQuestionMenuContainer];
+        const exitTargets = [about_exit, blog_exit, blog_post_exit];
+        const exitTargetsWithSettings = [about_exit, blog_exit, blog_post_exit, settings_exit];
+    
+        dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithSettings, event, reportIcon, homeIcon, state, spaceIcon, flags, blog_post_container);
     })
+
+    document.addEventListener('keydown', (event) => handleLeftRightArrowKeys(event));
+
 });
 
-function dealWithClick(excludeTargets, containers, exitTargets, event, reportIcon, homeIcon, main_elements, state, blogIcon, blogMenuContainer, blog_container, flags, blog_post_container, settings_exit, about_exit, body) {
+function handleLeftRightArrowKeys(event) {
+    if (event.key === 'ArrowLeft') {
+        if (state.lastSelectedMode === 'space') {
+            setDashboardMode("home", "block");
+
+        } else if (state.lastSelectedMode === 'home') {
+            setDashboardMode("report", "none");
+
+        }
+    } else if (event.key === 'ArrowRight') {
+        if (state.lastSelectedMode === 'report') {
+            setDashboardMode("home", "block");
+
+        } else if (state.lastSelectedMode === 'home') {
+            setDashboardMode("space", "none");
+
+        }
+    }
+}
+
+function setDashboardMode(mode, mainElementsDisplaySettings) {
+    document.body.setAttribute('data-dashboard-mode', mode);
+    state.lastSelectedMode = mode;
+    main_elements.style.display = mainElementsDisplaySettings;
+    body.style.overflowY = 'scroll';
+}
+
+function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithSettings, event, reportIcon, homeIcon, state, spaceIcon, flags, blog_post_container) {
     // if the click is not any of the main menu windows or is an exit btn
-    if ((!excludeTargets.includes(event.target) && !containers.some(container => container.contains(event.target))) || exitTargets.includes(event.target)) {
+    if ((!excludeTargets.includes(event.target) && !containers.some(container => container.contains(event.target))) || exitTargetsWithSettings.includes(event.target)) {
         // if user is exiting about or settings windows, make the setting the last one the user was on
         if (reportIcon.contains(event.target)) {
-            alert("This feature is currently under development. Thank you for your patience.");
-            // document.body.setAttribute('data-dashboard-mode', 'report');
-            // state.lastSelectedMode = 'report';
-            // main_elements.style.display = "none";
+            setDashboardMode("report", "none");
+            
         } else if (homeIcon.contains(event.target)) {
-            document.body.setAttribute('data-dashboard-mode', 'home');
-            main_elements.style.display = "block";
-            state.lastSelectedMode = "home"
-            body.style.overflowY = 'scroll';
+            setDashboardMode("home", "block");
+            
+        } else if (spaceIcon.contains(event.target)) {
+            setDashboardMode("space", "none");
 
-        } else if (blogIcon.contains(event.target)) {
-            blogMenuContainer.click();
-
-        } else if ((event.target === settings_exit) || (event.target === about_exit)) {
-            if (state.lastSelectedMode === 'report') {
-                document.body.setAttribute('data-dashboard-mode', 'report');
-            } else if (state.lastSelectedMode === 'home') {
-                document.body.setAttribute('data-dashboard-mode', 'home');
-                main_elements.style.display = "block";
-            } else if (state.lastSelectedMode === 'blog') {
-                document.body.setAttribute('data-dashboard-mode', 'blog');
-                blog_container.style.display = "flex";
-            }
-        } else if ((event.target !== aboutIconNotes) && (!deleteAccountPopup.contains(event.target)) && (!accountPopup.contains(event.target)) && (!loginQuestionMenuContainer.contains(event.target)) && (event.target !== popupOverlay)) {
-            document.body.setAttribute('data-dashboard-mode', 'home');
-            main_elements.style.display = "block";
-            state.lastSelectedMode = 'home';
-            body.style.overflowY = 'scroll';
         }
         
+        // when hitting a blog or about exit, or a settings exit if in home mode
+        if ((exitTargets.includes(event.target)) || (state.lastSelectedMode === 'home')) {
+            setDashboardMode("home", "block");
+        }
+        
+        // hiding blog content
         if (flags.blogShowing == true) {
             blog_post_container.style.display = 'none';
             hideBlog(blogs);
@@ -315,9 +314,63 @@ function dealWithClick(excludeTargets, containers, exitTargets, event, reportIco
     }
 }
 
-function showBlog(blog_id, blog_container, blog_post_container, blogIdList, flags) {
+function isClickNotOnAboutElements(event, about_menu_container, aboutContainer, menuBtn, about_exit, reportIcon, reportPath) {
+    let aboutElementsArr = [about_menu_container, aboutContainer, menuBtn, reportIcon, reportPath];
+
+    // Check if event.target is not contained within any of the aboutElementsArr
+    // or if the event.target is the about_exit
+    if (!aboutElementsArr.some(element => element.contains(event.target)) || event.target === about_exit) {
+        aboutContainer.style.display = "none";
+    }
+}
+
+function isClickNotOnMenuElements(event, menuBtn, flags, popupMenu) {
+    // if click is not on menu, hide menu
+    if (!menuBtn.contains(event.target)) {
+        closeMenu(flags, popupMenu);
+    }
+}
+
+function isClickNotOnQuestionMenuElements(event, questionIcon, flags, popupQuestionMenu) {
+    // if click is not on question menu, hide menu
+    if (!questionIcon.contains(event.target)) {
+        closeQuestionMenu(flags, popupQuestionMenu);
+    }
+}
+
+function isClickNotOnBlogElements(event, blogMenuContainer, blog_post_container, menuBtn, blog_exit) {
+    let blogElementsArr = [blogMenuContainer, blogContainer, blog_post_container, menuBtn];
+
+    if (!blogElementsArr.some(element => element.contains(event.target)) || event.target === blog_exit) {
+        blogContainer.style.display = "none";
+    }
+}
+
+function isClickNotOnSettingsElements(event, settingsContainer, settings_exit, body) {
+
+    if (event.target === settings_exit) {
+        settingsContainer.style.display = "none";
+        body.style.overflowY = 'scroll';
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function showBlog(blog_id, blogContainer, blog_post_container, blogIdList, flags) {
     //Hide the blog container
-    blog_container.style.display = "none";
+    blogContainer.style.display = "none";
 
     //Show the new actual blog post window (white, now)
     blog_post_container.style.display = "block";
@@ -335,57 +388,43 @@ function hideBlog(blogs) {
     })
 };
 
-function isClickNotOnAboutElements(event, about_menu_container, about_container, menuBtn, about_exit, reportIcon, reportPath) {
-    let aboutElementsArr = [about_menu_container, about_container, menuBtn, reportIcon, reportPath];
-
-    // Check if event.target is not contained within any of the aboutElementsArr
-    // or if the event.target is the about_exit
-    if (!aboutElementsArr.some(element => element.contains(event.target)) || event.target === about_exit) {
-        about_container.style.display = "none";
-    }
+// main menu
+function closeMenu(flags, popupMenu) {
+    flags.popupWindowShowing = false;
+    popupMenu.style.opacity = '0';
+    setTimeout(() => {
+        popupMenu.style.display = "none"
+    }, 50)
 }
 
-function isClickNotOnMenuElements(event, menuBtn, flags, popupMenu) {
-    // if click is not on menu, hide menu
-    if (!menuBtn.contains(event.target)) {
-        flags.popupWindowShowing = false;
-        popupMenu.style.opacity = '0';
-        setTimeout(() => {
-            popupMenu.style.display = "none"
-        }, 50)
-    }
+function openMenu(flags, popupMenu) {
+    flags.popupWindowShowing = true;
+    popupMenu.style.display = "flex";
+    setTimeout(() => {
+        popupMenu.classList.add('menuLanding');
+        popupMenu.style.opacity = '1';
+    }, 100);
 }
 
-function isClickNotOnQuestionMenuElements(event, questionIcon, flags, popupQuestionMenu) {
-    // if click is not on menu, hide menu
-    if (!questionIcon.contains(event.target)) {
-        flags.popupQuestionWindowShowing = false;
-        popupQuestionMenu.style.opacity = '0';
-        setTimeout(() => {
-            popupQuestionMenu.style.display = "none"
-        }, 50)
-    }
+// question window
+function closeQuestionMenu(flags, popupQuestionMenu) {
+    flags.popupQuestionWindowShowing = false;
+    popupQuestionMenu.style.opacity = '0';
+    setTimeout(() => {
+        popupQuestionMenu.style.display = "none"
+    }, 50)
 }
 
-function isClickNotOnBlogElements(event, blogIcon, blogMenuContainer, blog_container, blog_post_container, menuBtn, blog_exit, reportIcon, reportPath) {
-    let blogElementsArr = [blogIcon, blogMenuContainer, blog_container, blog_post_container, menuBtn, blog_exit, reportIcon, reportPath];
-
-    if (!blogElementsArr.some(element => element.contains(event.target)) || event.target === blog_exit) {
-        blog_container.style.display = "none";
-    }
+function openQuestionMenu(flags, popupQuestionMenu) {
+    flags.popupQuestionWindowShowing = true;
+    popupQuestionMenu.style.display = "flex";
+    setTimeout(() => {
+        popupQuestionMenu.classList.add('questionMenuLanding');
+        popupQuestionMenu.style.opacity = '1';
+    }, 100);
 }
 
-function isClickNotOnSettingsElements(event, settings_container, settings_exit, body, state, about_container) {
-
-    if (event.target === settings_exit) {
-        settings_container.style.display = "none";
-
-        if ((state.lastSelectedMode === "home") && (about_container.style.display !== "flex")) {
-            body.style.overflowY = 'scroll';
-        }
-    }
-}
-
+// account popup (btn in question window)
 function showAccountPopup(popupOverlay, accountPopup) {
     flags.accountWindowShowing = true;
     popupOverlay.style.display = "flex"; 
@@ -400,7 +439,6 @@ function hideAccountPopup(popupOverlay, accountPopup) {
 }
 
 // delete account functions
-
 function showDeleteAccountPopup(popupOverlay, deleteAccountPopup) {
     flags.deleteAccountWindowShowing = true;
     popupOverlay.style.display = "flex"; 

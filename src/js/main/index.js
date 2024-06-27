@@ -3,12 +3,12 @@ import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selected
 import { chime, bell, clock_tick, soundMap } from '../modules/sound-map.js';
 
 import {
-    start_stop_btn, submit_change_btn, end_session_btn, report_btn, total_time_display, productivity_chill_mode, progressBarContainer, progressBar, progressContainer, display, hyperChillTitle, subMainContainer, interruptionsContainer, interruptionsSubContainer, decBtn, incBtn, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, completedPomodoros_label, completedPomodoros_min, targetHoursContainer, timekeepingContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, targetTimeReachedToggle, breakSuggestionToggle, suggestionMinutesInput, flowmodoroNotificationToggle,flowmodoroNotifications, flowmodoroNotificationInfoWindow, flowTimeBreakNotification, flowTimeBreakNotificationInfoWindow, pomodoroNotifications, pomodoroNotificationInfoWindow, notesAutoSwitch, notesAutoSwitchInfoWindow, pomodoroNotificationToggle, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, defaultThemeContainer, defaultTheme, darkThemeContainer, darkGrayTheme, targetTimeReachedAlert, transitionClockSoundToggle, flowTimeAnimationToggle, chillTimeAnimationToggle, pomodoroVolumeContainer, pomodoroVolumeBar, pomodoroVolumeThumb, flowmodoroVolumeContainer, flowmodoroVolumeBar, flowmodoroVolumeThumb, generalVolumeContainer, generalVolumeBar, generalVolumeThumb, pomodoroVolumeContainer2, pomodoroVolumeBar2, pomodoroVolumeThumb2, flowmodoroVolumeContainer2, flowmodoroVolumeBar2, flowmodoroVolumeThumb2, generalVolumeContainer2, generalVolumeBar2, generalVolumeThumb2, flowmodoroRadios, flowmodoroInputs, generalRadios, pomodoroInputs, pomodoroRadios,flowtimeBackgroundCells, chilltimeBackgroundCells, settings_menu_container, registerHereText, backgroundVideoSource, backgroundVideo, flowAnimation, chillAnimation, hyperChillLogoImage,createLabelInput, updateLabelInput, emojiContainer, loginEmailInput, loginPasswordInput, forgotPasswordContainer, loginBtnContainer, loginBtn, logoutBtn, deleteAccountBtn, forgotPasswordSettings, propagateUnfinishedTasks, propagateUnfinishedTasksInfoWindow, flowtimeBackgroundWorldCells, chilltimeBackgroundWorldCells, deleteAccountPopupYesBtn, deleteAccountPopupNoBtn, deleteAccountPopup, popupOverlay, questionIcon,
-    logoutBtnContainer2,
-    logoutBtn2,
+    start_stop_btn, submit_change_btn, end_session_btn, report_btn, total_time_display, productivity_chill_mode, progressBarContainer, progressBar, progressContainer, display, hyperChillTitle, subMainContainer, interruptionsContainer, interruptionsSubContainer, decBtn, incBtn, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, completedPomodoros_label, completedPomodoros_min, targetHoursContainer, timekeepingContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, targetTimeReachedToggle, breakSuggestionToggle, suggestionMinutesInput, flowmodoroNotificationToggle,flowmodoroNotifications, flowmodoroNotificationInfoWindow, flowTimeBreakNotification, flowTimeBreakNotificationInfoWindow, pomodoroNotifications, pomodoroNotificationInfoWindow, notesAutoSwitch, notesAutoSwitchInfoWindow, pomodoroNotificationToggle, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, defaultThemeContainer, defaultTheme, darkThemeContainer, darkGrayTheme, targetTimeReachedAlert, transitionClockSoundToggle, flowTimeAnimationToggle, chillTimeAnimationToggle, pomodoroVolumeContainer, pomodoroVolumeBar, pomodoroVolumeThumb, flowmodoroVolumeContainer, flowmodoroVolumeBar, flowmodoroVolumeThumb, generalVolumeContainer, generalVolumeBar, generalVolumeThumb, pomodoroVolumeContainer2, pomodoroVolumeBar2, pomodoroVolumeThumb2, flowmodoroVolumeContainer2, flowmodoroVolumeBar2, flowmodoroVolumeThumb2, generalVolumeContainer2, generalVolumeBar2, generalVolumeThumb2, flowmodoroRadios, flowmodoroInputs, generalRadios, pomodoroInputs, pomodoroRadios,flowtimeBackgroundCells, chilltimeBackgroundCells, settings_menu_container, registerHereText, backgroundVideoSource, backgroundVideo, flowAnimation, chillAnimation, hyperChillLogoImage,createLabelInput, updateLabelInput, emojiContainer, loginEmailInput, loginPasswordInput, forgotPasswordContainer, loginBtnContainer, loginBtn, logoutBtn, deleteAccountBtn, forgotPasswordSettings, propagateUnfinishedTasks, propagateUnfinishedTasksInfoWindow, flowtimeBackgroundWorldCells, chilltimeBackgroundWorldCells, deleteAccountPopupYesBtn, deleteAccountPopupNoBtn, deleteAccountPopup, popupOverlay, questionIcon, logoutBtn2,
 } from '../modules/dom-elements.js';
 
 import { sessionState } from '../modules/state-objects.js';
+
+import { state } from '../modules/navigation-objects.js';
 
 import { initializeGUI } from '../utility/initialize_gui.js'; // minified
 import { updateUserSettings } from '../state/update-settings.js'; // minified
@@ -24,7 +24,6 @@ const totalDisplayWorker = new Worker('/js/displayWorkers/totalDisplayWorker.js'
 const observer = new MutationObserver(setTabTitleFromDisplay);
 
 document.addEventListener("DOMContentLoaded", function() {
-
     // Favicons
     const greenFavicon = "/images/logo/HyperChillLogoGreen.png";
     const blueFavicon = "/images/logo/HyperChillLogoBlue.png";
@@ -69,8 +68,12 @@ document.addEventListener("DOMContentLoaded", function() {
     // Initial Animations
     setTimeout(() => {
         hyperChillTitle.style.opacity = '1'; // increases opacity
-        hyperChillTitle.classList.add('hyperChillTitleAnimation'); // moves it down
+        hyperChillTitle.classList.add('hyperChillTitleAnimationTranslate'); // moves it down
     }, 0)
+
+    setTimeout(() => {
+        hyperChillTitle.classList.add('hyperChillTitleAnimationScale'); // makes it W I D E
+    }, 1000)
     
     const threeWayToggle = document.getElementById('threeWayToggle');
 
@@ -79,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }, 1000)
     
     setTimeout(() => {
-        hyperChillTitle.classList.remove('hyperChillTitleAnimation');
+        hyperChillTitle.classList.remove('hyperChillTitleAnimationTranslate');
         hyperChillTitle.style.opacity = '0';
         setTimeout(() => {
             hyperChillTitle.style.display = 'none';
@@ -2315,6 +2318,10 @@ function handleEnter(event, start_stop_btn, submit_change_btn, createLabelInput,
             flags.autoSwitchedModes = false;
             start_stop_btn.click();
         }
+    } else if (event.key === 'ArrowLeft') {
+        // DO NOTHING - code for this event is implemented in notes.js instead
+    } else if (event.key === 'ArrowRight') {
+        // DO NOTHING - code for this event is implemented in notes.js instead
     }
 };
 

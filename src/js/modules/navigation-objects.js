@@ -15,5 +15,5 @@ export const counters = {
 }
 
 export const state = {
-    lastSelectedMode: 'home'
+    lastSelectedMode: 'home' // can be report, home, space
 }
