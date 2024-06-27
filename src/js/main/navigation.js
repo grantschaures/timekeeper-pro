@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
     setTimeout(() => {
         menuBtn.style.opacity = '1';
 
-        if (!(isMobile || isIpad)) {
+        if (!(isMobile)) {
             questionIcon.style.opacity = '1';
         }
     }, 1000)
