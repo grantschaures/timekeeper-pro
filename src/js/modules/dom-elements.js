@@ -200,6 +200,8 @@ export const logoutBtnContainer2 = document.getElementById("logoutBtnContainer2"
 export const welcomeText = document.getElementById("welcomeText");
 export const goBackBtn = document.getElementById("goBackBtn");
 export const logoutBtn2 = document.getElementById("logoutBtn2");
+export const reportContainer = document.getElementById("reportContainer");
+export const spaceContainer = document.getElementById("spaceContainer");
 
 export let hoverTimer;
 export var backgroundVideoSource = document.getElementById('background-video-source');

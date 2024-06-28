@@ -12,7 +12,8 @@ const cssFiles = [
     path.join(__dirname, 'src', 'css', 'notes.css'),
     path.join(__dirname, 'src', 'css', 'privacy-and-terms.css'),
     path.join(__dirname, 'src', 'css', 'settings.css'),
-    path.join(__dirname, 'src', 'css', 'styles.css')
+    path.join(__dirname, 'src', 'css', 'styles.css'),
+    path.join(__dirname, 'src', 'css', 'report.css')
 ];
 
 cssFiles.forEach((file) => {

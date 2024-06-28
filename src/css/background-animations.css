@@ -4,7 +4,7 @@
     align-items: center;
     /* border: 4px solid orange; */
     width: 100%;
-    height: 1060px;
+    height: 100%;
     /* z-index: -1; */
     overflow-x: hidden;
 }
@@ -98,7 +98,7 @@
     display: none;
     justify-content: center;
     align-items: center;
-    height: 1020px;
+    height: 580px;
     width: 100%;
     /* overflow: hidden; */
     opacity: 0;
@@ -110,24 +110,24 @@
 }
 
 #circleOuter {
-    height: 1000px;
-    width: 1000px;
+    height: 800px;
+    width: 800px;
     position: absolute;
     /* opacity: 0.05; */
     animation: circleOuterAnimation 6s linear infinite;
 }
 
 #circleMiddle {
-    height: 800px;
-    width: 800px;
+    height: 600px;
+    width: 600px;
     position: absolute;
     /* opacity: 0.05; */
     animation: circleMiddleAnimation 6s linear infinite;
 }
 
 #circleInner {
-    height: 600px;
-    width: 600px;
+    height: 400px;
+    width: 400px;
     position: absolute;
     /* opacity: 0.05; */
     animation: circleInnerAnimation 6s linear infinite;

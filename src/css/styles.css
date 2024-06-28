@@ -28,7 +28,7 @@ body {
     padding: 0;
     min-height: 100%;
     position: relative;
-    /* border: 2px solid white; */
+    box-sizing: border-box;
 }
 
 /* Note: background image transition won't work on Firefox. Could potentially fix in the future. */
@@ -44,14 +44,13 @@ html {
     /* background-image: url("/images/iStock/iStock-1394258314-mid.jpg"); */
     /* background-image: url("/images/iStock/iStock-1306875579-mid.jpg"); */
     background-image: url("/images/iStock/iStock-1253862403-mid-edit.jpg");
-
+    
     transition: background-image 1s ease-in-out;
     
     /* background-image: linear-gradient(0deg, #3b8fe3, #411da3, #b004c7); */
     /* animation: animateBackground 15s ease infinite; */
     /* background-size: 400% 400%; */
-    
-    /* overflow-x: hidden; */
+    /* border: 2px solid white; */
 }
 
 /* .fade-background {
@@ -313,13 +312,14 @@ body[data-dashboard-mode=space] .dash-mode .caption [data-mode=space] {
     left: 0;
     right: 0;
 
+    z-index: 15;
+
     /* border: 3px solid rgb(230, 0, 220); */
     height: auto; /* Adjust height as needed */
     /* margin: 0; */
     box-sizing: border-box; /* Ensure padding and border are included in the element's width and height */
 
     margin: 25px;
-    z-index: 15; 
 }
 
 main {
@@ -345,6 +345,7 @@ main {
     /* Fixed dimensions */
     position: relative;
     width: 100%;
+    height: 100vh;
     /* max-width: 600px; */
     
     /* Centering it horizontally */
@@ -357,7 +358,8 @@ main {
     box-sizing: border-box;
 
     padding: 25px;
-    /* border: 1px solid cyan; */
+
+    /* border: 3px solid cyan; */
 }
 
 @media (max-width: 504px) {

@@ -1,4 +1,4 @@
-import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn } from '../modules/dom-elements.js';
+import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn, spaceContainer } from '../modules/dom-elements.js';
 
 import { blogIdList, flags, counters, state } from '../modules/navigation-objects.js';
 
@@ -59,6 +59,9 @@ document.addEventListener("DOMContentLoaded", function() {
         body.style.overflowY = 'hidden'; // no scroll
         blog_exit.classList.add('resetRotation'); // triggers reset animation
         setDashboardMode("home", "none");
+
+        resetMode("report", reportContainer);
+        resetMode("space", spaceContainer);
     });
 
     about_menu_container.addEventListener("click", function() {
@@ -80,6 +83,9 @@ document.addEventListener("DOMContentLoaded", function() {
         body.style.overflowY = 'hidden'; // no scroll
         about_exit.classList.add('resetRotation'); // triggers reset animation
         setDashboardMode("home", "none");
+
+        resetMode("report", reportContainer);
+        resetMode("space", spaceContainer);
     });
 
     settings_menu_container.addEventListener("click", function() {
@@ -264,17 +270,23 @@ function handleLeftRightArrowKeys(event) {
         if (state.lastSelectedMode === 'space') {
             setDashboardMode("home", "block");
 
+            resetMode("report", reportContainer);
+            resetMode("space", spaceContainer);
+
         } else if (state.lastSelectedMode === 'home') {
             setDashboardMode("report", "none");
-
+            initializeNewMode("report", reportContainer);
         }
     } else if (event.key === 'ArrowRight') {
         if (state.lastSelectedMode === 'report') {
             setDashboardMode("home", "block");
 
+            resetMode("report", reportContainer);
+            resetMode("space", spaceContainer);
+
         } else if (state.lastSelectedMode === 'home') {
             setDashboardMode("space", "none");
-
+            initializeNewMode("space", spaceContainer);
         }
     }
 }
@@ -286,24 +298,51 @@ function setDashboardMode(mode, mainElementsDisplaySettings) {
     body.style.overflowY = 'scroll';
 }
 
+function initializeNewMode(mode, containerType) {
+    if (mode === "report") {
+        containerType.style.display = "flex";
+    } else if (mode === "space") {
+        containerType.style.display = "flex";
+    }
+}
+
+function resetMode(mode, containerType) {
+    if (mode === "report") {
+        containerType.style.display = "none";
+    } else if (mode === "space") {
+        containerType.style.display = "none";
+    }
+}
+
 function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithSettings, event, reportIcon, homeIcon, state, spaceIcon, flags, blog_post_container) {
     // if the click is not any of the main menu windows or is an exit btn
     if ((!excludeTargets.includes(event.target) && !containers.some(container => container.contains(event.target))) || exitTargetsWithSettings.includes(event.target)) {
         // if user is exiting about or settings windows, make the setting the last one the user was on
         if (reportIcon.contains(event.target)) {
             setDashboardMode("report", "none");
+            initializeNewMode("report", reportContainer);
+
+            resetMode("space", spaceContainer);
             
         } else if (homeIcon.contains(event.target)) {
             setDashboardMode("home", "block");
+
+            resetMode("report", reportContainer);
+            resetMode("space", spaceContainer);
             
         } else if (spaceIcon.contains(event.target)) {
             setDashboardMode("space", "none");
+            initializeNewMode("space", spaceContainer);
 
+            resetMode("report", reportContainer);
         }
         
         // when hitting a blog or about exit, or a settings exit if in home mode
         if ((exitTargets.includes(event.target)) || (state.lastSelectedMode === 'home')) {
             setDashboardMode("home", "block");
+
+            resetMode("report", reportContainer);
+            resetMode("space", spaceContainer);
         }
         
         // hiding blog content
