@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function() {
         blogContainer.style.display = "none"; // hide main blog container
         closeMenu(flags, popupMenu); // hide main menu
 
-        if (flags.blogShowing == true) { // hide blog content
+        if (flags.blogShowing) { // hide blog content
             blog_post_container.style.display = 'none';
             hideBlog(blogs);
         }
@@ -269,13 +269,20 @@ function handleLeftRightArrowKeys(event) {
     if (event.key === 'ArrowLeft') {
         if (state.lastSelectedMode === 'space') {
             setDashboardMode("home", "block");
-
             resetMode("report", reportContainer);
             resetMode("space", spaceContainer);
 
         } else if (state.lastSelectedMode === 'home') {
             setDashboardMode("report", "none");
             initializeNewMode("report", reportContainer);
+
+            isClickNotOnAboutElements(event, about_menu_container, aboutContainer, menuBtn, about_exit, reportIcon, reportPath);
+            isClickNotOnBlogElements(event, blogMenuContainer, blog_post_container, menuBtn, blog_exit);
+
+            if (flags.blogShowing) { // hide blog content
+                blog_post_container.style.display = 'none';
+                hideBlog(blogs);
+            }
         }
     } else if (event.key === 'ArrowRight') {
         if (state.lastSelectedMode === 'report') {
@@ -287,6 +294,14 @@ function handleLeftRightArrowKeys(event) {
         } else if (state.lastSelectedMode === 'home') {
             setDashboardMode("space", "none");
             initializeNewMode("space", spaceContainer);
+
+            isClickNotOnAboutElements(event, about_menu_container, aboutContainer, menuBtn, about_exit, reportIcon, reportPath);
+            isClickNotOnBlogElements(event, blogMenuContainer, blog_post_container, menuBtn, blog_exit);
+
+            if (flags.blogShowing) { // hide blog content
+                blog_post_container.style.display = 'none';
+                hideBlog(blogs);
+            }
         }
     }
 }
@@ -354,7 +369,7 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
 }
 
 function isClickNotOnAboutElements(event, about_menu_container, aboutContainer, menuBtn, about_exit, reportIcon, reportPath) {
-    let aboutElementsArr = [about_menu_container, aboutContainer, menuBtn, reportIcon, reportPath];
+    let aboutElementsArr = [about_menu_container, aboutContainer, menuBtn];
 
     // Check if event.target is not contained within any of the aboutElementsArr
     // or if the event.target is the about_exit
@@ -424,7 +439,9 @@ function hideBlog(blogs) {
         if (!document.getElementById(blog.id).classList.contains("hidden")) {
             document.getElementById(blog.id).classList.add("hidden");
         }
-    })
+    });
+    
+    flags.blogShowing = false;
 };
 
 // main menu

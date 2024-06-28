@@ -111,7 +111,7 @@
                             <img id="menuIcon"src="/images/icons/noun-menu-6192580-white.png">
                             <img id="menuIcon-black"src="/images/icons/noun-menu-6192580.png">
                         </button>
-                        <div id="popupMenu">
+                        <div id="popupMenu" data-testid="popupMenu">
                             <div id="blogMenuContainer" data-testid="blogMenuContainer" class="menuContainer"> 
                                 <img id="blogIcon" src="/images/icons/blogIcon1.png" class="menuIcon">
                                 <div id="blogBtn">Blog</div>
@@ -134,8 +134,8 @@
                     </div>
                 </div>
                 <div class="bottom">
-                    <img id="questionIcon" src="/images/icons/questionIcon.png">
-                    <div id="popupQuestionMenu">
+                    <img id="questionIcon" data-testid="questionIcon" src="/images/icons/questionIcon.png">
+                    <div id="popupQuestionMenu" data-testid="popupQuestionMenu">
                         <div id="loginQuestionMenuContainer" class="menuContainer"> 
                             <img id="loginIcon2" src="/images/icons/loginIcon1.png" class="menuIcon">
                             <img id="accountIconFinal" src="/images/icons/accountIconFinal.png" class="menuIcon">
@@ -370,13 +370,13 @@
                 </div>
             </main>
 
-            <div id="reportContainer">
+            <div id="reportContainer" data-testid="reportContainer">
                 <div id="reportSubContainer">
                     REPORT FEATURE COMING SOON
                 </div>
             </div>
 
-            <div id="spaceContainer">
+            <div id="spaceContainer" data-testid="spaceContainer">
                 <div id="spaceSubContainer">
                     SPACE FEATURE COMING SOON
                 </div>
@@ -388,7 +388,7 @@
                 <div id="blogWindow">
                     <h1>Blog</h1>
                     <div id="blog_grid_container">
-                        <div class="blog_cell" id="blog_1">
+                        <div class="blog_cell" id="blog_1" data-testid="blog_1">
                             <div class="blogImage">
                                 <img src="images/blog/pexels-ariel-castillo-3563697.jpg">
                             </div>
@@ -409,7 +409,7 @@
             </div>
             
             <!--ADD NEW BLOG CONTENT HERE-->
-            <div id="blogPostContainer">
+            <div id="blogPostContainer" data-testid="blogPostContainer">
                 <img class="backIcon" id="blogPostBack" src="images/icons/noun-left-arrow-261369.png" draggable="false">
                 <img class="exitIcon" id="blogPostExit" src="images/icons/noun-exit-button-261420.png" draggable="false">
                 <div class="blog hidden" id="blogPost1">
