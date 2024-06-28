@@ -20,6 +20,18 @@ describe('Navigation', () => {
         cy.get('[data-testid="popupQuestionMenu"]').should('not.be.visible');
     })
 
+    it('Basic Testing of Shortcuts Popup', () => {
+        cy.get('[data-testid="questionIcon"]').click();
+        cy.get('[data-testid="shortcutsContainer"]').click();
+        
+        cy.get('[data-testid="popupOverlay"]').should('be.visible');
+        cy.get('[data-testid="shortcutsPopup"]').should('be.visible');
+
+        cy.get('[data-testid="shortcutsExit"]').click();
+        cy.get('[data-testid="popupOverlay"]').should('not.be.visible');
+        cy.get('[data-testid="shortcutsPopup"]').should('not.be.visible');
+    })
+
     it('Basic Testing of Settings', () => {
         cy.get('[data-testid="menuBtn"]').click();
         cy.contains("Settings").click();
