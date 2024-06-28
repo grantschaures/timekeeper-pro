@@ -193,6 +193,8 @@ export const loginQuestionMenuContainer = document.getElementById("loginQuestion
 export const privacyPolicyContainer = document.getElementById("privacyPolicyContainer");
 export const termsAndConditionsContainer = document.getElementById("termsAndConditionsContainer");
 export const shortcutsContainer = document.getElementById("shortcutsContainer");
+export const shortcutsPopup = document.getElementById("shortcutsPopup");
+export const shortcutsExit = document.getElementById("shortcutsExit");
 
 export const accountPopup = document.getElementById("accountPopup");
 export const goBackContainer = document.getElementById("goBackContainer");

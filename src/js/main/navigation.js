@@ -1,4 +1,4 @@
-import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn, spaceContainer } from '../modules/dom-elements.js';
+import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn, spaceContainer, shortcutsContainer, shortcutsPopup, shortcutsExit } from '../modules/dom-elements.js';
 
 import { blogIdList, flags, counters, state } from '../modules/navigation-objects.js';
 
@@ -166,13 +166,23 @@ document.addEventListener("DOMContentLoaded", function() {
     goBackBtn.addEventListener("click", function() {
         hideAccountPopup(popupOverlay, accountPopup);
     })
+
+    shortcutsContainer.addEventListener("click", function() {
+        showShortcutsPopup(popupOverlay, shortcutsPopup);
+    })
     
     popupOverlay.addEventListener("click", function(event) {
         if ((flags.accountWindowShowing) && (!accountPopup.contains(event.target))) {
             goBackBtn.click();
         } else if ((flags.deleteAccountWindowShowing) && (!deleteAccountPopup.contains(event.target))) {
             deleteAccountPopupNoBtn.click();
+        } else if ((flags.shortcutsWindowShowing) && (!shortcutsPopup.contains(event.target))) {
+            hideShortcutsPopup(popupOverlay, shortcutsPopup);
         }
+    })
+
+    shortcutsExit.addEventListener("click", function() {
+        hideShortcutsPopup(popupOverlay, shortcutsPopup);
     })
 
     // delete account stuff
@@ -440,7 +450,7 @@ function hideBlog(blogs) {
             document.getElementById(blog.id).classList.add("hidden");
         }
     });
-    
+
     flags.blogShowing = false;
 };
 
@@ -504,5 +514,20 @@ function showDeleteAccountPopup(popupOverlay, deleteAccountPopup) {
 function hideDeleteAccountPopup(popupOverlay, deleteAccountPopup) {
     flags.deleteAccountWindowShowing = false;
     deleteAccountPopup.style.display = "none";
+    popupOverlay.style.display = "none";
+}
+
+// shortcut functionality
+
+function showShortcutsPopup(popupOverlay, shortcutsPopup) {
+    flags.shortcutsWindowShowing = true;
+    popupOverlay.style.display = "flex"; 
+    shortcutsPopup.style.display = "block";
+    document.body.style.overflowY = 'hidden';
+}
+
+function hideShortcutsPopup(popupOverlay, shortcutsPopup) {
+    flags.shortcutsWindowShowing = false;
+    shortcutsPopup.style.display = "none";
     popupOverlay.style.display = "none";
 }

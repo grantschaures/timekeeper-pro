@@ -1158,6 +1158,7 @@ header {
 
 .overlay {
     display: none;
+    /* display: flex; */
     position: fixed;
     top: 0;
     left: 0;
@@ -1233,6 +1234,95 @@ header {
 
     border: 1px solid black;
 }
+
+#shortcutsPopup {
+    /* display: block; */
+    display: none;
+    background: rgb(50, 50, 50);
+    border-radius: 25px;
+    text-align: center; /* You can remove this if text alignment is not needed */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    height: auto; /* Adjust height based on content */
+    min-width: 320px;
+    width: 100%;
+    max-width: 420px;
+    box-sizing: border-box;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    border: 1px solid rgb(50, 50, 50);
+}
+
+#shortcutsPopupHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+#shortcutsPopupContainer {
+    display: flex;
+    justify-content: left;
+    flex-direction: column;
+
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+#shortcutsHeaderText {
+    position: relative;
+    margin: 0;
+}
+
+#shortcutsExit {
+    position: static;
+    margin: 0;
+}
+
+#shortcutsPopupHeader {
+    display: flex;
+}
+
+.shortcutsContainer {
+    display: flex;
+    justify-content: left;
+    flex-direction: column;
+}
+
+.shortcut {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    /* border: 1px solid green; */
+}
+
+.shortcutDescription {
+    display: flex;
+    font-family: settingsHeaderFont;
+    color: white;
+}
+
+.shortcutKey {
+    display: flex;
+    font-family: settingsHeaderFont;
+    color: white;
+}
+
+#shortcutsHr {
+    border: 1px solid white;
+}
+
+
+
+
+
+
 
 #accountIcon2 {
     transform: scale(0.4);

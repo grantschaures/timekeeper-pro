@@ -7,7 +7,8 @@ export const flags = {
     popupWindowShowing: false, // main menu
     popupQuestionWindowShowing: false,
     accountWindowShowing: false,
-    deleteAccountWindowShowing: false
+    deleteAccountWindowShowing: false,
+    shortcutsWindowShowing: false
 }
 
 export const counters = {
