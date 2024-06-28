@@ -24,6 +24,7 @@
 
     /* background-image: linear-gradient(to bottom, #3b8fe3, #1d60a3, #7f04c7); */
     padding: 10px 10px;
+    z-index: 50;
     border-radius: 15px;
     right: 0;
     bottom: 0;
