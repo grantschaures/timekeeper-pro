@@ -215,3 +215,13 @@
         opacity: 0.05
     }
 }
+
+/* adjusting animation heights for changes in height (e.g. mobile) */
+@media (max-width: 504px) {
+    #flowAnimation {
+        top: 475px;
+    }
+    #chillAnimation {
+        height: 900px;
+    }
+}
