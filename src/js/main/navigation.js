@@ -98,6 +98,11 @@ document.addEventListener("DOMContentLoaded", function() {
         // SHOWING ELEMENTS
         settingsContainer.style.display = "block";
 
+        // if coming from blog or about (which hides main_elements)
+        if (state.lastSelectedMode === 'home') {
+            main_elements.style.display = "block";
+        }
+
         // OTHER CHANGES
         let viewportWidth = window.innerWidth || document.documentElement.clientWidth;
         if ((counters.settingsBtnClicked === 0) && (viewportWidth > 650)) {
