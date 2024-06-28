@@ -224,4 +224,7 @@
     #chillAnimation {
         height: 900px;
     }
+    #animationContainer::-webkit-scrollbar {
+        display: none;
+    }
 }
