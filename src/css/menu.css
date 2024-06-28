@@ -24,7 +24,6 @@
 
     /* background-image: linear-gradient(to bottom, #3b8fe3, #1d60a3, #7f04c7); */
     padding: 10px 10px;
-    z-index: 100;
     border-radius: 15px;
     right: 0;
     bottom: 0;
@@ -39,7 +38,7 @@
 }
 
 #popupQuestionMenu {
-    position: absolute;
+    position: fixed;
     font-family: menuFont;
     color: rgb(187, 187, 187);
 
@@ -50,13 +49,13 @@
     background-color: rgba(32, 32, 32, 1);
 
     padding: 10px 10px;
-    z-index: 100;
     border-radius: 15px;
-    right: 0;
-    top: -250px;
-    display: none;
+    right: 25px;
+    bottom: 100px;
+    /* display: none; */
     opacity: 0;
     transition: opacity 0.15s ease-in, opacity 0.05s ease-out;
+    z-index: 22;
 
     flex-direction: column;
 }
@@ -103,6 +102,7 @@
     opacity: 0;
     transform: scale(0.85);
     transition: opacity 1s ease-in-out;
+    position: relative;
 }
 
 #questionIcon:hover {
