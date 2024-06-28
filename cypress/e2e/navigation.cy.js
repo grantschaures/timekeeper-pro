@@ -38,6 +38,23 @@ describe('Navigation', () => {
         cy.get('[data-testid="settingsContainer"]').should('be.visible');
         cy.get('[data-testid="settingsExit"]').click();
         cy.get('[data-testid="settingsContainer"]').should('not.be.visible');
+        
+        // when coming from blog
+        cy.get('[data-testid="menuBtn"]').click();
+        cy.contains("Blog").click();
+        cy.get('[data-testid="menuBtn"]').click();
+        cy.contains("Settings").click();
+        cy.get('[data-testid="main"]').should('be.visible');
+        cy.get('[data-testid="settingsExit"]').click();
+
+        // when coming from about
+        cy.get('[data-testid="menuBtn"]').click();
+        cy.contains("About").click();
+        cy.get('[data-testid="menuBtn"]').click();
+        cy.contains("Settings").click();
+        cy.get('[data-testid="main"]').should('be.visible');
+        cy.get('[data-testid="settingsExit"]').click();
+
     })
 
     it('Basic Three-Way Toggle Click Testing', () => {
