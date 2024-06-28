@@ -321,7 +321,6 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
         if (reportIcon.contains(event.target)) {
             setDashboardMode("report", "none");
             initializeNewMode("report", reportContainer);
-            body.style.overflowY = 'hidden'; // no scroll
 
             resetMode("space", spaceContainer);
             
@@ -334,7 +333,6 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
         } else if (spaceIcon.contains(event.target)) {
             setDashboardMode("space", "none");
             initializeNewMode("space", spaceContainer);
-            body.style.overflowY = 'hidden'; // no scroll
 
             resetMode("report", reportContainer);
         }
