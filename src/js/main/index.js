@@ -848,6 +848,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 flowAnimation.style.opacity = 0;
                 flowAnimation.style.display = 'none';
                 flowAnimation.classList.remove('intoOpacityTransition');
+                flowAnimation.offsetHeight;
             } else {
                 chillAnimation.style.opacity = 0;
                 chillAnimation.style.display = 'none';
