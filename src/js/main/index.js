@@ -841,15 +841,15 @@ document.addEventListener("DOMContentLoaded", function() {
         handleViewportWidthChange(settingsMappings, tempStorage, isMobile);
     });
 
-    document.addEventListener('visibilitychange', async function() {
+    document.addEventListener('visibilitychange', function() {
         //user clicks out of tab (or minimizes window)
         if (document.visibilityState === 'hidden') {
             if (flags.inHyperFocus) {
-                flowAnimation.classList.remove('intoOpacityTransition');
                 flowAnimation.style.display = 'none';
+                flowAnimation.classList.remove('intoOpacityTransition');
             } else {
-                chillAnimation.classList.remove('intoOpacityTransition');
                 chillAnimation.style.display = 'none';
+                chillAnimation.classList.remove('intoOpacityTransition');
             }
             
         } else if (document.visibilityState === 'visible') { //user returns to tab
