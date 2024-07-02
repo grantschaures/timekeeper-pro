@@ -853,15 +853,15 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             
         } else if (document.visibilityState === 'visible') { //user returns to tab
-            if ((flags.inHyperFocus) && (flags.flowTimeAnimationToggle)) {
-                flowAnimation.style.display = 'block';
-                flowAnimation.classList.add('intoOpacityTransition');
-            } else if ((!flags.inHyperFocus) && (flags.chillTimeAnimationToggle)) {
-                if (counters.startStop > 0) {
-                    chillAnimation.style.display = 'flex';
-                    chillAnimation.classList.add('intoOpacityTransition');
-                }
-            }
+            // if ((flags.inHyperFocus) && (flags.flowTimeAnimationToggle)) {
+            //     flowAnimation.style.display = 'block';
+            //     flowAnimation.classList.add('intoOpacityTransition');
+            // } else if ((!flags.inHyperFocus) && (flags.chillTimeAnimationToggle)) {
+            //     if (counters.startStop > 0) {
+            //         chillAnimation.style.display = 'flex';
+            //         chillAnimation.classList.add('intoOpacityTransition');
+            //     }
+            // }
         }
     });
 
