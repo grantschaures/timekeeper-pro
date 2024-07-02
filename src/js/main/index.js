@@ -175,7 +175,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop", setPomodoroIntervalText(counters, timeAmount));
                 setPomodoroWorker(flags, elapsedTime, counters, recoverPomState, pomodoroWorker);
             } else {
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop","Flow Time"); // change to deep work
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop","Deep Work"); // change to deep work
             }
 
             if (counters.startStop > 1) { // runs first during first chill time interval
