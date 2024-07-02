@@ -42,8 +42,7 @@
         <!-- <video autoplay muted loop playsinline id="background-video">
             <source id="background-video-source" src="videos/istockphoto-1388209063-640_adpp_is.mp4" type="video/mp4">
         </video> -->
-
-        <div id="popupOverlay" data-testid="popupOverlay" class="overlay">
+        <div id="popupOverlay" data-testid="popupOverlay" class="overlay"> <!-- z-index: 1000 -->
             <div id="deleteAccountPopup">
                 <div id="deleteAccountPopupHeader">
                     <h2 style="color: gray">💀 Delete Account 💀</h2>
@@ -113,7 +112,7 @@
             </div>
         </div>
 
-        <div id="animationContainer" class="wave-container">
+        <div id="animationContainer" class="wave-container"> <!-- z-index: 1 -->
             <div id="flowAnimation" class="wave">
                 <img id="sineWaveBack" src="images/animations/sine-wave-FINAL-LONG_small.png" class="no-select" draggable="false">
                 <img id="sineWaveFront" src="images/animations/sine-wave-hella-long_smaller.png" class="no-select" draggable="false">
@@ -125,13 +124,15 @@
             </div>
         </div>
 
-        <div id="mainContainer">
+        <div id="backgroundContainer"></div> <!-- z-index: 0 -->
+
+        <div id="mainContainer"> <!-- z-index: 5 -->
             <header>
                 <div class="container">
                     <img id="hyperChillLogoImage" src="images/logo/HyperChillLogo_smallest.png" class="no-select" draggable="false">
                     <div id="titleToggleContainer">
                         <h1 id="hyperChillTitle" class="no-select" >H Y P E R C H I L L . I O</h1>
-                        <span id="threeWayToggle" class="dash-mode">
+                        <span id="threeWayToggle" class="dash-mode"> <!-- z-index: 3 -->
                             <svg id="report-icon" data-testid="report-icon" dinkle-doink="report" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" data-clickable>
                                 <path id="report-path" d="M 12 26 L 12 23 L 16 23 L 16 26 Z M 18 26 L 18 18 L 22 18 L 22 26 Z M 24 26 L 24 12 L 28 12 L 28 26 Z" fill="white"></path>
                             </svg>                                                                              

@@ -54,6 +54,26 @@ html {
     /* border: 2px solid white; */
 }
 
+#backgroundContainer {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center center;
+
+    /* border: 5px solid gray; */
+
+    opacity: 0;
+    transition: opacity 0.25s ease-in-out;
+
+    z-index: 0;
+}
+
 body::before {
     content: '';
     position: fixed;
@@ -214,6 +234,7 @@ h4 {
     border: 3px solid #ffffff;
     position: relative;
     transition: opacity 1s ease-in-out;
+    z-index: 3;
 }
 
 .dash-mode::after {
@@ -356,6 +377,7 @@ main {
     padding: 25px;
 
     /* border: 3px solid cyan; */
+    z-index: 5;
 }
 
 @media (max-width: 504px) {
@@ -427,6 +449,8 @@ button:hover {
     opacity: 0;
     transition: opacity 1s ease-in-out, background-color 0.25s ease;
     border: 4px solid white;
+
+    z-index: 2;
 }
 
 #menuIcon {
@@ -526,6 +550,7 @@ button:hover {
     border-radius: 25px; /* Created corner curves */
     /* border: 1px solid yellow; */
 
+    z-index: 2;
 }
 
 #targetHoursContainer {
@@ -552,8 +577,7 @@ button:hover {
     
     border-radius: 25px; /* Created corner curves */
     /* border: 1px solid yellow; */
-
-
+    z-index: 2;
 }
 
 @media (min-width: 505px) {

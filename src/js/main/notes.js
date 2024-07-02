@@ -4,6 +4,8 @@ import {
 
 import { flags as indexflags } from '../modules/index-objects.js';
 
+import { state as navigationState } from '../modules/navigation-objects.js';
+
 import { notesFlags, counters, state, flags, emojiMap, tutorialContainerMap, fontSizeArr, fontNumArr, labelDict, notesArr } from '../modules/notes-objects.js';
 
 import { sessionState } from '../modules/state-objects.js';
@@ -1475,35 +1477,37 @@ function deselectTags(tag, flags, tagIcon, clearIcon, labelSelectionRow, counter
 }
 
 function handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInput, createLabelDone, updateLabelInput, updateLabelDone, noteInputSaveBtn, noteTaskInputText, noteInputCancelBtn, addNoteTaskContainer, flags, isMobile, settingsContainer, aboutContainer, blogContainer, main_elements) {
-    if (event.key === 'Enter') {
-        event.preventDefault();
-        
-        if (document.activeElement === createLabelInput) {
-            createLabelDone.click();
-        } else if (document.activeElement === updateLabelInput) {
-            updateLabelDone.click();
-        } else if (document.activeElement === noteTaskInputText) {
-            noteInputSaveBtn.click();
-        } else if (document.activeElement.id === 'note-task-input-text-edit') {
-            document.getElementById('note-input-save-btn-edit').click();
-        }
-    } else if ((event.key === 'n') && (canOpenNotes(blogContainer, aboutContainer, settingsContainer, main_elements))) {
-        if (!notesFlags.notesShowing) {
-            openNotesContainer(notesContainer, notesFlags);
-        } else if ((!flags.noteTaskInputContainerShowing) && (!flags.noteTaskInputContainerEditShowing) && (notesFlags.notesConsoleShowing)) {
-            addNoteTaskContainer.click();
-            taskCheckbox.checked = false;
+    if (navigationState.lastSelectedMode === 'home') {
+        if (event.key === 'Enter') {
             event.preventDefault();
-        }
-    }  else if ((event.key === 't') && (notesFlags.notesShowing) && (notesFlags.notesConsoleShowing) && (!flags.noteTaskInputContainerShowing) && (!flags.noteTaskInputContainerEditShowing)) {
-        addNoteTaskContainer.click();
-        taskCheckbox.checked = true;
-        event.preventDefault();
-    } else if ((event.key === 'Escape') && (notesFlags.notesShowing)) {
-        if (document.activeElement === noteTaskInputText) {
-            noteInputCancelBtn.click();
-        } else {
-            closeNotesContainer(notesContainer, notesFlags, flags, noteInputCancelBtn, isMobile);
+            
+            if (document.activeElement === createLabelInput) {
+                createLabelDone.click();
+            } else if (document.activeElement === updateLabelInput) {
+                updateLabelDone.click();
+            } else if (document.activeElement === noteTaskInputText) {
+                noteInputSaveBtn.click();
+            } else if (document.activeElement.id === 'note-task-input-text-edit') {
+                document.getElementById('note-input-save-btn-edit').click();
+            }
+        } else if ((event.key === 'n') && (canOpenNotes(blogContainer, aboutContainer, settingsContainer, main_elements))) {
+            if (!notesFlags.notesShowing) {
+                openNotesContainer(notesContainer, notesFlags);
+            } else if ((!flags.noteTaskInputContainerShowing) && (!flags.noteTaskInputContainerEditShowing) && (notesFlags.notesConsoleShowing)) {
+                addNoteTaskContainer.click();
+                taskCheckbox.checked = false;
+                event.preventDefault();
+            }
+        }  else if ((event.key === 't') && (notesFlags.notesShowing) && (notesFlags.notesConsoleShowing) && (!flags.noteTaskInputContainerShowing) && (!flags.noteTaskInputContainerEditShowing)) {
+            addNoteTaskContainer.click();
+            taskCheckbox.checked = true;
+            event.preventDefault();
+        } else if ((event.key === 'Escape') && (notesFlags.notesShowing)) {
+            if (document.activeElement === noteTaskInputText) {
+                noteInputCancelBtn.click();
+            } else {
+                closeNotesContainer(notesContainer, notesFlags, flags, noteInputCancelBtn, isMobile);
+            }
         }
     }
 }

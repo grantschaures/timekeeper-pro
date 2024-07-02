@@ -4,6 +4,7 @@ import { chime, bell, clock_tick, soundMap } from '../modules/sound-map.js';
 
 import {
     start_stop_btn, submit_change_btn, end_session_btn, report_btn, total_time_display, productivity_chill_mode, progressBarContainer, progressBar, progressContainer, display, hyperChillTitle, subMainContainer, interruptionsContainer, interruptionsSubContainer, decBtn, incBtn, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, completedPomodoros_label, completedPomodoros_min, targetHoursContainer, timekeepingContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, targetTimeReachedToggle, breakSuggestionToggle, suggestionMinutesInput, flowmodoroNotificationToggle,flowmodoroNotifications, flowmodoroNotificationInfoWindow, flowTimeBreakNotification, flowTimeBreakNotificationInfoWindow, pomodoroNotifications, pomodoroNotificationInfoWindow, notesAutoSwitch, notesAutoSwitchInfoWindow, pomodoroNotificationToggle, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, defaultThemeContainer, defaultTheme, darkThemeContainer, darkGrayTheme, targetTimeReachedAlert, transitionClockSoundToggle, flowTimeAnimationToggle, chillTimeAnimationToggle, pomodoroVolumeContainer, pomodoroVolumeBar, pomodoroVolumeThumb, flowmodoroVolumeContainer, flowmodoroVolumeBar, flowmodoroVolumeThumb, generalVolumeContainer, generalVolumeBar, generalVolumeThumb, pomodoroVolumeContainer2, pomodoroVolumeBar2, pomodoroVolumeThumb2, flowmodoroVolumeContainer2, flowmodoroVolumeBar2, flowmodoroVolumeThumb2, generalVolumeContainer2, generalVolumeBar2, generalVolumeThumb2, flowmodoroRadios, flowmodoroInputs, generalRadios, pomodoroInputs, pomodoroRadios,flowtimeBackgroundCells, chilltimeBackgroundCells, settings_menu_container, registerHereText, backgroundVideoSource, backgroundVideo, flowAnimation, chillAnimation, hyperChillLogoImage,createLabelInput, updateLabelInput, emojiContainer, loginEmailInput, loginPasswordInput, forgotPasswordContainer, loginBtnContainer, loginBtn, logoutBtn, deleteAccountBtn, forgotPasswordSettings, propagateUnfinishedTasks, propagateUnfinishedTasksInfoWindow, flowtimeBackgroundWorldCells, chilltimeBackgroundWorldCells, deleteAccountPopupYesBtn, deleteAccountPopupNoBtn, deleteAccountPopup, popupOverlay, questionIcon, logoutBtn2,
+    backgroundContainer,
 } from '../modules/dom-elements.js';
 
 import { sessionState } from '../modules/state-objects.js';
@@ -65,19 +66,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
     setInitialBackgroundCellSelection();
 
+    const threeWayToggle = document.getElementById('threeWayToggle');
+
     // Initial Animations
     setTimeout(() => {
         hyperChillTitle.style.opacity = '1'; // increases opacity
         hyperChillTitle.classList.add('hyperChillTitleAnimationTranslate'); // moves it down
     }, 0)
-
+    
     setTimeout(() => {
         hyperChillTitle.classList.add('hyperChillTitleAnimationScale'); // makes it W I D E
-    }, 1000)
-    
-    const threeWayToggle = document.getElementById('threeWayToggle');
-
-    setTimeout(() => {
         subMainContainer.style.opacity = '1';
     }, 1000)
     
@@ -104,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function() {
     startImg.src = defaultImgPath;
     startImg.onload = function() {
         document.body.classList.add('fade-out-bg');
-        document.documentElement.style.transition = "background-image 0.25s ease-in-out"
+        document.documentElement.style.transition = "background-image 0.25s ease-in-out";
     }
 
     // reset background to default
@@ -172,7 +170,7 @@ document.addEventListener("DOMContentLoaded", function() {
             hidePomodorosCompletedContainer(completedPomodorosContainer);
             showInterruptionsSubContainer(interruptionsSubContainer);
             setCurrentPomodoroNotification(counters, timeAmount);
-            setBackground(selectedBackground.flowtime);
+            setBackground(selectedBackground.flowtime, 1);
             flowmodoroAndBreakSuggestionActions(flags, elapsedTime, counters, timeAmount, flowmodoroWorker, suggestionWorker);
             intervals.main = setInterval(() => updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer), 1000); //repeatedly calls reference to updateProgressBar function every 1000 ms (1 second)
 
@@ -204,7 +202,7 @@ document.addEventListener("DOMContentLoaded", function() {
             saveResetInterruptions(interruptionsNum, counters, savedInterruptionsArr);
             
             hideInterruptionsSubContainer(interruptionsSubContainer);
-            setBackground(selectedBackground.chilltime);
+            setBackground(selectedBackground.chilltime, 1);
             
             // There's an automatic transition to Break either starting at Date.now() (if both toggles are on)
             // or starting at Date.now() - displayTime (only auto start break is on)
@@ -532,7 +530,7 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById(event.target.id).classList.add('selected-background');
 
             if (flags.inHyperFocus) {
-                setBackground(selectedBackground.flowtime);
+                setBackground(selectedBackground.flowtime, 1);
             }
 
             if (sessionState.loggedIn) {
@@ -558,7 +556,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // if we're in chilltime (and not pre-session)
             if ((!flags.inHyperFocus) && (counters.startStop >= 1)) {
-                setBackground(selectedBackground.chilltime);
+                setBackground(selectedBackground.chilltime, 1);
             }
 
             if (sessionState.loggedIn) {
@@ -843,7 +841,7 @@ document.addEventListener("DOMContentLoaded", function() {
         handleViewportWidthChange(settingsMappings, tempStorage, isMobile);
     });
 
-    document.addEventListener('visibilitychange', function() {
+    document.addEventListener('visibilitychange', async function() {
         //user clicks out of tab (or minimizes window)
         if (document.visibilityState === 'hidden') {
             if (flags.inHyperFocus) {
@@ -970,7 +968,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
 
             // reset background to default
-            setBackground(defaultImgUrl);
+            setBackground("", 0);
     
             // reset header text
             setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", "Press 'Start' to begin session");
@@ -1764,20 +1762,6 @@ async function setPomodoroIntervalArr(event, timeAmount, validatedFinalInputVal,
     }
 }
 
-function animationsFadeIn(animationType, displayType) {
-    // animationType.classList.remove('outOfOpacityTransition');
-    animationType.classList.add('intoOpacityTransition');
-    animationType.style.display = displayType;
-}
-
-function animationsFadeOut(animationType) {
-    animationType.classList.remove('intoOpacityTransition');
-    // animationType.classList.add('outOfOpacityTransition');
-    setTimeout(() => {
-        animationType.style.display = 'none';
-    }, 0)
-}
-
 function toggleInfoWindow(infoWindowElement, flagKey, flags) {
     const isCurrentlyShowing = flags[flagKey];
     if (isCurrentlyShowing) {
@@ -2301,7 +2285,7 @@ function playClick(clock_tick, flags) {
 
 function handleEnter(event, start_stop_btn, submit_change_btn, createLabelInput, updateLabelInput, flags) {
 
-    if ((event.key === 'Enter') && (!flags.enterKeyDown)) {
+    if ((event.key === 'Enter') && (!flags.enterKeyDown) && (state.lastSelectedMode === 'home')) {
         event.preventDefault();
         flags.enterKeyDown = true;
         
@@ -2414,9 +2398,17 @@ export function setInitialBackgroundCellSelection() {
     document.getElementById(selectedBackgroundId.chilltime).classList.add('selected-background');
 }
 
-export function setBackground(background_color) {
-    console.log("test")
-    document.documentElement.style.backgroundImage = background_color;
+export function setBackground(background_color, opacity) {
+    if (state.lastSelectedMode === 'home') {
+        backgroundContainer.style.opacity = opacity;
+        if (background_color === "") {
+            setTimeout(() => {
+                backgroundContainer.style.backgroundImage = background_color;
+            }, 250)
+        } else {
+            backgroundContainer.style.backgroundImage = background_color;
+        }
+    }
 };
 
 export function deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, isMobile) {
@@ -2543,4 +2535,18 @@ export function totalTimeDisplay(startTimes, elapsedTime, total_time_display, ti
     } else {
         total_time_display.textContent = `${hours}:${minutes}:${seconds}`;
     }
+};
+
+export function animationsFadeIn(animationType, displayType) {
+    if (state.lastSelectedMode === 'home') {
+        animationType.classList.add('intoOpacityTransition');
+        animationType.style.display = displayType;
+    }
+};
+
+export function animationsFadeOut(animationType) {
+    animationType.classList.remove('intoOpacityTransition');
+    setTimeout(() => {
+        animationType.style.display = 'none';
+    }, 0)
 };
