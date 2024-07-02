@@ -2,66 +2,35 @@ export var selectedBackground;
 export var flowtimeBackgrounds;
 export var chilltimeBackgrounds;
 
-if (detectBrowser() === "Firefox") {
-    selectedBackground = {
-        "flowtime": 'linear-gradient(90deg, #00c510, #00c431, #00c59a)',
-        "chilltime": 'linear-gradient(90deg, #0f0cce, #700cce, #b004c7)'
-    }
-
-    flowtimeBackgrounds = {
-        "green-default": 'linear-gradient(90deg, #00c510, #00c431, #00c59a)',
-        "red-flowtime": 'linear-gradient(90deg, #c42700, #c56900, #c58000)',
-        "yellow-flowtime": 'linear-gradient(90deg, #e1ff00, #90c400, #00e908)',
-        "blue-flowtime": 'linear-gradient(90deg, #0f0cce, #700cce, #b004c7)',
-        "purple-flowtime": 'linear-gradient(90deg, #700cce, #b004c7, #f700ff)',
-        "black-flowtime": 'linear-gradient(90deg, #202020, #202020, #202020)',
-        "hyperchillSunset-flowtime": 'url("/images/iStock/iStock-1253862403-mid-edit.jpg")',
-        "hyperchillHands-flowtime": 'url("/images/iStock/iStock-1306875579-mid.jpg")',
-        "hyperchillTriangle-flowtime": 'url("/images/iStock/iStock-1394258314-mid.jpg")',
-    }
-
-    chilltimeBackgrounds = {
-        "green-chilltime": 'linear-gradient(90deg, #00c510, #00c431, #00c59a)',
-        "red-chilltime": 'linear-gradient(90deg, #c42700, #c56900, #c58000)',
-        "yellow-chilltime": 'linear-gradient(90deg, #e1ff00, #90c400, #00e908)',
-        "blue-default": 'linear-gradient(90deg, #0f0cce, #700cce, #b004c7)',
-        "purple-chilltime": 'linear-gradient(90deg, #700cce, #b004c7, #f700ff)',
-        "black-chilltime": 'linear-gradient(90deg, #202020, #202020, #202020)',
-        "hyperchillSunset-chilltime": 'url("/images/iStock/iStock-1253862403-mid-orange.jpg")',
-        "hyperchillHands-chilltime": 'url("/images/iStock/iStock-1306875579-mid-invert.jpg")',
-        "hyperchillTriangle-chilltime": 'url("/images/iStock/iStock-1394258314-mid-green-pixelated.jpg")',
-    }
-
-} else {
-    selectedBackground = {
-        "flowtime": 'url("/images/hyperchill_gradients/blue-green-gradient.jpg")',
-        "chilltime": 'url("/images/hyperchill_gradients/blue-purple-gradient.jpg")'
-    }
-
-    flowtimeBackgrounds = {
-        "green-default": 'url("/images/hyperchill_gradients/blue-green-gradient.jpg")',
-        "red-flowtime": 'url("/images/hyperchill_gradients/red-orange-gradient.jpg")',
-        "yellow-flowtime": 'url("/images/hyperchill_gradients/lemon-lime-gradient.jpg")',
-        "blue-flowtime": 'url("/images/hyperchill_gradients/blue-purple-gradient.jpg")',
-        "purple-flowtime": 'url("/images/hyperchill_gradients/purple-pink-gradient.jpg")',
-        "black-flowtime": 'url("/images/hyperchill_gradients/black-gradient.jpg")',
-        "hyperchillSunset-flowtime": 'url("/images/iStock/iStock-1253862403-mid-edit.jpg")',
-        "hyperchillHands-flowtime": 'url("/images/iStock/iStock-1306875579-mid.jpg")',
-        "hyperchillTriangle-flowtime": 'url("/images/iStock/iStock-1394258314-mid.jpg")',
-    }
-
-    chilltimeBackgrounds = {
-        "green-chilltime": 'url("/images/hyperchill_gradients/blue-green-gradient.jpg")',
-        "red-chilltime": 'url("/images/hyperchill_gradients/red-orange-gradient.jpg")',
-        "yellow-chilltime": 'url("/images/hyperchill_gradients/lemon-lime-gradient.jpg")',
-        "blue-default": 'url("/images/hyperchill_gradients/blue-purple-gradient.jpg")',
-        "purple-chilltime": 'url("/images/hyperchill_gradients/purple-pink-gradient.jpg")',
-        "black-chilltime": 'url("/images/hyperchill_gradients/black-gradient.jpg")',
-        "hyperchillSunset-chilltime": 'url("/images/iStock/iStock-1253862403-mid-orange.jpg")',
-        "hyperchillHands-chilltime": 'url("/images/iStock/iStock-1306875579-mid-invert.jpg")',
-        "hyperchillTriangle-chilltime": 'url("/images/iStock/iStock-1394258314-mid-green-pixelated.jpg")',
-    }
+selectedBackground = {
+    "flowtime": 'linear-gradient(90deg, #00c510, #00c431, #00c59a)',
+    "chilltime": 'linear-gradient(90deg, #0f0cce, #700cce, #b004c7)'
 }
+
+flowtimeBackgrounds = {
+    "green-default": 'linear-gradient(90deg, #00c510, #00c431, #00c59a)',
+    "red-flowtime": 'linear-gradient(90deg, #c42700, #c56900, #c58000)',
+    "yellow-flowtime": 'linear-gradient(90deg, #e1ff00, #90c400, #00e908)',
+    "blue-flowtime": 'linear-gradient(90deg, #0f0cce, #700cce, #b004c7)',
+    "purple-flowtime": 'linear-gradient(90deg, #700cce, #b004c7, #f700ff)',
+    "black-flowtime": 'linear-gradient(90deg, #202020, #202020, #202020)',
+    "hyperchillSunset-flowtime": 'url("/images/iStock/iStock-1253862403-mid-edit.jpg")',
+    "hyperchillHands-flowtime": 'url("/images/iStock/iStock-1306875579-mid.jpg")',
+    "hyperchillTriangle-flowtime": 'url("/images/iStock/iStock-1394258314-mid.jpg")',
+}
+
+chilltimeBackgrounds = {
+    "green-chilltime": 'linear-gradient(90deg, #00c510, #00c431, #00c59a)',
+    "red-chilltime": 'linear-gradient(90deg, #c42700, #c56900, #c58000)',
+    "yellow-chilltime": 'linear-gradient(90deg, #e1ff00, #90c400, #00e908)',
+    "blue-default": 'linear-gradient(90deg, #0f0cce, #700cce, #b004c7)',
+    "purple-chilltime": 'linear-gradient(90deg, #700cce, #b004c7, #f700ff)',
+    "black-chilltime": 'linear-gradient(90deg, #202020, #202020, #202020)',
+    "hyperchillSunset-chilltime": 'url("/images/iStock/iStock-1253862403-mid-orange.jpg")',
+    "hyperchillHands-chilltime": 'url("/images/iStock/iStock-1306875579-mid-orange.jpg")',
+    "hyperchillTriangle-chilltime": 'url("/images/iStock/iStock-1394258314-mid-green-pixelated.jpg")',
+}
+
 
 export const selectedBackgroundIdTemp = {
     "flowtime": null,

@@ -193,17 +193,17 @@ describe('Auto Switch Functionality', () => {
     cy.contains("Select Task Labels").click();
   })
 
-  it('Auto Switch to Flow Time and Chill Time', () => {
+  it('Auto Switch to Deep Work and Break', () => {
     cy.get('[data-testid="aboutIconNotes"]').click();
     cy.get('[data-testid="transitionNotesAutoSwitchToggle"]').click({force: true});
     cy.get('[data-testid="settingsExit"]').click();
 
     cy.contains("✍️ Homework").click();
     cy.contains('h4', 'Done').click();
-    cy.get('[data-testid="productivity-chill-mode"]').should('contain', "Flow Time");
+    cy.get('[data-testid="productivity-chill-mode"]').should('contain', "Deep Work");
     
     cy.get('[data-testid="clearIcon"]').click();
     cy.contains('h4', 'Done').click();
-    cy.get('[data-testid="productivity-chill-mode"]').should('contain', "Chill Time");
+    cy.get('[data-testid="productivity-chill-mode"]').should('contain', "Break");
   })
 })

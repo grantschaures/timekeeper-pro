@@ -53,7 +53,7 @@
     border-radius: 15px;
     right: 25px;
     bottom: 100px;
-    /* display: none; */
+    display: none;
     opacity: 0;
     transition: opacity 0.15s ease-in, opacity 0.05s ease-out;
     z-index: 22;

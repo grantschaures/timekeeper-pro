@@ -48,9 +48,9 @@ describe('Basic Interval Switching Functionality', () => {
       cy.get('#subMainContainer').invoke('css', 'opacity', '1');
     })
   
-    it('Beginning --> Flow Time --> Chill Time', () => {
+    it('Beginning --> Deep Work --> Break', () => {
         cy.contains('Submit').should('exist');
-        cy.contains('Interruptions').should('exist');
+        cy.contains('Distractions').should('exist');
         cy.contains("Press 'Start' to begin session").should('exist');
         
         cy.get('[data-testid="progress-text"]').should('contain', '00:00:00');
@@ -59,65 +59,65 @@ describe('Basic Interval Switching Functionality', () => {
         cy.clock();
 
         /**
-         * Major Assumption: Chill Time notification times are 5, 8, 10, and 15 min
+         * Major Assumption: Break notification times are 5, 8, 10, and 15 min
          */
         
-        // --> Flow Time
+        // --> Deep Work
         cy.get('#start-stop').click();
-        cy.contains('Flow Time').should('exist');
-        cy.contains('Interruptions').should('exist');
+        cy.contains('Deep Work').should('exist');
+        cy.contains('Distractions').should('exist');
         cy.get('[data-testid="progress-bar-container"]').should('have.class', 'small');
         
         cy.tick(20 * 60 * 1000); // simulate passing of 20 minutes
         
-        // --> Chill Time
+        // --> Break
         cy.get('#start-stop').click();
-        cy.contains('Chill Time').should('exist');
+        cy.contains('Break').should('exist');
         cy.contains('Suggested Break').should('exist');
         cy.contains('5 min').should('exist');
         cy.get('[data-testid="progress-text"]').should('contain', '00:20:00');
 
-        // --> Flow Time
+        // --> Deep Work
         cy.get('#start-stop').click();
-        cy.contains('Flow Time').should('exist');
-        cy.contains('Interruptions').should('exist');
+        cy.contains('Deep Work').should('exist');
+        cy.contains('Distractions').should('exist');
         cy.get('[data-testid="progress-bar-container"]').should('have.class', 'small');
         
         cy.tick(45 * 60 * 1000); // simulate passing of 45 minutes
         
-        // --> Chill Time
+        // --> Break
         cy.get('#start-stop').click();
-        cy.contains('Chill Time').should('exist');
+        cy.contains('Break').should('exist');
         cy.contains('Suggested Break').should('exist');
         cy.contains('8 min').should('exist');
         cy.get('[data-testid="progress-text"]').should('contain', '01:05:00');
 
-        // --> Flow Time
+        // --> Deep Work
         cy.get('#start-stop').click();
-        cy.contains('Flow Time').should('exist');
-        cy.contains('Interruptions').should('exist');
+        cy.contains('Deep Work').should('exist');
+        cy.contains('Distractions').should('exist');
         cy.get('[data-testid="progress-bar-container"]').should('have.class', 'small');
         
         cy.tick(85 * 60 * 1000); // simulate passing of 85 minutes
         
-        // --> Chill Time
+        // --> Break
         cy.get('#start-stop').click();
-        cy.contains('Chill Time').should('exist');
+        cy.contains('Break').should('exist');
         cy.contains('Suggested Break').should('exist');
         cy.contains('10 min').should('exist');
         cy.get('[data-testid="progress-text"]').should('contain', '02:30:00');
 
-        // --> Flow Time
+        // --> Deep Work
         cy.get('#start-stop').click();
-        cy.contains('Flow Time').should('exist');
-        cy.contains('Interruptions').should('exist');
+        cy.contains('Deep Work').should('exist');
+        cy.contains('Distractions').should('exist');
         cy.get('[data-testid="progress-bar-container"]').should('have.class', 'small');
         
         cy.tick(100 * 60 * 1000); // simulate passing of 100 minutes
         
-        // --> Chill Time
+        // --> Break
         cy.get('#start-stop').click();
-        cy.contains('Chill Time').should('exist');
+        cy.contains('Break').should('exist');
         cy.contains('Suggested Break').should('exist');
         cy.contains('15 min').should('exist');
         cy.get('[data-testid="progress-text"]').should('contain', '04:10:00');
@@ -128,6 +128,6 @@ describe('Basic Interval Switching Functionality', () => {
         cy.get('[data-testid="progress-text"]').should('contain', '04:10:00 (83%)');
 
         cy.tick(15 * 60 * 1000); // simulate passing of 15 minutes
-        cy.get('#start-stop').click(); // --> End in Flow Time
+        cy.get('#start-stop').click(); // --> End in Deep Work
     })
 })

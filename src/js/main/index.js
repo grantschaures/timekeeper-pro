@@ -4,6 +4,7 @@ import { chime, bell, clock_tick, soundMap } from '../modules/sound-map.js';
 
 import {
     start_stop_btn, submit_change_btn, end_session_btn, report_btn, total_time_display, productivity_chill_mode, progressBarContainer, progressBar, progressContainer, display, hyperChillTitle, subMainContainer, interruptionsContainer, interruptionsSubContainer, decBtn, incBtn, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, completedPomodoros_label, completedPomodoros_min, targetHoursContainer, timekeepingContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, targetTimeReachedToggle, breakSuggestionToggle, suggestionMinutesInput, flowmodoroNotificationToggle,flowmodoroNotifications, flowmodoroNotificationInfoWindow, flowTimeBreakNotification, flowTimeBreakNotificationInfoWindow, pomodoroNotifications, pomodoroNotificationInfoWindow, notesAutoSwitch, notesAutoSwitchInfoWindow, pomodoroNotificationToggle, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, defaultThemeContainer, defaultTheme, darkThemeContainer, darkGrayTheme, targetTimeReachedAlert, transitionClockSoundToggle, flowTimeAnimationToggle, chillTimeAnimationToggle, pomodoroVolumeContainer, pomodoroVolumeBar, pomodoroVolumeThumb, flowmodoroVolumeContainer, flowmodoroVolumeBar, flowmodoroVolumeThumb, generalVolumeContainer, generalVolumeBar, generalVolumeThumb, pomodoroVolumeContainer2, pomodoroVolumeBar2, pomodoroVolumeThumb2, flowmodoroVolumeContainer2, flowmodoroVolumeBar2, flowmodoroVolumeThumb2, generalVolumeContainer2, generalVolumeBar2, generalVolumeThumb2, flowmodoroRadios, flowmodoroInputs, generalRadios, pomodoroInputs, pomodoroRadios,flowtimeBackgroundCells, chilltimeBackgroundCells, settings_menu_container, registerHereText, backgroundVideoSource, backgroundVideo, flowAnimation, chillAnimation, hyperChillLogoImage,createLabelInput, updateLabelInput, emojiContainer, loginEmailInput, loginPasswordInput, forgotPasswordContainer, loginBtnContainer, loginBtn, logoutBtn, deleteAccountBtn, forgotPasswordSettings, propagateUnfinishedTasks, propagateUnfinishedTasksInfoWindow, flowtimeBackgroundWorldCells, chilltimeBackgroundWorldCells, deleteAccountPopupYesBtn, deleteAccountPopupNoBtn, deleteAccountPopup, popupOverlay, questionIcon, logoutBtn2,
+    backgroundContainer,
 } from '../modules/dom-elements.js';
 
 import { sessionState } from '../modules/state-objects.js';
@@ -65,23 +66,22 @@ document.addEventListener("DOMContentLoaded", function() {
 
     setInitialBackgroundCellSelection();
 
+    const threeWayToggle = document.getElementById('threeWayToggle');
+
     // Initial Animations
     setTimeout(() => {
         hyperChillTitle.style.opacity = '1'; // increases opacity
         hyperChillTitle.classList.add('hyperChillTitleAnimationTranslate'); // moves it down
     }, 0)
-
+    
     setTimeout(() => {
         hyperChillTitle.classList.add('hyperChillTitleAnimationScale'); // makes it W I D E
-    }, 1000)
-    
-    const threeWayToggle = document.getElementById('threeWayToggle');
-
-    setTimeout(() => {
         subMainContainer.style.opacity = '1';
     }, 1000)
     
     setTimeout(() => {
+        subMainContainer.style.transition = 'opacity 0.5s ease-in-out';
+
         hyperChillTitle.classList.remove('hyperChillTitleAnimationTranslate');
         hyperChillTitle.style.opacity = '0';
         setTimeout(() => {
@@ -95,14 +95,17 @@ document.addEventListener("DOMContentLoaded", function() {
     }, 2000)
 
     // Fade out gradient once home image has loaded :P
-    let defaultImgPath = "/images/iStock/iStock-1253862403-mid-edit.jpg";
+    let defaultImgPath = "/images/iStock/iStock-1306875579-mid.jpg";
     let defaultImgUrl = 'url(' + defaultImgPath + ')';
 
     var startImg = new Image();
     startImg.src = defaultImgPath;
     startImg.onload = function() {
         document.body.classList.add('fade-out-bg');
+        document.documentElement.style.transition = "background-image 0.25s ease-in-out";
     }
+
+    // reset background to default
 
     // service worker registration
     // if ('serviceWorker' in navigator) {
@@ -120,7 +123,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.addEventListener('keyup', (event) => handleKeyUp(event, flags));
 
     start_stop_btn.addEventListener("click", function() {
-        
+
         counters.startStop++; //keep track of button presses (doesn't account for time recovery iterations)
         playClick(clock_tick, flags);
         resetDisplay(display);
@@ -141,8 +144,8 @@ document.addEventListener("DOMContentLoaded", function() {
         start_stop_btn.classList.remove('glowing-effect');
         flags.pomodoroCountIncremented = false;
         
-        if (!intervals.main) { // --> FLOW TIME
-            // console.log(getCurrentTime() + " --> Entering Flow Time");
+        if (!intervals.main) { // --> DEEP WORK
+            // console.log(getCurrentTime() + " --> Entering Deep Work");
             flags.inHyperFocus = true;
             flags.sentFlowmodoroNotification = false;
             counters.flowTimeIntervals++;
@@ -156,7 +159,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 lastChillTimeInterval = startTimes.hyperFocus - startTimes.chillTime;
             }
 
-            if (counters.startStop > 2) { // if 2nd round of flow time (1 round of chill time has already happened)
+            if (counters.startStop > 2) { // if 2nd round of deep work (1 round of break has already happened)
                 intervalArrs.chillTime.push(lastChillTimeInterval);
             }
 
@@ -167,7 +170,7 @@ document.addEventListener("DOMContentLoaded", function() {
             hidePomodorosCompletedContainer(completedPomodorosContainer);
             showInterruptionsSubContainer(interruptionsSubContainer);
             setCurrentPomodoroNotification(counters, timeAmount);
-            setBackground(selectedBackground.flowtime);
+            setBackground(selectedBackground.flowtime, 1);
             flowmodoroAndBreakSuggestionActions(flags, elapsedTime, counters, timeAmount, flowmodoroWorker, suggestionWorker);
             intervals.main = setInterval(() => updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer), 1000); //repeatedly calls reference to updateProgressBar function every 1000 ms (1 second)
 
@@ -175,18 +178,18 @@ document.addEventListener("DOMContentLoaded", function() {
                 setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop", setPomodoroIntervalText(counters, timeAmount));
                 setPomodoroWorker(flags, elapsedTime, counters, recoverPomState, pomodoroWorker);
             } else {
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop","Deep Work"); // change to deep work
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop","Deep Work");
             }
 
-            if (counters.startStop > 1) { // runs first during first chill time interval
+            if (counters.startStop > 1) { // runs first during first break interval
                 elapsedTime.chillTime += Date.now() - startTimes.chillTime;
             }
 
             // backgroundVideoSource.src = "videos/cyan_gradient_480p.mp4";
             // backgroundVideo.load();
 
-        } else { // --> CHILL TIME
-            // console.log(getCurrentTime() + " --> Entering Chill Time");
+        } else { // --> BREAK
+            // console.log(getCurrentTime() + " --> Entering Break");
             flags.inHyperFocus = false;
             flags.lastHyperFocusIntervalMin = Math.floor((Date.now() - startTimes.hyperFocus) / (1000 * 60));
             startTimes.chillTime = Date.now();
@@ -199,9 +202,9 @@ document.addEventListener("DOMContentLoaded", function() {
             saveResetInterruptions(interruptionsNum, counters, savedInterruptionsArr);
             
             hideInterruptionsSubContainer(interruptionsSubContainer);
-            setBackground(selectedBackground.chilltime);
+            setBackground(selectedBackground.chilltime, 1);
             
-            // There's an automatic transition to Chill Time either starting at Date.now() (if both toggles are on)
+            // There's an automatic transition to Break either starting at Date.now() (if both toggles are on)
             // or starting at Date.now() - displayTime (only auto start break is on)
 
             let lastFlowTimeInterval;
@@ -228,7 +231,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", setBothBreakIntervalText(counters, timeAmount));
             } else {
                 showSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, timeAmount, counters, flags);
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", "Chill Time");
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", "Break");
             }
 
             totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount);
@@ -277,8 +280,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 flags.progressBarContainerIsSmall = false;
             }
                 
-            /* Update progress bar & percentage ONCE to demonstrate submitted change in Chill Time.
-            In Flow Time, this code makes the change happen just a little bit faster. */
+            /* Update progress bar & percentage ONCE to demonstrate submitted change in Break.
+            In Deep Work, this code makes the change happen just a little bit faster. */
             updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer);
             totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount);
             
@@ -291,8 +294,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
             changeTargetHours(flags, sessionState);
 
-            /* Update progress bar & percentage ONCE to demonstrate submitted change in Chill Time.
-                In Flow Time, this code makes the change happen just a little bit faster. */
+            /* Update progress bar & percentage ONCE to demonstrate submitted change in Break.
+                In Deep Work, this code makes the change happen just a little bit faster. */
             updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer);
             totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount);
             
@@ -527,7 +530,7 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById(event.target.id).classList.add('selected-background');
 
             if (flags.inHyperFocus) {
-                setBackground(selectedBackground.flowtime);
+                setBackground(selectedBackground.flowtime, 1);
             }
 
             if (sessionState.loggedIn) {
@@ -553,7 +556,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // if we're in chilltime (and not pre-session)
             if ((!flags.inHyperFocus) && (counters.startStop >= 1)) {
-                setBackground(selectedBackground.chilltime);
+                setBackground(selectedBackground.chilltime, 1);
             }
 
             if (sessionState.loggedIn) {
@@ -591,9 +594,9 @@ document.addEventListener("DOMContentLoaded", function() {
             flags.breakSuggestionToggle = true;
 
             if (flags.inHyperFocus) {
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop","Flow Time");
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop","Deep Work");
             } else {
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start","Chill Time");
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start","Break");
             }
 
             resetPomodoroCounters(counters);
@@ -632,7 +635,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             let elapsedTimeInChillTime = Math.floor((Date.now() - startTimes.chillTime) / 1000); //in seconds
 
-            // When toggle for break notification is turned on whilst in chill time
+            // When toggle for break notification is turned on whilst in break
             if (!flags.inHyperFocus && counters.startStop !== 0) {
                 elapsedTime.flowmodoroNotificationSeconds = ((counters.currentFlowmodoroNotification * 60) - elapsedTimeInChillTime);
                 flowmodoroWorker.postMessage("clearInterval");
@@ -687,9 +690,9 @@ document.addEventListener("DOMContentLoaded", function() {
             pomodoroWorker.postMessage("clearInterval");
             start_stop_btn.classList.remove('glowing-effect');
             if (flags.inHyperFocus) {
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop","Flow Time");
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop","Deep Work");
             } else if (counters.startStop > 1) {
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start","Chill Time");
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start","Break");
                 hidePomodorosCompletedContainer(completedPomodorosContainer);
                 showSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, timeAmount, counters, flags);
             }
@@ -841,13 +844,15 @@ document.addEventListener("DOMContentLoaded", function() {
     document.addEventListener('visibilitychange', function() {
         //user clicks out of tab (or minimizes window)
         if (document.visibilityState === 'hidden') {
-            if (flags.inHyperFocus) {
-                flowAnimation.classList.remove('intoOpacityTransition');
-                flowAnimation.style.display = 'none';
-            } else {
-                chillAnimation.classList.remove('intoOpacityTransition');
-                chillAnimation.style.display = 'none';
-            }
+            requestAnimationFrame(() => {
+                if (flags.inHyperFocus) {
+                    flowAnimation.style.display = 'none';
+                    flowAnimation.classList.remove('intoOpacityTransition');
+                } else {
+                    chillAnimation.style.display = 'none';
+                    chillAnimation.classList.remove('intoOpacityTransition');
+                }
+            });
             
         } else if (document.visibilityState === 'visible') { //user returns to tab
             if ((flags.inHyperFocus) && (flags.flowTimeAnimationToggle)) {
@@ -897,7 +902,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 savedInterruptionsArr.push(counters.interruptions);
             }
             let totalInterruptions = savedInterruptionsArr.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-            console.log("Total Interruptions: " + totalInterruptions);
+            console.log("Total Distractions: " + totalInterruptions);
             
             // focus score calculation
             let totalMin = totalTime / timeConvert.msPerMin;
@@ -909,9 +914,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 console.log('Focus Score: ' + 0 + '%');
             }
             
-            // flow & chill time intervals
-            console.log("Flow Time Intervals: " + counters.flowTimeIntervals);
-            console.log("Chill Time Intervals: " + counters.chillTimeIntervals);
+            // deep work & break intervals
+            console.log("Deep Work Intervals: " + counters.flowTimeIntervals);
+            console.log("Break Intervals: " + counters.chillTimeIntervals);
             
             // average length of flowTime Intervals
             let timeInterval;
@@ -965,7 +970,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
 
             // reset background to default
-            setBackground(defaultImgUrl);
+            setBackground("", 0);
     
             // reset header text
             setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", "Press 'Start' to begin session");
@@ -1401,7 +1406,7 @@ function setLocalStartTime(flags, startTimes, recoverBreakState, recoverPomState
 // If in pomodoro mode AND not coming from non-pomodoro mode,
 // then we iterate the CurrentPomodoroIntervalOrderIndex
 function chillTimeToFirstPomodoro(flags, productivity_chill_mode, counters) {
-    if ((flags.pomodoroNotificationToggle) && (productivity_chill_mode.textContent !== "Chill Time")) {
+    if ((flags.pomodoroNotificationToggle) && (productivity_chill_mode.textContent !== "Break")) {
         iterateCurrentPomodoroIntervalOrderIndex(counters);
     } 
 }
@@ -1578,7 +1583,7 @@ function flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, 
         currentPomodoro.intervalOrderIndex++;
         setCurrentPomodoroNotificationRecovery(currentPomodoro, timeAmount);
         
-        hyperFocusElapsedTime -= displayTime; //for total display in chill time
+        hyperFocusElapsedTime -= displayTime; //for total display in break
         localStartTime = Date.now(); //effectively resets display time
         
         setRecoverBreakState(recoverBreakState, displayTime, pomodorosCompleted, hyperFocusElapsedTime, localStartTime, counters, flags, start_stop_btn, setPomIntervalTime); // this switches modes
@@ -1757,20 +1762,6 @@ async function setPomodoroIntervalArr(event, timeAmount, validatedFinalInputVal,
             }
         });
     }
-}
-
-function animationsFadeIn(animationType, displayType) {
-    // animationType.classList.remove('outOfOpacityTransition');
-    animationType.classList.add('intoOpacityTransition');
-    animationType.style.display = displayType;
-}
-
-function animationsFadeOut(animationType) {
-    animationType.classList.remove('intoOpacityTransition');
-    // animationType.classList.add('outOfOpacityTransition');
-    setTimeout(() => {
-        animationType.style.display = 'none';
-    }, 0)
 }
 
 function toggleInfoWindow(infoWindowElement, flagKey, flags) {
@@ -2148,7 +2139,7 @@ function targetHoursValidate(inputHours, timeConvert, startTimes, elapsedTime, f
             if (flags.inHyperFocus) { //if not at very start and in hyper focus
                 alert("Enter a valid target time between " + Math.ceil((parseFloat((elapsedTime.hyperFocus + (Date.now() - startTimes.local)) / timeConvert.msPerHour)) * 100) / 100 + " hours and 24 hours");
             }
-            else if (!flags.inHyperFocus) { //if not at very start and in chill time
+            else if (!flags.inHyperFocus) { //if not at very start and in break
                 alert("Enter a valid target time between " + Math.ceil((parseFloat(elapsedTime.hyperFocus / timeConvert.msPerHour)) * 100) / 100 + " hours and 24 hours");
             }
         }
@@ -2296,7 +2287,7 @@ function playClick(clock_tick, flags) {
 
 function handleEnter(event, start_stop_btn, submit_change_btn, createLabelInput, updateLabelInput, flags) {
 
-    if ((event.key === 'Enter') && (!flags.enterKeyDown)) {
+    if ((event.key === 'Enter') && (!flags.enterKeyDown) && (state.lastSelectedMode === 'home')) {
         event.preventDefault();
         flags.enterKeyDown = true;
         
@@ -2409,8 +2400,17 @@ export function setInitialBackgroundCellSelection() {
     document.getElementById(selectedBackgroundId.chilltime).classList.add('selected-background');
 }
 
-export function setBackground(background_color) {
-    document.documentElement.style.backgroundImage = background_color;
+export function setBackground(background_color, opacity) {
+    if (state.lastSelectedMode === 'home') {
+        backgroundContainer.style.opacity = opacity;
+        if (background_color === "") {
+            setTimeout(() => {
+                backgroundContainer.style.backgroundImage = background_color;
+            }, 250)
+        } else {
+            backgroundContainer.style.backgroundImage = background_color;
+        }
+    }
 };
 
 export function deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, isMobile) {
@@ -2537,4 +2537,18 @@ export function totalTimeDisplay(startTimes, elapsedTime, total_time_display, ti
     } else {
         total_time_display.textContent = `${hours}:${minutes}:${seconds}`;
     }
+};
+
+export function animationsFadeIn(animationType, displayType) {
+    if (state.lastSelectedMode === 'home') {
+        animationType.classList.add('intoOpacityTransition');
+        animationType.style.display = displayType;
+    }
+};
+
+export function animationsFadeOut(animationType) {
+    animationType.classList.remove('intoOpacityTransition');
+    setTimeout(() => {
+        animationType.style.display = 'none';
+    }, 0)
 };

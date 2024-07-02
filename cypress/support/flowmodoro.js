@@ -52,7 +52,7 @@ Cypress.Commands.add('setFlowmodoroIntervalTimes', function(lessThan25Min, lessT
 })
 
 Cypress.Commands.add('mainFlowmodoroTest', function(breakTimeStr, breakTime, flowTime, breakInput) {
-    cy.get('[data-testid="start-stop"]').click(); // --> Flow Time
+    cy.get('[data-testid="start-stop"]').click(); // --> Deep Work
     cy.tick(flowTime * 60 * 1000); // simulate passing of 5 minutes
     cy.get('[data-testid="start-stop"]').click(); // --> Chill Time
 

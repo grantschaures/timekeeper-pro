@@ -40,10 +40,11 @@ html {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center center;
+    background-color: #202020; /* Fallback */
     /* background-color: #411da3; */
+    /* background-image: url("/images/iStock/iStock-1253862403-mid-edit.jpg"); */
     /* background-image: url("/images/iStock/iStock-1394258314-mid.jpg"); */
-    /* background-image: url("/images/iStock/iStock-1306875579-mid.jpg"); */
-    background-image: url("/images/iStock/iStock-1253862403-mid-edit.jpg");
+    background-image: url("/images/iStock/iStock-1306875579-mid.jpg"); 
     
     transition: background-image 1s ease-in-out;
     
@@ -53,9 +54,25 @@ html {
     /* border: 2px solid white; */
 }
 
-/* .fade-background {
-    transition: background-image 1s ease-in-out;
-} */
+#backgroundContainer {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center center;
+
+    /* border: 5px solid gray; */
+
+    opacity: 0;
+    transition: opacity 0.25s ease-in-out;
+
+    z-index: 0;
+}
 
 body::before {
     content: '';
@@ -217,6 +234,7 @@ h4 {
     border: 3px solid #ffffff;
     position: relative;
     transition: opacity 1s ease-in-out;
+    z-index: 3;
 }
 
 .dash-mode::after {
@@ -239,15 +257,15 @@ h4 {
     transform: scale(1.15)
 }
 
-body[data-dashboard-mode=report] .dash-mode::after {
+body[dinkle-doink-setting=report] .dash-mode::after {
     translate: 0
 }
 
-body[data-dashboard-mode=home] .dash-mode::after {
+body[dinkle-doink-setting=home] .dash-mode::after {
     translate: calc(var(--circ-size)/4*3.675)
 }
 
-body[data-dashboard-mode=space] .dash-mode::after {
+body[dinkle-doink-setting=space] .dash-mode::after {
     translate: calc(var(--circ-size)/2*3.675)
 }
 
@@ -272,15 +290,15 @@ body[data-dashboard-mode=space] .dash-mode::after {
     transition: color 375ms ease-in-out
 }
 
-body[data-dashboard-mode=report] .dash-mode .caption [data-mode=report] {
+body[dinkle-doink-setting=report] .dash-mode .caption [dinkle-doink=report] {
     display: block
 }
 
-body[data-dashboard-mode=home] .dash-mode .caption [data-mode=home] {
+body[dinkle-doink-setting=home] .dash-mode .caption [dinkle-doink=home] {
     display: block
 }
 
-body[data-dashboard-mode=space] .dash-mode .caption [data-mode=space] {
+body[dinkle-doink-setting=space] .dash-mode .caption [dinkle-doink=space] {
     display: block
 }
 
@@ -324,7 +342,6 @@ body[data-dashboard-mode=space] .dash-mode .caption [data-mode=space] {
 
 main {
     display: block;
-    /* border: 3px solid red; */
 }
 
 #subMainContainer {
@@ -335,7 +352,7 @@ main {
     margin-top: 25px;
 
     opacity: 0;
-    transition: opacity 1s ease-in-out;
+    transition: opacity 1s ease-in-out; 
 
     /* border: 3px solid black; */
     /* overflow-x: hidden; */
@@ -360,6 +377,7 @@ main {
     padding: 25px;
 
     /* border: 3px solid cyan; */
+    z-index: 5;
 }
 
 @media (max-width: 504px) {
@@ -431,6 +449,8 @@ button:hover {
     opacity: 0;
     transition: opacity 1s ease-in-out, background-color 0.25s ease;
     border: 4px solid white;
+
+    z-index: 2;
 }
 
 #menuIcon {
@@ -530,6 +550,7 @@ button:hover {
     border-radius: 25px; /* Created corner curves */
     /* border: 1px solid yellow; */
 
+    z-index: 2;
 }
 
 #targetHoursContainer {
@@ -556,8 +577,7 @@ button:hover {
     
     border-radius: 25px; /* Created corner curves */
     /* border: 1px solid yellow; */
-
-
+    z-index: 2;
 }
 
 @media (min-width: 505px) {

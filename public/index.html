@@ -3,7 +3,7 @@
     <head>
         <meta charset='utf-8'>
         <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-        <meta name="description" content="HyperChill.io is a time tracker which documents the amount of time you spend productively on tasks.">
+        <meta name="description" content="HyperChill.io is a time tracker which collects and visualizes data concerning the duration and quality of deep work.">
         <title>HyperChill.io: Online Productivity Time Tracker</title>
         <meta name='viewport' content='width=device-width, initial-scale=1.0'>
         <link rel='stylesheet' href='/css/styles.css'>
@@ -38,12 +38,11 @@
         gtag('config', 'G-E3SBGG3VKK');
     </script>
 
-    <body data-dashboard-mode="home"> <!-- enclose all elements and content to be rendered in the browser -->
+    <body dinkle-doink-setting="home"> <!-- enclose all elements and content to be rendered in the browser -->
         <!-- <video autoplay muted loop playsinline id="background-video">
             <source id="background-video-source" src="videos/istockphoto-1388209063-640_adpp_is.mp4" type="video/mp4">
         </video> -->
-
-        <div id="popupOverlay" data-testid="popupOverlay" class="overlay">
+        <div id="popupOverlay" data-testid="popupOverlay" class="overlay"> <!-- z-index: 1000 -->
             <div id="deleteAccountPopup">
                 <div id="deleteAccountPopupHeader">
                     <h2 style="color: gray">💀 Delete Account 💀</h2>
@@ -113,7 +112,7 @@
             </div>
         </div>
 
-        <div id="animationContainer" class="wave-container">
+        <div id="animationContainer" class="wave-container"> <!-- z-index: 1 -->
             <div id="flowAnimation" class="wave">
                 <img id="sineWaveBack" src="images/animations/sine-wave-FINAL-LONG_small.png" class="no-select" draggable="false">
                 <img id="sineWaveFront" src="images/animations/sine-wave-hella-long_smaller.png" class="no-select" draggable="false">
@@ -125,27 +124,29 @@
             </div>
         </div>
 
-        <div id="mainContainer">
+        <div id="backgroundContainer"></div> <!-- z-index: 0 -->
+
+        <div id="mainContainer"> <!-- z-index: 5 -->
             <header>
                 <div class="container">
                     <img id="hyperChillLogoImage" src="images/logo/HyperChillLogo_smallest.png" class="no-select" draggable="false">
                     <div id="titleToggleContainer">
                         <h1 id="hyperChillTitle" class="no-select" >H Y P E R C H I L L . I O</h1>
-                        <span id="threeWayToggle" class="dash-mode">
-                            <svg id="report-icon" data-testid="report-icon" data-mode="report" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" data-clickable>
+                        <span id="threeWayToggle" class="dash-mode"> <!-- z-index: 3 -->
+                            <svg id="report-icon" data-testid="report-icon" dinkle-doink="report" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" data-clickable>
                                 <path id="report-path" d="M 12 26 L 12 23 L 16 23 L 16 26 Z M 18 26 L 18 18 L 22 18 L 22 26 Z M 24 26 L 24 12 L 28 12 L 28 26 Z" fill="white"></path>
                             </svg>                                                                              
-                            <svg id="home-icon" data-testid="home-icon" data-mode="home" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" data-clickable>
+                            <svg id="home-icon" data-testid="home-icon" dinkle-doink="home" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" data-clickable>
                                 <path id="home-path" d="M 10 27 V 14.3333 L 18.4444 8 L 26.8889 14.3333 V 27 H 20.5556 V 19.6111 H 16.3333 V 27 H 10 Z" fill="white"></path>
                             </svg>
-                            <svg id="space-icon" data-testid="space-icon" data-mode="space" width="36" height="36"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1232 959">
+                            <svg id="space-icon" data-testid="space-icon" dinkle-doink="space" width="36" height="36"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1232 959">
                                 <rect x="375.87" y="238.76" width="479.49" height="479.49" transform="translate(-158.05 575.46) rotate(-45)" style="fill: #fff; stroke-width: 0px;"/>
                                 <path d="M615.61,146.53l331.98,331.98-331.98,331.98-331.98-331.98,331.98-331.98M615.61,132.39l-346.13,346.13,346.13,346.13,346.13-346.13-346.13-346.13h0Z" style="fill: #fff; stroke-width: 0px;"/>
                               </svg>
                             <div class="caption fade">
-                                <span data-mode="report" class="no-select">Report</span>
-                                <span data-mode="home" class="no-select">Home</span>
-                                <span data-mode="space" class="no-select">Space</span>
+                                <span dinkle-doink="report" class="no-select">Report</span>
+                                <span dinkle-doink="home" class="no-select">Home</span>
+                                <span dinkle-doink="space" class="no-select">Space</span>
                             </div>
                         </span>
                     </div>
@@ -202,7 +203,7 @@
                 </div>
             </header>
 
-            <main data-testid="main">
+            <main class="main" data-testid="main">
                 <div id="subMainContainer">
                     <div id="targetHoursInterruptionsContainer">
                         <div id="targetHoursContainer">
@@ -218,7 +219,7 @@
                         </div>
                         <div id="interruptions-container">
                             <div id="interruptions-sub-container" data-testid="interruptions-sub-container">
-                                <h4 id="interruptions-label" style="font-size: 20px" class="no-select"> Interruptions </h4>
+                                <h4 id="interruptions-label" style="font-size: 20px" class="no-select"> Distractions </h4>
                                 <div id="interruptions-change-container">
                                     <button id="decBtn" class="interruptionsDivBtn no-select">-</button>
                                     <div id="coolerDiv" class="no-select">
@@ -566,7 +567,6 @@
                         <ul>
                             <li>Combines the focus and alertness achieved via concentration mediation with the relaxation achieved via NSDR</li>
                             <li>Defined as a state of deep immersive focus on a task</li>
-                            <li>Hypnosis, also referred to as 'Flow State', is the target mental state to reach while in Flow Time when using HyperChill.io</li>
                             <li><a href="https://www.reveri.com/" target="_blank">Hypnosis App Recommended By Andrew Huberman</a></li>
                             <li><a href="https://youtu.be/yb5zpo5WDG4?si=1uptj9aofINGMJdU&t=4333" target="_blank">01:12:13 | Hypnosis (Hyper Focus)</a></li>
                         </ul>
@@ -693,10 +693,10 @@
                         <h1 style="font-size: 26px">How It Works</h1>
                     </div>
                     <div>
-                        <h2 class="abouth2">1. Optional - Set a target time (in hours) that you want for a studying session</h2>
+                        <h2 class="abouth2">1. Optional - Set a target time (in hours) that you want for a deep work session</h2>
                         <h2 class="abouth2">2. Press 'Start' to start the session</h2>
-                        <h2 class="abouth2">3. After you've been studying for a while and need a break, press 'Stop' to enter 'Chill Time'</h2>
-                        <h2 class="abouth2">4. Press 'Start' once again to re-enter 'Flow Time'</h2>
+                        <h2 class="abouth2">3. After you've been working or studying for a while and need a break, press 'Stop' to enter 'Break'</h2>
+                        <h2 class="abouth2">4. Press 'Start' once again to re-enter 'Deep Work'</h2>
                         <h2 class="abouth2">5. Repeat steps 3-4 as needed until you're done with the session entirely, at which point you can hit 'End' or 'End Session'</h2>
                     </div>
                     <div>
@@ -716,7 +716,7 @@
                         <h2 class="abouth2">Track your Progress:</h2>
                             <ul>
                                 <li style="color: white">
-                                    <h2 class="abouth2">Use the Report feature to explore a graphical representation of your Flow Time/ Chill Time intervals for each day, week, and month.
+                                    <h2 class="abouth2">Use the Report feature to explore analytics related to the duration and quality of deep work.
                                         Use this information along with the Notes feature to detect patterns and make any necessary changes to maximize productivity.</h2>
                                 </li>
                             </ul>
@@ -761,7 +761,7 @@
                                 <img src="images/icons/circlesIcon.png" id="flowmodoroIcon" class="settingsIcon" draggable="false">
                             </div>
                             <div id="flowmodoroHeader" class="settingsHeader">
-                                <b>Chill Time</b>
+                                <b>Break</b>
                             </div>
                         </div>
                         <div id="generalBtnContainer" data-testid="generalBtnContainer" class="settingsHeaderRow subCategory">
@@ -769,7 +769,7 @@
                                 <img src="images/icons/sineIcon.png" id="generalIcon" class="settingsIcon" draggable="false">
                             </div>
                             <div id="generalHeader" class="settingsHeader">
-                                <b>Flow Time</b>
+                                <b>Deep Work</b>
                             </div>
                         </div>
                         <div id="backgroundsBtnContainer" class="settingsHeaderRow">
@@ -942,14 +942,14 @@
 
                         <div id="flowmodoroSettingsContainer" class="settingsContentContainer">
                             <div id="flowmodoroContainer" class="settingsIconTextContainer">
-                                <h2>Chill Time</h2>
+                                <h2>Break (Flowtime Technique)</h2>
                             </div>
                             <!-- <div class="horizontal"></div> -->
                             <div id="alertsNotificationsToggleContainer2" class="settingsCategory">
                                 <div id="flowmodoroNotificationsBlock">
                                     <div id="toggleFlowmodoroNotificationContainer" class="settingsMicroContainer">
                                         <div id="flowmodoroNotificationText" class="settingsText">
-                                            <p id="flowmodoroNotifications"><b class="settingsCategoryHeading">Chill Time Notifications</b></p>
+                                            <p id="flowmodoroNotifications"><b class="settingsCategoryHeading">Break Notifications</b></p>
                                         </div>
                                         <div id="flowmodoroNotificationToggleContainer" class="toggleContainer">
                                             <input type="checkbox" id="flowmodoroNotificationToggle" class="toggle-checkbox">
@@ -958,17 +958,17 @@
                                             </label>
                                         </div>
                                         <div id="flowmodoroNotificationInfoWindow" class="notificationInfoWindow">
-                                            This will notify you after the specified number of minutes in Chill Time
+                                            This will notify you after the specified number of minutes in Break
                                         </div>  
                                     </div>
                                     <div id="flowTimeBreakDemoImages" class="settingsMicroContainer">
                                         <div id="endOfBreakIntervals">
                                             <div id="minutesImageBucket" class="imageBucketHeader">
                                                 <div>
-                                                    <p id="FlowTime"><b>Flow Time: </b></p>
+                                                    <p id="FlowTime"><b>Deep Work: </b></p>
                                                 </div>
                                                 <div>
-                                                    <p id="ChillTime"><b>Chill Time: </b></p>
+                                                    <p id="ChillTime"><b>Break: </b></p>
                                                 </div>
                                             </div>
                                             <div id="semiBlock1" class="semiBlock">
@@ -1052,12 +1052,12 @@
 
                         <div id="generalSettingsContainer" class="settingsContentContainer">
                             <div id="generalContainer" class="settingsIconTextContainer">
-                                <h2>Flow Time</h2>
+                                <h2>Deep Work</h2>
                             </div>
                             <div id="flowTimeBreakNotificationBlock">
                                 <div id="toggleBreakSuggestionContainer" class="settingsMicroContainer">
                                     <div id="breakSuggestionText" class="settingsText">
-                                        <p id="flowTimeBreakNotification"><b class="settingsCategoryHeading">Flow Time Notifications</b></p>
+                                        <p id="flowTimeBreakNotification"><b class="settingsCategoryHeading">Deep Work Notifications</b></p>
                                     </div>
                                     <div id="breakSuggestionToggleContainer" class="toggleContainer">
                                         <input type="checkbox" id="breakSuggestionToggle" class="toggle-checkbox">
@@ -1066,7 +1066,7 @@
                                         </label>
                                     </div>
                                     <div id="flowTimeBreakNotificationInfoWindow" class="notificationInfoWindow">
-                                        Enter the time (in minutes) you'd like to pass while in Flow Time before getting a suggestion to take break
+                                        Enter the time (in minutes) you'd like to pass while in Deep Work before getting a suggestion to take break
                                     </div>  
                                 </div>
                                 <div id="suggestionMinutesContainer" class="settingsMicroContainer">
@@ -1141,7 +1141,7 @@
 
                             <div id="flowTimeBackgroundsTextContainer" class="settingsMicroContainer">
                                 <div id="flowTimeBackgroundsText" class="settingsText">
-                                    <p id="flowTimeBackgrounds"><b class="settingsCategoryHeading">Flow Time Background</b></p>
+                                    <p id="flowTimeBackgrounds"><b class="settingsCategoryHeading">Deep Work Background</b></p>
                                 </div>
                             </div>
 
@@ -1178,7 +1178,7 @@
 
                             <div id="chillTimeBackgrounds" class="settingsMicroContainer">
                                 <div id="chillTimeBackgroundsText" class="settingsText">
-                                    <p id="chillTimeBackgrounds"><b class="settingsCategoryHeading">Chill Time Background</b></p>
+                                    <p id="chillTimeBackgrounds"><b class="settingsCategoryHeading">Break Background</b></p>
                                 </div>
                             </div>
 
@@ -1240,7 +1240,7 @@
                             <div id="animationsContainer" class="settingsMicroContainer">
                                 <div id="flowTimeAnimationToggleContainer">
                                     <div id="flowTimeAnimationText" class="settingsText">
-                                        <p id="flowTimeAnimationHeader"><b>Flow Time</b></p>
+                                        <p id="flowTimeAnimationHeader"><b>Deep Work</b></p>
                                     </div>
                                     <div id="flowTimeAnimationToggleContainer" class="toggleContainer">
                                         <input type="checkbox" id="flowTimeAnimationToggle" class="toggle-checkbox" checked>
@@ -1252,7 +1252,7 @@
                                 </div>
                                 <div id="chillTimeAnimationToggleContainer">
                                     <div id="chillTimeAnimationText" class="settingsText">
-                                        <p id="chillTimeAnimationHeader"><b>Chill Time</b></p>
+                                        <p id="chillTimeAnimationHeader"><b>Break</b></p>
                                     </div>
                                     <div id="chillTimeAnimationToggleContainer" class="toggleContainer">
                                         <input type="checkbox" id="chillTimeAnimationToggle" class="toggle-checkbox" checked>
@@ -1408,7 +1408,7 @@
                             <div id="flowmodoroAlertSoundBlock2">
                                 <div id="flowmodoroAlertSoundContainer2" class="settingsMicroContainer">
                                     <div id="flowmodoroAlertSoundText2" class="settingsText">
-                                        <p><b>Chill Time Alert Volume</b></p>
+                                        <p><b>Break Alert Volume</b></p>
                                     </div>
                                     <div id="flowmodoroAlertSoundVolumeContainer2" class="toggleContainer">
                                         <div id="flowmodoroVolumeContainer2" class="volume-container">
@@ -1442,7 +1442,7 @@
                             <div id="generalAlertSoundBlock2">
                                 <div id="generalAlertSoundContainer2" class="settingsMicroContainer">
                                     <div id="generalAlertSoundText2" class="settingsText">
-                                        <p><b>Flow Time Alert Volume</b></p>
+                                        <p><b>Deep Work Alert Volume</b></p>
                                     </div>
                                     <div id="generalAlertSoundVolumeContainer2" class="toggleContainer">
                                         <div id="generalVolumeContainer2" class="volume-container">
