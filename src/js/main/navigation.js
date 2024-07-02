@@ -359,7 +359,15 @@ function subMainContainerTransition(display) {
 }
 
 function setModeBackground(imgPath) {
-    document.documentElement.style.backgroundImage = `url('${imgPath}')`;
+    var modeBackgroundImg = new Image();
+    modeBackgroundImg.src = imgPath;
+    modeBackgroundImg.onload = function() {
+        document.documentElement.style.backgroundImage = `url('${imgPath}')`;
+    }
+
+    modeBackgroundImg.onerror = function() {
+        console.error(`Failed to load image: ${imgPath}`);
+    };
 }
 
 // function showMainElements() {}
