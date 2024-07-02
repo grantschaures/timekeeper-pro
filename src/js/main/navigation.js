@@ -1,4 +1,4 @@
-import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn, spaceContainer, shortcutsContainer, shortcutsPopup, shortcutsExit } from '../modules/dom-elements.js';
+import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn, spaceContainer, shortcutsContainer, shortcutsPopup, shortcutsExit, reportContainer } from '../modules/dom-elements.js';
 
 import { blogIdList, flags, counters, state } from '../modules/navigation-objects.js';
 
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function() {
     blogMenuContainer.addEventListener("click", function(event) {
 
         // HIDING ELEMENTS
-        main_elements.style.display = "none"; // hide main elements
+        subMainContainer.style.display = "none"; // hide main elements
         aboutContainer.style.display = "none"; // hide main blog container
         closeMenu(flags, popupMenu); // hide main menu
 
@@ -58,16 +58,17 @@ document.addEventListener("DOMContentLoaded", function() {
         // OTHER CHANGES
         body.style.overflowY = 'hidden'; // no scroll
         blog_exit.classList.add('resetRotation'); // triggers reset animation
-        setDashboardMode("home", "none");
+        setDinkleDoinkSetting("home");
+        subMainContainerTransition("none");
 
-        resetMode("report", reportContainer);
-        resetMode("space", spaceContainer);
+        resetMode(reportContainer);
+        resetMode(spaceContainer);
     });
 
     about_menu_container.addEventListener("click", function() {
 
         // HIDING ELEMENTS
-        main_elements.style.display = "none"; // hide main elements
+        subMainContainer.style.display = "none"; // hide main elements
         blogContainer.style.display = "none"; // hide main blog container
         closeMenu(flags, popupMenu); // hide main menu
 
@@ -82,10 +83,11 @@ document.addEventListener("DOMContentLoaded", function() {
         // OTHER CHANGES
         body.style.overflowY = 'hidden'; // no scroll
         about_exit.classList.add('resetRotation'); // triggers reset animation
-        setDashboardMode("home", "none");
+        setDinkleDoinkSetting("home");
+        subMainContainerTransition("none");
 
-        resetMode("report", reportContainer);
-        resetMode("space", spaceContainer);
+        resetMode(reportContainer);
+        resetMode(spaceContainer);
     });
 
     settings_menu_container.addEventListener("click", function() {
@@ -98,9 +100,9 @@ document.addEventListener("DOMContentLoaded", function() {
         // SHOWING ELEMENTS
         settingsContainer.style.display = "block";
 
-        // if coming from blog or about (which hides main_elements)
+        // if coming from blog or about (which hides subMainContainer)
         if (state.lastSelectedMode === 'home') {
-            main_elements.style.display = "block";
+            subMainContainer.style.display = "block";
         }
 
         // OTHER CHANGES
@@ -283,16 +285,20 @@ document.addEventListener("DOMContentLoaded", function() {
 function handleLeftRightArrowKeys(event) {
     if (event.key === 'ArrowLeft') {
         if (state.lastSelectedMode === 'space') {
-            setDashboardMode("home", "block");
-            resetMode("report", reportContainer);
-            resetMode("space", spaceContainer);
-
+            resetMode(reportContainer);
+            resetMode(spaceContainer);
+            setDinkleDoinkSetting("home");
+            subMainContainerTransition("flex");
+            setModeBackground("/images/iStock/iStock-1306875579-mid.jpg"); // hands
+            
         } else if (state.lastSelectedMode === 'home') {
-            setDashboardMode("report", "none");
-            initializeNewMode("report", reportContainer);
-
+            initializeNewMode(reportContainer);
+            
             isClickNotOnAboutElements(event, about_menu_container, aboutContainer, menuBtn, about_exit, reportIcon, reportPath);
             isClickNotOnBlogElements(event, blogMenuContainer, blog_post_container, menuBtn, blog_exit);
+            setDinkleDoinkSetting("report");
+            subMainContainerTransition("none");
+            setModeBackground("/images/iStock/iStock-1253862403-mid-edit.jpg"); // basic
 
             if (flags.blogShowing) { // hide blog content
                 blog_post_container.style.display = 'none';
@@ -301,17 +307,21 @@ function handleLeftRightArrowKeys(event) {
         }
     } else if (event.key === 'ArrowRight') {
         if (state.lastSelectedMode === 'report') {
-            setDashboardMode("home", "block");
-
-            resetMode("report", reportContainer);
-            resetMode("space", spaceContainer);
-
+            
+            resetMode(reportContainer);
+            resetMode(spaceContainer);
+            setDinkleDoinkSetting("home");
+            subMainContainerTransition("flex");
+            setModeBackground("/images/iStock/iStock-1306875579-mid.jpg"); // hands
+            
         } else if (state.lastSelectedMode === 'home') {
-            setDashboardMode("space", "none");
-            initializeNewMode("space", spaceContainer);
-
+            initializeNewMode(spaceContainer);
+            
             isClickNotOnAboutElements(event, about_menu_container, aboutContainer, menuBtn, about_exit, reportIcon, reportPath);
             isClickNotOnBlogElements(event, blogMenuContainer, blog_post_container, menuBtn, blog_exit);
+            setDinkleDoinkSetting("space");
+            subMainContainerTransition("none");
+            setModeBackground("/images/iStock/iStock-1394258314-mid.jpg"); // space
 
             if (flags.blogShowing) { // hide blog content
                 blog_post_container.style.display = 'none';
@@ -321,27 +331,55 @@ function handleLeftRightArrowKeys(event) {
     }
 }
 
-function setDashboardMode(mode, mainElementsDisplaySettings) {
-    document.body.setAttribute('data-dashboard-mode', mode);
+function setDinkleDoinkSetting(mode) { // and also state.lastSelectedMode value
+    document.body.setAttribute('dinkle-doink-setting', mode);
     state.lastSelectedMode = mode;
-    main_elements.style.display = mainElementsDisplaySettings;
     body.style.overflowY = 'scroll';
 }
 
-function initializeNewMode(mode, containerType) {
-    if (mode === "report") {
-        containerType.style.display = "flex";
-    } else if (mode === "space") {
-        containerType.style.display = "flex";
+function subMainContainerTransition(display) {
+    if (display === "none") {
+    
+        subMainContainer.style.opacity = 0;
+        subMainContainer.offsetHeight; // forcing reflow
+        setTimeout(() => {
+            if (subMainContainer.style.opacity == 0) { // deals w/ edge case where user toggles right/left and back rapidly
+                subMainContainer.style.display = display; // none
+            }
+        }, 150)
+        
+    } else if (display === "flex") {
+        subMainContainer.style.display = display; // flex
+        subMainContainer.offsetHeight; // forcing reflow
+        setTimeout(() => {
+            subMainContainer.style.opacity = 1;
+        }, 0)
+    
     }
 }
 
-function resetMode(mode, containerType) {
-    if (mode === "report") {
-        containerType.style.display = "none";
-    } else if (mode === "space") {
-        containerType.style.display = "none";
-    }
+function setModeBackground(imgPath) {
+    document.documentElement.style.backgroundImage = `url('${imgPath}')`;
+}
+
+// function showMainElements() {}
+
+function initializeNewMode(containerType) {
+    containerType.style.display = "flex";
+    containerType.offsetHeight; // forcing reflow
+    setTimeout(() => {
+        containerType.style.opacity = 1;
+    }, 0)
+}
+
+function resetMode(containerType) {
+    // console.log(containerType);
+    containerType.style.opacity = 0;
+    setTimeout(() => {
+        if (containerType.style.opacity == 0) { // deals w/ edge case where user toggles right/left and back rapidly
+            containerType.style.display = "none";
+        }
+    }, 150)
 }
 
 function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithSettings, event, reportIcon, homeIcon, state, spaceIcon, flags, blog_post_container) {
@@ -349,30 +387,33 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
     if ((!excludeTargets.includes(event.target) && !containers.some(container => container.contains(event.target))) || exitTargetsWithSettings.includes(event.target)) {
         // if user is exiting about or settings windows, make the setting the last one the user was on
         if (reportIcon.contains(event.target)) {
-            setDashboardMode("report", "none");
-            initializeNewMode("report", reportContainer);
-
-            resetMode("space", spaceContainer);
+            initializeNewMode(reportContainer);
+            resetMode(spaceContainer);
+            setDinkleDoinkSetting("report");
+            subMainContainerTransition("none");
+            setModeBackground("/images/iStock/iStock-1253862403-mid-edit.jpg"); // basic
             
         } else if (homeIcon.contains(event.target)) {
-            setDashboardMode("home", "block");
-
-            resetMode("report", reportContainer);
-            resetMode("space", spaceContainer);
+            resetMode(reportContainer);
+            resetMode(spaceContainer);
+            setDinkleDoinkSetting("home");
+            subMainContainerTransition("flex");
+            setModeBackground("/images/iStock/iStock-1306875579-mid.jpg"); // hands
             
         } else if (spaceIcon.contains(event.target)) {
-            setDashboardMode("space", "none");
-            initializeNewMode("space", spaceContainer);
-
-            resetMode("report", reportContainer);
+            initializeNewMode(spaceContainer);
+            resetMode(reportContainer);
+            setDinkleDoinkSetting("space");
+            subMainContainerTransition("none");
+            setModeBackground("/images/iStock/iStock-1394258314-mid.jpg"); // space
         }
         
-        // when hitting a blog or about exit, or a settings exit if in home mode
+        // when hitting a blog or about exit (or clicking outside those containers), or a settings exit if in home mode
         if ((exitTargets.includes(event.target)) || (state.lastSelectedMode === 'home')) {
-            setDashboardMode("home", "block");
-
-            resetMode("report", reportContainer);
-            resetMode("space", spaceContainer);
+            setDinkleDoinkSetting("home");
+            subMainContainerTransition("flex");
+            resetMode(reportContainer);
+            resetMode(spaceContainer);
         }
         
         // hiding blog content

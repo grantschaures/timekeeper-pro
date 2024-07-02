@@ -10,7 +10,9 @@
     flex-direction: column; 
     box-sizing: border-box;
     margin-top: 25px;
-
+    
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
     /* border: 3px solid orange; */
 }
 
@@ -21,6 +23,7 @@
     background-color: rgba(0, 0, 0, 0.95);
     box-sizing: border-box;
     border-radius: 25px;
+    z-index: 10;
 
     align-items: center;
     justify-content: center;

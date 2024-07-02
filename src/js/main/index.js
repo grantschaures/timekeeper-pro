@@ -82,6 +82,8 @@ document.addEventListener("DOMContentLoaded", function() {
     }, 1000)
     
     setTimeout(() => {
+        subMainContainer.style.transition = 'opacity 0.5s ease-in-out';
+
         hyperChillTitle.classList.remove('hyperChillTitleAnimationTranslate');
         hyperChillTitle.style.opacity = '0';
         setTimeout(() => {
@@ -95,14 +97,17 @@ document.addEventListener("DOMContentLoaded", function() {
     }, 2000)
 
     // Fade out gradient once home image has loaded :P
-    let defaultImgPath = "/images/iStock/iStock-1253862403-mid-edit.jpg";
+    let defaultImgPath = "/images/iStock/iStock-1306875579-mid.jpg";
     let defaultImgUrl = 'url(' + defaultImgPath + ')';
 
     var startImg = new Image();
     startImg.src = defaultImgPath;
     startImg.onload = function() {
         document.body.classList.add('fade-out-bg');
+        document.documentElement.style.transition = "background-image 0.25s ease-in-out"
     }
+
+    // reset background to default
 
     // service worker registration
     // if ('serviceWorker' in navigator) {
@@ -120,7 +125,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.addEventListener('keyup', (event) => handleKeyUp(event, flags));
 
     start_stop_btn.addEventListener("click", function() {
-        
+
         counters.startStop++; //keep track of button presses (doesn't account for time recovery iterations)
         playClick(clock_tick, flags);
         resetDisplay(display);
@@ -141,8 +146,8 @@ document.addEventListener("DOMContentLoaded", function() {
         start_stop_btn.classList.remove('glowing-effect');
         flags.pomodoroCountIncremented = false;
         
-        if (!intervals.main) { // --> FLOW TIME
-            // console.log(getCurrentTime() + " --> Entering Flow Time");
+        if (!intervals.main) { // --> DEEP WORK
+            // console.log(getCurrentTime() + " --> Entering Deep Work");
             flags.inHyperFocus = true;
             flags.sentFlowmodoroNotification = false;
             counters.flowTimeIntervals++;
@@ -156,7 +161,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 lastChillTimeInterval = startTimes.hyperFocus - startTimes.chillTime;
             }
 
-            if (counters.startStop > 2) { // if 2nd round of flow time (1 round of chill time has already happened)
+            if (counters.startStop > 2) { // if 2nd round of deep work (1 round of break has already happened)
                 intervalArrs.chillTime.push(lastChillTimeInterval);
             }
 
@@ -175,18 +180,18 @@ document.addEventListener("DOMContentLoaded", function() {
                 setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop", setPomodoroIntervalText(counters, timeAmount));
                 setPomodoroWorker(flags, elapsedTime, counters, recoverPomState, pomodoroWorker);
             } else {
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop","Flow Time");
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop","Deep Work");
             }
 
-            if (counters.startStop > 1) { // runs first during first chill time interval
+            if (counters.startStop > 1) { // runs first during first break interval
                 elapsedTime.chillTime += Date.now() - startTimes.chillTime;
             }
 
             // backgroundVideoSource.src = "videos/cyan_gradient_480p.mp4";
             // backgroundVideo.load();
 
-        } else { // --> CHILL TIME
-            // console.log(getCurrentTime() + " --> Entering Chill Time");
+        } else { // --> BREAK
+            // console.log(getCurrentTime() + " --> Entering Break");
             flags.inHyperFocus = false;
             flags.lastHyperFocusIntervalMin = Math.floor((Date.now() - startTimes.hyperFocus) / (1000 * 60));
             startTimes.chillTime = Date.now();
@@ -201,7 +206,7 @@ document.addEventListener("DOMContentLoaded", function() {
             hideInterruptionsSubContainer(interruptionsSubContainer);
             setBackground(selectedBackground.chilltime);
             
-            // There's an automatic transition to Chill Time either starting at Date.now() (if both toggles are on)
+            // There's an automatic transition to Break either starting at Date.now() (if both toggles are on)
             // or starting at Date.now() - displayTime (only auto start break is on)
 
             let lastFlowTimeInterval;
@@ -228,7 +233,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", setBothBreakIntervalText(counters, timeAmount));
             } else {
                 showSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, timeAmount, counters, flags);
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", "Chill Time");
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", "Break");
             }
 
             totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount);
@@ -277,8 +282,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 flags.progressBarContainerIsSmall = false;
             }
                 
-            /* Update progress bar & percentage ONCE to demonstrate submitted change in Chill Time.
-            In Flow Time, this code makes the change happen just a little bit faster. */
+            /* Update progress bar & percentage ONCE to demonstrate submitted change in Break.
+            In Deep Work, this code makes the change happen just a little bit faster. */
             updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer);
             totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount);
             
@@ -291,8 +296,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
             changeTargetHours(flags, sessionState);
 
-            /* Update progress bar & percentage ONCE to demonstrate submitted change in Chill Time.
-                In Flow Time, this code makes the change happen just a little bit faster. */
+            /* Update progress bar & percentage ONCE to demonstrate submitted change in Break.
+                In Deep Work, this code makes the change happen just a little bit faster. */
             updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer);
             totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount);
             
@@ -591,9 +596,9 @@ document.addEventListener("DOMContentLoaded", function() {
             flags.breakSuggestionToggle = true;
 
             if (flags.inHyperFocus) {
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop","Flow Time");
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop","Deep Work");
             } else {
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start","Chill Time");
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start","Break");
             }
 
             resetPomodoroCounters(counters);
@@ -632,7 +637,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             let elapsedTimeInChillTime = Math.floor((Date.now() - startTimes.chillTime) / 1000); //in seconds
 
-            // When toggle for break notification is turned on whilst in chill time
+            // When toggle for break notification is turned on whilst in break
             if (!flags.inHyperFocus && counters.startStop !== 0) {
                 elapsedTime.flowmodoroNotificationSeconds = ((counters.currentFlowmodoroNotification * 60) - elapsedTimeInChillTime);
                 flowmodoroWorker.postMessage("clearInterval");
@@ -687,9 +692,9 @@ document.addEventListener("DOMContentLoaded", function() {
             pomodoroWorker.postMessage("clearInterval");
             start_stop_btn.classList.remove('glowing-effect');
             if (flags.inHyperFocus) {
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop","Flow Time");
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop","Deep Work");
             } else if (counters.startStop > 1) {
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start","Chill Time");
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start","Break");
                 hidePomodorosCompletedContainer(completedPomodorosContainer);
                 showSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, timeAmount, counters, flags);
             }
@@ -897,7 +902,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 savedInterruptionsArr.push(counters.interruptions);
             }
             let totalInterruptions = savedInterruptionsArr.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-            console.log("Total Interruptions: " + totalInterruptions);
+            console.log("Total Distractions: " + totalInterruptions);
             
             // focus score calculation
             let totalMin = totalTime / timeConvert.msPerMin;
@@ -909,9 +914,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 console.log('Focus Score: ' + 0 + '%');
             }
             
-            // flow & chill time intervals
-            console.log("Flow Time Intervals: " + counters.flowTimeIntervals);
-            console.log("Chill Time Intervals: " + counters.chillTimeIntervals);
+            // deep work & break intervals
+            console.log("Deep Work Intervals: " + counters.flowTimeIntervals);
+            console.log("Break Intervals: " + counters.chillTimeIntervals);
             
             // average length of flowTime Intervals
             let timeInterval;
@@ -1401,7 +1406,7 @@ function setLocalStartTime(flags, startTimes, recoverBreakState, recoverPomState
 // If in pomodoro mode AND not coming from non-pomodoro mode,
 // then we iterate the CurrentPomodoroIntervalOrderIndex
 function chillTimeToFirstPomodoro(flags, productivity_chill_mode, counters) {
-    if ((flags.pomodoroNotificationToggle) && (productivity_chill_mode.textContent !== "Chill Time")) {
+    if ((flags.pomodoroNotificationToggle) && (productivity_chill_mode.textContent !== "Break")) {
         iterateCurrentPomodoroIntervalOrderIndex(counters);
     } 
 }
@@ -1578,7 +1583,7 @@ function flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, 
         currentPomodoro.intervalOrderIndex++;
         setCurrentPomodoroNotificationRecovery(currentPomodoro, timeAmount);
         
-        hyperFocusElapsedTime -= displayTime; //for total display in chill time
+        hyperFocusElapsedTime -= displayTime; //for total display in break
         localStartTime = Date.now(); //effectively resets display time
         
         setRecoverBreakState(recoverBreakState, displayTime, pomodorosCompleted, hyperFocusElapsedTime, localStartTime, counters, flags, start_stop_btn, setPomIntervalTime); // this switches modes
@@ -2148,7 +2153,7 @@ function targetHoursValidate(inputHours, timeConvert, startTimes, elapsedTime, f
             if (flags.inHyperFocus) { //if not at very start and in hyper focus
                 alert("Enter a valid target time between " + Math.ceil((parseFloat((elapsedTime.hyperFocus + (Date.now() - startTimes.local)) / timeConvert.msPerHour)) * 100) / 100 + " hours and 24 hours");
             }
-            else if (!flags.inHyperFocus) { //if not at very start and in chill time
+            else if (!flags.inHyperFocus) { //if not at very start and in break
                 alert("Enter a valid target time between " + Math.ceil((parseFloat(elapsedTime.hyperFocus / timeConvert.msPerHour)) * 100) / 100 + " hours and 24 hours");
             }
         }
@@ -2410,6 +2415,7 @@ export function setInitialBackgroundCellSelection() {
 }
 
 export function setBackground(background_color) {
+    console.log("test")
     document.documentElement.style.backgroundImage = background_color;
 };
 

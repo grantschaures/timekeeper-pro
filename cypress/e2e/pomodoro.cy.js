@@ -114,12 +114,12 @@ describe('Pomodoro | Auto and non-auto start', () => {
     })
 
     // Testing cause of undefined error
-    it('Test to ensure that changing pomodoro input after toggling on pom notis in chill time does not alter mode header text until next switch', () => {
+    it('Test to ensure that changing pomodoro input after toggling on pom notis in break does not alter mode header text until next switch', () => {
         cy.get('[data-testid="settingsExit"]').click();
 
         cy.clock(); // start cypress clock
-        cy.get('[data-testid="start-stop"]').click(); // --> Flow Time
-        cy.get('[data-testid="start-stop"]').click(); // --> Chill Time
+        cy.get('[data-testid="start-stop"]').click(); // --> Deep Work
+        cy.get('[data-testid="start-stop"]').click(); // --> Break
         cy.tick(5 * 60 * 1000); // simulate passing of 5 min
         
         cy.openPomodoroSettings();
@@ -127,9 +127,9 @@ describe('Pomodoro | Auto and non-auto start', () => {
         cy.get('[data-testid="pomodoroInput"]').clear();
         cy.get('[data-testid="pomodoroInput"]').type(30); // click start btn to reset
         cy.get('[data-testid="settingsExit"]').click();
-        cy.get('[data-testid="productivity-chill-mode"]').should('contain', "Chill Time");
+        cy.get('[data-testid="productivity-chill-mode"]').should('contain', "Break");
         
-        cy.get('[data-testid="start-stop"]').click(); // --> Flow Time
+        cy.get('[data-testid="start-stop"]').click(); // --> Deep Work
         cy.get('[data-testid="productivity-chill-mode"]').should('contain', "Pomodoro #1 | 30 min");
     })
 
@@ -340,7 +340,7 @@ describe('Addition and removal of glowing-effect on start-stop btn', () => {
        cy.get('#start-stop').should('not.have.class', 'glowing-effect'); // ensure start-stop btn is still glowing
     })
 
-    it("Pomodoro on --> Reach time --> Set Flow Time notification to same time, then turn on toggle --> Turns on glowing effect", () => {
+    it("Pomodoro on --> Reach time --> Set Deep Work notification to same time, then turn on toggle --> Turns on glowing effect", () => {
         // INITIAL CONDITIONS
         cy.get('body').invoke('css', 'overflow-y', 'scroll');
         
@@ -361,7 +361,7 @@ describe('Addition and removal of glowing-effect on start-stop btn', () => {
        cy.tick(25 * 60 * 1000); // simulate passing of 25 minutes
        cy.get('#start-stop').should('have.class', 'glowing-effect'); // ensure start-stop btn is glowing
 
-       // Turn on Flow Time notification, set to 25 min, and turn on toggle
+       // Turn on Deep Work notification, set to 25 min, and turn on toggle
        cy.get('[data-testid="menuBtn"]').click();
        cy.contains("Settings").click();
        cy.get('[data-testid="generalBtnContainer"]').click();
@@ -375,7 +375,7 @@ describe('Addition and removal of glowing-effect on start-stop btn', () => {
        cy.get('#start-stop').should('have.class', 'glowing-effect'); // ensure start-stop btn is still glowing
     })
 
-    it("Pomodoro on --> Reach time --> Turn on toggle, set Flow Time notification to 1  --> Turns on glowing effect", () => {
+    it("Pomodoro on --> Reach time --> Turn on toggle, set Deep Work notification to 1  --> Turns on glowing effect", () => {
         // INITIAL CONDITIONS
         cy.get('body').invoke('css', 'overflow-y', 'scroll');
         

@@ -28,7 +28,7 @@ if (detectBrowser() === "Firefox") {
         "purple-chilltime": 'linear-gradient(90deg, #700cce, #b004c7, #f700ff)',
         "black-chilltime": 'linear-gradient(90deg, #202020, #202020, #202020)',
         "hyperchillSunset-chilltime": 'url("/images/iStock/iStock-1253862403-mid-orange.jpg")',
-        "hyperchillHands-chilltime": 'url("/images/iStock/iStock-1306875579-mid-invert.jpg")',
+        "hyperchillHands-chilltime": 'url("/images/iStock/iStock-1306875579-mid-orange.jpg")',
         "hyperchillTriangle-chilltime": 'url("/images/iStock/iStock-1394258314-mid-green-pixelated.jpg")',
     }
 
@@ -58,7 +58,7 @@ if (detectBrowser() === "Firefox") {
         "purple-chilltime": 'url("/images/hyperchill_gradients/purple-pink-gradient.jpg")',
         "black-chilltime": 'url("/images/hyperchill_gradients/black-gradient.jpg")',
         "hyperchillSunset-chilltime": 'url("/images/iStock/iStock-1253862403-mid-orange.jpg")',
-        "hyperchillHands-chilltime": 'url("/images/iStock/iStock-1306875579-mid-invert.jpg")',
+        "hyperchillHands-chilltime": 'url("/images/iStock/iStock-1306875579-mid-orange.jpg")',
         "hyperchillTriangle-chilltime": 'url("/images/iStock/iStock-1394258314-mid-green-pixelated.jpg")',
     }
 }
