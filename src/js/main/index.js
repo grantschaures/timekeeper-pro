@@ -841,29 +841,34 @@ document.addEventListener("DOMContentLoaded", function() {
         handleViewportWidthChange(settingsMappings, tempStorage, isMobile);
     });
 
-    // document.addEventListener('visibilitychange', function() {
-    //     //user clicks out of tab (or minimizes window)
-    //     if (document.visibilityState === 'hidden') {
-    //         if (flags.inHyperFocus) {
-    //             flowAnimation.style.display = 'none';
-    //             flowAnimation.classList.remove('intoOpacityTransition');
-    //         } else {
-    //             chillAnimation.style.display = 'none';
-    //             chillAnimation.classList.remove('intoOpacityTransition');
-    //         }
+    document.addEventListener('visibilitychange', function() {
+        //user clicks out of tab (or minimizes window)
+        if (document.visibilityState === 'hidden') {
+            if (flags.inHyperFocus) {
+                flowAnimation.style.opacity = 0;
+                flowAnimation.style.display = 'none';
+                flowAnimation.classList.remove('intoOpacityTransition');
+                document.body.offsetHeight;
+                console.log(Date.now());
+            } else {
+                chillAnimation.style.opacity = 0;
+                chillAnimation.style.display = 'none';
+                chillAnimation.classList.remove('intoOpacityTransition');
+            }
             
-    //     } else if (document.visibilityState === 'visible') { //user returns to tab
-    //         if ((flags.inHyperFocus) && (flags.flowTimeAnimationToggle)) {
-    //             flowAnimation.style.display = 'block';
-    //             flowAnimation.classList.add('intoOpacityTransition');
-    //         } else if ((!flags.inHyperFocus) && (flags.chillTimeAnimationToggle)) {
-    //             if (counters.startStop > 0) {
-    //                 chillAnimation.style.display = 'flex';
-    //                 chillAnimation.classList.add('intoOpacityTransition');
-    //             }
-    //         }
-    //     }
-    // });
+        } else if (document.visibilityState === 'visible') { //user returns to tab
+            console.log(Date.now())
+            if ((flags.inHyperFocus) && (flags.flowTimeAnimationToggle)) {
+                flowAnimation.style.display = 'block';
+                flowAnimation.classList.add('intoOpacityTransition');
+            } else if ((!flags.inHyperFocus) && (flags.chillTimeAnimationToggle)) {
+                if (counters.startStop > 0) {
+                    chillAnimation.style.display = 'flex';
+                    chillAnimation.classList.add('intoOpacityTransition');
+                }
+            }
+        }
+    });
 
     /**
      * setTimeout delay of 0 allows the event listener callback function in menu.js
@@ -880,10 +885,6 @@ document.addEventListener("DOMContentLoaded", function() {
     registerHereText.addEventListener('click', function() {
         window.location.href = "/signup";
     });
-
-    // report_btn.addEventListener("click", function() {
-    //     alert("This feature is currently under development. Thank you for your patience.")
-    // })
 
     end_session_btn.addEventListener("click", function() { //temporary function
         if (flags.sessionInProgress) {
