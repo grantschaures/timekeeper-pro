@@ -844,24 +844,26 @@ document.addEventListener("DOMContentLoaded", function() {
     document.addEventListener('visibilitychange', function() {
         //user clicks out of tab (or minimizes window)
         if (document.visibilityState === 'hidden') {
-            if (flags.inHyperFocus) {
-                flowAnimation.style.display = 'none';
-                flowAnimation.classList.remove('intoOpacityTransition');
-            } else {
-                chillAnimation.style.display = 'none';
-                chillAnimation.classList.remove('intoOpacityTransition');
-            }
+            requestAnimationFrame(() => {
+                if (flags.inHyperFocus) {
+                    flowAnimation.style.display = 'none';
+                    flowAnimation.classList.remove('intoOpacityTransition');
+                } else {
+                    chillAnimation.style.display = 'none';
+                    chillAnimation.classList.remove('intoOpacityTransition');
+                }
+            });
             
         } else if (document.visibilityState === 'visible') { //user returns to tab
-            // if ((flags.inHyperFocus) && (flags.flowTimeAnimationToggle)) {
-            //     flowAnimation.style.display = 'block';
-            //     flowAnimation.classList.add('intoOpacityTransition');
-            // } else if ((!flags.inHyperFocus) && (flags.chillTimeAnimationToggle)) {
-            //     if (counters.startStop > 0) {
-            //         chillAnimation.style.display = 'flex';
-            //         chillAnimation.classList.add('intoOpacityTransition');
-            //     }
-            // }
+            if ((flags.inHyperFocus) && (flags.flowTimeAnimationToggle)) {
+                flowAnimation.style.display = 'block';
+                flowAnimation.classList.add('intoOpacityTransition');
+            } else if ((!flags.inHyperFocus) && (flags.chillTimeAnimationToggle)) {
+                if (counters.startStop > 0) {
+                    chillAnimation.style.display = 'flex';
+                    chillAnimation.classList.add('intoOpacityTransition');
+                }
+            }
         }
     });
 
