@@ -108,15 +108,13 @@ document.addEventListener("DOMContentLoaded", function() {
         // SHOWING ELEMENTS
         settingsContainer.style.display = "block";
 
-        subMainContainer.style.display = "flex";
-        subMainContainer.offsetHeight; // forcing reflow
-        setTimeout(() => {
-            subMainContainer.style.opacity = 1;
-        }, 0)
-
         // if coming from blog or about (which hides subMainContainer)
         if (state.lastSelectedMode === 'home') {
             subMainContainer.style.display = "flex";
+            subMainContainer.offsetHeight; // forcing reflow
+            setTimeout(() => {
+                subMainContainer.style.opacity = 1;
+            }, 0)
         }
 
         // OTHER CHANGES
