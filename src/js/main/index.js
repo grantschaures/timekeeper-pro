@@ -1,4 +1,4 @@
-import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selectedBackgroundIdTemp, selectedBackgroundId, timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, alertVolumes, alertSounds, counters, flags, tempStorage, settingsMappings, savedInterruptionsArr, timeAmount, intervalArrs } from '../modules/index-objects.js';
+import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selectedBackgroundIdTemp, selectedBackgroundId, timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, alertVolumes, alertSounds, counters, flags, tempStorage, settingsMappings, savedInterruptionsArr, timeAmount, intervalArrs, defaultBackgroundPath } from '../modules/index-objects.js';
 
 import { chime, bell, clock_tick, soundMap } from '../modules/sound-map.js';
 
@@ -98,11 +98,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     // Fade out gradient once home image has loaded :P
-    let defaultImgPath = "/images/iStock/iStock-1394258314-mid.jpg";
-    let defaultImgUrl = 'url(' + defaultImgPath + ')';
+    let defaultImgUrl = 'url(' + defaultBackgroundPath + ')';
 
     var startImg = new Image();
-    startImg.src = defaultImgPath;
+    startImg.src = defaultBackgroundPath;
     startImg.onload = function() {
         document.body.classList.add('fade-out-bg');
         document.documentElement.style.transition = "background-image 0.25s ease-in-out";

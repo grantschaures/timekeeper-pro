@@ -1,13 +1,11 @@
-export var selectedBackground;
-export var flowtimeBackgrounds;
-export var chilltimeBackgrounds;
+export const defaultBackgroundPath = "/images/iStock/iStock-1394258314-mid.jpg";
 
-selectedBackground = {
+export const selectedBackground = {
     "flowtime": 'linear-gradient(90deg, #00c510, #00c431, #00c59a)',
     "chilltime": 'linear-gradient(90deg, #0f0cce, #700cce, #b004c7)'
 }
 
-flowtimeBackgrounds = {
+export const flowtimeBackgrounds = {
     "green-default": 'linear-gradient(90deg, #00c510, #00c431, #00c59a)',
     "red-flowtime": 'linear-gradient(90deg, #c42700, #c56900, #c58000)',
     "yellow-flowtime": 'linear-gradient(90deg, #e1ff00, #90c400, #00e908)',
@@ -19,7 +17,7 @@ flowtimeBackgrounds = {
     "hyperchillTriangle-flowtime": 'url("/images/iStock/iStock-1394258314-mid.jpg")',
 }
 
-chilltimeBackgrounds = {
+export const chilltimeBackgrounds = {
     "green-chilltime": 'linear-gradient(90deg, #00c510, #00c431, #00c59a)',
     "red-chilltime": 'linear-gradient(90deg, #c42700, #c56900, #c58000)',
     "yellow-chilltime": 'linear-gradient(90deg, #e1ff00, #90c400, #00e908)',

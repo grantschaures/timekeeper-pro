@@ -260,58 +260,68 @@ h4 {
     font-family: myFont2;
 }
 
-.dash-mode {
+.dinkle-doink-mode {
     display: none;
-    /* display: inline-flex; */
     opacity: 0;
-    width: 102px;
-    /* background-color: rgba(0, 0, 0, 0.35); */
-    border-radius: 2rem;
-    cursor: pointer;
-    border: 3px solid #ffffff;
     position: relative;
+    width: 102px;
+    border-radius: 2rem;
     transition: opacity 1s ease-in-out;
+    cursor: pointer;
+    border: 3px solid white;
     z-index: 3;
 }
 
-.dash-mode::after {
+.dinkle-doink-mode::after {
     content: "";
-    background: linear-gradient(155deg, #BCA0FF 0%, #6C37ED 100%);
-    box-shadow: 0px 4px 4px 0px rgba(108,55,237,.41);
-    z-index: 5;
+    background: linear-gradient(160deg, #2dd5ff 0%, #5025be 100%);
+    box-shadow: 0px 3px 3px 0px rgba(5, 0, 40, 0.35);
     left: 0;
-    height: var(--circ-size);
-    width: var(--circ-size);
+    --spot-area: 36px;
+    height: var(--spot-area);
+    width: var(--spot-area);
     position: absolute;
-    top: calc((100% - var(--circ-size))/2);
+    top: calc((100% - var(--spot-area))/2);
     border-radius: 1000px;
-    --circ-size: 36px;
-    transition: all 175ms ease-in-out;
-    translate: calc(var(--circ-size)/4*3.675)
+    z-index: 6;
+    transition: all 250ms ease-in-out;
+    translate: calc(var(--spot-area)/4*3.675)
 }
 
-.dash-mode:active::after {
-    transform: scale(1.15)
+.dinkle-doink-mode:active::after {
+    transform: scale(1.2)
 }
 
-body[dinkle-doink-setting=report] .dash-mode::after {
+body[dinkle-doink-setting=report] .dinkle-doink-mode::after {
     translate: 0
 }
 
-body[dinkle-doink-setting=home] .dash-mode::after {
-    translate: calc(var(--circ-size)/4*3.675)
+body[dinkle-doink-setting=home] .dinkle-doink-mode::after {
+    translate: calc(var(--spot-area)/4*3.675)
 }
 
-body[dinkle-doink-setting=space] .dash-mode::after {
-    translate: calc(var(--circ-size)/2*3.675)
+body[dinkle-doink-setting=space] .dinkle-doink-mode::after {
+    translate: calc(var(--spot-area)/2*3.675)
 }
 
-.dash-mode svg {
+body[dinkle-doink-setting=report] .dinkle-doink-mode .caption [dinkle-doink=report] {
+    display: block
+}
+
+body[dinkle-doink-setting=home] .dinkle-doink-mode .caption [dinkle-doink=home] {
+    display: block
+}
+
+body[dinkle-doink-setting=space] .dinkle-doink-mode .caption [dinkle-doink=space] {
+    display: block
+}
+
+.dinkle-doink-mode svg {
     position: relative;
     z-index: 10
 }
 
-.dash-mode .caption {
+.dinkle-doink-mode .caption {
     position: absolute;
     bottom: -1.75rem;
     left: 0;
@@ -321,23 +331,12 @@ body[dinkle-doink-setting=space] .dash-mode::after {
     text-align: center
 }
 
-.dash-mode .caption span {
+.dinkle-doink-mode .caption span {
     display: none;
-    color: #ffffff;
-    transition: color 375ms ease-in-out
+    color: white;
+    transition: color 250ms ease-in-out
 }
 
-body[dinkle-doink-setting=report] .dash-mode .caption [dinkle-doink=report] {
-    display: block
-}
-
-body[dinkle-doink-setting=home] .dash-mode .caption [dinkle-doink=home] {
-    display: block
-}
-
-body[dinkle-doink-setting=space] .dash-mode .caption [dinkle-doink=space] {
-    display: block
-}
 
 .threeWayToggleIcon {
     width: 30px;

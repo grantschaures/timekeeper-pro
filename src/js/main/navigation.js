@@ -4,7 +4,7 @@ import { blogIdList, flags, counters, state } from '../modules/navigation-object
 
 import { sessionState } from '../modules/state-objects.js';
 
-import { flags as indexFlags, selectedBackground } from '../modules/index-objects.js';
+import { flags as indexFlags, selectedBackground, defaultBackgroundPath } from '../modules/index-objects.js';
 
 import { deleteUserAccount } from '../state/delete-account.js'; // minified
 
@@ -304,7 +304,7 @@ function handleLeftRightArrowKeys(event) {
                 resetMode(reportContainer);
                 resetMode(spaceContainer);
                 subMainContainerTransition("flex");
-                // setModeBackground("/images/iStock/iStock-1394258314-mid.jpg");
+                // setModeBackground(defaultBackgroundPath);
                 fadeInAnimationsSessionBackground(); // needs to execute second
                 
             } else if (state.lastSelectedMode === 'home') { // --> REPORT
@@ -314,7 +314,7 @@ function handleLeftRightArrowKeys(event) {
                 subMainContainerTransition("none");
                 fadeOutAnimationsSessionBackground(); // needs to execute first
                 setDinkleDoinkSetting("report"); // needs to execute second
-                setModeBackground("/images/iStock/iStock-1394258314-mid.jpg"); // needs to execute third
+                setModeBackground(defaultBackgroundPath); // needs to execute third
                 
                 if (flags.blogShowing) { // hide blog content
                     blog_post_container.style.display = 'none';
@@ -327,7 +327,7 @@ function handleLeftRightArrowKeys(event) {
                 resetMode(reportContainer);
                 resetMode(spaceContainer);
                 subMainContainerTransition("flex");
-                // setModeBackground("/images/iStock/iStock-1394258314-mid.jpg");
+                // setModeBackground(defaultBackgroundPath);
                 fadeInAnimationsSessionBackground(); // needs to execute second
                 
             } else if (state.lastSelectedMode === 'home') { // --> SPACE
@@ -337,7 +337,7 @@ function handleLeftRightArrowKeys(event) {
                 subMainContainerTransition("none");
                 fadeOutAnimationsSessionBackground(); // needs to execute first
                 setDinkleDoinkSetting("space"); // needs to execute second
-                setModeBackground("/images/iStock/iStock-1394258314-mid.jpg"); // needs to execute third
+                setModeBackground(defaultBackgroundPath); // needs to execute third
     
                 if (flags.blogShowing) { // hide blog content
                     blog_post_container.style.display = 'none';
@@ -430,14 +430,14 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
             subMainContainerTransition("none");
             fadeOutAnimationsSessionBackground(); // needs to execute first
             setDinkleDoinkSetting("report"); // needs to execute second
-            setModeBackground("/images/iStock/iStock-1394258314-mid.jpg"); // needs to execute third
+            setModeBackground(defaultBackgroundPath); // needs to execute third
 
         } else if (homeIcon.contains(event.target)) { // --> HOME
             setDinkleDoinkSetting("home"); // needs to execute first
             resetMode(reportContainer);
             resetMode(spaceContainer);
             subMainContainerTransition("flex");
-            // setModeBackground("/images/iStock/iStock-1394258314-mid.jpg");
+            // setModeBackground(defaultBackgroundPath);
             fadeInAnimationsSessionBackground(); // needs to execute second
             
         } else if (spaceIcon.contains(event.target)) { // --> SPACE
@@ -446,7 +446,7 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
             subMainContainerTransition("none");
             fadeOutAnimationsSessionBackground(); // needs to execute first
             setDinkleDoinkSetting("space"); // needs to execute second
-            setModeBackground("/images/iStock/iStock-1394258314-mid.jpg"); // needs to execute third
+            setModeBackground(defaultBackgroundPath); // needs to execute third
         }
         
         // when hitting a blog or about exit (or clicking outside those containers), or a settings exit if in home mode
