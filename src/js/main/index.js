@@ -690,7 +690,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // When toggle for break notification is turned on whilst in flow time
             if (flags.inHyperFocus) {
-                let pomodoroString = "Pomodoro #1 | " + String(timeAmount.pomodoroIntervalArr[0]) + " min left";
+                let pomodoroString = "Pomodoro #1 | " + String(timeAmount.pomodoroIntervalArr[0]) + " min";
                 setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop", pomodoroString);
                 elapsedTime.pomodoroNotificationSeconds = ((counters.currentPomodoroNotification * 60) - elapsedTimeInHyperfocus);
                 pomodoroWorker.postMessage(elapsedTime.pomodoroNotificationSeconds);
@@ -1326,13 +1326,13 @@ function flowmodoroAndBreakSuggestionActions(flags, elapsedTime, counters, timeA
 function setBothBreakIntervalText(counters, timeAmount) {
     let breakString;
     if (counters.currentPomodoroIntervalOrderIndex === 1) {
-        breakString  = "Short Break #1 | " + String(timeAmount.pomodoroIntervalArr[1]) + " min left";
+        breakString  = "Short Break #1 | " + String(timeAmount.pomodoroIntervalArr[1]) + " min";
     } else if (counters.currentPomodoroIntervalOrderIndex === 3) {
-        breakString  = "Short Break #2 | " + String(timeAmount.pomodoroIntervalArr[1]) + " min left";
+        breakString  = "Short Break #2 | " + String(timeAmount.pomodoroIntervalArr[1]) + " min";
     } else if (counters.currentPomodoroIntervalOrderIndex === 5) {
-        breakString  = "Short Break #3 | " + String(timeAmount.pomodoroIntervalArr[1]) + " min left";
+        breakString  = "Short Break #3 | " + String(timeAmount.pomodoroIntervalArr[1]) + " min";
     } else if (counters.currentPomodoroIntervalOrderIndex === 7) {
-        breakString  = "Long Break | " + String(timeAmount.pomodoroIntervalArr[2]) + " min left";
+        breakString  = "Long Break | " + String(timeAmount.pomodoroIntervalArr[2]) + " min";
     } else {
         breakString = "Break Mode"; // catch all
     }
@@ -1356,11 +1356,11 @@ function setPomodoroWorker(flags, elapsedTime, counters, recoverPomState, pomodo
 function setBreakIntervalText(counters, timeAmount) {
     let breakString;
     if (counters.currentPomodoroIntervalOrderIndex === 1) {
-        breakString  = "Short Break #1 | " + String(timeAmount.pomodoroIntervalArr[1]) + " min left";
+        breakString  = "Short Break #1 | " + String(timeAmount.pomodoroIntervalArr[1]) + " min";
     } else if (counters.currentPomodoroIntervalOrderIndex === 3) {
-        breakString  = "Short Break #2 | " + String(timeAmount.pomodoroIntervalArr[1]) + " min left";
+        breakString  = "Short Break #2 | " + String(timeAmount.pomodoroIntervalArr[1]) + " min";
     } else if (counters.currentPomodoroIntervalOrderIndex === 5) {
-        breakString  = "Short Break #3 | " + String(timeAmount.pomodoroIntervalArr[1]) + " min left";
+        breakString  = "Short Break #3 | " + String(timeAmount.pomodoroIntervalArr[1]) + " min";
     } else {
         breakString = "Break Mode"; // catch all
     }
@@ -1371,13 +1371,13 @@ function setBreakIntervalText(counters, timeAmount) {
 function setPomodoroIntervalText(counters, timeAmount) {
     let pomodoroString;
     if (counters.currentPomodoroIntervalOrderIndex === 0) {
-        pomodoroString = "Pomodoro #1 | " + String(timeAmount.pomodoroIntervalArr[0]) + " min left";
+        pomodoroString = "Pomodoro #1 | " + String(timeAmount.pomodoroIntervalArr[0]) + " min";
     } else if (counters.currentPomodoroIntervalOrderIndex === 2) {
-        pomodoroString = "Pomodoro #2 | " + String(timeAmount.pomodoroIntervalArr[0]) + " min left";
+        pomodoroString = "Pomodoro #2 | " + String(timeAmount.pomodoroIntervalArr[0]) + " min";
     } else if (counters.currentPomodoroIntervalOrderIndex === 4) {
-        pomodoroString = "Pomodoro #3 | " + String(timeAmount.pomodoroIntervalArr[0]) + " min left";
+        pomodoroString = "Pomodoro #3 | " + String(timeAmount.pomodoroIntervalArr[0]) + " min";
     } else if (counters.currentPomodoroIntervalOrderIndex === 6) {
-        pomodoroString = "Pomodoro #4 | " + String(timeAmount.pomodoroIntervalArr[0]) + " min left";
+        pomodoroString = "Pomodoro #4 | " + String(timeAmount.pomodoroIntervalArr[0]) + " min";
     } else {
         pomodoroString = "Pomodoro Mode"; // catch all
     }
@@ -1760,7 +1760,7 @@ async function setPomodoroIntervalArr(event, timeAmount, validatedFinalInputVal,
         newIntervalArr[2] = validatedFinalInputVal;
         timeAmount.pomodoroIntervalArr[2] = validatedFinalInputVal;
         if ((counters.currentPomodoroIntervalIndex === 2) && (counters.startStop !== 0) && (flags.pomodoroNotificationToggle)) {
-            productivity_chill_mode.innerText = "Long Break | " + String(timeAmount.pomodoroIntervalArr[2]) + " min left";
+            productivity_chill_mode.innerText = "Long Break | " + String(timeAmount.pomodoroIntervalArr[2]) + " min";
         }
     }
 
