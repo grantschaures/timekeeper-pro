@@ -33,6 +33,7 @@ router.post('/emailsignup', async (req, res) => {
                 // If user exists but isn't verified (hasn't set password), regenerate token and update expiration
                 user.token = generateToken();
                 user.tokenExpire = new Date(new Date().getTime() + 60 * 60 * 1000);
+                console.log("User exists but isn't verified (hasn't set password). Regenerating token and updating expiration.")
             }
         } else {
             // If no user exists, create new user
@@ -44,10 +45,6 @@ router.post('/emailsignup', async (req, res) => {
                 logins: 0
             });
 
-            // Save the user (new or updated)
-            await user.save({ session });
-            console.log('User saved successfully with expiration date for token.');
-            
             // Create the notes entry
             const note = new Note({
                 userId: user._id,
@@ -63,6 +60,9 @@ router.post('/emailsignup', async (req, res) => {
             console.log('Note saved for user.');
         }
 
+        // Save the user (new or updated)
+        await user.save({ session });
+        console.log('User saved successfully with expiration date for token.');
 
         // Commit the transaction
         await session.commitTransaction();
