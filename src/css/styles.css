@@ -109,7 +109,7 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: linear-gradient(0deg, #0f0cce, #700cce, #b004c7);
+    background-image: linear-gradient(0deg, #2dd5ff, #670cce, #200044);
     /* background-image: url("/images/iStock/iStock-1253862403-smaller.jpg"); */
     background-repeat: no-repeat;
     background-attachment: fixed;
