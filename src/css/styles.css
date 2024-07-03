@@ -569,7 +569,7 @@ button:hover {
 
     justify-content: center;
     
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.9);
 
     /* DARK GREY THEME BACKGROUND */
     /* background-color: rgba(32, 32, 32, 0.9); */
@@ -596,7 +596,7 @@ button:hover {
 
     justify-content: center;
     
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.9);
 
     /* DARK GREY THEME BACKGROUND */
     /* background-color: rgba(32, 32, 32, 0.9); */
@@ -814,7 +814,7 @@ button:hover {
     margin-top: 25px;
     margin-bottom: 25px;
 
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.9);
 
     /* DARK GREY THEME BACKGROUND */
     /* background-color: rgba(32, 32, 32, 0.9); */
@@ -1221,7 +1221,7 @@ header {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.75);
     justify-content: center;
     align-items: center;
     /* as of 6/28/24, the settings has the next highest z-index of 25 */

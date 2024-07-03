@@ -2445,7 +2445,7 @@ export function setBackground(background_color, opacity) {
 export function deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, isMobile) {
     let componentArr1 = [interruptionsContainer, targetHoursContainer, timekeepingContainer, notesContainer, aboutContainer, blogContainer];
 
-    let darkBackgroundTranslucent = "rgba(0, 0, 0, 0.8)"; // changed from 0.35 alpha value
+    let darkBackgroundTranslucent = "rgba(0, 0, 0, 0.9)"; // changed from 0.8 alpha value
     let darkBackground = "rgb(0, 0, 0)";
     let progressBarBackground = "rgba(255, 255, 255, 0.25)";
     let progressBarBorder = "1px rgba(0, 0, 0, 0.25)";
