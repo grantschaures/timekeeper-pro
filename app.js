@@ -7,6 +7,7 @@ const path = require('path');
 const User = require("./models/user");
 const cookieParser = require('cookie-parser');
 const http2 = require('http2');
+const fs = require('fs');
 
 // initialization of a new express application
 const app = express();
@@ -142,7 +143,13 @@ app.use("/api/data", require("./api/data"));
 const PORT = process.env.PORT || 3000;
 // Start the web server
 
+// Load SSL certificate and key
+const options = {
+  key: fs.readFileSync('/path/to/privkey.pem'), // Reads the private key file
+  cert: fs.readFileSync('/path/to/fullchain.pem') // Reads the certificate file
+};
+
 const server = http2.createServer(app);
-server.listen(PORT, function() {
+http2.createSecureServer(options, app).listen(PORT, function() {
   console.log(`Server is running at http://localhost:${PORT}/`);
 });
