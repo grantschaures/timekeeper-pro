@@ -41,17 +41,8 @@ html {
     background-attachment: fixed;
     background-position: center center;
     background-color: #202020; /* Fallback */
-    /* background-color: #411da3; */
-    /* background-image: url("/images/iStock/iStock-1253862403-mid-edit.jpg"); */
-    background-image: url("/images/iStock/iStock-1394258314-mid.jpg");
-    /* background-image: url("/images/iStock/iStock-1306875579-mid.jpg");  */
-    
+    background-image: url("/images/environments/1394258314-mid.jpg");
     transition: background-image 1s ease-in-out;
-    
-    /* background-image: linear-gradient(0deg, #3b8fe3, #411da3, #b004c7); */
-    /* animation: animateBackground 15s ease infinite; */
-    /* background-size: 400% 400%; */
-    /* border: 2px solid white; */
 }
 
 #backgroundContainer {
@@ -110,7 +101,6 @@ body::before {
     width: 100%;
     height: 100%;
     background-image: linear-gradient(0deg, #2dd5ff, #670cce, #200044);
-    /* background-image: url("/images/iStock/iStock-1253862403-smaller.jpg"); */
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center center;
