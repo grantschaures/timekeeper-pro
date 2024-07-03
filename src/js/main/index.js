@@ -5,6 +5,8 @@ import { chime, bell, clock_tick, soundMap } from '../modules/sound-map.js';
 import {
     start_stop_btn, submit_change_btn, end_session_btn, report_btn, total_time_display, productivity_chill_mode, progressBarContainer, progressBar, progressContainer, display, hyperChillTitle, subMainContainer, interruptionsContainer, interruptionsSubContainer, decBtn, incBtn, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, completedPomodoros_label, completedPomodoros_min, targetHoursContainer, timekeepingContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, targetTimeReachedToggle, breakSuggestionToggle, suggestionMinutesInput, flowmodoroNotificationToggle,flowmodoroNotifications, flowmodoroNotificationInfoWindow, flowTimeBreakNotification, flowTimeBreakNotificationInfoWindow, pomodoroNotifications, pomodoroNotificationInfoWindow, notesAutoSwitch, notesAutoSwitchInfoWindow, pomodoroNotificationToggle, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, defaultThemeContainer, defaultTheme, darkThemeContainer, darkGrayTheme, targetTimeReachedAlert, transitionClockSoundToggle, flowTimeAnimationToggle, chillTimeAnimationToggle, pomodoroVolumeContainer, pomodoroVolumeBar, pomodoroVolumeThumb, flowmodoroVolumeContainer, flowmodoroVolumeBar, flowmodoroVolumeThumb, generalVolumeContainer, generalVolumeBar, generalVolumeThumb, pomodoroVolumeContainer2, pomodoroVolumeBar2, pomodoroVolumeThumb2, flowmodoroVolumeContainer2, flowmodoroVolumeBar2, flowmodoroVolumeThumb2, generalVolumeContainer2, generalVolumeBar2, generalVolumeThumb2, flowmodoroRadios, flowmodoroInputs, generalRadios, pomodoroInputs, pomodoroRadios,flowtimeBackgroundCells, chilltimeBackgroundCells, settings_menu_container, registerHereText, backgroundVideoSource, backgroundVideo, flowAnimation, chillAnimation, hyperChillLogoImage,createLabelInput, updateLabelInput, emojiContainer, loginEmailInput, loginPasswordInput, forgotPasswordContainer, loginBtnContainer, loginBtn, logoutBtn, deleteAccountBtn, forgotPasswordSettings, propagateUnfinishedTasks, propagateUnfinishedTasksInfoWindow, flowtimeBackgroundWorldCells, chilltimeBackgroundWorldCells, deleteAccountPopupYesBtn, deleteAccountPopupNoBtn, deleteAccountPopup, popupOverlay, questionIcon, logoutBtn2,
     backgroundContainer,
+    deepWorkBackground,
+    breakBackground,
 } from '../modules/dom-elements.js';
 
 import { sessionState } from '../modules/state-objects.js';
@@ -848,14 +850,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 flowAnimation.style.opacity = 0;
                 flowAnimation.style.display = 'none';
                 flowAnimation.classList.remove('intoOpacityTransition');
-                flowAnimation.offsetHeight;
             } else {
                 chillAnimation.style.opacity = 0;
                 chillAnimation.style.display = 'none';
                 chillAnimation.classList.remove('intoOpacityTransition');
             }
             
-        } else if (document.visibilityState === 'visible') { //user returns to tab
+        } else if ((document.visibilityState === 'visible') && (state.lastSelectedMode === 'home')) { //user returns to tab
             if ((flags.inHyperFocus) && (flags.flowTimeAnimationToggle)) {
                 flowAnimation.style.display = 'block';
                 flowAnimation.classList.add('intoOpacityTransition');
@@ -938,6 +939,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // (2) Reset everything to the default state
 
+            // reset background to default
+            setBackground("", 0);
+            resetHtmlBackground(defaultImgUrl);
+
             // reset alerts
             pauseAndResetAlertSounds(bell, chime);
 
@@ -965,9 +970,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 progressBarContainer.classList.toggle("small"); // make progress container large
                 flags.progressBarContainerIsSmall = false;
             }
-
-            // reset background to default
-            setBackground("", 0);
     
             // reset header text
             setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", "Press 'Start' to begin session");
@@ -2388,6 +2390,10 @@ function debuggingPopup(color) {
     mainContainer.appendChild(newDiv);
 }
 
+function resetHtmlBackground(backgroundImg) {
+    document.documentElement.style.backgroundImage = backgroundImg;
+}
+
 // ---------------------
 // EXPORTED FUNCTIONS
 // ---------------------
@@ -2399,13 +2405,34 @@ export function setInitialBackgroundCellSelection() {
 
 export function setBackground(background_color, opacity) {
     if (state.lastSelectedMode === 'home') {
-        backgroundContainer.style.opacity = opacity;
-        if (background_color === "") {
-            setTimeout(() => {
-                backgroundContainer.style.backgroundImage = background_color;
-            }, 250)
+
+        if (flags.inHyperFocus) {
+            deepWorkBackground.style.opacity = opacity;
+            if (background_color === "") {
+                setTimeout(() => {
+                    deepWorkBackground.style.backgroundImage = background_color;
+                }, 500)
+            } else {
+                breakBackground.style.opacity = 0;
+                deepWorkBackground.style.backgroundImage = background_color;
+                setTimeout(() => {
+                    document.documentElement.style.backgroundImage = background_color;
+                }, 500)
+            }
         } else {
-            backgroundContainer.style.backgroundImage = background_color;
+            breakBackground.style.opacity = opacity;
+            if (background_color === "") {
+                setTimeout(() => {
+                    breakBackground.style.backgroundImage = background_color;
+                }, 500)
+            } else {
+                breakBackground.style.backgroundImage = background_color;
+                deepWorkBackground.style.opacity = 0;
+                setTimeout(() => {
+                    document.documentElement.style.backgroundImage = background_color;
+                }, 500)
+            }
+
         }
     }
 };

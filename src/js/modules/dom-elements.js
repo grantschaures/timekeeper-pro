@@ -2,6 +2,8 @@
 // DOM ELEMENTS & INITIAL SETUP
 // ------------------------------
 export const backgroundContainer = document.getElementById('backgroundContainer');
+export const deepWorkBackground = document.getElementById('deepWorkBackground');
+export const breakBackground = document.getElementById('breakBackground');
 export const start_stop_btn = document.getElementById("start-stop");
 export const submit_change_btn = document.getElementById("target-hours-submit");
 export const end_session_btn = document.getElementById("end-session");

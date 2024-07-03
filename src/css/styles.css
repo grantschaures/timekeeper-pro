@@ -68,11 +68,39 @@ html {
 
     /* border: 5px solid gray; */
 
-    opacity: 0;
+    opacity: 1;
     transition: opacity 0.25s ease-in-out;
 
     z-index: 0;
 }
+
+#deepWorkBackground, #breakBackground {
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center center;
+    background-size: cover; /* Ensure the background covers the entire element */
+
+    /* border: 5px solid gray; */
+
+    opacity: 0;
+    z-index: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+/* .fadeOutBackground {
+    animation: fadeOutBackground 0.25s ease-in-out forwards;
+}
+
+.fadeInBackground {
+    animation: fadeInBackground 0.25s ease-in-out forwards;
+} */
 
 body::before {
     content: '';
@@ -96,6 +124,15 @@ body.fade-out-bg::before {
 }
 
 @keyframes fadeOutBackground {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes fadeInBackground {
     from {
         opacity: 1;
     }

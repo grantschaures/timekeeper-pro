@@ -19,6 +19,10 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     let isIpad = isIpadCheck();
 
+    if (!isMobile) {
+        questionIcon.style.display = 'block';
+    }
+
     setTimeout(() => {
         menuBtn.style.opacity = '1';
 
@@ -301,9 +305,9 @@ function handleLeftRightArrowKeys(event) {
             isClickNotOnAboutElements(event, about_menu_container, aboutContainer, menuBtn, about_exit, reportIcon, reportPath);
             isClickNotOnBlogElements(event, blogMenuContainer, blog_post_container, menuBtn, blog_exit);
             subMainContainerTransition("none");
-            setModeBackground("/images/iStock/iStock-1253862403-mid-edit.jpg"); // basic
             fadeOutAnimationsSessionBackground(indexFlags, flowTimeAnimationToggle, chillTimeAnimationToggle); // needs to execute first
             setDinkleDoinkSetting("report"); // needs to execute second
+            setModeBackground("/images/iStock/iStock-1253862403-mid-edit.jpg"); // needs to execute third
 
             if (flags.blogShowing) { // hide blog content
                 blog_post_container.style.display = 'none';
@@ -324,9 +328,9 @@ function handleLeftRightArrowKeys(event) {
             isClickNotOnAboutElements(event, about_menu_container, aboutContainer, menuBtn, about_exit, reportIcon, reportPath);
             isClickNotOnBlogElements(event, blogMenuContainer, blog_post_container, menuBtn, blog_exit);
             subMainContainerTransition("none");
-            setModeBackground("/images/iStock/iStock-1394258314-mid.jpg"); // space
             fadeOutAnimationsSessionBackground(indexFlags, flowTimeAnimationToggle, chillTimeAnimationToggle); // needs to execute first
             setDinkleDoinkSetting("space"); // needs to execute second
+            setModeBackground("/images/iStock/iStock-1394258314-mid.jpg"); // needs to execute third
 
             if (flags.blogShowing) { // hide blog content
                 blog_post_container.style.display = 'none';
@@ -365,17 +369,17 @@ function subMainContainerTransition(display) {
 function setModeBackground(imgPath) {
     var modeBackgroundImg = new Image();
     modeBackgroundImg.src = imgPath;
+
+    if (((!indexFlags.sessionInProgress) && (state.lastSelectedMode === "home")) || (state.lastSelectedMode === "report") || (state.lastSelectedMode == "space")) {
+        modeBackgroundImg.onload = function() {
+            document.documentElement.style.backgroundImage = `url('${imgPath}')`;
+        }
     
-    modeBackgroundImg.onload = function() {
-        document.documentElement.style.backgroundImage = `url('${imgPath}')`;
+        modeBackgroundImg.onerror = function() {
+            console.error(`Failed to load image: ${imgPath}`);
+        };
     }
-
-    modeBackgroundImg.onerror = function() {
-        console.error(`Failed to load image: ${imgPath}`);
-    };
 }
-
-// function showMainElements() {}
 
 function initializeNewMode(containerType) {
     containerType.style.display = "flex";
@@ -386,13 +390,14 @@ function initializeNewMode(containerType) {
 }
 
 function resetMode(containerType) {
-    // console.log(containerType);
+    containerType.classList.add('no-transition');
     containerType.style.opacity = 0;
     setTimeout(() => {
         if (containerType.style.opacity == 0) { // deals w/ edge case where user toggles right/left and back rapidly
             containerType.style.display = "none";
         }
         body.style.overflowY = 'scroll'; // re enable scroll for main elements
+        containerType.classList.remove('no-transition'); // re enable 0.5s opacity transition for report or space container
     }, 150)
 }
 
@@ -404,9 +409,9 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
             initializeNewMode(reportContainer);
             resetMode(spaceContainer);
             subMainContainerTransition("none");
-            setModeBackground("/images/iStock/iStock-1253862403-mid-edit.jpg"); // basic
             fadeOutAnimationsSessionBackground(indexFlags, flowTimeAnimationToggle, chillTimeAnimationToggle); // needs to execute first
             setDinkleDoinkSetting("report"); // needs to execute second
+            setModeBackground("/images/iStock/iStock-1253862403-mid-edit.jpg"); // needs to execute third
 
         } else if (homeIcon.contains(event.target)) { // --> HOME
             setDinkleDoinkSetting("home"); // needs to execute first
@@ -420,9 +425,9 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
             initializeNewMode(spaceContainer);
             resetMode(reportContainer);
             subMainContainerTransition("none");
-            setModeBackground("/images/iStock/iStock-1394258314-mid.jpg"); // space
             fadeOutAnimationsSessionBackground(indexFlags, flowTimeAnimationToggle, chillTimeAnimationToggle); // needs to execute first
             setDinkleDoinkSetting("space"); // needs to execute second
+            setModeBackground("/images/iStock/iStock-1394258314-mid.jpg"); // needs to execute third
         }
         
         // when hitting a blog or about exit (or clicking outside those containers), or a settings exit if in home mode
