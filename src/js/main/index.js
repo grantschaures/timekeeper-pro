@@ -71,30 +71,41 @@ document.addEventListener("DOMContentLoaded", function() {
     const threeWayToggle = document.getElementById('threeWayToggle');
 
     // Initial Animations
-    setTimeout(() => {
-        hyperChillTitle.style.opacity = '1'; // increases opacity
-        hyperChillTitle.classList.add('hyperChillTitleAnimationTranslate'); // moves it down
-    }, 0)
-    
-    setTimeout(() => {
-        hyperChillTitle.classList.add('hyperChillTitleAnimationScale'); // makes it W I D E
-        subMainContainer.style.opacity = '1';
-    }, 1000)
-    
-    setTimeout(() => {
-        subMainContainer.style.transition = 'opacity 0.5s ease-in-out';
-
-        hyperChillTitle.classList.remove('hyperChillTitleAnimationTranslate');
-        hyperChillTitle.style.opacity = '0';
+    if (!isMobile) {
         setTimeout(() => {
-            hyperChillTitle.style.display = 'none';
+            hyperChillTitle.style.opacity = '1'; // increases opacity
+            hyperChillTitle.classList.add('hyperChillTitleAnimationTranslate'); // moves it down
+        }, 0)
+        
+        setTimeout(() => {
+            hyperChillTitle.classList.add('hyperChillTitleAnimationScale'); // makes it W I D E
+            subMainContainer.style.opacity = '1';
+        }, 1000)
+        
+        setTimeout(() => {
+            subMainContainer.style.transition = 'opacity 0.5s ease-in-out';
+    
+            hyperChillTitle.classList.remove('hyperChillTitleAnimationTranslate');
+            hyperChillTitle.style.opacity = '0';
+            setTimeout(() => {
+                hyperChillTitle.style.display = 'none';
+                threeWayToggle.style.display = 'inline-flex';
+                threeWayToggle.classList.add('threeWayToggleAnimation');
+                setTimeout(() => {
+                    threeWayToggle.style.opacity = '1';
+                }, 100)
+            }, 1000)
+        }, 2000)
+    } else {
+        setTimeout(() => {
+            subMainContainer.style.opacity = '1';
+            subMainContainer.style.transition = 'opacity 0.5s ease-in-out';
             threeWayToggle.style.display = 'inline-flex';
-            threeWayToggle.classList.add('threeWayToggleAnimation');
             setTimeout(() => {
                 threeWayToggle.style.opacity = '1';
             }, 100)
         }, 1000)
-    }, 2000)
+    }
 
 
     // Fade out gradient once home image has loaded :P
