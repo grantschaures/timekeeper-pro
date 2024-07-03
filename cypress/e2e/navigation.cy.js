@@ -66,7 +66,7 @@ describe('Navigation', () => {
     it('Basic Three-Way Toggle Click Testing', () => {
         cy.homeIconClick();
         
-        // Click --> REPORT ICON
+        // Click --> REPORT ICON /
         cy.reportIconClick();
         
         // Click --> HOME ICON
