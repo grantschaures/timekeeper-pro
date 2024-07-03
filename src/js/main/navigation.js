@@ -66,8 +66,9 @@ document.addEventListener("DOMContentLoaded", function() {
         // OTHER CHANGES
         body.style.overflowY = 'hidden'; // no scroll
         blog_exit.classList.add('resetRotation'); // triggers reset animation
-        setDinkleDoinkSetting("home");
+        setDinkleDoinkSetting("home"); //  needs to execute first
         subMainContainerTransition("none");
+        fadeInAnimationsSessionBackground(); // needs to execute second
 
         resetMode(reportContainer);
         resetMode(spaceContainer);
@@ -91,8 +92,9 @@ document.addEventListener("DOMContentLoaded", function() {
         // OTHER CHANGES
         body.style.overflowY = 'hidden'; // no scroll
         about_exit.classList.add('resetRotation'); // triggers reset animation
-        setDinkleDoinkSetting("home");
+        setDinkleDoinkSetting("home"); // needs to execute first
         subMainContainerTransition("none");
+        fadeInAnimationsSessionBackground(); // needs to execute second
 
         resetMode(reportContainer);
         resetMode(spaceContainer);
