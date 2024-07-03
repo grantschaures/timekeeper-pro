@@ -96,6 +96,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }, 1000)
     }, 2000)
 
+
     // Fade out gradient once home image has loaded :P
     let defaultImgPath = "/images/iStock/iStock-1306875579-mid.jpg";
     let defaultImgUrl = 'url(' + defaultImgPath + ')';
@@ -2411,26 +2412,30 @@ export function setBackground(background_color, opacity) {
             if (background_color === "") {
                 setTimeout(() => {
                     deepWorkBackground.style.backgroundImage = background_color;
-                }, 500)
+                }, 250)
             } else {
                 breakBackground.style.opacity = 0;
                 deepWorkBackground.style.backgroundImage = background_color;
                 setTimeout(() => {
-                    document.documentElement.style.backgroundImage = background_color;
-                }, 500)
+                    if (state.lastSelectedMode === 'home') { // deals w/ edge case where user toggles right/left and back rapidly
+                        document.documentElement.style.backgroundImage = background_color;
+                    }
+                }, 250)
             }
         } else {
             breakBackground.style.opacity = opacity;
             if (background_color === "") {
                 setTimeout(() => {
                     breakBackground.style.backgroundImage = background_color;
-                }, 500)
+                }, 250)
             } else {
                 breakBackground.style.backgroundImage = background_color;
                 deepWorkBackground.style.opacity = 0;
                 setTimeout(() => {
-                    document.documentElement.style.backgroundImage = background_color;
-                }, 500)
+                    if (state.lastSelectedMode === 'home') { // deals w/ edge case where user toggles right/left and back rapidly
+                        document.documentElement.style.backgroundImage = background_color;
+                    }
+                }, 250)
             }
 
         }

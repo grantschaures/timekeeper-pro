@@ -108,9 +108,15 @@ document.addEventListener("DOMContentLoaded", function() {
         // SHOWING ELEMENTS
         settingsContainer.style.display = "block";
 
+        subMainContainer.style.display = "flex";
+        subMainContainer.offsetHeight; // forcing reflow
+        setTimeout(() => {
+            subMainContainer.style.opacity = 1;
+        }, 0)
+
         // if coming from blog or about (which hides subMainContainer)
         if (state.lastSelectedMode === 'home') {
-            subMainContainer.style.display = "block";
+            subMainContainer.style.display = "flex";
         }
 
         // OTHER CHANGES
@@ -279,7 +285,7 @@ document.addEventListener("DOMContentLoaded", function() {
         isClickNotOnSettingsElements(event, settingsContainer, settings_exit, body);
     
         const excludeTargets = [blogBtn, blog_icon, blogMenuContainer, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, aboutIconNotes, popupOverlay]; // all stuff in the main menu and question menu + others
-        const containers = [aboutContainer, blogContainer, menuBtn, questionIcon, blog_post_container, settingsContainer, popupQuestionMenu, deleteAccountPopup, accountPopup, loginQuestionMenuContainer];
+        const containers = [aboutContainer, blogContainer, menuBtn, questionIcon, blog_post_container, settingsContainer, popupQuestionMenu, deleteAccountPopup, accountPopup, loginQuestionMenuContainer, shortcutsPopup];
         const exitTargets = [about_exit, blog_exit, blog_post_exit];
         const exitTargetsWithSettings = [about_exit, blog_exit, blog_post_exit, settings_exit];
     
@@ -291,53 +297,64 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function handleLeftRightArrowKeys(event) {
-    if (event.key === 'ArrowLeft') {
-        if (state.lastSelectedMode === 'space') { // --> HOME
-            setDinkleDoinkSetting("home"); // needs to execute first
-            resetMode(reportContainer);
-            resetMode(spaceContainer);
-            subMainContainerTransition("flex");
-            setModeBackground("/images/iStock/iStock-1306875579-mid.jpg"); // hands
-            fadeInAnimationsSessionBackground(indexFlags, flowTimeAnimationToggle, chillTimeAnimationToggle); // needs to execute second
-            
-        } else if (state.lastSelectedMode === 'home') { // --> REPORT
-            initializeNewMode(reportContainer);
-            isClickNotOnAboutElements(event, about_menu_container, aboutContainer, menuBtn, about_exit, reportIcon, reportPath);
-            isClickNotOnBlogElements(event, blogMenuContainer, blog_post_container, menuBtn, blog_exit);
-            subMainContainerTransition("none");
-            fadeOutAnimationsSessionBackground(indexFlags, flowTimeAnimationToggle, chillTimeAnimationToggle); // needs to execute first
-            setDinkleDoinkSetting("report"); // needs to execute second
-            setModeBackground("/images/iStock/iStock-1253862403-mid-edit.jpg"); // needs to execute third
-
-            if (flags.blogShowing) { // hide blog content
-                blog_post_container.style.display = 'none';
-                hideBlog(blogs);
+    if (flags.allowToggleSwitch) {
+        if (event.key === 'ArrowLeft') {
+            if (state.lastSelectedMode === 'space') { // --> HOME
+                setDinkleDoinkSetting("home"); // needs to execute first
+                resetMode(reportContainer);
+                resetMode(spaceContainer);
+                subMainContainerTransition("flex");
+                setModeBackground("/images/iStock/iStock-1306875579-mid.jpg"); // hands
+                fadeInAnimationsSessionBackground(); // needs to execute second
+                
+            } else if (state.lastSelectedMode === 'home') { // --> REPORT
+                initializeNewMode(reportContainer);
+                isClickNotOnAboutElements(event, about_menu_container, aboutContainer, menuBtn, about_exit, reportIcon, reportPath);
+                isClickNotOnBlogElements(event, blogMenuContainer, blog_post_container, menuBtn, blog_exit);
+                subMainContainerTransition("none");
+                fadeOutAnimationsSessionBackground(); // needs to execute first
+                setDinkleDoinkSetting("report"); // needs to execute second
+                setModeBackground("/images/iStock/iStock-1253862403-mid-edit.jpg"); // needs to execute third
+                
+                if (flags.blogShowing) { // hide blog content
+                    blog_post_container.style.display = 'none';
+                    hideBlog(blogs);
+                }
+            }
+        } else if (event.key === 'ArrowRight') {
+            if (state.lastSelectedMode === 'report') { // --> HOME
+                setDinkleDoinkSetting("home"); // needs to execute first
+                resetMode(reportContainer);
+                resetMode(spaceContainer);
+                subMainContainerTransition("flex");
+                setModeBackground("/images/iStock/iStock-1306875579-mid.jpg"); // hands
+                fadeInAnimationsSessionBackground(); // needs to execute second
+                
+            } else if (state.lastSelectedMode === 'home') { // --> SPACE
+                initializeNewMode(spaceContainer);
+                isClickNotOnAboutElements(event, about_menu_container, aboutContainer, menuBtn, about_exit, reportIcon, reportPath);
+                isClickNotOnBlogElements(event, blogMenuContainer, blog_post_container, menuBtn, blog_exit);
+                subMainContainerTransition("none");
+                fadeOutAnimationsSessionBackground(); // needs to execute first
+                setDinkleDoinkSetting("space"); // needs to execute second
+                setModeBackground("/images/iStock/iStock-1394258314-mid.jpg"); // needs to execute third
+    
+                if (flags.blogShowing) { // hide blog content
+                    blog_post_container.style.display = 'none';
+                    hideBlog(blogs);
+                }
             }
         }
-    } else if (event.key === 'ArrowRight') {
-        if (state.lastSelectedMode === 'report') { // --> HOME
-            setDinkleDoinkSetting("home"); // needs to execute first
-            resetMode(reportContainer);
-            resetMode(spaceContainer);
-            subMainContainerTransition("flex");
-            setModeBackground("/images/iStock/iStock-1306875579-mid.jpg"); // hands
-            fadeInAnimationsSessionBackground(indexFlags, flowTimeAnimationToggle, chillTimeAnimationToggle); // needs to execute second
-            
-        } else if (state.lastSelectedMode === 'home') { // --> SPACE
-            initializeNewMode(spaceContainer);
-            isClickNotOnAboutElements(event, about_menu_container, aboutContainer, menuBtn, about_exit, reportIcon, reportPath);
-            isClickNotOnBlogElements(event, blogMenuContainer, blog_post_container, menuBtn, blog_exit);
-            subMainContainerTransition("none");
-            fadeOutAnimationsSessionBackground(indexFlags, flowTimeAnimationToggle, chillTimeAnimationToggle); // needs to execute first
-            setDinkleDoinkSetting("space"); // needs to execute second
-            setModeBackground("/images/iStock/iStock-1394258314-mid.jpg"); // needs to execute third
-
-            if (flags.blogShowing) { // hide blog content
-                blog_post_container.style.display = 'none';
-                hideBlog(blogs);
-            }
-        }
+        switchDelay(flags);
     }
+}
+
+// purpose of this function is to prevent goons from spamming the three-way toggle for no good reason
+function switchDelay(flags) {
+    flags.allowToggleSwitch = false;
+    setTimeout(() => {
+        flags.allowToggleSwitch = true;
+    }, 250)
 }
 
 function setDinkleDoinkSetting(mode) { // and also state.lastSelectedMode value
@@ -409,7 +426,7 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
             initializeNewMode(reportContainer);
             resetMode(spaceContainer);
             subMainContainerTransition("none");
-            fadeOutAnimationsSessionBackground(indexFlags, flowTimeAnimationToggle, chillTimeAnimationToggle); // needs to execute first
+            fadeOutAnimationsSessionBackground(); // needs to execute first
             setDinkleDoinkSetting("report"); // needs to execute second
             setModeBackground("/images/iStock/iStock-1253862403-mid-edit.jpg"); // needs to execute third
 
@@ -419,13 +436,13 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
             resetMode(spaceContainer);
             subMainContainerTransition("flex");
             setModeBackground("/images/iStock/iStock-1306875579-mid.jpg"); // hands
-            fadeInAnimationsSessionBackground(indexFlags, flowTimeAnimationToggle, chillTimeAnimationToggle); // needs to execute second
+            fadeInAnimationsSessionBackground(); // needs to execute second
             
         } else if (spaceIcon.contains(event.target)) { // --> SPACE
             initializeNewMode(spaceContainer);
             resetMode(reportContainer);
             subMainContainerTransition("none");
-            fadeOutAnimationsSessionBackground(indexFlags, flowTimeAnimationToggle, chillTimeAnimationToggle); // needs to execute first
+            fadeOutAnimationsSessionBackground(); // needs to execute first
             setDinkleDoinkSetting("space"); // needs to execute second
             setModeBackground("/images/iStock/iStock-1394258314-mid.jpg"); // needs to execute third
         }
@@ -447,12 +464,20 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
 }
 
 function isClickNotOnAboutElements(event, about_menu_container, aboutContainer, menuBtn, about_exit, reportIcon, reportPath) {
-    let aboutElementsArr = [about_menu_container, aboutContainer, menuBtn];
+    let aboutElementsArr = [about_menu_container, aboutContainer, menuBtn, questionIcon, popupQuestionMenu, shortcutsPopup, accountPopup, popupOverlay];
 
     // Check if event.target is not contained within any of the aboutElementsArr
     // or if the event.target is the about_exit
     if (!aboutElementsArr.some(element => element.contains(event.target)) || event.target === about_exit) {
         aboutContainer.style.display = "none";
+    }
+}
+
+function isClickNotOnBlogElements(event, blogMenuContainer, blog_post_container, menuBtn, blog_exit) {
+    let blogElementsArr = [blogMenuContainer, blogContainer, blog_post_container, menuBtn, questionIcon, popupQuestionMenu, shortcutsPopup, accountPopup, popupOverlay];
+
+    if (!blogElementsArr.some(element => element.contains(event.target)) || event.target === blog_exit) {
+        blogContainer.style.display = "none";
     }
 }
 
@@ -470,52 +495,44 @@ function isClickNotOnQuestionMenuElements(event, questionIcon, flags, popupQuest
     }
 }
 
-function isClickNotOnBlogElements(event, blogMenuContainer, blog_post_container, menuBtn, blog_exit) {
-    let blogElementsArr = [blogMenuContainer, blogContainer, blog_post_container, menuBtn];
-
-    if (!blogElementsArr.some(element => element.contains(event.target)) || event.target === blog_exit) {
-        blogContainer.style.display = "none";
-    }
-}
-
 function isClickNotOnSettingsElements(event, settingsContainer, settings_exit, body) {
 
-    if (event.target === settings_exit) {
+    if ((event.target === settings_exit)) {
         settingsContainer.style.display = "none";
         body.style.overflowY = 'scroll';
     }
 }
 
-function fadeOutAnimationsSessionBackground(indexFlags, flowTimeAnimationToggle, chillTimeAnimationToggle) {
+function fadeOutAnimationsSessionBackground() {
     if (indexFlags.sessionInProgress) {
         // remove backgroundContainer background
         // remove animations if present
 
         setBackground("", 0); // removes background (regardless of current interval mode)
 
-        if ((flowTimeAnimationToggle) && (indexFlags.inHyperFocus)) {
+        if ((indexFlags.flowTimeAnimationToggle) && (indexFlags.inHyperFocus)) {
             animationsFadeOut(flowAnimation);
         }
         
-        if ((chillTimeAnimationToggle) && (!indexFlags.inHyperFocus)) {
+        if ((indexFlags.chillTimeAnimationToggle) && (!indexFlags.inHyperFocus)) {
             animationsFadeOut(chillAnimation);
         }
     }
 }
 
-function fadeInAnimationsSessionBackground(indexFlags, flowTimeAnimationToggle, chillTimeAnimationToggle) {
+function fadeInAnimationsSessionBackground() {
     if (indexFlags.sessionInProgress) {
         if (indexFlags.inHyperFocus) {
             setBackground(selectedBackground.flowtime, 1);
 
-            if (flowTimeAnimationToggle) {
+            if (indexFlags.flowTimeAnimationToggle) {
                 animationsFadeIn(flowAnimation, "block");
             }
 
         } else {
             setBackground(selectedBackground.chilltime, 1);
 
-            if (chillTimeAnimationToggle) {
+            if (indexFlags.chillTimeAnimationToggle) {
                 animationsFadeIn(chillAnimation, "flex");
             }
         }

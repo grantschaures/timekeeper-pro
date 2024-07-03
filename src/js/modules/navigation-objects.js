@@ -8,7 +8,8 @@ export const flags = {
     popupQuestionWindowShowing: false,
     accountWindowShowing: false,
     deleteAccountWindowShowing: false,
-    shortcutsWindowShowing: false
+    shortcutsWindowShowing: false,
+    allowToggleSwitch: true,
 }
 
 export const counters = {

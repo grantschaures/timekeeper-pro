@@ -30,17 +30,23 @@ Cypress.Commands.add('reportIconClick', function() {
     cy.get('[data-testid="report-icon"]').click();
 
     // invisible
-    cy.get('[data-testid="main"]').should('not.be.visible');
+    cy.clock();
+    cy.tick(1000);
+    cy.get('[data-testid="subMainContainer"]').should('not.be.visible');
     cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
     cy.get('[data-testid="blogContainer"]').should('not.be.visible');
     cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
 
+    cy.clock();
+    cy.tick(1000);
     // visible
     cy.get('[data-testid="reportContainer"]').should('be.visible');
 })
 
 Cypress.Commands.add('homeIconClick', function() {
+    cy.clock()
     cy.get('[data-testid="home-icon"]').click();
+    cy.tick(250);
 
     // invisible
     cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
@@ -49,14 +55,16 @@ Cypress.Commands.add('homeIconClick', function() {
     cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
     
     // visible
-    cy.get('[data-testid="main"]').should('be.visible');
+    cy.get('[data-testid="subMainContainer"]').should('have.css', 'display', 'flex');
 })
 
 Cypress.Commands.add('spaceIconClick', function() {
+    cy.clock()
     cy.get('[data-testid="space-icon"]').click();
+    cy.tick(250)
 
     // invisible
-    cy.get('[data-testid="main"]').should('not.be.visible');
+    cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
     cy.get('[data-testid="reportContainer"]').should('not.be.visible');
     cy.get('[data-testid="blogContainer"]').should('not.be.visible');
     cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
@@ -102,12 +110,12 @@ Cypress.Commands.add('openBlog', function() {
     cy.get('[data-testid="menuBtn"]').click();
     cy.contains("Blog").click();
     cy.get('[data-testid="blogContainer"]').should('be.visible');
-    cy.get('[data-testid="main"]').should('not.be.visible');
+    cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
 })
 
 Cypress.Commands.add('openAbout', function() {
     cy.get('[data-testid="menuBtn"]').click();
     cy.contains("About").click();
     cy.get('[data-testid="aboutContainer"]').should('be.visible');
-    cy.get('[data-testid="main"]').should('not.be.visible');
+    cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
 })
