@@ -43,25 +43,26 @@ router.post('/emailsignup', async (req, res) => {
                 emailVerified: false,
                 logins: 0
             });
+
+            // Save the user (new or updated)
+            await user.save({ session });
+            console.log('User saved successfully with expiration date for token.');
+            
+            // Create the notes entry
+            const note = new Note({
+                userId: user._id,
+                labels: new Map([
+                    ["tag-1", "✍️ Homework"],
+                    ["tag-2", "📚 Reading"],
+                    ["tag-3", "🧘 Meditation"]
+                ]),
+                lastLabelIdNum: 3,  // Default value
+                lastSelectedEmojiId: "books-emoji"  // Default value
+            });
+            await note.save({ session });
+            console.log('Note saved for user.');
         }
 
-        // Save the user (new or updated)
-        await user.save({ session });
-        console.log('User saved successfully with expiration date for token.');
-        
-        // Create the notes entry
-        const note = new Note({
-            userId: user._id,
-            labels: new Map([
-                ["tag-1", "✍️ Homework"],
-                ["tag-2", "📚 Reading"],
-                ["tag-3", "🧘 Meditation"]
-            ]),
-            lastLabelIdNum: 3,  // Default value
-            lastSelectedEmojiId: "books-emoji"  // Default value
-        });
-        await note.save({ session });
-        console.log('Note saved for user.');
 
         // Commit the transaction
         await session.commitTransaction();
@@ -81,7 +82,7 @@ router.post('/emailsignup', async (req, res) => {
                         <img src="https://hyperchill.io/images/email/logoImageSmall.png">
                         <hr style="margin: 20px auto; width: 528px;">
                         <p style="font-size: 24px; color: black; font-family: Verdana, Geneva, Tahoma, sans-serif;">
-                            Please reset your account password
+                            Please set a new password for your account
                         </p><br>
                         <a href="https://hyperchill.io/set-password/${user.token}" style="background-color: #00af2c; font-family: Verdana, Geneva, Tahoma, sans-serif; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; margin-top: 20px;">
                             Set Password
@@ -147,7 +148,7 @@ router.post('/resetPassword', async (req, res) => {
                         <img src="https://hyperchill.io/images/email/logoImageSmall.png">
                         <hr style="margin: 20px auto; width: 528px;">
                         <p style="font-size: 24px; color: black; font-family: Verdana, Geneva, Tahoma, sans-serif;">
-                            Please set a new password for your account
+                            Please reset your account password
                         </p><br>
                         <a href="https://hyperchill.io/set-password/${user.token}" style="background-color: #00af2c; font-family: Verdana, Geneva, Tahoma, sans-serif; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; margin-top: 20px;">
                             Reset Password
