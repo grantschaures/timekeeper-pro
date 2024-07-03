@@ -18,6 +18,20 @@ document.addEventListener("DOMContentLoaded", function() {
         "/images/environments/1394258314-mid.jpg",
         "/images/environments/1394258314-small-green-pixelated.jpg",
         "/images/environments/1394258314-small.jpg",
+
+        // icons
+        "/images/icons/menu-6192580-white.png",
+        "/images/icons/menu-6192580.png",
+        "/images/icons/questionIcon.png",
+        "/images/icons/white_tag_icon.png",
+        "/images/icons/blogIcon.png",
+        "/images/icons/aboutIcon.png",
+        "/images/icons/settingsIcon1.png",
+        "/images/icons/loginIcon.png",
+        "/images/icons/logoutIcon.png",
+        "/images/icons/accountIcon.png",
+        "/images/icons/shortcutsIconFinal.png",
+        "/images/icons/privacyTermsIcon.png",
     ];
 
     // Function to create and append link tags for preloading images

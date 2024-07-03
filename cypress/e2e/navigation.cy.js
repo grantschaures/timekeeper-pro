@@ -48,8 +48,8 @@ describe('Navigation', () => {
 
         cy.clock();
         cy.tick(1000);
-        cy.get('[data-testid="subMainContainer"]').should('have.css', 'display', 'flex');
         cy.get('[data-testid="settingsExit"]').click();
+        cy.get('[data-testid="subMainContainer"]').should('have.css', 'display', 'flex');
 
         // when coming from about
         cy.get('[data-testid="menuBtn"]').click();
@@ -59,8 +59,8 @@ describe('Navigation', () => {
 
         cy.clock();
         cy.tick(1000);
-        cy.get('[data-testid="subMainContainer"]').should('have.css', 'display', 'flex');
         cy.get('[data-testid="settingsExit"]').click();
+        cy.get('[data-testid="subMainContainer"]').should('have.css', 'display', 'flex');
     })
 
     // this is cause issues ;/
@@ -106,7 +106,7 @@ describe('Navigation', () => {
             cy.tick(250);
 
             // invisible
-            cy.get('[data-testid="main"]').should('not.be.visible');
+            cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
             cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
 
             // visible
@@ -122,7 +122,7 @@ describe('Navigation', () => {
             cy.get('[data-testid="reportContainer"]').should('not.be.visible');
             
             // visible
-            cy.get('[data-testid="main"]').should('be.visible');
+            cy.get('[data-testid="subMainContainer"]').should('have.css', 'display', 'flex');
 
             cy.tick(250);
         
@@ -131,7 +131,7 @@ describe('Navigation', () => {
             cy.tick(250);
 
             // invisible
-            cy.get('[data-testid="main"]').should('not.be.visible');
+            cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
             cy.get('[data-testid="reportContainer"]').should('not.be.visible');
             
             // visible
@@ -148,17 +148,17 @@ describe('Navigation', () => {
             cy.get('[data-testid="reportContainer"]').should('not.be.visible');
             
             // visible
-            cy.get('[data-testid="main"]').should('be.visible');
+            cy.get('[data-testid="subMainContainer"]').should('have.css', 'display', 'flex');
     })
 
     it('Basic Blog and About Container Testing (in home)', () => {
         cy.openBlog();
         cy.get('[data-testid="blogExit"]').click();
-        cy.get('[data-testid="main"]').should('be.visible');
+        cy.get('[data-testid="subMainContainer"]').should('have.css', 'display', 'flex');
 
         cy.openAbout();
         cy.get('[data-testid="aboutExit"]').click();
-        cy.get('[data-testid="main"]').should('be.visible');
+        cy.get('[data-testid="subMainContainer"]').should('have.css', 'display', 'flex');
     })
 
     it('Advanced Blog and About Container Testing', () => {
@@ -190,7 +190,7 @@ describe('Navigation', () => {
         cy.tick(250)
 
         // invisible
-        cy.get('[data-testid="main"]').should('not.be.visible');
+        cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
         cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
         cy.get('[data-testid="blogContainer"]').should('not.be.visible');
         cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
@@ -207,7 +207,7 @@ describe('Navigation', () => {
         cy.tick(250)
 
         // invisible
-        cy.get('[data-testid="main"]').should('not.be.visible');
+        cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
         cy.get('[data-testid="reportContainer"]').should('not.be.visible');
         cy.get('[data-testid="blogContainer"]').should('not.be.visible');
         cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
@@ -226,7 +226,7 @@ describe('Navigation', () => {
         cy.tick(250)
 
         // invisible
-        cy.get('[data-testid="main"]').should('not.be.visible');
+        cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
         cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
         cy.get('[data-testid="blogContainer"]').should('not.be.visible');
         cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
@@ -244,7 +244,7 @@ describe('Navigation', () => {
         cy.tick(250)
 
         // invisible
-        cy.get('[data-testid="main"]').should('not.be.visible');
+        cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
         cy.get('[data-testid="reportContainer"]').should('not.be.visible');
         cy.get('[data-testid="blogContainer"]').should('not.be.visible');
         cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
@@ -330,7 +330,7 @@ describe('Navigation', () => {
         cy.tick(250)
         cy.leftArrowKeyPress(); // report <--
         cy.tick(250)
-        cy.get('[data-testid="main"]').should('not.be.visible');
+        cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
         cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
         cy.get('[data-testid="blogContainer"]').should('not.be.visible');
         cy.get('[data-testid="blogPostContainer"]').should('not.be.visible');
@@ -351,7 +351,7 @@ describe('Navigation', () => {
         cy.tick(250)
         cy.rightArrowKeyPress(); // --> space
         cy.tick(250)
-        cy.get('[data-testid="main"]').should('not.be.visible');
+        cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
         cy.get('[data-testid="reportContainer"]').should('not.be.visible');
         cy.get('[data-testid="blogContainer"]').should('not.be.visible');
         cy.get('[data-testid="blogPostContainer"]').should('not.be.visible');
