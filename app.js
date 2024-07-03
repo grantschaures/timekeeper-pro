@@ -143,13 +143,6 @@ app.use("/api/data", require("./api/data"));
 const PORT = process.env.PORT || 3000;
 // Start the web server
 
-// Load SSL certificate and key
-const options = {
-  key: fs.readFileSync('/path/to/privkey.pem'), // Reads the private key file
-  cert: fs.readFileSync('/path/to/fullchain.pem') // Reads the certificate file
-};
-
-// const server = http2.createServer(app);
 app.listen(PORT, function() {
   console.log(`Server is running at http://localhost:${PORT}/`);
 });
