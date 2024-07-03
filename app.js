@@ -149,7 +149,7 @@ const options = {
   cert: fs.readFileSync('/path/to/fullchain.pem') // Reads the certificate file
 };
 
-const server = http2.createServer(app);
-http2.createSecureServer(options, app).listen(PORT, function() {
+// const server = http2.createServer(app);
+app.listen(PORT, function() {
   console.log(`Server is running at http://localhost:${PORT}/`);
 });
