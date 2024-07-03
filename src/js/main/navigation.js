@@ -302,7 +302,7 @@ function handleLeftRightArrowKeys(event) {
                 resetMode(reportContainer);
                 resetMode(spaceContainer);
                 subMainContainerTransition("flex");
-                setModeBackground("/images/iStock/iStock-1306875579-mid.jpg"); // hands
+                // setModeBackground("/images/iStock/iStock-1394258314-mid.jpg");
                 fadeInAnimationsSessionBackground(); // needs to execute second
                 
             } else if (state.lastSelectedMode === 'home') { // --> REPORT
@@ -312,7 +312,7 @@ function handleLeftRightArrowKeys(event) {
                 subMainContainerTransition("none");
                 fadeOutAnimationsSessionBackground(); // needs to execute first
                 setDinkleDoinkSetting("report"); // needs to execute second
-                setModeBackground("/images/iStock/iStock-1253862403-mid-edit.jpg"); // needs to execute third
+                setModeBackground("/images/iStock/iStock-1394258314-mid.jpg"); // needs to execute third
                 
                 if (flags.blogShowing) { // hide blog content
                     blog_post_container.style.display = 'none';
@@ -325,7 +325,7 @@ function handleLeftRightArrowKeys(event) {
                 resetMode(reportContainer);
                 resetMode(spaceContainer);
                 subMainContainerTransition("flex");
-                setModeBackground("/images/iStock/iStock-1306875579-mid.jpg"); // hands
+                // setModeBackground("/images/iStock/iStock-1394258314-mid.jpg");
                 fadeInAnimationsSessionBackground(); // needs to execute second
                 
             } else if (state.lastSelectedMode === 'home') { // --> SPACE
@@ -348,11 +348,12 @@ function handleLeftRightArrowKeys(event) {
 }
 
 // purpose of this function is to prevent goons from spamming the three-way toggle for no good reason
+// utility is now negligible, arguably
 function switchDelay(flags) {
     flags.allowToggleSwitch = false;
     setTimeout(() => {
         flags.allowToggleSwitch = true;
-    }, 250)
+    }, 150)
 }
 
 function setDinkleDoinkSetting(mode) { // and also state.lastSelectedMode value
@@ -381,6 +382,7 @@ function subMainContainerTransition(display) {
     }
 }
 
+// functionality for incorporating multple toggle mode backgrounds
 function setModeBackground(imgPath) {
     var modeBackgroundImg = new Image();
     modeBackgroundImg.src = imgPath;
@@ -426,14 +428,14 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
             subMainContainerTransition("none");
             fadeOutAnimationsSessionBackground(); // needs to execute first
             setDinkleDoinkSetting("report"); // needs to execute second
-            setModeBackground("/images/iStock/iStock-1253862403-mid-edit.jpg"); // needs to execute third
+            setModeBackground("/images/iStock/iStock-1394258314-mid.jpg"); // needs to execute third
 
         } else if (homeIcon.contains(event.target)) { // --> HOME
             setDinkleDoinkSetting("home"); // needs to execute first
             resetMode(reportContainer);
             resetMode(spaceContainer);
             subMainContainerTransition("flex");
-            setModeBackground("/images/iStock/iStock-1306875579-mid.jpg"); // hands
+            // setModeBackground("/images/iStock/iStock-1394258314-mid.jpg");
             fadeInAnimationsSessionBackground(); // needs to execute second
             
         } else if (spaceIcon.contains(event.target)) { // --> SPACE

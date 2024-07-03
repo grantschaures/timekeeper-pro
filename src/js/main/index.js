@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     // Fade out gradient once home image has loaded :P
-    let defaultImgPath = "/images/iStock/iStock-1306875579-mid.jpg";
+    let defaultImgPath = "/images/iStock/iStock-1394258314-mid.jpg";
     let defaultImgUrl = 'url(' + defaultImgPath + ')';
 
     var startImg = new Image();

@@ -43,8 +43,8 @@ html {
     background-color: #202020; /* Fallback */
     /* background-color: #411da3; */
     /* background-image: url("/images/iStock/iStock-1253862403-mid-edit.jpg"); */
-    /* background-image: url("/images/iStock/iStock-1394258314-mid.jpg"); */
-    background-image: url("/images/iStock/iStock-1306875579-mid.jpg"); 
+    background-image: url("/images/iStock/iStock-1394258314-mid.jpg");
+    /* background-image: url("/images/iStock/iStock-1306875579-mid.jpg");  */
     
     transition: background-image 1s ease-in-out;
     
