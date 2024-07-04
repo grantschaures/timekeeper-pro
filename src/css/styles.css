@@ -377,7 +377,8 @@ main {
     align-items: center;
     margin-top: 25px;
 
-    opacity: 0;
+    /* SETTING THIS TO 0 WILL RE-ENABLE subMainContainer FADE IN ANIMATION AT THE EXPENSE OF LCP (LARGEST CONTENTFUL PAINT)*/
+    opacity: 1;
     transition: opacity 1s ease-in-out; 
 
     /* border: 3px solid black; */

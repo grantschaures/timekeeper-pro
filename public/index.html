@@ -6,27 +6,62 @@
         <meta name="description" content="HyperChill.io is a time tracker which collects and visualizes data concerning the duration and quality of deep work.">
         <title>HyperChill.io: Online Productivity Time Tracker</title>
         <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-        <link rel='stylesheet' href='/css/styles.css'>
-        <link rel='stylesheet' href='/css/background-animations.css'>
-        <link rel='stylesheet' href='/css/settings.css'>
+
+        <link rel="preload" href="/css/styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/css/styles.css"></noscript>
+
+        <link rel="preload" href="/css/settings.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/css/settings.css"></noscript>
+
+        <link rel="preload" href="/css/notes.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/css/notes.css"></noscript>
+
+        <!-- <link rel="preload" href="/css/blog.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/css/blog.css"></noscript> -->
+
+        <!-- <link rel="preload" href="/css/menu.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/css/menu.css"></noscript> -->
+
+        <!-- <link rel="preload" href="/css/icons.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/css/icons.css"></noscript> -->
+
+        <!-- <link rel="preload" href="/css/notes.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/css/notes.css"></noscript> -->
+
+        <!-- <link rel="preload" href="/css/notes.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/css/notes.css"></noscript> -->
+
+        <!-- <link rel="preload" href="/css/report.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/css/report.css"></noscript> -->
+
+        <!-- <link rel="preload" href="/css/space.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/css/space.css"></noscript> -->
+
+        <!-- <link rel="preload" href="/css/background-animations.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/css/background-animations.css"></noscript> -->
+
+        <!-- <link rel='stylesheet' href='/css/styles.css'> -->
+        <!-- <link rel='stylesheet' href='/css/settings.css'> -->
+        <!-- <link rel='stylesheet' href='/css/notes.css'> -->
         <link rel='stylesheet' href='/css/blog.css'>
-        <link rel='stylesheet' href='/css/icons.css'>
-        <link rel='stylesheet' href='/css/notes.css'>
         <link rel='stylesheet' href='/css/menu.css'>
+        <link rel='stylesheet' href='/css/icons.css'>
         <link rel='stylesheet' href='/css/report.css'>
         <link rel='stylesheet' href='/css/space.css'>
+        <link rel='stylesheet' href='/css/background-animations.css'>
+
         <link id="favicon1" rel="icon" href="/images/logo/HyperChillLogo_circular_white_border.png" type="image/x-icon">
         <link id="favicon2" rel="icon" type="image/png" sizes="32x32" href="/images/logo/HyperChillLogo_circular_white_border.png">
         <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
 
-        <script src="https://accounts.google.com/gsi/client"></script>
-        <script src="/js/utility/preload.js" defer></script>
-        <script type="module" src="/js/api/google-signin.js"></script>
-        <script type="module" src='/js/state/state.js'></script>
         <script type="module" src='/js/main/index.js'></script>
+        <script src="/js/utility/preload.js"></script>
+        <script type="module" src='/js/state/state.js'></script>
         <script type="module" src='/js/main/navigation.js'></script>
         <script type="module" src='/js/main/notes.js'></script>
+        <script src="https://accounts.google.com/gsi/client"></script>
+        <script type="module" src="/js/api/google-signin.js"></script>
     </head>
 
     <!-- Google tag (gtag.js) -->
@@ -268,7 +303,7 @@
                                 <button id="start-stop" data-testid="start-stop" class="no-select">Start</button>
                             </div>
                             <div>
-                                <button id="end-session" aria-label="End Session Button"></button> <!-- Text inserted via JS -->
+                                <button id="end_session_btn" aria-label="End Session Button">End Session</button>
                             </div>
                         </div>
                     </div>
@@ -1468,7 +1503,7 @@
                                         </span>
                                     </label>
                                     <label id="generalBellContainer2" class="generalAlertContainer">
-                                        <input id="generalBellInput2" type="radio" name="generalAlert2" class="generalAlert" aria-labelledby="generalBellText2">
+                                        <input id="generalBellInput2" type="radio" name="generalAlert2" class="generalAlert" aria-labelledby="generalChimeText2">
                                         <span id="generalBellText2" class="settingsHeader">
                                             Bell
                                         </span>

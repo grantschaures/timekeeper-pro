@@ -57,8 +57,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     //Safari on iPad Pro acts like mobile (no push notifications) but identifies as desktop
 
-    // INITIAL DOMContentLoaded FUNCTION CALLS
-    setInitialEndSessionBtnText(initialViewportWidth, end_session_btn);
+    setEndSessionBtnText(initialViewportWidth, end_session_btn);
 
     window.scrollTo({ top: 0, behavior: 'smooth' }); // scroll to top
 
@@ -71,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const threeWayToggle = document.getElementById('threeWayToggle');
 
     // Initial Animations
-    if (!isMobile) {
+    if ((!isMobile) && (initialViewportWidth > 504)) {
         setTimeout(() => {
             hyperChillTitle.style.opacity = '1'; // increases opacity
             hyperChillTitle.classList.add('hyperChillTitleAnimationTranslate'); // moves it down
@@ -96,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 }, 100)
             }, 1000)
         }, 2000)
-    } else {
+    } else if (isMobile || (initialViewportWidth <= 504)) {
         setTimeout(() => {
             hyperChillTitle.style.display = 'none';
             subMainContainer.style.opacity = '1';
@@ -851,7 +850,7 @@ document.addEventListener("DOMContentLoaded", function() {
     })
 
     window.addEventListener("resize", function() {
-        handleViewportWidthChange(settingsMappings, tempStorage, isMobile);
+        handleViewportWidthChange(settingsMappings, tempStorage, end_session_btn);
     });
 
     document.addEventListener('visibilitychange', function() {
@@ -888,7 +887,7 @@ document.addEventListener("DOMContentLoaded", function() {
      */
     settings_menu_container.addEventListener("click", function() {
         setTimeout(() => {
-            handleViewportWidthChange(settingsMappings, tempStorage, isMobile);
+            handleViewportWidthChange(settingsMappings, tempStorage, end_session_btn);
         }, 0);
     });
 
@@ -1924,22 +1923,9 @@ function showAllSettingsContainers(settingsMappings) {
     }
 }
 
-function setInitialEndSessionBtnText(initialViewportWidth, end_session_btn) {
-    if (initialViewportWidth <= 504) {
-        end_session_btn.innerText = "End";
-    } else {
-        end_session_btn.innerText = "End Session";
-    }
-}
-
-function handleViewportWidthChange(settingsMappings, tempStorage, isMobile) {
+function handleViewportWidthChange(settingsMappings, tempStorage, end_session_btn) {
     let viewportWidth = window.innerWidth || document.documentElement.clientWidth;
-    let end_session_btn = document.getElementById("end-session");
-    if (viewportWidth <= 504) {
-        end_session_btn.innerText = "End";
-    } else {
-        end_session_btn.innerText = "End Session";
-    }
+    setEndSessionBtnText(viewportWidth, end_session_btn);
 
     if (viewportWidth <= 650) {
         showAllSettingsContainers(settingsMappings);
@@ -1959,6 +1945,15 @@ function handleViewportWidthChange(settingsMappings, tempStorage, isMobile) {
         }
     }
 }
+
+function setEndSessionBtnText(initialViewportWidth, end_session_btn) {
+    if (initialViewportWidth <= 522) {
+        end_session_btn.innerText = "End";
+    } else {
+        end_session_btn.innerText = "End Session";
+    }
+}
+
 
 // Show suggestion break container AND sets current flowmodoro notification
 function showSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, timeAmount, counters, flags) {

@@ -180,7 +180,7 @@
         transform: scaleX(1) scaleY(1);
     }
     70% {
-        opacity: 0.05;
+        opacity: 0.25;
         transform: scaleX(1.03) scaleY(1.03);
     }
     90% {
