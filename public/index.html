@@ -1,68 +1,73 @@
 <!DOCTYPE html> <!-- Instructs web browser about type of document that follows -->
 <html lang="en">
     <head>
-        <meta charset='utf-8'>
-        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="description" content="HyperChill.io is a time tracker which collects and visualizes data concerning the duration and quality of deep work.">
         <title>HyperChill.io: Online Productivity Time Tracker</title>
-        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link rel="preload" href="/css/styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" href="/css/styles.css"></noscript>
+        <!-- <link rel="preload" href="/css/styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/css/styles.css"></noscript> -->
 
-        <link rel="preload" href="/css/settings.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" href="/css/settings.css"></noscript>
+        <!-- <link rel="preload" href="/css/settings.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/css/settings.css"></noscript> -->
 
-        <link rel="preload" href="/css/notes.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" href="/css/notes.css"></noscript>
+        <!-- <link rel="preload" href="/css/notes.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/css/notes.css"></noscript> -->
 
         <!-- <link rel="preload" href="/css/blog.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" href="/css/blog.css"></noscript> -->
+        <noscript><link rel="stylesheet" href="/css/blog.css"></noscript>
 
-        <!-- <link rel="preload" href="/css/menu.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link rel="preload" href="/css/menu.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="/css/menu.css"></noscript> -->
 
         <!-- <link rel="preload" href="/css/icons.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="/css/icons.css"></noscript> -->
 
         <!-- <link rel="preload" href="/css/notes.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" href="/css/notes.css"></noscript> -->
+        <noscript><link rel="stylesheet" href="/css/notes.css"></noscript>
 
-        <!-- <link rel="preload" href="/css/notes.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" href="/css/notes.css"></noscript> -->
+        <link rel="preload" href="/css/notes.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/css/notes.css"></noscript>
 
-        <!-- <link rel="preload" href="/css/report.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" href="/css/report.css"></noscript> -->
+        <link rel="preload" href="/css/report.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/css/report.css"></noscript>
 
-        <!-- <link rel="preload" href="/css/space.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" href="/css/space.css"></noscript> -->
+        <link rel="preload" href="/css/space.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/css/space.css"></noscript>
 
-        <!-- <link rel="preload" href="/css/background-animations.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link rel="preload" href="/css/background-animations.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="/css/background-animations.css"></noscript> -->
 
-        <!-- <link rel='stylesheet' href='/css/styles.css'> -->
-        <!-- <link rel='stylesheet' href='/css/settings.css'> -->
-        <!-- <link rel='stylesheet' href='/css/notes.css'> -->
+        <link rel='stylesheet' href='/css/styles.css'>
+        <link rel='stylesheet' href='/css/settings.css'>
+        <link rel='stylesheet' href='/css/notes.css'>
+        <link rel='stylesheet' href='/css/icons.css'>
         <link rel='stylesheet' href='/css/blog.css'>
         <link rel='stylesheet' href='/css/menu.css'>
-        <link rel='stylesheet' href='/css/icons.css'>
         <link rel='stylesheet' href='/css/report.css'>
         <link rel='stylesheet' href='/css/space.css'>
         <link rel='stylesheet' href='/css/background-animations.css'>
 
         <link id="favicon1" rel="icon" href="/images/logo/HyperChillLogo_circular_white_border.png" type="image/x-icon">
         <link id="favicon2" rel="icon" type="image/png" sizes="32x32" href="/images/logo/HyperChillLogo_circular_white_border.png">
-        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 
-        <script type="module" src='/js/main/index.js'></script>
         <script src="/js/utility/preload.js"></script>
-        <script type="module" src='/js/state/state.js'></script>
-        <script type="module" src='/js/main/navigation.js'></script>
-        <script type="module" src='/js/main/notes.js'></script>
-        <script src="https://accounts.google.com/gsi/client"></script>
+        <script type="module" src="/js/main/index.js"></script>
+        <script type="module" src="/js/state/state.js"></script>
+        <script type="module" src="/js/main/navigation.js"></script>
+        <script type="module" src="/js/main/notes.js"></script>
         <script type="module" src="/js/api/google-signin.js"></script>
-    </head>
+        <script src="https://accounts.google.com/gsi/client"></script>
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-E3SBGG3VKK"></script><script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-E3SBGG3VKK');
+    </script></head>
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-E3SBGG3VKK"></script>
@@ -1588,5 +1593,11 @@
                 </div>
             </div>
         </div>
+    
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&amp;display=swap" rel="stylesheet"></noscript>
+
+    
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&amp;display=swap" rel="stylesheet"></noscript>
+
     </body>
 </html>
