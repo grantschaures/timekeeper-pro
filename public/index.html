@@ -216,7 +216,7 @@
                                 <h4 id="targetLabel" style="font-size: 20px" class="no-select">Target Hours</h4>
                                 <div id="coolDiv-submit">
                                     <div id="coolDiv">
-                                        <input type="number" id="target-hours" data-testid="target-hours" class="glowing-effect" name="hours" min="0">
+                                        <input type="number" id="target-hours" data-testid="target-hours" class="glowing-effect" name="hours" min="0" aria-labelledby="targetLabel">
                                     </div>
                                     <button type="submit" id="target-hours-submit" data-testid="target-hours-submit" class="no-select">Submit</button>
                                 </div>
@@ -392,7 +392,7 @@
                         </div>
                         <div id="create-label-window">
                             <div id="create-label">
-                                <input type="text" id="create-label-input" data-testid="create-label-input" placeholder="Enter Label Name">
+                                <input type="text" id="create-label-input" data-testid="create-label-input" placeholder="Enter Label Name" aria-labelledby="create-label-container">
                                 <div id="emoji-btn">
                                     <img id="OGemoji" src="images/notes/emoji-symbols/books.png" alt="Books Emoji">
                                 </div>
@@ -404,7 +404,7 @@
                         </div>
                         <div id="update-label-window">
                             <div id="update-label">
-                                <input type="text" id="update-label-input" data-testid="update-label-input" placeholder="Enter Label Name">
+                                <input type="text" id="update-label-input" data-testid="update-label-input" placeholder="Enter Label Name" aria-labelledby="update-label-container">
                                 <div id="emoji-btn2">
                                     <img id="OGemoji2" src="images/notes/emoji-symbols/books.png" alt="Books Emoji">
                                 </div>
@@ -830,7 +830,7 @@
                                             <p id="pomodoroNotifications"><b class="settingsCategoryHeading">Pomodoro Notifications</b></p>
                                         </div>
                                         <div id="pomodoroNotificationToggleContainer" class="toggleContainer">
-                                            <input type="checkbox" id="pomodoroNotificationToggle" class="toggle-checkbox">
+                                            <input type="checkbox" id="pomodoroNotificationToggle" class="toggle-checkbox" aria-labelledby="pomodoroNotifications">
                                             <label for="pomodoroNotificationToggle" data-testid="pomodoroNotificationToggle" id="pomodoroNotificationToggleLabel" class="toggle-label">
                                                 <span id="pomodoroNotificationToggleBall" class="toggle-ball"></span>
                                             </label>
@@ -851,26 +851,26 @@
                                             </div>
                                             <div id="minutesImageBucket1" class="imageBucket">
                                                 <div>
-                                                    <p><b>Pomodoro</b></p>
+                                                    <p id="pomodoroInputText"><b>Pomodoro</b></p>
                                                 </div>
                                                 <div class="pomodoroNotificationContainer">
-                                                    <input type="number" id="pomodoroInput" data-testid="pomodoroInput" value="25" class="pomodoroInterval" name="minutes" min="1" max="720" step="1">
+                                                    <input type="number" id="pomodoroInput" data-testid="pomodoroInput" value="25" class="pomodoroInterval" name="minutes" min="1" max="720" step="1" aria-labelledby="pomodoroInputText">
                                                 </div>
                                             </div>
                                             <div id="minutesImageBucket2" class="imageBucket">
                                                 <div>
-                                                    <p><b>Short Break</b></p>
+                                                    <p id="shortBreakInputText"><b>Short Break</b></p>
                                                 </div>
                                                 <div class="pomodoroNotificationContainer">
-                                                    <input type="number" id="shortBreakInput" data-testid="shortBreakInput" value="5" class="pomodoroInterval" name="minutes" min="1" max="720" step="1">
+                                                    <input type="number" id="shortBreakInput" data-testid="shortBreakInput" value="5" class="pomodoroInterval" name="minutes" min="1" max="720" step="1" aria-labelledby="shortBreakInputText">
                                                 </div>
                                             </div>
                                             <div id="minutesImageBucket3" class="imageBucket">
                                                 <div>
-                                                    <p><b>Long Break</b></p>
+                                                    <p id="longBreakInputText"><b>Long Break</b></p>
                                                 </div>
                                                 <div class="pomodoroNotificationContainer">
-                                                    <input type="number" id="longBreakInput" data-testid="longBreakInput" value="15" class="pomodoroInterval" name="minutes" min="1" max="720" step="1">
+                                                    <input type="number" id="longBreakInput" data-testid="longBreakInput" value="15" class="pomodoroInterval" name="minutes" min="1" max="720" step="1" aria-labelledby="longBreakInputText">
                                                 </div>
                                             </div>
                                         </div>
@@ -885,7 +885,7 @@
                                             <p><b>Auto Start Pomodoro Interval</b></p>
                                         </div>
                                         <div id="autoStartPomodoroIntervalToggleContainer" class="toggleContainer">
-                                            <input type="checkbox" id="autoStartPomodoroIntervalToggle" class="toggle-checkbox">
+                                            <input type="checkbox" id="autoStartPomodoroIntervalToggle" class="toggle-checkbox" aria-labelledby="autoStartPomodoroIntervalText">
                                             <label for="autoStartPomodoroIntervalToggle" data-testid="autoStartPomodoroIntervalToggleLabel" id="autoStartPomodoroIntervalToggleLabel" class="toggle-label">
                                                 <span id="autoStartPomodoroIntervalToggleBall" class="toggle-ball"></span>
                                             </label>
@@ -896,7 +896,7 @@
                                             <p><b>Auto Start Break Interval</b></p>
                                         </div>
                                         <div id="autoStartBreakIntervalToggleContainer" class="toggleContainer">
-                                            <input type="checkbox" id="autoStartBreakIntervalToggle" class="toggle-checkbox">
+                                            <input type="checkbox" id="autoStartBreakIntervalToggle" class="toggle-checkbox" aria-labelledby="autoStartBreakIntervalText">
                                             <label for="autoStartBreakIntervalToggle" data-testid="autoStartBreakIntervalToggleLabel" id="autoStartBreakIntervalToggleLabel" class="toggle-label">
                                                 <span id="autoStartBreakIntervalToggleBall" class="toggle-ball"></span>
                                             </label>
@@ -921,19 +921,19 @@
                                     </div>
                                     <div class="pickAlertSound">
                                         <label id="pomodoroNoAlertContainer" class="pomodoroAlertContainer">
-                                            <input id="pomodoroNoAlertInput" type="radio" name="pomodoroAlert" class="pomodoroAlert" checked>
+                                            <input id="pomodoroNoAlertInput" type="radio" name="pomodoroAlert" class="pomodoroAlert"  aria-labelledby="pomodoroNoAlertText" checked>
                                             <span id="pomodoroNoAlertText" class="settingsHeader">
                                                 No Alert
                                             </span>
                                         </label>
                                         <label id="pomodoroChimeAlertContainer" class="pomodoroAlertContainer">
-                                            <input id="pomodoroChimeInput" type="radio" name="pomodoroAlert" class="pomodoroAlert">
+                                            <input id="pomodoroChimeInput" type="radio" name="pomodoroAlert" class="pomodoroAlert"  aria-labelledby="pomodoroChimeText">
                                             <span id="pomodoroChimeText" class="settingsHeader">
                                                 Chime
                                             </span>
                                         </label>
                                         <label id="pomodoroBellContainer" class="pomodoroAlertContainer">
-                                            <input id="pomodoroBellInput" type="radio" name="pomodoroAlert" class="pomodoroAlert">
+                                            <input id="pomodoroBellInput" type="radio" name="pomodoroAlert" class="pomodoroAlert"  aria-labelledby="pomodoroBellText">
                                             <span id="pomodoroBellText" class="settingsHeader">
                                                 Bell
                                             </span>
@@ -955,7 +955,7 @@
                                             <p id="flowmodoroNotifications"><b class="settingsCategoryHeading">Break Notifications</b></p>
                                         </div>
                                         <div id="flowmodoroNotificationToggleContainer" class="toggleContainer">
-                                            <input type="checkbox" id="flowmodoroNotificationToggle" class="toggle-checkbox">
+                                            <input type="checkbox" id="flowmodoroNotificationToggle" class="toggle-checkbox"  aria-labelledby="flowmodoroNotifications">
                                             <label for="flowmodoroNotificationToggle" data-testid="flowmodoroNotificationToggle" id="flowmodoroNotificationToggleLabel" class="toggle-label">
                                                 <span id="flowmodoroNotificationToggleBall" class="toggle-ball"></span>
                                             </label>
@@ -980,7 +980,7 @@
                                                         <p><b>&lt; 25 min</b></p>
                                                     </div>
                                                     <div class="chillTimeNotificationContainer">
-                                                        <input type="number" id="flowmodoroBreakInput1" data-testid="flowmodoroBreakInput1" value="5" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1">
+                                                        <input type="number" id="flowmodoroBreakInput1" data-testid="flowmodoroBreakInput1" value="5" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1"  aria-labelledby="ChillTime">
                                                     </div>
                                                 </div>
                                                 <div id="minutesImageBucket2" class="imageBucket">
@@ -988,7 +988,7 @@
                                                         <p><b>&lt; 50 min</b></p>
                                                     </div>
                                                     <div class="chillTimeNotificationContainer">
-                                                        <input type="number" id="flowmodoroBreakInput2" data-testid="flowmodoroBreakInput2" value="8" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1">
+                                                        <input type="number" id="flowmodoroBreakInput2" data-testid="flowmodoroBreakInput2" value="8" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1"  aria-labelledby="ChillTime">
                                                     </div>
                                                 </div>
                                             </div>
@@ -998,7 +998,7 @@
                                                         <p><b>&lt; 90 min</b></p>
                                                     </div>
                                                     <div class="chillTimeNotificationContainer">
-                                                        <input type="number" id="flowmodoroBreakInput3" data-testid="flowmodoroBreakInput3" value="10" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1">
+                                                        <input type="number" id="flowmodoroBreakInput3" data-testid="flowmodoroBreakInput3" value="10" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1"  aria-labelledby="ChillTime">
                                                     </div>
                                                 </div>
                                                 <div id="minutesImageBucket4" class="imageBucket">
@@ -1006,7 +1006,7 @@
                                                         <p><b>&gt;= 90 min</b></p>
                                                     </div>
                                                     <div class="chillTimeNotificationContainer">
-                                                        <input type="number" id="flowmodoroBreakInput4" data-testid="flowmodoroBreakInput4" value="15" class="flowmodoroBreak" name="minutes" min="1" step="1">
+                                                        <input type="number" id="flowmodoroBreakInput4" data-testid="flowmodoroBreakInput4" value="15" class="flowmodoroBreak" name="minutes" min="1" step="1"  aria-labelledby="ChillTime">
                                                     </div>
                                                 </div>
                                             </div>
@@ -1031,19 +1031,19 @@
                                     </div>
                                     <div class="pickAlertSound">
                                         <label id="flowmodoroNoAlertContainer" class="flowmodoroAlertContainer">
-                                            <input id="flowmodoroNoAlertInput" type="radio" name="flowmodoroAlert" class="flowmodoroAlert" checked>
+                                            <input id="flowmodoroNoAlertInput" type="radio" name="flowmodoroAlert" class="flowmodoroAlert" aria-labelledby="flowmodoroNoAlertText" checked>
                                             <span id="flowmodoroNoAlertText" class="settingsHeader">
                                                 No Alert
                                             </span>
                                         </label>
                                         <label id="flowmodoroChimeAlertContainer" class="flowmodoroAlertContainer">
-                                            <input id="flowmodoroChimeInput" type="radio" name="flowmodoroAlert" class="flowmodoroAlert">
+                                            <input id="flowmodoroChimeInput" type="radio" name="flowmodoroAlert" class="flowmodoroAlert" aria-labelledby="flowmodoroChimeText">
                                             <span id="flowmodoroChimeText" class="settingsHeader">
                                                 Chime
                                             </span>
                                         </label>
                                         <label id="flowmodoroBellContainer" class="flowmodoroAlertContainer">
-                                            <input id="flowmodoroBellInput" type="radio" name="flowmodoroAlert" class="flowmodoroAlert">
+                                            <input id="flowmodoroBellInput" type="radio" name="flowmodoroAlert" class="flowmodoroAlert" aria-labelledby="flowmodoroBellText">
                                             <span id="flowmodoroBellText" class="settingsHeader">
                                                 Bell
                                             </span>
@@ -1063,7 +1063,7 @@
                                         <p id="flowTimeBreakNotification"><b class="settingsCategoryHeading">Deep Work Notifications</b></p>
                                     </div>
                                     <div id="breakSuggestionToggleContainer" class="toggleContainer">
-                                        <input type="checkbox" id="breakSuggestionToggle" class="toggle-checkbox">
+                                        <input type="checkbox" id="breakSuggestionToggle" class="toggle-checkbox" aria-labelledby="flowTimeBreakNotification">
                                         <label for="breakSuggestionToggle" data-testid="breakSuggestionToggle" id="breakSuggestionToggleLabel" class="toggle-label">
                                             <span id="breakSuggestionToggleBall" class="toggle-ball"></span>
                                         </label>
@@ -1078,7 +1078,7 @@
                                     </div>
                                     <div id="suggestionMinutesInputContainer" class="toggleContainer">
                                         <div id="coolDiv2">
-                                            <input type="number" id="suggestionMinutesInput" data-testid="suggestionMinutesInput" value = '90' name="minutes" min="1" max="720">
+                                            <input type="number" id="suggestionMinutesInput" data-testid="suggestionMinutesInput" value = '90' name="minutes" min="1" max="720" aria-labelledby="suggestionMinutesText">
                                         </div>
                                     </div>
                                 </div>
@@ -1101,19 +1101,19 @@
                                 </div>
                                 <div class="pickAlertSound">
                                     <label id="generalNoAlertContainer" class="generalAlertContainer">
-                                        <input id="generalNoAlertInput" type="radio" name="generalAlert" class="generalAlert" checked>
+                                        <input id="generalNoAlertInput" type="radio" name="generalAlert" class="generalAlert" aria-labelledby="generalNoAlertText" checked>
                                         <span id="generalNoAlertText" class="settingsHeader">
                                             No Alert
                                         </span>
                                     </label>
                                     <label id="generalChimeAlertContainer" class="generalAlertContainer">
-                                        <input id="generalChimeInput" type="radio" name="generalAlert" class="generalAlert">
+                                        <input id="generalChimeInput" type="radio" name="generalAlert" class="generalAlert" aria-labelledby="generalChimeText">
                                         <span id="generalChimeText" class="settingsHeader">
                                             Chime
                                         </span>
                                     </label>
                                     <label id="generalBellContainer" class="generalAlertContainer">
-                                        <input id="generalBellInput" type="radio" name="generalAlert" class="generalAlert">
+                                        <input id="generalBellInput" type="radio" name="generalAlert" class="generalAlert" aria-labelledby="generalBellText">
                                         <span id="generalBellText" class="settingsHeader">
                                             Bell
                                         </span>
@@ -1129,7 +1129,7 @@
                                     <p id="targetTimeReachedAlert"><b class="settingsCategoryHeading">Target Time Reached Notification</b></p>
                                 </div>
                                 <div id="targetTimeReachedToggleContainer" class="toggleContainer">
-                                    <input type="checkbox" id="targetTimeReachedToggle" class="toggle-checkbox">
+                                    <input type="checkbox" id="targetTimeReachedToggle" class="toggle-checkbox" aria-labelledby="targetTimeReachedAlert">
                                     <label for="targetTimeReachedToggle" id="targetTimeReachedToggleLabel" class="toggle-label">
                                         <span id="targetTimeReachedToggleBall" class="toggle-ball"></span>
                                     </label>
@@ -1246,8 +1246,7 @@
                                         <p id="flowTimeAnimationHeader"><b>Deep Work</b></p>
                                     </div>
                                     <div id="flowTimeAnimationToggleContainer" class="toggleContainer">
-                                        <input type="checkbox" id="flowTimeAnimationToggle" class="toggle-checkbox" checked>
-                                        <!-- <input type="checkbox" id="flowTimeAnimationToggle" class="toggle-checkbox"> -->
+                                        <input type="checkbox" id="flowTimeAnimationToggle" class="toggle-checkbox" aria-labelledby="flowTimeAnimationHeader" checked>
                                         <label for="flowTimeAnimationToggle" id="flowTimeAnimationToggleLabel" class="toggle-label">
                                             <span id="flowTimeAnimationToggleBall" class="toggle-ball"></span>
                                         </label>
@@ -1258,7 +1257,7 @@
                                         <p id="chillTimeAnimationHeader"><b>Break</b></p>
                                     </div>
                                     <div id="chillTimeAnimationToggleContainer" class="toggleContainer">
-                                        <input type="checkbox" id="chillTimeAnimationToggle" class="toggle-checkbox" checked>
+                                        <input type="checkbox" id="chillTimeAnimationToggle" class="toggle-checkbox" aria-labelledby="chillTimeAnimationHeader" checked>
                                         <label for="chillTimeAnimationToggle" id="chillTimeAnimationToggleLabel" class="toggle-label">
                                             <span id="chillTimeAnimationToggleBall" class="toggle-ball"></span>
                                         </label>
@@ -1277,7 +1276,7 @@
                                         <p id="notesAutoSwitch"><b class="settingsCategoryHeading">Auto Switch</b></p>
                                     </div>
                                     <div id="transitionNotesAutoSwitchToggleContainer" class="toggleContainer">
-                                        <input type="checkbox" id="transitionNotesAutoSwitchToggle" data-testid="transitionNotesAutoSwitchToggle" class="toggle-checkbox">
+                                        <input type="checkbox" id="transitionNotesAutoSwitchToggle" data-testid="transitionNotesAutoSwitchToggle" class="toggle-checkbox" aria-labelledby="notesAutoSwitch">
                                         <label for="transitionNotesAutoSwitchToggle" id="transitionNotesAutoSwitchToggleLabel" class="toggle-label">
                                             <span id="transitionNotesAutoSwitchToggleBall" class="toggle-ball"></span>
                                         </label>
@@ -1294,7 +1293,7 @@
                                         <p id="propagateUnfinishedTasks"><b class="settingsCategoryHeading">Keep Unfinished Tasks</b></p>
                                     </div>
                                     <div id="propagateUnfinishedTasksToggleContainer" class="toggleContainer">
-                                        <input type="checkbox" id="propagateUnfinishedTasksToggle" data-testid="propagateUnfinishedTasksToggle" class="toggle-checkbox">
+                                        <input type="checkbox" id="propagateUnfinishedTasksToggle" data-testid="propagateUnfinishedTasksToggle" class="toggle-checkbox" aria-labelledby="propagateUnfinishedTasks">
                                         <label for="propagateUnfinishedTasksToggle" id="propagateUnfinishedTasksToggleLabel" class="toggle-label">
                                             <span id="propagateUnfinishedTasksToggleBall" class="toggle-ball"></span>
                                         </label>
@@ -1364,7 +1363,7 @@
                                         <p><b>Transition Clock Sound</b></p>
                                     </div>
                                     <div id="transitionClockSoundToggleContainer" class="toggleContainer">
-                                        <input type="checkbox" id="transitionClockSoundToggle" class="toggle-checkbox">
+                                        <input type="checkbox" id="transitionClockSoundToggle" class="toggle-checkbox" aria-labelledby="transitionClockSoundText">
                                         <label for="transitionClockSoundToggle" id="transitionClockSoundToggleLabel" class="toggle-label">
                                             <span id="transitionClockSoundToggleBall" class="toggle-ball"></span>
                                         </label>
@@ -1389,19 +1388,19 @@
                                 </div>
                                 <div class="pickAlertSound">
                                     <label id="pomodoroNoAlertContainer2" class="pomodoroAlertContainer">
-                                        <input id="pomodoroNoAlertInput2" type="radio" name="pomodoroAlert2" class="pomodoroAlert" checked>
+                                        <input id="pomodoroNoAlertInput2" type="radio" name="pomodoroAlert2" class="pomodoroAlert"  aria-labelledby="pomodoroNoAlertText2" checked>
                                         <span id="pomodoroNoAlertText2" class="settingsHeader">
                                             No Alert
                                         </span>
                                     </label>
                                     <label id="pomodoroChimeAlertContainer2" class="pomodoroAlertContainer">
-                                        <input id="pomodoroChimeInput2" type="radio" name="pomodoroAlert2" class="pomodoroAlert">
+                                        <input id="pomodoroChimeInput2" type="radio" name="pomodoroAlert2" class="pomodoroAlert" aria-labelledby="pomodoroChimeText2">
                                         <span id="pomodoroChimeText2" class="settingsHeader">
                                             Chime
                                         </span>
                                     </label>
                                     <label id="pomodoroBellContainer2" class="pomodoroAlertContainer">
-                                        <input id="pomodoroBellInput2" type="radio" name="pomodoroAlert2" class="pomodoroAlert">
+                                        <input id="pomodoroBellInput2" type="radio" name="pomodoroAlert2" class="pomodoroAlert" aria-labelledby="pomodoroBellText2">
                                         <span id="pomodoroBellText2" class="settingsHeader">
                                             Bell
                                         </span>
@@ -1423,19 +1422,19 @@
                                 </div>
                                 <div class="pickAlertSound">
                                     <label id="flowmodoroNoAlertContainer2" class="flowmodoroAlertContainer">
-                                        <input id="flowmodoroNoAlertInput2" type="radio" name="flowmodoroAlert2" class="flowmodoroAlert" checked>
+                                        <input id="flowmodoroNoAlertInput2" type="radio" name="flowmodoroAlert2" class="flowmodoroAlert" aria-labelledby="flowmodoroNoAlertText2" checked>
                                         <span id="flowmodoroNoAlertText2" class="settingsHeader">
                                             No Alert
                                         </span>
                                     </label>
                                     <label id="flowmodoroChimeAlertContainer2" class="flowmodoroAlertContainer">
-                                        <input id="flowmodoroChimeInput2" type="radio" name="flowmodoroAlert2" class="flowmodoroAlert">
+                                        <input id="flowmodoroChimeInput2" type="radio" name="flowmodoroAlert2" class="flowmodoroAlert" aria-labelledby="flowmodoroChimeText2">
                                         <span id="flowmodoroChimeText2" class="settingsHeader">
                                             Chime
                                         </span>
                                     </label>
                                     <label id="flowmodoroBellContainer2" class="flowmodoroAlertContainer">
-                                        <input id="flowmodoroBellInput2" type="radio" name="flowmodoroAlert2" class="flowmodoroAlert">
+                                        <input id="flowmodoroBellInput2" type="radio" name="flowmodoroAlert2" class="flowmodoroAlert" aria-labelledby="flowmodoroBellText2">
                                         <span id="flowmodoroBellText2" class="settingsHeader">
                                             Bell
                                         </span>
@@ -1457,19 +1456,19 @@
                                 </div>
                                 <div class="pickAlertSound">
                                     <label id="generalNoAlertContainer2" class="generalAlertContainer">
-                                        <input id="generalNoAlertInput2" type="radio" name="generalAlert2" class="generalAlert" checked>
+                                        <input id="generalNoAlertInput2" type="radio" name="generalAlert2" class="generalAlert" aria-labelledby="generalNoAlertText2" checked>
                                         <span id="generalNoAlertText2" class="settingsHeader">
                                             No Alert
                                         </span>
                                     </label>
                                     <label id="generalChimeAlertContainer2" class="generalAlertContainer">
-                                        <input id="generalChimeInput2" type="radio" name="generalAlert2" class="generalAlert">
+                                        <input id="generalChimeInput2" type="radio" name="generalAlert2" class="generalAlert" aria-labelledby="generalChimeText2">
                                         <span id="generalChimeText2" class="settingsHeader">
                                             Chime
                                         </span>
                                     </label>
                                     <label id="generalBellContainer2" class="generalAlertContainer">
-                                        <input id="generalBellInput2" type="radio" name="generalAlert2" class="generalAlert">
+                                        <input id="generalBellInput2" type="radio" name="generalAlert2" class="generalAlert" aria-labelledby="generalBellText2">
                                         <span id="generalBellText2" class="settingsHeader">
                                             Bell
                                         </span>
