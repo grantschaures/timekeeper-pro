@@ -77,8 +77,8 @@ document.addEventListener("DOMContentLoaded", function() {
         }, 0)
         
         setTimeout(() => {
-            hyperChillTitle.classList.add('hyperChillTitleAnimationScale'); // makes it W I D E
             subMainContainer.style.opacity = '1';
+            hyperChillTitle.classList.add('hyperChillTitleAnimationScale'); // makes it W I D E
         }, 1000)
         
         setTimeout(() => {

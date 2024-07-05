@@ -377,10 +377,9 @@ main {
     align-items: center;
     margin-top: 25px;
 
-    /* SETTING THIS TO 1 WILL DISABLE subMainContainer FADE IN ANIMATION AND INCREASE LCP (LARGEST CONTENTFUL PAINT)*/
     opacity: 0;
-    transition: opacity 1s ease-in-out; 
-
+    transition: opacity 1s ease-in-out;
+    
     /* border: 3px solid black; */
     /* overflow-x: hidden; */
 }
@@ -404,7 +403,7 @@ main {
     padding: 25px;
 
     /* border: 3px solid cyan; */
-    z-index: 5;
+    z-index: 25;
 }
 
 @media (max-width: 504px) {
@@ -577,7 +576,7 @@ button:hover {
     border-radius: 25px; /* Created corner curves */
     /* border: 1px solid yellow; */
 
-    z-index: 2;
+    z-index: 25;
 }
 
 #targetHoursContainer {
@@ -604,7 +603,7 @@ button:hover {
     
     border-radius: 25px; /* Created corner curves */
     /* border: 1px solid yellow; */
-    z-index: 2;
+    z-index: 25;
 }
 
 @media (min-width: 505px) {
@@ -826,7 +825,7 @@ button:hover {
     box-sizing: border-box;
     
     border-radius: 25px;
-    z-index: 1;
+    z-index: 25;
     
 }
 

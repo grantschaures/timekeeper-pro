@@ -171,7 +171,7 @@
             </div>
         </div> <!-- z-index: 0 -->
 
-        <div id="mainContainer"> <!-- z-index: 5 -->
+        <div id="mainContainer"> <!-- z-index: 25 -->
             <header>
                 <div class="container">
                     <img id="hyperChillLogoImage" src="images/logo/HyperChillLogo_smallest.png" class="no-select" draggable="false" alt="">
@@ -224,9 +224,9 @@
                     </div>
                 </div>
                 <div class="bottom">
-                    <img id="questionIcon" data-testid="questionIcon" src="/images/icons/questionIcon.png" alt="Question Button">
+                    <img id="questionIcon" data-testid="questionIcon" src="/images/icons/questionIcon.png" alt="Question Button"> <!-- z-index: 20 -->
                 </div>
-                <div id="popupQuestionMenu" data-testid="popupQuestionMenu">
+                <div id="popupQuestionMenu" data-testid="popupQuestionMenu"> <!-- z-index: 30 -->
                     <div id="loginQuestionMenuContainer" class="menuContainer"> 
                         <img id="loginIcon2" src="/images/icons/loginIcon.png" class="menuIcon" alt="Login">
                         <img id="accountIconFinal" src="/images/icons/accountIcon.png" class="menuIcon" alt="Account">
@@ -249,7 +249,7 @@
             </header>
 
             <main class="main" data-testid="main">
-                <div id="subMainContainer" data-testid="subMainContainer">
+                <div id="subMainContainer" data-testid="subMainContainer" class="introTransition">
                     <div id="targetHoursInterruptionsContainer">
                         <div id="targetHoursContainer">
                             <div id="targetHoursSubContainer">
@@ -313,7 +313,7 @@
                         </div>
                     </div>
 
-                    <div data-testid="notes-container" id="notes-container">
+                    <div data-testid="notes-container" id="notes-container"> <!-- z-index: 20 -->
                         <div id="task-container">
                             <div id="clearDiv">
                                 <img src="images/icons/reset-1033424-white.png" id="clearIcon"  data-testid="clearIcon" class="no-select" alt="Reset Labels">

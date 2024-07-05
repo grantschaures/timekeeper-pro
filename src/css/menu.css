@@ -56,7 +56,7 @@
     display: none;
     opacity: 0;
     transition: opacity 0.15s ease-in, opacity 0.05s ease-out;
-    z-index: 22;
+    z-index: 30;
 
     flex-direction: column;
 }
@@ -105,6 +105,7 @@
     transform: scale(0.85);
     transition: opacity 1s ease-in-out;
     position: relative;
+    z-index: 20;
 }
 
 #questionIcon:hover {
