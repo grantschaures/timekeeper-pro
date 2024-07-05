@@ -848,8 +848,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 flowAnimation.style.opacity = 0;
                 flowAnimation.style.display = 'none';
                 flowAnimation.classList.remove('intoOpacityTransition');
-                document.body.offsetHeight;
-                console.log(Date.now());
+                console.log(Date.now())
             } else {
                 chillAnimation.style.opacity = 0;
                 chillAnimation.style.display = 'none';
@@ -869,6 +868,11 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
     });
+
+    window.addEventListener('blur', function() {
+        flowAnimation.style.display = 'none';
+        console.log(Date.now())
+    })
 
     /**
      * setTimeout delay of 0 allows the event listener callback function in menu.js
