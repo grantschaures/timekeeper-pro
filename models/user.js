@@ -56,6 +56,7 @@ const User = db.model("User", {
     }
   },
   targetHours:  { type: Number, required: false },
+  showingTimeLeft: { type: Boolean, default: false }
 }, 'Users');
 
 module.exports = User;

@@ -1,4 +1,4 @@
-import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selectedBackgroundIdTemp, selectedBackgroundId, timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, alertVolumes, alertSounds, counters, flags, tempStorage, settingsMappings, savedInterruptionsArr, timeAmount, intervalArrs, defaultBackgroundPath } from '../modules/index-objects.js';
+import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selectedBackgroundIdTemp, selectedBackgroundId, timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, alertVolumes, alertSounds, counters, flags, tempStorage, settingsMappings, savedInterruptionsArr, timeAmount, intervalArrs, defaultBackgroundPath, progressTextMod } from '../modules/index-objects.js';
 
 import { chime, bell, clock_tick, soundMap } from '../modules/sound-map.js';
 
@@ -16,6 +16,7 @@ import { state } from '../modules/navigation-objects.js';
 import { initializeGUI } from '../utility/initialize_gui.js'; // minified
 import { updateUserSettings } from '../state/update-settings.js'; // minified
 import { updateTargetHours } from '../state/update-target-hours.js'; // minified
+import { updateShowingTimeLeft } from '../state/update-showing-time-left.js'; // minified
 
 const pomodoroWorker = new Worker('/js/displayWorkers/pomodoroWorker.js');
 const suggestionWorker = new Worker('/js/displayWorkers/suggestionWorker.js');
@@ -246,7 +247,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", "Break");
             }
 
-            totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount);
+            totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod);
             flowmodoroAndBreakSuggestionActions(flags, elapsedTime, counters, timeAmount, flowmodoroWorker, suggestionWorker);
             
             clearInterval(intervals.main);
@@ -295,7 +296,7 @@ document.addEventListener("DOMContentLoaded", function() {
             /* Update progress bar & percentage ONCE to demonstrate submitted change in Break.
             In Deep Work, this code makes the change happen just a little bit faster. */
             updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer);
-            totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount);
+            totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod);
             
             flags.hitTarget = false;
 
@@ -309,7 +310,7 @@ document.addEventListener("DOMContentLoaded", function() {
             /* Update progress bar & percentage ONCE to demonstrate submitted change in Break.
                 In Deep Work, this code makes the change happen just a little bit faster. */
             updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer);
-            totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount);
+            totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod);
             
             /* The reason for this is that we don't want to bombard the user with progress container animations at the very start of the program :P */
             if (counters.startStop > 0) { // only if session has been started
@@ -973,7 +974,7 @@ document.addEventListener("DOMContentLoaded", function() {
             // reset displays
             resetDisplay(display);
             updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer);
-            totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount);
+            totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod);
 
             // reset progress bar size
             if (flags.progressBarContainerIsSmall) {
@@ -1075,7 +1076,37 @@ document.addEventListener("DOMContentLoaded", function() {
         window.location.href = "/reset-password";
     })
 
+    progressContainer.addEventListener("mouseover", function() {
+        if (((!progressBarContainer.classList.contains('small')) && (counters.startStop >= 1)) || ((counters.startStop === 0) && (flags.submittedTarget))) {
+            progressContainer.style.cursor = 'pointer';
+        }
+    });
+    
+    progressContainer.addEventListener("mouseout", function() {
+        if (((!progressBarContainer.classList.contains('small')) && (counters.startStop >= 1)) || ((counters.startStop === 0) && (flags.submittedTarget))) {
+            progressContainer.style.cursor = 'default';
+        }
+    });
+
+    progressContainer.addEventListener("click", async function() {
+        if (((!progressBarContainer.classList.contains('small')) && (counters.startStop >= 1)) || ((counters.startStop === 0) && (flags.submittedTarget))) {
+            if (!progressTextMod.showingTimeLeft) {
+                progressTextMod.showingTimeLeft = true; // show time left
+                total_time_display.textContent = progressTextMod.targetTimeLeftStr; // for immediate change
+            } else {
+                progressTextMod.showingTimeLeft = false; // hide time left
+                total_time_display.textContent = progressTextMod.defaultTimeStr; // for immediate change
+            }
+
+            if (sessionState.loggedIn) {
+                await updateShowingTimeLeft(progressTextMod.showingTimeLeft);
+            }
+        }
+    });
+
+    // ---------------------
     // DISPLAY WORKERS
+    // ---------------------
 
     pomodoroWorker.onmessage = function(message) {
         console.log("pomodoroWorker.onmessage")
@@ -1141,7 +1172,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     totalDisplayWorker.onmessage = function(message) {
-        totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount);
+        totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod);
     }
 
     document.dispatchEvent(new Event('defaultSettingsApplied'));
@@ -2538,7 +2569,7 @@ export function replaceTargetHours(inputHours, timeAmount, flags) {
     return targetHours;
 };
 
-export function totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount) {
+export function totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod) {
     let timeDiff = getTotalElapsed(flags, elapsedTime.hyperFocus, startTimes);
 
     // if 24 hours reached, end session
@@ -2560,13 +2591,43 @@ export function totalTimeDisplay(startTimes, elapsedTime, total_time_display, ti
     // console.log(flags.submittedTarget);
 
     if (flags.submittedTarget) {
+
         let percentage = timeDiff / timeAmount.targetTime;
-        
         if (percentage > 1) {
             percentage = 1; //cap percentage at 100%
         }
 
-        total_time_display.textContent = `${hours}:${minutes}:${seconds}` + " (" + Math.trunc(percentage * 100) + "%)";
+        let defaultStr = `${hours}:${minutes}:${seconds}` + " (" + Math.trunc(percentage * 100) + "%) completed";
+        progressTextMod.defaultTimeStr = defaultStr;
+
+        // NEW STUFF
+        let timeLeft = timeAmount.targetTime - timeDiff;
+        let timeLeftHours = Math.floor(timeLeft / timeConvert.msPerHour);
+        let timeLeftMinutes = Math.floor((timeLeft - timeLeftHours * timeConvert.msPerHour) / timeConvert.msPerMin);
+        let timeLeftSeconds = Math.ceil((timeLeft - timeLeftHours * timeConvert.msPerHour - timeLeftMinutes * timeConvert.msPerMin) / timeConvert.msPerSec);
+
+        // Format the time values
+        timeLeftHours = String(timeLeftHours).padStart(2, '0');
+        timeLeftMinutes = String(timeLeftMinutes).padStart(2, '0');
+        timeLeftSeconds = String(timeLeftSeconds).padStart(2, '0');
+        
+        let timeLeftString;
+        let timeLeftPercentage = timeLeft / timeAmount.targetTime;
+        if (flags.hitTarget) {
+            timeLeftString = `00:00:00 (0%) remaining`;
+        } else {
+            timeLeftString = `${timeLeftHours}:${timeLeftMinutes}:${timeLeftSeconds} (${Math.ceil(timeLeftPercentage * 100)}%) remaining`;
+        }
+        
+        progressTextMod.targetTimeLeftStr = timeLeftString;
+        // NEW STUFF
+
+        if (progressTextMod.showingTimeLeft) {
+            total_time_display.textContent = timeLeftString;
+        } else {
+            total_time_display.textContent = defaultStr;
+        }
+
     } else {
         total_time_display.textContent = `${hours}:${minutes}:${seconds}`;
     }

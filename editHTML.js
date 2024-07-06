@@ -88,6 +88,10 @@ const indexReplacements = [
     {
         pattern: /import { updateTargetHours } from '..\/state\/update-target-hours.js';/g,
         replacement: "import { updateTargetHours } from '../minified/update-target-hours.min.js';"
+    },
+    {
+        pattern: /import { updateShowingTimeLeft } from '..\/state\/update-showing-time-left.js';/g,
+        replacement: "import { updateShowingTimeLeft } from '../minified/update-showing-time-left.min.js';"
     }
 ];
 

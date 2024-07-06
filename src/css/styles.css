@@ -859,9 +859,6 @@ button:hover {
     #targetHoursInterruptionsContainer {
         display: none;
     }
-    #progress-text {
-        font-size: 12px;
-    }
     #chillAnimation {
         margin-top: -135px;
     }
@@ -1065,10 +1062,19 @@ button:hover {
     white-space: nowrap;
 }
 
-@media (max-width: 280px) {
+@media (max-width: 500px) {
+    #progress-text {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 420px) {
     #progress-text {
         font-size: 14px;
     }
+}
+
+@media (max-width: 280px) {
     #progress-bar-container.small {
         width: 45%;
     }

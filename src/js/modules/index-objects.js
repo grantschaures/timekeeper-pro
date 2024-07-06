@@ -177,10 +177,16 @@ export const settingsMappings = {
 };
 
 export const timeAmount = {
-    targetTime: null,
+    targetTime: null, // in ms
     breakTimeSuggestionsArr: [5, 8, 10, 15],
     suggestionMinutes: 90,
     pomodoroIntervalArr: [25, 5, 15]
+}
+
+export const progressTextMod = {
+    targetTimeLeftStr: null,
+    defaultTimeStr: null,
+    showingTimeLeft: false
 }
 
 //STORAGE

@@ -2,7 +2,7 @@ import { pomodoroNotificationToggle, pomodoroInputs, autoStartPomodoroIntervalTo
 
 import { sessionState } from '../modules/state-objects.js';
 
-import { flags, timeAmount, alertVolumes, alertSounds, selectedBackgroundId, selectedBackground, flowtimeBackgrounds, chilltimeBackgrounds, selectedBackgroundIdTemp, startTimes, elapsedTime, timeConvert } from '../modules/index-objects.js';
+import { flags, timeAmount, alertVolumes, alertSounds, selectedBackgroundId, selectedBackground, flowtimeBackgrounds, chilltimeBackgrounds, selectedBackgroundIdTemp, startTimes, elapsedTime, timeConvert, progressTextMod } from '../modules/index-objects.js';
 
 import { flags as notesflags, counters as notesCounters, state as notesState, labelDict, notesArr } from '../modules/notes-objects.js';
 
@@ -54,12 +54,21 @@ async function updateGUIForLoggedInUser(userData, noteData) {
     // settings (--> logged in version)
     updateSettings(userData);
 
+    // showing time left (--> logged in version)
+    updateShowingTimeLeft(userData);
+    
+    // target hours (--> logged in version)
     updateTargetHours(userData);
 
     // notes (--> logged in version)
     updateUserLabels(noteData);
 
     updateUserNotes(noteData);
+}
+
+function updateShowingTimeLeft(userData) {
+    const showingTimeLeft = userData.showingTimeLeft;
+    progressTextMod.showingTimeLeft = showingTimeLeft;
 }
 
 function updateTargetHours(userData) {
@@ -71,7 +80,7 @@ function updateTargetHours(userData) {
 
         // update UI
         replaceTargetHours(targetHours, timeAmount, flags);
-        totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount);
+        totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod);
     }
 }
 

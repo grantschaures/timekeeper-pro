@@ -43,6 +43,38 @@ router.delete("/delete-account", async function(req, res) {
     }
 });
 
+router.post("/update-showing-time-left", async function(req, res) {
+    // Assuming the JWT is sent automatically in cookie headers
+    const token = req.cookies.token;  // Extract the JWT from cookies directly
+    const { showingTimeLeft } = req.body;
+
+    if (!token) {
+        return res.status(401).json({ isLoggedIn: false });
+    }
+    // console.log(targetHours);
+
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        const user = await User.findById(decoded.userId);
+
+        if (user) {
+            user.showingTimeLeft = showingTimeLeft;
+            await user.save();
+            res.json({ success: true, message: 'Target Hours updated successfully' });
+        } else {
+            return res.status(401).json({ 
+                isLoggedIn: false,
+                message: "User not found"
+            });
+        }
+    } catch (error) {
+        return res.status(401).json({
+            isLoggedIn: false,
+            message: "Session is not valid: " + error.message
+        });
+    }
+});
+
 router.post("/update-target-hours", async function(req, res) {
     // Assuming the JWT is sent automatically in cookie headers
     const token = req.cookies.token;  // Extract the JWT from cookies directly
