@@ -8,7 +8,7 @@
 
     /* POTENTIAL DESIGN ALTERNATIVE -- WHITE BORDER */
     /* border: 3px solid rgb(255, 255, 255); */
-    z-index: 20;
+    z-index: 30;
     border-radius: 25px;
     max-width: 600px;
     height: 250px;
@@ -199,7 +199,7 @@
     transition: opacity 0.15s ease;
     --after-left: 45%;
 
-    z-index: 15;
+    z-index: 30;
 }
 
 #emoji-container {
@@ -227,7 +227,7 @@
     transition: opacity 0.15s ease;
     --after-left: 45%;
 
-    z-index: 15;
+    z-index: 30;
 }
 
 #emoji-container::after {

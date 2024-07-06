@@ -56,7 +56,7 @@
     display: none;
     opacity: 0;
     transition: opacity 0.15s ease-in, opacity 0.05s ease-out;
-    z-index: 30;
+    z-index: 35;
 
     flex-direction: column;
 }
