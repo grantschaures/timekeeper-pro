@@ -6,6 +6,7 @@ export const deepWorkBackground = document.getElementById('deepWorkBackground');
 export const breakBackground = document.getElementById('breakBackground');
 export const start_stop_btn = document.getElementById("start-stop");
 export const submit_change_btn = document.getElementById("target-hours-submit");
+export const target_hours_input = document.getElementById("target-hours");
 export const end_session_btn = document.getElementById("end_session_btn");
 export const report_btn = document.getElementById("reportBtn");
 export const total_time_display = document.getElementById("progress-text");

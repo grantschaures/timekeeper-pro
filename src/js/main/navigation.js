@@ -1,10 +1,12 @@
-import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn, spaceContainer, shortcutsContainer, shortcutsPopup, shortcutsExit, reportContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, flowAnimation, chillAnimation } from '../modules/dom-elements.js';
+import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn, spaceContainer, shortcutsContainer, shortcutsPopup, shortcutsExit, reportContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, flowAnimation, chillAnimation, target_hours_input } from '../modules/dom-elements.js';
 
 import { blogIdList, flags, counters, state } from '../modules/navigation-objects.js';
 
 import { sessionState } from '../modules/state-objects.js';
 
 import { flags as indexFlags, selectedBackground, defaultBackgroundPath } from '../modules/index-objects.js';
+
+import { flags as notesFlags } from '../modules/notes-objects.js';
 
 import { deleteUserAccount } from '../state/delete-account.js'; // minified
 
@@ -125,6 +127,7 @@ document.addEventListener("DOMContentLoaded", function() {
             pomodoroBtnContainer.click();
         }
 
+        flags.settingsContainerShowing = true;
         counters.settingsBtnClicked++;
         body.style.overflowY = 'hidden'; // no scroll    
         settings_exit.classList.add('resetRotation'); // reset animation
@@ -297,7 +300,11 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function handleLeftRightArrowKeys(event) {
-    if (flags.allowToggleSwitch) {
+
+    // add any additional inputs here
+    let flagArr = [notesFlags.noteTaskInputContainerShowing, notesFlags.createLabelWindowOpen, notesFlags.updateLabelWindowOpen, flags.settingsContainerShowing, (document.activeElement.id === 'target-hours')]
+
+    if (flags.allowToggleSwitch && flagArr.every(flag => !flag)) {
         if (event.key === 'ArrowLeft') {
             if (state.lastSelectedMode === 'space') { // --> HOME
                 setDinkleDoinkSetting("home"); // needs to execute first
@@ -350,7 +357,6 @@ function handleLeftRightArrowKeys(event) {
 }
 
 // purpose of this function is to prevent goons from spamming the three-way toggle for no good reason
-// utility is now negligible, arguably
 function switchDelay(flags) {
     flags.allowToggleSwitch = false;
     setTimeout(() => {
@@ -498,8 +504,12 @@ function isClickNotOnQuestionMenuElements(event, questionIcon, flags, popupQuest
 }
 
 function isClickNotOnSettingsElements(event, settingsContainer, settings_exit, body) {
-
     if ((event.target === settings_exit)) {
+
+        // Programmatic Changes
+        flags.settingsContainerShowing = false;
+
+        // GUI changes
         settingsContainer.style.display = "none";
         body.style.overflowY = 'scroll';
     }

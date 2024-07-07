@@ -915,7 +915,7 @@ document.addEventListener("DOMContentLoaded", function() {
             
             // focus score calculation
             let totalMin = totalTime / timeConvert.msPerMin;
-            let result = (1 - (((totalInterruptions) / (totalMin)) / (0.5))) * 100;
+            let result = (1 - (((totalInterruptions) / (totalMin)) / (0.2))) * 100; // positive values start w/ < 1 distraction / 5 min of deep work
             let focusPercent = Math.floor(result);
             if (focusPercent > 0) {
                 console.log('Focus Score: ' + focusPercent + '%');
