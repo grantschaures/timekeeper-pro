@@ -10,6 +10,11 @@ const User = db.model("User", {
   emailVerified: { type: Boolean, required: true},
   googleAccountLinked: { type: Boolean, required: false},
   logins: { type: Number, required: true, default: 0 },
+  loginTimeArr: [{ type: Date }], // logs whenever user logs in (this can be implemented completely on the server)
+  activityTimeArr: [{
+    timeZone: { type: String, required: true },
+    loginDateUTC: { type: Date, required: true }
+  }],
   settings: {
     pomodoro: {
       notificationToggle: { type: Boolean, default: false },
@@ -56,7 +61,7 @@ const User = db.model("User", {
     }
   },
   targetHours:  { type: Number, required: false },
-  showingTimeLeft: { type: Boolean, default: false }
+  showingTimeLeft: { type: Boolean, default: false },
 }, 'Users');
 
 module.exports = User;
