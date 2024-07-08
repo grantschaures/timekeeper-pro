@@ -7,16 +7,19 @@ import {
     backgroundContainer,
     deepWorkBackground,
     breakBackground,
+    streaksContainer,
+    streaksLoginSuggestionPopup,
 } from '../modules/dom-elements.js';
 
 import { sessionState } from '../modules/state-objects.js';
 
-import { state } from '../modules/navigation-objects.js';
+import { state, flags as navFlags } from '../modules/navigation-objects.js';
 
 import { initializeGUI } from '../utility/initialize_gui.js'; // minified
 import { updateUserSettings } from '../state/update-settings.js'; // minified
 import { updateTargetHours } from '../state/update-target-hours.js'; // minified
 import { updateShowingTimeLeft } from '../state/update-showing-time-left.js'; // minified
+import { userActivity } from '../state/user-activity.js'; // minified
 
 const pomodoroWorker = new Worker('/js/displayWorkers/pomodoroWorker.js');
 const suggestionWorker = new Worker('/js/displayWorkers/suggestionWorker.js');
@@ -823,7 +826,7 @@ document.addEventListener("DOMContentLoaded", function() {
         defaultTheme.classList.add('selected-background');
         flags.darkThemeActivated = false;
 
-        deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, isMobile);
+        deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, isMobile, streaksContainer);
 
         if (sessionState.loggedIn) {
             await updateUserSettings({
@@ -839,7 +842,7 @@ document.addEventListener("DOMContentLoaded", function() {
         darkGrayTheme.classList.add('selected-background');
         flags.darkThemeActivated = true;
 
-        activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer);
+        activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, streaksContainer);
 
         if (sessionState.loggedIn) {
             await updateUserSettings({
@@ -900,6 +903,13 @@ document.addEventListener("DOMContentLoaded", function() {
         if (flags.sessionInProgress) {
             // (1) Collect all necessary information about the session
             // if in flowtime, add interruptions count to the interruptions array
+
+            let userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; // determined moment they end session
+            if (sessionState.loggedIn) {
+                logUserActivity(userTimeZone);
+            } else { // non-logged in user
+                streaksCount.innerText = 1;
+            }
             
             // total time
             let totalTime = getTotalElapsed(flags, elapsedTime.hyperFocus, startTimes);
@@ -1104,6 +1114,32 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+    streaksContainer.addEventListener("mouseover", function() {
+        // for non logged in user and question popup menu isn't open
+        // Show log in suggestion container
+        // "You have one "You've got a one day streak! Log in to save your progress."
+
+        if ((!sessionState.loggedIn) && (!navFlags.popupQuestionWindowShowing)) {
+            streaksContainer.style.cursor = 'pointer';
+            streaksLoginSuggestionPopup.style.opacity = 1;
+        }
+    })
+    
+    streaksContainer.addEventListener("mouseout", function() {
+        // for non logged in user and question popup menu isn't open
+        // remove log in suggestion window
+        
+        if ((!sessionState.loggedIn) && (!navFlags.popupQuestionWindowShowing)) {
+            streaksLoginSuggestionPopup.style.opacity = 0;
+        }
+    })
+
+    streaksContainer.addEventListener("click", function() {
+        if ((!sessionState.loggedIn) && (!navFlags.popupQuestionWindowShowing)) {
+            window.location.href = "/login";
+        }
+    })
+
     // ---------------------
     // DISPLAY WORKERS
     // ---------------------
@@ -1175,7 +1211,7 @@ document.addEventListener("DOMContentLoaded", function() {
         totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod);
     }
 
-    document.dispatchEvent(new Event('defaultSettingsApplied'));
+    document.dispatchEvent(new Event('updateState'));
 });
 
 // ---------------------
@@ -2430,6 +2466,13 @@ function resetHtmlBackground(backgroundImg) {
     document.documentElement.style.backgroundImage = backgroundImg;
 }
 
+async function logUserActivity(userTimeZone) {
+    await userActivity(userTimeZone);
+
+    // Eventually, we'll want to call this after the very last data has been sent to the database
+    document.dispatchEvent(new Event('updateState'));
+}
+
 // ---------------------
 // EXPORTED FUNCTIONS
 // ---------------------
@@ -2477,8 +2520,8 @@ export function setBackground(background_color, opacity) {
     }
 };
 
-export function deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, isMobile) {
-    let componentArr1 = [interruptionsContainer, targetHoursContainer, timekeepingContainer, notesContainer, aboutContainer, blogContainer];
+export function deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, isMobile, streaksContainer) {
+    let componentArr1 = [interruptionsContainer, targetHoursContainer, timekeepingContainer, notesContainer, aboutContainer, blogContainer, streaksContainer];
 
     let darkBackgroundTranslucent = "rgba(0, 0, 0, 0.9)"; // changed from 0.8 alpha value
     let darkBackground = "rgb(0, 0, 0)";
@@ -2488,7 +2531,10 @@ export function deactivateDarkTheme(interruptionsContainer, targetHoursContainer
 
     componentArr1.forEach(function(component) {
         component.style.backgroundColor = darkBackgroundTranslucent;
-        component.style.border = null;
+
+        if (component !== streaksContainer) {
+            component.style.border = null;
+        }
     })
 
     // dealing w/ popup menu
@@ -2513,8 +2559,8 @@ export function deactivateDarkTheme(interruptionsContainer, targetHoursContainer
     }
 };
 
-export async function activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer) {
-    let componentArr1 = [interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, notesContainer, aboutContainer, blogContainer];
+export async function activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, streaksContainer) {
+    let componentArr1 = [interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, notesContainer, aboutContainer, blogContainer, streaksContainer];
     let componentArr2 = [popupMenu, settingsContainer, emojiContainer];
 
     let darkBackgroundTranslucent = "rgba(32, 32, 32, 0.9)";

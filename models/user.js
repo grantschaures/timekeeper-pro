@@ -12,8 +12,8 @@ const User = db.model("User", {
   logins: { type: Number, required: true, default: 0 },
   loginTimeArr: [{ type: Date }], // logs whenever user logs in (this can be implemented completely on the server)
   activityTimeArr: [{
-    timeZone: { type: String, required: true },
-    loginDateUTC: { type: Date, required: true }
+    timeZone: { type: String },
+    activityDateUTC: { type: Date }
   }],
   settings: {
     pomodoro: {

@@ -20,6 +20,6 @@ export async function deleteUserAccount(settings) {
 
 
     } catch (error) {
-        console.error('Failed to update user:', error);
+        console.error('Failed to delete user account:', error);
     }
 }

@@ -1258,6 +1258,7 @@ export function appendEditRemoveContainer(inputType, lastIdNum) {
     const editBtn = document.createElement('div');
     editBtn.classList.add('editRemoveBtn');
     editBtn.classList.add('editBtn');
+    editBtn.classList.add('no-select');
 
     let editBtnIdStr = "editBtn" + inputType + lastIdNum;
     editBtn.setAttribute('id', editBtnIdStr);
@@ -1280,6 +1281,7 @@ export function appendEditRemoveContainer(inputType, lastIdNum) {
     const removeBtn = document.createElement('div');
     removeBtn.classList.add('editRemoveBtn');
     removeBtn.classList.add('removeBtn');
+    removeBtn.classList.add('no-select');
 
     let removeBtnIdStr = "removeBtn" + inputType + lastIdNum;
     removeBtn.setAttribute('id', removeBtnIdStr);

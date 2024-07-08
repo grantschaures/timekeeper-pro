@@ -127,6 +127,7 @@ export const reportIcon = document.getElementById("report-icon");
 export const reportPath = document.getElementById("report-path");
 export const spaceIcon = document.getElementById("space-icon"); // icon in three way toggle
 export const homeIcon = document.getElementById("home-icon");
+export const threeWayToggle = document.getElementById("threeWayToggle");
 export const blogMenuContainer = document.getElementById("blogMenuContainer");
 export const aboutIconNotes = document.getElementById('aboutIconNotes');
 export const body = document.body;
@@ -190,8 +191,12 @@ export const deleteAccountPopup = document.getElementById("deleteAccountPopup");
 export const deleteAccountPopupYesBtn = document.getElementById("deleteAccountPopupYesBtn");
 export const deleteAccountPopupNoBtn = document.getElementById("deleteAccountPopupNoBtn");
 
-export const questionIcon = document.getElementById("questionIcon");
+export const questionIcon = document.getElementById("questionIconContainer");
 export const popupQuestionMenu = document.getElementById("popupQuestionMenu");
+
+export const streaksContainer = document.getElementById("streaksContainer");
+export const streaksLoginSuggestionPopup = document.getElementById("streaksLoginSuggestionPopup");
+export const streaksCount = document.getElementById("streaksCount");
 
 export const loginQuestionMenuContainer = document.getElementById("loginQuestionMenuContainer");
 export const privacyPolicyContainer = document.getElementById("privacyPolicyContainer");

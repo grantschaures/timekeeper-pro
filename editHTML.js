@@ -92,6 +92,10 @@ const indexReplacements = [
     {
         pattern: /import { updateShowingTimeLeft } from '..\/state\/update-showing-time-left.js';/g,
         replacement: "import { updateShowingTimeLeft } from '../minified/update-showing-time-left.min.js';"
+    },
+    {
+        pattern: /import { userActivity } from '..\/state\/user-activity.js';/g,
+        replacement: "import { userActivity } from '../minified/user-activity.min.js';"
     }
 ];
 

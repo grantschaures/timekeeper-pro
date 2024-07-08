@@ -1,11 +1,11 @@
-export async function updateShowingTimeLeft(showingTimeLeft) {
+export async function userActivity(userTimeZone) {
     try {
-        const response = await fetch('/api/data/update-showing-time-left', {
+        const response = await fetch('/api/data/user-activity', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ showingTimeLeft })
+            body: JSON.stringify({ userTimeZone })
         });
 
         if (!response.ok) {
@@ -16,8 +16,8 @@ export async function updateShowingTimeLeft(showingTimeLeft) {
         }
 
         const data = await response.json();
-        // console.log("Settings updated successfully:", data);
+        // console.log(data);
     } catch (error) {
-        console.error('Failed to update progress bar text display setting:', error);
+        console.error('Failed to update activity info:', error);
     }
 }

@@ -18,6 +18,6 @@ export async function updateTargetHours(targetHours) {
         const data = await response.json();
         // console.log("Settings updated successfully:", data);
     } catch (error) {
-        console.error('Failed to update settings:', error);
+        console.error('Failed to update target hours:', error);
     }
 }
