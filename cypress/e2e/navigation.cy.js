@@ -328,7 +328,7 @@ describe('Navigation', () => {
         cy.openBlog();
         cy.get('[data-testid="blog_1"]').click();
         cy.tick(250)
-        cy.leftArrowKeyPress(); // report <--
+        cy.leftArrowKeyPress(); // report <---
         cy.tick(250)
         cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
         cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
