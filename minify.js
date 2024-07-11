@@ -20,6 +20,7 @@ let files = [
     'src/js/state/delete-account.js',
     'src/js/utility/initialize_gui.js',
     'src/js/utility/preload.js',
+    'src/js/utility/update_streaks.js',
     'src/js/login_signup/login.js',
     'src/js/login_signup/signup.js',
     'src/js/login_signup/reset-password.js',

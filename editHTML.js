@@ -73,6 +73,10 @@ const stateReplacements = [
     {
         pattern: /import { appendEditRemoveContainer, createCheckElements, getLastNumberFromId } from '..\/main\/notes.js';/g,
         replacement: "import { appendEditRemoveContainer, createCheckElements, getLastNumberFromId } from '../minified/notes.min.js';"
+    },
+    {
+        pattern: /import { updateStreaks } from '..\/utility\/update_streaks.js';/g,
+        replacement: "import { updateStreaks } from '../minified/update_streaks.min.js';"
     }
 ];
 

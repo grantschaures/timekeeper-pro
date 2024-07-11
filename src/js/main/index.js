@@ -2469,8 +2469,8 @@ function resetHtmlBackground(backgroundImg) {
 async function logUserActivity(userTimeZone) {
     await userActivity(userTimeZone);
 
-    // Eventually, we'll want to call this after the very last data has been sent to the database
-    // document.dispatchEvent(new Event('updateState'));
+    // Eventually, we'll want to update the GUI
+    document.dispatchEvent(new Event('updateStreak'));
 }
 
 // ---------------------
