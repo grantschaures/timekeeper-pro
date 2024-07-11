@@ -2470,7 +2470,7 @@ async function logUserActivity(userTimeZone) {
     await userActivity(userTimeZone);
 
     // Eventually, we'll want to call this after the very last data has been sent to the database
-    document.dispatchEvent(new Event('updateState'));
+    // document.dispatchEvent(new Event('updateState'));
 }
 
 // ---------------------
