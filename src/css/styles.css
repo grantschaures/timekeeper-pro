@@ -1504,7 +1504,7 @@ header {
 #streaksLoginSuggestionPopup::after {
     content: '';
     position: absolute;
-    bottom: -10px; /* Position the tip below the container */
+    bottom: -9.5px; /* Position the tip below the container */
     left: 55%; /* Center the tip horizontally */
     transform: translateX(-50%);
     width: 0;
