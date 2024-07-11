@@ -118,7 +118,7 @@ router.post("/verifyIdToken", async function(req, res) {
             });
             await user.save({ session });
 
-            // Create the notes entry
+            // Create the note document entry
             note = new Note({
                 userId: user._id,
                 labels: new Map([

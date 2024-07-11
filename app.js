@@ -6,6 +6,8 @@ const mongoose = require('mongoose');
 const path = require('path');
 const User = require("./models/user");
 const cookieParser = require('cookie-parser');
+const http2 = require('http2');
+const fs = require('fs');
 
 // initialization of a new express application
 const app = express();
@@ -16,8 +18,8 @@ const TESTING_DOMAIN = 'hyperchill-testing-df1b0f1f63d0.herokuapp.com';
 
 //CHECKING REQUESTS IN LOG
 const logRequest = function(req, res, next) {
-    console.log(`Request: ${req.method} for ${req.path}`);
-    next();
+  console.log(`Request: ${req.method} for ${req.path}`);
+  next();
 };
 
 app.use(logRequest);
@@ -140,6 +142,7 @@ app.use("/api/data", require("./api/data"));
 
 const PORT = process.env.PORT || 3000;
 // Start the web server
+
 app.listen(PORT, function() {
-    console.log(`Server is running at http://localhost:${PORT}/`);
+  console.log(`Server is running at http://localhost:${PORT}/`);
 });

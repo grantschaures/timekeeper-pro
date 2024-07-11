@@ -1,33 +1,73 @@
 <!DOCTYPE html> <!-- Instructs web browser about type of document that follows -->
 <html lang="en">
     <head>
-        <meta charset='utf-8'>
-        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="description" content="HyperChill.io is a time tracker which collects and visualizes data concerning the duration and quality of deep work.">
         <title>HyperChill.io: Online Productivity Time Tracker</title>
-        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- <link rel="preload" href="/css/styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/css/styles.css"></noscript> -->
+
+        <!-- <link rel="preload" href="/css/settings.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/css/settings.css"></noscript> -->
+
+        <!-- <link rel="preload" href="/css/notes.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/css/notes.css"></noscript> -->
+
+        <!-- <link rel="preload" href="/css/blog.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/css/blog.css"></noscript>
+
+        <link rel="preload" href="/css/menu.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/css/menu.css"></noscript> -->
+
+        <!-- <link rel="preload" href="/css/icons.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/css/icons.css"></noscript> -->
+
+        <!-- <link rel="preload" href="/css/notes.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/css/notes.css"></noscript>
+
+        <link rel="preload" href="/css/notes.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/css/notes.css"></noscript>
+
+        <link rel="preload" href="/css/report.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/css/report.css"></noscript>
+
+        <link rel="preload" href="/css/space.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/css/space.css"></noscript>
+
+        <link rel="preload" href="/css/background-animations.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/css/background-animations.css"></noscript> -->
+
         <link rel='stylesheet' href='/css/styles.css'>
-        <link rel='stylesheet' href='/css/background-animations.css'>
         <link rel='stylesheet' href='/css/settings.css'>
-        <link rel='stylesheet' href='/css/blog.css'>
-        <link rel='stylesheet' href='/css/icons.css'>
         <link rel='stylesheet' href='/css/notes.css'>
+        <link rel='stylesheet' href='/css/icons.css'>
+        <link rel='stylesheet' href='/css/blog.css'>
         <link rel='stylesheet' href='/css/menu.css'>
         <link rel='stylesheet' href='/css/report.css'>
         <link rel='stylesheet' href='/css/space.css'>
+        <link rel='stylesheet' href='/css/background-animations.css'>
+
         <link id="favicon1" rel="icon" href="/images/logo/HyperChillLogo_circular_white_border.png" type="image/x-icon">
         <link id="favicon2" rel="icon" type="image/png" sizes="32x32" href="/images/logo/HyperChillLogo_circular_white_border.png">
-        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 
-        <script src="https://accounts.google.com/gsi/client"></script>
-        <script src="/js/utility/preload.js" defer></script>
+        <script src="/js/utility/preload.js"></script>
+        <script type="module" src="/js/main/index.js"></script>
+        <script type="module" src="/js/state/state.js"></script>
+        <script type="module" src="/js/main/navigation.js"></script>
+        <script type="module" src="/js/main/notes.js"></script>
         <script type="module" src="/js/api/google-signin.js"></script>
-        <script type="module" src='/js/state/state.js'></script>
-        <script type="module" src='/js/main/index.js'></script>
-        <script type="module" src='/js/main/navigation.js'></script>
-        <script type="module" src='/js/main/notes.js'></script>
-    </head>
+        <script src="https://accounts.google.com/gsi/client"></script>
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-E3SBGG3VKK"></script><script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-E3SBGG3VKK');
+    </script></head>
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-E3SBGG3VKK"></script>
@@ -56,7 +96,6 @@
             </div>
             <div id="accountPopup" class="accountPopup">
                 <div id="questionPopupUserEmailContainer">
-                    <!-- <img src="images/icons/accountIcon2.png" id="accountIcon2" draggable="false"> -->
                     <h2 id="welcomeText" style="color: gray"></h2>
                     <div id="questionPopupUserEmail"></div>
                 </div>
@@ -69,7 +108,7 @@
             <div id="shortcutsPopup" data-testid="shortcutsPopup">
                 <div id="shortcutsPopupHeader">
                     <h2 id="shortcutsHeaderText">Keyboard Shortcuts</h2>
-                    <img class="exitIcon" id="shortcutsExit" data-testid="shortcutsExit" src="images/icons/noun-exit-button-261420-white.png" draggable="false">
+                    <img class="exitIcon" id="shortcutsExit" data-testid="shortcutsExit" src="images/icons/exit-button-261420-white.png" draggable="false" alt="Exit">
                 </div>
                 <hr id="shortcutsHr">
                 <div id="shortcutsPopupContainer">
@@ -108,31 +147,37 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
 
         <div id="animationContainer" class="wave-container"> <!-- z-index: 1 -->
             <div id="flowAnimation" class="wave">
-                <img id="sineWaveBack" src="images/animations/sine-wave-FINAL-LONG_small.png" class="no-select" draggable="false">
-                <img id="sineWaveFront" src="images/animations/sine-wave-hella-long_smaller.png" class="no-select" draggable="false">
+                <img id="sineWaveBack" src="images/animations/sine-wave-longer.png" class="no-select" draggable="false" alt="">
+                <img id="sineWaveFront" src="images/animations/sine-wave-shorter.png" class="no-select" draggable="false" alt="">
             </div>
             <div id="chillAnimation" class="circle">
-                <img id="circleOuter" src="images/animations/Circle-20pt_small.png" class="no-select" draggable="false"> 
-                <img id="circleMiddle" src="images/animations/Circle-20pt_small.png" class="no-select" draggable="false"> 
-                <img id="circleInner" src="images/animations/Circle-20pt_small.png" class="no-select" draggable="false"> 
+                <img id="circleOuter" src="images/animations/circle_20pt.png" class="no-select" draggable="false" alt=""> 
+                <img id="circleMiddle" src="images/animations/circle_30pt.png" class="no-select" draggable="false" alt=""> 
+                <img id="circleInner" src="images/animations/circle_40pt.png" class="no-select" draggable="false" alt=""> 
             </div>
         </div>
 
-        <div id="backgroundContainer"></div> <!-- z-index: 0 -->
+        <div id="backgroundContainer">
+            <div id="deepWorkBackground">
 
-        <div id="mainContainer"> <!-- z-index: 5 -->
+            </div>
+            <div id="breakBackground">
+
+            </div>
+        </div> <!-- z-index: 0 -->
+
+        <div id="mainContainer"> <!-- z-index: 25 -->
             <header>
                 <div class="container">
-                    <img id="hyperChillLogoImage" src="images/logo/HyperChillLogo_smallest.png" class="no-select" draggable="false">
+                    <img id="hyperChillLogoImage" src="images/logo/HyperChillLogo_smallest.png" class="no-select" draggable="false" alt="">
                     <div id="titleToggleContainer">
                         <h1 id="hyperChillTitle" class="no-select" >H Y P E R C H I L L . I O</h1>
-                        <span id="threeWayToggle" class="dash-mode"> <!-- z-index: 3 -->
+                        <span id="threeWayToggle" class="dinkle-doink-mode" data-testid="dinkle-doink-mode"> <!-- z-index: 3 -->
                             <svg id="report-icon" data-testid="report-icon" dinkle-doink="report" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" data-clickable>
                                 <path id="report-path" d="M 12 26 L 12 23 L 16 23 L 16 26 Z M 18 26 L 18 18 L 22 18 L 22 26 Z M 24 26 L 24 12 L 28 12 L 28 26 Z" fill="white"></path>
                             </svg>                                                                              
@@ -152,66 +197,66 @@
                     </div>
 
                     <div class="headerBtns">
-                        <button id="menuBtn" data-testid="menuBtn" class="no-select">
-                            <img id="menuIcon"src="/images/icons/noun-menu-6192580-white.png">
-                            <img id="menuIcon-black"src="/images/icons/noun-menu-6192580.png">
+                        <button id="menuBtn" data-testid="menuBtn" class="no-select" aria-label="Menu Button">
+                            <img id="menuIcon"src="/images/icons/menu-6192580-white.png" alt="Menu">
+                            <img id="menuIcon-black"src="/images/icons/menu-6192580.png" alt="Menu">
                         </button>
                         <div id="popupMenu" data-testid="popupMenu">
                             <div id="blogMenuContainer" data-testid="blogMenuContainer" class="menuContainer"> 
-                                <img id="blogIcon" src="/images/icons/blogIcon1.png" class="menuIcon">
+                                <img id="blogIcon" src="/images/icons/blogIcon.png" class="menuIcon" alt="Blog">
                                 <div id="blogBtn">Blog</div>
                             </div>
                             <div id="aboutMenuContainer" data-testid="aboutMenuContainer" class="menuContainer">
-                                <img id="aboutIcon" src="/images/icons/aboutIcon1.png" class="menuIcon">
+                                <img id="aboutIcon" src="/images/icons/aboutIcon.png" class="menuIcon" alt="About">
                                 <div id="aboutBtn">About</div>
                             </div>
                             <div id="settingsMenuContainer" class="menuContainer">
-                                <img id="settingsIcon" src="/images/icons/settingsIcon1.png" class="menuIcon">
+                                <img id="settingsIcon" src="/images/icons/settingsIcon1.png" class="menuIcon" alt="Settings">
                                 <div id="settingsBtn">Settings</div>
                             </div>
                             <hr id="menu_hr">
                             <div id="loginMenuContainer" class="menuContainer"> 
-                                <img id="loginIcon" src="/images/icons/loginIcon1.png" class="menuIcon">
-                                <img id="logoutIcon" src="/images/icons/logoutIcon.png" class="menuIcon">
+                                <img id="loginIcon" src="/images/icons/loginIcon.png" class="menuIcon" alt="Login">
+                                <img id="logoutIcon" src="/images/icons/logoutIcon.png" class="menuIcon" alt="Logout">
                                 <div id="logInOutBtn">Log In</div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="bottom">
-                    <img id="questionIcon" data-testid="questionIcon" src="/images/icons/questionIcon.png">
+                    <img id="questionIcon" data-testid="questionIcon" src="/images/icons/questionIcon.png" alt="Question Button"> <!-- z-index: 20 -->
                 </div>
-                <div id="popupQuestionMenu" data-testid="popupQuestionMenu">
+                <div id="popupQuestionMenu" data-testid="popupQuestionMenu"> <!-- z-index: 30 -->
                     <div id="loginQuestionMenuContainer" class="menuContainer"> 
-                        <img id="loginIcon2" src="/images/icons/loginIcon1.png" class="menuIcon">
-                        <img id="accountIconFinal" src="/images/icons/accountIconFinal.png" class="menuIcon">
+                        <img id="loginIcon2" src="/images/icons/loginIcon.png" class="menuIcon" alt="Login">
+                        <img id="accountIconFinal" src="/images/icons/accountIcon.png" class="menuIcon" alt="Account">
                         <div id="logInOutBtn2">Log In</div>
                     </div>
                     <hr id="menu_hr">
                     <div id="privacyPolicyContainer" data-testid="privacyPolicyContainer" class="menuContainer"> 
-                        <img id="privacyIcon" src="/images/icons/privacyTermsIcon.png" class="menuIcon">
+                        <img id="privacyIcon" src="/images/icons/privacyTermsIcon.png" class="menuIcon" alt="Privacy Policy">
                         <div id="privacyPolicyBtn">Privacy Policy</div>
                     </div>
                     <div id="termsAndConditionsContainer" data-testid="termsAndConditionsContainer" class="menuContainer">
-                        <img id="termsIcon" src="/images/icons/privacyTermsIcon.png" class="menuIcon">
+                        <img id="termsIcon" src="/images/icons/privacyTermsIcon.png" class="menuIcon" alt="Terms And Conditions">
                         <div id="termsAndConditionsBtn">Terms & Conditions</div>
                     </div>
                     <div id="shortcutsContainer" data-testid="shortcutsContainer" class="menuContainer">
-                        <img id="shortCutsIcon" src="/images/icons/shortcutsIconFinal.png" class="menuIcon">
+                        <img id="shortCutsIcon" src="/images/icons/shortcutsIconFinal.png" class="menuIcon" alt="Shortcuts">
                         <div id="shortcutsBtn">Shortcuts</div>
                     </div>
                 </div>
             </header>
 
             <main class="main" data-testid="main">
-                <div id="subMainContainer">
+                <div id="subMainContainer" data-testid="subMainContainer" class="introTransition">
                     <div id="targetHoursInterruptionsContainer">
                         <div id="targetHoursContainer">
                             <div id="targetHoursSubContainer">
                                 <h4 id="targetLabel" style="font-size: 20px" class="no-select">Target Hours</h4>
                                 <div id="coolDiv-submit">
                                     <div id="coolDiv">
-                                        <input type="number" id="target-hours" data-testid="target-hours" class="glowing-effect" name="hours" min="0">
+                                        <input type="number" id="target-hours" data-testid="target-hours" class="glowing-effect" name="hours" min="0" aria-labelledby="targetLabel">
                                     </div>
                                     <button type="submit" id="target-hours-submit" data-testid="target-hours-submit" class="no-select">Submit</button>
                                 </div>
@@ -221,11 +266,11 @@
                             <div id="interruptions-sub-container" data-testid="interruptions-sub-container">
                                 <h4 id="interruptions-label" style="font-size: 20px" class="no-select"> Distractions </h4>
                                 <div id="interruptions-change-container">
-                                    <button id="decBtn" class="interruptionsDivBtn no-select">-</button>
+                                    <button id="decBtn" class="interruptionsDivBtn no-select" aria-label="Distraction Decrement Button">-</button>
                                     <div id="coolerDiv" class="no-select">
                                         <div id="interruptions_num" class="no-select">0</div>
                                     </div>
-                                    <button id="incBtn" class="interruptionsDivBtn no-select">+</button>
+                                    <button id="incBtn" class="interruptionsDivBtn no-select" aria-label="Distraction Increment Button">+</button>
                                 </div>
                             </div>
                             <div id="suggestionBreakContainer">
@@ -263,18 +308,18 @@
                                 <button id="start-stop" data-testid="start-stop" class="no-select">Start</button>
                             </div>
                             <div>
-                                <button id="end-session"></button> <!-- Text inserted via JS -->
+                                <button id="end_session_btn" aria-label="End Session Button">End Session</button>
                             </div>
                         </div>
                     </div>
 
-                    <div data-testid="notes-container" id="notes-container">
+                    <div data-testid="notes-container" id="notes-container"> <!-- z-index: 20 -->
                         <div id="task-container">
                             <div id="clearDiv">
-                                <img src="images/icons/noun-reset-1033424-white.png" id="clearIcon"  data-testid="clearIcon" class="no-select">
+                                <img src="images/icons/reset-1033424-white.png" id="clearIcon"  data-testid="clearIcon" class="no-select" alt="Reset Labels">
                             </div>
                             <div id="prompt-container">
-                                <img id="tag-icon" src="images/icons/white_tag_icon.png" class="no-select">
+                                <img id="tag-icon" src="images/icons/white_tag_icon.png" class="no-select" alt="Label Icon">
                                 <div id="task-prompt" class="no-select">
                                     Select Task Labels
                                 </div>
@@ -343,54 +388,53 @@
                                 </div> -->
                                 <div id="add-done-container" data-testid="add-done-container">
                                     <h4 id="tag-selection-divider" class="unselectable" >|</h4>
-                                    <img id="add-tag-icon" data-testid="add-tag-icon" src="images/icons/noun-exit-button-261420-white.png" draggable="false" class="unselectable">
+                                    <img id="add-tag-icon" data-testid="add-tag-icon" src="images/icons/exit-button-261420-white.png" draggable="false" class="unselectable" alt="Add Label">
                                     <div id="selection-done-div" class="tag unselectable">
                                         <h4 id="selection-done" class="tag-text">Done</h4>
                                     </div>
                                 </div>
                                 <div id="infoBtnContainer">
-                                    <img id="aboutIconNotes" data-testid="aboutIconNotes" src="/images/icons/aboutIcon1.png">
+                                    <img id="aboutIconNotes" data-testid="aboutIconNotes" src="/images/icons/aboutIcon.png" alt="Notes Info">
                                 </div>
                             </div>
                         </div>
                         <div id="emoji-container">
                             <div id="emoji-row-1">
-                                <img id="studying-man-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/studying_man.png">
-                                <img id="studying-woman-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/studying_woman.png">
-                                <img id="meditation-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/meditation.png">
-                                <img id="meditation-woman-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/meditation_woman.png">
+                                <img id="studying-man-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/studying_man.png" alt="Studying Man Emoji">
+                                <img id="studying-woman-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/studying_woman.png" alt="Studying Woman Emoji">
+                                <img id="meditation-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/meditation.png"  alt="Meditating Person Emoji">
+                                <img id="meditation-woman-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/meditation_woman.png" alt="Meditating Woman Emoji">
                             </div>
                             <div id="emoji-row-2">
-                                <img id="happy-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/happy.png">
-                                <img id="zany-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/zany.png">
-                                <img id="heart-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/heart.png">
-                                <img id="dead-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/dead.png">
+                                <img id="happy-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/happy.png" alt="Happy Emoji">
+                                <img id="zany-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/zany.png" alt="Zany Emoji">
+                                <img id="heart-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/heart.png" alt="Heart Emoji">
+                                <img id="dead-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/dead.png" alt="Dead (Skull) Emoji">
                             </div>
                             <div id="emoji-row-3">
-                                <img id="document-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/document.png">
-                                <img id="memo-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/memo.png">
-                                <img id="writing-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/writing.png">
-                                <img id="notebook-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/notebook.png">
+                                <img id="document-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/document.png" alt="Document Emoji">
+                                <img id="memo-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/memo.png" alt="Memo Emoji">
+                                <img id="writing-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/writing.png" alt="Writing Emoji">
+                                <img id="notebook-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/notebook.png" alt="Notebook Emoji">
                             </div>
                             <div id="emoji-row-4">
-                                <img id="exercise-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/exercise.png">
-                                <img id="headphones-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/headphones.png">
-                                <img id="piano-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/piano.png">
-                                <img id="brain-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/brain.png">
+                                <img id="exercise-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/exercise.png" alt="Exercise Emoji">
+                                <img id="headphones-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/headphones.png" alt="Headphones Emoji">
+                                <img id="piano-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/piano.png" alt="Piano Emoji">
+                                <img id="brain-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/brain.png" alt="Brain Emoji">
                             </div>
                             <div id="emoji-row-5">
-                                <img id="lightbulb-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/light_bulb.png">
-                                <img id="calendar-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/calendar.png">
-                                <img id="clock-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/clock.png">
-                                <img id="books-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/books.png">
+                                <img id="lightbulb-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/light_bulb.png" alt="Lightbulb Emoji">
+                                <img id="calendar-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/calendar.png" alt="Calendar Emoji">
+                                <img id="clock-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/clock.png" alt="Clock Emoji">
+                                <img id="books-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/books.png" alt="Books Emoji">
                             </div>
                         </div>
                         <div id="create-label-window">
                             <div id="create-label">
-                                <input type="text" id="create-label-input" data-testid="create-label-input" placeholder="Enter Label Name">
+                                <input type="text" id="create-label-input" data-testid="create-label-input" placeholder="Enter Label Name" aria-labelledby="create-label-container">
                                 <div id="emoji-btn">
-                                    <!-- <img id="OGemoji" src="images/notes/HyperChillLogo_notes.png"> -->
-                                    <img id="OGemoji" src="images/notes/emoji-symbols/books.png">
+                                    <img id="OGemoji" src="images/notes/emoji-symbols/books.png" alt="Books Emoji">
                                 </div>
                             </div>
                             <div id="cancel-done-div" class="cancel-done-container unselectable">
@@ -400,10 +444,9 @@
                         </div>
                         <div id="update-label-window">
                             <div id="update-label">
-                                <input type="text" id="update-label-input" data-testid="update-label-input" placeholder="Enter Label Name">
+                                <input type="text" id="update-label-input" data-testid="update-label-input" placeholder="Enter Label Name" aria-labelledby="update-label-container">
                                 <div id="emoji-btn2">
-                                    <!-- <img id="OGemoji" src="images/notes/HyperChillLogo_notes.png"> -->
-                                    <img id="OGemoji2" src="images/notes/emoji-symbols/books.png">
+                                    <img id="OGemoji2" src="images/notes/emoji-symbols/books.png" alt="Books Emoji">
                                 </div>
                             </div>
                             <div id="cancel-done-div2" class="cancel-done-container unselectable">
@@ -429,13 +472,13 @@
 
             <!--ADD NEW BLOG GRID CONTAINER HERE-->
             <div id="blogContainer" data-testid="blogContainer">
-                <img class="exitIcon" id="blogExit" data-testid="blogExit" src="images/icons/noun-exit-button-261420-white.png" draggable="false">
+                <img class="exitIcon" id="blogExit" data-testid="blogExit" src="images/icons/exit-button-261420-white.png" draggable="false" alt="Exit">
                 <div id="blogWindow">
                     <h1>Blog</h1>
                     <div id="blog_grid_container">
                         <div class="blog_cell" id="blog_1" data-testid="blog_1">
                             <div class="blogImage">
-                                <img src="images/blog/pexels-ariel-castillo-3563697.jpg">
+                                <img src="images/blog/pexels-ariel-castillo-3563697.jpg" alt="">
                             </div>
                             <div>
                                 <h2 class="blogDescription">Daily Practices & Protocols to Improve Focus</h2>
@@ -455,8 +498,8 @@
             
             <!--ADD NEW BLOG CONTENT HERE-->
             <div id="blogPostContainer" data-testid="blogPostContainer">
-                <img class="backIcon" id="blogPostBack" src="images/icons/noun-left-arrow-261369.png" draggable="false">
-                <img class="exitIcon" id="blogPostExit" src="images/icons/noun-exit-button-261420.png" draggable="false">
+                <img class="backIcon" id="blogPostBack" src="images/icons/left-arrow-261369.png" draggable="false" alt="Back">
+                <img class="exitIcon" id="blogPostExit" src="images/icons/exit-button-261420.png" draggable="false" alt="Exit">
                 <div class="blog hidden" id="blogPost1">
                     <div class="iframe-container">
                         <iframe src="https://www.youtube.com/embed/yb5zpo5WDG4?si=GT9uix2oPLBnFHrq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
@@ -686,7 +729,7 @@
             </div>
 
             <div id="aboutContainer" data-testid="aboutContainer">
-                <img class="exitIcon" id="aboutExit" data-testid="aboutExit" src="images/icons/noun-exit-button-261420-white.png" draggable="false">
+                <img class="exitIcon" id="aboutExit" data-testid="aboutExit" src="images/icons/exit-button-261420-white.png" draggable="false" alt="Exit">
                 <div id="aboutWindow">
                     <h1>About</h1>
                     <div>
@@ -735,14 +778,14 @@
 
             <div id="settingsContainer" data-testid="settingsContainer">
                 <div id="settingsHeader">
-                    <img class="exitIcon" id="settingsExit" data-testid="settingsExit" src="images/icons/noun-exit-button-261420-white.png" draggable="false">
+                    <img class="exitIcon" id="settingsExit" data-testid="settingsExit" src="images/icons/exit-button-261420-white.png" draggable="false" alt="Exit">
                     <h1>Settings</h1>
                 </div>
                 <div class="settings" id="settingsWindow">
                     <div id="settingsHeaderColumn">
                         <div id="notificationsHeaderContainer" class="settingsHeaderRow">
                             <div class="settingsIconContainer">
-                                <img src="images/icons/noun-notifications-2548963-white.png" id="alertsNotificationsIcon" class="settingsIcon" draggable="false">
+                                <img src="images/icons/notifications-2548963-white.png" id="alertsNotificationsIcon" class="settingsIcon" draggable="false" alt="Alerts And Notifications Category">
                             </div>
                             <div id="notificationsHeader" class="settingsHeader">
                                 <b>Notifications</b>
@@ -750,7 +793,7 @@
                         </div>
                         <div id="pomodoroBtnContainer" data-testid="pomodoroBtnContainer" class="settingsHeaderRow subCategory">
                             <div class="settingsIconContainer">
-                                <img src="images/icons/tomatoIcon.png" id="pomodoroIcon" class="settingsIcon" draggable="false">
+                                <img src="images/icons/tomatoIcon.png" id="pomodoroIcon" class="settingsIcon" draggable="false" alt="Pomodoro Notifications">
                             </div>
                             <div id="pomodoroHeader" class="settingsHeader">
                                 <b>Pomodoro</b>
@@ -758,7 +801,7 @@
                         </div>
                         <div id="flowmodoroBtnContainer" data-testid="flowmodoroBtnContainer" class="settingsHeaderRow subCategory">
                             <div class="settingsIconContainer">
-                                <img src="images/icons/circlesIcon.png" id="flowmodoroIcon" class="settingsIcon" draggable="false">
+                                <img src="images/icons/circlesIcon.png" id="flowmodoroIcon" class="settingsIcon" draggable="false" alt="Break Notifications">
                             </div>
                             <div id="flowmodoroHeader" class="settingsHeader">
                                 <b>Break</b>
@@ -766,7 +809,7 @@
                         </div>
                         <div id="generalBtnContainer" data-testid="generalBtnContainer" class="settingsHeaderRow subCategory">
                             <div class="settingsIconContainer">
-                                <img src="images/icons/sineIcon.png" id="generalIcon" class="settingsIcon" draggable="false">
+                                <img src="images/icons/sineIcon.png" id="generalIcon" class="settingsIcon" draggable="false" alt="Deep Work Notifications">
                             </div>
                             <div id="generalHeader" class="settingsHeader">
                                 <b>Deep Work</b>
@@ -774,7 +817,7 @@
                         </div>
                         <div id="backgroundsBtnContainer" class="settingsHeaderRow">
                             <div class="settingsIconContainer">
-                                <img src="images/icons/backgroundsIcon.png" id="backgroundsIcon" class="settingsIcon" draggable="false">
+                                <img src="images/icons/backgroundsIcon.png" id="backgroundsIcon" class="settingsIcon" draggable="false" alt="Background And Themes Settings">
                             </div>
                             <div id="backgroundsHeader" class="settingsHeader">
                                 <b>Backgrounds & Themes</b>
@@ -782,7 +825,7 @@
                         </div>
                         <div id="notesBtnContainer" class="settingsHeaderRow">
                             <div class="settingsIconContainer">
-                                <img src="images/icons/whitepencil.png" id="notesIcon" class="settingsIcon" draggable="false">
+                                <img src="images/icons/whitepencil.png" id="notesIcon" class="settingsIcon" draggable="false" alt="Notes Settings">
                             </div>
                             <div id="notesHeader" class="settingsHeader">
                                 <b>Notes</b>
@@ -790,7 +833,7 @@
                         </div>
                         <div id="soundsBtnContainer" class="settingsHeaderRow">
                             <div class="settingsIconContainer">
-                                <img src="images/icons/noun-sound-3074860-white.png" id="soundsIcon" class="settingsIcon" draggable="false">
+                                <img src="images/icons/sound-3074860-white.png" id="soundsIcon" class="settingsIcon" draggable="false" alt="Sound Settings">
                             </div>
                             <div id="soundsHeader" class="settingsHeader">
                                 <b>Sounds</b>
@@ -798,7 +841,7 @@
                         </div>
                         <div id="accountBtnContainer" class="settingsHeaderRow">
                             <div class="settingsIconContainer">
-                                <img src="images/icons/accountIcon.png" id="accountIcon" class="settingsIcon" draggable="false">
+                                <img src="images/icons/accountIconWhite.png" id="accountIcon" class="settingsIcon" draggable="false" alt="Account Settings">
                             </div>
                             <div id="accountHeader" class="settingsHeader">
                                 <b>Account</b>
@@ -806,7 +849,7 @@
                         </div>
                         <div id="supportAndFeedbackBtnContainer" class="settingsHeaderRow">
                             <div class="settingsIconContainer">
-                                <img src="images/icons/supportAndFeedbackIcon.png" id="supportAndFeedbackIcon" class="settingsIcon" draggable="false">
+                                <img src="images/icons/supportAndFeedbackIcon.png" id="supportAndFeedbackIcon" class="settingsIcon" draggable="false" alt="Support And Feedback">
                             </div>
                             <div id="supportAndFeedbackHeader" class="settingsHeader">
                                 <b>Support & Feedback</b>
@@ -827,7 +870,7 @@
                                             <p id="pomodoroNotifications"><b class="settingsCategoryHeading">Pomodoro Notifications</b></p>
                                         </div>
                                         <div id="pomodoroNotificationToggleContainer" class="toggleContainer">
-                                            <input type="checkbox" id="pomodoroNotificationToggle" class="toggle-checkbox">
+                                            <input type="checkbox" id="pomodoroNotificationToggle" class="toggle-checkbox" aria-labelledby="pomodoroNotifications">
                                             <label for="pomodoroNotificationToggle" data-testid="pomodoroNotificationToggle" id="pomodoroNotificationToggleLabel" class="toggle-label">
                                                 <span id="pomodoroNotificationToggleBall" class="toggle-ball"></span>
                                             </label>
@@ -848,26 +891,26 @@
                                             </div>
                                             <div id="minutesImageBucket1" class="imageBucket">
                                                 <div>
-                                                    <p><b>Pomodoro</b></p>
+                                                    <p id="pomodoroInputText"><b>Pomodoro</b></p>
                                                 </div>
                                                 <div class="pomodoroNotificationContainer">
-                                                    <input type="number" id="pomodoroInput" data-testid="pomodoroInput" value="25" class="pomodoroInterval" name="minutes" min="1" max="720" step="1">
+                                                    <input type="number" id="pomodoroInput" data-testid="pomodoroInput" value="25" class="pomodoroInterval" name="minutes" min="1" max="720" step="1" aria-labelledby="pomodoroInputText">
                                                 </div>
                                             </div>
                                             <div id="minutesImageBucket2" class="imageBucket">
                                                 <div>
-                                                    <p><b>Short Break</b></p>
+                                                    <p id="shortBreakInputText"><b>Short Break</b></p>
                                                 </div>
                                                 <div class="pomodoroNotificationContainer">
-                                                    <input type="number" id="shortBreakInput" data-testid="shortBreakInput" value="5" class="pomodoroInterval" name="minutes" min="1" max="720" step="1">
+                                                    <input type="number" id="shortBreakInput" data-testid="shortBreakInput" value="5" class="pomodoroInterval" name="minutes" min="1" max="720" step="1" aria-labelledby="shortBreakInputText">
                                                 </div>
                                             </div>
                                             <div id="minutesImageBucket3" class="imageBucket">
                                                 <div>
-                                                    <p><b>Long Break</b></p>
+                                                    <p id="longBreakInputText"><b>Long Break</b></p>
                                                 </div>
                                                 <div class="pomodoroNotificationContainer">
-                                                    <input type="number" id="longBreakInput" data-testid="longBreakInput" value="15" class="pomodoroInterval" name="minutes" min="1" max="720" step="1">
+                                                    <input type="number" id="longBreakInput" data-testid="longBreakInput" value="15" class="pomodoroInterval" name="minutes" min="1" max="720" step="1" aria-labelledby="longBreakInputText">
                                                 </div>
                                             </div>
                                         </div>
@@ -882,7 +925,7 @@
                                             <p><b>Auto Start Pomodoro Interval</b></p>
                                         </div>
                                         <div id="autoStartPomodoroIntervalToggleContainer" class="toggleContainer">
-                                            <input type="checkbox" id="autoStartPomodoroIntervalToggle" class="toggle-checkbox">
+                                            <input type="checkbox" id="autoStartPomodoroIntervalToggle" class="toggle-checkbox" aria-labelledby="autoStartPomodoroIntervalText">
                                             <label for="autoStartPomodoroIntervalToggle" data-testid="autoStartPomodoroIntervalToggleLabel" id="autoStartPomodoroIntervalToggleLabel" class="toggle-label">
                                                 <span id="autoStartPomodoroIntervalToggleBall" class="toggle-ball"></span>
                                             </label>
@@ -893,7 +936,7 @@
                                             <p><b>Auto Start Break Interval</b></p>
                                         </div>
                                         <div id="autoStartBreakIntervalToggleContainer" class="toggleContainer">
-                                            <input type="checkbox" id="autoStartBreakIntervalToggle" class="toggle-checkbox">
+                                            <input type="checkbox" id="autoStartBreakIntervalToggle" class="toggle-checkbox" aria-labelledby="autoStartBreakIntervalText">
                                             <label for="autoStartBreakIntervalToggle" data-testid="autoStartBreakIntervalToggleLabel" id="autoStartBreakIntervalToggleLabel" class="toggle-label">
                                                 <span id="autoStartBreakIntervalToggleBall" class="toggle-ball"></span>
                                             </label>
@@ -918,19 +961,19 @@
                                     </div>
                                     <div class="pickAlertSound">
                                         <label id="pomodoroNoAlertContainer" class="pomodoroAlertContainer">
-                                            <input id="pomodoroNoAlertInput" type="radio" name="pomodoroAlert" class="pomodoroAlert" checked>
+                                            <input id="pomodoroNoAlertInput" type="radio" name="pomodoroAlert" class="pomodoroAlert"  aria-labelledby="pomodoroNoAlertText" checked>
                                             <span id="pomodoroNoAlertText" class="settingsHeader">
                                                 No Alert
                                             </span>
                                         </label>
                                         <label id="pomodoroChimeAlertContainer" class="pomodoroAlertContainer">
-                                            <input id="pomodoroChimeInput" type="radio" name="pomodoroAlert" class="pomodoroAlert">
+                                            <input id="pomodoroChimeInput" type="radio" name="pomodoroAlert" class="pomodoroAlert"  aria-labelledby="pomodoroChimeText">
                                             <span id="pomodoroChimeText" class="settingsHeader">
                                                 Chime
                                             </span>
                                         </label>
                                         <label id="pomodoroBellContainer" class="pomodoroAlertContainer">
-                                            <input id="pomodoroBellInput" type="radio" name="pomodoroAlert" class="pomodoroAlert">
+                                            <input id="pomodoroBellInput" type="radio" name="pomodoroAlert" class="pomodoroAlert"  aria-labelledby="pomodoroBellText">
                                             <span id="pomodoroBellText" class="settingsHeader">
                                                 Bell
                                             </span>
@@ -952,7 +995,7 @@
                                             <p id="flowmodoroNotifications"><b class="settingsCategoryHeading">Break Notifications</b></p>
                                         </div>
                                         <div id="flowmodoroNotificationToggleContainer" class="toggleContainer">
-                                            <input type="checkbox" id="flowmodoroNotificationToggle" class="toggle-checkbox">
+                                            <input type="checkbox" id="flowmodoroNotificationToggle" class="toggle-checkbox"  aria-labelledby="flowmodoroNotifications">
                                             <label for="flowmodoroNotificationToggle" data-testid="flowmodoroNotificationToggle" id="flowmodoroNotificationToggleLabel" class="toggle-label">
                                                 <span id="flowmodoroNotificationToggleBall" class="toggle-ball"></span>
                                             </label>
@@ -977,7 +1020,7 @@
                                                         <p><b>&lt; 25 min</b></p>
                                                     </div>
                                                     <div class="chillTimeNotificationContainer">
-                                                        <input type="number" id="flowmodoroBreakInput1" data-testid="flowmodoroBreakInput1" value="5" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1">
+                                                        <input type="number" id="flowmodoroBreakInput1" data-testid="flowmodoroBreakInput1" value="5" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1"  aria-labelledby="ChillTime">
                                                     </div>
                                                 </div>
                                                 <div id="minutesImageBucket2" class="imageBucket">
@@ -985,7 +1028,7 @@
                                                         <p><b>&lt; 50 min</b></p>
                                                     </div>
                                                     <div class="chillTimeNotificationContainer">
-                                                        <input type="number" id="flowmodoroBreakInput2" data-testid="flowmodoroBreakInput2" value="8" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1">
+                                                        <input type="number" id="flowmodoroBreakInput2" data-testid="flowmodoroBreakInput2" value="8" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1"  aria-labelledby="ChillTime">
                                                     </div>
                                                 </div>
                                             </div>
@@ -995,7 +1038,7 @@
                                                         <p><b>&lt; 90 min</b></p>
                                                     </div>
                                                     <div class="chillTimeNotificationContainer">
-                                                        <input type="number" id="flowmodoroBreakInput3" data-testid="flowmodoroBreakInput3" value="10" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1">
+                                                        <input type="number" id="flowmodoroBreakInput3" data-testid="flowmodoroBreakInput3" value="10" class="flowmodoroBreak" name="minutes" min="1" max="720" step="1"  aria-labelledby="ChillTime">
                                                     </div>
                                                 </div>
                                                 <div id="minutesImageBucket4" class="imageBucket">
@@ -1003,7 +1046,7 @@
                                                         <p><b>&gt;= 90 min</b></p>
                                                     </div>
                                                     <div class="chillTimeNotificationContainer">
-                                                        <input type="number" id="flowmodoroBreakInput4" data-testid="flowmodoroBreakInput4" value="15" class="flowmodoroBreak" name="minutes" min="1" step="1">
+                                                        <input type="number" id="flowmodoroBreakInput4" data-testid="flowmodoroBreakInput4" value="15" class="flowmodoroBreak" name="minutes" min="1" step="1"  aria-labelledby="ChillTime">
                                                     </div>
                                                 </div>
                                             </div>
@@ -1028,19 +1071,19 @@
                                     </div>
                                     <div class="pickAlertSound">
                                         <label id="flowmodoroNoAlertContainer" class="flowmodoroAlertContainer">
-                                            <input id="flowmodoroNoAlertInput" type="radio" name="flowmodoroAlert" class="flowmodoroAlert" checked>
+                                            <input id="flowmodoroNoAlertInput" type="radio" name="flowmodoroAlert" class="flowmodoroAlert" aria-labelledby="flowmodoroNoAlertText" checked>
                                             <span id="flowmodoroNoAlertText" class="settingsHeader">
                                                 No Alert
                                             </span>
                                         </label>
                                         <label id="flowmodoroChimeAlertContainer" class="flowmodoroAlertContainer">
-                                            <input id="flowmodoroChimeInput" type="radio" name="flowmodoroAlert" class="flowmodoroAlert">
+                                            <input id="flowmodoroChimeInput" type="radio" name="flowmodoroAlert" class="flowmodoroAlert" aria-labelledby="flowmodoroChimeText">
                                             <span id="flowmodoroChimeText" class="settingsHeader">
                                                 Chime
                                             </span>
                                         </label>
                                         <label id="flowmodoroBellContainer" class="flowmodoroAlertContainer">
-                                            <input id="flowmodoroBellInput" type="radio" name="flowmodoroAlert" class="flowmodoroAlert">
+                                            <input id="flowmodoroBellInput" type="radio" name="flowmodoroAlert" class="flowmodoroAlert" aria-labelledby="flowmodoroBellText">
                                             <span id="flowmodoroBellText" class="settingsHeader">
                                                 Bell
                                             </span>
@@ -1060,7 +1103,7 @@
                                         <p id="flowTimeBreakNotification"><b class="settingsCategoryHeading">Deep Work Notifications</b></p>
                                     </div>
                                     <div id="breakSuggestionToggleContainer" class="toggleContainer">
-                                        <input type="checkbox" id="breakSuggestionToggle" class="toggle-checkbox">
+                                        <input type="checkbox" id="breakSuggestionToggle" class="toggle-checkbox" aria-labelledby="flowTimeBreakNotification">
                                         <label for="breakSuggestionToggle" data-testid="breakSuggestionToggle" id="breakSuggestionToggleLabel" class="toggle-label">
                                             <span id="breakSuggestionToggleBall" class="toggle-ball"></span>
                                         </label>
@@ -1075,7 +1118,7 @@
                                     </div>
                                     <div id="suggestionMinutesInputContainer" class="toggleContainer">
                                         <div id="coolDiv2">
-                                            <input type="number" id="suggestionMinutesInput" data-testid="suggestionMinutesInput" value = '90' name="minutes" min="1" max="720">
+                                            <input type="number" id="suggestionMinutesInput" data-testid="suggestionMinutesInput" value = '90' name="minutes" min="1" max="720" aria-labelledby="suggestionMinutesText">
                                         </div>
                                     </div>
                                 </div>
@@ -1098,19 +1141,19 @@
                                 </div>
                                 <div class="pickAlertSound">
                                     <label id="generalNoAlertContainer" class="generalAlertContainer">
-                                        <input id="generalNoAlertInput" type="radio" name="generalAlert" class="generalAlert" checked>
+                                        <input id="generalNoAlertInput" type="radio" name="generalAlert" class="generalAlert" aria-labelledby="generalNoAlertText" checked>
                                         <span id="generalNoAlertText" class="settingsHeader">
                                             No Alert
                                         </span>
                                     </label>
                                     <label id="generalChimeAlertContainer" class="generalAlertContainer">
-                                        <input id="generalChimeInput" type="radio" name="generalAlert" class="generalAlert">
+                                        <input id="generalChimeInput" type="radio" name="generalAlert" class="generalAlert" aria-labelledby="generalChimeText">
                                         <span id="generalChimeText" class="settingsHeader">
                                             Chime
                                         </span>
                                     </label>
                                     <label id="generalBellContainer" class="generalAlertContainer">
-                                        <input id="generalBellInput" type="radio" name="generalAlert" class="generalAlert">
+                                        <input id="generalBellInput" type="radio" name="generalAlert" class="generalAlert" aria-labelledby="generalBellText">
                                         <span id="generalBellText" class="settingsHeader">
                                             Bell
                                         </span>
@@ -1126,7 +1169,7 @@
                                     <p id="targetTimeReachedAlert"><b class="settingsCategoryHeading">Target Time Reached Notification</b></p>
                                 </div>
                                 <div id="targetTimeReachedToggleContainer" class="toggleContainer">
-                                    <input type="checkbox" id="targetTimeReachedToggle" class="toggle-checkbox">
+                                    <input type="checkbox" id="targetTimeReachedToggle" class="toggle-checkbox" aria-labelledby="targetTimeReachedAlert">
                                     <label for="targetTimeReachedToggle" id="targetTimeReachedToggleLabel" class="toggle-label">
                                         <span id="targetTimeReachedToggleBall" class="toggle-ball"></span>
                                     </label>
@@ -1164,7 +1207,7 @@
                             <div id="hyperChillWorldBlock-flowtime">
                                 <div id="hyperChillWorldContainer-flowtime" class="settingsMicroContainer">
                                     <div id="hyperChillWorldText-flowtime" class="settingsText">
-                                        <p id="hyperChillWorld-flowtime"><b>Worlds 😛</b></p>
+                                        <p id="hyperChillWorld-flowtime"><b>Environments 😛</b></p>
                                     </div>
                                 </div>
                                 <div id="flowtimeWorldsBackgroundsContainer" class="settingsMicroContainer backgroundsContainer">
@@ -1202,7 +1245,7 @@
                             <div id="hyperChillWorldBlock-chilltime">
                                 <div id="hyperChillWorldContainer-chilltime" class="settingsMicroContainer">
                                     <div id="hyperChillWorldText-chilltime" class="settingsText">
-                                        <p id="hyperChillWorld-chilltime"><b>Worlds 😛</b></p>
+                                        <p id="hyperChillWorld-chilltime"><b>Environments 😛</b></p>
                                     </div>
                                 </div>
                                 <div id="chilltimeWorldsBackgroundsContainer" class="settingsMicroContainer backgroundsContainer">
@@ -1243,8 +1286,7 @@
                                         <p id="flowTimeAnimationHeader"><b>Deep Work</b></p>
                                     </div>
                                     <div id="flowTimeAnimationToggleContainer" class="toggleContainer">
-                                        <input type="checkbox" id="flowTimeAnimationToggle" class="toggle-checkbox" checked>
-                                        <!-- <input type="checkbox" id="flowTimeAnimationToggle" class="toggle-checkbox"> -->
+                                        <input type="checkbox" id="flowTimeAnimationToggle" class="toggle-checkbox" aria-labelledby="flowTimeAnimationHeader" checked>
                                         <label for="flowTimeAnimationToggle" id="flowTimeAnimationToggleLabel" class="toggle-label">
                                             <span id="flowTimeAnimationToggleBall" class="toggle-ball"></span>
                                         </label>
@@ -1255,7 +1297,7 @@
                                         <p id="chillTimeAnimationHeader"><b>Break</b></p>
                                     </div>
                                     <div id="chillTimeAnimationToggleContainer" class="toggleContainer">
-                                        <input type="checkbox" id="chillTimeAnimationToggle" class="toggle-checkbox" checked>
+                                        <input type="checkbox" id="chillTimeAnimationToggle" class="toggle-checkbox" aria-labelledby="chillTimeAnimationHeader" checked>
                                         <label for="chillTimeAnimationToggle" id="chillTimeAnimationToggleLabel" class="toggle-label">
                                             <span id="chillTimeAnimationToggleBall" class="toggle-ball"></span>
                                         </label>
@@ -1274,7 +1316,7 @@
                                         <p id="notesAutoSwitch"><b class="settingsCategoryHeading">Auto Switch</b></p>
                                     </div>
                                     <div id="transitionNotesAutoSwitchToggleContainer" class="toggleContainer">
-                                        <input type="checkbox" id="transitionNotesAutoSwitchToggle" data-testid="transitionNotesAutoSwitchToggle" class="toggle-checkbox">
+                                        <input type="checkbox" id="transitionNotesAutoSwitchToggle" data-testid="transitionNotesAutoSwitchToggle" class="toggle-checkbox" aria-labelledby="notesAutoSwitch">
                                         <label for="transitionNotesAutoSwitchToggle" id="transitionNotesAutoSwitchToggleLabel" class="toggle-label">
                                             <span id="transitionNotesAutoSwitchToggleBall" class="toggle-ball"></span>
                                         </label>
@@ -1291,7 +1333,7 @@
                                         <p id="propagateUnfinishedTasks"><b class="settingsCategoryHeading">Keep Unfinished Tasks</b></p>
                                     </div>
                                     <div id="propagateUnfinishedTasksToggleContainer" class="toggleContainer">
-                                        <input type="checkbox" id="propagateUnfinishedTasksToggle" data-testid="propagateUnfinishedTasksToggle" class="toggle-checkbox">
+                                        <input type="checkbox" id="propagateUnfinishedTasksToggle" data-testid="propagateUnfinishedTasksToggle" class="toggle-checkbox" aria-labelledby="propagateUnfinishedTasks">
                                         <label for="propagateUnfinishedTasksToggle" id="propagateUnfinishedTasksToggleLabel" class="toggle-label">
                                             <span id="propagateUnfinishedTasksToggleBall" class="toggle-ball"></span>
                                         </label>
@@ -1318,7 +1360,7 @@
                                         <div id="addingInfoBucket" class="labelInfoBucket">
                                             <p id="adding" class="tutorialSectionHeading"><b>Creating a Label:</b></p>
                                             <div id="addingImgContainer" class="tutorialImgContainer">
-                                                <img src="images/tutorial/adding.png" class="tutorialImg">
+                                                <img src="images/tutorial/adding.png" class="tutorialImg" alt="Adding A Label">
                                                 <div id="addingLabelInstructions" class="labelInstructions">
                                                     <p><b>Click on Create Label Button</b></p>
                                                 </div>
@@ -1329,7 +1371,7 @@
                                         <div id="deletingInfoBucket" class="labelInfoBucket">
                                             <p id="deleting" class="tutorialSectionHeading"><b>Deleting a Label:</b></p>
                                             <div id="deletingImgContainer" class="tutorialImgContainer">
-                                                <img src="images/tutorial/deleting.png" class="tutorialImg">
+                                                <img src="images/tutorial/deleting.png" class="tutorialImg" alt="Deleting A Label">
                                                 <div id="deletingLabelInstructions" class="labelInstructions">
                                                     <p><b>Shift + Click on Label</b></p>
                                                 </div>
@@ -1340,7 +1382,7 @@
                                         <div id="updatingInfoBucket" class="labelInfoBucket">
                                             <p id="updating" class="tutorialSectionHeading"><b>Updating a Label:</b></p>
                                             <div id="updatingImgContainer" class="tutorialImgContainer">
-                                                <img src="images/tutorial/updating.png" class="tutorialImg">
+                                                <img src="images/tutorial/updating.png" class="tutorialImg" alt="Updating A Label">
                                                 <div id="updatingLabelInstructions" class="labelInstructions">
                                                     <p><b>Alt/ Option + Click on Label</b></p>
                                                 </div>
@@ -1361,7 +1403,7 @@
                                         <p><b>Transition Clock Sound</b></p>
                                     </div>
                                     <div id="transitionClockSoundToggleContainer" class="toggleContainer">
-                                        <input type="checkbox" id="transitionClockSoundToggle" class="toggle-checkbox">
+                                        <input type="checkbox" id="transitionClockSoundToggle" class="toggle-checkbox" aria-labelledby="transitionClockSoundText">
                                         <label for="transitionClockSoundToggle" id="transitionClockSoundToggleLabel" class="toggle-label">
                                             <span id="transitionClockSoundToggleBall" class="toggle-ball"></span>
                                         </label>
@@ -1386,19 +1428,19 @@
                                 </div>
                                 <div class="pickAlertSound">
                                     <label id="pomodoroNoAlertContainer2" class="pomodoroAlertContainer">
-                                        <input id="pomodoroNoAlertInput2" type="radio" name="pomodoroAlert2" class="pomodoroAlert" checked>
+                                        <input id="pomodoroNoAlertInput2" type="radio" name="pomodoroAlert2" class="pomodoroAlert"  aria-labelledby="pomodoroNoAlertText2" checked>
                                         <span id="pomodoroNoAlertText2" class="settingsHeader">
                                             No Alert
                                         </span>
                                     </label>
                                     <label id="pomodoroChimeAlertContainer2" class="pomodoroAlertContainer">
-                                        <input id="pomodoroChimeInput2" type="radio" name="pomodoroAlert2" class="pomodoroAlert">
+                                        <input id="pomodoroChimeInput2" type="radio" name="pomodoroAlert2" class="pomodoroAlert" aria-labelledby="pomodoroChimeText2">
                                         <span id="pomodoroChimeText2" class="settingsHeader">
                                             Chime
                                         </span>
                                     </label>
                                     <label id="pomodoroBellContainer2" class="pomodoroAlertContainer">
-                                        <input id="pomodoroBellInput2" type="radio" name="pomodoroAlert2" class="pomodoroAlert">
+                                        <input id="pomodoroBellInput2" type="radio" name="pomodoroAlert2" class="pomodoroAlert" aria-labelledby="pomodoroBellText2">
                                         <span id="pomodoroBellText2" class="settingsHeader">
                                             Bell
                                         </span>
@@ -1420,19 +1462,19 @@
                                 </div>
                                 <div class="pickAlertSound">
                                     <label id="flowmodoroNoAlertContainer2" class="flowmodoroAlertContainer">
-                                        <input id="flowmodoroNoAlertInput2" type="radio" name="flowmodoroAlert2" class="flowmodoroAlert" checked>
+                                        <input id="flowmodoroNoAlertInput2" type="radio" name="flowmodoroAlert2" class="flowmodoroAlert" aria-labelledby="flowmodoroNoAlertText2" checked>
                                         <span id="flowmodoroNoAlertText2" class="settingsHeader">
                                             No Alert
                                         </span>
                                     </label>
                                     <label id="flowmodoroChimeAlertContainer2" class="flowmodoroAlertContainer">
-                                        <input id="flowmodoroChimeInput2" type="radio" name="flowmodoroAlert2" class="flowmodoroAlert">
+                                        <input id="flowmodoroChimeInput2" type="radio" name="flowmodoroAlert2" class="flowmodoroAlert" aria-labelledby="flowmodoroChimeText2">
                                         <span id="flowmodoroChimeText2" class="settingsHeader">
                                             Chime
                                         </span>
                                     </label>
                                     <label id="flowmodoroBellContainer2" class="flowmodoroAlertContainer">
-                                        <input id="flowmodoroBellInput2" type="radio" name="flowmodoroAlert2" class="flowmodoroAlert">
+                                        <input id="flowmodoroBellInput2" type="radio" name="flowmodoroAlert2" class="flowmodoroAlert" aria-labelledby="flowmodoroBellText2">
                                         <span id="flowmodoroBellText2" class="settingsHeader">
                                             Bell
                                         </span>
@@ -1454,19 +1496,19 @@
                                 </div>
                                 <div class="pickAlertSound">
                                     <label id="generalNoAlertContainer2" class="generalAlertContainer">
-                                        <input id="generalNoAlertInput2" type="radio" name="generalAlert2" class="generalAlert" checked>
+                                        <input id="generalNoAlertInput2" type="radio" name="generalAlert2" class="generalAlert" aria-labelledby="generalNoAlertText2" checked>
                                         <span id="generalNoAlertText2" class="settingsHeader">
                                             No Alert
                                         </span>
                                     </label>
                                     <label id="generalChimeAlertContainer2" class="generalAlertContainer">
-                                        <input id="generalChimeInput2" type="radio" name="generalAlert2" class="generalAlert">
+                                        <input id="generalChimeInput2" type="radio" name="generalAlert2" class="generalAlert" aria-labelledby="generalChimeText2">
                                         <span id="generalChimeText2" class="settingsHeader">
                                             Chime
                                         </span>
                                     </label>
                                     <label id="generalBellContainer2" class="generalAlertContainer">
-                                        <input id="generalBellInput2" type="radio" name="generalAlert2" class="generalAlert">
+                                        <input id="generalBellInput2" type="radio" name="generalAlert2" class="generalAlert" aria-labelledby="generalChimeText2">
                                         <span id="generalBellText2" class="settingsHeader">
                                             Bell
                                         </span>
@@ -1551,5 +1593,11 @@
                 </div>
             </div>
         </div>
+    
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&amp;display=swap" rel="stylesheet"></noscript>
+
+    
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&amp;display=swap" rel="stylesheet"></noscript>
+
     </body>
 </html>

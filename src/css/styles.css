@@ -41,17 +41,8 @@ html {
     background-attachment: fixed;
     background-position: center center;
     background-color: #202020; /* Fallback */
-    /* background-color: #411da3; */
-    /* background-image: url("/images/iStock/iStock-1253862403-mid-edit.jpg"); */
-    /* background-image: url("/images/iStock/iStock-1394258314-mid.jpg"); */
-    background-image: url("/images/iStock/iStock-1306875579-mid.jpg"); 
-    
+    background-image: url("/images/environments/1394258314-mid.jpg");
     transition: background-image 1s ease-in-out;
-    
-    /* background-image: linear-gradient(0deg, #3b8fe3, #411da3, #b004c7); */
-    /* animation: animateBackground 15s ease infinite; */
-    /* background-size: 400% 400%; */
-    /* border: 2px solid white; */
 }
 
 #backgroundContainer {
@@ -68,11 +59,39 @@ html {
 
     /* border: 5px solid gray; */
 
-    opacity: 0;
+    opacity: 1;
     transition: opacity 0.25s ease-in-out;
 
     z-index: 0;
 }
+
+#deepWorkBackground, #breakBackground {
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center center;
+    background-size: cover; /* Ensure the background covers the entire element */
+
+    /* border: 5px solid gray; */
+
+    opacity: 0;
+    z-index: 0;
+    transition: opacity 0.25s ease-in-out;
+}
+
+/* .fadeOutBackground {
+    animation: fadeOutBackground 0.25s ease-in-out forwards;
+}
+
+.fadeInBackground {
+    animation: fadeInBackground 0.25s ease-in-out forwards;
+} */
 
 body::before {
     content: '';
@@ -81,8 +100,7 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: linear-gradient(0deg, #0f0cce, #700cce, #b004c7);
-    /* background-image: url("/images/iStock/iStock-1253862403-smaller.jpg"); */
+    background-image: linear-gradient(0deg, #2dd5ff, #670cce, #200044);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center center;
@@ -96,6 +114,15 @@ body.fade-out-bg::before {
 }
 
 @keyframes fadeOutBackground {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes fadeInBackground {
     from {
         opacity: 1;
     }
@@ -223,58 +250,68 @@ h4 {
     font-family: myFont2;
 }
 
-.dash-mode {
+.dinkle-doink-mode {
     display: none;
-    /* display: inline-flex; */
     opacity: 0;
-    width: 102px;
-    /* background-color: rgba(0, 0, 0, 0.35); */
-    border-radius: 2rem;
-    cursor: pointer;
-    border: 3px solid #ffffff;
     position: relative;
+    width: 102px;
+    border-radius: 2rem;
     transition: opacity 1s ease-in-out;
+    cursor: pointer;
+    border: 3px solid white;
     z-index: 3;
 }
 
-.dash-mode::after {
+.dinkle-doink-mode::after {
     content: "";
-    background: linear-gradient(155deg, #BCA0FF 0%, #6C37ED 100%);
-    box-shadow: 0px 4px 4px 0px rgba(108,55,237,.41);
-    z-index: 5;
+    background: linear-gradient(160deg, #2dd5ff 0%, #5025be 100%);
+    box-shadow: 0px 3px 3px 0px rgba(5, 0, 40, 0.35);
     left: 0;
-    height: var(--circ-size);
-    width: var(--circ-size);
+    --spot-area: 36px;
+    height: var(--spot-area);
+    width: var(--spot-area);
     position: absolute;
-    top: calc((100% - var(--circ-size))/2);
+    top: calc((100% - var(--spot-area))/2);
     border-radius: 1000px;
-    --circ-size: 36px;
-    transition: all 175ms ease-in-out;
-    translate: calc(var(--circ-size)/4*3.675)
+    z-index: 6;
+    transition: all 250ms ease-in-out;
+    translate: calc(var(--spot-area)/4*3.675)
 }
 
-.dash-mode:active::after {
-    transform: scale(1.15)
+.dinkle-doink-mode:active::after {
+    transform: scale(1.2)
 }
 
-body[dinkle-doink-setting=report] .dash-mode::after {
+body[dinkle-doink-setting=report] .dinkle-doink-mode::after {
     translate: 0
 }
 
-body[dinkle-doink-setting=home] .dash-mode::after {
-    translate: calc(var(--circ-size)/4*3.675)
+body[dinkle-doink-setting=home] .dinkle-doink-mode::after {
+    translate: calc(var(--spot-area)/4*3.675)
 }
 
-body[dinkle-doink-setting=space] .dash-mode::after {
-    translate: calc(var(--circ-size)/2*3.675)
+body[dinkle-doink-setting=space] .dinkle-doink-mode::after {
+    translate: calc(var(--spot-area)/2*3.675)
 }
 
-.dash-mode svg {
+body[dinkle-doink-setting=report] .dinkle-doink-mode .caption [dinkle-doink=report] {
+    display: block
+}
+
+body[dinkle-doink-setting=home] .dinkle-doink-mode .caption [dinkle-doink=home] {
+    display: block
+}
+
+body[dinkle-doink-setting=space] .dinkle-doink-mode .caption [dinkle-doink=space] {
+    display: block
+}
+
+.dinkle-doink-mode svg {
     position: relative;
     z-index: 10
 }
 
-.dash-mode .caption {
+.dinkle-doink-mode .caption {
     position: absolute;
     bottom: -1.75rem;
     left: 0;
@@ -284,23 +321,12 @@ body[dinkle-doink-setting=space] .dash-mode::after {
     text-align: center
 }
 
-.dash-mode .caption span {
+.dinkle-doink-mode .caption span {
     display: none;
-    color: #ffffff;
-    transition: color 375ms ease-in-out
+    color: white;
+    transition: color 250ms ease-in-out
 }
 
-body[dinkle-doink-setting=report] .dash-mode .caption [dinkle-doink=report] {
-    display: block
-}
-
-body[dinkle-doink-setting=home] .dash-mode .caption [dinkle-doink=home] {
-    display: block
-}
-
-body[dinkle-doink-setting=space] .dash-mode .caption [dinkle-doink=space] {
-    display: block
-}
 
 .threeWayToggleIcon {
     width: 30px;
@@ -352,8 +378,8 @@ main {
     margin-top: 25px;
 
     opacity: 0;
-    transition: opacity 1s ease-in-out; 
-
+    transition: opacity 1s ease-in-out;
+    
     /* border: 3px solid black; */
     /* overflow-x: hidden; */
 }
@@ -377,7 +403,7 @@ main {
     padding: 25px;
 
     /* border: 3px solid cyan; */
-    z-index: 5;
+    z-index: 25;
 }
 
 @media (max-width: 504px) {
@@ -532,7 +558,7 @@ button:hover {
 
     justify-content: center;
     
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.9);
 
     /* DARK GREY THEME BACKGROUND */
     /* background-color: rgba(32, 32, 32, 0.9); */
@@ -550,7 +576,7 @@ button:hover {
     border-radius: 25px; /* Created corner curves */
     /* border: 1px solid yellow; */
 
-    z-index: 2;
+    z-index: 25;
 }
 
 #targetHoursContainer {
@@ -559,7 +585,7 @@ button:hover {
 
     justify-content: center;
     
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.9);
 
     /* DARK GREY THEME BACKGROUND */
     /* background-color: rgba(32, 32, 32, 0.9); */
@@ -577,7 +603,7 @@ button:hover {
     
     border-radius: 25px; /* Created corner curves */
     /* border: 1px solid yellow; */
-    z-index: 2;
+    z-index: 25;
 }
 
 @media (min-width: 505px) {
@@ -777,7 +803,7 @@ button:hover {
     margin-top: 25px;
     margin-bottom: 25px;
 
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.9);
 
     /* DARK GREY THEME BACKGROUND */
     /* background-color: rgba(32, 32, 32, 0.9); */
@@ -799,7 +825,7 @@ button:hover {
     box-sizing: border-box;
     
     border-radius: 25px;
-    z-index: 1;
+    z-index: 25;
     
 }
 
@@ -1184,7 +1210,7 @@ header {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.75);
     justify-content: center;
     align-items: center;
     /* as of 6/28/24, the settings has the next highest z-index of 25 */

@@ -101,7 +101,7 @@
     justify-content: center;
     align-items: center;
     height: 810px;
-    top: -130px;
+    top: -125px;
     right: 0px;
     width: 100%;
     overflow-x: hidden;
@@ -121,16 +121,16 @@
 }
 
 #circleMiddle {
-    height: 400px;
-    width: 400px;
+    height: 425px;
+    width: 425px;
     position: absolute;
     /* opacity: 0.05; */
     animation: circleMiddleAnimation 6s linear infinite;
 }
 
 #circleInner {
-    height: 200px;
-    width: 200px;
+    height: 250px;
+    width: 250px;
     position: absolute;
     /* opacity: 0.05; */
     animation: circleInnerAnimation 6s linear infinite;
@@ -156,7 +156,7 @@
         transform: scaleX(1) scaleY(1);
     }
     90% {
-        opacity: 0.35;
+        opacity: 0.50;
         transform: scaleX(1.01) scaleY(1.01);
     }
     100% {
@@ -180,7 +180,7 @@
         transform: scaleX(1) scaleY(1);
     }
     70% {
-        opacity: 0.05;
+        opacity: 0.25;
         transform: scaleX(1.03) scaleY(1.03);
     }
     90% {

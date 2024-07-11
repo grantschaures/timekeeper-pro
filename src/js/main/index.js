@@ -1,10 +1,12 @@
-import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selectedBackgroundIdTemp, selectedBackgroundId, timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, alertVolumes, alertSounds, counters, flags, tempStorage, settingsMappings, savedInterruptionsArr, timeAmount, intervalArrs } from '../modules/index-objects.js';
+import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selectedBackgroundIdTemp, selectedBackgroundId, timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, alertVolumes, alertSounds, counters, flags, tempStorage, settingsMappings, savedInterruptionsArr, timeAmount, intervalArrs, defaultBackgroundPath } from '../modules/index-objects.js';
 
 import { chime, bell, clock_tick, soundMap } from '../modules/sound-map.js';
 
 import {
     start_stop_btn, submit_change_btn, end_session_btn, report_btn, total_time_display, productivity_chill_mode, progressBarContainer, progressBar, progressContainer, display, hyperChillTitle, subMainContainer, interruptionsContainer, interruptionsSubContainer, decBtn, incBtn, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, completedPomodoros_label, completedPomodoros_min, targetHoursContainer, timekeepingContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, targetTimeReachedToggle, breakSuggestionToggle, suggestionMinutesInput, flowmodoroNotificationToggle,flowmodoroNotifications, flowmodoroNotificationInfoWindow, flowTimeBreakNotification, flowTimeBreakNotificationInfoWindow, pomodoroNotifications, pomodoroNotificationInfoWindow, notesAutoSwitch, notesAutoSwitchInfoWindow, pomodoroNotificationToggle, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, defaultThemeContainer, defaultTheme, darkThemeContainer, darkGrayTheme, targetTimeReachedAlert, transitionClockSoundToggle, flowTimeAnimationToggle, chillTimeAnimationToggle, pomodoroVolumeContainer, pomodoroVolumeBar, pomodoroVolumeThumb, flowmodoroVolumeContainer, flowmodoroVolumeBar, flowmodoroVolumeThumb, generalVolumeContainer, generalVolumeBar, generalVolumeThumb, pomodoroVolumeContainer2, pomodoroVolumeBar2, pomodoroVolumeThumb2, flowmodoroVolumeContainer2, flowmodoroVolumeBar2, flowmodoroVolumeThumb2, generalVolumeContainer2, generalVolumeBar2, generalVolumeThumb2, flowmodoroRadios, flowmodoroInputs, generalRadios, pomodoroInputs, pomodoroRadios,flowtimeBackgroundCells, chilltimeBackgroundCells, settings_menu_container, registerHereText, backgroundVideoSource, backgroundVideo, flowAnimation, chillAnimation, hyperChillLogoImage,createLabelInput, updateLabelInput, emojiContainer, loginEmailInput, loginPasswordInput, forgotPasswordContainer, loginBtnContainer, loginBtn, logoutBtn, deleteAccountBtn, forgotPasswordSettings, propagateUnfinishedTasks, propagateUnfinishedTasksInfoWindow, flowtimeBackgroundWorldCells, chilltimeBackgroundWorldCells, deleteAccountPopupYesBtn, deleteAccountPopupNoBtn, deleteAccountPopup, popupOverlay, questionIcon, logoutBtn2,
     backgroundContainer,
+    deepWorkBackground,
+    breakBackground,
 } from '../modules/dom-elements.js';
 
 import { sessionState } from '../modules/state-objects.js';
@@ -55,8 +57,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     //Safari on iPad Pro acts like mobile (no push notifications) but identifies as desktop
 
-    // INITIAL DOMContentLoaded FUNCTION CALLS
-    setInitialEndSessionBtnText(initialViewportWidth, end_session_btn);
+    setEndSessionBtnText(initialViewportWidth, end_session_btn);
 
     window.scrollTo({ top: 0, behavior: 'smooth' }); // scroll to top
 
@@ -69,37 +70,48 @@ document.addEventListener("DOMContentLoaded", function() {
     const threeWayToggle = document.getElementById('threeWayToggle');
 
     // Initial Animations
-    setTimeout(() => {
-        hyperChillTitle.style.opacity = '1'; // increases opacity
-        hyperChillTitle.classList.add('hyperChillTitleAnimationTranslate'); // moves it down
-    }, 0)
+    if ((!isMobile) && (initialViewportWidth > 504)) {
+        setTimeout(() => {
+            hyperChillTitle.style.opacity = '1'; // increases opacity
+            hyperChillTitle.classList.add('hyperChillTitleAnimationTranslate'); // moves it down
+        }, 0)
+        
+        setTimeout(() => {
+            subMainContainer.style.opacity = '1';
+            hyperChillTitle.classList.add('hyperChillTitleAnimationScale'); // makes it W I D E
+        }, 1000)
+        
+        setTimeout(() => {
+            subMainContainer.style.transition = 'opacity 0.5s ease-in-out';
     
-    setTimeout(() => {
-        hyperChillTitle.classList.add('hyperChillTitleAnimationScale'); // makes it W I D E
-        subMainContainer.style.opacity = '1';
-    }, 1000)
-    
-    setTimeout(() => {
-        subMainContainer.style.transition = 'opacity 0.5s ease-in-out';
-
-        hyperChillTitle.classList.remove('hyperChillTitleAnimationTranslate');
-        hyperChillTitle.style.opacity = '0';
+            hyperChillTitle.classList.remove('hyperChillTitleAnimationTranslate');
+            hyperChillTitle.style.opacity = '0';
+            setTimeout(() => {
+                hyperChillTitle.style.display = 'none';
+                threeWayToggle.style.display = 'inline-flex';
+                threeWayToggle.classList.add('threeWayToggleAnimation');
+                setTimeout(() => {
+                    threeWayToggle.style.opacity = '1';
+                }, 100)
+            }, 1000)
+        }, 2000)
+    } else if (isMobile || (initialViewportWidth <= 504)) {
         setTimeout(() => {
             hyperChillTitle.style.display = 'none';
+            subMainContainer.style.opacity = '1';
+            subMainContainer.style.transition = 'opacity 0.5s ease-in-out';
             threeWayToggle.style.display = 'inline-flex';
-            threeWayToggle.classList.add('threeWayToggleAnimation');
             setTimeout(() => {
                 threeWayToggle.style.opacity = '1';
             }, 100)
         }, 1000)
-    }, 2000)
+    }
 
     // Fade out gradient once home image has loaded :P
-    let defaultImgPath = "/images/iStock/iStock-1306875579-mid.jpg";
-    let defaultImgUrl = 'url(' + defaultImgPath + ')';
+    let defaultImgUrl = 'url(' + defaultBackgroundPath + ')';
 
     var startImg = new Image();
-    startImg.src = defaultImgPath;
+    startImg.src = defaultBackgroundPath;
     startImg.onload = function() {
         document.body.classList.add('fade-out-bg');
         document.documentElement.style.transition = "background-image 0.25s ease-in-out";
@@ -838,7 +850,7 @@ document.addEventListener("DOMContentLoaded", function() {
     })
 
     window.addEventListener("resize", function() {
-        handleViewportWidthChange(settingsMappings, tempStorage, isMobile);
+        handleViewportWidthChange(settingsMappings, tempStorage, end_session_btn);
     });
 
     document.addEventListener('visibilitychange', function() {
@@ -848,15 +860,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 flowAnimation.style.opacity = 0;
                 flowAnimation.style.display = 'none';
                 flowAnimation.classList.remove('intoOpacityTransition');
-                console.log(Date.now())
             } else {
                 chillAnimation.style.opacity = 0;
                 chillAnimation.style.display = 'none';
                 chillAnimation.classList.remove('intoOpacityTransition');
             }
             
-        } else if (document.visibilityState === 'visible') { //user returns to tab
-            console.log(Date.now())
+        } else if ((document.visibilityState === 'visible') && (state.lastSelectedMode === 'home')) { //user returns to tab
             if ((flags.inHyperFocus) && (flags.flowTimeAnimationToggle)) {
                 flowAnimation.style.display = 'block';
                 flowAnimation.classList.add('intoOpacityTransition');
@@ -882,7 +892,7 @@ document.addEventListener("DOMContentLoaded", function() {
      */
     settings_menu_container.addEventListener("click", function() {
         setTimeout(() => {
-            handleViewportWidthChange(settingsMappings, tempStorage, isMobile);
+            handleViewportWidthChange(settingsMappings, tempStorage, end_session_btn);
         }, 0);
     });
 
@@ -944,6 +954,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // (2) Reset everything to the default state
 
+            // reset background to default
+            setBackground("", 0);
+            resetHtmlBackground(defaultImgUrl);
+
             // reset alerts
             pauseAndResetAlertSounds(bell, chime);
 
@@ -971,9 +985,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 progressBarContainer.classList.toggle("small"); // make progress container large
                 flags.progressBarContainerIsSmall = false;
             }
-
-            // reset background to default
-            setBackground("", 0);
     
             // reset header text
             setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", "Press 'Start' to begin session");
@@ -1120,7 +1131,6 @@ document.addEventListener("DOMContentLoaded", function() {
     
     displayWorker.onmessage = function(message) {
         const timeDiff = Date.now() - startTimes.local;
-
     
         let hours = Math.floor(timeDiff / timeConvert.msPerHour);
         let minutes = Math.floor((timeDiff - hours * timeConvert.msPerHour) / timeConvert.msPerMin);
@@ -1918,22 +1928,9 @@ function showAllSettingsContainers(settingsMappings) {
     }
 }
 
-function setInitialEndSessionBtnText(initialViewportWidth, end_session_btn) {
-    if (initialViewportWidth <= 504) {
-        end_session_btn.innerText = "End";
-    } else {
-        end_session_btn.innerText = "End Session";
-    }
-}
-
-function handleViewportWidthChange(settingsMappings, tempStorage, isMobile) {
+function handleViewportWidthChange(settingsMappings, tempStorage, end_session_btn) {
     let viewportWidth = window.innerWidth || document.documentElement.clientWidth;
-    let end_session_btn = document.getElementById("end-session");
-    if (viewportWidth <= 504) {
-        end_session_btn.innerText = "End";
-    } else {
-        end_session_btn.innerText = "End Session";
-    }
+    setEndSessionBtnText(viewportWidth, end_session_btn);
 
     if (viewportWidth <= 650) {
         showAllSettingsContainers(settingsMappings);
@@ -1953,6 +1950,15 @@ function handleViewportWidthChange(settingsMappings, tempStorage, isMobile) {
         }
     }
 }
+
+function setEndSessionBtnText(initialViewportWidth, end_session_btn) {
+    if (initialViewportWidth <= 522) {
+        end_session_btn.innerText = "End";
+    } else {
+        end_session_btn.innerText = "End Session";
+    }
+}
+
 
 // Show suggestion break container AND sets current flowmodoro notification
 function showSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, timeAmount, counters, flags) {
@@ -2394,6 +2400,10 @@ function debuggingPopup(color) {
     mainContainer.appendChild(newDiv);
 }
 
+function resetHtmlBackground(backgroundImg) {
+    document.documentElement.style.backgroundImage = backgroundImg;
+}
+
 // ---------------------
 // EXPORTED FUNCTIONS
 // ---------------------
@@ -2405,13 +2415,38 @@ export function setInitialBackgroundCellSelection() {
 
 export function setBackground(background_color, opacity) {
     if (state.lastSelectedMode === 'home') {
-        backgroundContainer.style.opacity = opacity;
-        if (background_color === "") {
-            setTimeout(() => {
-                backgroundContainer.style.backgroundImage = background_color;
-            }, 250)
+
+        if (flags.inHyperFocus) {
+            deepWorkBackground.style.opacity = opacity;
+            if (background_color === "") {
+                setTimeout(() => {
+                    deepWorkBackground.style.backgroundImage = background_color;
+                }, 250)
+            } else {
+                breakBackground.style.opacity = 0;
+                deepWorkBackground.style.backgroundImage = background_color;
+                setTimeout(() => {
+                    if (state.lastSelectedMode === 'home') { // deals w/ edge case where user toggles right/left and back rapidly
+                        document.documentElement.style.backgroundImage = background_color;
+                    }
+                }, 250)
+            }
         } else {
-            backgroundContainer.style.backgroundImage = background_color;
+            breakBackground.style.opacity = opacity;
+            if (background_color === "") {
+                setTimeout(() => {
+                    breakBackground.style.backgroundImage = background_color;
+                }, 250)
+            } else {
+                breakBackground.style.backgroundImage = background_color;
+                deepWorkBackground.style.opacity = 0;
+                setTimeout(() => {
+                    if (state.lastSelectedMode === 'home') { // deals w/ edge case where user toggles right/left and back rapidly
+                        document.documentElement.style.backgroundImage = background_color;
+                    }
+                }, 250)
+            }
+
         }
     }
 };
@@ -2419,7 +2454,7 @@ export function setBackground(background_color, opacity) {
 export function deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, isMobile) {
     let componentArr1 = [interruptionsContainer, targetHoursContainer, timekeepingContainer, notesContainer, aboutContainer, blogContainer];
 
-    let darkBackgroundTranslucent = "rgba(0, 0, 0, 0.8)"; // changed from 0.35 alpha value
+    let darkBackgroundTranslucent = "rgba(0, 0, 0, 0.9)"; // changed from 0.8 alpha value
     let darkBackground = "rgb(0, 0, 0)";
     let progressBarBackground = "rgba(255, 255, 255, 0.25)";
     let progressBarBorder = "1px rgba(0, 0, 0, 0.25)";
