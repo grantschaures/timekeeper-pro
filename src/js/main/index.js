@@ -2452,40 +2452,41 @@ async function logUserActivity(userTimeZone) {
 
 // needed to unlock the audio context to play the alert automatically on mobile
 export function triggerSilentAlertAudioMobile(chime, bell, Chime, Bell, flags) {
-    if (!flags.triggeredSilentAudio) {
+    // if (!flags.triggeredSilentAudio) {
         // Set volume to 0
         chime.volume = 0;
         bell.volume = 0;
     
-        // // Ensure the audio is muted
-        // chime.muted = true;
-        // bell.muted = true;
+        // Ensure the audio is muted
+        chime.muted = true;
+        bell.muted = true;
     
-        // // Play the audio and ensure it is silent
-        // chime.play().then(() => {
-        //     chime.pause(); // Immediately pause it to ensure it's loaded
-        //     chime.muted = false; // Unmute for future plays
-        //     chime.currentTime = 0; // Reset to start
-        // }).catch(error => {
-        //     console.error('Chime playback error:', error);
-        // });
+        // Play the audio and ensure it is silent
+        chime.play().then(() => {
+            chime.pause(); // Immediately pause it to ensure it's loaded
+            chime.muted = false; // Unmute for future plays
+            chime.currentTime = 0; // Reset to start
+        }).catch(error => {
+            console.error('Chime playback error:', error);
+        });
     
-        // bell.play().then(() => {
-        //     bell.pause(); // Immediately pause it to ensure it's loaded
-        //     bell.muted = false; // Unmute for future plays
-        //     bell.currentTime = 0; // Reset to start
-        // }).catch(error => {
-        //     console.error('Bell playback error:', error);
-        // });
+        bell.play().then(() => {
+            bell.pause(); // Immediately pause it to ensure it's loaded
+            bell.muted = false; // Unmute for future plays
+            bell.currentTime = 0; // Reset to start
+        }).catch(error => {
+            console.error('Bell playback error:', error);
+        });
 
-        chime.play();
-        bell.play();
+        const Chime2 = new Audio('sounds/alerts/LEX_LM_77_bell_loop_vinyl_night_F.wav');
+        const Bell2 = new Audio('sounds/alerts/ESM_Christmas_Glockenspiel_Bell_Pluck_Hit_Single_9_Wet_Perc_Tonal.wav');
     
-        soundMap.Chime = Chime;
-        soundMap.Bell = Bell;
+        soundMap.Chime = Chime2;
+        soundMap.Bell = Bell2;
 
-        flags.triggeredSilentAudio = true;
-    }
+        // flags.triggeredSilentAudio = true;
+
+    // }
 }
 
 export function setInitialBackgroundCellSelection() {
