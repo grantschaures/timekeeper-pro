@@ -1,6 +1,6 @@
 import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selectedBackgroundIdTemp, selectedBackgroundId, timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, alertVolumes, alertSounds, counters, flags, tempStorage, settingsMappings, savedInterruptionsArr, timeAmount, intervalArrs, defaultBackgroundPath, progressTextMod } from '../modules/index-objects.js';
 
-import { Chime, Bell, clock_tick, soundMap } from '../modules/sound-map.js';
+import { chimePath, bellPath, clock_tick, soundMap } from '../modules/sound-map.js';
 
 import {
     start_stop_btn, submit_change_btn, end_session_btn, report_btn, total_time_display, productivity_chill_mode, progressBarContainer, progressBar, progressContainer, display, hyperChillTitle, subMainContainer, interruptionsContainer, interruptionsSubContainer, decBtn, incBtn, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, completedPomodoros_label, completedPomodoros_min, targetHoursContainer, timekeepingContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, targetTimeReachedToggle, breakSuggestionToggle, suggestionMinutesInput, flowmodoroNotificationToggle,flowmodoroNotifications, flowmodoroNotificationInfoWindow, flowTimeBreakNotification, flowTimeBreakNotificationInfoWindow, pomodoroNotifications, pomodoroNotificationInfoWindow, notesAutoSwitch, notesAutoSwitchInfoWindow, pomodoroNotificationToggle, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, defaultThemeContainer, defaultTheme, darkThemeContainer, darkGrayTheme, targetTimeReachedAlert, transitionClockSoundToggle, flowTimeAnimationToggle, chillTimeAnimationToggle, pomodoroVolumeContainer, pomodoroVolumeBar, pomodoroVolumeThumb, flowmodoroVolumeContainer, flowmodoroVolumeBar, flowmodoroVolumeThumb, generalVolumeContainer, generalVolumeBar, generalVolumeThumb, pomodoroVolumeContainer2, pomodoroVolumeBar2, pomodoroVolumeThumb2, flowmodoroVolumeContainer2, flowmodoroVolumeBar2, flowmodoroVolumeThumb2, generalVolumeContainer2, generalVolumeBar2, generalVolumeThumb2, flowmodoroRadios, flowmodoroInputs, generalRadios, pomodoroInputs, pomodoroRadios,flowtimeBackgroundCells, chilltimeBackgroundCells, settings_menu_container, registerHereText, backgroundVideoSource, backgroundVideo, flowAnimation, chillAnimation, hyperChillLogoImage,createLabelInput, updateLabelInput, emojiContainer, loginEmailInput, loginPasswordInput, forgotPasswordContainer, loginBtnContainer, loginBtn, logoutBtn, deleteAccountBtn, forgotPasswordSettings, propagateUnfinishedTasks, propagateUnfinishedTasksInfoWindow, flowtimeBackgroundWorldCells, chilltimeBackgroundWorldCells, deleteAccountPopupYesBtn, deleteAccountPopupNoBtn, deleteAccountPopup, popupOverlay, questionIcon, logoutBtn2,
@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if (counters.startStop === 1) {
             veryStartActions(startTimes, hyperChillLogoImage, progressBarContainer, flags);
-            triggerSilentAlertAudioMobile(soundMap.Chime, soundMap.Bell, Chime, Bell, flags);
+            triggerSilentAlertAudioMobile(soundMap.Chime, soundMap.Bell, chimePath, bellPath, flags);
             startTimes.lastPomNotification = Date.now();
         } else {
             chillTimeToFirstPomodoro(flags, productivity_chill_mode, counters);
@@ -2451,8 +2451,8 @@ async function logUserActivity(userTimeZone) {
 // ---------------------
 
 // needed to unlock the audio context to play the alert automatically on mobile
-export function triggerSilentAlertAudioMobile(chime, bell, Chime, Bell, flags) {
-    // if (!flags.triggeredSilentAudio) {
+export function triggerSilentAlertAudioMobile(chime, bell, chimePath, bellPath, flags) {
+    if (!flags.triggeredSilentAudio) {
         // Set volume to 0
         chime.volume = 0;
         bell.volume = 0;
@@ -2478,15 +2478,15 @@ export function triggerSilentAlertAudioMobile(chime, bell, Chime, Bell, flags) {
             console.error('Bell playback error:', error);
         });
 
-        const Chime2 = new Audio('sounds/alerts/LEX_LM_77_bell_loop_vinyl_night_F.wav');
-        const Bell2 = new Audio('sounds/alerts/ESM_Christmas_Glockenspiel_Bell_Pluck_Hit_Single_9_Wet_Perc_Tonal.wav');
+        const Chime = new Audio(chimePath);
+        const Bell = new Audio(bellPath);
     
         soundMap.Chime = Chime;
         soundMap.Bell = Bell;
 
-        // flags.triggeredSilentAudio = true;
+        flags.triggeredSilentAudio = true;
 
-    // }
+    }
 }
 
 export function setInitialBackgroundCellSelection() {

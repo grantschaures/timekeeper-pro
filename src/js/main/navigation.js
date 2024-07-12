@@ -3,7 +3,7 @@ import { blogIdList, flags, counters, state } from '../modules/navigation-object
 import { sessionState } from '../modules/state-objects.js';
 import { flags as indexFlags, selectedBackground, defaultBackgroundPath } from '../modules/index-objects.js';
 import { flags as notesFlags } from '../modules/notes-objects.js';
-import { Chime, Bell, soundMap } from '../modules/sound-map.js';
+import { chimePath, bellPath, soundMap } from '../modules/sound-map.js';
 
 import { deleteUserAccount } from '../state/delete-account.js'; // minified
 import { setBackground, animationsFadeIn, animationsFadeOut, triggerSilentAlertAudioMobile } from '../main/index.js'; // minified
@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function() {
             pomodoroBtnContainer.click();
         }
 
-        triggerSilentAlertAudioMobile(soundMap.Chime, soundMap.Bell, Chime, Bell, indexFlags);
+        triggerSilentAlertAudioMobile(soundMap.Chime, soundMap.Bell, chimePath, bellPath, indexFlags);
 
         flags.settingsContainerShowing = true;
         counters.settingsBtnClicked++;
