@@ -2452,7 +2452,7 @@ async function logUserActivity(userTimeZone) {
 
 // needed to unlock the audio context to play the alert automatically on mobile
 export function triggerSilentAlertAudioMobile(chime, bell, Chime, Bell, flags) {
-    if (!flags.triggeredSilentAudio) {
+    // if (!flags.triggeredSilentAudio) {
         // Set volume to 0
         chime.volume = 0;
         bell.volume = 0;
@@ -2482,7 +2482,7 @@ export function triggerSilentAlertAudioMobile(chime, bell, Chime, Bell, flags) {
         soundMap.Bell = Bell;
 
         flags.triggeredSilentAudio = true;
-    }
+    // }
 }
 
 export function setInitialBackgroundCellSelection() {
