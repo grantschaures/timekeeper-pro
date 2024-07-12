@@ -2481,8 +2481,8 @@ export function triggerSilentAlertAudioMobile(chime, bell, Chime, Bell, flags) {
         const Chime2 = new Audio('sounds/alerts/LEX_LM_77_bell_loop_vinyl_night_F.wav');
         const Bell2 = new Audio('sounds/alerts/ESM_Christmas_Glockenspiel_Bell_Pluck_Hit_Single_9_Wet_Perc_Tonal.wav');
     
-        soundMap.Chime = Chime2;
-        soundMap.Bell = Bell2;
+        soundMap.Chime = Chime;
+        soundMap.Bell = Bell;
 
         // flags.triggeredSilentAudio = true;
 
