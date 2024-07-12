@@ -8,7 +8,6 @@ import { chimePath, bellPath, soundMap } from '../modules/sound-map.js';
 import { deleteUserAccount } from '../state/delete-account.js'; // minified
 import { setBackground, animationsFadeIn, animationsFadeOut, triggerSilentAlertAudioMobile } from '../main/index.js'; // minified
 
-
 document.addEventListener("DOMContentLoaded", function() {
 
     // This may actually detect all mobile + iPad devices
@@ -254,7 +253,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         icon.addEventListener('click', function() {
             //Hide blogs
-            if (flags.blogShowing == true) {
+            if (flags.blogShowing) {
                 blog_post_container.style.display = 'none';
 
                 //ensure that any visible blog becomes hidden when clicking out
@@ -621,6 +620,7 @@ function hideBlog(blogs) {
             document.getElementById(blog.id).classList.add("hidden");
         }
     });
+    pauseVideo();
 
     flags.blogShowing = false;
 };
