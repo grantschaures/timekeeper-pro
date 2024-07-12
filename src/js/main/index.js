@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if (counters.startStop === 1) {
             veryStartActions(startTimes, hyperChillLogoImage, progressBarContainer, flags);
-            triggerSilentAlertAudioMobile(chime, bell); // will cause any external music playing to stop on mobile
+            // triggerSilentAlertAudioMobile(chime, bell); // will cause any external music playing to stop on mobile
             startTimes.lastPomNotification = Date.now();
         } else {
             chillTimeToFirstPomodoro(flags, productivity_chill_mode, counters);
