@@ -1154,7 +1154,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 new Notification(getPomodoroNotificationString(counters, timeAmount));
             }
             
-            playAlertSoundCountdown(soundMap.Chime, SoundMap.Bell, alertSounds.pomodoro, alertVolumes.pomodoro);
+            playAlertSoundCountdown(soundMap.Chime, soundMap.Bell, alertSounds.pomodoro, alertVolumes.pomodoro);
             
             if ((counters.currentPomodoroIntervalIndex === 0) && (!flags.pomodoroCountIncremented)) {
                 counters.pomodorosCompleted++;
@@ -2117,6 +2117,8 @@ function getCurrentTime() {
 }
 
 function playAlertSoundCountdown(chime, bell, alertSoundType, alertVolumeType) {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    alert(audioContext.state);
     pauseAndResetAlertSounds(soundMap.Bell, soundMap.Chime);
     if (alertSoundType === 'chime') {
         chime.volume = alertVolumeType;
