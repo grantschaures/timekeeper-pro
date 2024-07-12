@@ -1,16 +1,13 @@
 import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn, spaceContainer, shortcutsContainer, shortcutsPopup, shortcutsExit, reportContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, flowAnimation, chillAnimation, target_hours_input, streaksContainer, threeWayToggle } from '../modules/dom-elements.js';
-
 import { blogIdList, flags, counters, state } from '../modules/navigation-objects.js';
-
 import { sessionState } from '../modules/state-objects.js';
-
 import { flags as indexFlags, selectedBackground, defaultBackgroundPath } from '../modules/index-objects.js';
-
 import { flags as notesFlags } from '../modules/notes-objects.js';
+import { chimePath, bellPath, soundMap } from '../modules/sound-map.js';
 
 import { deleteUserAccount } from '../state/delete-account.js'; // minified
+import { setBackground, animationsFadeIn, animationsFadeOut, triggerSilentAlertAudioMobile } from '../main/index.js'; // minified
 
-import { setBackground, animationsFadeIn, animationsFadeOut } from '../main/index.js'; // minified
 
 document.addEventListener("DOMContentLoaded", function() {
 
@@ -128,6 +125,8 @@ document.addEventListener("DOMContentLoaded", function() {
         if ((counters.settingsBtnClicked === 0) && (viewportWidth > 650)) {
             pomodoroBtnContainer.click();
         }
+
+        triggerSilentAlertAudioMobile(soundMap.Chime, soundMap.Bell, chimePath, bellPath, indexFlags);
 
         flags.settingsContainerShowing = true;
         counters.settingsBtnClicked++;
