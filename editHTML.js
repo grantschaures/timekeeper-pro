@@ -124,8 +124,8 @@ const navigationReplacements = [
         replacement: "import { deleteUserAccount } from '../minified/delete-account.min.js';"
     },
     {
-        pattern: /import { setBackground, animationsFadeIn, animationsFadeOut } from '..\/main\/index.js';/g,
-        replacement: "import { setBackground, animationsFadeIn, animationsFadeOut } from '../minified/index.min.js';"
+        pattern: /import { setBackground, animationsFadeIn, animationsFadeOut, triggerSilentAlertAudioMobile } from '..\/main\/index.js';/g,
+        replacement: "import { setBackground, animationsFadeIn, animationsFadeOut, triggerSilentAlertAudioMobile } from '../minified/index.min.js';"
     }
 ]
 

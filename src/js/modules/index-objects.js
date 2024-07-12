@@ -158,7 +158,8 @@ export const flags = {
     sentSuggestionMinutesNotification: false,
     enterKeyDown: false,
     pomodoroCountIncremented: false,
-    sessionInProgress: false
+    sessionInProgress: false,
+    triggeredSilentAudio: false
 }
 
 export const tempStorage = {

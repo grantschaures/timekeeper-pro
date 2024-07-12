@@ -1,6 +1,6 @@
 import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selectedBackgroundIdTemp, selectedBackgroundId, timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, alertVolumes, alertSounds, counters, flags, tempStorage, settingsMappings, savedInterruptionsArr, timeAmount, intervalArrs, defaultBackgroundPath, progressTextMod } from '../modules/index-objects.js';
 
-import { clock_tick, soundMap } from '../modules/sound-map.js';
+import { Chime, Bell, clock_tick, soundMap } from '../modules/sound-map.js';
 
 import {
     start_stop_btn, submit_change_btn, end_session_btn, report_btn, total_time_display, productivity_chill_mode, progressBarContainer, progressBar, progressContainer, display, hyperChillTitle, subMainContainer, interruptionsContainer, interruptionsSubContainer, decBtn, incBtn, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, completedPomodoros_label, completedPomodoros_min, targetHoursContainer, timekeepingContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, targetTimeReachedToggle, breakSuggestionToggle, suggestionMinutesInput, flowmodoroNotificationToggle,flowmodoroNotifications, flowmodoroNotificationInfoWindow, flowTimeBreakNotification, flowTimeBreakNotificationInfoWindow, pomodoroNotifications, pomodoroNotificationInfoWindow, notesAutoSwitch, notesAutoSwitchInfoWindow, pomodoroNotificationToggle, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, defaultThemeContainer, defaultTheme, darkThemeContainer, darkGrayTheme, targetTimeReachedAlert, transitionClockSoundToggle, flowTimeAnimationToggle, chillTimeAnimationToggle, pomodoroVolumeContainer, pomodoroVolumeBar, pomodoroVolumeThumb, flowmodoroVolumeContainer, flowmodoroVolumeBar, flowmodoroVolumeThumb, generalVolumeContainer, generalVolumeBar, generalVolumeThumb, pomodoroVolumeContainer2, pomodoroVolumeBar2, pomodoroVolumeThumb2, flowmodoroVolumeContainer2, flowmodoroVolumeBar2, flowmodoroVolumeThumb2, generalVolumeContainer2, generalVolumeBar2, generalVolumeThumb2, flowmodoroRadios, flowmodoroInputs, generalRadios, pomodoroInputs, pomodoroRadios,flowtimeBackgroundCells, chilltimeBackgroundCells, settings_menu_container, registerHereText, backgroundVideoSource, backgroundVideo, flowAnimation, chillAnimation, hyperChillLogoImage,createLabelInput, updateLabelInput, emojiContainer, loginEmailInput, loginPasswordInput, forgotPasswordContainer, loginBtnContainer, loginBtn, logoutBtn, deleteAccountBtn, forgotPasswordSettings, propagateUnfinishedTasks, propagateUnfinishedTasksInfoWindow, flowtimeBackgroundWorldCells, chilltimeBackgroundWorldCells, deleteAccountPopupYesBtn, deleteAccountPopupNoBtn, deleteAccountPopup, popupOverlay, questionIcon, logoutBtn2,
@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if (counters.startStop === 1) {
             veryStartActions(startTimes, hyperChillLogoImage, progressBarContainer, flags);
-            triggerSilentAlertAudioMobile(soundMap.Chime, soundMap.Bell); // will cause any external music playing to stop on mobile
+            triggerSilentAlertAudioMobile(soundMap.Chime, soundMap.Bell, Chime, Bell, flags);
             startTimes.lastPomNotification = Date.now();
         } else {
             chillTimeToFirstPomodoro(flags, productivity_chill_mode, counters);
@@ -2135,40 +2135,6 @@ function playAlertSoundCountdown(chime, bell, alertSoundType, alertVolumeType) {
     }
 }
 
-// needed to unlock the audio context to play the alert automatically on mobile
-function triggerSilentAlertAudioMobile(chime, bell) {
-    // Set volume to 0
-    chime.volume = 0;
-    bell.volume = 0;
-
-    // Ensure the audio is muted
-    chime.muted = true;
-    bell.muted = true;
-
-    // Play the audio and ensure it is silent
-    chime.play().then(() => {
-        chime.pause(); // Immediately pause it to ensure it's loaded
-        chime.muted = false; // Unmute for future plays
-        chime.currentTime = 0; // Reset to start
-    }).catch(error => {
-        console.error('Chime playback error:', error);
-    });
-
-    bell.play().then(() => {
-        bell.pause(); // Immediately pause it to ensure it's loaded
-        bell.muted = false; // Unmute for future plays
-        bell.currentTime = 0; // Reset to start
-    }).catch(error => {
-        console.error('Bell playback error:', error);
-    });
-
-    const Chime = new Audio('sounds/alerts/LEX_LM_77_bell_loop_vinyl_night_F.wav');
-    const Bell = new Audio('sounds/alerts/ESM_Christmas_Glockenspiel_Bell_Pluck_Hit_Single_9_Wet_Perc_Tonal.wav');
-
-    soundMap.Chime = Chime;
-    soundMap.Bell = Bell;
-}
-
 //For some reason, EDGE won't prompt the user to turn on notifications if they're set to default :/
 async function enableNotifications(breakSuggestionToggle, flowmodoroNotificationToggle, pomodoroNotificationToggle, flags) {
     // Check if notifications are supported
@@ -2483,6 +2449,41 @@ async function logUserActivity(userTimeZone) {
 // ---------------------
 // EXPORTED FUNCTIONS
 // ---------------------
+
+// needed to unlock the audio context to play the alert automatically on mobile
+export function triggerSilentAlertAudioMobile(chime, bell, Chime, Bell, flags) {
+    if (!flags.triggeredSilentAudio) {
+        // Set volume to 0
+        chime.volume = 0;
+        bell.volume = 0;
+    
+        // Ensure the audio is muted
+        chime.muted = true;
+        bell.muted = true;
+    
+        // Play the audio and ensure it is silent
+        chime.play().then(() => {
+            chime.pause(); // Immediately pause it to ensure it's loaded
+            chime.muted = false; // Unmute for future plays
+            chime.currentTime = 0; // Reset to start
+        }).catch(error => {
+            console.error('Chime playback error:', error);
+        });
+    
+        bell.play().then(() => {
+            bell.pause(); // Immediately pause it to ensure it's loaded
+            bell.muted = false; // Unmute for future plays
+            bell.currentTime = 0; // Reset to start
+        }).catch(error => {
+            console.error('Bell playback error:', error);
+        });
+    
+        soundMap.Chime = Chime;
+        soundMap.Bell = Bell;
+
+        flags.triggeredSilentAudio = true;
+    }
+}
 
 export function setInitialBackgroundCellSelection() {
     document.getElementById(selectedBackgroundId.flowtime).classList.add('selected-background');
