@@ -531,7 +531,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     radioGroups.forEach(group => {
         group.radios.forEach(radio => {
-            radio.addEventListener('change', event => handleRadioChange(event, group.type, soundMap, soundMap.Bell, soundMap.Chime, alertSounds, alertVolumes));
+            radio.addEventListener('change', event => handleRadioChange(event, group.type, soundMap, alertSounds, alertVolumes));
         });
     });
 
@@ -1178,7 +1178,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     suggestionWorker.onmessage = function(message) {
         if (!flags.sentSuggestionMinutesNotification) {
-            sendSuggestionBreakNotification(timeAmount, startTimes, soundMap.Chime, soundMap.Bell, alertSounds, alertVolumes, isMobile, isIpad);
+            sendSuggestionBreakNotification(timeAmount, startTimes, alertSounds, alertVolumes, isMobile, isIpad);
             flags.sentSuggestionMinutesNotification = true;
             start_stop_btn.classList.add('glowing-effect');
         }
@@ -1186,7 +1186,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
     flowmodoroWorker.onmessage = function(message) {
         if (!flags.sentFlowmodoroNotification) {
-            sendFlowmodoroNotification(timeAmount, counters, startTimes, soundMap.Chime, soundMap.Bell, alertSounds, alertVolumes, isMobile, isIpad);
+            sendFlowmodoroNotification(timeAmount, counters, startTimes, alertSounds, alertVolumes, isMobile, isIpad);
             flags.sentFlowmodoroNotification = true;
             start_stop_btn.classList.add('glowing-effect');
         }
@@ -1205,7 +1205,7 @@ document.addEventListener("DOMContentLoaded", function() {
         
         display.textContent = `${hours}:${minutes}:${seconds}`;
 
-        timeRecovery(flags, counters, startTimes, elapsedTime, start_stop_btn, recoverPomState, recoverBreakState, timeAmount, total_time_display, timeConvert, progressBar, progressContainer, soundMap.Chime, soundMap.Bell, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min, flowmodoroWorker, suggestionWorker, isMobile, isIpad);
+        timeRecovery(flags, counters, startTimes, elapsedTime, start_stop_btn, recoverPomState, recoverBreakState, timeAmount, total_time_display, timeConvert, progressBar, progressContainer, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min, flowmodoroWorker, suggestionWorker, isMobile, isIpad);
     }
 
     totalDisplayWorker.onmessage = function(message) {
@@ -1219,17 +1219,17 @@ document.addEventListener("DOMContentLoaded", function() {
 // HELPER FUNCTIONS
 // ---------------------
 
-function timeRecovery(flags, counters, startTimes, elapsedTime, start_stop_btn, recoverPomState, recoverBreakState, timeAmount, total_time_display, timeConvert, progressBar, progressContainer, chime, bell, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min, flowmodoroWorker, suggestionWorker, isMobile, isIpad) {
+function timeRecovery(flags, counters, startTimes, elapsedTime, start_stop_btn, recoverPomState, recoverBreakState, timeAmount, total_time_display, timeConvert, progressBar, progressContainer, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min, flowmodoroWorker, suggestionWorker, isMobile, isIpad) {
     if (flags.pomodoroNotificationToggle) {
         if ((!flags.inHyperFocus) && ((counters.currentPomodoroNotification * 60 * 1000) < ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000)) && (!flags.modeChangeExecuted)) {
             flags.modeChangeExecuted = true;
             flags.autoSwitchedModes = false;
             // debuggingPopup("purple");
-            chillTimeRecovery(flags, counters, elapsedTime, startTimes, start_stop_btn, recoverPomState, timeAmount, total_time_display, timeConvert, progressBar, progressContainer, soundMap.Chime, soundMap.Bell, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min, isMobile, isIpad);
+            chillTimeRecovery(flags, counters, elapsedTime, startTimes, start_stop_btn, recoverPomState, timeAmount, alertSounds, alertVolumes, isMobile, isIpad);
         } else if ((flags.inHyperFocus) && ((counters.currentPomodoroNotification * 60 * 1000) < ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000)) && (!flags.modeChangeExecuted)) {
             flags.modeChangeExecuted = true;
             flags.autoSwitchedModes = false;
-            flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, start_stop_btn, recoverBreakState, soundMap.Chime, soundMap.Bell, alertSounds, alertVolumes, isMobile, isIpad);
+            flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, start_stop_btn, recoverBreakState, alertSounds, alertVolumes, isMobile, isIpad);
         }
         
         // console.log("Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000: " + ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000)));
@@ -1237,14 +1237,14 @@ function timeRecovery(flags, counters, startTimes, elapsedTime, start_stop_btn, 
         if ((flags.flowmodoroNotificationToggle) && (!flags.inHyperFocus) && ((counters.currentFlowmodoroNotification * 60 * 1000) < ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000)) && (!flags.sentFlowmodoroNotification)) {
             // console.log("TIME RECOVERY FOR FLOWMODORO")
             flowmodoroWorker.postMessage("clearInterval");
-            sendFlowmodoroNotification(timeAmount, counters, startTimes, soundMap.Chime, soundMap.Bell, alertSounds, alertVolumes, isMobile, isIpad);
+            sendFlowmodoroNotification(timeAmount, counters, startTimes, alertSounds, alertVolumes, isMobile, isIpad);
             flags.sentFlowmodoroNotification = true;
             start_stop_btn.classList.add('glowing-effect');
         }
         if ((flags.breakSuggestionToggle) && (flags.inHyperFocus) && ((timeAmount.suggestionMinutes * 60 * 1000) < ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000)) && (!flags.sentSuggestionMinutesNotification)) {
             // console.log("TIME RECOVERY FOR SUGGESTION MINUTES")
             suggestionWorker.postMessage("clearInterval");
-            sendSuggestionBreakNotification(timeAmount, startTimes, soundMap.Chime, soundMap.Bell, alertSounds, alertVolumes, isMobile, isIpad);
+            sendSuggestionBreakNotification(timeAmount, startTimes, alertSounds, alertVolumes, isMobile, isIpad);
             flags.sentSuggestionMinutesNotification = true;
             start_stop_btn.classList.add('glowing-effect');
         }
@@ -1276,7 +1276,7 @@ function getPomodoroNotificationString(counters, timeAmount) {
     return notificationString;
 }
 
-function handleRadioChange(event, alertType, soundMap, bell, chime, alertSounds, alertVolumes) {
+function handleRadioChange(event, alertType, soundMap, alertSounds, alertVolumes) {
     const { target } = event;
     const soundTypes = Object.keys(soundMap); // ['NoAlert', 'Chime', 'Bell']
 
@@ -1487,7 +1487,7 @@ function chillTimeToFirstPomodoro(flags, productivity_chill_mode, counters) {
     } 
 }
 
-function sendSuggestionBreakNotification(timeAmount, startTimes, chime, bell, alertSounds, alertVolumes, isMobile, isIpad) {
+function sendSuggestionBreakNotification(timeAmount, startTimes, alertSounds, alertVolumes, isMobile, isIpad) {
     let notificationString;
     if (timeAmount.suggestionMinutes > 1) {
         notificationString = "Need a break? You've been hard at work for " + String(timeAmount.suggestionMinutes) + " minutes!";
@@ -1503,7 +1503,7 @@ function sendSuggestionBreakNotification(timeAmount, startTimes, chime, bell, al
     playAlertSoundCountdown(soundMap.Chime, soundMap.Bell, alertSounds.general, alertVolumes.general);
 }
 
-function sendFlowmodoroNotification(timeAmount, counters, startTimes, chime, bell, alertSounds, alertVolumes, isMobile, isIpad) {
+function sendFlowmodoroNotification(timeAmount, counters, startTimes, alertSounds, alertVolumes, isMobile, isIpad) {
     let notificationString;
     if (timeAmount.breakTimeSuggestionsArr[counters.currentFlowmodoroBreakIndex] == 1) {
         notificationString = "It's been " + counters.currentFlowmodoroNotification + " minute! Are you ready to get back into Flow Time?";
@@ -1519,7 +1519,7 @@ function sendFlowmodoroNotification(timeAmount, counters, startTimes, chime, bel
     playAlertSoundCountdown(soundMap.Chime, soundMap.Bell, alertSounds.flowmodoro, alertVolumes.flowmodoro);
 }
 
-function sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, bell, alertSounds, alertVolumes, flags, isMobile, isIpad) {
+function sendPomodoroDelayNotification(startTimes, counters, timeAmount, alertSounds, alertVolumes, flags, isMobile, isIpad) {
     let notificationString;
     if (counters.currentPomodoroIntervalOrderIndex == 0 || counters.currentPomodoroIntervalOrderIndex == 2 || counters.currentPomodoroIntervalOrderIndex == 4) { // 1st-3rd pomodoro
         if (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] == 1) {
@@ -1559,7 +1559,7 @@ function sendPomodoroDelayNotification(startTimes, counters, timeAmount, chime, 
     startTimes.lastPomNotification = Date.now();
 }
 
-function chillTimeRecovery(flags, counters, elapsedTime, startTimes, start_stop_btn, recoverPomState, timeAmount, total_time_display, timeConvert, progressBar, progressContainer, chime, bell, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min, isMobile, isIpad) {
+function chillTimeRecovery(flags, counters, elapsedTime, startTimes, start_stop_btn, recoverPomState, timeAmount, alertSounds, alertVolumes, isMobile, isIpad) {
     // INITIALIZING VARS
     // console.log("chilltime recovery initiated")
     let displayTime = Date.now() - startTimes.local;
@@ -1576,7 +1576,7 @@ function chillTimeRecovery(flags, counters, elapsedTime, startTimes, start_stop_
     
     // When both auto start toggles are turned on
     if ((flags.autoStartPomodoroInterval) && ((((Math.round(displayTime / 1000)) - (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60)) <= 2) && (((Date.now() - startTimes.lastPomNotification) / 1000) > 30))) {
-        sendPomodoroDelayNotification(startTimes, counters, timeAmount, soundMap.Chime, soundMap.Bell, alertSounds, alertVolumes, flags, isMobile, isIpad);
+        sendPomodoroDelayNotification(startTimes, counters, timeAmount, alertSounds, alertVolumes, flags, isMobile, isIpad);
     }
     
     // debuggingPopup("pink");
@@ -1613,7 +1613,7 @@ function chillTimeRecovery(flags, counters, elapsedTime, startTimes, start_stop_
         // This evaluates when a the computer sleeps and then awakens during the same interval when autoswitchtobreak isn't turned on
         // debuggingPopup("black");
         pomodoroWorker.postMessage("clearInterval");
-        sendPomodoroDelayNotification(startTimes, counters, timeAmount, soundMap.Chime, soundMap.Bell, alertSounds, alertVolumes, flags, isMobile, isIpad);
+        sendPomodoroDelayNotification(startTimes, counters, timeAmount, alertSounds, alertVolumes, flags, isMobile, isIpad);
         start_stop_btn.classList.add('glowing-effect');
     } else {
         start_stop_btn.classList.add('glowing-effect');
@@ -1626,7 +1626,7 @@ function chillTimeRecovery(flags, counters, elapsedTime, startTimes, start_stop_
     This function deals w/ the situation where the computer goes to sleep during a pomodoro interval
     and calculates the future state of the program based on which intervals should have occured.
 */
-function flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, start_stop_btn, recoverBreakState, chime, bell, alertSounds, alertVolumes, isMobile, isIpad) {
+function flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, start_stop_btn, recoverBreakState, alertSounds, alertVolumes, isMobile, isIpad) {
     // INITIALIZING VARS
     // console.log("flowtime recovery initiated")
     // alert("flowtime recovery initiated")
@@ -1645,7 +1645,7 @@ function flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, 
     // if autoStartBreakInterval toggled on, and display time is 2s or less past the set interval time, and there's been at least 30s since the last pomodoro notification
     // console.log((timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60));
     if ((flags.autoStartBreakInterval) && ((((Math.round(displayTime / 1000)) - (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60)) <= 2) && (((Date.now() - startTimes.lastPomNotification) / 1000) > 30))) {
-        sendPomodoroDelayNotification(startTimes, counters, timeAmount, soundMap.Chime, soundMap.Bell, alertSounds, alertVolumes, flags, isMobile, isIpad);
+        sendPomodoroDelayNotification(startTimes, counters, timeAmount, alertSounds, alertVolumes, flags, isMobile, isIpad);
     }
     
     // debuggingPopup("blue");
@@ -1683,7 +1683,7 @@ function flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, 
         // This evaluates when a the computer sleeps and then awakens during the same interval when autoswitchtobreak isn't turned on
         // debuggingPopup("orange");
         pomodoroWorker.postMessage("clearInterval");
-        sendPomodoroDelayNotification(startTimes, counters, timeAmount, soundMap.Chime, soundMap.Bell, alertSounds, alertVolumes, flags, isMobile, isIpad);
+        sendPomodoroDelayNotification(startTimes, counters, timeAmount, alertSounds, alertVolumes, flags, isMobile, isIpad);
         start_stop_btn.classList.add('glowing-effect');
     } else { // when pom toggle turned after after time has passed pom interval time
         start_stop_btn.classList.add('glowing-effect');
@@ -1959,10 +1959,10 @@ function handleMouseUp(event) {
 async function handleAlertSoundAndUpdate(type, draggingFlag, draggingFlag2) {
     if (alertSounds[type] === 'chime') {
         pauseAndResetAlertSounds(soundMap.Bell, soundMap.Chime);
-        playAlertSound(chime, type, alertVolumes);
+        playAlertSound(soundMap.Chime, type, alertVolumes);
     } else if (alertSounds[type] === 'bell') {
         pauseAndResetAlertSounds(soundMap.Bell, soundMap.Chime);
-        playAlertSound(bell, type, alertVolumes);
+        playAlertSound(soundMap.Bell, type, alertVolumes);
     }
     flags[draggingFlag] = false;
     flags[draggingFlag2] = false;
