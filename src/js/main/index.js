@@ -2117,8 +2117,8 @@ function getCurrentTime() {
 }
 
 function playAlertSoundCountdown(chime, bell, alertSoundType, alertVolumeType) {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    alert(audioContext.state);
+    // const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    // alert(audioContext.state);
     pauseAndResetAlertSounds(soundMap.Bell, soundMap.Chime);
     if (alertSoundType === 'chime') {
         chime.volume = alertVolumeType;
