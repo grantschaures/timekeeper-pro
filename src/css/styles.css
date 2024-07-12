@@ -1469,6 +1469,7 @@ header {
 #streaksEmoji {
     margin-left: 4px;
     padding-bottom: 4px;
+    margin-right: 1px;
 }
 
 #streaksCount {
@@ -1477,6 +1478,7 @@ header {
     margin-right: 8px;
     width: auto;
     white-space: nowrap;
+    margin-left: 1px;
 }
 
 #streaksLoginSuggestionPopup {
