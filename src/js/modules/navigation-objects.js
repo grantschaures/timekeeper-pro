@@ -10,6 +10,7 @@ export const flags = {
     deleteAccountWindowShowing: false,
     shortcutsWindowShowing: false,
     allowToggleSwitch: true,
+    settingsContainerShowing: false
 }
 
 export const counters = {

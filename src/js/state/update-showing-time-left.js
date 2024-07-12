@@ -1,11 +1,11 @@
-export async function updateTargetHours(targetHours) {
+export async function updateShowingTimeLeft(showingTimeLeft) {
     try {
-        const response = await fetch('/api/data/update-target-hours', {
+        const response = await fetch('/api/data/update-showing-time-left', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ targetHours })
+            body: JSON.stringify({ showingTimeLeft })
         });
 
         if (!response.ok) {
@@ -18,6 +18,6 @@ export async function updateTargetHours(targetHours) {
         const data = await response.json();
         // console.log("Settings updated successfully:", data);
     } catch (error) {
-        console.error('Failed to update target hours:', error);
+        console.error('Failed to update progress bar text display setting:', error);
     }
 }

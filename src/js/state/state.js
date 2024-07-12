@@ -1,18 +1,21 @@
-import { pomodoroNotificationToggle, pomodoroInputs, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, pomodoroVolumeThumb, pomodoroVolumeThumb2, pomodoroRadios, flowmodoroNotificationToggle, flowmodoroInputs, flowmodoroVolumeThumb, flowmodoroVolumeThumb2, flowmodoroRadios, breakSuggestionToggle, suggestionMinutesInput, generalRadios, targetTimeReachedToggle, darkGrayTheme, defaultTheme, interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, emojiContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, transitionClockSoundToggle, labelSelectionRow, emojiImg, emojiImg2, dynamicList, propagateUnfinishedTasksToggle as propagateUnfinishedTasksToggleElement, blackFlowtimeBackground, blackChilltimeBackground, total_time_display } from '../modules/dom-elements.js';
+import { pomodoroNotificationToggle, pomodoroInputs, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, pomodoroVolumeThumb, pomodoroVolumeThumb2, pomodoroRadios, flowmodoroNotificationToggle, flowmodoroInputs, flowmodoroVolumeThumb, flowmodoroVolumeThumb2, flowmodoroRadios, breakSuggestionToggle, suggestionMinutesInput, generalRadios, targetTimeReachedToggle, darkGrayTheme, defaultTheme, interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, emojiContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, transitionClockSoundToggle, labelSelectionRow, emojiImg, emojiImg2, dynamicList, propagateUnfinishedTasksToggle as propagateUnfinishedTasksToggleElement, blackFlowtimeBackground, blackChilltimeBackground, total_time_display, streaksContainer } from '../modules/dom-elements.js';
 
 import { sessionState } from '../modules/state-objects.js';
 
-import { flags, timeAmount, alertVolumes, alertSounds, selectedBackgroundId, selectedBackground, flowtimeBackgrounds, chilltimeBackgrounds, selectedBackgroundIdTemp, startTimes, elapsedTime, timeConvert } from '../modules/index-objects.js';
+import { flags, timeAmount, alertVolumes, alertSounds, selectedBackgroundId, selectedBackground, flowtimeBackgrounds, chilltimeBackgrounds, selectedBackgroundIdTemp, startTimes, elapsedTime, timeConvert, progressTextMod } from '../modules/index-objects.js';
 
 import { flags as notesflags, counters as notesCounters, state as notesState, labelDict, notesArr } from '../modules/notes-objects.js';
+
+import { updateStreak } from '../utility/update_streaks.js';
 
 import { setInitialBackgroundCellSelection, setBackground, deactivateDarkTheme, activateDarkTheme, replaceTargetHours, totalTimeDisplay } from '../main/index.js';
 
 import { appendEditRemoveContainer, createCheckElements, getLastNumberFromId } from '../main/notes.js';
 
+
 var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-document.addEventListener('defaultSettingsApplied', () => {
+document.addEventListener('updateState', () => {
     checkUserSession();
 });
 
@@ -54,12 +57,24 @@ async function updateGUIForLoggedInUser(userData, noteData) {
     // settings (--> logged in version)
     updateSettings(userData);
 
+    // streak (--> logged in version)
+    updateStreak(userData);
+
+    // showing time left (--> logged in version)
+    updateShowingTimeLeft(userData);
+    
+    // target hours (--> logged in version)
     updateTargetHours(userData);
 
     // notes (--> logged in version)
     updateUserLabels(noteData);
 
     updateUserNotes(noteData);
+}
+
+function updateShowingTimeLeft(userData) {
+    const showingTimeLeft = userData.showingTimeLeft;
+    progressTextMod.showingTimeLeft = showingTimeLeft;
 }
 
 function updateTargetHours(userData) {
@@ -71,7 +86,7 @@ function updateTargetHours(userData) {
 
         // update UI
         replaceTargetHours(targetHours, timeAmount, flags);
-        totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount);
+        totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod);
     }
 }
 
@@ -335,11 +350,11 @@ function updateThemes(userData) {
     if (!flags.darkThemeActivated) {
         darkGrayTheme.classList.remove('selected-background');
         defaultTheme.classList.add('selected-background');
-        deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, isMobile);
+        deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, isMobile, streaksContainer);
     } else {
         darkGrayTheme.classList.add('selected-background');
         defaultTheme.classList.remove('selected-background');
-        activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer);
+        activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, streaksContainer);
     }
 }
 

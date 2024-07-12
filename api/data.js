@@ -43,6 +43,80 @@ router.delete("/delete-account", async function(req, res) {
     }
 });
 
+router.post("/user-activity", async function(req, res) {
+    // Assuming the JWT is sent automatically in cookie headers
+    const token = req.cookies.token;  // Extract the JWT from cookies directly
+    const { userTimeZone } = req.body;
+
+    if (!token) {
+        return res.status(401).json({ isLoggedIn: false });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        const user = await User.findById(decoded.userId);
+
+        if (user) {
+            let currentUTCDate = new Date();
+
+            // TESTING
+            // let testDateStr = '2024-07-06T23:12:27.354Z';
+            // currentUTCDate = new Date(testDateStr);
+            // TESTING
+
+            user.activityTimeArr.push({
+                timeZone: userTimeZone,
+                activityDateUTC: currentUTCDate
+            });
+
+            await user.save();
+            res.json({ success: true, message: 'User activity time logged' });
+
+        } else {
+            return res.status(401).json({ 
+                isLoggedIn: false,
+                message: "User not found"
+            });
+        }
+    } catch (error) {
+        return res.status(401).json({
+            isLoggedIn: false,
+            message: "Session is not valid: " + error.message
+        });
+    }
+});
+
+router.post("/update-showing-time-left", async function(req, res) {
+    // Assuming the JWT is sent automatically in cookie headers
+    const token = req.cookies.token;  // Extract the JWT from cookies directly
+    const { showingTimeLeft } = req.body;
+
+    if (!token) {
+        return res.status(401).json({ isLoggedIn: false });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        const user = await User.findById(decoded.userId);
+
+        if (user) {
+            user.showingTimeLeft = showingTimeLeft;
+            await user.save();
+            res.json({ success: true, message: 'Target Hours updated successfully' });
+        } else {
+            return res.status(401).json({ 
+                isLoggedIn: false,
+                message: "User not found"
+            });
+        }
+    } catch (error) {
+        return res.status(401).json({
+            isLoggedIn: false,
+            message: "Session is not valid: " + error.message
+        });
+    }
+});
+
 router.post("/update-target-hours", async function(req, res) {
     // Assuming the JWT is sent automatically in cookie headers
     const token = req.cookies.token;  // Extract the JWT from cookies directly
@@ -51,7 +125,6 @@ router.post("/update-target-hours", async function(req, res) {
     if (!token) {
         return res.status(401).json({ isLoggedIn: false });
     }
-    // console.log(targetHours);
 
     try {
         const decoded = jwt.verify(token, process.env.SECRET_KEY);

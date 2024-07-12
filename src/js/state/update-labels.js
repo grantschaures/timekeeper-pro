@@ -18,6 +18,6 @@ export async function updateLabels(labelArr) {
         const data = await response.json();
         // console.log("notes updated successfully:", data);
     } catch (error) {
-        console.error('Failed to update notes:', error);
+        console.error('Failed to update labels:', error);
     }
 }

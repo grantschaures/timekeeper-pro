@@ -73,6 +73,10 @@ const stateReplacements = [
     {
         pattern: /import { appendEditRemoveContainer, createCheckElements, getLastNumberFromId } from '..\/main\/notes.js';/g,
         replacement: "import { appendEditRemoveContainer, createCheckElements, getLastNumberFromId } from '../minified/notes.min.js';"
+    },
+    {
+        pattern: /import { updateStreak } from '..\/utility\/update_streaks.js';/g,
+        replacement: "import { updateStreak } from '../minified/update_streaks.min.js';"
     }
 ];
 
@@ -88,6 +92,14 @@ const indexReplacements = [
     {
         pattern: /import { updateTargetHours } from '..\/state\/update-target-hours.js';/g,
         replacement: "import { updateTargetHours } from '../minified/update-target-hours.min.js';"
+    },
+    {
+        pattern: /import { updateShowingTimeLeft } from '..\/state\/update-showing-time-left.js';/g,
+        replacement: "import { updateShowingTimeLeft } from '../minified/update-showing-time-left.min.js';"
+    },
+    {
+        pattern: /import { userActivity } from '..\/state\/user-activity.js';/g,
+        replacement: "import { userActivity } from '../minified/user-activity.min.js';"
     }
 ];
 

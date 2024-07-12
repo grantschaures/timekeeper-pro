@@ -36,6 +36,7 @@ router.post("/validateUser", loginLimiter, async function(req, res) {
         const user = await User.findOne({ email: email });
         if (user && await bcrypt.compare(password, user.password)) {
             user.logins++;
+            user.loginTimeArr.push(new Date());
             user.save();
 
             beginSession(user, res);
@@ -106,6 +107,7 @@ router.post("/verifyIdToken", async function(req, res) {
         if (user) {
             user.googleAccountLinked = true;
             user.logins++;
+            user.loginTimeArr.push(new Date());
             await user.save({ session });
         } else {
             // If no user exists, create a new one
@@ -113,7 +115,8 @@ router.post("/verifyIdToken", async function(req, res) {
                 email: email,
                 emailVerified: false,
                 logins: 1,
-                googleAccountLinked: true
+                googleAccountLinked: true,
+                loginTimeArr: [new Date()],
                 // settings are added w/ default values based on defined schema
             });
             await user.save({ session });
