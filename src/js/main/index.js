@@ -58,11 +58,11 @@ document.addEventListener("DOMContentLoaded", function() {
         if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
             return "iOS";
         }
-        if (/tablet|iPad|playbook|silk/i.test(userAgent)) {
-            return "Tablet";
-        }
         if (/mobile|android|touch|webos|hpwos/i.test(userAgent)) {
             return "Mobile";
+        }
+        if (/tablet|iPad|playbook|silk/.test(userAgent) || (navigator.maxTouchPoints > 1)) {
+            return "iPad or Tablet";
         }
         return "Desktop";
     }
