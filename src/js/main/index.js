@@ -9,6 +9,7 @@ import {
     breakBackground,
     streaksContainer,
     streaksLoginSuggestionPopup,
+    streaksCount,
 } from '../modules/dom-elements.js';
 
 import { sessionState } from '../modules/state-objects.js';
@@ -1123,6 +1124,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if ((!sessionState.loggedIn) && (!navFlags.popupQuestionWindowShowing)) {
             streaksContainer.style.cursor = 'pointer';
             streaksLoginSuggestionPopup.style.opacity = 1;
+            streaksLoginSuggestionPopup.style.zIndex = 35;
         }
     })
     
@@ -1132,6 +1134,7 @@ document.addEventListener("DOMContentLoaded", function() {
         
         if ((!sessionState.loggedIn) && (!navFlags.popupQuestionWindowShowing)) {
             streaksLoginSuggestionPopup.style.opacity = 0;
+            streaksLoginSuggestionPopup.style.zIndex = 0;
         }
     })
 
