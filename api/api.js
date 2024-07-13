@@ -36,12 +36,14 @@ router.post("/validateUser", loginLimiter, async function(req, res) {
     const password = req.body.user.password;
     const userAgent = req.body.userAgent;
     const userDevice = req.body.userDevice;
+    const loginMethod = "Email";
 
     let loginDate = new Date();
     let loginData = {
         loginDate,
         userAgent,
-        userDevice
+        userDevice,
+        loginMethod
     }
 
     try {
@@ -108,6 +110,7 @@ router.post("/verifyIdToken", async function(req, res) {
         const token = req.body.idToken;
         const userAgent = req.body.userAgent;
         const userDevice = req.body.userDevice;
+        const loginMethod = "Google";
 
         const ticket = await client.verifyIdToken({
             idToken: token,
@@ -124,7 +127,8 @@ router.post("/verifyIdToken", async function(req, res) {
         let loginData = {
             loginDate,
             userAgent,
-            userDevice
+            userDevice,
+            loginMethod
         }
 
         if (user) {

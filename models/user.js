@@ -14,6 +14,7 @@ const User = db.model("User", {
     loginDate: { type: Date },
     userAgent: { type: String },
     userDevice: { type: String },
+    loginMethod: { type: String }
   }],
   activityTimeArr: [{
     timeZone: { type: String },
