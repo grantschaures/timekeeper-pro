@@ -28,6 +28,10 @@ document.addEventListener("DOMContentLoaded", function() {
         if (!(isMobile)) {
             questionIcon.style.opacity = '1';
             streaksContainer.style.opacity = '1';
+
+            setTimeout(() => {
+                streaksContainer.style.transition = 'opacity 0.25s ease-in-out, background-color 0.25s ease';
+            }, 1000)
         }
     }, 1000)
     
@@ -62,6 +66,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
         // SHOWING ELEMENTS
         blogContainer.style.display = "flex"; // show main blog container
+        fadeInStreaks(streaksContainer); // showing streaks container
 
         // OTHER CHANGES
         body.style.overflowY = 'hidden'; // no scroll
@@ -88,6 +93,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // SHOWING ELEMENTS
         aboutContainer.style.display = "flex"; // show about container
+        fadeInStreaks(streaksContainer); // showing streaks container
 
         // OTHER CHANGES
         body.style.overflowY = 'hidden'; // no scroll
@@ -299,11 +305,25 @@ document.addEventListener("DOMContentLoaded", function() {
 
 });
 
+function fadeInStreaks(streaksContainer) {
+    streaksContainer.style.display = 'flex';
+    setTimeout(() => {
+        streaksContainer.style.opacity = 1;
+    }, 0)
+}
+
+function fadeOutStreaks(streaksContainer) {
+    streaksContainer.style.opacity = 0;
+    setTimeout(() => {
+        streaksContainer.style.display = 'none';
+    }, 250)
+}
+
 function slimeSwitch() {
     addPseudoElementStyle('scaleX(2)');
     setTimeout(() => {
         addPseudoElementStyle('scaleX(1)');
-    }, 125) // halfway through toggle switch
+    }, 120) // halfway through toggle switch
 }
 
 function addPseudoElementStyle(transformValue) {
@@ -330,7 +350,8 @@ function handleLeftRightArrowKeys(event) {
     if (flags.allowToggleSwitch && flagArr.every(flag => !flag)) {
         if (event.key === 'ArrowLeft') {
             if (state.lastSelectedMode === 'space') { // --> HOME
-                slimeSwitch()
+                slimeSwitch();
+                fadeInStreaks(streaksContainer);
                 setDinkleDoinkSetting("home"); // needs to execute first
                 resetMode(reportContainer);
                 resetMode(spaceContainer);
@@ -339,7 +360,8 @@ function handleLeftRightArrowKeys(event) {
                 fadeInAnimationsSessionBackground(); // needs to execute second
                 
             } else if (state.lastSelectedMode === 'home') { // --> REPORT
-                slimeSwitch()
+                slimeSwitch();
+                fadeOutStreaks(streaksContainer);
                 initializeNewMode(reportContainer);
                 isClickNotOnAboutElements(event, about_menu_container, aboutContainer, menuBtn, about_exit, reportIcon, reportPath);
                 isClickNotOnBlogElements(event, blogMenuContainer, blog_post_container, menuBtn, blog_exit);
@@ -355,7 +377,8 @@ function handleLeftRightArrowKeys(event) {
             }
         } else if (event.key === 'ArrowRight') {
             if (state.lastSelectedMode === 'report') { // --> HOME
-                slimeSwitch()
+                slimeSwitch();
+                fadeInStreaks(streaksContainer);
                 setDinkleDoinkSetting("home"); // needs to execute first
                 resetMode(reportContainer);
                 resetMode(spaceContainer);
@@ -364,7 +387,8 @@ function handleLeftRightArrowKeys(event) {
                 fadeInAnimationsSessionBackground(); // needs to execute second
                 
             } else if (state.lastSelectedMode === 'home') { // --> SPACE
-                slimeSwitch()
+                slimeSwitch();
+                fadeOutStreaks(streaksContainer);
                 initializeNewMode(spaceContainer);
                 isClickNotOnAboutElements(event, about_menu_container, aboutContainer, menuBtn, about_exit, reportIcon, reportPath);
                 isClickNotOnBlogElements(event, blogMenuContainer, blog_post_container, menuBtn, blog_exit);
@@ -388,7 +412,7 @@ function switchDelay(flags) {
     flags.allowToggleSwitch = false;
     setTimeout(() => {
         flags.allowToggleSwitch = true;
-    }, 150)
+    }, 250)
 }
 
 function setDinkleDoinkSetting(mode) { // and also state.lastSelectedMode value
@@ -462,6 +486,7 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
                 slimeSwitch(); 
             }
 
+            fadeOutStreaks(streaksContainer);
             initializeNewMode(reportContainer);
             resetMode(spaceContainer);
             subMainContainerTransition("none");
@@ -474,6 +499,7 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
                 slimeSwitch(); 
             }
 
+            fadeInStreaks(streaksContainer);
             setDinkleDoinkSetting("home"); // needs to execute first
             resetMode(reportContainer);
             resetMode(spaceContainer);
@@ -486,6 +512,7 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
                 slimeSwitch(); 
             }
 
+            fadeOutStreaks(streaksContainer);
             initializeNewMode(spaceContainer);
             resetMode(reportContainer);
             subMainContainerTransition("none");
