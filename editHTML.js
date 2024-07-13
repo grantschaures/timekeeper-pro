@@ -71,8 +71,8 @@ const stateReplacements = [
         replacement: "import { setInitialBackgroundCellSelection, setBackground, deactivateDarkTheme, activateDarkTheme, replaceTargetHours, totalTimeDisplay } from '../minified/index.min.js';"
     },
     {
-        pattern: /import { appendEditRemoveContainer, createCheckElements, getLastNumberFromId } from '..\/main\/notes.js';/g,
-        replacement: "import { appendEditRemoveContainer, createCheckElements, getLastNumberFromId } from '../minified/notes.min.js';"
+        pattern: /import { appendEditRemoveContainer, createCheckElements, getLastNumberFromId, addLabelInputContainerTagDivider, addLabelInitialActions, removeTagSelectionDivider, adjustLabelFontSize } from '..\/main\/notes.js';/g,
+        replacement: "import { appendEditRemoveContainer, createCheckElements, getLastNumberFromId, addLabelInputContainerTagDivider, addLabelInitialActions, removeTagSelectionDivider, adjustLabelFontSize } from '../minified/notes.min.js';"
     },
     {
         pattern: /import { updateStreak } from '..\/utility\/update_streaks.js';/g,
