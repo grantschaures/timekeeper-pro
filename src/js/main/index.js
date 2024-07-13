@@ -41,6 +41,36 @@ document.addEventListener("DOMContentLoaded", function() {
     var isIpad = isIpadCheck();
     const initialViewportWidth = window.innerWidth || document.documentElement.clientWidth;
 
+    // TESTING
+    const userAgent = navigator.userAgent;
+    console.log(userAgent);
+
+    function getDeviceType() {
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    
+        // Regular expressions to match different types of devices
+        if (/windows phone/i.test(userAgent)) {
+            return "Windows Phone";
+        }
+        if (/android/i.test(userAgent)) {
+            return "Android";
+        }
+        if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+            return "iOS";
+        }
+        if (/tablet|iPad|playbook|silk/i.test(userAgent)) {
+            return "Tablet";
+        }
+        if (/mobile|android|touch|webos|hpwos/i.test(userAgent)) {
+            return "Mobile";
+        }
+        return "Desktop";
+    }
+    
+    console.log("Device Type: " + getDeviceType());
+    alert(getDeviceType());
+    // TESTING
+
     // not used; initialized for reference
     let pomodoroIntervalOrderArr = ['pom1', 'shortbreak1', 'pom2', 'shortbreak2', 'pom3', 'shortbreak3', 'pom4', 'longbreak'];
 
@@ -194,7 +224,7 @@ document.addEventListener("DOMContentLoaded", function() {
             if (!flags.autoStartPomodoroInterval) { // we know the user clicked the start btn, and that it didn't happen programmatically
                 pauseAndResetAlertSounds(soundMap.Bell, soundMap.Chime);
             }
-            
+
             if (flags.pomodoroNotificationToggle) {
                 setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop", setPomodoroIntervalText(counters, timeAmount));
                 setPomodoroWorker(flags, elapsedTime, counters, recoverPomState, pomodoroWorker);

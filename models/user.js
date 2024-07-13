@@ -10,7 +10,7 @@ const User = db.model("User", {
   emailVerified: { type: Boolean, required: true},
   googleAccountLinked: { type: Boolean, required: false},
   logins: { type: Number, required: true, default: 0 },
-  loginTimeArr: [{ type: Date }], // logs whenever user logs in (this can be implemented completely on the server)
+  loginTimeArr: [{ type: Date }],
   activityTimeArr: [{
     timeZone: { type: String },
     activityDateUTC: { type: Date }

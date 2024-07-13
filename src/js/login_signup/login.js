@@ -66,7 +66,7 @@ window.addUser = function() {
     .then(data => {
         // console.log("Server response:", data);
         if (data.loginSuccess === true) {
-            console.log("Login was successful!")
+            console.log("Login was successful!");
             initializeGUI();
         }
     })
