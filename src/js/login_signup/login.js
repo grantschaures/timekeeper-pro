@@ -1,4 +1,5 @@
-import { initializeGUI } from '../utility/initialize_gui.js';
+import { initializeGUI } from '../utility/initialize_gui.js'; // minified
+import { userAgent, userDevice } from '../utility/identification.js'; // minified
 
 document.addEventListener("DOMContentLoaded", function () {
     const loginSubmitBtn = document.getElementById("loginSubmitBtn");
@@ -46,7 +47,7 @@ window.addUser = function() {
     fetch("/api/api/validateUser", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(user)
+        body: JSON.stringify({ user: user, userAgent: userAgent, userDevice: userDevice })
     })
     .then(response => {
         if (!response.ok) {

@@ -31,12 +31,24 @@ const loginLimiter = rateLimit({
 // Add a new User to the database
 router.post("/validateUser", loginLimiter, async function(req, res) {
 
-    const { email, password } = req.body;
+    // const { email, password } = req.body;
+    const email = req.body.user.email;
+    const password = req.body.user.password;
+    const userAgent = req.body.userAgent;
+    const userDevice = req.body.userDevice;
+
+    let loginDate = new Date();
+    let loginData = {
+        loginDate,
+        userAgent,
+        userDevice
+    }
+
     try {
         const user = await User.findOne({ email: email });
         if (user && await bcrypt.compare(password, user.password)) {
             user.logins++;
-            user.loginTimeArr.push(new Date());
+            user.loginTimeArr.push(loginData);
             user.save();
 
             beginSession(user, res);
@@ -94,6 +106,9 @@ router.post("/verifyIdToken", async function(req, res) {
     try {
         console.log("/verifyIdToken endpoint has been reached")
         const token = req.body.idToken;
+        const userAgent = req.body.userAgent;
+        const userDevice = req.body.userDevice;
+
         const ticket = await client.verifyIdToken({
             idToken: token,
             audience: CLIENT_ID,
@@ -104,10 +119,18 @@ router.post("/verifyIdToken", async function(req, res) {
         let user = await User.findOne({ email: email });
 
         let note;
+
+        let loginDate = new Date();
+        let loginData = {
+            loginDate,
+            userAgent,
+            userDevice
+        }
+
         if (user) {
             user.googleAccountLinked = true;
             user.logins++;
-            user.loginTimeArr.push(new Date());
+            user.loginTimeArr.push(loginData);
             await user.save({ session });
         } else {
             // If no user exists, create a new one
@@ -116,7 +139,7 @@ router.post("/verifyIdToken", async function(req, res) {
                 emailVerified: false,
                 logins: 1,
                 googleAccountLinked: true,
-                loginTimeArr: [new Date()],
+                loginTimeArr: [loginData],
                 // settings are added w/ default values based on defined schema
             });
             await user.save({ session });

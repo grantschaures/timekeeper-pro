@@ -16,6 +16,7 @@ import { sessionState } from '../modules/state-objects.js';
 
 import { state, flags as navFlags } from '../modules/navigation-objects.js';
 
+import { userAgent, userDevice } from '../utility/identification.js'; // minified
 import { initializeGUI } from '../utility/initialize_gui.js'; // minified
 import { updateUserSettings } from '../state/update-settings.js'; // minified
 import { updateTargetHours } from '../state/update-target-hours.js'; // minified
@@ -1056,7 +1057,7 @@ document.addEventListener("DOMContentLoaded", function() {
         fetch("/api/api/validateUser", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(user)
+            body: JSON.stringify({ user: user, userAgent: userAgent, userDevice: userDevice })
         })
         .then(response => {
             if (!response.ok) {
