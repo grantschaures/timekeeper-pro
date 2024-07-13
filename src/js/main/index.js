@@ -191,13 +191,13 @@ document.addEventListener("DOMContentLoaded", function() {
             flowmodoroAndBreakSuggestionActions(flags, elapsedTime, counters, timeAmount, flowmodoroWorker, suggestionWorker);
             intervals.main = setInterval(() => updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer), 1000); //repeatedly calls reference to updateProgressBar function every 1000 ms (1 second)
 
+            if (!flags.autoStartPomodoroInterval) { // we know the user clicked the start btn, and that it didn't happen programmatically
+                pauseAndResetAlertSounds(soundMap.Bell, soundMap.Chime);
+            }
+            
             if (flags.pomodoroNotificationToggle) {
                 setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop", setPomodoroIntervalText(counters, timeAmount));
                 setPomodoroWorker(flags, elapsedTime, counters, recoverPomState, pomodoroWorker);
-
-                if (!flags.autoStartPomodoroInterval) { // we know the user clicked the start btn, and that it didn't happen programmatically
-                    pauseAndResetAlertSounds(soundMap.Bell, soundMap.Chime);
-                }
             } else {
                 setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop","Deep Work");
             }
@@ -241,7 +241,9 @@ document.addEventListener("DOMContentLoaded", function() {
             let previousHyperFocusElapsedTime = elapsedTime.hyperFocus;
             elapsedTime.hyperFocus += Date.now() - startTimes.hyperFocus;
 
-            // console.log("startTimes.local: " + startTimes.local)
+            if (!flags.autoStartBreakInterval) { // we know the user clicked the stop btn, and that it didn't happen programmatically
+                pauseAndResetAlertSounds(soundMap.Bell, soundMap.Chime);
+            }
 
             if (flags.pomodoroNotificationToggle) {
                 showPomodorosCompletedContainer(completedPomodorosContainer, completedPomodoros_label, completedPomodoros_min, counters);
@@ -250,11 +252,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 recoverToBreakUpdateProgressBarAndTotalElapsed(flags, timeAmount, startTimes, elapsedTime, progressBar, progressContainer);
                 setPomodoroNotificationSeconds(flags, elapsedTime, counters, recoverBreakState, pomodoroWorker);
                 setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", setBothBreakIntervalText(counters, timeAmount));
-
-                if (!flags.autoStartBreakInterval) { // we know the user clicked the stop btn, and that it didn't happen programmatically
-                    pauseAndResetAlertSounds(soundMap.Bell, soundMap.Chime);
-                }
-
             } else {
                 showSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, timeAmount, counters, flags);
                 setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", "Break");
