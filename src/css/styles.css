@@ -358,7 +358,7 @@ body[dinkle-doink-setting=space] .dinkle-doink-mode .caption [dinkle-doink=space
 
     z-index: 15;
 
-    border: 3px solid rgb(230, 0, 220);
+    /* border: 3px solid rgb(230, 0, 220); */
     height: auto; /* Adjust height as needed */
     /* margin: 0; */
     box-sizing: border-box; /* Ensure padding and border are included in the element's width and height */
