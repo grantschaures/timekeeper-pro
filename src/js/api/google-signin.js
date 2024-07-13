@@ -1,5 +1,6 @@
 // Import necessary functions
 import { initializeGUI } from '../utility/initialize_gui.js';
+import { userAgent, userDevice } from '../utility/identification.js';
 
 // Attach handleCredentialResponse to the window object to ensure global availability
 window.handleCredentialResponse = function(response) {
