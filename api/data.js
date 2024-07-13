@@ -194,11 +194,12 @@ router.post("/update-labels", async function(req, res) {
     // Assuming the JWT is sent automatically in cookie headers
     const token = req.cookies.token;  // Extract the JWT from cookies directly
     const { labelArr } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
 
     const labelDict = labelArr[0];
-    const lastLabelIdNum = labelArr[1];
-    const lastSelectedEmojiId = labelArr[2];
+    const selectedLabelDict = labelArr[1];
+    const lastLabelIdNum = labelArr[2];
+    const lastSelectedEmojiId = labelArr[3];
 
     if (!token) {
         return res.status(401).json({ isLoggedIn: false });
@@ -228,6 +229,7 @@ router.post("/update-labels", async function(req, res) {
 
         // Update the labels object
         note.labels = labelDict;
+        note.selectedLabels = selectedLabelDict;
         note.lastLabelIdNum = lastLabelIdNum;
         note.lastSelectedEmojiId = lastSelectedEmojiId;
         // console.log(labels);

@@ -6,7 +6,7 @@ import { flags as indexflags } from '../modules/index-objects.js';
 
 import { state as navigationState } from '../modules/navigation-objects.js';
 
-import { notesFlags, counters, state, flags, emojiMap, tutorialContainerMap, fontSizeArr, fontNumArr, labelDict, notesArr } from '../modules/notes-objects.js';
+import { notesFlags, counters, state, flags, emojiMap, tutorialContainerMap, fontSizeArr, fontNumArr, labelDict, notesArr, selectedLabelDict } from '../modules/notes-objects.js';
 
 import { sessionState } from '../modules/state-objects.js';
 
@@ -237,7 +237,7 @@ document.addEventListener("DOMContentLoaded", function() {
             notesFlags.notesConsoleShowing = false;
         }
         
-        // query select all w/ className 'tag unselectable selected-tag'\
+        // query select all w/ className 'tag unselectable selected-tag'
         let selectedTags = document.querySelectorAll('.selected-tag');
         
         selectedTags.forEach(tag => {
@@ -381,6 +381,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             labelInputContainer.style.justifyContent = 'left';
                         }
                     }
+                    // console.log(labelDict);
                 }
             }
 
@@ -486,7 +487,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 replaceEmoji(state, emojiImg, emojiImg2);
 
                 if (sessionState.loggedIn) {
-                    const labelArr = [labelDict, counters.lastLabelIdNum, state.lastSelectedEmojiId];
+                    const labelArr = [labelDict, selectedLabelDict, counters.lastLabelIdNum, state.lastSelectedEmojiId];
                     updateLabels(labelArr);
                 }
             }
@@ -532,7 +533,7 @@ document.addEventListener("DOMContentLoaded", function() {
             labelDict[state.elementToUpdateId] = updateLabelInput.value;
 
             if (sessionState.loggedIn) {
-                const labelArr = [labelDict, counters.lastLabelIdNum, state.lastSelectedEmojiId];
+                const labelArr = [labelDict, selectedLabelDict, counters.lastLabelIdNum, state.lastSelectedEmojiId];
                 updateLabels(labelArr);
             }
         }
@@ -728,6 +729,7 @@ document.addEventListener("DOMContentLoaded", function() {
 // ---------------------
 // HELPER FUNCTIONS 2
 // ---------------------
+
 function populateTaskLabelContainer() {
     let initialLabelValues = ["✍️ Homework", "📚 Reading", "🧘 Meditation"];
 
@@ -779,18 +781,19 @@ function createLabel(createLabelInput, counters, labelSelectionRow, addDoneConta
 
     // update dict
     labelDict[selectionDiv.id] = labelName;
+    // console.log(labelDict);
 }
 
 function checkLabelIsUnique(createLabelInput) {
     let isUnique = true;
-    let currentSelectionTags = document.querySelectorAll('.selection-tag');
-    currentSelectionTags.forEach(tag => {
-        let labelName = tag.firstElementChild.textContent;
-        if (labelName === (createLabelInput.value).trim()) {
-            alert("The label '" + labelName + "' already exists!");
-            isUnique = false;
-        }
-    })
+    let inputVal = createLabelInput.value.trim();
+    
+    const hasValue = Object.values(labelDict).includes(inputVal);
+    
+    if (hasValue) {
+        alert("The label '" + inputVal + "' already exists!");
+        isUnique = false;
+    }
 
     return isUnique;
 }
@@ -867,9 +870,9 @@ function noteInputSave(noteTaskInputContainer, addNoteTaskContainer, flags, note
     }
 }
 
-function addLabelInitialActions(flags, tagIcon, promptContainer, clearIcon) {
+export function addLabelInitialActions(flags, tagIcon, promptContainer, clearIcon) {
     // initial actions if adding first label to label input container
-    if (flags.tagSelected === false) {
+    if (!flags.tagSelected) {
         flags.tagSelected = true;
         tagIcon.style.marginLeft = '5px';
         tagIcon.classList.add('tagToLeftSide');
@@ -892,6 +895,7 @@ function addLabel(target, labelInputContainer) {
         selectionTagId = target.id;
         innerHTML = target.innerHTML;
     }
+    // console.log(innerHTML);
 
     // Remove tag from selection window
     document.getElementById(selectionTagId).remove();
@@ -901,12 +905,19 @@ function addLabel(target, labelInputContainer) {
     selectedDiv.className = 'tag unselectable selected-tag';
     selectedDiv.innerHTML = innerHTML;
     selectedDiv.id = selectionTagId;
-    selectedDiv.firstElementChild.style.backgroundColor = selectedBackgroundColor;
 
-    labelInputContainer.appendChild(selectedDiv);
+    selectedDiv.firstElementChild.style.backgroundColor = selectedBackgroundColor;
+    labelInputContainer.appendChild(selectedDiv);  
+
+    selectedLabelDict[selectionTagId] = document.getElementById(selectionTagId).innerText; // update selectedLabelDict
+
+    if (sessionState.loggedIn) {
+        const labelArr = [labelDict, selectedLabelDict, counters.lastLabelIdNum, state.lastSelectedEmojiId];
+        updateLabels(labelArr);
+    }
 }
 
-function addLabelInputContainerTagDivider(counters, labelInputContainer) {
+export function addLabelInputContainerTagDivider(counters, labelInputContainer) {
 
     //if more than 1 selected tag, adds a '|' divider to left
     if (counters.tagsSelected > 1) {
@@ -917,7 +928,7 @@ function addLabelInputContainerTagDivider(counters, labelInputContainer) {
     }
 }
 
-function adjustLabelFontSize(state, fontSizeArr, fontNumArr, labelInputContainer) {
+export function adjustLabelFontSize(state, fontSizeArr, fontNumArr, labelInputContainer) {
     let tagDivs = document.querySelectorAll('.selected-tag .tag-text');
     let fontArrIndex = 0;
     do {
@@ -945,12 +956,12 @@ function deleteLabel(target, addDoneContainer, tagSelectionDivider, flags) {
     delete labelDict[toDeleteTagId];
 
     if (sessionState.loggedIn) {
-        const labelArr = [labelDict, counters.lastLabelIdNum, state.lastSelectedEmojiId];
+        const labelArr = [labelDict, selectedLabelDict, counters.lastLabelIdNum, state.lastSelectedEmojiId];
         updateLabels(labelArr);
     }
 }
 
-function removeTagSelectionDivider(addDoneContainer, tagSelectionDivider, flags) {
+export function removeTagSelectionDivider(addDoneContainer, tagSelectionDivider, flags) {
     if (!addDoneContainer.previousElementSibling) {
         tagSelectionDivider.style.display = 'none';
         addDoneContainer.style.marginLeft = '7px';
@@ -1464,18 +1475,25 @@ function deselectTags(tag, flags, tagIcon, clearIcon, labelSelectionRow, counter
     let selectionDiv = document.createElement('div');
     selectionDiv.className = 'tag unselectable selection-tag';
     selectionDiv.innerHTML = innerHTML;
-    // console.log(innerHTML);
     selectionDiv.id = selectedTagId;
     selectionDiv.firstElementChild.style.backgroundColor = '';
-    // console.log(selectionDiv.id);
 
     labelSelectionRow.insertBefore(selectionDiv, labelSelectionRow.firstChild);
     counters.tagsSelected--;
 
-    //if there weren't any tags left in the selection window, add the selection divider '|'
+    //if there weren't any tags left in the selection window, add the  selection divider '|'
     //and remove the margin-left value and indicate that there's tags in the selection window
 
     showTagSelectionDivider(flags, tagSelectionDivider, addDoneContainer);
+
+    delete selectedLabelDict[selectedTagId]; // update selectedLabelDict
+
+    // console.log(labelDict);
+
+    if (sessionState.loggedIn) {
+        const labelArr = [labelDict, selectedLabelDict, counters.lastLabelIdNum, state.lastSelectedEmojiId];
+        updateLabels(labelArr);
+    }
 }
 
 function handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInput, createLabelDone, updateLabelInput, updateLabelDone, noteInputSaveBtn, noteTaskInputText, noteInputCancelBtn, addNoteTaskContainer, flags, isMobile, settingsContainer, aboutContainer, blogContainer, main_elements) {
