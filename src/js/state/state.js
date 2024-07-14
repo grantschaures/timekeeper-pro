@@ -497,8 +497,9 @@ function updateUserLabels(noteData) {
     if (notesCounters.tagsSelected > 0) {
         addLabelInitialActions(notesflags, tagIcon, promptContainer, clearIcon);
         taskPrompt.style.display = "none";
+        promptContainer.style.zIndex = 3;
     }
-    
+
     removeTagSelectionDivider(addDoneContainer, tagSelectionDivider, notesflags);
 
     // update lastLabelIdNum
