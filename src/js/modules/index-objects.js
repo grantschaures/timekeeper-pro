@@ -1,4 +1,4 @@
-export const defaultBackgroundPath = "/images/environments/1394258314-mid.jpg";
+export const homeBackground = 'linear-gradient(90deg, #0cc1ce, #700cce, #b004c7)';
 
 export const selectedBackground = {
     "flowtime": 'linear-gradient(90deg, #00c510, #00c431, #00c59a)',
@@ -130,7 +130,7 @@ export const flags = {
     submittedSuggestionMinutes: false,
     transitionClockSoundToggle: false,
     flowmodoroNotificationToggle: false, // settings
-    progressBarContainerIsSmall: false,
+    progressBarContainerIsSmall: true,
     flowmodoroThumbIsDragging: false,
     autoStartFlowTimeInterval: false,
     autoStartChillTimeInterval: false,
@@ -150,8 +150,8 @@ export const flags = {
     autoSwitchedModes: false,
     inRecoveryBreak: false,
     inRecoveryPom: false,
-    flowTimeAnimationToggle: true,
-    chillTimeAnimationToggle: true,
+    flowTimeAnimationToggle: false,
+    chillTimeAnimationToggle: false,
     darkThemeActivated: true,
     modeChangeExecuted: false,
     sentFlowmodoroNotification: false,

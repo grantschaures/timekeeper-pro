@@ -88,6 +88,9 @@ function updateTargetHours(userData) {
         // update UI
         replaceTargetHours(targetHours, timeAmount, flags);
         totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod);
+
+        progressBarContainer.classList.toggle("small");
+        flags.progressBarContainerIsSmall = false;
     }
 }
 

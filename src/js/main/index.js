@@ -1,4 +1,4 @@
-import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selectedBackgroundIdTemp, selectedBackgroundId, timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, alertVolumes, alertSounds, counters, flags, tempStorage, settingsMappings, savedInterruptionsArr, timeAmount, intervalArrs, defaultBackgroundPath, progressTextMod } from '../modules/index-objects.js';
+import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selectedBackgroundIdTemp, selectedBackgroundId, timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, alertVolumes, alertSounds, counters, flags, tempStorage, settingsMappings, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, homeBackground } from '../modules/index-objects.js';
 
 import { chimePath, bellPath, clock_tick, soundMap } from '../modules/sound-map.js';
 
@@ -113,26 +113,11 @@ document.addEventListener("DOMContentLoaded", function() {
         }, 1000)
     }
 
-    // Fade out gradient once home image has loaded :P
-    let defaultImgUrl = 'url(' + defaultBackgroundPath + ')';
-
-    var startImg = new Image();
-    startImg.src = defaultBackgroundPath;
-    startImg.onload = function() {
-        document.body.classList.add('fade-out-bg');
-        document.documentElement.style.transition = "background-image 0.25s ease-in-out";
-    }
-
-    // reset background to default
-
-    // service worker registration
-    // if ('serviceWorker' in navigator) {
-    //     navigator.serviceWorker.register('/js/service_workers/sw.js').then(registration => {
-    //         console.log('Service Worker registered with scope:', registration.scope);
-    //     }).catch(error => {
-    //         console.log('Service Worker registration failed:', error);
-    //     });
-    // }
+    setTimeout(() => {
+        if (counters.startStop === 0) {
+            animationsFadeIn(chillAnimation, 'flex');
+        }
+    }, 3000)
 
     // ----------------
     // EVENT LISTENERS
@@ -149,6 +134,8 @@ document.addEventListener("DOMContentLoaded", function() {
         if (counters.startStop === 1) {
             veryStartActions(startTimes, hyperChillLogoImage, progressBarContainer, flags);
             triggerSilentAlertAudioMobile(soundMap.Chime, soundMap.Bell, chimePath, bellPath, flags);
+            animationsFadeOut(chillAnimation);
+            document.documentElement.style.backgroundSize = '100%';
             startTimes.lastPomNotification = Date.now();
         } else {
             chillTimeToFirstPomodoro(flags, productivity_chill_mode, counters);
@@ -323,12 +310,9 @@ document.addEventListener("DOMContentLoaded", function() {
             updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer);
             totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod);
             
-            /* The reason for this is that we don't want to bombard the user with progress container animations at the very start of the program :P */
-            if (counters.startStop > 0) { // only if session has been started
-                if (!flags.progressBarContainerIsSmall) { // and progress bar container is large
-                    progressBarContainer.classList.toggle("small"); // make progress container small
-                    flags.progressBarContainerIsSmall = true;
-                }
+            if (!flags.progressBarContainerIsSmall) { // and progress bar container is large
+                progressBarContainer.classList.toggle("small"); // make progress container small
+                flags.progressBarContainerIsSmall = true;
             }
         }
     });
@@ -866,31 +850,30 @@ document.addEventListener("DOMContentLoaded", function() {
         handleViewportWidthChange(settingsMappings, tempStorage, end_session_btn);
     });
 
-    document.addEventListener('visibilitychange', function() {
-        //user clicks out of tab (or minimizes window)
-        if (document.visibilityState === 'hidden') {
-            if (flags.inHyperFocus) {
-                flowAnimation.style.opacity = 0;
-                flowAnimation.style.display = 'none';
-                flowAnimation.classList.remove('intoOpacityTransition');
-            } else {
-                chillAnimation.style.opacity = 0;
-                chillAnimation.style.display = 'none';
-                chillAnimation.classList.remove('intoOpacityTransition');
-            }
+    // document.addEventListener('visibilitychange', function() {
+    //     if (document.visibilityState === 'hidden') {
+    //         if (flags.inHyperFocus) {
+    //             flowAnimation.style.opacity = 0;
+    //             flowAnimation.style.display = 'none';
+    //             flowAnimation.classList.remove('intoOpacityTransition');
+    //         } else {
+    //             chillAnimation.style.opacity = 0;
+    //             chillAnimation.style.display = 'none';
+    //             chillAnimation.classList.remove('intoOpacityTransition');
+    //         }
             
-        } else if ((document.visibilityState === 'visible') && (state.lastSelectedMode === 'home')) { //user returns to tab
-            if ((flags.inHyperFocus) && (flags.flowTimeAnimationToggle)) {
-                flowAnimation.style.display = 'block';
-                flowAnimation.classList.add('intoOpacityTransition');
-            } else if ((!flags.inHyperFocus) && (flags.chillTimeAnimationToggle)) {
-                if (counters.startStop > 0) {
-                    chillAnimation.style.display = 'flex';
-                    chillAnimation.classList.add('intoOpacityTransition');
-                }
-            }
-        }
-    });
+    //     } else if ((document.visibilityState === 'visible') && (state.lastSelectedMode === 'home')) { //user returns to tab
+    //         if ((flags.inHyperFocus) && (flags.flowTimeAnimationToggle)) {
+    //             flowAnimation.style.display = 'block';
+    //             flowAnimation.classList.add('intoOpacityTransition');
+    //         } else if ((!flags.inHyperFocus) && (flags.chillTimeAnimationToggle)) {
+    //             if (counters.startStop > 0) {
+    //                 chillAnimation.style.display = 'flex';
+    //                 chillAnimation.classList.add('intoOpacityTransition');
+    //             }
+    //         }
+    //     }
+    // });
 
     /**
      * setTimeout delay of 0 allows the event listener callback function in menu.js
@@ -971,7 +954,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // reset background to default
             setBackground("", 0);
-            resetHtmlBackground(defaultImgUrl);
+            resetHtmlBackground(homeBackground);
+            document.documentElement.style.backgroundSize = '400% 400%';
 
             // reset alerts
             pauseAndResetAlertSounds(soundMap.Bell, soundMap.Chime);
@@ -987,19 +971,15 @@ document.addEventListener("DOMContentLoaded", function() {
             totalDisplayWorker.postMessage("clearInterval");
     
             // fade out animations
-            animationsFadeOut(chillAnimation);
             animationsFadeOut(flowAnimation);
+
+            // fade in animation (if not already faded in)
+            animationsFadeIn(chillAnimation, 'flex');
     
             // reset displays
             resetDisplay(display);
             updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer);
             totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod);
-
-            // reset progress bar size
-            if (flags.progressBarContainerIsSmall) {
-                progressBarContainer.classList.toggle("small"); // make progress container large
-                flags.progressBarContainerIsSmall = false;
-            }
     
             // reset header text
             setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", "Press 'Start' to begin session");
@@ -2262,11 +2242,6 @@ function veryStartActions(startTimes, hyperChillLogoImage, progressBarContainer,
     setBrowserTabTitle(); //sets browser tab title to the stopwatch time '00:00:00'
     document.getElementById("target-hours").classList.remove("glowing-effect");
     hyperChillLogoImage.classList.add("hyperChillLogoRotate");
-
-    if ((document.getElementById("target-hours").value == "") || ((!document.getElementById("target-hours").value == "") && (!flags.submittedTarget))) {
-        progressBarContainer.classList.toggle("small");
-        flags.progressBarContainerIsSmall = true;
-    }
 };
 
 function resetActions(hyperChillLogoImage, flags, intervals, recoverBreakState, recoverPomState, startTimes, elapsedTime, counters, savedInterruptionsArr, intervalArrs) {
@@ -2445,8 +2420,8 @@ function debuggingPopup(color) {
     mainContainer.appendChild(newDiv);
 }
 
-function resetHtmlBackground(backgroundImg) {
-    document.documentElement.style.backgroundImage = backgroundImg;
+function resetHtmlBackground(homeBackground) {
+    document.documentElement.style.backgroundImage = homeBackground;
 }
 
 async function logUserActivity(userTimeZone) {

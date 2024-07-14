@@ -1,7 +1,7 @@
 import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn, spaceContainer, shortcutsContainer, shortcutsPopup, shortcutsExit, reportContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, flowAnimation, chillAnimation, target_hours_input, streaksContainer, threeWayToggle } from '../modules/dom-elements.js';
 import { blogIdList, flags, counters, state } from '../modules/navigation-objects.js';
 import { sessionState } from '../modules/state-objects.js';
-import { flags as indexFlags, selectedBackground, defaultBackgroundPath } from '../modules/index-objects.js';
+import { flags as indexFlags, selectedBackground } from '../modules/index-objects.js';
 import { flags as notesFlags } from '../modules/notes-objects.js';
 import { chimePath, bellPath, soundMap } from '../modules/sound-map.js';
 
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function() {
         blog_exit.classList.add('resetRotation'); // triggers reset animation
         setDinkleDoinkSetting("home"); //  needs to execute first
         subMainContainerTransition("none");
-        fadeInAnimationsSessionBackground(); // needs to execute second
+        fadeInAnimations(); // needs to execute second
 
         resetMode(reportContainer);
         resetMode(spaceContainer);
@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function() {
         about_exit.classList.add('resetRotation'); // triggers reset animation
         setDinkleDoinkSetting("home"); // needs to execute first
         subMainContainerTransition("none");
-        fadeInAnimationsSessionBackground(); // needs to execute second
+        fadeInAnimations(); // needs to execute second
 
         resetMode(reportContainer);
         resetMode(spaceContainer);
@@ -356,8 +356,7 @@ function handleLeftRightArrowKeys(event) {
                 resetMode(reportContainer);
                 resetMode(spaceContainer);
                 subMainContainerTransition("flex");
-                // setModeBackground(defaultBackgroundPath);
-                fadeInAnimationsSessionBackground(); // needs to execute second
+                fadeInAnimations(); // needs to execute second
                 
             } else if (state.lastSelectedMode === 'home') { // --> REPORT
                 slimeSwitch();
@@ -366,9 +365,8 @@ function handleLeftRightArrowKeys(event) {
                 isClickNotOnAboutElements(event, about_menu_container, aboutContainer, menuBtn, about_exit, reportIcon, reportPath);
                 isClickNotOnBlogElements(event, blogMenuContainer, blog_post_container, menuBtn, blog_exit);
                 subMainContainerTransition("none");
-                fadeOutAnimationsSessionBackground(); // needs to execute first
+                fadeOutAnimations(); // needs to execute first
                 setDinkleDoinkSetting("report"); // needs to execute second
-                setModeBackground(defaultBackgroundPath); // needs to execute third
                 
                 if (flags.blogShowing) { // hide blog content
                     blog_post_container.style.display = 'none';
@@ -383,8 +381,7 @@ function handleLeftRightArrowKeys(event) {
                 resetMode(reportContainer);
                 resetMode(spaceContainer);
                 subMainContainerTransition("flex");
-                // setModeBackground(defaultBackgroundPath);
-                fadeInAnimationsSessionBackground(); // needs to execute second
+                fadeInAnimations(); // needs to execute second
                 
             } else if (state.lastSelectedMode === 'home') { // --> SPACE
                 slimeSwitch();
@@ -393,9 +390,8 @@ function handleLeftRightArrowKeys(event) {
                 isClickNotOnAboutElements(event, about_menu_container, aboutContainer, menuBtn, about_exit, reportIcon, reportPath);
                 isClickNotOnBlogElements(event, blogMenuContainer, blog_post_container, menuBtn, blog_exit);
                 subMainContainerTransition("none");
-                fadeOutAnimationsSessionBackground(); // needs to execute first
+                fadeOutAnimations(); // needs to execute first
                 setDinkleDoinkSetting("space"); // needs to execute second
-                setModeBackground(defaultBackgroundPath); // needs to execute third
     
                 if (flags.blogShowing) { // hide blog content
                     blog_post_container.style.display = 'none';
@@ -441,22 +437,6 @@ function subMainContainerTransition(display) {
     }
 }
 
-// functionality for incorporating multple toggle mode backgrounds
-function setModeBackground(imgPath) {
-    var modeBackgroundImg = new Image();
-    modeBackgroundImg.src = imgPath;
-
-    if (((!indexFlags.sessionInProgress) && (state.lastSelectedMode === "home")) || (state.lastSelectedMode === "report") || (state.lastSelectedMode == "space")) {
-        modeBackgroundImg.onload = function() {
-            document.documentElement.style.backgroundImage = `url('${imgPath}')`;
-        }
-    
-        modeBackgroundImg.onerror = function() {
-            console.error(`Failed to load image: ${imgPath}`);
-        };
-    }
-}
-
 function initializeNewMode(containerType) {
     containerType.style.display = "flex";
     containerType.offsetHeight; // forcing reflow
@@ -490,9 +470,8 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
             initializeNewMode(reportContainer);
             resetMode(spaceContainer);
             subMainContainerTransition("none");
-            fadeOutAnimationsSessionBackground(); // needs to execute first
+            fadeOutAnimations(); // needs to execute first
             setDinkleDoinkSetting("report"); // needs to execute second
-            setModeBackground(defaultBackgroundPath); // needs to execute third
 
         } else if (homeIcon.contains(event.target)) { // --> HOME
             if (state.lastSelectedMode !== 'home') {
@@ -504,8 +483,7 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
             resetMode(reportContainer);
             resetMode(spaceContainer);
             subMainContainerTransition("flex");
-            // setModeBackground(defaultBackgroundPath);
-            fadeInAnimationsSessionBackground(); // needs to execute second
+            fadeInAnimations(); // needs to execute second
             
         } else if (spaceIcon.contains(event.target)) { // --> SPACE
             if (state.lastSelectedMode !== 'space') {
@@ -516,9 +494,8 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
             initializeNewMode(spaceContainer);
             resetMode(reportContainer);
             subMainContainerTransition("none");
-            fadeOutAnimationsSessionBackground(); // needs to execute first
+            fadeOutAnimations(); // needs to execute first
             setDinkleDoinkSetting("space"); // needs to execute second
-            setModeBackground(defaultBackgroundPath); // needs to execute third
         }
         
         // when hitting a blog or about exit (or clicking outside those containers), or a settings exit if in home mode
@@ -581,38 +558,20 @@ function isClickNotOnSettingsElements(event, settingsContainer, settings_exit, b
     }
 }
 
-function fadeOutAnimationsSessionBackground() {
-    if (indexFlags.sessionInProgress) {
-        // remove backgroundContainer background
-        // remove animations if present
-
-        setBackground("", 0); // removes background (regardless of current interval mode)
-
-        if ((indexFlags.flowTimeAnimationToggle) && (indexFlags.inHyperFocus)) {
-            animationsFadeOut(flowAnimation);
-        }
-        
-        if ((indexFlags.chillTimeAnimationToggle) && (!indexFlags.inHyperFocus)) {
-            animationsFadeOut(chillAnimation);
-        }
-    }
+function fadeOutAnimations() {
+    animationsFadeOut(flowAnimation);
+    animationsFadeOut(chillAnimation);
 }
 
-function fadeInAnimationsSessionBackground() {
-    if (indexFlags.sessionInProgress) {
-        if (indexFlags.inHyperFocus) {
-            setBackground(selectedBackground.flowtime, 1);
+function fadeInAnimations() {
+    if (indexFlags.inHyperFocus) {
+        if (indexFlags.flowTimeAnimationToggle) {
+            animationsFadeIn(flowAnimation, "block");
+        }
 
-            if (indexFlags.flowTimeAnimationToggle) {
-                animationsFadeIn(flowAnimation, "block");
-            }
-
-        } else {
-            setBackground(selectedBackground.chilltime, 1);
-
-            if (indexFlags.chillTimeAnimationToggle) {
-                animationsFadeIn(chillAnimation, "flex");
-            }
+    } else {
+        if ((indexFlags.chillTimeAnimationToggle) || (!indexFlags.sessionInProgress)) {
+            animationsFadeIn(chillAnimation, "flex");
         }
     }
 }

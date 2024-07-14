@@ -31,7 +31,18 @@ body {
     box-sizing: border-box;
 }
 
-/* Note: background image transition won't work on Firefox. Could potentially fix in the future. */
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
 html {
     margin: 0;
     width: 100%;
@@ -41,8 +52,11 @@ html {
     background-attachment: fixed;
     background-position: center center;
     background-color: #202020; /* Fallback */
-    background-image: url("/images/environments/1394258314-mid.jpg");
+    /* background-image: url("/images/environments/1394258314-mid.jpg"); */
+    background-image: linear-gradient(90deg, #0cc1ce, #700cce, #b004c7);
     transition: background-image 1s ease-in-out;
+    background-size: 400% 400%;
+    animation: gradientShift 30s linear infinite;
 }
 
 #backgroundContainer {
@@ -100,7 +114,6 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: linear-gradient(0deg, #2dd5ff, #670cce, #200044);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center center;
@@ -128,18 +141,6 @@ body.fade-out-bg::before {
     }
     to {
         opacity: 0;
-    }
-}
-
-@keyframes animatePosition {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
     }
 }
 
@@ -912,7 +913,7 @@ button:hover {
 }
 
 .hyperChillTitleAnimationTranslate {
-    animation: hyperChillTitleAnimationTranslate 1s forwards;
+    animation: hyperChillTitleAnimationTranslate 0.75s forwards;
 }
 
 .hyperChillTitleAnimationScale {

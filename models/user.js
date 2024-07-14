@@ -54,8 +54,8 @@ const User = db.model("User", {
       flowTimeBackgroundTemp: { type: String, default: null },
       chillTimeBackgroundTemp: { type: String, default: null },
       darkThemeActivated: { type: Boolean, default: false },
-      flowTimeAnimation:  { type: Boolean, default: true },
-      chillTimeAnimation: { type: Boolean, default: true }
+      flowTimeAnimation:  { type: Boolean, default: false },
+      chillTimeAnimation: { type: Boolean, default: false }
     },
     notes: {
       autoSwitchToggle: { type: Boolean, default: false },
