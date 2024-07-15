@@ -195,7 +195,8 @@ export const savedInterruptionsArr = [];
 
 export const intervalArrs = {
     flowTime: [],
-    chillTime: []
+    chillTime: [],
+    transitionTime: []
 }
 
 

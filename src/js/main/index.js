@@ -132,10 +132,10 @@ document.addEventListener("DOMContentLoaded", function() {
         resetDisplay(display);
 
         if (counters.startStop === 1) {
+            document.documentElement.style.backgroundSize = '100%';
             veryStartActions(startTimes, hyperChillLogoImage, progressBarContainer, flags);
             triggerSilentAlertAudioMobile(soundMap.Chime, soundMap.Bell, chimePath, bellPath, flags);
             animationsFadeOut(chillAnimation);
-            document.documentElement.style.backgroundSize = '100%';
             startTimes.lastPomNotification = Date.now();
         } else {
             chillTimeToFirstPomodoro(flags, productivity_chill_mode, counters);
@@ -148,6 +148,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
         start_stop_btn.classList.remove('glowing-effect');
         flags.pomodoroCountIncremented = false;
+
+        intervalArrs.transitionTime.push(Date.now());
         
         if (!intervals.main) { // --> DEEP WORK
             // console.log(getCurrentTime() + " --> Entering Deep Work");
@@ -894,9 +896,9 @@ document.addEventListener("DOMContentLoaded", function() {
     end_session_btn.addEventListener("click", function() { //temporary function
         if (flags.sessionInProgress) {
             // (1) Collect all necessary information about the session
-            // if in flowtime, add interruptions count to the interruptions array
+            // if in deep work, add interruptions count to the interruptions array
 
-            let userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; // determined moment they end session
+            let userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; // determine moment they end session
             if (sessionState.loggedIn) {
                 logUserActivity(userTimeZone);
             } else { // non-logged in user
@@ -947,8 +949,13 @@ document.addEventListener("DOMContentLoaded", function() {
             let avgFlowTimeIntervalStr = returnTotalTimeString(avgFlowTimeInterval, timeConvert);
             console.log("Average Flow Time Interval Length: " + avgFlowTimeIntervalStr);
 
+            console.log("transition time Arr: " + intervalArrs.transitionTime);
 
             console.log(""); // new line
+
+
+
+
 
             // (2) Reset everything to the default state
 
