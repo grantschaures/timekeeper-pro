@@ -132,11 +132,15 @@ document.addEventListener("DOMContentLoaded", function() {
         resetDisplay(display);
 
         if (counters.startStop === 1) {
-            document.documentElement.style.backgroundSize = '100%';
             veryStartActions(startTimes, hyperChillLogoImage, progressBarContainer, flags);
             triggerSilentAlertAudioMobile(soundMap.Chime, soundMap.Bell, chimePath, bellPath, flags);
             animationsFadeOut(chillAnimation);
             startTimes.lastPomNotification = Date.now();
+            
+            setTimeout(() => {
+                document.documentElement.style.backgroundSize = '100%';
+                flags.canEndSession = true;
+            }, 250)
         } else {
             chillTimeToFirstPomodoro(flags, productivity_chill_mode, counters);
         }
@@ -894,7 +898,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     end_session_btn.addEventListener("click", function() { //temporary function
-        if (flags.sessionInProgress) {
+        if ((flags.sessionInProgress) && (flags.canEndSession)) {
             // (1) Collect all necessary information about the session
             // if in deep work, add interruptions count to the interruptions array
 
@@ -2288,6 +2292,7 @@ function resetFlags(flags) {
     flags.sentSuggestionMinutesNotification = false;
     flags.pomodoroCountIncremented = false;
     flags.sessionInProgress = false;
+    flags.canEndSession = false;
 }
 
 function resetPropertiesToZero(obj) {
