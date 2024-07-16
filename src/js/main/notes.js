@@ -701,12 +701,8 @@ document.addEventListener("stateUpdated", function() {
 // -------------------
 // HELPER FUNCTIONS 2
 // -------------------
-export function addLabelArrValue(timeStamp, labelFlags, labelArrs) {
-    for (let key in labelFlags) {
-        if (labelFlags[key]) {
-            labelArrs[key].push(timeStamp);
-        }
-    }
+function updateLabelArr(labelName, labelArrs, timeStamp) {
+    labelArrs[labelName].push(timeStamp);
     console.log(labelArrs);
 }
 
@@ -960,7 +956,7 @@ function addLabel(target, labelInputContainer) {
     // if in hyperFocus (deep work), add timeStamp to labelArr
     let timeStamp = Date.now();
     if (indexflags.inHyperFocus) {
-        addLabelArrValue(timeStamp, labelFlags, labelArrs);
+        updateLabelArr(labelName, labelArrs, timeStamp);
     }
 
     if (sessionState.loggedIn) {
@@ -1553,7 +1549,7 @@ function deselectTags(tag, flags, tagIcon, clearIcon, labelSelectionRow, counter
     // add timeStamp (to represent taking away label) to labelArr if in hyperFocus
     let timeStamp = Date.now();
     if (indexflags.inHyperFocus) { // needs to execute first
-        addLabelArrValue(timeStamp, labelFlags, labelArrs);
+        updateLabelArr(labelName, labelArrs, timeStamp);
     }
 
     // set corresponding label in notesFlags to false

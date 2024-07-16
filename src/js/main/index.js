@@ -23,7 +23,6 @@ import { updateShowingTimeLeft } from '../state/update-showing-time-left.js'; //
 import { userActivity } from '../state/user-activity.js'; // minified
 import { lastIntervalSwitch } from '../state/last-interval-switch.js'; // minified
 import { userAgent, userDevice } from '../utility/identification.js'; // minified
-import { addLabelArrValue } from '../main/notes.js'; // minified
 
 const pomodoroWorker = new Worker('/js/displayWorkers/pomodoroWorker.js');
 const suggestionWorker = new Worker('/js/displayWorkers/suggestionWorker.js');
@@ -138,7 +137,7 @@ document.addEventListener("stateUpdated", function() {
         }
         
         let transitionTime = Date.now();
-        addLabelArrValue(transitionTime, labelFlags, labelArrs);
+        updateLabelArrs(transitionTime, labelFlags, labelArrs);
 
         if (counters.startStop === 1) {
             veryStartActions(startTimes, hyperChillLogoImage, progressBarContainer, flags);
@@ -967,7 +966,7 @@ document.addEventListener("stateUpdated", function() {
             // add final labelArr value (at some point later, we need to reset label Arrs after sending label time data to database)
             let endTime = Date.now();
             if (flags.inHyperFocus) {
-                addLabelArrValue(endTime, labelFlags, labelArrs);
+                updateLabelArrs(endTime, labelFlags, labelArrs);
             }
             displayTotalLabelTime(labelArrs);
 
@@ -980,7 +979,7 @@ document.addEventListener("stateUpdated", function() {
             // (2) Reset everything to the default state
 
             // reset labelArrs
-            resetLabelArrs(labelArrs);
+            // resetLabelArrs(labelArrs);
 
             // reset background to default
             setBackground("", 0);
@@ -1002,9 +1001,6 @@ document.addEventListener("stateUpdated", function() {
     
             // fade out animations
             animationsFadeOut(flowAnimation);
-
-            // fade in animation (if not already faded in)
-            animationsFadeIn(chillAnimation, 'flex');
     
             // reset displays
             resetDisplay(display);
@@ -1026,11 +1022,15 @@ document.addEventListener("stateUpdated", function() {
             // reset interruptions text to counters.interruptions, which has already been reset to 0
             interruptionsNum.textContent = counters.interruptions;
 
+            // fade in animation (if not already faded in)
+            setTimeout(() => {
+                animationsFadeIn(chillAnimation, 'flex');
+            }, 100); // delay fixed hitch between hitting end-session and resetting background
+
             // reset favicon
             setFavicon(defaultFavicon);
         }
 
-        // location.reload();
     });
 
     // similar function in navigation.js
@@ -1238,6 +1238,15 @@ document.addEventListener("stateUpdated", function() {
 // ---------------------
 // HELPER FUNCTIONS
 // ---------------------
+function updateLabelArrs(timeStamp, labelFlags, labelArrs) {
+    for (let key in labelFlags) {
+        if (labelFlags[key]) {
+            labelArrs[key].push(timeStamp);
+        }
+    }
+    console.log(labelArrs);
+}
+
 function resetLabelArrs(labelArrs) {
     for (let key in labelArrs) {
         labelArrs[key] = [];
@@ -1253,8 +1262,10 @@ function displayTotalLabelTime(labelArrs) {
             timeSum += arr[i] - arr[i-1];
         }
 
+        let totalLabelTimeStr = returnTotalTimeString(timeSum, timeConvert);
+
         let labelName = key;
-        console.log(labelName + ": " + timeSum);
+        console.log(labelName + ": " + totalLabelTimeStr);
     }
 }
 
@@ -2534,42 +2545,23 @@ export function setInitialBackgroundCellSelection() {
 }
 
 export function setBackground(background_color, opacity) {
-    if (state.lastSelectedMode === 'home') {
+    if (state.lastSelectedMode !== 'home') return;
 
-        if (flags.inHyperFocus) {
-            deepWorkBackground.style.opacity = opacity;
-            if (background_color === "") {
-                setTimeout(() => {
-                    deepWorkBackground.style.backgroundImage = background_color;
-                }, 250)
-            } else {
-                breakBackground.style.opacity = 0;
-                deepWorkBackground.style.backgroundImage = background_color;
-                setTimeout(() => {
-                    if (state.lastSelectedMode === 'home') { // deals w/ edge case where user toggles right/left and back rapidly
-                        document.documentElement.style.backgroundImage = background_color;
-                    }
-                }, 250)
-            }
-        } else {
-            breakBackground.style.opacity = opacity;
-            if (background_color === "") {
-                setTimeout(() => {
-                    breakBackground.style.backgroundImage = background_color;
-                }, 250)
-            } else {
-                breakBackground.style.backgroundImage = background_color;
-                deepWorkBackground.style.opacity = 0;
-                setTimeout(() => {
-                    if (state.lastSelectedMode === 'home') { // deals w/ edge case where user toggles right/left and back rapidly
-                        document.documentElement.style.backgroundImage = background_color;
-                    }
-                }, 250)
-            }
+    const targetBackground = flags.inHyperFocus ? deepWorkBackground : breakBackground;
+    const alternateBackground = flags.inHyperFocus ? breakBackground : deepWorkBackground;
 
-        }
+    targetBackground.style.opacity = opacity;
+
+    if (background_color === "") {
+        setTimeout(() => {
+            targetBackground.style.backgroundImage = background_color;
+        }, 250);
+    } else {
+        alternateBackground.style.opacity = 0;
+        targetBackground.style.backgroundImage = background_color;
     }
-};
+}
+
 
 export function deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, isMobile, streaksContainer) {
     let componentArr1 = [interruptionsContainer, targetHoursContainer, timekeepingContainer, notesContainer, aboutContainer, blogContainer, streaksContainer];
@@ -2730,7 +2722,7 @@ export function totalTimeDisplay(startTimes, elapsedTime, total_time_display, ti
     }
 };
 
-export function animationsFadeIn(animationType, displayType) {
+export async function animationsFadeIn(animationType, displayType) {
     if (state.lastSelectedMode === 'home') {
         animationType.classList.add('intoOpacityTransition');
         animationType.style.display = displayType;

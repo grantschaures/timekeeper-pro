@@ -108,10 +108,6 @@ const indexReplacements = [
     {
         pattern: /import { userAgent, userDevice } from '..\/utility\/identification.js';/g,
         replacement: "import { userAgent, userDevice } from '../minified/identification.min.js';"
-    },
-    {
-        pattern: /import { addLabelArrValue } from '..\/main\/notes.js';/g,
-        replacement: "import { addLabelArrValue } from '../minified/notes.min.js';"
     }
 ];
 
@@ -136,8 +132,8 @@ const navigationReplacements = [
         replacement: "import { deleteUserAccount } from '../minified/delete-account.min.js';"
     },
     {
-        pattern: /import { setBackground, animationsFadeIn, animationsFadeOut, triggerSilentAlertAudioMobile } from '..\/main\/index.js';/g,
-        replacement: "import { setBackground, animationsFadeIn, animationsFadeOut, triggerSilentAlertAudioMobile } from '../minified/index.min.js';"
+        pattern: /import { animationsFadeIn, animationsFadeOut, triggerSilentAlertAudioMobile } from '..\/main\/index.js';/g,
+        replacement: "import { animationsFadeIn, animationsFadeOut, triggerSilentAlertAudioMobile } from '../minified/index.min.js';"
     }
 ]
 
