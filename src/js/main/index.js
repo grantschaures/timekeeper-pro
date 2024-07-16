@@ -13,15 +13,17 @@ import {
 } from '../modules/dom-elements.js';
 
 import { sessionState } from '../modules/state-objects.js';
-
 import { state, flags as navFlags } from '../modules/navigation-objects.js';
+import { labelFlags, labelArrs } from '../modules/notes-objects.js';
 
-import { userAgent, userDevice } from '../utility/identification.js'; // minified
 import { initializeGUI } from '../utility/initialize_gui.js'; // minified
 import { updateUserSettings } from '../state/update-settings.js'; // minified
 import { updateTargetHours } from '../state/update-target-hours.js'; // minified
 import { updateShowingTimeLeft } from '../state/update-showing-time-left.js'; // minified
 import { userActivity } from '../state/user-activity.js'; // minified
+import { lastIntervalSwitch } from '../state/last-interval-switch.js'; // minified
+import { userAgent, userDevice } from '../utility/identification.js'; // minified
+import { addLabelArrValue } from '../main/notes.js'; // minified
 
 const pomodoroWorker = new Worker('/js/displayWorkers/pomodoroWorker.js');
 const suggestionWorker = new Worker('/js/displayWorkers/suggestionWorker.js');
@@ -32,7 +34,7 @@ const totalDisplayWorker = new Worker('/js/displayWorkers/totalDisplayWorker.js'
 // Create a new mutation observer to watch for changes to the #display div
 const observer = new MutationObserver(setTabTitleFromDisplay);
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("stateUpdated", function() {
     // Favicons
     const greenFavicon = "/images/logo/HyperChillLogoGreen.png";
     const blueFavicon = "/images/logo/HyperChillLogoBlue.png";
@@ -130,6 +132,10 @@ document.addEventListener("DOMContentLoaded", function() {
         counters.startStop++; //keep track of button presses (doesn't account for time recovery iterations)
         playClick(clock_tick, flags);
         resetDisplay(display);
+        logLastIntervalSwitch();
+        
+        let transitionTime = Date.now();
+        addLabelArrValue(transitionTime, labelFlags, labelArrs);
 
         if (counters.startStop === 1) {
             veryStartActions(startTimes, hyperChillLogoImage, progressBarContainer, flags);
@@ -153,7 +159,7 @@ document.addEventListener("DOMContentLoaded", function() {
         start_stop_btn.classList.remove('glowing-effect');
         flags.pomodoroCountIncremented = false;
 
-        intervalArrs.transitionTime.push(Date.now());
+        intervalArrs.transitionTime.push(transitionTime);
         
         if (!intervals.main) { // --> DEEP WORK
             // console.log(getCurrentTime() + " --> Entering Deep Work");
@@ -955,6 +961,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
             console.log("transition time Arr: " + intervalArrs.transitionTime);
 
+            // add final labelArr value (at some point later, we need to reset label Arrs after sending label time data to database)
+            let endTime = Date.now();
+            if (flags.inHyperFocus) {
+                addLabelArrValue(endTime, labelFlags, labelArrs);
+            }
+            displayTotalLabelTime(labelArrs);
+
             console.log(""); // new line
 
 
@@ -962,6 +975,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
             // (2) Reset everything to the default state
+
+            // reset labelArrs
+            resetLabelArrs(labelArrs);
 
             // reset background to default
             setBackground("", 0);
@@ -1213,12 +1229,31 @@ document.addEventListener("DOMContentLoaded", function() {
         totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod);
     }
 
-    document.dispatchEvent(new Event('updateState'));
+    // document.dispatchEvent(new Event('updateState'));
 });
 
 // ---------------------
 // HELPER FUNCTIONS
 // ---------------------
+function resetLabelArrs(labelArrs) {
+    for (let key in labelArrs) {
+        labelArrs[key] = [];
+    }
+}
+
+function displayTotalLabelTime(labelArrs) {
+    for (let key in labelArrs) {
+        let arr = labelArrs[key];
+        let timeSum = 0;
+
+        for (let i = 1; i < arr.length; i += 2) {
+            timeSum += arr[i] - arr[i-1];
+        }
+
+        let labelName = key;
+        console.log(labelName + ": " + timeSum);
+    }
+}
 
 function timeRecovery(flags, counters, startTimes, elapsedTime, start_stop_btn, recoverPomState, recoverBreakState, timeAmount, total_time_display, timeConvert, progressBar, progressContainer, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min, flowmodoroWorker, suggestionWorker, isMobile, isIpad) {
     if (flags.pomodoroNotificationToggle) {
@@ -2436,11 +2471,15 @@ function resetHtmlBackground(homeBackground) {
     document.documentElement.style.backgroundImage = homeBackground;
 }
 
-async function logUserActivity(userTimeZone) {
+async function logUserActivity(userTimeZone) { // logging when user ends session
     await userActivity(userTimeZone);
 
     // Eventually, we'll want to update the GUI
     document.dispatchEvent(new Event('updateStreak'));
+}
+
+async function logLastIntervalSwitch() {
+    await lastIntervalSwitch();
 }
 
 // ---------------------

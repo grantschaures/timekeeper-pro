@@ -4,7 +4,7 @@ import { sessionState } from '../modules/state-objects.js';
 
 import { flags, timeAmount, alertVolumes, alertSounds, selectedBackgroundId, selectedBackground, flowtimeBackgrounds, chilltimeBackgrounds, selectedBackgroundIdTemp, startTimes, elapsedTime, timeConvert, progressTextMod } from '../modules/index-objects.js';
 
-import { flags as notesflags, counters as notesCounters, state as notesState, labelDict, notesArr, selectedLabelDict, notesFlags, fontSizeArr, fontNumArr } from '../modules/notes-objects.js';
+import { flags as notesflags, counters as notesCounters, state as notesState, labelDict, notesArr, selectedLabelDict, notesFlags, fontSizeArr, fontNumArr, labelFlags, labelArrs } from '../modules/notes-objects.js';
 
 import { updateStreak } from '../utility/update_streaks.js';
 
@@ -15,23 +15,27 @@ import { appendEditRemoveContainer, createCheckElements, getLastNumberFromId, ad
 
 var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-document.addEventListener('updateState', () => {
-    checkUserSession();
+document.addEventListener('DOMContentLoaded', () => {
+    checkUserSession().then(() => {
+        document.dispatchEvent(new Event('stateUpdated'));
+    });
 });
 
-function checkUserSession() {
-    // Make a request to a server endpoint that will validate the session
-    fetch('/api/state/sessionValidation', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
+async function checkUserSession() {
+    try {
+        const response = await fetch('/api/state/sessionValidation', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await response.json();
         updateUserSession(data);
-    })
-    .catch(error => console.error('Error validating user session:', error));
+        return data;
+    } catch (error) {
+        console.error('Error validating user session:', error);
+        throw error;
+    }
 }
 
 async function updateUserSession(data) {
@@ -459,6 +463,12 @@ function updateUserLabels(noteData) {
         
         // update labels dictionary (client-side) - contains every label (regardless of location)
         labelDict[key] = value;
+
+        // update labelFlags (initially initialize all to false)
+        labelFlags[value] = false;
+
+        //update labelArrs (initialize all to empty array)
+        labelArrs[value] = [];
     }
 
     for (const [key, value] of Object.entries(noteData.selectedLabels)) {
@@ -491,6 +501,9 @@ function updateUserLabels(noteData) {
         }
         
         selectedLabelDict[key] = value;
+
+        // update labels in labelFlags w/ true if selected
+        labelFlags[value] = true;
     }
 
     let labelDictReversed = reverseDict(labelDict);

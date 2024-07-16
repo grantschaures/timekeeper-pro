@@ -8,7 +8,7 @@ import { chimePath, bellPath, soundMap } from '../modules/sound-map.js';
 import { deleteUserAccount } from '../state/delete-account.js'; // minified
 import { setBackground, animationsFadeIn, animationsFadeOut, triggerSilentAlertAudioMobile } from '../main/index.js'; // minified
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("stateUpdated", function() {
 
     // This may actually detect all mobile + iPad devices
     function isIpadCheck() {
@@ -320,10 +320,10 @@ function fadeOutStreaks(streaksContainer) {
 }
 
 function slimeSwitch() {
-    addPseudoElementStyle('scaleX(2)');
+    addPseudoElementStyle('scaleX(1.5)');
     setTimeout(() => {
         addPseudoElementStyle('scaleX(1)');
-    }, 120) // halfway through toggle switch
+    }, 150) // halfway through toggle switch
 }
 
 function addPseudoElementStyle(transformValue) {

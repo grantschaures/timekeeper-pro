@@ -75,3 +75,6 @@ export const fontNumArr = [20, 19, 18, 17, 16, 15, 14, 13, 12];
 export let labelDict = {};
 export let selectedLabelDict = {};
 export const notesArr = [];
+
+export const labelFlags = {};
+export const labelArrs = {};

@@ -19,5 +19,7 @@ export async function updateUserSettings(settings) {
         // console.log("User updated successfully:", data);
     } catch (error) {
         console.error('Failed to update user:', error);
+        alert("Your session has expired. Please log in again.");
+        window.location.href = "/login";
     }
 }

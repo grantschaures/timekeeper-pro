@@ -102,8 +102,16 @@ const indexReplacements = [
         replacement: "import { userActivity } from '../minified/user-activity.min.js';"
     },
     {
+        pattern: /import { lastIntervalSwitch } from '..\/state\/last-interval-switch.js';/g,
+        replacement: "import { lastIntervalSwitch } from '../minified/last-interval-switch.min.js';"
+    },
+    {
         pattern: /import { userAgent, userDevice } from '..\/utility\/identification.js';/g,
         replacement: "import { userAgent, userDevice } from '../minified/identification.min.js';"
+    },
+    {
+        pattern: /import { addLabelArrValue } from '..\/main\/notes.js';/g,
+        replacement: "import { addLabelArrValue } from '../minified/notes.min.js';"
     }
 ];
 

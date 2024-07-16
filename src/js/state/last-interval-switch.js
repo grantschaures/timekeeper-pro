@@ -1,11 +1,10 @@
-export async function updateShowingTimeLeft(showingTimeLeft) {
+export async function lastIntervalSwitch() {
     try {
-        const response = await fetch('/api/data/update-showing-time-left', {
+        const response = await fetch('/api/data/last-interval-switch', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ showingTimeLeft })
+            }
         });
 
         if (!response.ok) {
@@ -16,9 +15,9 @@ export async function updateShowingTimeLeft(showingTimeLeft) {
         }
 
         const data = await response.json();
-        // console.log("Settings updated successfully:", data);
+        // console.log(data);
     } catch (error) {
-        console.error('Failed to update progress bar text display setting:', error);
+        console.error('Failed to update last interval switch date:', error);
         alert("Your session has expired. Please log in again.");
         window.location.href = "/login";
     }

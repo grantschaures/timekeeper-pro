@@ -6,7 +6,7 @@ import { flags as indexflags } from '../modules/index-objects.js';
 
 import { state as navigationState } from '../modules/navigation-objects.js';
 
-import { notesFlags, counters, state, flags, emojiMap, tutorialContainerMap, fontSizeArr, fontNumArr, labelDict, notesArr, selectedLabelDict } from '../modules/notes-objects.js';
+import { notesFlags, counters, state, flags, emojiMap, tutorialContainerMap, fontSizeArr, fontNumArr, labelDict, notesArr, selectedLabelDict, labelFlags, labelArrs } from '../modules/notes-objects.js';
 
 import { sessionState } from '../modules/state-objects.js';
 
@@ -15,7 +15,7 @@ import { updateLabels } from '../state/update-labels.js';
 import { updateNotes } from '../state/update-notes.js';
 
 // main event listener
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("stateUpdated", function() {
     // ---------------------
     // HELPER FUNCTIONS 1
     // ---------------------
@@ -116,8 +116,13 @@ document.addEventListener("DOMContentLoaded", function() {
     //set initial emoji container point location
     setEmojiContainerPointLocation(window.innerWidth, emojiContainer, notesFlags, isMobile);
 
-    // populates task label container w/ default labels
-    populateTaskLabelContainer();
+    // we just happened to decide to dynamically populate labels container, even for non-logged in user 🤷‍♂️
+    if (!sessionState.loggedIn) {
+        // populates task label container w/ default labels
+        populateTaskLabelContainer();
+    }
+
+    // initialize labelFlags w/ current label names
 
     if (isMobile) {
         aboutIconNotes.style.display = "none";
@@ -369,19 +374,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (counters.tagsSelected === 5) {
                     alert("You've reached your max limit of 5 labels");
                 } else {
-                    counters.tagsSelected++;
-                    addLabelInputContainerTagDivider(counters, labelInputContainer);
-                    addLabel(target, labelInputContainer);
-                    addLabelInitialActions(flags, tagIcon, promptContainer, clearIcon);
-                    removeTagSelectionDivider(addDoneContainer, tagSelectionDivider, flags);
-                    if ((labelInputContainer.scrollWidth > labelInputContainer.clientWidth) || (state.currentLabelInputTagSize < 20)) {
-                        adjustLabelFontSize(state, fontSizeArr, fontNumArr, labelInputContainer);
-
-                        if (labelInputContainer.scrollWidth > labelInputContainer.clientWidth) {
-                            labelInputContainer.style.justifyContent = 'left';
-                        }
-                    }
-                    // console.log(labelDict);
+                    addLabelToInputContainer(target);
                 }
             }
 
@@ -407,36 +400,7 @@ document.addEventListener("DOMContentLoaded", function() {
         var target = event.target;
         
         // check if div or h4 is clicked on
-        if ((target.className === 'selected-tag' || target.className === 'tag-text' || target.className === 'tag-text deleteJiggling') && (!notesFlags.notesConsoleShowing)) {
-            if (target.className === 'tag-text deleteJiggling') {
-                target.className = 'tag-text';
-            }
-            
-            deselectTags(target, flags, tagIcon, clearIcon, labelSelectionRow, counters, tagSelectionDivider, addDoneContainer);
-            // resets font size for all in main selection container
-            let tagDivs = document.querySelectorAll('.selection-tag .tag-text'); //not actually a div (really an h4 (the div's child))
-            tagDivs.forEach(tag => {
-                tag.style.fontSize = '20px';
-            })
-            
-            // resets size of no overflow in labelInputContainer
-            if (labelInputContainer.scrollWidth <= labelInputContainer.clientWidth) {
-                adjustLabelFontSize(state, fontSizeArr, fontNumArr, labelInputContainer);
-            }
-
-            if (labelInputContainer.scrollWidth <= labelInputContainer.clientWidth) {
-                labelInputContainer.style.justifyContent = 'center';
-            }
-    
-            if (!flags.tagSelected) {
-                tagIcon.style.marginLeft = '';
-                tagIcon.classList.remove('tagToLeftSide');
-                promptContainer.style.width = '';
-            }
-        } else {
-            promptContainer.click();
-        }
-
+        removeLabelFromInputContainer(target);
     })
 
     createLabelCancel.addEventListener("click", function(event) {
@@ -529,8 +493,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
             flags.updateLabelWindowOpen = false;
 
-            // edit label dict
-            labelDict[state.elementToUpdateId] = updateLabelInput.value;
+            // edit labelFlags
+            const oldLabelName = labelDict[state.elementToUpdateId];
+            const newLabelName = updateLabelInput.value;
+            renameKey(labelFlags, oldLabelName, newLabelName);
+
+            // edit labelArrs
+            renameKey(labelArrs, oldLabelName, newLabelName);
+
+            // edit labelDict
+            labelDict[state.elementToUpdateId] = newLabelName;
 
             if (sessionState.loggedIn) {
                 const labelArr = [labelDict, selectedLabelDict, counters.lastLabelIdNum, state.lastSelectedEmojiId];
@@ -726,9 +698,74 @@ document.addEventListener("DOMContentLoaded", function() {
     })
 })
 
-// ---------------------
+// -------------------
 // HELPER FUNCTIONS 2
-// ---------------------
+// -------------------
+export function addLabelArrValue(timeStamp, labelFlags, labelArrs) {
+    for (let key in labelFlags) {
+        if (labelFlags[key]) {
+            labelArrs[key].push(timeStamp);
+        }
+    }
+    console.log(labelArrs);
+}
+
+function renameKey(obj, oldKey, newKey) {
+    if (obj.hasOwnProperty(oldKey)) {
+        obj[newKey] = obj[oldKey];  // Create new key with the old key's value
+        delete obj[oldKey];         // Delete the old key
+    }
+}
+
+function removeLabelFromInputContainer(target) {
+    if ((target.className === 'selected-tag' || target.className === 'tag-text' || target.className === 'tag-text deleteJiggling') && (!notesFlags.notesConsoleShowing)) {
+        if (target.className === 'tag-text deleteJiggling') {
+            target.className = 'tag-text';
+        }
+        
+        deselectTags(target, flags, tagIcon, clearIcon, labelSelectionRow, counters, tagSelectionDivider, addDoneContainer);
+
+        // resets font size for all in main selection container
+        let tagDivs = document.querySelectorAll('.selection-tag .tag-text'); //not actually a div (really an h4 (the div's child))
+        tagDivs.forEach(tag => {
+            tag.style.fontSize = '20px';
+        })
+        
+        // resets size of no overflow in labelInputContainer
+        if (labelInputContainer.scrollWidth <= labelInputContainer.clientWidth) {
+            adjustLabelFontSize(state, fontSizeArr, fontNumArr, labelInputContainer);
+        }
+
+        if (labelInputContainer.scrollWidth <= labelInputContainer.clientWidth) {
+            labelInputContainer.style.justifyContent = 'center';
+        }
+
+        if (!flags.tagSelected) {
+            tagIcon.style.marginLeft = '';
+            tagIcon.classList.remove('tagToLeftSide');
+            promptContainer.style.width = '';
+        }
+    } else {
+        promptContainer.click();
+    }
+}
+
+function addLabelToInputContainer(target) {
+    counters.tagsSelected++;
+    addLabelInputContainerTagDivider(counters, labelInputContainer);
+    addLabel(target, labelInputContainer);
+    addLabelInitialActions(flags, tagIcon, promptContainer, clearIcon);
+    removeTagSelectionDivider(addDoneContainer, tagSelectionDivider, flags);
+
+
+    if ((labelInputContainer.scrollWidth > labelInputContainer.clientWidth) || (state.currentLabelInputTagSize < 20)) {
+        adjustLabelFontSize(state, fontSizeArr, fontNumArr, labelInputContainer);
+
+        if (labelInputContainer.scrollWidth > labelInputContainer.clientWidth) {
+            labelInputContainer.style.justifyContent = 'left';
+        }
+    }
+}
 
 function populateTaskLabelContainer() {
     let initialLabelValues = ["✍️ Homework", "📚 Reading", "🧘 Meditation"];
@@ -779,9 +816,14 @@ function createLabel(createLabelInput, counters, labelSelectionRow, addDoneConta
 
     labelSelectionRow.insertBefore(selectionDiv, addDoneContainer);
 
-    // update dict
+    // update labelDict
     labelDict[selectionDiv.id] = labelName;
-    // console.log(labelDict);
+
+    // initialize labelFlag
+    labelFlags[labelName] = false;
+
+    // initialize labelArr
+    labelArrs[labelName] = [];
 }
 
 function checkLabelIsUnique(createLabelInput) {
@@ -911,6 +953,16 @@ function addLabel(target, labelInputContainer) {
 
     selectedLabelDict[selectionTagId] = document.getElementById(selectionTagId).innerText; // update selectedLabelDict
 
+    // set corresponding label in notesFlags to true
+    const labelName = selectedLabelDict[selectionTagId];
+    labelFlags[labelName] = true;
+
+    // if in hyperFocus (deep work), add timeStamp to labelArr
+    let timeStamp = Date.now();
+    if (indexflags.inHyperFocus) {
+        addLabelArrValue(timeStamp, labelFlags, labelArrs);
+    }
+
     if (sessionState.loggedIn) {
         const labelArr = [labelDict, selectedLabelDict, counters.lastLabelIdNum, state.lastSelectedEmojiId];
         updateLabels(labelArr);
@@ -952,8 +1004,16 @@ function deleteLabel(target, addDoneContainer, tagSelectionDivider, flags) {
     document.getElementById(toDeleteTagId).remove();
     removeTagSelectionDivider(addDoneContainer, tagSelectionDivider, flags);
 
-    // edit label dict
+    const labelName = labelDict[toDeleteTagId];
+
+    // edit labelDict
     delete labelDict[toDeleteTagId];
+
+    // edit labelFlags
+    delete labelFlags[labelName];
+
+    // edit labelArrs
+    delete labelArrs[labelName];
 
     if (sessionState.loggedIn) {
         const labelArr = [labelDict, selectedLabelDict, counters.lastLabelIdNum, state.lastSelectedEmojiId];
@@ -1486,9 +1546,18 @@ function deselectTags(tag, flags, tagIcon, clearIcon, labelSelectionRow, counter
 
     showTagSelectionDivider(flags, tagSelectionDivider, addDoneContainer);
 
+    const labelName = selectedLabelDict[selectedTagId];
+
     delete selectedLabelDict[selectedTagId]; // update selectedLabelDict
 
-    // console.log(labelDict);
+    // add timeStamp (to represent taking away label) to labelArr if in hyperFocus
+    let timeStamp = Date.now();
+    if (indexflags.inHyperFocus) { // needs to execute first
+        addLabelArrValue(timeStamp, labelFlags, labelArrs);
+    }
+
+    // set corresponding label in notesFlags to false
+    labelFlags[labelName] = false; // needs to execute second
 
     if (sessionState.loggedIn) {
         const labelArr = [labelDict, selectedLabelDict, counters.lastLabelIdNum, state.lastSelectedEmojiId];
