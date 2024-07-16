@@ -132,7 +132,10 @@ document.addEventListener("stateUpdated", function() {
         counters.startStop++; //keep track of button presses (doesn't account for time recovery iterations)
         playClick(clock_tick, flags);
         resetDisplay(display);
-        logLastIntervalSwitch();
+
+        if (sessionState.loggedIn) {
+            logLastIntervalSwitch();
+        }
         
         let transitionTime = Date.now();
         addLabelArrValue(transitionTime, labelFlags, labelArrs);
