@@ -12,7 +12,7 @@ document.addEventListener("stateUpdated", function() {
 
     end_session_btn.addEventListener("click", function() { //temporary function
         if ((flags.sessionInProgress) && (flags.canEndSession)) {
-            
+
             // (1) Collect all necessary information about the session
 
             let userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; // determine moment they end session
@@ -22,7 +22,7 @@ document.addEventListener("stateUpdated", function() {
                 streaksCount.innerText = 1;
             }
             
-            // total time
+            // total time //
             let totalTime = getTotalElapsed(flags, elapsedTime.hyperFocus, startTimes);
             let totalTimeStr = returnTotalTimeString(totalTime, timeConvert);
             console.log("Total Time: " + totalTimeStr);
