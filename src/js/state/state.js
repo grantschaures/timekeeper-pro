@@ -49,7 +49,7 @@ async function checkUserSession() {
             }
         });
         const data = await response.json();
-        loadFonts(myFontBlog, myFont2, myFont3, settingsHeaderFont);
+        loadFonts([myFontBlog, myFont2, myFont3, settingsHeaderFont]);
         updateUserSession(data);
         return data;
     } catch (error) {
@@ -640,6 +640,8 @@ function reverseDict(tagDict) {
 function loadFonts(fontArr) {
     for (let i = 0; i < fontArr.length; i++) {
         const font = new FontFace(fontArr[i].name, fontArr[i].path);
+        // console.log(fontArr[i].path);
+        // console.log(fontArr[i].name);
     
         font.load().then(function(loadedFont) {
             document.fonts.add(loadedFont);
