@@ -14,8 +14,25 @@ import { appendEditRemoveContainer, createCheckElements, getLastNumberFromId, ad
 
 var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-const myFontBlogPath = 'url(../fonts/CPMono_v07_Plain.woff)';
-// can add more if needed
+const myFontBlog = {
+    path: 'url(../fonts/CPMono_v07_Plain.woff)',
+    name: "myFontBlog"
+}
+
+const myFont2 = {
+    path: 'url(../fonts/CPMono_v07_Bold.woff)',
+    name: "myFont2"
+}
+
+const myFont3 = {
+    path: 'url(../fonts/CPMono_v07_Light.woff)',
+    name: "myFont3"
+}
+
+const settingsHeaderFont = {
+    path: 'url(../fonts/TTNormsProRegular.otf)',
+    name: "settingsHeaderFont"
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     checkUserSession().then(() => {
@@ -32,7 +49,7 @@ async function checkUserSession() {
             }
         });
         const data = await response.json();
-        loadFont(myFontBlogPath);
+        loadFonts(myFontBlog, myFont2, myFont3, settingsHeaderFont);
         updateUserSession(data);
         return data;
     } catch (error) {
@@ -620,12 +637,14 @@ function reverseDict(tagDict) {
     return reversedSelectedLabelDict;
 }
 
-function loadFont(myFontPath) {
-    const font = new FontFace('myFontBlog', myFontPath);
-
-    font.load().then(function(loadedFont) {
-        document.fonts.add(loadedFont);
-    }).catch(function(error) {
-        console.error("Font loading failed:", error);
-    });
+function loadFonts(fontArr) {
+    for (let i = 0; i < fontArr.length; i++) {
+        const font = new FontFace(fontArr[i].name, fontArr[i].path);
+    
+        font.load().then(function(loadedFont) {
+            document.fonts.add(loadedFont);
+        }).catch(function(error) {
+            console.error("Font loading failed:", error);
+        });
+    }
 }
