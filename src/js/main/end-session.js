@@ -7,14 +7,13 @@ import { labelFlags, labelArrs } from '../modules/notes-objects.js';
 import { userActivity } from '../state/user-activity.js'; // minified
 import { animationsFadeIn, animationsFadeOut, getTotalElapsed, returnTotalTimeString, updateLabelArrs, setBackground, pauseAndResetAlertSounds, resetDisplay, updateProgressBar, totalTimeDisplay, setButtonTextAndMode, hideSuggestionBreakContainer, hidePomodorosCompletedContainer, showInterruptionsSubContainer, setFavicon, observer, pomodoroWorker, suggestionWorker, flowmodoroWorker, displayWorker, totalDisplayWorker } from '../main/index.js'; // minified
 
-document.addEventListener("stateUpdated", function() {
-    const defaultFavicon = "/images/logo/HyperChillLogo_circular_white_border.png";
+const defaultFavicon = "/images/logo/HyperChillLogo_circular_white_border.png";
 
+document.addEventListener("stateUpdated", function() {
     end_session_btn.addEventListener("click", function() { //temporary function
         if ((flags.sessionInProgress) && (flags.canEndSession)) {
 
             // (1) Collect all necessary information about the session
-
             let userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; // determine moment they end session
             if (sessionState.loggedIn) {
                 logUserActivity(userTimeZone);
@@ -76,6 +75,11 @@ document.addEventListener("stateUpdated", function() {
             displayTotalLabelTime(labelArrs);
 
             console.log(""); // new line
+
+
+
+
+
 
             // (2) Reset everything to the default state
             sessionReset();
