@@ -1,15 +1,10 @@
 import { timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, counters, flags, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, homeBackground } from '../modules/index-objects.js';
-
 import { start_stop_btn, end_session_btn, total_time_display, productivity_chill_mode, progressBar, progressContainer, display, interruptionsSubContainer, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, flowAnimation, chillAnimation, hyperChillLogoImage, streaksCount } from '../modules/dom-elements.js';
-
 import { soundMap } from '../modules/sound-map.js';
-
 import { sessionState } from '../modules/state-objects.js';
-
 import { labelFlags, labelArrs } from '../modules/notes-objects.js';
 
 import { userActivity } from '../state/user-activity.js'; // minified
-
 import { animationsFadeIn, animationsFadeOut, getTotalElapsed, returnTotalTimeString, updateLabelArrs, setBackground, pauseAndResetAlertSounds, resetDisplay, updateProgressBar, totalTimeDisplay, setButtonTextAndMode, hideSuggestionBreakContainer, hidePomodorosCompletedContainer, showInterruptionsSubContainer, setFavicon, observer, pomodoroWorker, suggestionWorker, flowmodoroWorker, displayWorker, totalDisplayWorker } from '../main/index.js'; // minified
 
 document.addEventListener("stateUpdated", function() {
@@ -17,8 +12,8 @@ document.addEventListener("stateUpdated", function() {
 
     end_session_btn.addEventListener("click", function() { //temporary function
         if ((flags.sessionInProgress) && (flags.canEndSession)) {
+            
             // (1) Collect all necessary information about the session
-            // if in deep work, add interruptions count to the interruptions array
 
             let userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; // determine moment they end session
             if (sessionState.loggedIn) {
@@ -82,70 +77,74 @@ document.addEventListener("stateUpdated", function() {
 
             console.log(""); // new line
 
-
-
-
-
             // (2) Reset everything to the default state
-
-            // reset labelArrs
-            // resetLabelArrs(labelArrs);
-
-            // reset background to default
-            setBackground("", 0);
-            resetHtmlBackground(homeBackground);
-            document.documentElement.style.backgroundSize = '400% 400%';
-
-            // reset alerts
-            pauseAndResetAlertSounds(soundMap.Bell, soundMap.Chime);
-
-            // reset internal logic
-            resetActions(hyperChillLogoImage, flags, intervals, recoverBreakState, recoverPomState, startTimes, elapsedTime, counters, savedInterruptionsArr, intervalArrs);
-    
-            // clear all intervals
-            pomodoroWorker.postMessage("clearInterval");
-            suggestionWorker.postMessage("clearInterval");
-            flowmodoroWorker.postMessage("clearInterval");
-            displayWorker.postMessage("clearInterval");
-            totalDisplayWorker.postMessage("clearInterval");
-    
-            // fade out animations
-            animationsFadeOut(flowAnimation);
-    
-            // reset displays
-            resetDisplay(display);
-            updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer);
-            totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod);
-    
-            // reset header text
-            setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", "Press 'Start' to begin session");
-
-            // get rid of glowing green on start/ stop btn and progress bar
-            start_stop_btn.classList.remove('glowing-effect');
-            progressContainer.classList.remove("glowing-effect");
-
-            // reset containers
-            hideSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min);
-            hidePomodorosCompletedContainer(completedPomodorosContainer);
-            showInterruptionsSubContainer(interruptionsSubContainer);
-
-            // reset interruptions text to counters.interruptions, which has already been reset to 0
-            interruptionsNum.textContent = counters.interruptions;
-
-            // fade in animation (if not already faded in)
-            setTimeout(() => {
-                animationsFadeIn(chillAnimation, 'flex');
-            }, 100); // delay fixed hitch between hitting end-session and resetting background
-
-            // reset favicon
-            setFavicon(defaultFavicon);
+            sessionReset();
         }
     });
 })
 
 // ---------------------
+// MAIN FUNCTIONS
+// ---------------------
+
+function sessionReset() {
+    // reset labelArrs
+    // resetLabelArrs(labelArrs);
+
+    // reset background to default
+    setBackground("", 0);
+    resetHtmlBackground(homeBackground);
+    document.documentElement.style.backgroundSize = '400% 400%';
+
+    // reset alerts
+    pauseAndResetAlertSounds(soundMap.Bell, soundMap.Chime);
+
+    // reset internal logic
+    resetActions(hyperChillLogoImage, flags, intervals, recoverBreakState, recoverPomState, startTimes, elapsedTime, counters, savedInterruptionsArr, intervalArrs);
+
+    // clear all intervals
+    pomodoroWorker.postMessage("clearInterval");
+    suggestionWorker.postMessage("clearInterval");
+    flowmodoroWorker.postMessage("clearInterval");
+    displayWorker.postMessage("clearInterval");
+    totalDisplayWorker.postMessage("clearInterval");
+
+    // fade out animations
+    animationsFadeOut(flowAnimation);
+
+    // reset displays
+    resetDisplay(display);
+    updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer);
+    totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod);
+
+    // reset header text
+    setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", "Press 'Start' to begin session");
+
+    // get rid of glowing green on start/ stop btn and progress bar
+    start_stop_btn.classList.remove('glowing-effect');
+    progressContainer.classList.remove("glowing-effect");
+
+    // reset containers
+    hideSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min);
+    hidePomodorosCompletedContainer(completedPomodorosContainer);
+    showInterruptionsSubContainer(interruptionsSubContainer);
+
+    // reset interruptions text to counters.interruptions, which has already been reset to 0
+    interruptionsNum.textContent = counters.interruptions;
+
+    // fade in animation (if not already faded in)
+    setTimeout(() => {
+        animationsFadeIn(chillAnimation, 'flex');
+    }, 100); // delay fixed hitch between hitting end-session and resetting background
+
+    // reset favicon
+    setFavicon(defaultFavicon);
+}
+
+// ---------------------
 // HELPER FUNCTIONS
 // ---------------------
+
 function resetActions(hyperChillLogoImage, flags, intervals, recoverBreakState, recoverPomState, startTimes, elapsedTime, counters, savedInterruptionsArr, intervalArrs) {
     observer.disconnect();
     document.title = "HyperChill.io | Online Productivity Time Tracker";
