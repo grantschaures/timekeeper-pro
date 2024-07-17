@@ -20,24 +20,22 @@ import { initializeGUI } from '../utility/initialize_gui.js'; // minified
 import { updateUserSettings } from '../state/update-settings.js'; // minified
 import { updateTargetHours } from '../state/update-target-hours.js'; // minified
 import { updateShowingTimeLeft } from '../state/update-showing-time-left.js'; // minified
-import { userActivity } from '../state/user-activity.js'; // minified
 import { lastIntervalSwitch } from '../state/last-interval-switch.js'; // minified
 import { userAgent, userDevice } from '../utility/identification.js'; // minified
 
-const pomodoroWorker = new Worker('/js/displayWorkers/pomodoroWorker.js');
-const suggestionWorker = new Worker('/js/displayWorkers/suggestionWorker.js');
-const flowmodoroWorker = new Worker('/js/displayWorkers/flowmodoroWorker.js');
-const displayWorker = new Worker('/js/displayWorkers/displayWorker.js');
-const totalDisplayWorker = new Worker('/js/displayWorkers/totalDisplayWorker.js');
+export const pomodoroWorker = new Worker('/js/displayWorkers/pomodoroWorker.js');
+export const suggestionWorker = new Worker('/js/displayWorkers/suggestionWorker.js');
+export const flowmodoroWorker = new Worker('/js/displayWorkers/flowmodoroWorker.js');
+export const displayWorker = new Worker('/js/displayWorkers/displayWorker.js');
+export const totalDisplayWorker = new Worker('/js/displayWorkers/totalDisplayWorker.js');
 
 // Create a new mutation observer to watch for changes to the #display div
-const observer = new MutationObserver(setTabTitleFromDisplay);
+export const observer = new MutationObserver(setTabTitleFromDisplay);
 
 document.addEventListener("stateUpdated", function() {
     // Favicons
     const greenFavicon = "/images/logo/HyperChillLogoGreen.png";
     const blueFavicon = "/images/logo/HyperChillLogoBlue.png";
-    const defaultFavicon = "/images/logo/HyperChillLogo_circular_white_border.png";
 
     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     var isIpad = isIpadCheck();
@@ -905,134 +903,6 @@ document.addEventListener("stateUpdated", function() {
         window.location.href = "/signup";
     });
 
-    end_session_btn.addEventListener("click", function() { //temporary function
-        if ((flags.sessionInProgress) && (flags.canEndSession)) {
-            // (1) Collect all necessary information about the session
-            // if in deep work, add interruptions count to the interruptions array
-
-            let userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; // determine moment they end session
-            if (sessionState.loggedIn) {
-                logUserActivity(userTimeZone);
-            } else { // non-logged in user
-                streaksCount.innerText = 1;
-            }
-            
-            // total time
-            let totalTime = getTotalElapsed(flags, elapsedTime.hyperFocus, startTimes);
-            let totalTimeStr = returnTotalTimeString(totalTime, timeConvert);
-            console.log("Total Time: " + totalTimeStr);
-            
-            // total interruptions
-            if (flags.inHyperFocus) {
-                savedInterruptionsArr.push(counters.interruptions);
-            }
-            let totalInterruptions = savedInterruptionsArr.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-            console.log("Total Distractions: " + totalInterruptions);
-            
-            // focus score calculation
-            let totalMin = totalTime / timeConvert.msPerMin;
-            let result = (1 - (((totalInterruptions) / (totalMin)) / (0.2))) * 100; // positive values start w/ < 1 distraction / 5 min of deep work
-            let focusPercent = Math.floor(result);
-            if (focusPercent > 0) {
-                console.log('Focus Score: ' + focusPercent + '%');
-            } else {
-                console.log('Focus Score: ' + 0 + '%');
-            }
-            
-            // deep work & break intervals
-            console.log("Deep Work Intervals: " + counters.flowTimeIntervals);
-            console.log("Break Intervals: " + counters.chillTimeIntervals);
-            
-            // average length of flowTime Intervals
-            let timeInterval;
-            if (flags.inHyperFocus) {
-                timeInterval = Date.now() - startTimes.hyperFocus;
-                intervalArrs.flowTime.push(timeInterval);
-            } else {
-                timeInterval = Date.now() - startTimes.chillTime;
-                intervalArrs.chillTime.push(timeInterval);
-            }
-            console.log(intervalArrs.flowTime)
-            console.log(intervalArrs.chillTime)
-
-            let flowTimeIntervalArrSum = (intervalArrs.flowTime).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-            let flowTimeArrLength = (intervalArrs.flowTime).length;
-            let avgFlowTimeInterval = (flowTimeIntervalArrSum / flowTimeArrLength);
-            let avgFlowTimeIntervalStr = returnTotalTimeString(avgFlowTimeInterval, timeConvert);
-            console.log("Average Flow Time Interval Length: " + avgFlowTimeIntervalStr);
-
-            console.log("transition time Arr: " + intervalArrs.transitionTime);
-
-            // add final labelArr value (at some point later, we need to reset label Arrs after sending label time data to database)
-            let endTime = Date.now();
-            if (flags.inHyperFocus) {
-                updateLabelArrs(endTime, labelFlags, labelArrs);
-            }
-            displayTotalLabelTime(labelArrs);
-
-            console.log(""); // new line
-
-
-
-
-
-            // (2) Reset everything to the default state
-
-            // reset labelArrs
-            // resetLabelArrs(labelArrs);
-
-            // reset background to default
-            setBackground("", 0);
-            resetHtmlBackground(homeBackground);
-            document.documentElement.style.backgroundSize = '400% 400%';
-
-            // reset alerts
-            pauseAndResetAlertSounds(soundMap.Bell, soundMap.Chime);
-
-            // reset internal logic
-            resetActions(hyperChillLogoImage, flags, intervals, recoverBreakState, recoverPomState, startTimes, elapsedTime, counters, savedInterruptionsArr, intervalArrs);
-    
-            // clear all intervals
-            pomodoroWorker.postMessage("clearInterval");
-            suggestionWorker.postMessage("clearInterval");
-            flowmodoroWorker.postMessage("clearInterval");
-            displayWorker.postMessage("clearInterval");
-            totalDisplayWorker.postMessage("clearInterval");
-    
-            // fade out animations
-            animationsFadeOut(flowAnimation);
-    
-            // reset displays
-            resetDisplay(display);
-            updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer);
-            totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod);
-    
-            // reset header text
-            setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", "Press 'Start' to begin session");
-
-            // get rid of glowing green on start/ stop btn and progress bar
-            start_stop_btn.classList.remove('glowing-effect');
-            progressContainer.classList.remove("glowing-effect");
-
-            // reset containers
-            hideSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min);
-            hidePomodorosCompletedContainer(completedPomodorosContainer);
-            showInterruptionsSubContainer(interruptionsSubContainer);
-
-            // reset interruptions text to counters.interruptions, which has already been reset to 0
-            interruptionsNum.textContent = counters.interruptions;
-
-            // fade in animation (if not already faded in)
-            setTimeout(() => {
-                animationsFadeIn(chillAnimation, 'flex');
-            }, 100); // delay fixed hitch between hitting end-session and resetting background
-
-            // reset favicon
-            setFavicon(defaultFavicon);
-        }
-
-    });
-
     // similar function in navigation.js
     function logoutUser() {
         fetch('/api/state/logout', {
@@ -1238,35 +1108,13 @@ document.addEventListener("stateUpdated", function() {
 // ---------------------
 // HELPER FUNCTIONS
 // ---------------------
-function updateLabelArrs(timeStamp, labelFlags, labelArrs) {
+export function updateLabelArrs(timeStamp, labelFlags, labelArrs) {
     for (let key in labelFlags) {
         if (labelFlags[key]) {
             labelArrs[key].push(timeStamp);
         }
     }
     console.log(labelArrs);
-}
-
-function resetLabelArrs(labelArrs) {
-    for (let key in labelArrs) {
-        labelArrs[key] = [];
-    }
-}
-
-function displayTotalLabelTime(labelArrs) {
-    for (let key in labelArrs) {
-        let arr = labelArrs[key];
-        let timeSum = 0;
-
-        for (let i = 1; i < arr.length; i += 2) {
-            timeSum += arr[i] - arr[i-1];
-        }
-
-        let totalLabelTimeStr = returnTotalTimeString(timeSum, timeConvert);
-
-        let labelName = key;
-        console.log(labelName + ": " + totalLabelTimeStr);
-    }
 }
 
 function timeRecovery(flags, counters, startTimes, elapsedTime, start_stop_btn, recoverPomState, recoverBreakState, timeAmount, total_time_display, timeConvert, progressBar, progressContainer, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min, flowmodoroWorker, suggestionWorker, isMobile, isIpad) {
@@ -1822,7 +1670,7 @@ function showPomodorosCompletedContainer(completedPomodorosContainer, completedP
     changeCompletedPomodorosContainerHeader(completedPomodoros_label, completedPomodoros_min, counters)
 }
 
-function hidePomodorosCompletedContainer(completedPomodorosContainer) {
+export function hidePomodorosCompletedContainer(completedPomodorosContainer) {
     completedPomodorosContainer.style.display = 'none';
 }
 
@@ -1933,7 +1781,7 @@ function playAlertSound(soundType, notificationSettingType, alertVolumes) {
     // alert(soundType.volume);
 }
 
-function pauseAndResetAlertSounds(bell, chime) {
+export function pauseAndResetAlertSounds(bell, chime) {
     bell.pause();
     bell.currentTime = 0;
     chime.pause();
@@ -2130,7 +1978,7 @@ function changeSuggestionBreakContainerHeader(flags, suggestionBreak_label, sugg
     suggestionBreak_min.textContent = counters.currentFlowmodoroNotification + " min";
 }
 
-function hideSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label) {
+export function hideSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label) {
     suggestionBreakContainer.style.display = 'none';
 }
 
@@ -2138,7 +1986,7 @@ function hideInterruptionsSubContainer(interruptionsSubContainer) {
     interruptionsSubContainer.style.display = 'none';
 }
 
-function showInterruptionsSubContainer(interruptionsSubContainer) {
+export function showInterruptionsSubContainer(interruptionsSubContainer) {
     interruptionsSubContainer.style.display = 'block';
 }
 
@@ -2245,13 +2093,13 @@ function targetHoursValidate(inputHours, timeConvert, startTimes, elapsedTime, f
     return true;
 };
 
-function setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, stop_start, hf_ct) {
+export function setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, stop_start, hf_ct) {
     start_stop_btn.innerText = stop_start;
     productivity_chill_mode.innerText = hf_ct;
     flags.inHyperFocus = stop_start === "Stop";
 };
 
-function updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer) {
+export function updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer) {
     let timeDiff;
     // console.log(timeDiff)
     
@@ -2292,7 +2140,7 @@ function updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressB
     progressBar.style.width = (percentage * 100) + '%';
 };
 
-function resetDisplay(display) {
+export function resetDisplay(display) {
     display.innerText = "00:00:00"; //immediately resets display w/ no lag time
 };
 
@@ -2304,69 +2152,6 @@ function veryStartActions(startTimes, hyperChillLogoImage, progressBarContainer,
     hyperChillLogoImage.classList.add("hyperChillLogoRotate");
 };
 
-function resetActions(hyperChillLogoImage, flags, intervals, recoverBreakState, recoverPomState, startTimes, elapsedTime, counters, savedInterruptionsArr, intervalArrs) {
-    observer.disconnect();
-    document.title = "HyperChill.io | Online Productivity Time Tracker";
-    hyperChillLogoImage.classList.remove('hyperChillLogoRotate'); // currently invisible FYI
-
-    clearAllIntervals(intervals);
-    resetPropertiesToNull(recoverBreakState);
-    resetPropertiesToNull(recoverPomState);
-    resetPropertiesToUndefined(startTimes);
-    resetPropertiesToZero(elapsedTime);
-    resetPropertiesToZero(counters);
-    resetFlags(flags);
-    savedInterruptionsArr.splice(0, savedInterruptionsArr.length);
-    (intervalArrs.flowTime).splice(0, (intervalArrs.flowTime).length);
-    (intervalArrs.chillTime).splice(0, (intervalArrs.chillTime).length);
-}
-
-function clearAllIntervals(intervals) {
-    for (let key in intervals) {
-        if (intervals[key] !== null) {
-            clearInterval(intervals[key]);
-            intervals[key] = null;
-        }
-    }
-}
-
-function resetFlags(flags) {
-    flags.hitTarget = false;
-    flags.inHyperFocus = false;
-    flags.autoSwitchedModes = false;
-    flags.inRecoveryBreak = false;
-    flags.inRecoveryPom = false;
-    flags.modeChangeExecuted = false;
-    flags.sentFlowmodoroNotification = false;
-    flags.sentSuggestionMinutesNotification = false;
-    flags.pomodoroCountIncremented = false;
-    flags.sessionInProgress = false;
-    flags.canEndSession = false;
-}
-
-function resetPropertiesToZero(obj) {
-    for (let key in obj) {
-        if (obj.hasOwnProperty(key)) {
-            obj[key] = 0;
-        }
-    }
-}
-
-function resetPropertiesToUndefined(obj) {
-    for (let key in obj) {
-        if (obj.hasOwnProperty(key)) {
-            obj[key] = undefined;
-        }
-    }
-}
-
-function resetPropertiesToNull(obj) {
-    for (let key in obj) {
-        if (obj.hasOwnProperty(key)) {
-            obj[key] = null;
-        }
-    }
-}
 
 function playClick(clock_tick, flags) {
     if (flags.transitionClockSoundToggle == true) {
@@ -2412,7 +2197,7 @@ function handleKeyUp(event, flags) {
     }
 }
 
-function returnTotalTimeString(totalMilliseconds, timeConvert) {
+export function returnTotalTimeString(totalMilliseconds, timeConvert) {
     let hours = Math.floor(totalMilliseconds / timeConvert.msPerHour);
     let minutes = Math.floor((totalMilliseconds - hours * timeConvert.msPerHour) / timeConvert.msPerMin);
     let seconds = Math.floor((totalMilliseconds - hours * timeConvert.msPerHour - minutes * timeConvert.msPerMin) / timeConvert.msPerSec);
@@ -2427,7 +2212,7 @@ function returnTotalTimeString(totalMilliseconds, timeConvert) {
     return combinedStr;
 }
 
-function getTotalElapsed(flags, elapsedTime, startTimes) { //return current total hyper focus time
+export function getTotalElapsed(flags, elapsedTime, startTimes) { //return current total hyper focus time
     // console.log("Elapsed Time: " + elapsedTime);
     // console.log("Date.now() - startTimes: " + (Date.now() - startTimes));
     
@@ -2452,7 +2237,7 @@ function setBrowserTabTitle() {
     });
 };
 
-function setFavicon(faviconPath) {
+export function setFavicon(faviconPath) {
     let favicon1 = document.getElementById("favicon1");
     let favicon2 = document.getElementById("favicon2");
 
@@ -2479,17 +2264,6 @@ function debuggingPopup(color) {
 
     // Append the new div to the body
     mainContainer.appendChild(newDiv);
-}
-
-function resetHtmlBackground(homeBackground) {
-    document.documentElement.style.backgroundImage = homeBackground;
-}
-
-async function logUserActivity(userTimeZone) { // logging when user ends session
-    await userActivity(userTimeZone);
-
-    // Eventually, we'll want to update the GUI
-    document.dispatchEvent(new Event('updateStreak'));
 }
 
 async function logLastIntervalSwitch() {

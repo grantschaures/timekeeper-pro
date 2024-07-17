@@ -32,6 +32,7 @@ const resetPasswordHtmlPath = './public/reset-password.html';
 const stateJsPath = './src/js/state/state.js';
 const indexJsPath = './src/js/main/index.js';
 const notesJsPath = './src/js/main/notes.js';
+const endSessionJsPath = './src/js/main/end-session.js';
 const navigationJsPath = './src/js/main/navigation.js';
 const loginJsPath = './src/js/login_signup/login.js';
 const googleSignInPath = './src/js/api/google-signin.js';
@@ -98,10 +99,6 @@ const indexReplacements = [
         replacement: "import { updateShowingTimeLeft } from '../minified/update-showing-time-left.min.js';"
     },
     {
-        pattern: /import { userActivity } from '..\/state\/user-activity.js';/g,
-        replacement: "import { userActivity } from '../minified/user-activity.min.js';"
-    },
-    {
         pattern: /import { lastIntervalSwitch } from '..\/state\/last-interval-switch.js';/g,
         replacement: "import { lastIntervalSwitch } from '../minified/last-interval-switch.min.js';"
     },
@@ -159,6 +156,17 @@ const loginReplacements = [
     }
 ];
 
+const endSessionReplacements = [
+    {
+        pattern: /import { userActivity } from '..\/state\/user-activity.js';/g,
+        replacement: "import { userActivity } from '../minified/user-activity.min.js';"
+    },
+    {
+        pattern: /import { animationsFadeIn, animationsFadeOut, getTotalElapsed, returnTotalTimeString, updateLabelArrs, setBackground, pauseAndResetAlertSounds, resetDisplay, updateProgressBar, totalTimeDisplay, setButtonTextAndMode, hideSuggestionBreakContainer, hidePomodorosCompletedContainer, showInterruptionsSubContainer, setFavicon, observer, pomodoroWorker, suggestionWorker, flowmodoroWorker, displayWorker, totalDisplayWorker } from '..\/main\/index.js';/g,
+        replacement: "import { animationsFadeIn, animationsFadeOut, getTotalElapsed, returnTotalTimeString, updateLabelArrs, setBackground, pauseAndResetAlertSounds, resetDisplay, updateProgressBar, totalTimeDisplay, setButtonTextAndMode, hideSuggestionBreakContainer, hidePomodorosCompletedContainer, showInterruptionsSubContainer, setFavicon, observer, pomodoroWorker, suggestionWorker, flowmodoroWorker, displayWorker, totalDisplayWorker } from '../minified/index.min.js';"
+    }
+]
+
 // Update index.html
 readFileAndReplace(indexHtmlPath, indexHtmlReplacements);
 
@@ -181,3 +189,4 @@ readFileAndReplace(notesJsPath, notesReplacements);
 readFileAndReplace(navigationJsPath, navigationReplacements);
 readFileAndReplace(googleSignInPath, googleSignInReplacements);
 readFileAndReplace(loginJsPath, loginReplacements);
+readFileAndReplace(endSessionJsPath, endSessionReplacements);
