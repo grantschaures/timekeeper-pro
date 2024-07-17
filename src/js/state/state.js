@@ -12,8 +12,10 @@ import { setInitialBackgroundCellSelection, setBackground, deactivateDarkTheme, 
 
 import { appendEditRemoveContainer, createCheckElements, getLastNumberFromId, addLabelInputContainerTagDivider, addLabelInitialActions, removeTagSelectionDivider, adjustLabelFontSize } from '../main/notes.js';
 
-
 var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+const myFontBlogPath = 'url(../fonts/CPMono_v07_Plain.woff)';
+// can add more if needed
 
 document.addEventListener('DOMContentLoaded', () => {
     checkUserSession().then(() => {
@@ -30,6 +32,7 @@ async function checkUserSession() {
             }
         });
         const data = await response.json();
+        loadFont(myFontBlogPath);
         updateUserSession(data);
         return data;
     } catch (error) {
@@ -615,4 +618,14 @@ function reverseDict(tagDict) {
     // console.log(reversedSelectedLabelDict);
 
     return reversedSelectedLabelDict;
+}
+
+function loadFont(myFontPath) {
+    const font = new FontFace('myFontBlog', myFontPath);
+
+    font.load().then(function(loadedFont) {
+        document.fonts.add(loadedFont);
+    }).catch(function(error) {
+        console.error("Font loading failed:", error);
+    });
 }
