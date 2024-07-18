@@ -22,7 +22,8 @@ export const state = {
     lastSelectionElement: null,
     lastSelectedEmojiId: "books-emoji",
     elementToUpdateId: null,
-    currentNoteTaskEditId: null
+    currentNoteTaskEditId: null,
+    labelToDeleteId: null
 }
 
 export const flags = {
@@ -37,7 +38,8 @@ export const flags = {
     propagateUnfinishedTasksToggle: false,
     noteTaskInputContainerShowing: false,
     noteTaskInputContainerEditShowing: false,
-    resetTasks: false
+    resetTasks: false,
+    confirmLabelDeletionWindowShowing: false
 }
 
 export const emojiMap = {

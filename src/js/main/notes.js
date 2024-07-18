@@ -1,5 +1,11 @@
 import {
-    notesContainer, taskContainer, promptContainer, labelInputContainer, createLabelContainer, createLabelWindow, createLabelInput, createLabelDone, createLabelCancel, updateLabelContainer, updateLabelWindow, updateLabelInput, updateLabelCancel, updateLabelDone, labelSelectionWindow, labelSelectionRow, clearIcon, notesBtn, notesConsole, taskPrompt, tagIcon, tagSelection, tagSelectionDivider, addDoneContainer, selectionDoneDiv, selectionDone, addTagIcon, emojiBtn, emojiBtn2, emojiImg, emojiImg2, emojiContainer, emojiSymbols, transitionNotesAutoSwitchToggle, start_stop_btn, tutorialImgContainers, aboutIconNotes, settings_menu_container, notesBtnContainer, notesSettingsHr1, notesSettingsHr2, addingDeletingUpdatingLabelsInfoBlock, addNoteTaskContainer, noteTaskInputContainer, noteTaskInputText, noteInputCancelBtn, noteInputSaveBtn, taskCheckbox, dynamicList, textarea, settingsContainer, aboutContainer, blogContainer, main_elements, isMobile, propagateUnfinishedTasksToggle, clearNotesConsoleBtn, body
+    notesContainer, taskContainer, promptContainer, labelInputContainer, createLabelContainer, createLabelWindow, createLabelInput, createLabelDone, createLabelCancel, updateLabelContainer, updateLabelWindow, updateLabelInput, updateLabelCancel, updateLabelDone, labelSelectionWindow, labelSelectionRow, clearIcon, notesBtn, notesConsole, taskPrompt, tagIcon, tagSelection, tagSelectionDivider, addDoneContainer, selectionDoneDiv, selectionDone, addTagIcon, emojiBtn, emojiBtn2, emojiImg, emojiImg2, emojiContainer, emojiSymbols, transitionNotesAutoSwitchToggle, start_stop_btn, tutorialImgContainers, aboutIconNotes, settings_menu_container, notesBtnContainer, notesSettingsHr1, notesSettingsHr2, addingDeletingUpdatingLabelsInfoBlock, addNoteTaskContainer, noteTaskInputContainer, noteTaskInputText, noteInputCancelBtn, noteInputSaveBtn, taskCheckbox, dynamicList, textarea, settingsContainer, aboutContainer, blogContainer, main_elements, isMobile, propagateUnfinishedTasksToggle, clearNotesConsoleBtn, body,
+    confirmLabelDeletionPopup,
+    popupOverlay,
+    confirmLabelDeletionNoBtn,
+    confirmLabelDeletionYesBtn,
+    labelToDeleteContainer,
+    confirmLabelDeletionText
 } from '../modules/dom-elements.js';
 
 import { flags as indexflags } from '../modules/index-objects.js';
@@ -117,9 +123,10 @@ document.addEventListener("stateUpdated", function() {
     setEmojiContainerPointLocation(window.innerWidth, emojiContainer, notesFlags, isMobile);
 
     // we just happened to decide to dynamically populate labels container, even for non-logged in user 🤷‍♂️
-    if (!sessionState.loggedIn) {
-        // populates task label container w/ default labels
-        populateTaskLabelContainer();
+    if (sessionState.loggedIn) {
+        modifyConfirmLabelDeletionText(confirmLabelDeletionText);
+    } else {
+        populateTaskLabelContainer(); // populates task label container w/ default labels
     }
 
     // initialize labelFlags w/ current label names
@@ -300,7 +307,7 @@ document.addEventListener("stateUpdated", function() {
         if ((event.key === 'Shift') && (flags.shiftPressed)) {
             flags.shiftPressed = false;
 
-            if (state.lastSelectionElement !== null) {
+            if ((state.lastSelectionElement !== null) && (state.labelToDeleteId === null)) {
                 state.lastSelectionElement.style.backgroundColor = "";
                 state.lastSelectionElement.classList.remove('deleteJiggling');
             }
@@ -320,7 +327,7 @@ document.addEventListener("stateUpdated", function() {
         // If user shift-clicks or alt-clicks on label and quickly moves mouse to outside,
         // it catches that movement in case the labelSelectionRow mouseover
         // event listener missed it and resets color and jiggle class
-        if ((!((target.classList.contains('tag-text')) && ((flags.shiftPressed) || (flags.altPressed)) && (target !== selectionDoneDiv) && (target !== selectionDone) && (target !== addTagIcon)) && (state.lastSelectionElement !== null))) {
+        if (!((target.classList.contains('tag-text')) && ((flags.shiftPressed) || (flags.altPressed)) && (target !== selectionDoneDiv) && (target !== selectionDone) && (target !== addTagIcon)) && (state.lastSelectionElement !== null) && (state.labelToDeleteId === null)) {
             state.lastSelectionElement.style.backgroundColor = "";
             state.lastSelectionElement.classList.remove('deleteJiggling');
         }
@@ -696,11 +703,55 @@ document.addEventListener("stateUpdated", function() {
             new Notification("No changes were made to the notes console.");
         }
     })
+
+    confirmLabelDeletionNoBtn.addEventListener("click", function() {
+        hideConfirmLabelDeletionPopup(popupOverlay, confirmLabelDeletionPopup, state);
+    })
+
+    confirmLabelDeletionYesBtn.addEventListener("click", function() {
+        labelDeletion(addDoneContainer, tagSelectionDivider, flags, state);
+        hideConfirmLabelDeletionPopup(popupOverlay, confirmLabelDeletionPopup, state);
+    })
 })
 
 // -------------------
 // HELPER FUNCTIONS 2
 // -------------------
+function modifyConfirmLabelDeletionText(confirmLabelDeletionText) {
+    confirmLabelDeletionText.innerText = "Are you sure you want to delete the following label and its associated data?";
+}
+
+function hideConfirmLabelDeletionPopup(popupOverlay, confirmLabelDeletionPopup, state) {
+    flags.confirmLabelDeletionWindowShowing = false;
+    state.labelToDeleteId = null;
+    popupOverlay.style.display = "none";
+    confirmLabelDeletionPopup.style.display = "none";
+    body.style.overflowY = 'scroll';
+    
+    labelToDeleteContainer.removeChild(labelToDeleteContainer.firstChild); // remove label in popup
+}
+
+function showConfirmLabelDeletionPopup(labelId, popupOverlay, confirmLabelDeletionPopup, state) {
+    flags.confirmLabelDeletionWindowShowing = true;
+    state.labelToDeleteId = labelId;
+    popupOverlay.style.display = "flex"; 
+    confirmLabelDeletionPopup.style.display = "block";
+    body.style.overflowY = 'hidden';
+
+    insertLabelToDeleteIntoPopup(labelId); // add label to popup
+}
+
+function insertLabelToDeleteIntoPopup(labelId) {
+    let labelName = document.getElementById(labelId).firstChild.innerText;
+    let innerHTMLString = "<h4 class='tag-text-delete-label-popup'>" + labelName + "</h4>";
+
+    let selectionDiv = document.createElement('div');
+    selectionDiv.className = 'tag unselectable selection-tag';
+    selectionDiv.innerHTML = innerHTMLString;
+
+    labelToDeleteContainer.appendChild(selectionDiv);
+}
+
 function updateLabelArr(labelName, labelArrs, timeStamp) {
     labelArrs[labelName].push(timeStamp);
     console.log(labelArrs);
@@ -988,7 +1039,7 @@ export function adjustLabelFontSize(state, fontSizeArr, fontNumArr, labelInputCo
     } while (((labelInputContainer.scrollWidth - labelInputContainer.clientWidth) > 0) && (fontArrIndex < 9))
 }
 
-function deleteLabel(target, addDoneContainer, tagSelectionDivider, flags) {
+function deleteLabel(target) {
     let toDeleteTagId;
 
     if (target.className === 'tag-text deleteJiggling') {
@@ -997,20 +1048,25 @@ function deleteLabel(target, addDoneContainer, tagSelectionDivider, flags) {
         toDeleteTagId = target.id;
     }
 
-    document.getElementById(toDeleteTagId).remove();
+    // call function which shows popup container prompting user to confirm their intended action
+    showConfirmLabelDeletionPopup(toDeleteTagId, popupOverlay, confirmLabelDeletionPopup, state);
+}
+
+function labelDeletion(addDoneContainer, tagSelectionDivider, flags, state) {
+    document.getElementById(state.labelToDeleteId).remove();
     removeTagSelectionDivider(addDoneContainer, tagSelectionDivider, flags);
-
-    const labelName = labelDict[toDeleteTagId];
-
+    
+    const labelName = labelDict[state.labelToDeleteId];
+    
     // edit labelDict
-    delete labelDict[toDeleteTagId];
-
+    delete labelDict[state.labelToDeleteId];
+    
     // edit labelFlags
     delete labelFlags[labelName];
-
+    
     // edit labelArrs
     delete labelArrs[labelName];
-
+    
     if (sessionState.loggedIn) {
         const labelArr = [labelDict, selectedLabelDict, counters.lastLabelIdNum, state.lastSelectedEmojiId];
         updateLabels(labelArr);

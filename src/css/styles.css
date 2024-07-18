@@ -1230,14 +1230,13 @@ header {
     background: rgba(0, 0, 0, 0.75);
     justify-content: center;
     align-items: center;
-    /* as of 6/28/24, the settings has the next highest z-index of 25 */
-    /* regardless, we'll always want the overlay to be on top of everything */
+    /* we'll always want the overlay to be on top of everything */
     z-index: 1000;
 }
 
 #deleteAccountPopup {
     display: none;
-    background: rgb(216, 216, 216);
+    background: rgb(50, 50, 50);
     padding-left: 20px;
     padding-right: 20px;
     border-radius: 25px;
@@ -1246,50 +1245,44 @@ header {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Applies To: deleteAccountPopupYesBtn, deleteAccountPopupNoBtn*/
-#deleteAccountPopupBtnContainer > button, #accountPopupButtonsContainer > button {
-    color: white;
-    background-color: gray;
-    border: none;
-}
-
-#deleteAccountPopupYesBtn, #goBackBtn {
+#deleteAccountPopupYesBtn, #goBackBtn, #confirmLabelDeletionYesBtn {
     margin-right: 5px;
 }
 
-#deleteAccountPopupNoBtn, #logoutBtn2 {
+#deleteAccountPopupNoBtn, #logoutBtn2, #confirmLabelDeletionNoBtn {
     margin-left: 5px;
 }
 
 #goBackBtn:hover, #logoutBtn2:hover {
-    background-color: black;
-    color: white;
+    background-color: white;
+    color: black;
 }
 
-#deleteAccountPopupBtnContainer {
+#deleteAccountPopupBtnContainer, #confirmLabelDeletionBtnContainer {
     margin-bottom: 25px;
 }
 
-#deleteAccountPopupText {
+#deleteAccountPopupText, #confirmLabelDeletionText {
     font-family: 'settingsHeaderFont';
+    color: white;
     font-size: 24px;
 }
 
-#deleteAccountPopupYesBtn:hover {
+#deleteAccountPopupYesBtn:hover, #confirmLabelDeletionYesBtn:hover {
     background-color: red;
-    border: none;
+    border: 2px solid red;
     color: white;
 }
 
-#deleteAccountPopupNoBtn:hover {
+#deleteAccountPopupNoBtn:hover, #confirmLabelDeletionNoBtn:hover {
     background-color: #53e658;
-    border: none;
+    border: 2px solid #53e658;
     color: white;
 }
 
 #accountPopup {
     display: none;
-    background: rgb(216, 216, 216);
+    background: rgb(50, 50, 50);
     padding-left: 20px;
     padding-right: 20px;
     border-radius: 25px;
@@ -1383,12 +1376,6 @@ header {
     border: 1px solid white;
 }
 
-
-
-
-
-
-
 #accountIcon2 {
     transform: scale(0.4);
 }
@@ -1405,7 +1392,8 @@ header {
 }
 
 #questionPopupUserEmail {
-    font-family: myFontBlog;
+    font-family: myFont2;
+    color: white;
     font-size: 24px;
     font-weight: 500px;
     padding-bottom: 10px;
@@ -1516,7 +1504,7 @@ header {
     content: '';
     position: absolute;
     bottom: -9.5px; /* Position the tip below the container */
-    left: 55%; /* Center the tip horizontally */
+    left: 55.5%; /* Center the tip horizontally */
     transform: translateX(-50%);
     width: 0;
     height: 0;
@@ -1556,4 +1544,19 @@ header {
     #questionIconContainer {
         display: none;
     }
+}
+
+#confirmLabelDeletionPopup {
+    display: none;
+    background: rgb(50, 50, 50);
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 25px;
+    text-align: center;
+    max-width: 500px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#labelToDeleteContainer {
+    margin: 25px;
 }

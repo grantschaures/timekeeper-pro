@@ -1,4 +1,4 @@
-import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn, spaceContainer, shortcutsContainer, shortcutsPopup, shortcutsExit, reportContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, flowAnimation, chillAnimation, target_hours_input, streaksContainer, threeWayToggle } from '../modules/dom-elements.js';
+import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn, spaceContainer, shortcutsContainer, shortcutsPopup, shortcutsExit, reportContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, flowAnimation, chillAnimation, target_hours_input, streaksContainer, threeWayToggle, labelToDeleteContainer, confirmLabelDeletionPopup, labelSelectionRow, confirmLabelDeletionNoBtn } from '../modules/dom-elements.js';
 import { blogIdList, flags, counters, state } from '../modules/navigation-objects.js';
 import { sessionState } from '../modules/state-objects.js';
 import { flags as indexFlags} from '../modules/index-objects.js';
@@ -208,6 +208,8 @@ document.addEventListener("stateUpdated", function() {
             deleteAccountPopupNoBtn.click();
         } else if ((flags.shortcutsWindowShowing) && (!shortcutsPopup.contains(event.target))) {
             hideShortcutsPopup(popupOverlay, shortcutsPopup);
+        } else if ((notesFlags.confirmLabelDeletionWindowShowing) && (!confirmLabelDeletionPopup.contains(event.target))) {
+            confirmLabelDeletionNoBtn.click();
         }
     })
 
@@ -294,7 +296,7 @@ document.addEventListener("stateUpdated", function() {
         isClickNotOnSettingsElements(event, settingsContainer, settings_exit, body);
     
         const excludeTargets = [blogBtn, blog_icon, blogMenuContainer, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, aboutIconNotes, popupOverlay]; // all stuff in the main menu and question menu + others
-        const containers = [aboutContainer, blogContainer, menuBtn, questionIcon, blog_post_container, settingsContainer, popupQuestionMenu, deleteAccountPopup, accountPopup, loginQuestionMenuContainer, shortcutsPopup];
+        const containers = [aboutContainer, blogContainer, menuBtn, questionIcon, blog_post_container, settingsContainer, popupQuestionMenu, deleteAccountPopup, accountPopup, loginQuestionMenuContainer, shortcutsPopup, confirmLabelDeletionPopup, labelSelectionRow];
         const exitTargets = [about_exit, blog_exit, blog_post_exit];
         const exitTargetsWithSettings = [about_exit, blog_exit, blog_post_exit, settings_exit];
     
@@ -659,6 +661,7 @@ function hideAccountPopup(popupOverlay, accountPopup) {
     flags.accountWindowShowing = false;
     accountPopup.style.display = "none";
     popupOverlay.style.display = "none";
+    body.style.overflowY = 'scroll';
 }
 
 // delete account functions
@@ -687,4 +690,5 @@ function hideShortcutsPopup(popupOverlay, shortcutsPopup) {
     flags.shortcutsWindowShowing = false;
     shortcutsPopup.style.display = "none";
     popupOverlay.style.display = "none";
+    body.style.overflowY = 'scroll';
 }

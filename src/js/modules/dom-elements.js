@@ -214,6 +214,12 @@ export const logoutBtn2 = document.getElementById("logoutBtn2");
 export const reportContainer = document.getElementById("reportContainer");
 export const spaceContainer = document.getElementById("spaceContainer");
 
+export const confirmLabelDeletionPopup = document.getElementById("confirmLabelDeletionPopup");
+export const labelToDeleteContainer = document.getElementById("labelToDeleteContainer");
+export const confirmLabelDeletionYesBtn = document.getElementById("confirmLabelDeletionYesBtn");
+export const confirmLabelDeletionNoBtn = document.getElementById("confirmLabelDeletionNoBtn");
+export const confirmLabelDeletionText = document.getElementById("confirmLabelDeletionText");
+
 export let hoverTimer;
 export var backgroundVideoSource = document.getElementById('background-video-source');
 export var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
