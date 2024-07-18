@@ -1110,11 +1110,15 @@ document.addEventListener("stateUpdated", function() {
 // ---------------------
 export function updateLabelArrs(timeStamp, labelFlags, labelArrs) {
     for (let key in labelFlags) {
+        if (!labelArrs[key]) {
+            labelArrs[key] = [];
+        }
+
         if (labelFlags[key]) {
             labelArrs[key].push(timeStamp);
         }
     }
-    // console.log(labelArrs);
+    console.log(labelArrs);
 }
 
 function timeRecovery(flags, counters, startTimes, elapsedTime, start_stop_btn, recoverPomState, recoverBreakState, timeAmount, total_time_display, timeConvert, progressBar, progressContainer, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min, flowmodoroWorker, suggestionWorker, isMobile, isIpad) {

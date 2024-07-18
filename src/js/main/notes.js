@@ -753,8 +753,12 @@ function insertLabelToDeleteIntoPopup(labelId) {
 }
 
 function updateLabelArr(labelName, labelArrs, timeStamp) {
+    if (!labelArrs[labelName]) {
+        labelArrs[labelName] = [];
+    }
+
     labelArrs[labelName].push(timeStamp);
-    // console.log(labelArrs);
+    console.log(labelArrs);
 }
 
 function renameKey(obj, oldKey, newKey) {
