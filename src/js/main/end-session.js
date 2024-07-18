@@ -1,5 +1,5 @@
 import { timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, counters, flags, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, homeBackground } from '../modules/index-objects.js';
-import { start_stop_btn, end_session_btn, total_time_display, productivity_chill_mode, progressBar, progressContainer, display, interruptionsSubContainer, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, flowAnimation, chillAnimation, hyperChillLogoImage, streaksCount } from '../modules/dom-elements.js';
+import { start_stop_btn, end_session_btn, total_time_display, productivity_chill_mode, progressBar, progressContainer, display, interruptionsSubContainer, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, flowAnimation, chillAnimation, hyperChillLogoImage, streaksCount, breakBackground, deepWorkBackground } from '../modules/dom-elements.js';
 import { soundMap } from '../modules/sound-map.js';
 import { sessionState } from '../modules/state-objects.js';
 import { labelFlags, labelArrs } from '../modules/notes-objects.js';
@@ -91,13 +91,12 @@ document.addEventListener("stateUpdated", function() {
 // ---------------------
 // MAIN FUNCTIONS
 // ---------------------
-
 function sessionReset() {
     // reset labelArrs
     // resetLabelArrs(labelArrs);
 
     // reset background to default
-    setBackground("", 0);
+    resetBackgrounds(deepWorkBackground, breakBackground);
     resetHtmlBackground(homeBackground);
     document.documentElement.style.backgroundSize = '400% 400%';
 
@@ -149,6 +148,10 @@ function sessionReset() {
 // ---------------------
 // HELPER FUNCTIONS
 // ---------------------
+function resetBackgrounds(deepWorkBackground, breakBackground) {
+    deepWorkBackground.style.opacity = 0;
+    breakBackground.style.opacity = 0;
+}
 
 function resetActions(hyperChillLogoImage, flags, intervals, recoverBreakState, recoverPomState, startTimes, elapsedTime, counters, savedInterruptionsArr, intervalArrs) {
     observer.disconnect();

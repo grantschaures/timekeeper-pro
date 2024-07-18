@@ -2309,7 +2309,6 @@ export function triggerSilentAlertAudioMobile(chime, bell, chimePath, bellPath, 
         soundMap.Bell = Bell;
 
         flags.triggeredSilentAudio = true;
-
     }
 }
 
@@ -2320,19 +2319,20 @@ export function setInitialBackgroundCellSelection() {
 
 export function setBackground(background_color, opacity) {
     if (state.lastSelectedMode !== 'home') return;
+    
+    if (background_color === "") { // when ending a session
+        deepWorkBackground.style.opacity = 0;
+        breakBackground.style.opacity = 0;
+        
+    } else if (flags.inHyperFocus) {
+        breakBackground.style.opacity = 0; // alt fades out, revealing dw background
 
-    const targetBackground = flags.inHyperFocus ? deepWorkBackground : breakBackground;
-    const alternateBackground = flags.inHyperFocus ? breakBackground : deepWorkBackground;
+        deepWorkBackground.style.backgroundImage = background_color;
+        deepWorkBackground.style.opacity = opacity; // 1 (permenant for rest of session)
 
-    targetBackground.style.opacity = opacity;
-
-    if (background_color === "") {
-        setTimeout(() => {
-            targetBackground.style.backgroundImage = background_color;
-        }, 250);
     } else {
-        alternateBackground.style.opacity = 0;
-        targetBackground.style.backgroundImage = background_color;
+        breakBackground.style.backgroundImage = background_color;
+        breakBackground.style.opacity = 1; // alt fades in (on top of dw background)
     }
 }
 

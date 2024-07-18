@@ -51,7 +51,7 @@ html {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center center;
-    background-color: #202020; /* Fallback */
+    background-color: #202020;
     /* background-image: url("/images/environments/1394258314-mid.jpg"); */
     background-image: linear-gradient(90deg, #0cc1ce, #700cce, #b004c7);
     transition: background-image 1s ease-in-out;
@@ -97,6 +97,14 @@ html {
     opacity: 0;
     z-index: 0;
     transition: opacity 0.25s ease-in-out;
+}
+
+#deepWorkBackground {
+    z-index: 0;
+}
+
+#breakBackground {
+    z-index: 1;
 }
 
 /* .fadeOutBackground {
