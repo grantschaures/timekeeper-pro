@@ -186,7 +186,6 @@ html::-webkit-scrollbar-thumb {
     border-radius: 10px;
 }
 
-
 h1 {
     font-size: 30px;
     font-family: myFont2; 
@@ -275,7 +274,7 @@ h4 {
     border-radius: 1000px;
     z-index: 6;
     transition: all 250ms ease-in-out;
-    translate: calc(var(--spot-area)/4*3.675)
+    translate: calc(var(--spot-area)/4*3.675);
 }
 
 .dinkle-doink-mode:active::after {
