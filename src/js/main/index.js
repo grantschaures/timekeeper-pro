@@ -10,6 +10,7 @@ import {
     streaksContainer,
     streaksLoginSuggestionPopup,
     streaksCount,
+    popupQuestionMenu,
 } from '../modules/dom-elements.js';
 
 import { sessionState } from '../modules/state-objects.js';
