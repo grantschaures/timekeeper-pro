@@ -1,6 +1,6 @@
-export async function userActivity(userTimeZone) {
+export async function sessionCompletion(userTimeZone) {
     try {
-        const response = await fetch('/api/data/user-activity', {
+        const response = await fetch('/api/data/session-completion', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

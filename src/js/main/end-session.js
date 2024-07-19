@@ -4,7 +4,7 @@ import { soundMap } from '../modules/sound-map.js';
 import { sessionState } from '../modules/state-objects.js';
 import { labelFlags, labelArrs } from '../modules/notes-objects.js';
 
-import { userActivity } from '../state/user-activity.js'; // minified
+import { sessionCompletion } from '../state/session-completion.js'; // minified
 import { animationsFadeIn, animationsFadeOut, getTotalElapsed, returnTotalTimeString, updateLabelArrs, setBackground, pauseAndResetAlertSounds, resetDisplay, updateProgressBar, totalTimeDisplay, setButtonTextAndMode, hideSuggestionBreakContainer, hidePomodorosCompletedContainer, showInterruptionsSubContainer, setFavicon, observer, pomodoroWorker, suggestionWorker, flowmodoroWorker, displayWorker, totalDisplayWorker } from '../main/index.js'; // minified
 
 const defaultFavicon = "/images/logo/HyperChillLogo_circular_white_border.png";
@@ -17,7 +17,7 @@ document.addEventListener("stateUpdated", function() {
 
             let userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; // determine moment they end session
             if (sessionState.loggedIn) {
-                logUserActivity(userTimeZone);
+                logSessionCompletion(userTimeZone);
             } else { // non-logged in user
                 streaksCount.innerText = 1;
             }
@@ -240,8 +240,8 @@ function displayTotalLabelTime(labelArrs) {
     }
 }
 
-async function logUserActivity(userTimeZone) { // logging when user ends session
-    await userActivity(userTimeZone);
+async function logSessionCompletion(userTimeZone) { // logging when user ends session
+    await sessionCompletion(userTimeZone);
 
     // Eventually, we'll want to update the GUI
     document.dispatchEvent(new Event('updateStreak'));

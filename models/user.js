@@ -16,9 +16,9 @@ const User = db.model("User", {
     userDevice: { type: String },
     loginMethod: { type: String }
   }],
-  activityTimeArr: [{ // this effectively contains a count of the number of session the user has logged
+  sessionCompletionTimeArr: [{ // this effectively contains a count of the number of session the user has logged
     timeZone: { type: String },
-    activityDateUTC: { type: Date }
+    sessionCompletionDateUTC: { type: Date }
   }],
   lastIntervalSwitch: { type: Date }, // last time the user (value gets replaced each time user switches interval)
   settings: {

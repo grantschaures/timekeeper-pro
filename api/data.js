@@ -82,7 +82,7 @@ router.post("/last-interval-switch", async function(req, res) {
     }
 });
 
-router.post("/user-activity", async function(req, res) {
+router.post("/session-completion", async function(req, res) {
     // Assuming the JWT is sent automatically in cookie headers
     const token = req.cookies.token;  // Extract the JWT from cookies directly
     const { userTimeZone } = req.body;
@@ -104,9 +104,9 @@ router.post("/user-activity", async function(req, res) {
             // currentUTCDate = new Date(testDateStr);
             // TESTING
 
-            user.activityTimeArr.push({
+            user.sessionCompletionTimeArr.push({
                 timeZone: userTimeZone,
-                activityDateUTC: currentUTCDate
+                sessionCompletionDateUTC: currentUTCDate
             });
 
             await user.save();

@@ -18,7 +18,7 @@ let files = [
     'src/js/state/update-target-hours.js',
     'src/js/state/update-showing-time-left.js',
     'src/js/state/delete-account.js',
-    'src/js/state/user-activity.js',
+    'src/js/state/session-completion.js',
     'src/js/state/last-interval-switch.js',
     'src/js/utility/initialize_gui.js',
     'src/js/utility/preload.js',
