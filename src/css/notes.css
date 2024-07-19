@@ -508,6 +508,20 @@
     transition: background-color 0.15s ease-in-out;
 }
 
+.tag-text-delete-label-popup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: myFont3;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+    font-size: 20px;
+    color: white;
+    padding: 0px 10px;
+    margin: 0;
+    white-space: nowrap;
+}
+
 .tag-text:hover {
     cursor: pointer;
 }

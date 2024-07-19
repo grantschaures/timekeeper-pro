@@ -31,7 +31,18 @@ body {
     box-sizing: border-box;
 }
 
-/* Note: background image transition won't work on Firefox. Could potentially fix in the future. */
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
 html {
     margin: 0;
     width: 100%;
@@ -40,9 +51,12 @@ html {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center center;
-    background-color: #202020; /* Fallback */
-    background-image: url("/images/environments/1394258314-mid.jpg");
+    background-color: #202020;
+    /* background-image: url("/images/environments/1394258314-mid.jpg"); */
+    background-image: linear-gradient(90deg, #0cc1ce, #700cce, #b004c7);
     transition: background-image 1s ease-in-out;
+    background-size: 400% 400%;
+    animation: gradientShift 30s linear infinite;
 }
 
 #backgroundContainer {
@@ -85,6 +99,14 @@ html {
     transition: opacity 0.25s ease-in-out;
 }
 
+#deepWorkBackground {
+    z-index: 0;
+}
+
+#breakBackground {
+    z-index: 1;
+}
+
 /* .fadeOutBackground {
     animation: fadeOutBackground 0.25s ease-in-out forwards;
 }
@@ -100,7 +122,6 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: linear-gradient(0deg, #2dd5ff, #670cce, #200044);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center center;
@@ -128,18 +149,6 @@ body.fade-out-bg::before {
     }
     to {
         opacity: 0;
-    }
-}
-
-@keyframes animatePosition {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
     }
 }
 
@@ -911,7 +920,7 @@ button:hover {
 }
 
 .hyperChillTitleAnimationTranslate {
-    animation: hyperChillTitleAnimationTranslate 1s forwards;
+    animation: hyperChillTitleAnimationTranslate 0.75s forwards;
 }
 
 .hyperChillTitleAnimationScale {
@@ -992,7 +1001,7 @@ button:hover {
     
     /* Fixed dimensions */
     width: 100%;
-    height: 65px;
+    height: 70px;
     transition: width 2s ease-in-out, height 1s ease-in-out;
 
     max-width: 575px;
@@ -1000,7 +1009,7 @@ button:hover {
     border: 1px rgba(0, 0, 0, 0.25);
     box-sizing: border-box;
     
-    border-radius: 40px; /* Created corner curves */
+    border-radius: 50px; /* Created corner curves */
     margin-top: 25px;
     z-index: 25;
 }
@@ -1020,11 +1029,18 @@ button:hover {
     width: 180px;
     min-width: 130px;
     height: 50px;
+    /* padding-left: 2px;
+    padding-right: 2px; */
+}
+
+#progress-bar-container.small #progress-container {
+    width: 88%;
+    transition: width 1s 1s ease-in-out;
 }
 
 #progress-container {
     position: relative;
-    width: 90%;
+    width: 93%;
     max-width: 575px;
     height: 30px;
     background-color: #ffffff;
@@ -1034,6 +1050,8 @@ button:hover {
     margin-left: auto;
     margin-right: auto;
     /* margin-top: 50px; */
+
+    transition: width 1s ease-in-out;
 }
 
 #progress-bar {
@@ -1219,14 +1237,13 @@ header {
     background: rgba(0, 0, 0, 0.75);
     justify-content: center;
     align-items: center;
-    /* as of 6/28/24, the settings has the next highest z-index of 25 */
-    /* regardless, we'll always want the overlay to be on top of everything */
+    /* we'll always want the overlay to be on top of everything */
     z-index: 1000;
 }
 
 #deleteAccountPopup {
     display: none;
-    background: rgb(216, 216, 216);
+    background: rgb(50, 50, 50);
     padding-left: 20px;
     padding-right: 20px;
     border-radius: 25px;
@@ -1235,50 +1252,44 @@ header {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Applies To: deleteAccountPopupYesBtn, deleteAccountPopupNoBtn*/
-#deleteAccountPopupBtnContainer > button, #accountPopupButtonsContainer > button {
-    color: white;
-    background-color: gray;
-    border: none;
-}
-
-#deleteAccountPopupYesBtn, #goBackBtn {
+#deleteAccountPopupYesBtn, #goBackBtn, #confirmLabelDeletionYesBtn {
     margin-right: 5px;
 }
 
-#deleteAccountPopupNoBtn, #logoutBtn2 {
+#deleteAccountPopupNoBtn, #logoutBtn2, #confirmLabelDeletionNoBtn {
     margin-left: 5px;
 }
 
 #goBackBtn:hover, #logoutBtn2:hover {
-    background-color: black;
-    color: white;
+    background-color: white;
+    color: black;
 }
 
-#deleteAccountPopupBtnContainer {
+#deleteAccountPopupBtnContainer, #confirmLabelDeletionBtnContainer {
     margin-bottom: 25px;
 }
 
-#deleteAccountPopupText {
+#deleteAccountPopupText, #confirmLabelDeletionText {
     font-family: 'settingsHeaderFont';
+    color: white;
     font-size: 24px;
 }
 
-#deleteAccountPopupYesBtn:hover {
+#deleteAccountPopupYesBtn:hover, #confirmLabelDeletionYesBtn:hover {
     background-color: red;
-    border: none;
+    border: 2px solid red;
     color: white;
 }
 
-#deleteAccountPopupNoBtn:hover {
+#deleteAccountPopupNoBtn:hover, #confirmLabelDeletionNoBtn:hover {
     background-color: #53e658;
-    border: none;
+    border: 2px solid #53e658;
     color: white;
 }
 
 #accountPopup {
     display: none;
-    background: rgb(216, 216, 216);
+    background: rgb(50, 50, 50);
     padding-left: 20px;
     padding-right: 20px;
     border-radius: 25px;
@@ -1372,12 +1383,6 @@ header {
     border: 1px solid white;
 }
 
-
-
-
-
-
-
 #accountIcon2 {
     transform: scale(0.4);
 }
@@ -1394,8 +1399,8 @@ header {
 }
 
 #questionPopupUserEmail {
-    /* font-family: myFont3; */
-    font-family: myFontBlog;
+    font-family: myFont2;
+    color: white;
     font-size: 24px;
     font-weight: 500px;
     padding-bottom: 10px;
@@ -1468,6 +1473,7 @@ header {
 #streaksEmoji {
     margin-left: 4px;
     padding-bottom: 4px;
+    margin-right: 1px;
 }
 
 #streaksCount {
@@ -1476,6 +1482,7 @@ header {
     margin-right: 8px;
     width: auto;
     white-space: nowrap;
+    margin-left: 1px;
 }
 
 #streaksLoginSuggestionPopup {
@@ -1497,14 +1504,14 @@ header {
     display: flex;
     opacity: 0;
     transition: opacity 0.15s ease-in-out;
-    z-index: 35;
+    z-index: 0; /* needs to be at 0 when invisible so it doesn't cover up start and end-session btns */
 }
 
 #streaksLoginSuggestionPopup::after {
     content: '';
     position: absolute;
     bottom: -9.5px; /* Position the tip below the container */
-    left: 55%; /* Center the tip horizontally */
+    left: 55.5%; /* Center the tip horizontally */
     transform: translateX(-50%);
     width: 0;
     height: 0;
@@ -1544,4 +1551,19 @@ header {
     #questionIconContainer {
         display: none;
     }
+}
+
+#confirmLabelDeletionPopup {
+    display: none;
+    background: rgb(50, 50, 50);
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 25px;
+    text-align: center;
+    max-width: 500px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#labelToDeleteContainer {
+    margin: 25px;
 }

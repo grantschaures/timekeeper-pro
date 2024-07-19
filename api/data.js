@@ -5,12 +5,15 @@ const router = express.Router();  // This is a slight refactor for clarity
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
+// Middleware for parsing JSON bodies
 router.use(express.json());
+
+// Middleware for checking and renewing the token
+router.use(checkAndRenewToken);
 
 router.delete("/delete-account", async function(req, res) {
     // Assuming the JWT is sent automatically in cookie headers
     const token = req.cookies.token;  // Extract the JWT from cookies directly
-    const { targetHours } = req.body;
 
     if (!token) {
         return res.status(401).json({ isLoggedIn: false });
@@ -43,6 +46,42 @@ router.delete("/delete-account", async function(req, res) {
     }
 });
 
+// proxy for most recent use of the app
+router.post("/last-interval-switch", async function(req, res) {
+    // Assuming the JWT is sent automatically in cookie headers
+    const token = req.cookies.token;  // Extract the JWT from cookies directly
+
+    if (!token) {
+        return res.status(401).json({ isLoggedIn: false });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        const userId = decoded.userId;
+        const user = await User.findById(userId);
+
+        if (user) {
+            let currentUTCDate = new Date();
+
+            user.lastIntervalSwitch = currentUTCDate;
+
+            await user.save();
+            res.json({ success: true, message: 'User last interval switch time logged' });
+
+        } else {
+            return res.status(401).json({ 
+                isLoggedIn: false,
+                message: "User not found"
+            });
+        }
+    } catch (error) {
+        return res.status(401).json({
+            isLoggedIn: false,
+            message: "Session is not valid: " + error.message
+        });
+    }
+});
+
 router.post("/user-activity", async function(req, res) {
     // Assuming the JWT is sent automatically in cookie headers
     const token = req.cookies.token;  // Extract the JWT from cookies directly
@@ -54,7 +93,8 @@ router.post("/user-activity", async function(req, res) {
 
     try {
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
-        const user = await User.findById(decoded.userId);
+        const userId = decoded.userId;
+        const user = await User.findById(userId);
 
         if (user) {
             let currentUTCDate = new Date();
@@ -194,11 +234,12 @@ router.post("/update-labels", async function(req, res) {
     // Assuming the JWT is sent automatically in cookie headers
     const token = req.cookies.token;  // Extract the JWT from cookies directly
     const { labelArr } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
 
     const labelDict = labelArr[0];
-    const lastLabelIdNum = labelArr[1];
-    const lastSelectedEmojiId = labelArr[2];
+    const selectedLabelDict = labelArr[1];
+    const lastLabelIdNum = labelArr[2];
+    const lastSelectedEmojiId = labelArr[3];
 
     if (!token) {
         return res.status(401).json({ isLoggedIn: false });
@@ -228,6 +269,7 @@ router.post("/update-labels", async function(req, res) {
 
         // Update the labels object
         note.labels = labelDict;
+        note.selectedLabels = selectedLabelDict;
         note.lastLabelIdNum = lastLabelIdNum;
         note.lastSelectedEmojiId = lastSelectedEmojiId;
         // console.log(labels);
@@ -302,3 +344,51 @@ router.post("/update-notes", async function(req, res) {
 });
 
 module.exports = router;
+
+// -----------------
+// HELPER FUNCTIONS
+// -----------------
+
+function checkAndRenewToken(req, res, next) {
+    const token = req.cookies.token;
+
+    if (!token) {
+        return res.status(401).json({ isLoggedIn: false, message: "No token provided" });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        const currentTime = Math.floor(Date.now() / 1000);
+
+        // Check if the token is expiring in less than 24 hours
+        if (decoded.exp - currentTime < 24 * 60 * 60) {
+            // Create a new token with extended expiration
+            const newPayload = {
+                userId: decoded.userId,
+                iat: currentTime,
+                exp: currentTime + (24 * 60 * 60) // 24 hours from now
+            };
+            const newToken = jwt.sign(newPayload, process.env.SECRET_KEY);
+
+            // Set the new token in an HttpOnly cookie
+            res.cookie('token', newToken, {
+                httpOnly: true,
+                secure: true, // Ensure this is set to true in production if using HTTPS
+                sameSite: 'Strict',
+                maxAge: 24 * 60 * 60 * 1000 // 1 day in milliseconds
+            });
+
+            // Add the new token to the response body (optional)
+            res.locals.newToken = newToken;
+        }
+
+        // Attach the decoded token to the request object for further processing
+        req.user = decoded;
+        next();
+    } catch (error) {
+        return res.status(401).json({
+            isLoggedIn: false,
+            message: "Session is not valid: " + error.message
+        });
+    }
+}

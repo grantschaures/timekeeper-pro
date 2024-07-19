@@ -1,15 +1,14 @@
-import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn, spaceContainer, shortcutsContainer, shortcutsPopup, shortcutsExit, reportContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, flowAnimation, chillAnimation, target_hours_input, streaksContainer, threeWayToggle } from '../modules/dom-elements.js';
+import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn, spaceContainer, shortcutsContainer, shortcutsPopup, shortcutsExit, reportContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, flowAnimation, chillAnimation, target_hours_input, streaksContainer, threeWayToggle, labelToDeleteContainer, confirmLabelDeletionPopup, labelSelectionRow, confirmLabelDeletionNoBtn } from '../modules/dom-elements.js';
 import { blogIdList, flags, counters, state } from '../modules/navigation-objects.js';
 import { sessionState } from '../modules/state-objects.js';
-import { flags as indexFlags, selectedBackground, defaultBackgroundPath } from '../modules/index-objects.js';
+import { flags as indexFlags} from '../modules/index-objects.js';
 import { flags as notesFlags } from '../modules/notes-objects.js';
 import { chimePath, bellPath, soundMap } from '../modules/sound-map.js';
 
 import { deleteUserAccount } from '../state/delete-account.js'; // minified
-import { setBackground, animationsFadeIn, animationsFadeOut, triggerSilentAlertAudioMobile } from '../main/index.js'; // minified
+import { animationsFadeIn, animationsFadeOut, triggerSilentAlertAudioMobile } from '../main/index.js'; // minified
 
-
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("stateUpdated", function() {
 
     // This may actually detect all mobile + iPad devices
     function isIpadCheck() {
@@ -29,6 +28,10 @@ document.addEventListener("DOMContentLoaded", function() {
         if (!(isMobile)) {
             questionIcon.style.opacity = '1';
             streaksContainer.style.opacity = '1';
+
+            setTimeout(() => {
+                streaksContainer.style.transition = 'opacity 0.25s ease-in-out, background-color 0.25s ease';
+            }, 1000)
         }
     }, 1000)
     
@@ -63,13 +66,14 @@ document.addEventListener("DOMContentLoaded", function() {
     
         // SHOWING ELEMENTS
         blogContainer.style.display = "flex"; // show main blog container
+        fadeInStreaks(streaksContainer); // showing streaks container
 
         // OTHER CHANGES
         body.style.overflowY = 'hidden'; // no scroll
         blog_exit.classList.add('resetRotation'); // triggers reset animation
         setDinkleDoinkSetting("home"); //  needs to execute first
         subMainContainerTransition("none");
-        fadeInAnimationsSessionBackground(); // needs to execute second
+        fadeInAnimations(); // needs to execute second
 
         resetMode(reportContainer);
         resetMode(spaceContainer);
@@ -89,13 +93,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // SHOWING ELEMENTS
         aboutContainer.style.display = "flex"; // show about container
+        fadeInStreaks(streaksContainer); // showing streaks container
 
         // OTHER CHANGES
         body.style.overflowY = 'hidden'; // no scroll
         about_exit.classList.add('resetRotation'); // triggers reset animation
         setDinkleDoinkSetting("home"); // needs to execute first
         subMainContainerTransition("none");
-        fadeInAnimationsSessionBackground(); // needs to execute second
+        fadeInAnimations(); // needs to execute second
 
         resetMode(reportContainer);
         resetMode(spaceContainer);
@@ -203,6 +208,8 @@ document.addEventListener("DOMContentLoaded", function() {
             deleteAccountPopupNoBtn.click();
         } else if ((flags.shortcutsWindowShowing) && (!shortcutsPopup.contains(event.target))) {
             hideShortcutsPopup(popupOverlay, shortcutsPopup);
+        } else if ((notesFlags.confirmLabelDeletionWindowShowing) && (!confirmLabelDeletionPopup.contains(event.target))) {
+            confirmLabelDeletionNoBtn.click();
         }
     })
 
@@ -254,7 +261,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         icon.addEventListener('click', function() {
             //Hide blogs
-            if (flags.blogShowing == true) {
+            if (flags.blogShowing) {
                 blog_post_container.style.display = 'none';
 
                 //ensure that any visible blog becomes hidden when clicking out
@@ -289,7 +296,7 @@ document.addEventListener("DOMContentLoaded", function() {
         isClickNotOnSettingsElements(event, settingsContainer, settings_exit, body);
     
         const excludeTargets = [blogBtn, blog_icon, blogMenuContainer, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, aboutIconNotes, popupOverlay]; // all stuff in the main menu and question menu + others
-        const containers = [aboutContainer, blogContainer, menuBtn, questionIcon, blog_post_container, settingsContainer, popupQuestionMenu, deleteAccountPopup, accountPopup, loginQuestionMenuContainer, shortcutsPopup];
+        const containers = [aboutContainer, blogContainer, menuBtn, questionIcon, blog_post_container, settingsContainer, popupQuestionMenu, deleteAccountPopup, accountPopup, loginQuestionMenuContainer, shortcutsPopup, confirmLabelDeletionPopup, labelSelectionRow];
         const exitTargets = [about_exit, blog_exit, blog_post_exit];
         const exitTargetsWithSettings = [about_exit, blog_exit, blog_post_exit, settings_exit];
     
@@ -300,11 +307,25 @@ document.addEventListener("DOMContentLoaded", function() {
 
 });
 
+function fadeInStreaks(streaksContainer) {
+    streaksContainer.style.display = 'flex';
+    setTimeout(() => {
+        streaksContainer.style.opacity = 1;
+    }, 0)
+}
+
+function fadeOutStreaks(streaksContainer) {
+    streaksContainer.style.opacity = 0;
+    setTimeout(() => {
+        streaksContainer.style.display = 'none';
+    }, 250)
+}
+
 function slimeSwitch() {
-    addPseudoElementStyle('scaleX(2)');
+    addPseudoElementStyle('scaleX(1.5)');
     setTimeout(() => {
         addPseudoElementStyle('scaleX(1)');
-    }, 125) // halfway through toggle switch
+    }, 150) // halfway through toggle switch
 }
 
 function addPseudoElementStyle(transformValue) {
@@ -331,23 +352,23 @@ function handleLeftRightArrowKeys(event) {
     if (flags.allowToggleSwitch && flagArr.every(flag => !flag)) {
         if (event.key === 'ArrowLeft') {
             if (state.lastSelectedMode === 'space') { // --> HOME
-                slimeSwitch()
+                slimeSwitch();
+                fadeInStreaks(streaksContainer);
                 setDinkleDoinkSetting("home"); // needs to execute first
                 resetMode(reportContainer);
                 resetMode(spaceContainer);
                 subMainContainerTransition("flex");
-                // setModeBackground(defaultBackgroundPath);
-                fadeInAnimationsSessionBackground(); // needs to execute second
+                fadeInAnimations(); // needs to execute second
                 
             } else if (state.lastSelectedMode === 'home') { // --> REPORT
-                slimeSwitch()
+                slimeSwitch();
+                fadeOutStreaks(streaksContainer);
                 initializeNewMode(reportContainer);
                 isClickNotOnAboutElements(event, about_menu_container, aboutContainer, menuBtn, about_exit, reportIcon, reportPath);
                 isClickNotOnBlogElements(event, blogMenuContainer, blog_post_container, menuBtn, blog_exit);
                 subMainContainerTransition("none");
-                fadeOutAnimationsSessionBackground(); // needs to execute first
+                fadeOutAnimations(); // needs to execute first
                 setDinkleDoinkSetting("report"); // needs to execute second
-                setModeBackground(defaultBackgroundPath); // needs to execute third
                 
                 if (flags.blogShowing) { // hide blog content
                     blog_post_container.style.display = 'none';
@@ -356,23 +377,23 @@ function handleLeftRightArrowKeys(event) {
             }
         } else if (event.key === 'ArrowRight') {
             if (state.lastSelectedMode === 'report') { // --> HOME
-                slimeSwitch()
+                slimeSwitch();
+                fadeInStreaks(streaksContainer);
                 setDinkleDoinkSetting("home"); // needs to execute first
                 resetMode(reportContainer);
                 resetMode(spaceContainer);
                 subMainContainerTransition("flex");
-                // setModeBackground(defaultBackgroundPath);
-                fadeInAnimationsSessionBackground(); // needs to execute second
+                fadeInAnimations(); // needs to execute second
                 
             } else if (state.lastSelectedMode === 'home') { // --> SPACE
-                slimeSwitch()
+                slimeSwitch();
+                fadeOutStreaks(streaksContainer);
                 initializeNewMode(spaceContainer);
                 isClickNotOnAboutElements(event, about_menu_container, aboutContainer, menuBtn, about_exit, reportIcon, reportPath);
                 isClickNotOnBlogElements(event, blogMenuContainer, blog_post_container, menuBtn, blog_exit);
                 subMainContainerTransition("none");
-                fadeOutAnimationsSessionBackground(); // needs to execute first
+                fadeOutAnimations(); // needs to execute first
                 setDinkleDoinkSetting("space"); // needs to execute second
-                setModeBackground(defaultBackgroundPath); // needs to execute third
     
                 if (flags.blogShowing) { // hide blog content
                     blog_post_container.style.display = 'none';
@@ -389,7 +410,7 @@ function switchDelay(flags) {
     flags.allowToggleSwitch = false;
     setTimeout(() => {
         flags.allowToggleSwitch = true;
-    }, 150)
+    }, 250)
 }
 
 function setDinkleDoinkSetting(mode) { // and also state.lastSelectedMode value
@@ -415,22 +436,6 @@ function subMainContainerTransition(display) {
         setTimeout(() => {
             subMainContainer.style.opacity = 1;
         }, 0)
-    }
-}
-
-// functionality for incorporating multple toggle mode backgrounds
-function setModeBackground(imgPath) {
-    var modeBackgroundImg = new Image();
-    modeBackgroundImg.src = imgPath;
-
-    if (((!indexFlags.sessionInProgress) && (state.lastSelectedMode === "home")) || (state.lastSelectedMode === "report") || (state.lastSelectedMode == "space")) {
-        modeBackgroundImg.onload = function() {
-            document.documentElement.style.backgroundImage = `url('${imgPath}')`;
-        }
-    
-        modeBackgroundImg.onerror = function() {
-            console.error(`Failed to load image: ${imgPath}`);
-        };
     }
 }
 
@@ -463,36 +468,36 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
                 slimeSwitch(); 
             }
 
+            fadeOutStreaks(streaksContainer);
             initializeNewMode(reportContainer);
             resetMode(spaceContainer);
             subMainContainerTransition("none");
-            fadeOutAnimationsSessionBackground(); // needs to execute first
+            fadeOutAnimations(); // needs to execute first
             setDinkleDoinkSetting("report"); // needs to execute second
-            setModeBackground(defaultBackgroundPath); // needs to execute third
 
         } else if (homeIcon.contains(event.target)) { // --> HOME
             if (state.lastSelectedMode !== 'home') {
                 slimeSwitch(); 
             }
 
+            fadeInStreaks(streaksContainer);
             setDinkleDoinkSetting("home"); // needs to execute first
             resetMode(reportContainer);
             resetMode(spaceContainer);
             subMainContainerTransition("flex");
-            // setModeBackground(defaultBackgroundPath);
-            fadeInAnimationsSessionBackground(); // needs to execute second
+            fadeInAnimations(); // needs to execute second
             
         } else if (spaceIcon.contains(event.target)) { // --> SPACE
             if (state.lastSelectedMode !== 'space') {
                 slimeSwitch(); 
             }
 
+            fadeOutStreaks(streaksContainer);
             initializeNewMode(spaceContainer);
             resetMode(reportContainer);
             subMainContainerTransition("none");
-            fadeOutAnimationsSessionBackground(); // needs to execute first
+            fadeOutAnimations(); // needs to execute first
             setDinkleDoinkSetting("space"); // needs to execute second
-            setModeBackground(defaultBackgroundPath); // needs to execute third
         }
         
         // when hitting a blog or about exit (or clicking outside those containers), or a settings exit if in home mode
@@ -555,38 +560,20 @@ function isClickNotOnSettingsElements(event, settingsContainer, settings_exit, b
     }
 }
 
-function fadeOutAnimationsSessionBackground() {
-    if (indexFlags.sessionInProgress) {
-        // remove backgroundContainer background
-        // remove animations if present
-
-        setBackground("", 0); // removes background (regardless of current interval mode)
-
-        if ((indexFlags.flowTimeAnimationToggle) && (indexFlags.inHyperFocus)) {
-            animationsFadeOut(flowAnimation);
-        }
-        
-        if ((indexFlags.chillTimeAnimationToggle) && (!indexFlags.inHyperFocus)) {
-            animationsFadeOut(chillAnimation);
-        }
-    }
+function fadeOutAnimations() {
+    animationsFadeOut(flowAnimation);
+    animationsFadeOut(chillAnimation);
 }
 
-function fadeInAnimationsSessionBackground() {
-    if (indexFlags.sessionInProgress) {
-        if (indexFlags.inHyperFocus) {
-            setBackground(selectedBackground.flowtime, 1);
+function fadeInAnimations() {
+    if (indexFlags.inHyperFocus) {
+        if (indexFlags.flowTimeAnimationToggle) {
+            animationsFadeIn(flowAnimation, "block");
+        }
 
-            if (indexFlags.flowTimeAnimationToggle) {
-                animationsFadeIn(flowAnimation, "block");
-            }
-
-        } else {
-            setBackground(selectedBackground.chilltime, 1);
-
-            if (indexFlags.chillTimeAnimationToggle) {
-                animationsFadeIn(chillAnimation, "flex");
-            }
+    } else {
+        if ((indexFlags.chillTimeAnimationToggle) || (!indexFlags.sessionInProgress)) {
+            animationsFadeIn(chillAnimation, "flex");
         }
     }
 }
@@ -621,6 +608,7 @@ function hideBlog(blogs) {
             document.getElementById(blog.id).classList.add("hidden");
         }
     });
+    pauseVideo();
 
     flags.blogShowing = false;
 };
@@ -673,6 +661,7 @@ function hideAccountPopup(popupOverlay, accountPopup) {
     flags.accountWindowShowing = false;
     accountPopup.style.display = "none";
     popupOverlay.style.display = "none";
+    body.style.overflowY = 'scroll';
 }
 
 // delete account functions
@@ -701,4 +690,5 @@ function hideShortcutsPopup(popupOverlay, shortcutsPopup) {
     flags.shortcutsWindowShowing = false;
     shortcutsPopup.style.display = "none";
     popupOverlay.style.display = "none";
+    body.style.overflowY = 'scroll';
 }

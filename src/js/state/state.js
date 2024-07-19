@@ -1,37 +1,61 @@
-import { pomodoroNotificationToggle, pomodoroInputs, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, pomodoroVolumeThumb, pomodoroVolumeThumb2, pomodoroRadios, flowmodoroNotificationToggle, flowmodoroInputs, flowmodoroVolumeThumb, flowmodoroVolumeThumb2, flowmodoroRadios, breakSuggestionToggle, suggestionMinutesInput, generalRadios, targetTimeReachedToggle, darkGrayTheme, defaultTheme, interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, emojiContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, transitionClockSoundToggle, labelSelectionRow, emojiImg, emojiImg2, dynamicList, propagateUnfinishedTasksToggle as propagateUnfinishedTasksToggleElement, blackFlowtimeBackground, blackChilltimeBackground, total_time_display, streaksContainer } from '../modules/dom-elements.js';
+import { pomodoroNotificationToggle, pomodoroInputs, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, pomodoroVolumeThumb, pomodoroVolumeThumb2, pomodoroRadios, flowmodoroNotificationToggle, flowmodoroInputs, flowmodoroVolumeThumb, flowmodoroVolumeThumb2, flowmodoroRadios, breakSuggestionToggle, suggestionMinutesInput, generalRadios, targetTimeReachedToggle, darkGrayTheme, defaultTheme, interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, emojiContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, transitionClockSoundToggle, labelSelectionRow, emojiImg, emojiImg2, dynamicList, propagateUnfinishedTasksToggle as propagateUnfinishedTasksToggleElement, blackFlowtimeBackground, blackChilltimeBackground, total_time_display, streaksContainer, labelInputContainer, tagIcon, promptContainer, clearIcon, addDoneContainer, tagSelectionDivider, taskPrompt } from '../modules/dom-elements.js';
 
 import { sessionState } from '../modules/state-objects.js';
 
 import { flags, timeAmount, alertVolumes, alertSounds, selectedBackgroundId, selectedBackground, flowtimeBackgrounds, chilltimeBackgrounds, selectedBackgroundIdTemp, startTimes, elapsedTime, timeConvert, progressTextMod } from '../modules/index-objects.js';
 
-import { flags as notesflags, counters as notesCounters, state as notesState, labelDict, notesArr } from '../modules/notes-objects.js';
+import { flags as notesflags, counters as notesCounters, state as notesState, labelDict, notesArr, selectedLabelDict, notesFlags, fontSizeArr, fontNumArr, labelFlags, labelArrs } from '../modules/notes-objects.js';
 
 import { updateStreak } from '../utility/update_streaks.js';
 
 import { setInitialBackgroundCellSelection, setBackground, deactivateDarkTheme, activateDarkTheme, replaceTargetHours, totalTimeDisplay } from '../main/index.js';
 
-import { appendEditRemoveContainer, createCheckElements, getLastNumberFromId } from '../main/notes.js';
-
+import { appendEditRemoveContainer, createCheckElements, getLastNumberFromId, addLabelInputContainerTagDivider, addLabelInitialActions, removeTagSelectionDivider, adjustLabelFontSize } from '../main/notes.js';
 
 var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-document.addEventListener('updateState', () => {
-    checkUserSession();
+const myFontBlog = {
+    path: 'url(../fonts/CPMono_v07_Plain.woff)',
+    name: "myFontBlog"
+}
+
+const myFont2 = {
+    path: 'url(../fonts/CPMono_v07_Bold.woff)',
+    name: "myFont2"
+}
+
+const myFont3 = {
+    path: 'url(../fonts/CPMono_v07_Light.woff)',
+    name: "myFont3"
+}
+
+const settingsHeaderFont = {
+    path: 'url(../fonts/TTNormsProRegular.otf)',
+    name: "settingsHeaderFont"
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    checkUserSession().then(() => {
+        document.dispatchEvent(new Event('stateUpdated'));
+    });
 });
 
-function checkUserSession() {
-    // Make a request to a server endpoint that will validate the session
-    fetch('/api/state/sessionValidation', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
+async function checkUserSession() {
+    try {
+        const response = await fetch('/api/state/sessionValidation', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await response.json();
+        loadFonts([myFontBlog, myFont2, myFont3, settingsHeaderFont]);
         updateUserSession(data);
-    })
-    .catch(error => console.error('Error validating user session:', error));
+        return data;
+    } catch (error) {
+        console.error('Error validating user session:', error);
+        throw error;
+    }
 }
 
 async function updateUserSession(data) {
@@ -66,9 +90,10 @@ async function updateGUIForLoggedInUser(userData, noteData) {
     // target hours (--> logged in version)
     updateTargetHours(userData);
 
-    // notes (--> logged in version)
+    // labels (--> logged in version)
     updateUserLabels(noteData);
-
+    
+    // notes (--> logged in version)
     updateUserNotes(noteData);
 }
 
@@ -87,6 +112,9 @@ function updateTargetHours(userData) {
         // update UI
         replaceTargetHours(targetHours, timeAmount, flags);
         totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod);
+
+        progressBarContainer.classList.toggle("small");
+        flags.progressBarContainerIsSmall = false;
     }
 }
 
@@ -425,8 +453,6 @@ function updateTransitionClockSound(userData) {
 }
 
 function updateUserLabels(noteData) {
-    // console.log(noteData);
-    // console.log(noteData.labels);
 
     // remove ALL default labels
     const tags = labelSelectionRow.getElementsByClassName('selection-tag');
@@ -435,27 +461,87 @@ function updateUserLabels(noteData) {
         delete labelDict[tag.id]; // delete default tags from labelDict
     });
 
+    // console.log(noteData.selectedLabels);
+
     // populate w/ noteData labels
     for (const [key, value] of Object.entries(noteData.labels).reverse()) {
+
         const newLabelElement = document.createElement('div');
         newLabelElement.id = key;
-        newLabelElement.className = 'tag unselectable selection-tag';
-
+        
         const labelText = document.createElement('h4');
         labelText.className = 'tag-text';
         labelText.textContent = value; // Assuming value is the label text
-
+        
         //make labelText a child of  newLabelElement
         newLabelElement.appendChild(labelText);
-        labelSelectionRow.insertBefore(newLabelElement, labelSelectionRow.firstChild);
+        
+        if (!noteData.selectedLabels.hasOwnProperty(key)) {
+            newLabelElement.className = 'tag unselectable selection-tag';
+            labelSelectionRow.insertBefore(newLabelElement, labelSelectionRow.firstChild);
+        }
+        
+        // update labels dictionary (client-side) - contains every label (regardless of location)
+        labelDict[key] = value;
 
-        // update labels dictionary (client-side)
-        labelDict[newLabelElement.id] = labelText.textContent;
+        // update labelFlags (initially initialize all to false)
+        labelFlags[value] = false;
+
+        //update labelArrs (initialize all to empty array)
+        labelArrs[value] = [];
     }
+
+    for (const [key, value] of Object.entries(noteData.selectedLabels)) {
+
+        const newLabelElement = document.createElement('div');
+        newLabelElement.id = key;
+        
+        const labelText = document.createElement('h4');
+        labelText.className = 'tag-text';
+        labelText.textContent = value; // Assuming value is the label text
+        
+        //make labelText a child of  newLabelElement
+        newLabelElement.appendChild(labelText);
+
+        newLabelElement.className = 'tag unselectable selected-tag';
+        
+        // modified addLabel() function, but for state.js
+        newLabelElement.firstElementChild.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+        
+        notesCounters.tagsSelected++;
+        addLabelInputContainerTagDivider(notesCounters, labelInputContainer);
+        labelInputContainer.appendChild(newLabelElement);
+        
+        if ((labelInputContainer.scrollWidth > labelInputContainer.clientWidth) || (notesState.currentLabelInputTagSize < 20)) {
+            adjustLabelFontSize(notesState, fontSizeArr, fontNumArr, labelInputContainer);
+            
+            if (labelInputContainer.scrollWidth > labelInputContainer.clientWidth) {
+                labelInputContainer.style.justifyContent = 'left';
+            }
+        }
+        
+        selectedLabelDict[key] = value;
+
+        // update labels in labelFlags w/ true if selected
+        labelFlags[value] = true;
+    }
+
+    let labelDictReversed = reverseDict(labelDict);
+    Object.keys(labelDict).forEach(key => delete labelDict[key]);
+    Object.keys(labelDictReversed).forEach(key => labelDict[key] = labelDictReversed[key])
+    
+    if (notesCounters.tagsSelected > 0) {
+        addLabelInitialActions(notesflags, tagIcon, promptContainer, clearIcon);
+        taskPrompt.style.display = "none";
+        promptContainer.style.zIndex = 3;
+    }
+
+    removeTagSelectionDivider(addDoneContainer, tagSelectionDivider, notesflags);
 
     // update lastLabelIdNum
     notesCounters.lastLabelIdNum = noteData.lastLabelIdNum;
 
+    // update lastSelectedEmojiId
     notesState.lastSelectedEmojiId = noteData.lastSelectedEmojiId;
 
     // replace emoji w/ last selected one (overrides hardcoded html emoji) -- repeated code (from replaceEmoji() in notes.js), can refactor later :P
@@ -532,4 +618,35 @@ function updateUserNotes(noteData) {
 
     // update lastTaskInputIdNum
     notesCounters.lastTaskInputIdNum = noteData.lastTaskInputIdNum;
+}
+
+function reverseDict(tagDict) {
+
+    // Step 1: Convert the object to an array of key-value pairs
+    let entries = Object.entries(tagDict);
+    // console.table(entries);
+    
+    // Step 2: Reverse the array
+    let reversedEntries = entries.reverse();
+    // console.table(reversedEntries); 
+
+    // Step 3: Convert the reversed array back to an object
+    let reversedSelectedLabelDict = Object.fromEntries(reversedEntries);
+    // console.log(reversedSelectedLabelDict);
+
+    return reversedSelectedLabelDict;
+}
+
+function loadFonts(fontArr) {
+    for (let i = 0; i < fontArr.length; i++) {
+        const font = new FontFace(fontArr[i].name, fontArr[i].path);
+        // console.log(fontArr[i].path);
+        // console.log(fontArr[i].name);
+    
+        font.load().then(function(loadedFont) {
+            document.fonts.add(loadedFont);
+        }).catch(function(error) {
+            console.error("Font loading failed:", error);
+        });
+    }
 }

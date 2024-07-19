@@ -19,5 +19,7 @@ export async function userActivity(userTimeZone) {
         // console.log(data);
     } catch (error) {
         console.error('Failed to update activity info:', error);
+        alert("Your session has expired. Please log in again.");
+        window.location.href = "/login";
     }
 }

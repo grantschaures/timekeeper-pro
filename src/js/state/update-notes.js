@@ -19,5 +19,7 @@ export async function updateNotes(notesObj) {
         // console.log("notes updated successfully:", data);
     } catch (error) {
         console.error('Failed to update notes:', error);
+        alert("Your session has expired. Please log in again.");
+        window.location.href = "/login";
     }
 }

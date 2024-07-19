@@ -10,11 +10,17 @@ const User = db.model("User", {
   emailVerified: { type: Boolean, required: true},
   googleAccountLinked: { type: Boolean, required: false},
   logins: { type: Number, required: true, default: 0 },
-  loginTimeArr: [{ type: Date }], // logs whenever user logs in (this can be implemented completely on the server)
-  activityTimeArr: [{
+  loginTimeArr: [{
+    loginDate: { type: Date },
+    userAgent: { type: String },
+    userDevice: { type: String },
+    loginMethod: { type: String }
+  }],
+  activityTimeArr: [{ // this effectively contains a count of the number of session the user has logged
     timeZone: { type: String },
     activityDateUTC: { type: Date }
   }],
+  lastIntervalSwitch: { type: Date }, // last time the user (value gets replaced each time user switches interval)
   settings: {
     pomodoro: {
       notificationToggle: { type: Boolean, default: false },
@@ -49,8 +55,8 @@ const User = db.model("User", {
       flowTimeBackgroundTemp: { type: String, default: null },
       chillTimeBackgroundTemp: { type: String, default: null },
       darkThemeActivated: { type: Boolean, default: false },
-      flowTimeAnimation:  { type: Boolean, default: true },
-      chillTimeAnimation: { type: Boolean, default: true }
+      flowTimeAnimation:  { type: Boolean, default: false },
+      chillTimeAnimation: { type: Boolean, default: false }
     },
     notes: {
       autoSwitchToggle: { type: Boolean, default: false },

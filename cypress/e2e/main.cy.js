@@ -54,7 +54,7 @@ describe('Basic Interval Switching Functionality', () => {
         cy.contains("Press 'Start' to begin session").should('exist');
         
         cy.get('[data-testid="progress-text"]').should('contain', '00:00:00');
-        cy.get('[data-testid="progress-bar-container"]').should('not.have.class', 'small');
+        cy.get('[data-testid="progress-bar-container"]').should('have.class', 'small');
         
         cy.clock();
 

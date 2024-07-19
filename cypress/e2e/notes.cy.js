@@ -10,8 +10,8 @@ describe('Adding, Removing, Editing Notes and Tasks', () => {
     // Ensure notes-container exists and is visible to user
     cy.get('[data-testid="notes-container"]').should('exist').and('be.visible');
 
-    // Ensure "Select Task Labels" is showing up somewhere
-    cy.contains('Select Task Labels').should('be.visible'); 
+    // Ensure "Select Task Label" is showing up somewhere
+    cy.contains('Select Task Label').should('be.visible'); 
   })
 
   it('Create Note', () => {
@@ -116,7 +116,7 @@ describe('Adding, Removing, Editing Labels', () => {
     cy.visit('http://localhost:3000')
     cy.get('#subMainContainer').invoke('css', 'opacity', '1');
     cy.contains('button', 'Notes').click();
-    cy.contains("Select Task Labels").click();
+    cy.contains("Select Task Label").click();
 
     // remove all default labels
     cy.removeDefaultLabels();
@@ -190,7 +190,7 @@ describe('Auto Switch Functionality', () => {
     cy.visit('http://localhost:3000')
     cy.get('#subMainContainer').invoke('css', 'opacity', '1');
     cy.contains('button', 'Notes').click();
-    cy.contains("Select Task Labels").click();
+    cy.contains("Select Task Label").click();
   })
 
   it('Auto Switch to Deep Work and Break', () => {

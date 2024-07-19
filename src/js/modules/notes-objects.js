@@ -22,7 +22,8 @@ export const state = {
     lastSelectionElement: null,
     lastSelectedEmojiId: "books-emoji",
     elementToUpdateId: null,
-    currentNoteTaskEditId: null
+    currentNoteTaskEditId: null,
+    labelToDeleteId: null
 }
 
 export const flags = {
@@ -37,7 +38,8 @@ export const flags = {
     propagateUnfinishedTasksToggle: false,
     noteTaskInputContainerShowing: false,
     noteTaskInputContainerEditShowing: false,
-    resetTasks: false
+    resetTasks: false,
+    confirmLabelDeletionWindowShowing: false
 }
 
 export const emojiMap = {
@@ -72,5 +74,9 @@ export const tutorialContainerMap = {
 export const fontSizeArr = ['20px', '19px', '18px', '17px', '16px', '15px', '14px', '13px', '12px'];
 export const fontNumArr = [20, 19, 18, 17, 16, 15, 14, 13, 12];
 
-export const labelDict = {};
+export let labelDict = {};
+export let selectedLabelDict = {};
 export const notesArr = [];
+
+export const labelFlags = {};
+export const labelArrs = {};

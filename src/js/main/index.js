@@ -1,4 +1,4 @@
-import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selectedBackgroundIdTemp, selectedBackgroundId, timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, alertVolumes, alertSounds, counters, flags, tempStorage, settingsMappings, savedInterruptionsArr, timeAmount, intervalArrs, defaultBackgroundPath, progressTextMod } from '../modules/index-objects.js';
+import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selectedBackgroundIdTemp, selectedBackgroundId, timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, alertVolumes, alertSounds, counters, flags, tempStorage, settingsMappings, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, homeBackground } from '../modules/index-objects.js';
 
 import { chimePath, bellPath, clock_tick, soundMap } from '../modules/sound-map.js';
 
@@ -9,32 +9,33 @@ import {
     breakBackground,
     streaksContainer,
     streaksLoginSuggestionPopup,
+    streaksCount,
 } from '../modules/dom-elements.js';
 
 import { sessionState } from '../modules/state-objects.js';
-
 import { state, flags as navFlags } from '../modules/navigation-objects.js';
+import { labelFlags, labelArrs } from '../modules/notes-objects.js';
 
 import { initializeGUI } from '../utility/initialize_gui.js'; // minified
 import { updateUserSettings } from '../state/update-settings.js'; // minified
 import { updateTargetHours } from '../state/update-target-hours.js'; // minified
 import { updateShowingTimeLeft } from '../state/update-showing-time-left.js'; // minified
-import { userActivity } from '../state/user-activity.js'; // minified
+import { lastIntervalSwitch } from '../state/last-interval-switch.js'; // minified
+import { userAgent, userDevice } from '../utility/identification.js'; // minified
 
-const pomodoroWorker = new Worker('/js/displayWorkers/pomodoroWorker.js');
-const suggestionWorker = new Worker('/js/displayWorkers/suggestionWorker.js');
-const flowmodoroWorker = new Worker('/js/displayWorkers/flowmodoroWorker.js');
-const displayWorker = new Worker('/js/displayWorkers/displayWorker.js');
-const totalDisplayWorker = new Worker('/js/displayWorkers/totalDisplayWorker.js');
+export const pomodoroWorker = new Worker('/js/displayWorkers/pomodoroWorker.js');
+export const suggestionWorker = new Worker('/js/displayWorkers/suggestionWorker.js');
+export const flowmodoroWorker = new Worker('/js/displayWorkers/flowmodoroWorker.js');
+export const displayWorker = new Worker('/js/displayWorkers/displayWorker.js');
+export const totalDisplayWorker = new Worker('/js/displayWorkers/totalDisplayWorker.js');
 
 // Create a new mutation observer to watch for changes to the #display div
-const observer = new MutationObserver(setTabTitleFromDisplay);
+export const observer = new MutationObserver(setTabTitleFromDisplay);
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("stateUpdated", function() {
     // Favicons
     const greenFavicon = "/images/logo/HyperChillLogoGreen.png";
     const blueFavicon = "/images/logo/HyperChillLogoBlue.png";
-    const defaultFavicon = "/images/logo/HyperChillLogo_circular_white_border.png";
 
     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     var isIpad = isIpadCheck();
@@ -111,26 +112,11 @@ document.addEventListener("DOMContentLoaded", function() {
         }, 1000)
     }
 
-    // Fade out gradient once home image has loaded :P
-    let defaultImgUrl = 'url(' + defaultBackgroundPath + ')';
-
-    var startImg = new Image();
-    startImg.src = defaultBackgroundPath;
-    startImg.onload = function() {
-        document.body.classList.add('fade-out-bg');
-        document.documentElement.style.transition = "background-image 0.25s ease-in-out";
-    }
-
-    // reset background to default
-
-    // service worker registration
-    // if ('serviceWorker' in navigator) {
-    //     navigator.serviceWorker.register('/js/service_workers/sw.js').then(registration => {
-    //         console.log('Service Worker registered with scope:', registration.scope);
-    //     }).catch(error => {
-    //         console.log('Service Worker registration failed:', error);
-    //     });
-    // }
+    setTimeout(() => {
+        if (counters.startStop === 0) {
+            animationsFadeIn(chillAnimation, 'flex');
+        }
+    }, 3000)
 
     // ----------------
     // EVENT LISTENERS
@@ -144,10 +130,23 @@ document.addEventListener("DOMContentLoaded", function() {
         playClick(clock_tick, flags);
         resetDisplay(display);
 
+        if (sessionState.loggedIn) {
+            logLastIntervalSwitch();
+        }
+        
+        let transitionTime = Date.now();
+        updateLabelArrs(transitionTime, labelFlags, labelArrs);
+
         if (counters.startStop === 1) {
             veryStartActions(startTimes, hyperChillLogoImage, progressBarContainer, flags);
             triggerSilentAlertAudioMobile(soundMap.Chime, soundMap.Bell, chimePath, bellPath, flags);
+            animationsFadeOut(chillAnimation);
             startTimes.lastPomNotification = Date.now();
+            
+            setTimeout(() => {
+                document.documentElement.style.backgroundSize = '100%';
+                flags.canEndSession = true;
+            }, 250)
         } else {
             chillTimeToFirstPomodoro(flags, productivity_chill_mode, counters);
         }
@@ -159,6 +158,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
         start_stop_btn.classList.remove('glowing-effect');
         flags.pomodoroCountIncremented = false;
+
+        intervalArrs.transitionTime.push(transitionTime);
         
         if (!intervals.main) { // --> DEEP WORK
             // console.log(getCurrentTime() + " --> Entering Deep Work");
@@ -189,6 +190,10 @@ document.addEventListener("DOMContentLoaded", function() {
             setBackground(selectedBackground.flowtime, 1);
             flowmodoroAndBreakSuggestionActions(flags, elapsedTime, counters, timeAmount, flowmodoroWorker, suggestionWorker);
             intervals.main = setInterval(() => updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer), 1000); //repeatedly calls reference to updateProgressBar function every 1000 ms (1 second)
+
+            if (!flags.autoStartPomodoroInterval) { // we know the user clicked the start btn, and that it didn't happen programmatically
+                pauseAndResetAlertSounds(soundMap.Bell, soundMap.Chime);
+            }
 
             if (flags.pomodoroNotificationToggle) {
                 setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop", setPomodoroIntervalText(counters, timeAmount));
@@ -236,7 +241,9 @@ document.addEventListener("DOMContentLoaded", function() {
             let previousHyperFocusElapsedTime = elapsedTime.hyperFocus;
             elapsedTime.hyperFocus += Date.now() - startTimes.hyperFocus;
 
-            // console.log("startTimes.local: " + startTimes.local)
+            if (!flags.autoStartBreakInterval) { // we know the user clicked the stop btn, and that it didn't happen programmatically
+                pauseAndResetAlertSounds(soundMap.Bell, soundMap.Chime);
+            }
 
             if (flags.pomodoroNotificationToggle) {
                 showPomodorosCompletedContainer(completedPomodorosContainer, completedPomodoros_label, completedPomodoros_min, counters);
@@ -315,12 +322,9 @@ document.addEventListener("DOMContentLoaded", function() {
             updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer);
             totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod);
             
-            /* The reason for this is that we don't want to bombard the user with progress container animations at the very start of the program :P */
-            if (counters.startStop > 0) { // only if session has been started
-                if (!flags.progressBarContainerIsSmall) { // and progress bar container is large
-                    progressBarContainer.classList.toggle("small"); // make progress container small
-                    flags.progressBarContainerIsSmall = true;
-                }
+            if (!flags.progressBarContainerIsSmall) { // and progress bar container is large
+                progressBarContainer.classList.toggle("small"); // make progress container small
+                flags.progressBarContainerIsSmall = true;
             }
         }
     });
@@ -591,6 +595,7 @@ document.addEventListener("DOMContentLoaded", function() {
     //Further clicks will render the targetReachToggle flag true or false
     targetTimeReachedToggle.addEventListener("click", async function() {
         if (targetTimeReachedToggle.checked) {
+            enableNotifications();
             flags.targetReachedToggle = true;
         } else {
             flags.targetReachedToggle = false;
@@ -607,7 +612,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     breakSuggestionToggle.addEventListener("click", async function() {
         if (breakSuggestionToggle.checked) {
-            enableNotifications(breakSuggestionToggle, flowmodoroNotificationToggle, pomodoroNotificationToggle, flags);
+            enableNotifications();
             flags.breakSuggestionToggle = true;
 
             if (flags.inHyperFocus) {
@@ -642,7 +647,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     flowmodoroNotificationToggle.addEventListener("click", async function() {
         if (flowmodoroNotificationToggle.checked) {
-            enableNotifications(breakSuggestionToggle, flowmodoroNotificationToggle, pomodoroNotificationToggle, flags);
+            enableNotifications();
 
             resetPomodoroCounters(counters);
 
@@ -679,7 +684,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     pomodoroNotificationToggle.addEventListener("click", async function() {
         if (pomodoroNotificationToggle.checked) {
-            enableNotifications(breakSuggestionToggle, flowmodoroNotificationToggle, pomodoroNotificationToggle, flags);
+            enableNotifications();
             resetPomodoroCounters(counters);
 
             // DISABLE GENERAL AND FLOWMODORO NOTIFICATIONS
@@ -858,31 +863,30 @@ document.addEventListener("DOMContentLoaded", function() {
         handleViewportWidthChange(settingsMappings, tempStorage, end_session_btn);
     });
 
-    document.addEventListener('visibilitychange', function() {
-        //user clicks out of tab (or minimizes window)
-        if (document.visibilityState === 'hidden') {
-            if (flags.inHyperFocus) {
-                flowAnimation.style.opacity = 0;
-                flowAnimation.style.display = 'none';
-                flowAnimation.classList.remove('intoOpacityTransition');
-            } else {
-                chillAnimation.style.opacity = 0;
-                chillAnimation.style.display = 'none';
-                chillAnimation.classList.remove('intoOpacityTransition');
-            }
+    // document.addEventListener('visibilitychange', function() {
+    //     if (document.visibilityState === 'hidden') {
+    //         if (flags.inHyperFocus) {
+    //             flowAnimation.style.opacity = 0;
+    //             flowAnimation.style.display = 'none';
+    //             flowAnimation.classList.remove('intoOpacityTransition');
+    //         } else {
+    //             chillAnimation.style.opacity = 0;
+    //             chillAnimation.style.display = 'none';
+    //             chillAnimation.classList.remove('intoOpacityTransition');
+    //         }
             
-        } else if ((document.visibilityState === 'visible') && (state.lastSelectedMode === 'home')) { //user returns to tab
-            if ((flags.inHyperFocus) && (flags.flowTimeAnimationToggle)) {
-                flowAnimation.style.display = 'block';
-                flowAnimation.classList.add('intoOpacityTransition');
-            } else if ((!flags.inHyperFocus) && (flags.chillTimeAnimationToggle)) {
-                if (counters.startStop > 0) {
-                    chillAnimation.style.display = 'flex';
-                    chillAnimation.classList.add('intoOpacityTransition');
-                }
-            }
-        }
-    });
+    //     } else if ((document.visibilityState === 'visible') && (state.lastSelectedMode === 'home')) { //user returns to tab
+    //         if ((flags.inHyperFocus) && (flags.flowTimeAnimationToggle)) {
+    //             flowAnimation.style.display = 'block';
+    //             flowAnimation.classList.add('intoOpacityTransition');
+    //         } else if ((!flags.inHyperFocus) && (flags.chillTimeAnimationToggle)) {
+    //             if (counters.startStop > 0) {
+    //                 chillAnimation.style.display = 'flex';
+    //                 chillAnimation.classList.add('intoOpacityTransition');
+    //             }
+    //         }
+    //     }
+    // });
 
     window.addEventListener('blur', function() {
         flowAnimation.style.display = 'none';
@@ -903,121 +907,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     registerHereText.addEventListener('click', function() {
         window.location.href = "/signup";
-    });
-
-    end_session_btn.addEventListener("click", function() { //temporary function
-        if (flags.sessionInProgress) {
-            // (1) Collect all necessary information about the session
-            // if in flowtime, add interruptions count to the interruptions array
-
-            let userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; // determined moment they end session
-            if (sessionState.loggedIn) {
-                logUserActivity(userTimeZone);
-            } else { // non-logged in user
-                streaksCount.innerText = 1;
-            }
-            
-            // total time
-            let totalTime = getTotalElapsed(flags, elapsedTime.hyperFocus, startTimes);
-            let totalTimeStr = returnTotalTimeString(totalTime, timeConvert);
-            console.log("Total Time: " + totalTimeStr);
-            
-            // total interruptions
-            if (flags.inHyperFocus) {
-                savedInterruptionsArr.push(counters.interruptions);
-            }
-            let totalInterruptions = savedInterruptionsArr.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-            console.log("Total Distractions: " + totalInterruptions);
-            
-            // focus score calculation
-            let totalMin = totalTime / timeConvert.msPerMin;
-            let result = (1 - (((totalInterruptions) / (totalMin)) / (0.2))) * 100; // positive values start w/ < 1 distraction / 5 min of deep work
-            let focusPercent = Math.floor(result);
-            if (focusPercent > 0) {
-                console.log('Focus Score: ' + focusPercent + '%');
-            } else {
-                console.log('Focus Score: ' + 0 + '%');
-            }
-            
-            // deep work & break intervals
-            console.log("Deep Work Intervals: " + counters.flowTimeIntervals);
-            console.log("Break Intervals: " + counters.chillTimeIntervals);
-            
-            // average length of flowTime Intervals
-            let timeInterval;
-            if (flags.inHyperFocus) {
-                timeInterval = Date.now() - startTimes.hyperFocus;
-                intervalArrs.flowTime.push(timeInterval);
-            } else {
-                timeInterval = Date.now() - startTimes.chillTime;
-                intervalArrs.chillTime.push(timeInterval);
-            }
-            console.log(intervalArrs.flowTime)
-            console.log(intervalArrs.chillTime)
-
-            let flowTimeIntervalArrSum = (intervalArrs.flowTime).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-            let flowTimeArrLength = (intervalArrs.flowTime).length;
-            let avgFlowTimeInterval = (flowTimeIntervalArrSum / flowTimeArrLength);
-            let avgFlowTimeIntervalStr = returnTotalTimeString(avgFlowTimeInterval, timeConvert);
-            console.log("Average Flow Time Interval Length: " + avgFlowTimeIntervalStr);
-
-
-            console.log(""); // new line
-
-            // (2) Reset everything to the default state
-
-            // reset background to default
-            setBackground("", 0);
-            resetHtmlBackground(defaultImgUrl);
-
-            // reset alerts
-            pauseAndResetAlertSounds(soundMap.Bell, soundMap.Chime);
-
-            // reset internal logic
-            resetActions(hyperChillLogoImage, flags, intervals, recoverBreakState, recoverPomState, startTimes, elapsedTime, counters, savedInterruptionsArr, intervalArrs);
-    
-            // clear all intervals
-            pomodoroWorker.postMessage("clearInterval");
-            suggestionWorker.postMessage("clearInterval");
-            flowmodoroWorker.postMessage("clearInterval");
-            displayWorker.postMessage("clearInterval");
-            totalDisplayWorker.postMessage("clearInterval");
-    
-            // fade out animations
-            animationsFadeOut(chillAnimation);
-            animationsFadeOut(flowAnimation);
-    
-            // reset displays
-            resetDisplay(display);
-            updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer);
-            totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod);
-
-            // reset progress bar size
-            if (flags.progressBarContainerIsSmall) {
-                progressBarContainer.classList.toggle("small"); // make progress container large
-                flags.progressBarContainerIsSmall = false;
-            }
-    
-            // reset header text
-            setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", "Press 'Start' to begin session");
-
-            // get rid of glowing green on start/ stop btn and progress bar
-            start_stop_btn.classList.remove('glowing-effect');
-            progressContainer.classList.remove("glowing-effect");
-
-            // reset containers
-            hideSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min);
-            hidePomodorosCompletedContainer(completedPomodorosContainer);
-            showInterruptionsSubContainer(interruptionsSubContainer);
-
-            // reset interruptions text to counters.interruptions, which has already been reset to 0
-            interruptionsNum.textContent = counters.interruptions;
-
-            // reset favicon
-            setFavicon(defaultFavicon);
-        }
-
-        // location.reload();
     });
 
     // similar function in navigation.js
@@ -1054,7 +943,7 @@ document.addEventListener("DOMContentLoaded", function() {
         fetch("/api/api/validateUser", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(user)
+            body: JSON.stringify({ user: user, userAgent: userAgent, userDevice: userDevice })
         })
         .then(response => {
             if (!response.ok) {
@@ -1128,6 +1017,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if ((!sessionState.loggedIn) && (!navFlags.popupQuestionWindowShowing)) {
             streaksContainer.style.cursor = 'pointer';
             streaksLoginSuggestionPopup.style.opacity = 1;
+            streaksLoginSuggestionPopup.style.zIndex = 35;
         }
     })
     
@@ -1137,6 +1027,7 @@ document.addEventListener("DOMContentLoaded", function() {
         
         if ((!sessionState.loggedIn) && (!navFlags.popupQuestionWindowShowing)) {
             streaksLoginSuggestionPopup.style.opacity = 0;
+            streaksLoginSuggestionPopup.style.zIndex = 0;
         }
     })
 
@@ -1217,12 +1108,24 @@ document.addEventListener("DOMContentLoaded", function() {
         totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod);
     }
 
-    document.dispatchEvent(new Event('updateState'));
+    // document.dispatchEvent(new Event('updateState'));
 });
 
 // ---------------------
 // HELPER FUNCTIONS
 // ---------------------
+export function updateLabelArrs(timeStamp, labelFlags, labelArrs) {
+    for (let key in labelFlags) {
+        if (!labelArrs[key]) {
+            labelArrs[key] = [];
+        }
+
+        if (labelFlags[key]) {
+            labelArrs[key].push(timeStamp);
+        }
+    }
+    console.log(labelArrs);
+}
 
 function timeRecovery(flags, counters, startTimes, elapsedTime, start_stop_btn, recoverPomState, recoverBreakState, timeAmount, total_time_display, timeConvert, progressBar, progressContainer, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min, flowmodoroWorker, suggestionWorker, isMobile, isIpad) {
     if (flags.pomodoroNotificationToggle) {
@@ -1777,7 +1680,7 @@ function showPomodorosCompletedContainer(completedPomodorosContainer, completedP
     changeCompletedPomodorosContainerHeader(completedPomodoros_label, completedPomodoros_min, counters)
 }
 
-function hidePomodorosCompletedContainer(completedPomodorosContainer) {
+export function hidePomodorosCompletedContainer(completedPomodorosContainer) {
     completedPomodorosContainer.style.display = 'none';
 }
 
@@ -1888,7 +1791,7 @@ function playAlertSound(soundType, notificationSettingType, alertVolumes) {
     // alert(soundType.volume);
 }
 
-function pauseAndResetAlertSounds(bell, chime) {
+export function pauseAndResetAlertSounds(bell, chime) {
     bell.pause();
     bell.currentTime = 0;
     chime.pause();
@@ -2085,7 +1988,7 @@ function changeSuggestionBreakContainerHeader(flags, suggestionBreak_label, sugg
     suggestionBreak_min.textContent = counters.currentFlowmodoroNotification + " min";
 }
 
-function hideSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label) {
+export function hideSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label) {
     suggestionBreakContainer.style.display = 'none';
 }
 
@@ -2093,7 +1996,7 @@ function hideInterruptionsSubContainer(interruptionsSubContainer) {
     interruptionsSubContainer.style.display = 'none';
 }
 
-function showInterruptionsSubContainer(interruptionsSubContainer) {
+export function showInterruptionsSubContainer(interruptionsSubContainer) {
     interruptionsSubContainer.style.display = 'block';
 }
 
@@ -2141,7 +2044,7 @@ function playAlertSoundCountdown(chime, bell, alertSoundType, alertVolumeType) {
 }
 
 //For some reason, EDGE won't prompt the user to turn on notifications if they're set to default :/
-async function enableNotifications(breakSuggestionToggle, flowmodoroNotificationToggle, pomodoroNotificationToggle, flags) {
+async function enableNotifications() {
     // Check if notifications are supported
     if (!("Notification" in window)) {
         alert("This browser does not support push notifications");
@@ -2200,13 +2103,13 @@ function targetHoursValidate(inputHours, timeConvert, startTimes, elapsedTime, f
     return true;
 };
 
-function setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, stop_start, hf_ct) {
+export function setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, stop_start, hf_ct) {
     start_stop_btn.innerText = stop_start;
     productivity_chill_mode.innerText = hf_ct;
     flags.inHyperFocus = stop_start === "Stop";
 };
 
-function updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer) {
+export function updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer) {
     let timeDiff;
     // console.log(timeDiff)
     
@@ -2247,7 +2150,7 @@ function updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressB
     progressBar.style.width = (percentage * 100) + '%';
 };
 
-function resetDisplay(display) {
+export function resetDisplay(display) {
     display.innerText = "00:00:00"; //immediately resets display w/ no lag time
 };
 
@@ -2257,75 +2160,8 @@ function veryStartActions(startTimes, hyperChillLogoImage, progressBarContainer,
     setBrowserTabTitle(); //sets browser tab title to the stopwatch time '00:00:00'
     document.getElementById("target-hours").classList.remove("glowing-effect");
     hyperChillLogoImage.classList.add("hyperChillLogoRotate");
-
-    if ((document.getElementById("target-hours").value == "") || ((!document.getElementById("target-hours").value == "") && (!flags.submittedTarget))) {
-        progressBarContainer.classList.toggle("small");
-        flags.progressBarContainerIsSmall = true;
-    }
 };
 
-function resetActions(hyperChillLogoImage, flags, intervals, recoverBreakState, recoverPomState, startTimes, elapsedTime, counters, savedInterruptionsArr, intervalArrs) {
-    observer.disconnect();
-    document.title = "HyperChill.io | Online Productivity Time Tracker";
-    hyperChillLogoImage.classList.remove('hyperChillLogoRotate'); // currently invisible FYI
-
-    clearAllIntervals(intervals);
-    resetPropertiesToNull(recoverBreakState);
-    resetPropertiesToNull(recoverPomState);
-    resetPropertiesToUndefined(startTimes);
-    resetPropertiesToZero(elapsedTime);
-    resetPropertiesToZero(counters);
-    resetFlags(flags);
-    savedInterruptionsArr.splice(0, savedInterruptionsArr.length);
-    (intervalArrs.flowTime).splice(0, (intervalArrs.flowTime).length);
-    (intervalArrs.chillTime).splice(0, (intervalArrs.chillTime).length);
-}
-
-function clearAllIntervals(intervals) {
-    for (let key in intervals) {
-        if (intervals[key] !== null) {
-            clearInterval(intervals[key]);
-            intervals[key] = null;
-        }
-    }
-}
-
-function resetFlags(flags) {
-    flags.hitTarget = false;
-    flags.inHyperFocus = false;
-    flags.autoSwitchedModes = false;
-    flags.inRecoveryBreak = false;
-    flags.inRecoveryPom = false;
-    flags.modeChangeExecuted = false;
-    flags.sentFlowmodoroNotification = false;
-    flags.sentSuggestionMinutesNotification = false;
-    flags.pomodoroCountIncremented = false;
-    flags.sessionInProgress = false;
-}
-
-function resetPropertiesToZero(obj) {
-    for (let key in obj) {
-        if (obj.hasOwnProperty(key)) {
-            obj[key] = 0;
-        }
-    }
-}
-
-function resetPropertiesToUndefined(obj) {
-    for (let key in obj) {
-        if (obj.hasOwnProperty(key)) {
-            obj[key] = undefined;
-        }
-    }
-}
-
-function resetPropertiesToNull(obj) {
-    for (let key in obj) {
-        if (obj.hasOwnProperty(key)) {
-            obj[key] = null;
-        }
-    }
-}
 
 function playClick(clock_tick, flags) {
     if (flags.transitionClockSoundToggle == true) {
@@ -2371,7 +2207,7 @@ function handleKeyUp(event, flags) {
     }
 }
 
-function returnTotalTimeString(totalMilliseconds, timeConvert) {
+export function returnTotalTimeString(totalMilliseconds, timeConvert) {
     let hours = Math.floor(totalMilliseconds / timeConvert.msPerHour);
     let minutes = Math.floor((totalMilliseconds - hours * timeConvert.msPerHour) / timeConvert.msPerMin);
     let seconds = Math.floor((totalMilliseconds - hours * timeConvert.msPerHour - minutes * timeConvert.msPerMin) / timeConvert.msPerSec);
@@ -2386,7 +2222,7 @@ function returnTotalTimeString(totalMilliseconds, timeConvert) {
     return combinedStr;
 }
 
-function getTotalElapsed(flags, elapsedTime, startTimes) { //return current total hyper focus time
+export function getTotalElapsed(flags, elapsedTime, startTimes) { //return current total hyper focus time
     // console.log("Elapsed Time: " + elapsedTime);
     // console.log("Date.now() - startTimes: " + (Date.now() - startTimes));
     
@@ -2411,7 +2247,7 @@ function setBrowserTabTitle() {
     });
 };
 
-function setFavicon(faviconPath) {
+export function setFavicon(faviconPath) {
     let favicon1 = document.getElementById("favicon1");
     let favicon2 = document.getElementById("favicon2");
 
@@ -2440,15 +2276,8 @@ function debuggingPopup(color) {
     mainContainer.appendChild(newDiv);
 }
 
-function resetHtmlBackground(backgroundImg) {
-    document.documentElement.style.backgroundImage = backgroundImg;
-}
-
-async function logUserActivity(userTimeZone) {
-    await userActivity(userTimeZone);
-
-    // Eventually, we'll want to update the GUI
-    document.dispatchEvent(new Event('updateStreak'));
+async function logLastIntervalSwitch() {
+    await lastIntervalSwitch();
 }
 
 // ---------------------
@@ -2490,7 +2319,6 @@ export function triggerSilentAlertAudioMobile(chime, bell, chimePath, bellPath, 
         soundMap.Bell = Bell;
 
         flags.triggeredSilentAudio = true;
-
     }
 }
 
@@ -2500,42 +2328,24 @@ export function setInitialBackgroundCellSelection() {
 }
 
 export function setBackground(background_color, opacity) {
-    if (state.lastSelectedMode === 'home') {
+    if (state.lastSelectedMode !== 'home') return;
+    
+    if (background_color === "") { // when ending a session
+        deepWorkBackground.style.opacity = 0;
+        breakBackground.style.opacity = 0;
+        
+    } else if (flags.inHyperFocus) {
+        breakBackground.style.opacity = 0; // alt fades out, revealing dw background
 
-        if (flags.inHyperFocus) {
-            deepWorkBackground.style.opacity = opacity;
-            if (background_color === "") {
-                setTimeout(() => {
-                    deepWorkBackground.style.backgroundImage = background_color;
-                }, 250)
-            } else {
-                breakBackground.style.opacity = 0;
-                deepWorkBackground.style.backgroundImage = background_color;
-                setTimeout(() => {
-                    if (state.lastSelectedMode === 'home') { // deals w/ edge case where user toggles right/left and back rapidly
-                        document.documentElement.style.backgroundImage = background_color;
-                    }
-                }, 250)
-            }
-        } else {
-            breakBackground.style.opacity = opacity;
-            if (background_color === "") {
-                setTimeout(() => {
-                    breakBackground.style.backgroundImage = background_color;
-                }, 250)
-            } else {
-                breakBackground.style.backgroundImage = background_color;
-                deepWorkBackground.style.opacity = 0;
-                setTimeout(() => {
-                    if (state.lastSelectedMode === 'home') { // deals w/ edge case where user toggles right/left and back rapidly
-                        document.documentElement.style.backgroundImage = background_color;
-                    }
-                }, 250)
-            }
+        deepWorkBackground.style.backgroundImage = background_color;
+        deepWorkBackground.style.opacity = opacity; // 1 (permenant for rest of session)
 
-        }
+    } else {
+        breakBackground.style.backgroundImage = background_color;
+        breakBackground.style.opacity = 1; // alt fades in (on top of dw background)
     }
-};
+}
+
 
 export function deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, isMobile, streaksContainer) {
     let componentArr1 = [interruptionsContainer, targetHoursContainer, timekeepingContainer, notesContainer, aboutContainer, blogContainer, streaksContainer];
@@ -2696,7 +2506,7 @@ export function totalTimeDisplay(startTimes, elapsedTime, total_time_display, ti
     }
 };
 
-export function animationsFadeIn(animationType, displayType) {
+export async function animationsFadeIn(animationType, displayType) {
     if (state.lastSelectedMode === 'home') {
         animationType.classList.add('intoOpacityTransition');
         animationType.style.display = displayType;

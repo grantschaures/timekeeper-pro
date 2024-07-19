@@ -21,5 +21,7 @@ export async function deleteUserAccount(settings) {
 
     } catch (error) {
         console.error('Failed to delete user account:', error);
+        alert("Your session has expired. Please log in again.");
+        window.location.href = "/login";
     }
 }

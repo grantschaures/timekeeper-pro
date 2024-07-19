@@ -3,42 +3,9 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="description" content="HyperChill.io is a time tracker which collects and visualizes data concerning the duration and quality of deep work.">
-        <title>HyperChill.io: Online Productivity Time Tracker</title>
+        <meta name="description" content="Hyperchill.io is a time tracker which collects and visualizes data concerning the duration and quality of deep work.">
+        <title>Hyperchill.io: Online Productivity Time Tracker</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-        <!-- <link rel="preload" href="/css/styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" href="/css/styles.css"></noscript> -->
-
-        <!-- <link rel="preload" href="/css/settings.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" href="/css/settings.css"></noscript> -->
-
-        <!-- <link rel="preload" href="/css/notes.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" href="/css/notes.css"></noscript> -->
-
-        <!-- <link rel="preload" href="/css/blog.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" href="/css/blog.css"></noscript>
-
-        <link rel="preload" href="/css/menu.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" href="/css/menu.css"></noscript> -->
-
-        <!-- <link rel="preload" href="/css/icons.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" href="/css/icons.css"></noscript> -->
-
-        <!-- <link rel="preload" href="/css/notes.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" href="/css/notes.css"></noscript>
-
-        <link rel="preload" href="/css/notes.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" href="/css/notes.css"></noscript>
-
-        <link rel="preload" href="/css/report.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" href="/css/report.css"></noscript>
-
-        <link rel="preload" href="/css/space.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" href="/css/space.css"></noscript>
-
-        <link rel="preload" href="/css/background-animations.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" href="/css/background-animations.css"></noscript> -->
 
         <link rel='stylesheet' href='/css/styles.css'>
         <link rel='stylesheet' href='/css/settings.css'>
@@ -56,10 +23,11 @@
         <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 
         <script src="/js/utility/preload.js"></script>
-        <script type="module" src="/js/main/index.js"></script>
         <script type="module" src="/js/state/state.js"></script>
+        <script type="module" src="/js/main/index.js"></script>
         <script type="module" src="/js/main/navigation.js"></script>
         <script type="module" src="/js/main/notes.js"></script>
+        <script type="module" src="/js/main/end-session.js"></script>
         <script type="module" src="/js/api/google-signin.js"></script>
         
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
@@ -103,7 +71,7 @@
             </div>
             <div id="accountPopup" class="accountPopup">
                 <div id="questionPopupUserEmailContainer">
-                    <h2 id="welcomeText" style="color: gray"></h2>
+                    <h2 id="welcomeText" style="color: white"></h2>
                     <div id="questionPopupUserEmail"></div>
                 </div>
                 <hr>
@@ -153,6 +121,19 @@
                             <div class="shortcutKey">Escape (esc)</div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div id="confirmLabelDeletionPopup">
+                <div id="confirmLabelDeletionPromptContainer">
+                    <div id="labelToDeleteContainer"></div> <!-- dynamically load in label -->
+                    <hr>
+                    <p id="confirmLabelDeletionText">
+                        Are you sure you want to delete the following label?
+                    </p>
+                </div>
+                <div id="confirmLabelDeletionBtnContainer">
+                    <button id="confirmLabelDeletionYesBtn">Yes</button>
+                    <button id="confirmLabelDeletionNoBtn">No</button>
                 </div>
             </div>
         </div>
@@ -243,7 +224,7 @@
                         ?
                     </div>
                 </div>
-                <div id="streaksLoginSuggestionPopup">
+                <div id="streaksLoginSuggestionPopup"> <!-- z-index: 35 when showing only, 0 otherwise -->
                     Complete a deep work session every day to build up your streak! Log in to save your progress 😛
                 </div>
                 <div id="popupQuestionMenu" data-testid="popupQuestionMenu" class="no-select"> <!-- z-index: 30 -->
@@ -305,7 +286,7 @@
                     </div>
                         
                     <div id="progress">
-                        <div id="progress-bar-container" data-testid="progress-bar-container"> <!-- z-index: 25 -->
+                        <div id="progress-bar-container" class="small" data-testid="progress-bar-container"> <!-- z-index: 25 -->
                             <div id="progress-container" data-testid="progress-container">
                                 <div id="progress-bar"></div>
                                 <div id="progress-text" data-testid="progress-text" class="progress-text no-select">00:00:00</div>
@@ -341,7 +322,7 @@
                             <div id="prompt-container">
                                 <img id="tag-icon" src="images/icons/white_tag_icon.png" class="no-select" alt="Label Icon">
                                 <div id="task-prompt" class="no-select">
-                                    Select Task Labels
+                                    Select Task Label
                                 </div>
                             </div>
                             <div id="label-input-container" data-testid="label-input-container">
@@ -522,7 +503,7 @@
                 <img class="exitIcon" id="blogPostExit" src="images/icons/exit-button-261420.png" draggable="false" alt="Exit">
                 <div class="blog hidden" id="blogPost1">
                     <div class="iframe-container">
-                        <iframe src="https://www.youtube.com/embed/yb5zpo5WDG4?si=GT9uix2oPLBnFHrq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        <iframe id="player" src="https://www.youtube.com/embed/yb5zpo5WDG4?enablejsapi=1&origin=https://hyperchill.io" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                     </div>
                     <script>
                         // 2. This code loads the IFrame Player API code asynchronously.
@@ -536,32 +517,34 @@
                         //    after the API code downloads.
                         var player;
                         function onYouTubeIframeAPIReady() {
+                        //   console.log("YouTube IFrame API ready");
+
                           player = new YT.Player('player', {
+                            videoId: 'yb5zpo5WDG4',
                             events: {
-                              'onReady': onPlayerReady,
-                              'onStateChange': onPlayerStateChange
+                              'onReady': onPlayerReady
                             }
                           });
                         }
-                  
+
                         // 4. The API will call this function when the video player is ready.
                         function onPlayerReady(event) {
-                            console.log("test")
-                          event.target.playVideo();
+                        //   console.log("Player Ready")
                         }
-                  
-                        // 5. The API calls this function when the player's state changes.
-                        //    The function indicates that when playing a video (state=1),
-                        //    the player should play for six seconds and then stop.
-                        var done = false;
-                        function onPlayerStateChange(event) {
-                          if (event.data == YT.PlayerState.PLAYING && !done) {
-                            setTimeout(stopVideo, 6000);
-                            done = true;
-                          }
-                        }
-                        function stopVideo() {
-                          player.stopVideo();
+
+                        // Function to pause the video
+                        function pauseVideo() {
+                            if (player && player.getPlayerState) {
+                                // Check if the player is in the PLAYING state
+                                if (player.getPlayerState() === YT.PlayerState.PLAYING) {
+                                    player.pauseVideo();
+                                    // console.log("Video paused.");
+                                } else {
+                                    // console.log("Player is not currently playing.");
+                                }
+                            } else {
+                                console.error("Player is not defined or getPlayerState method is not available.");
+                            }
                         }
                     </script>
                     <div class="mainBlogContent">
@@ -1306,7 +1289,7 @@
                                         <p id="flowTimeAnimationHeader"><b>Deep Work</b></p>
                                     </div>
                                     <div id="flowTimeAnimationToggleContainer" class="toggleContainer">
-                                        <input type="checkbox" id="flowTimeAnimationToggle" class="toggle-checkbox" aria-labelledby="flowTimeAnimationHeader" checked>
+                                        <input type="checkbox" id="flowTimeAnimationToggle" class="toggle-checkbox" aria-labelledby="flowTimeAnimationHeader">
                                         <label for="flowTimeAnimationToggle" id="flowTimeAnimationToggleLabel" class="toggle-label">
                                             <span id="flowTimeAnimationToggleBall" class="toggle-ball"></span>
                                         </label>
@@ -1317,7 +1300,7 @@
                                         <p id="chillTimeAnimationHeader"><b>Break</b></p>
                                     </div>
                                     <div id="chillTimeAnimationToggleContainer" class="toggleContainer">
-                                        <input type="checkbox" id="chillTimeAnimationToggle" class="toggle-checkbox" aria-labelledby="chillTimeAnimationHeader" checked>
+                                        <input type="checkbox" id="chillTimeAnimationToggle" class="toggle-checkbox" aria-labelledby="chillTimeAnimationHeader">
                                         <label for="chillTimeAnimationToggle" id="chillTimeAnimationToggleLabel" class="toggle-label">
                                             <span id="chillTimeAnimationToggleBall" class="toggle-ball"></span>
                                         </label>

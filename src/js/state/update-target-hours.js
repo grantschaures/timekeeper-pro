@@ -19,5 +19,7 @@ export async function updateTargetHours(targetHours) {
         // console.log("Settings updated successfully:", data);
     } catch (error) {
         console.error('Failed to update target hours:', error);
+        alert("Your session has expired. Please log in again.");
+        window.location.href = "/login";
     }
 }
