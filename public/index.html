@@ -136,6 +136,24 @@
                     <button id="confirmLabelDeletionNoBtn">No</button>
                 </div>
             </div>
+            <div id="previousSessionStartedPopup">
+                <div d="previousSessionStartedPromptContainer">
+                    <p>A previous session was started, but never ended. Would you like to: </p>
+                    <div class="previousSessionStartedOption">
+                        <label for="invalidatePreviousSessionInput">
+                            <input type="radio" id="invalidatePreviousSessionInput" class="sessionInput" name="options" required checked>
+                            Invalidate previous session and continue
+                        </label>
+                    </div>
+                    <div class="previousSessionStartedOption">
+                        <label for="quitCurrentSessionInput">
+                            <input type="radio" id="quitCurrentSessionInput" class="sessionInput" name="options" required>
+                            Quit current session
+                        </label>
+                    </div>
+                    <button id="previousSessionStartedOkBtn" type="submit">Ok</button>
+                </div>
+            </div>
         </div>
 
         <div id="animationContainer" class="wave-container"> <!-- z-index: 1 -->

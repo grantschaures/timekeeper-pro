@@ -11,6 +11,113 @@ router.use(express.json());
 // Middleware for checking and renewing the token
 router.use(checkAndRenewToken);
 
+router.post("/update-invaliDate", async function(req, res) {
+    // Assuming the JWT is sent automatically in cookie headers
+    const token = req.cookies.token;  // Extract the JWT from cookies directly
+    const { invaliDate } = req.body;
+    let sessionStartDate = new Date(invaliDate);
+
+    if (!token) {
+        return res.status(401).json({ isLoggedIn: false });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        const userId = decoded.userId;
+        const user = await User.findById(userId);
+
+        if (user) {
+            user.invaliDate = sessionStartDate;
+            console.log(sessionStartDate);
+
+            await user.save();
+            res.json({ success: true, message: 'delete-account endpoint reached successfully' });
+        } else {
+            return res.status(401).json({ 
+                isLoggedIn: false,
+                message: "User not found"
+            });
+        }
+    } catch (error) {
+        return res.status(401).json({
+            isLoggedIn: false,
+            message: "Session is not valid: " + error.message
+        });
+    }
+});
+
+router.post("/check-invaliDate", async function(req, res) {
+    // Assuming the JWT is sent automatically in cookie headers
+    const token = req.cookies.token;  // Extract the JWT from cookies directly
+    const { sessionStartTime } = req.body;
+    let sessionStartDate = new Date(sessionStartTime);
+
+    // console.log(sessionStartDate);
+    
+    if (!token) {
+        return res.status(401).json({ isLoggedIn: false });
+    }
+    
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        const userId = decoded.userId;
+        const user = await User.findById(userId);
+        
+        let invaliDate = user.invaliDate;
+        // console.log(invaliDate);
+        let logAction;
+
+        if (sessionStartDate < invaliDate) {
+            logAction = false;
+        } else {
+            logAction = true;
+        }
+
+        if (user) {
+            res.json({ logSession: logAction, success: true, message: 'delete-account endpoint reached successfully' });
+        } else {
+            return res.status(401).json({ 
+                isLoggedIn: false,
+                message: "User not found"
+            });
+        }
+    } catch (error) {
+        return res.status(401).json({
+            isLoggedIn: false,
+            message: "Session is not valid: " + error.message
+        });
+    }
+});
+
+router.post("/check-session", async function(req, res) {
+    // Assuming the JWT is sent automatically in cookie headers
+    const token = req.cookies.token;  // Extract the JWT from cookies directly
+
+    if (!token) {
+        return res.status(401).json({ isLoggedIn: false });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        const userId = decoded.userId;
+        const user = await User.findById(userId);
+
+        if (user) {
+            res.json({ sessionStatus: user.sessionRunning, success: true, message: 'delete-account endpoint reached successfully' });
+        } else {
+            return res.status(401).json({ 
+                isLoggedIn: false,
+                message: "User not found"
+            });
+        }
+    } catch (error) {
+        return res.status(401).json({
+            isLoggedIn: false,
+            message: "Session is not valid: " + error.message
+        });
+    }
+});
+
 router.delete("/delete-account", async function(req, res) {
     // Assuming the JWT is sent automatically in cookie headers
     const token = req.cookies.token;  // Extract the JWT from cookies directly

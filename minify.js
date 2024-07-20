@@ -20,6 +20,8 @@ let files = [
     'src/js/state/delete-account.js',
     'src/js/state/session-completion.js',
     'src/js/state/last-interval-switch.js',
+    'src/js/state/check-session.js',
+    'src/js/state/check-invaliDate.js',
     'src/js/utility/initialize_gui.js',
     'src/js/utility/preload.js',
     'src/js/utility/update_streaks.js',

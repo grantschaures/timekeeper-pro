@@ -201,6 +201,11 @@ export const intervalArrs = {
     interruptionTime: []
 }
 
+export const times = {
+    start: null,
+    end: null
+}
+
 
 // ---------------------
 // HELPER FUNCTIONS

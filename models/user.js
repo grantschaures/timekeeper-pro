@@ -29,6 +29,7 @@ const User = db.model("User", {
   lastIntervalSwitch: { type: Date }, // last time the user (value gets replaced each time user switches interval)
   lastActivity: { type: Date },
   sessionRunning: { type: Boolean },
+  invaliDate: { type: Date },
   settings: {
     pomodoro: {
       notificationToggle: { type: Boolean, default: false },

@@ -106,6 +106,14 @@ const indexReplacements = [
     {
         pattern: /import { userAgent, userDevice } from '..\/utility\/identification.js';/g,
         replacement: "import { userAgent, userDevice } from '../minified/identification.min.js';"
+    },
+    {
+        pattern: /import { checkSession } from '..\/state\/check-session.js';/g,
+        replacement: "import { checkSession } from '../minified/check-session.min.js';"
+    },
+    {
+        pattern: /import { sessionReset } from '..\/main\/end-session.js';/g,
+        replacement: "import { sessionReset } from '../minified/end-session.min.js';"
     }
 ];
 
@@ -165,6 +173,10 @@ const endSessionReplacements = [
     {
         pattern: /import { animationsFadeIn, animationsFadeOut, getTotalElapsed, returnTotalTimeString, updateLabelArrs, setBackground, pauseAndResetAlertSounds, resetDisplay, updateProgressBar, totalTimeDisplay, setButtonTextAndMode, hideSuggestionBreakContainer, hidePomodorosCompletedContainer, showInterruptionsSubContainer, setFavicon, observer, pomodoroWorker, suggestionWorker, flowmodoroWorker, displayWorker, totalDisplayWorker } from '..\/main\/index.js';/g,
         replacement: "import { animationsFadeIn, animationsFadeOut, getTotalElapsed, returnTotalTimeString, updateLabelArrs, setBackground, pauseAndResetAlertSounds, resetDisplay, updateProgressBar, totalTimeDisplay, setButtonTextAndMode, hideSuggestionBreakContainer, hidePomodorosCompletedContainer, showInterruptionsSubContainer, setFavicon, observer, pomodoroWorker, suggestionWorker, flowmodoroWorker, displayWorker, totalDisplayWorker } from '../minified/index.min.js';"
+    },
+    {
+        pattern: /import { checkInvaliDate } from '..\/state\/check-invaliDate.js';/g,
+        replacement: "import { checkInvaliDate } from '../minified/check-invaliDate.min.js';"
     }
 ]
 
