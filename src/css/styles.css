@@ -1573,9 +1573,13 @@ header {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     font-family: 'settingsHeaderFont';
     color: white;
-    font-size: 24px;
+    /* font-size: 24px; */
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
+}
+
+#previousSessionText {
+    font-size: 24px;
 }
 
 .previousSessionStartedOption {
@@ -1584,6 +1588,7 @@ header {
     /* border: 3px solid yellow; */
     text-align: left;
     margin-bottom: 5px;
+    font-size: 18px;
 }
 
 .sessionInput:hover {

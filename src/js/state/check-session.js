@@ -1,4 +1,4 @@
-import { popupOverlay, previousSessionStartedPopup } from '../modules/dom-elements.js';
+import { popupOverlay, previousSessionStartedPopup, previousSessionStartedOkBtn } from '../modules/dom-elements.js';
 export async function checkSession() {
     try {
         const response = await fetch('/api/data/check-session', {
@@ -26,6 +26,10 @@ export async function checkSession() {
             setTimeout(() => {
                 previousSessionStartedPopup.style.opacity = '1';
             }, 100)
+
+            // comment out the above and comment this in to quickly bypass popup and select default (invalidate previous session and continue)
+            // or simply call updateInvaliDate(startTimes.beginning) instead of triggering click
+            // previousSessionStartedOkBtn.click();
         }
 
     } catch (error) {
