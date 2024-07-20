@@ -1,3 +1,3 @@
-HEYYOOO
+# HEYYOOO
 
-Official Repo For Hyperchill.io
+## This is the official repo for Hyperchill.io - The worlds sexiest productivity time tracker tool
