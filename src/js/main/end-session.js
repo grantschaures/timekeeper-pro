@@ -85,7 +85,7 @@ document.addEventListener("stateUpdated", function() {
             // (2) Reset everything to the default state
             sessionReset();
         }
-    });
+    });    
 })
 
 // ---------------------

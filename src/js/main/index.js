@@ -132,7 +132,7 @@ document.addEventListener("stateUpdated", function() {
         resetDisplay(display);
 
         if (sessionState.loggedIn) {
-            logLastIntervalSwitch();
+            logLastIntervalSwitch(counters.startStop);
         }
         
         let transitionTime = Date.now();
@@ -2277,8 +2277,8 @@ function debuggingPopup(color) {
     mainContainer.appendChild(newDiv);
 }
 
-async function logLastIntervalSwitch() {
-    await lastIntervalSwitch();
+async function logLastIntervalSwitch(intervalSwitchCount) {
+    await lastIntervalSwitch(intervalSwitchCount);
 }
 
 // ---------------------
