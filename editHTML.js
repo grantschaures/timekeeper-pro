@@ -159,8 +159,8 @@ const loginReplacements = [
 
 const endSessionReplacements = [
     {
-        pattern: /import { sessionCompletion } from '..\/state\/user-activity.js';/g,
-        replacement: "import { sessionCompletion } from '../minified/user-activity.min.js';"
+        pattern: /import { sessionCompletion } from '..\/state\/session-completion.js';/g,
+        replacement: "import { sessionCompletion } from '../minified/session-completion.min.js';"
     },
     {
         pattern: /import { animationsFadeIn, animationsFadeOut, getTotalElapsed, returnTotalTimeString, updateLabelArrs, setBackground, pauseAndResetAlertSounds, resetDisplay, updateProgressBar, totalTimeDisplay, setButtonTextAndMode, hideSuggestionBreakContainer, hidePomodorosCompletedContainer, showInterruptionsSubContainer, setFavicon, observer, pomodoroWorker, suggestionWorker, flowmodoroWorker, displayWorker, totalDisplayWorker } from '..\/main\/index.js';/g,

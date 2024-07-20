@@ -68,7 +68,6 @@ router.post("/last-interval-switch", async function(req, res) {
             user.lastActivity = currentUTCDate;
 
             if (intervalSwitchCount === 1) {
-                console.log("TesT")
                 user.sessionRunning = true;
             }
 
