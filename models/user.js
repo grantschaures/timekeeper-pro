@@ -16,6 +16,12 @@ const User = db.model("User", {
     userDevice: { type: String },
     loginMethod: { type: String }
   }],
+  lastLogin: {
+    loginDate: { type: Date },
+    userAgent: { type: String },
+    userDevice: { type: String },
+    loginMethod: { type: String }
+  },
   sessionCompletionTimeArr: [{ // this effectively contains a count of the number of session the user has logged
     timeZone: { type: String },
     sessionCompletionDateUTC: { type: Date }
