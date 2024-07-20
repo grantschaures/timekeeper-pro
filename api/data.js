@@ -176,6 +176,7 @@ router.post("/last-interval-switch", async function(req, res) {
 
             if (intervalSwitchCount === 1) {
                 user.sessionRunning = true;
+                user.sessionStartTimeArr.push(currentUTCDate);
             }
 
             await user.save();
