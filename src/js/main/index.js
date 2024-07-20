@@ -134,28 +134,28 @@ document.addEventListener("stateUpdated", function() {
 
     start_stop_btn.addEventListener("click", function() {
 
+        let transitionTime = Date.now();
         counters.startStop++; //keep track of button presses (doesn't account for time recovery iterations)
         playClick(clock_tick, flags);
         resetDisplay(display);
-        checkSessionIntervalSwitch();
         
-        let transitionTime = Date.now();
         updateLabelArrs(transitionTime, labelFlags, labelArrs);
-
+        
         if (counters.startStop === 1) {
             veryStartActions(startTimes, hyperChillLogoImage, flags, times);
             triggerSilentAlertAudioMobile(soundMap.Chime, soundMap.Bell, chimePath, bellPath, flags);
             animationsFadeOut(chillAnimation);
             startTimes.lastPomNotification = Date.now();
-
+            
             setTimeout(() => {
                 document.documentElement.style.backgroundSize = '100%';
                 flags.canEndSession = true;
-            }, 250)
+            }, 1000)
         } else {
             chillTimeToFirstPomodoro(flags, productivity_chill_mode, counters);
         }
-
+        
+        checkSessionIntervalSwitch();
         setLocalStartTime(flags, startTimes, recoverBreakState, recoverPomState);
 
         displayWorker.postMessage("clearInterval");
@@ -1143,7 +1143,7 @@ async function checkSessionIntervalSwitch() {
         if (counters.startStop === 1) {
             await checkSession();
         }
-        await logLastIntervalSwitch(counters.startStop);
+        await logLastIntervalSwitch(counters.startStop, times.start);
     }
 }
 
@@ -2311,8 +2311,8 @@ function debuggingPopup(color) {
     mainContainer.appendChild(newDiv);
 }
 
-async function logLastIntervalSwitch(intervalSwitchCount) {
-    await lastIntervalSwitch(intervalSwitchCount);
+async function logLastIntervalSwitch(intervalSwitchCount, sessionStartTime) {
+    await lastIntervalSwitch(intervalSwitchCount, sessionStartTime);
 }
 
 // ---------------------

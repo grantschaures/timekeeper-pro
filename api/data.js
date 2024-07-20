@@ -52,7 +52,7 @@ router.post("/check-invaliDate", async function(req, res) {
     const { sessionStartTime } = req.body;
     let sessionStartDate = new Date(sessionStartTime);
 
-    // console.log(sessionStartDate);
+    console.log(sessionStartDate);
     
     if (!token) {
         return res.status(401).json({ isLoggedIn: false });
@@ -64,10 +64,22 @@ router.post("/check-invaliDate", async function(req, res) {
         const user = await User.findById(userId);
         
         let invaliDate = user.invaliDate;
-        // console.log(invaliDate);
-        let logAction;
 
-        if (sessionStartDate < invaliDate) {
+        let sessionStartTimeArr = user.sessionStartTimeArr;
+        console.log(sessionStartTimeArr);
+        let targetDate = new Date(sessionStartDate);
+        const index = sessionStartTimeArr.findIndex(dateString => new Date(dateString).getTime() === targetDate.getTime());
+        console.log(index);
+
+        let raceCondition;
+        if (index !== -1 && sessionStartTimeArr[index + 1] && (new Date(sessionStartTimeArr[index + 1]).getTime() - new Date(sessionStartTimeArr[index]).getTime() < 1000)) {
+            raceCondition = true;
+        } else {
+            raceCondition = false;
+        }
+
+        let logAction;
+        if ((sessionStartDate < invaliDate) || (raceCondition)) {
             logAction = false;
         } else {
             logAction = true;
@@ -157,7 +169,7 @@ router.delete("/delete-account", async function(req, res) {
 router.post("/last-interval-switch", async function(req, res) {
     // Assuming the JWT is sent automatically in cookie headers
     const token = req.cookies.token;  // Extract the JWT from cookies directly
-    const { intervalSwitchCount } = req.body;
+    const { intervalSwitchCount, sessionStartTime } = req.body;
 
     if (!token) {
         return res.status(401).json({ isLoggedIn: false });
@@ -176,7 +188,7 @@ router.post("/last-interval-switch", async function(req, res) {
 
             if (intervalSwitchCount === 1) {
                 user.sessionRunning = true;
-                user.sessionStartTimeArr.push(currentUTCDate);
+                user.sessionStartTimeArr.push(sessionStartTime);
             }
 
             await user.save();

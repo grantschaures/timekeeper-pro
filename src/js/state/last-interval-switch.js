@@ -1,11 +1,11 @@
-export async function lastIntervalSwitch(intervalSwitchCount) {
+export async function lastIntervalSwitch(intervalSwitchCount, sessionStartTime) {
     try {
         const response = await fetch('/api/data/last-interval-switch', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ intervalSwitchCount })
+            body: JSON.stringify({ intervalSwitchCount, sessionStartTime })
         });
 
         if (!response.ok) {
