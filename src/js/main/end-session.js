@@ -161,7 +161,7 @@ function resetBackgrounds(deepWorkBackground, breakBackground) {
 
 function resetActions(hyperChillLogoImage, flags, intervals, recoverBreakState, recoverPomState, startTimes, elapsedTime, counters, savedInterruptionsArr, intervalArrs, times) {
     observer.disconnect();
-    document.title = "HyperChill.io | Online Productivity Time Tracker";
+    document.title = "Hyperchill.io | Online Productivity Time Tracker";
     hyperChillLogoImage.classList.remove('hyperChillLogoRotate'); // currently invisible FYI
 
     clearAllIntervals(intervals);
