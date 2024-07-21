@@ -1,4 +1,4 @@
-import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selectedBackgroundIdTemp, selectedBackgroundId, timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, alertVolumes, alertSounds, counters, flags, tempStorage, settingsMappings, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, homeBackground } from '../modules/index-objects.js';
+import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selectedBackgroundIdTemp, selectedBackgroundId, timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, alertVolumes, alertSounds, counters, flags, tempStorage, settingsMappings, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, homeBackground, times } from '../modules/index-objects.js';
 
 import { chimePath, bellPath, clock_tick, soundMap } from '../modules/sound-map.js';
 
@@ -10,6 +10,11 @@ import {
     streaksContainer,
     streaksLoginSuggestionPopup,
     streaksCount,
+    popupQuestionMenu,
+    previousSessionStartedOkBtn,
+    previousSessionStartedPopup,
+    invalidatePreviousSessionInput,
+    quitCurrentSessionInput,
 } from '../modules/dom-elements.js';
 
 import { sessionState } from '../modules/state-objects.js';
@@ -17,11 +22,14 @@ import { state, flags as navFlags } from '../modules/navigation-objects.js';
 import { labelFlags, labelArrs } from '../modules/notes-objects.js';
 
 import { initializeGUI } from '../utility/initialize_gui.js'; // minified
+import { userAgent, userDevice } from '../utility/identification.js'; // minified
 import { updateUserSettings } from '../state/update-settings.js'; // minified
 import { updateTargetHours } from '../state/update-target-hours.js'; // minified
 import { updateShowingTimeLeft } from '../state/update-showing-time-left.js'; // minified
 import { lastIntervalSwitch } from '../state/last-interval-switch.js'; // minified
-import { userAgent, userDevice } from '../utility/identification.js'; // minified
+import { checkSession } from '../state/check-session.js'; // minified
+import { updateInvaliDate } from '../state/update-invaliDate.js'; // minified
+import { sessionReset } from '../main/end-session.js'; // minified
 
 export const pomodoroWorker = new Worker('/js/displayWorkers/pomodoroWorker.js');
 export const suggestionWorker = new Worker('/js/displayWorkers/suggestionWorker.js');
@@ -126,19 +134,15 @@ document.addEventListener("stateUpdated", function() {
 
     start_stop_btn.addEventListener("click", function() {
 
+        let transitionTime = Date.now();
         counters.startStop++; //keep track of button presses (doesn't account for time recovery iterations)
         playClick(clock_tick, flags);
         resetDisplay(display);
-
-        if (sessionState.loggedIn) {
-            logLastIntervalSwitch();
-        }
         
-        let transitionTime = Date.now();
         updateLabelArrs(transitionTime, labelFlags, labelArrs);
-
+        
         if (counters.startStop === 1) {
-            veryStartActions(startTimes, hyperChillLogoImage, progressBarContainer, flags);
+            veryStartActions(startTimes, hyperChillLogoImage, flags, times);
             triggerSilentAlertAudioMobile(soundMap.Chime, soundMap.Bell, chimePath, bellPath, flags);
             animationsFadeOut(chillAnimation);
             startTimes.lastPomNotification = Date.now();
@@ -146,11 +150,12 @@ document.addEventListener("stateUpdated", function() {
             setTimeout(() => {
                 document.documentElement.style.backgroundSize = '100%';
                 flags.canEndSession = true;
-            }, 250)
+            }, 1000)
         } else {
             chillTimeToFirstPomodoro(flags, productivity_chill_mode, counters);
         }
-
+        
+        checkSessionIntervalSwitch();
         setLocalStartTime(flags, startTimes, recoverBreakState, recoverPomState);
 
         displayWorker.postMessage("clearInterval");
@@ -595,6 +600,7 @@ document.addEventListener("stateUpdated", function() {
     //Further clicks will render the targetReachToggle flag true or false
     targetTimeReachedToggle.addEventListener("click", async function() {
         if (targetTimeReachedToggle.checked) {
+            enableNotifications();
             flags.targetReachedToggle = true;
         } else {
             flags.targetReachedToggle = false;
@@ -611,7 +617,7 @@ document.addEventListener("stateUpdated", function() {
 
     breakSuggestionToggle.addEventListener("click", async function() {
         if (breakSuggestionToggle.checked) {
-            enableNotifications(breakSuggestionToggle, flowmodoroNotificationToggle, pomodoroNotificationToggle, flags);
+            enableNotifications();
             flags.breakSuggestionToggle = true;
 
             if (flags.inHyperFocus) {
@@ -646,7 +652,7 @@ document.addEventListener("stateUpdated", function() {
 
     flowmodoroNotificationToggle.addEventListener("click", async function() {
         if (flowmodoroNotificationToggle.checked) {
-            enableNotifications(breakSuggestionToggle, flowmodoroNotificationToggle, pomodoroNotificationToggle, flags);
+            enableNotifications();
 
             resetPomodoroCounters(counters);
 
@@ -683,7 +689,7 @@ document.addEventListener("stateUpdated", function() {
 
     pomodoroNotificationToggle.addEventListener("click", async function() {
         if (pomodoroNotificationToggle.checked) {
-            enableNotifications(breakSuggestionToggle, flowmodoroNotificationToggle, pomodoroNotificationToggle, flags);
+            enableNotifications();
             resetPomodoroCounters(counters);
 
             // DISABLE GENERAL AND FLOWMODORO NOTIFICATIONS
@@ -887,6 +893,11 @@ document.addEventListener("stateUpdated", function() {
     //     }
     // });
 
+    window.addEventListener('blur', function() {
+        flowAnimation.style.display = 'none';
+        // console.log(Date.now())
+    })
+
     /**
      * setTimeout delay of 0 allows the event listener callback function in menu.js
      * dealing with opening the settings menu to execute first before
@@ -1031,6 +1042,25 @@ document.addEventListener("stateUpdated", function() {
         }
     })
 
+    previousSessionStartedOkBtn.addEventListener("click", function() {
+        popupOverlay.style.display = "none";
+        previousSessionStartedPopup.style.display = "none";
+        previousSessionStartedPopup.style.opacity = '0';
+
+        if (invalidatePreviousSessionInput.checked) {
+            // update invaliDate value in db w/ Date.now() of new session start
+            console.log("invalidate previous session and continue was selected");
+            updateInvaliDate(startTimes.beginning);
+        } else {
+            // basically reset GUI but don't log (similar to what happens when session that started before invaliDate ends)
+            // made function for this
+            sessionReset();
+
+            quitCurrentSessionInput.checked = false;
+            invalidatePreviousSessionInput.checked = true;
+        }
+    })
+
     // ---------------------
     // DISPLAY WORKERS
     // ---------------------
@@ -1105,9 +1135,18 @@ document.addEventListener("stateUpdated", function() {
     // document.dispatchEvent(new Event('updateState'));
 });
 
-// ---------------------
+// ------------------
 // HELPER FUNCTIONS
-// ---------------------
+// ------------------
+async function checkSessionIntervalSwitch() {
+    if (sessionState.loggedIn) {
+        if (counters.startStop === 1) {
+            await checkSession();
+        }
+        await logLastIntervalSwitch(counters.startStop, times.start);
+    }
+}
+
 export function updateLabelArrs(timeStamp, labelFlags, labelArrs) {
     for (let key in labelFlags) {
         if (!labelArrs[key]) {
@@ -2038,7 +2077,7 @@ function playAlertSoundCountdown(chime, bell, alertSoundType, alertVolumeType) {
 }
 
 //For some reason, EDGE won't prompt the user to turn on notifications if they're set to default :/
-async function enableNotifications(breakSuggestionToggle, flowmodoroNotificationToggle, pomodoroNotificationToggle, flags) {
+async function enableNotifications() {
     // Check if notifications are supported
     if (!("Notification" in window)) {
         alert("This browser does not support push notifications");
@@ -2148,8 +2187,10 @@ export function resetDisplay(display) {
     display.innerText = "00:00:00"; //immediately resets display w/ no lag time
 };
 
-function veryStartActions(startTimes, hyperChillLogoImage, progressBarContainer, flags) {
-    startTimes.beginning = Date.now();
+function veryStartActions(startTimes, hyperChillLogoImage, flags, times) {
+    let currentTime = Date.now();
+    startTimes.beginning = currentTime;
+    times.start = currentTime;
     flags.sessionInProgress = true;
     setBrowserTabTitle(); //sets browser tab title to the stopwatch time '00:00:00'
     document.getElementById("target-hours").classList.remove("glowing-effect");
@@ -2270,8 +2311,8 @@ function debuggingPopup(color) {
     mainContainer.appendChild(newDiv);
 }
 
-async function logLastIntervalSwitch() {
-    await lastIntervalSwitch();
+async function logLastIntervalSwitch(intervalSwitchCount, sessionStartTime) {
+    await lastIntervalSwitch(intervalSwitchCount, sessionStartTime);
 }
 
 // ---------------------

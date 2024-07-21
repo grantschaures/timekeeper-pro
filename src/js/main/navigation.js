@@ -66,7 +66,7 @@ document.addEventListener("stateUpdated", function() {
     
         // SHOWING ELEMENTS
         blogContainer.style.display = "flex"; // show main blog container
-        fadeInStreaks(streaksContainer); // showing streaks container
+        fadeInStreaks(streaksContainer, isMobile); // showing streaks container
 
         // OTHER CHANGES
         body.style.overflowY = 'hidden'; // no scroll
@@ -93,7 +93,7 @@ document.addEventListener("stateUpdated", function() {
 
         // SHOWING ELEMENTS
         aboutContainer.style.display = "flex"; // show about container
-        fadeInStreaks(streaksContainer); // showing streaks container
+        fadeInStreaks(streaksContainer, isMobile); // showing streaks container
 
         // OTHER CHANGES
         body.style.overflowY = 'hidden'; // no scroll
@@ -307,11 +307,13 @@ document.addEventListener("stateUpdated", function() {
 
 });
 
-function fadeInStreaks(streaksContainer) {
-    streaksContainer.style.display = 'flex';
-    setTimeout(() => {
-        streaksContainer.style.opacity = 1;
-    }, 0)
+function fadeInStreaks(streaksContainer, isMobile) {
+    if (!isMobile) {
+        streaksContainer.style.display = 'flex';
+        setTimeout(() => {
+            streaksContainer.style.opacity = 1;
+        }, 0)
+    }
 }
 
 function fadeOutStreaks(streaksContainer) {
@@ -353,7 +355,7 @@ function handleLeftRightArrowKeys(event) {
         if (event.key === 'ArrowLeft') {
             if (state.lastSelectedMode === 'space') { // --> HOME
                 slimeSwitch();
-                fadeInStreaks(streaksContainer);
+                fadeInStreaks(streaksContainer, isMobile);
                 setDinkleDoinkSetting("home"); // needs to execute first
                 resetMode(reportContainer);
                 resetMode(spaceContainer);
@@ -378,7 +380,7 @@ function handleLeftRightArrowKeys(event) {
         } else if (event.key === 'ArrowRight') {
             if (state.lastSelectedMode === 'report') { // --> HOME
                 slimeSwitch();
-                fadeInStreaks(streaksContainer);
+                fadeInStreaks(streaksContainer, isMobile);
                 setDinkleDoinkSetting("home"); // needs to execute first
                 resetMode(reportContainer);
                 resetMode(spaceContainer);
@@ -480,7 +482,7 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
                 slimeSwitch(); 
             }
 
-            fadeInStreaks(streaksContainer);
+            fadeInStreaks(streaksContainer, isMobile);
             setDinkleDoinkSetting("home"); // needs to execute first
             resetMode(reportContainer);
             resetMode(spaceContainer);

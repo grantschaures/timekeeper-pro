@@ -1,97 +1,103 @@
-import { timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, counters, flags, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, homeBackground } from '../modules/index-objects.js';
+import { timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, counters, flags, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, homeBackground, times } from '../modules/index-objects.js';
 import { start_stop_btn, end_session_btn, total_time_display, productivity_chill_mode, progressBar, progressContainer, display, interruptionsSubContainer, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, flowAnimation, chillAnimation, hyperChillLogoImage, streaksCount, breakBackground, deepWorkBackground } from '../modules/dom-elements.js';
 import { soundMap } from '../modules/sound-map.js';
 import { sessionState } from '../modules/state-objects.js';
 import { labelFlags, labelArrs } from '../modules/notes-objects.js';
 
-import { userActivity } from '../state/user-activity.js'; // minified
+import { sessionCompletion } from '../state/session-completion.js'; // minified
 import { animationsFadeIn, animationsFadeOut, getTotalElapsed, returnTotalTimeString, updateLabelArrs, setBackground, pauseAndResetAlertSounds, resetDisplay, updateProgressBar, totalTimeDisplay, setButtonTextAndMode, hideSuggestionBreakContainer, hidePomodorosCompletedContainer, showInterruptionsSubContainer, setFavicon, observer, pomodoroWorker, suggestionWorker, flowmodoroWorker, displayWorker, totalDisplayWorker } from '../main/index.js'; // minified
+import { checkInvaliDate } from '../state/check-invaliDate.js'; // minified
 
 const defaultFavicon = "/images/logo/HyperChillLogo_circular_white_border.png";
 
 document.addEventListener("stateUpdated", function() {
-    end_session_btn.addEventListener("click", function() { //temporary function
+    end_session_btn.addEventListener("click", async function() {
         if ((flags.sessionInProgress) && (flags.canEndSession)) {
-            // (1) Collect all necessary information about the session
+            times.end = Date.now();
 
-
-            let userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; // determine moment they end session
             if (sessionState.loggedIn) {
-                logUserActivity(userTimeZone);
-            } else { // non-logged in user
-                streaksCount.innerText = 1;
+                // IF START OF SESSION IS BEFORE invaliDate, RESET GUI BUT DON'T LOG SESSION
+                let logSessionActivity = await checkInvaliDate(times.start); // T or F
+                if (logSessionActivity) {
+                    // (1) Collect all necessary information about the session
+                    await logSession();
+                }
             }
-            
-            // total time in deep work
-            let totalTime = getTotalElapsed(flags, elapsedTime.hyperFocus, startTimes);
-            let totalTimeStr = returnTotalTimeString(totalTime, timeConvert);
-            console.log("Total Time: " + totalTimeStr);
-            
-            // total interruptions
-            if (flags.inHyperFocus) {
-                savedInterruptionsArr.push(counters.interruptions);
-            }
-            let totalInterruptions = savedInterruptionsArr.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-            console.log("Total Distractions: " + totalInterruptions);
-            
-            // focus score calculation
-            let totalMin = totalTime / timeConvert.msPerMin;
-            let result = (1 - (((totalInterruptions) / (totalMin)) / (0.2))) * 100; // positive values start w/ < 1 distraction / 5 min of deep work
-            let focusPercent = Math.floor(result);
-            if (focusPercent > 0) {
-                console.log('Focus Score: ' + focusPercent + '%');
-            } else {
-                console.log('Focus Score: ' + 0 + '%');
-            }
-            
-            // deep work & break intervals
-            console.log("Deep Work Intervals: " + counters.flowTimeIntervals);
-            console.log("Break Intervals: " + counters.chillTimeIntervals);
-            
-            // average length of flowTime Intervals
-            let timeInterval;
-            if (flags.inHyperFocus) {
-                timeInterval = Date.now() - startTimes.hyperFocus;
-                intervalArrs.flowTime.push(timeInterval);
-            } else {
-                timeInterval = Date.now() - startTimes.chillTime;
-                intervalArrs.chillTime.push(timeInterval);
-            }
-            console.log(intervalArrs.flowTime)
-            console.log(intervalArrs.chillTime)
-
-            let flowTimeIntervalArrSum = (intervalArrs.flowTime).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-            let flowTimeArrLength = (intervalArrs.flowTime).length;
-            let avgFlowTimeInterval = (flowTimeIntervalArrSum / flowTimeArrLength);
-            let avgFlowTimeIntervalStr = returnTotalTimeString(avgFlowTimeInterval, timeConvert);
-            console.log("Average Flow Time Interval Length: " + avgFlowTimeIntervalStr);
-
-            console.log("transition time Arr: " + intervalArrs.transitionTime);
-
-            // add final labelArr value (at some point later, we need to reset label Arrs after sending label time data to database)
-            let endTime = Date.now();
-            if (flags.inHyperFocus) {
-                updateLabelArrs(endTime, labelFlags, labelArrs);
-            }
-            displayTotalLabelTime(labelArrs);
-
-            console.log(""); // new line
-
-
-
-
-
 
             // (2) Reset everything to the default state
-            sessionReset();
+            await sessionReset();
         }
-    });
+    });    
 })
 
 // ---------------------
 // MAIN FUNCTIONS
 // ---------------------
-function sessionReset() {
+async function logSession() {
+    let userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; // determine moment they end session
+    if (sessionState.loggedIn) {
+        logSessionCompletion(userTimeZone);
+    } else { // non-logged in user
+        streaksCount.innerText = 1;
+    }
+    
+    // total time in deep work
+    let totalTime = getTotalElapsed(flags, elapsedTime.hyperFocus, startTimes);
+    let totalTimeStr = returnTotalTimeString(totalTime, timeConvert);
+    console.log("Total Time: " + totalTimeStr);
+    
+    // total interruptions
+    if (flags.inHyperFocus) {
+        savedInterruptionsArr.push(counters.interruptions);
+    }
+    let totalInterruptions = savedInterruptionsArr.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+    console.log("Total Distractions: " + totalInterruptions);
+    
+    // focus score calculation
+    let totalMin = totalTime / timeConvert.msPerMin;
+    let result = (1 - (((totalInterruptions) / (totalMin)) / (0.2))) * 100; // positive values start w/ < 1 distraction / 5 min of deep work
+    let focusPercent = Math.floor(result);
+    if (focusPercent > 0) {
+        console.log('Focus Score: ' + focusPercent + '%');
+    } else {
+        console.log('Focus Score: ' + 0 + '%');
+    }
+    
+    // deep work & break intervals
+    console.log("Deep Work Intervals: " + counters.flowTimeIntervals);
+    console.log("Break Intervals: " + counters.chillTimeIntervals);
+    
+    // average length of flowTime Intervals
+    let timeInterval;
+    if (flags.inHyperFocus) {
+        timeInterval = Date.now() - startTimes.hyperFocus;
+        intervalArrs.flowTime.push(timeInterval);
+    } else {
+        timeInterval = Date.now() - startTimes.chillTime;
+        intervalArrs.chillTime.push(timeInterval);
+    }
+    console.log(intervalArrs.flowTime)
+    console.log(intervalArrs.chillTime)
+
+    let flowTimeIntervalArrSum = (intervalArrs.flowTime).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+    let flowTimeArrLength = (intervalArrs.flowTime).length;
+    let avgFlowTimeInterval = (flowTimeIntervalArrSum / flowTimeArrLength);
+    let avgFlowTimeIntervalStr = returnTotalTimeString(avgFlowTimeInterval, timeConvert);
+    console.log("Average Flow Time Interval Length: " + avgFlowTimeIntervalStr);
+
+    console.log("transition time Arr: " + intervalArrs.transitionTime);
+
+    // add final labelArr value (at some point later, we need to reset label Arrs after sending label time data to database)
+    let endTime = Date.now();
+    if (flags.inHyperFocus) {
+        updateLabelArrs(endTime, labelFlags, labelArrs);
+    }
+    displayTotalLabelTime(labelArrs);
+
+    console.log(""); // new line
+}
+
+export async function sessionReset() {
     // reset labelArrs
     // resetLabelArrs(labelArrs);
 
@@ -104,7 +110,7 @@ function sessionReset() {
     pauseAndResetAlertSounds(soundMap.Bell, soundMap.Chime);
 
     // reset internal logic
-    resetActions(hyperChillLogoImage, flags, intervals, recoverBreakState, recoverPomState, startTimes, elapsedTime, counters, savedInterruptionsArr, intervalArrs);
+    resetActions(hyperChillLogoImage, flags, intervals, recoverBreakState, recoverPomState, startTimes, elapsedTime, counters, savedInterruptionsArr, intervalArrs, times);
 
     // clear all intervals
     pomodoroWorker.postMessage("clearInterval");
@@ -153,7 +159,7 @@ function resetBackgrounds(deepWorkBackground, breakBackground) {
     breakBackground.style.opacity = 0;
 }
 
-function resetActions(hyperChillLogoImage, flags, intervals, recoverBreakState, recoverPomState, startTimes, elapsedTime, counters, savedInterruptionsArr, intervalArrs) {
+function resetActions(hyperChillLogoImage, flags, intervals, recoverBreakState, recoverPomState, startTimes, elapsedTime, counters, savedInterruptionsArr, intervalArrs, times) {
     observer.disconnect();
     document.title = "HyperChill.io | Online Productivity Time Tracker";
     hyperChillLogoImage.classList.remove('hyperChillLogoRotate'); // currently invisible FYI
@@ -161,6 +167,7 @@ function resetActions(hyperChillLogoImage, flags, intervals, recoverBreakState, 
     clearAllIntervals(intervals);
     resetPropertiesToNull(recoverBreakState);
     resetPropertiesToNull(recoverPomState);
+    resetPropertiesToNull(times);
     resetPropertiesToUndefined(startTimes);
     resetPropertiesToZero(elapsedTime);
     resetPropertiesToZero(counters);
@@ -240,8 +247,8 @@ function displayTotalLabelTime(labelArrs) {
     }
 }
 
-async function logUserActivity(userTimeZone) { // logging when user ends session
-    await userActivity(userTimeZone);
+async function logSessionCompletion(userTimeZone) { // logging when user ends session
+    await sessionCompletion(userTimeZone);
 
     // Eventually, we'll want to update the GUI
     document.dispatchEvent(new Event('updateStreak'));

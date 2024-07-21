@@ -3,8 +3,8 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="description" content="hyperchill.io is a time tracker which collects and visualizes data concerning the duration and quality of deep work.">
-        <title>hyperchill.io: Online Productivity Time Tracker</title>
+        <meta name="description" content="Hyperchill.io is a time tracker which collects and visualizes data concerning the duration and quality of deep work.">
+        <title>Hyperchill.io: Online Productivity Time Tracker</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <link rel='stylesheet' href='/css/styles.css'>
@@ -134,6 +134,24 @@
                 <div id="confirmLabelDeletionBtnContainer">
                     <button id="confirmLabelDeletionYesBtn">Yes</button>
                     <button id="confirmLabelDeletionNoBtn">No</button>
+                </div>
+            </div>
+            <div id="previousSessionStartedPopup">
+                <div d="previousSessionStartedPromptContainer">
+                    <p id="previousSessionText">A previous session was started, but never ended. Would you like to: </p>
+                    <div class="previousSessionStartedOption">
+                        <label for="invalidatePreviousSessionInput">
+                            <input type="radio" id="invalidatePreviousSessionInput" class="sessionInput" name="options" required checked>
+                            Invalidate previous session and continue (recommended)
+                        </label>
+                    </div>
+                    <div class="previousSessionStartedOption">
+                        <label for="quitCurrentSessionInput">
+                            <input type="radio" id="quitCurrentSessionInput" class="sessionInput" name="options" required>
+                            Quit current session
+                        </label>
+                    </div>
+                    <button id="previousSessionStartedOkBtn" type="submit">Ok</button>
                 </div>
             </div>
         </div>

@@ -220,6 +220,11 @@ export const confirmLabelDeletionYesBtn = document.getElementById("confirmLabelD
 export const confirmLabelDeletionNoBtn = document.getElementById("confirmLabelDeletionNoBtn");
 export const confirmLabelDeletionText = document.getElementById("confirmLabelDeletionText");
 
+export const previousSessionStartedPopup = document.getElementById("previousSessionStartedPopup");
+export const previousSessionStartedOkBtn = document.getElementById("previousSessionStartedOkBtn");
+export const invalidatePreviousSessionInput = document.getElementById("invalidatePreviousSessionInput");
+export const quitCurrentSessionInput = document.getElementById("quitCurrentSessionInput");
+
 export let hoverTimer;
 export var backgroundVideoSource = document.getElementById('background-video-source');
 export var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);

@@ -16,11 +16,21 @@ const User = db.model("User", {
     userDevice: { type: String },
     loginMethod: { type: String }
   }],
-  activityTimeArr: [{ // this effectively contains a count of the number of session the user has logged
+  lastLogin: {
+    loginDate: { type: Date },
+    userAgent: { type: String },
+    userDevice: { type: String },
+    loginMethod: { type: String }
+  },
+  sessionCompletionTimeArr: [{ // this effectively contains a count of the number of session the user has logged
     timeZone: { type: String },
-    activityDateUTC: { type: Date }
+    sessionCompletionDateUTC: { type: Date }
   }],
   lastIntervalSwitch: { type: Date }, // last time the user (value gets replaced each time user switches interval)
+  lastActivity: { type: Date },
+  sessionRunning: { type: Boolean },
+  invaliDate: { type: Date },
+  sessionStartTimeArr: [{ type: Date }],
   settings: {
     pomodoro: {
       notificationToggle: { type: Boolean, default: false },

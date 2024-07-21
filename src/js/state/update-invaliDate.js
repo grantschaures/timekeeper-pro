@@ -1,11 +1,11 @@
-export async function lastIntervalSwitch(intervalSwitchCount, sessionStartTime) {
+export async function updateInvaliDate(invaliDate) {
     try {
-        const response = await fetch('/api/data/last-interval-switch', {
+        const response = await fetch('/api/data/update-invaliDate', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ intervalSwitchCount, sessionStartTime })
+            body: JSON.stringify({ invaliDate })
         });
 
         if (!response.ok) {
@@ -16,9 +16,9 @@ export async function lastIntervalSwitch(intervalSwitchCount, sessionStartTime) 
         }
 
         const data = await response.json();
-        // console.log(data);
+        // console.log("Settings updated successfully:", data);
     } catch (error) {
-        console.error('Failed to update last interval switch date:', error);
+        console.error('Failed to update invaliDate:', error);
         alert("Your session has expired. Please log in again.");
         window.location.href = "/login";
     }

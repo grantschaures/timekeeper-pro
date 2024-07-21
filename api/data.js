@@ -11,6 +11,125 @@ router.use(express.json());
 // Middleware for checking and renewing the token
 router.use(checkAndRenewToken);
 
+router.post("/update-invaliDate", async function(req, res) {
+    // Assuming the JWT is sent automatically in cookie headers
+    const token = req.cookies.token;  // Extract the JWT from cookies directly
+    const { invaliDate } = req.body;
+    let sessionStartDate = new Date(invaliDate);
+
+    if (!token) {
+        return res.status(401).json({ isLoggedIn: false });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        const userId = decoded.userId;
+        const user = await User.findById(userId);
+
+        if (user) {
+            user.invaliDate = sessionStartDate;
+            console.log(sessionStartDate);
+
+            await user.save();
+            res.json({ success: true, message: 'delete-account endpoint reached successfully' });
+        } else {
+            return res.status(401).json({ 
+                isLoggedIn: false,
+                message: "User not found"
+            });
+        }
+    } catch (error) {
+        return res.status(401).json({
+            isLoggedIn: false,
+            message: "Session is not valid: " + error.message
+        });
+    }
+});
+
+router.post("/check-invaliDate", async function(req, res) {
+    // Assuming the JWT is sent automatically in cookie headers
+    const token = req.cookies.token;  // Extract the JWT from cookies directly
+    const { sessionStartTime } = req.body;
+    let sessionStartDate = new Date(sessionStartTime);
+
+    console.log(sessionStartDate);
+    
+    if (!token) {
+        return res.status(401).json({ isLoggedIn: false });
+    }
+    
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        const userId = decoded.userId;
+        const user = await User.findById(userId);
+        
+        let invaliDate = user.invaliDate;
+
+        let sessionStartTimeArr = user.sessionStartTimeArr;
+        console.log(sessionStartTimeArr);
+        let targetDate = new Date(sessionStartDate);
+        const index = sessionStartTimeArr.findIndex(dateString => new Date(dateString).getTime() === targetDate.getTime());
+        console.log(index);
+
+        let raceCondition;
+        if (index !== -1 && sessionStartTimeArr[index + 1] && (new Date(sessionStartTimeArr[index + 1]).getTime() - new Date(sessionStartTimeArr[index]).getTime() < 1000)) {
+            raceCondition = true;
+        } else {
+            raceCondition = false;
+        }
+
+        let logAction;
+        if ((sessionStartDate < invaliDate) || (raceCondition)) {
+            logAction = false;
+        } else {
+            logAction = true;
+        }
+
+        if (user) {
+            res.json({ logSession: logAction, success: true, message: 'delete-account endpoint reached successfully' });
+        } else {
+            return res.status(401).json({ 
+                isLoggedIn: false,
+                message: "User not found"
+            });
+        }
+    } catch (error) {
+        return res.status(401).json({
+            isLoggedIn: false,
+            message: "Session is not valid: " + error.message
+        });
+    }
+});
+
+router.post("/check-session", async function(req, res) {
+    // Assuming the JWT is sent automatically in cookie headers
+    const token = req.cookies.token;  // Extract the JWT from cookies directly
+
+    if (!token) {
+        return res.status(401).json({ isLoggedIn: false });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        const userId = decoded.userId;
+        const user = await User.findById(userId);
+
+        if (user) {
+            res.json({ sessionStatus: user.sessionRunning, success: true, message: 'delete-account endpoint reached successfully' });
+        } else {
+            return res.status(401).json({ 
+                isLoggedIn: false,
+                message: "User not found"
+            });
+        }
+    } catch (error) {
+        return res.status(401).json({
+            isLoggedIn: false,
+            message: "Session is not valid: " + error.message
+        });
+    }
+});
+
 router.delete("/delete-account", async function(req, res) {
     // Assuming the JWT is sent automatically in cookie headers
     const token = req.cookies.token;  // Extract the JWT from cookies directly
@@ -50,6 +169,7 @@ router.delete("/delete-account", async function(req, res) {
 router.post("/last-interval-switch", async function(req, res) {
     // Assuming the JWT is sent automatically in cookie headers
     const token = req.cookies.token;  // Extract the JWT from cookies directly
+    const { intervalSwitchCount, sessionStartTime } = req.body;
 
     if (!token) {
         return res.status(401).json({ isLoggedIn: false });
@@ -64,6 +184,12 @@ router.post("/last-interval-switch", async function(req, res) {
             let currentUTCDate = new Date();
 
             user.lastIntervalSwitch = currentUTCDate;
+            user.lastActivity = currentUTCDate;
+
+            if (intervalSwitchCount === 1) {
+                user.sessionRunning = true;
+                user.sessionStartTimeArr.push(sessionStartTime);
+            }
 
             await user.save();
             res.json({ success: true, message: 'User last interval switch time logged' });
@@ -82,7 +208,7 @@ router.post("/last-interval-switch", async function(req, res) {
     }
 });
 
-router.post("/user-activity", async function(req, res) {
+router.post("/session-completion", async function(req, res) {
     // Assuming the JWT is sent automatically in cookie headers
     const token = req.cookies.token;  // Extract the JWT from cookies directly
     const { userTimeZone } = req.body;
@@ -104,10 +230,14 @@ router.post("/user-activity", async function(req, res) {
             // currentUTCDate = new Date(testDateStr);
             // TESTING
 
-            user.activityTimeArr.push({
+            user.sessionCompletionTimeArr.push({
                 timeZone: userTimeZone,
-                activityDateUTC: currentUTCDate
+                sessionCompletionDateUTC: currentUTCDate
             });
+
+            user.sessionRunning = false;
+
+            user.lastActivity = currentUTCDate;
 
             await user.save();
             res.json({ success: true, message: 'User activity time logged' });
@@ -138,9 +268,11 @@ router.post("/update-showing-time-left", async function(req, res) {
     try {
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
         const user = await User.findById(decoded.userId);
+        let currentUTCDate = new Date();
 
         if (user) {
             user.showingTimeLeft = showingTimeLeft;
+            user.lastActivity = currentUTCDate;
             await user.save();
             res.json({ success: true, message: 'Target Hours updated successfully' });
         } else {
@@ -169,6 +301,7 @@ router.post("/update-target-hours", async function(req, res) {
     try {
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
         const user = await User.findById(decoded.userId);
+        let currentUTCDate = new Date();
 
         if (user) {
             if (targetHours === 0) {
@@ -176,6 +309,8 @@ router.post("/update-target-hours", async function(req, res) {
             } else {
                 user.targetHours = targetHours;
             }
+            user.lastActivity = currentUTCDate;
+
             await user.save();
             res.json({ success: true, message: 'Target Hours updated successfully' });
         } else {
@@ -205,6 +340,7 @@ router.post("/update-settings", async function(req, res) {
     try {
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
         const user = await User.findById(decoded.userId);
+        let currentUTCDate = new Date();
 
         if (user) {
             // Use dot notation to update nested fields
@@ -213,6 +349,8 @@ router.post("/update-settings", async function(req, res) {
                     user.settings[section][key] = value;
                 }
             }
+
+            user.lastActivity = currentUTCDate;
 
             await user.save();
             res.json({ success: true, message: 'Settings updated successfully' });
@@ -240,6 +378,8 @@ router.post("/update-labels", async function(req, res) {
     const selectedLabelDict = labelArr[1];
     const lastLabelIdNum = labelArr[2];
     const lastSelectedEmojiId = labelArr[3];
+
+    let currentUTCDate = new Date();
 
     if (!token) {
         return res.status(401).json({ isLoggedIn: false });
@@ -272,10 +412,14 @@ router.post("/update-labels", async function(req, res) {
         note.selectedLabels = selectedLabelDict;
         note.lastLabelIdNum = lastLabelIdNum;
         note.lastSelectedEmojiId = lastSelectedEmojiId;
+
+        user.lastActivity = currentUTCDate;
         // console.log(labels);
 
         // Save the updated note
         await note.save();
+
+        await user.save();
 
         return res.json({
             isLoggedIn: true,
@@ -295,7 +439,7 @@ router.post("/update-notes", async function(req, res) {
     const token = req.cookies.token;  // Extract the JWT from cookies directly
     const { notesObj } = req.body;
 
-    console.log(notesObj);
+    let currentUTCDate = new Date();
 
     if (!token) {
         return res.status(401).json({ isLoggedIn: false });
@@ -327,8 +471,12 @@ router.post("/update-notes", async function(req, res) {
         note.noteTasks = notesObj.notesArr;
         note.lastTaskInputIdNum = notesObj.lastTaskInputIdNum;
 
+        user.lastActivity = currentUTCDate;
+
         // Save the updated note
         await note.save();
+
+        await user.save();
 
         return res.json({
             isLoggedIn: true,

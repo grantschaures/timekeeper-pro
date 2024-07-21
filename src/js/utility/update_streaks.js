@@ -18,8 +18,8 @@ function checkUserSession() {
 }
 
 export function updateStreak(userData) {
-    const activityTimeData = userData.activityTimeArr; // contains array of objects w/ timeZone and activityDateUTC
-    const activityDates = activityTimeData.map(entry => convertUTCToLocalTimeZone(entry.activityDateUTC, entry.timeZone));
+    const activityTimeData = userData.sessionCompletionTimeArr; // contains array of objects w/ timeZone and activityDateUTC
+    const activityDates = activityTimeData.map(entry => convertUTCToLocalTimeZone(entry.sessionCompletionDateUTC, entry.timeZone));
 
     let streak = calculateConsecutiveDays(activityDates);
     streaksCount.innerText = streak;
