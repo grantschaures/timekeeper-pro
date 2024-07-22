@@ -7,18 +7,15 @@ import {
     labelToDeleteContainer,
     confirmLabelDeletionText
 } from '../modules/dom-elements.js';
-
 import { flags as indexflags } from '../modules/index-objects.js';
-
 import { state as navigationState } from '../modules/navigation-objects.js';
-
 import { notesFlags, counters, state, flags, emojiMap, tutorialContainerMap, fontSizeArr, fontNumArr, labelDict, notesArr, selectedLabelDict, labelFlags, labelArrs } from '../modules/notes-objects.js';
-
 import { sessionState } from '../modules/state-objects.js';
 
-import { updateUserSettings } from '../state/update-settings.js';
-import { updateLabels } from '../state/update-labels.js';
-import { updateNotes } from '../state/update-notes.js';
+import { updateUserSettings } from '../state/update-settings.js'; // minified
+import { updateLabels } from '../state/update-labels.js'; // minified
+import { updateDeletedLabels } from '../state/update-deleted-labels.js'; // minified
+import { updateNotes } from '../state/update-notes.js'; // minified
 
 // main event listener
 document.addEventListener("stateUpdated", function() {
@@ -1061,6 +1058,10 @@ function labelDeletion(addDoneContainer, tagSelectionDivider, flags, state) {
     removeTagSelectionDivider(addDoneContainer, tagSelectionDivider, flags);
     
     const labelName = labelDict[state.labelToDeleteId];
+
+    // create label key-value pair to insert into deletedLabels
+    let deletedLabel = {};
+    deletedLabel[state.labelToDeleteId] = labelName;
     
     // edit labelDict
     delete labelDict[state.labelToDeleteId];
@@ -1074,6 +1075,8 @@ function labelDeletion(addDoneContainer, tagSelectionDivider, flags, state) {
     if (sessionState.loggedIn) {
         const labelArr = [labelDict, selectedLabelDict, counters.lastLabelIdNum, state.lastSelectedEmojiId];
         updateLabels(labelArr);
+
+        updateDeletedLabels(deletedLabel);
     }
 }
 

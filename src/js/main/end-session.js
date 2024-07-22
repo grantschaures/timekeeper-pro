@@ -15,13 +15,11 @@ document.addEventListener("stateUpdated", function() {
         if ((flags.sessionInProgress) && (flags.canEndSession)) {
             times.end = Date.now();
 
-            if (sessionState.loggedIn) {
-                // IF START OF SESSION IS BEFORE invaliDate, RESET GUI BUT DON'T LOG SESSION
-                let logSessionActivity = await checkInvaliDate(times.start); // T or F
-                if (logSessionActivity) {
-                    // (1) Collect all necessary information about the session
-                    await logSession();
-                }
+            // IF START OF SESSION IS BEFORE invaliDate, RESET GUI BUT DON'T LOG SESSION
+            let logSessionActivity = await checkInvaliDate(times.start); // T or F
+            if ((sessionState.loggedIn) && (logSessionActivity)) {
+                // (1) Collect all necessary information about the session
+                await logSession();
             }
 
             // (2) Reset everything to the default state

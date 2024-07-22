@@ -295,7 +295,7 @@ document.addEventListener("stateUpdated", function() {
         isClickNotOnBlogElements(event, blogMenuContainer, blog_post_container, menuBtn, blog_exit);
         isClickNotOnSettingsElements(event, settingsContainer, settings_exit, body);
     
-        const excludeTargets = [blogBtn, blog_icon, blogMenuContainer, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, aboutIconNotes, popupOverlay]; // all stuff in the main menu and question menu + others
+        const excludeTargets = [blogBtn, blog_icon, blogMenuContainer, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, aboutIconNotes, popupOverlay, start_stop_btn]; // all stuff in the main menu and question menu + others
         const containers = [aboutContainer, blogContainer, menuBtn, questionIcon, blog_post_container, settingsContainer, popupQuestionMenu, deleteAccountPopup, accountPopup, loginQuestionMenuContainer, shortcutsPopup, confirmLabelDeletionPopup, labelSelectionRow];
         const exitTargets = [about_exit, blog_exit, blog_post_exit];
         const exitTargetsWithSettings = [about_exit, blog_exit, blog_post_exit, settings_exit];

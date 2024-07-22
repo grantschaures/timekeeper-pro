@@ -127,6 +127,10 @@ const notesReplacements = [
         replacement: "import { updateLabels } from '../minified/update-labels.min.js';"
     },
     {
+        pattern: /import { updateDeletedLabels } from '..\/state\/update-deleted-labels.js';/g,
+        replacement: "import { updateDeletedLabels } from '../minified/update-deleted-labels.min.js';"
+    },
+    {
         pattern: /import { updateNotes } from '..\/state\/update-notes.js';/g,
         replacement: "import { updateNotes } from '../minified/update-notes.min.js';"
     },

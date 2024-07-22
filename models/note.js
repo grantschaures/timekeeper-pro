@@ -15,6 +15,11 @@ const Note = db.model("Note", {
     of: String,
     default: {}
   },
+  deletedLabels: {
+    type: Map,
+    of: String,
+    default: {}
+  },
   lastLabelIdNum: { type: Number, default: 3 },
   lastSelectedEmojiId: { type: String, default: "books-emoji" },
   noteTasks: [

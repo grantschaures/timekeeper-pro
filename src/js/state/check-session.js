@@ -1,4 +1,4 @@
-import { popupOverlay, previousSessionStartedPopup, previousSessionStartedOkBtn } from '../modules/dom-elements.js';
+import { popupOverlay, previousSessionStartedPopup, previousSessionStartedOkBtn, body } from '../modules/dom-elements.js';
 export async function checkSession() {
     try {
         const response = await fetch('/api/data/check-session', {
@@ -21,6 +21,7 @@ export async function checkSession() {
         console.log(data.sessionStatus);
 
         if (data.sessionStatus) {
+            body.style.overflowY = "hidden";
             popupOverlay.style.display = "flex";
             previousSessionStartedPopup.style.display = "flex";
             setTimeout(() => {

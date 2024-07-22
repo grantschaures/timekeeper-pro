@@ -368,6 +368,63 @@ router.post("/update-settings", async function(req, res) {
     }
 });
 
+router.post("/update-deleted-labels", async function(req, res) {
+    // Assuming the JWT is sent automatically in cookie headers
+    const token = req.cookies.token;  // Extract the JWT from cookies directly
+    const { deletedLabel } = req.body;
+    console.log(deletedLabel);
+
+
+    if (!token) {
+        return res.status(401).json({ isLoggedIn: false });
+    }
+
+    try {
+        // Verify the token
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        const user = await User.findById(decoded.userId);
+
+        if (!user) {
+            return res.status(401).json({ 
+                isLoggedIn: false,
+                message: "User not found"
+            });
+        }
+
+        // Find the note associated with the user
+        const note = await Note.findOne({ userId: user._id });
+
+        if (!note) {
+            return res.status(404).json({
+                isLoggedIn: true,
+                message: "Note not found"
+            });
+        }
+
+        // Update the deleted labels object
+        if (!note.deletedLabels) {
+            note.deletedLabels = new Map();
+        }
+
+        for (const [key, value] of Object.entries(deletedLabel)) {
+            note.deletedLabels.set(key, value);
+        }
+
+        await note.save();
+
+        return res.json({
+            isLoggedIn: true,
+            message: "Labels updated successfully",
+            note: note
+        });
+    } catch (error) {
+        return res.status(401).json({
+            isLoggedIn: false,
+            message: "Session is not valid: " + error.message
+        });
+    }
+});
+
 router.post("/update-labels", async function(req, res) {
     // Assuming the JWT is sent automatically in cookie headers
     const token = req.cookies.token;  // Extract the JWT from cookies directly

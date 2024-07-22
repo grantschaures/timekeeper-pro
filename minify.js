@@ -13,6 +13,7 @@ let files = [
     'src/js/api/google-signin.js',
     'src/js/state/state.js',
     'src/js/state/update-labels.js',
+    'src/js/state/update-deleted-labels.js',
     'src/js/state/update-notes.js',
     'src/js/state/update-settings.js',
     'src/js/state/update-target-hours.js',
