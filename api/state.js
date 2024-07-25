@@ -24,7 +24,7 @@ router.get("/sessionValidation", async function(req, res) {
         if (user) {
             const note = await Note.findOne({ userId: user._id });
             const report = await Report.findOne({ userId: user._id });
-            return res.json({ 
+            return res.json({ // the only place where isLoggedIn = true matters
                 user: user,
                 note: note,
                 report: report,

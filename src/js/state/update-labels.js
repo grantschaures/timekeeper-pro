@@ -12,6 +12,12 @@ export async function updateLabels(labelArr) {
             const errorText = await response.text();
             console.error('Response status:', response.status);
             console.error('Response body:', errorText);
+
+            if (response.status === 420) {
+                alert("Your session has expired. Please log in again.");
+                window.location.href = "/login";
+            }
+
             throw new Error('Network response was not ok');
         }
 
@@ -19,7 +25,5 @@ export async function updateLabels(labelArr) {
         // console.log("notes updated successfully:", data);
     } catch (error) {
         console.error('Failed to update labels:', error);
-        alert("Your session has expired. Please log in again.");
-        window.location.href = "/login";
     }
 }

@@ -35,7 +35,5 @@ export async function checkSession() {
 
     } catch (error) {
         console.error('Failed to update check if session is running:', error);
-        alert("Your session has expired. Please log in again.");
-        window.location.href = "/login";
     }
 }

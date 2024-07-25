@@ -25,7 +25,5 @@ export async function checkInvaliDate(sessionStartTime) {
 
     } catch (error) {
         console.error('Failed to update check invaliDate:', error);
-        alert("Your session has expired. Please log in again.");
-        window.location.href = "/login";
     }
 }

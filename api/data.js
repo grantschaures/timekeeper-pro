@@ -9,7 +9,7 @@ require('dotenv').config();
 // Middleware for parsing JSON bodies
 router.use(express.json());
 
-// Middleware for checking and renewing the token
+// Middleware for checking and renewing the token (also checks if session token/ cookie has expired)
 router.use(checkAndRenewToken);
 
 router.post("/update-report", async function(req, res) {
@@ -19,7 +19,7 @@ router.post("/update-report", async function(req, res) {
     // console.log(session);
 
     if (!token) {
-        return res.status(401).json({ isLoggedIn: false, message: "Token was not found" });
+        return res.status(401).json({ message: "Token was not found" });
     }
 
     try {
@@ -34,7 +34,6 @@ router.post("/update-report", async function(req, res) {
 
             if (!report) {
                 return res.status(404).json({
-                    isLoggedIn: true,
                     message: "Report not found"
                 });
             }
@@ -42,15 +41,13 @@ router.post("/update-report", async function(req, res) {
             await report.save();
             res.json({ success: true, message: 'update-report endpoint reached successfully' });
         } else {
-            return res.status(401).json({ 
-                isLoggedIn: false,
+            return res.status(404).json({ 
                 message: "User not found"
             });
         }
     } catch (error) {
         return res.status(401).json({
-            isLoggedIn: false,
-            message: "Session is not valid: " + error.message
+            message: "The server was unable to process the request: " + error.message
         });
     }
 });
@@ -62,7 +59,7 @@ router.post("/update-invaliDate", async function(req, res) {
     let sessionStartDate = new Date(invaliDate);
 
     if (!token) {
-        return res.status(401).json({ isLoggedIn: false });
+        return res.status(401).json({ message: 'Unauthorized: No token provided' });
     }
 
     try {
@@ -77,15 +74,13 @@ router.post("/update-invaliDate", async function(req, res) {
             await user.save();
             res.json({ success: true, message: 'update-invaliDate endpoint reached successfully' });
         } else {
-            return res.status(401).json({ 
-                isLoggedIn: false,
+            return res.status(404).json({ 
                 message: "User not found"
             });
         }
     } catch (error) {
         return res.status(401).json({
-            isLoggedIn: false,
-            message: "Session is not valid: " + error.message
+            message: "The server was unable to process the request: " + error.message
         });
     }
 });
@@ -97,7 +92,7 @@ router.post("/check-invaliDate", async function(req, res) {
     let sessionStartDate = new Date(sessionStartTime);
 
     if (!token) {
-        return res.status(401).json({ isLoggedIn: false });
+        return res.status(401).json({ message: 'Unauthorized: No token provided' });
     }
     
     try {
@@ -129,15 +124,13 @@ router.post("/check-invaliDate", async function(req, res) {
         if (user) {
             res.json({ logSession: logAction, success: true, message: 'check-invaliDate endpoint reached successfully' });
         } else {
-            return res.status(401).json({ 
-                isLoggedIn: false,
+            return res.status(404).json({ 
                 message: "User not found"
             });
         }
     } catch (error) {
         return res.status(401).json({
-            isLoggedIn: false,
-            message: "Session is not valid: " + error.message
+            message: "The server was unable to process the request: " + error.message
         });
     }
 });
@@ -147,7 +140,7 @@ router.post("/check-session", async function(req, res) {
     const token = req.cookies.token;  // Extract the JWT from cookies directly
 
     if (!token) {
-        return res.status(401).json({ isLoggedIn: false });
+        return res.status(401).json({ message: 'Unauthorized: No token provided' });
     }
 
     try {
@@ -158,15 +151,13 @@ router.post("/check-session", async function(req, res) {
         if (user) {
             res.json({ sessionStatus: user.sessionRunning, success: true, message: 'check-session endpoint reached successfully' });
         } else {
-            return res.status(401).json({ 
-                isLoggedIn: false,
+            return res.status(404).json({
                 message: "User not found"
             });
         }
     } catch (error) {
         return res.status(401).json({
-            isLoggedIn: false,
-            message: "Session is not valid: " + error.message
+            message: "The server was unable to process the request: " + error.message
         });
     }
 });
@@ -176,7 +167,7 @@ router.delete("/delete-account", async function(req, res) {
     const token = req.cookies.token;  // Extract the JWT from cookies directly
 
     if (!token) {
-        return res.status(401).json({ isLoggedIn: false });
+        return res.status(401).json({ message: 'Unauthorized: No token provided' });
     }
 
     try {
@@ -196,15 +187,13 @@ router.delete("/delete-account", async function(req, res) {
 
             res.json({ success: true, message: 'delete-account endpoint reached successfully' });
         } else {
-            return res.status(401).json({ 
-                isLoggedIn: false,
+            return res.status(404).json({ 
                 message: "User not found"
             });
         }
     } catch (error) {
         return res.status(401).json({
-            isLoggedIn: false,
-            message: "Session is not valid: " + error.message
+            message: "The server was unable to process the request: " + error.message
         });
     }
 });
@@ -216,7 +205,7 @@ router.post("/last-interval-switch", async function(req, res) {
     const { intervalSwitchCount, sessionStartTime } = req.body;
 
     if (!token) {
-        return res.status(401).json({ isLoggedIn: false });
+        return res.status(401).json({ message: 'Unauthorized: No token provided' });
     }
 
     try {
@@ -239,15 +228,13 @@ router.post("/last-interval-switch", async function(req, res) {
             res.json({ success: true, message: 'User last interval switch time logged' });
 
         } else {
-            return res.status(401).json({ 
-                isLoggedIn: false,
+            return res.status(404).json({ 
                 message: "User not found"
             });
         }
     } catch (error) {
         return res.status(401).json({
-            isLoggedIn: false,
-            message: "Session is not valid: " + error.message
+            message: "The server was unable to process the request: " + error.message
         });
     }
 });
@@ -258,7 +245,7 @@ router.post("/session-completion", async function(req, res) {
     const { userTimeZone } = req.body;
 
     if (!token) {
-        return res.status(401).json({ isLoggedIn: false });
+        return res.status(401).json({ message: 'Unauthorized: No token provided' });
     }
 
     try {
@@ -287,15 +274,13 @@ router.post("/session-completion", async function(req, res) {
             res.json({ success: true, message: 'User activity time logged' });
 
         } else {
-            return res.status(401).json({ 
-                isLoggedIn: false,
+            return res.status(404).json({ 
                 message: "User not found"
             });
         }
     } catch (error) {
         return res.status(401).json({
-            isLoggedIn: false,
-            message: "Session is not valid: " + error.message
+            message: "The server was unable to process the request: " + error.message
         });
     }
 });
@@ -306,7 +291,7 @@ router.post("/update-showing-time-left", async function(req, res) {
     const { showingTimeLeft } = req.body;
 
     if (!token) {
-        return res.status(401).json({ isLoggedIn: false });
+        return res.status(401).json({ message: 'Unauthorized: No token provided' });
     }
 
     try {
@@ -320,15 +305,13 @@ router.post("/update-showing-time-left", async function(req, res) {
             await user.save();
             res.json({ success: true, message: 'Target Hours updated successfully' });
         } else {
-            return res.status(401).json({ 
-                isLoggedIn: false,
+            return res.status(404).json({ 
                 message: "User not found"
             });
         }
     } catch (error) {
         return res.status(401).json({
-            isLoggedIn: false,
-            message: "Session is not valid: " + error.message
+            message: "The server was unable to process the request: " + error.message
         });
     }
 });
@@ -339,7 +322,7 @@ router.post("/update-target-hours", async function(req, res) {
     const { targetHours } = req.body;
 
     if (!token) {
-        return res.status(401).json({ isLoggedIn: false });
+        return res.status(401).json({ message: 'Unauthorized: No token provided' });
     }
 
     try {
@@ -358,15 +341,13 @@ router.post("/update-target-hours", async function(req, res) {
             await user.save();
             res.json({ success: true, message: 'Target Hours updated successfully' });
         } else {
-            return res.status(401).json({ 
-                isLoggedIn: false,
+            return res.status(404).json({ 
                 message: "User not found"
             });
         }
     } catch (error) {
         return res.status(401).json({
-            isLoggedIn: false,
-            message: "Session is not valid: " + error.message
+            message: "The server was unable to process the request: " + error.message
         });
     }
 });
@@ -378,7 +359,7 @@ router.post("/update-settings", async function(req, res) {
     console.log(settings);
 
     if (!token) {
-        return res.status(401).json({ isLoggedIn: false });
+        return res.status(401).json({ message: 'Unauthorized: No token provided' });
     }
 
     try {
@@ -399,15 +380,13 @@ router.post("/update-settings", async function(req, res) {
             await user.save();
             res.json({ success: true, message: 'Settings updated successfully' });
         } else {
-            return res.status(401).json({ 
-                isLoggedIn: false,
+            return res.status(404).json({ 
                 message: "User not found"
             });
         }
     } catch (error) {
         return res.status(401).json({
-            isLoggedIn: false,
-            message: "Session is not valid: " + error.message
+            message: "The server was unable to process the request: " + error.message
         });
     }
 });
@@ -420,7 +399,7 @@ router.post("/update-deleted-labels", async function(req, res) {
 
 
     if (!token) {
-        return res.status(401).json({ isLoggedIn: false });
+        return res.status(401).json({ message: 'Unauthorized: No token provided' });
     }
 
     try {
@@ -429,8 +408,7 @@ router.post("/update-deleted-labels", async function(req, res) {
         const user = await User.findById(decoded.userId);
 
         if (!user) {
-            return res.status(401).json({ 
-                isLoggedIn: false,
+            return res.status(404).json({ 
                 message: "User not found"
             });
         }
@@ -440,7 +418,6 @@ router.post("/update-deleted-labels", async function(req, res) {
 
         if (!note) {
             return res.status(404).json({
-                isLoggedIn: true,
                 message: "Note not found"
             });
         }
@@ -457,14 +434,12 @@ router.post("/update-deleted-labels", async function(req, res) {
         await note.save();
 
         return res.json({
-            isLoggedIn: true,
             message: "Labels updated successfully",
             note: note
         });
     } catch (error) {
         return res.status(401).json({
-            isLoggedIn: false,
-            message: "Session is not valid: " + error.message
+            message: "The server was unable to process the request: " + error.message
         });
     }
 });
@@ -483,7 +458,7 @@ router.post("/update-labels", async function(req, res) {
     let currentUTCDate = new Date();
 
     if (!token) {
-        return res.status(401).json({ isLoggedIn: false });
+        return res.status(401).json({ message: 'Unauthorized: No token provided' });
     }
 
     try {
@@ -492,8 +467,7 @@ router.post("/update-labels", async function(req, res) {
         const user = await User.findById(decoded.userId);
 
         if (!user) {
-            return res.status(401).json({ 
-                isLoggedIn: false,
+            return res.status(404).json({ 
                 message: "User not found"
             });
         }
@@ -503,7 +477,6 @@ router.post("/update-labels", async function(req, res) {
 
         if (!note) {
             return res.status(404).json({
-                isLoggedIn: true,
                 message: "Note not found"
             });
         }
@@ -523,14 +496,12 @@ router.post("/update-labels", async function(req, res) {
         await user.save();
 
         return res.json({
-            isLoggedIn: true,
             message: "Labels updated successfully",
             note: note
         });
     } catch (error) {
         return res.status(401).json({
-            isLoggedIn: false,
-            message: "Session is not valid: " + error.message
+            message: "The server was unable to process the request: " + error.message
         });
     }
 });
@@ -543,7 +514,7 @@ router.post("/update-notes", async function(req, res) {
     let currentUTCDate = new Date();
 
     if (!token) {
-        return res.status(401).json({ isLoggedIn: false });
+        return res.status(401).json({ message: 'Unauthorized: No token provided' });
     }
     
     try {
@@ -552,8 +523,7 @@ router.post("/update-notes", async function(req, res) {
         const user = await User.findById(decoded.userId);
         
         if (!user) {
-            return res.status(401).json({ 
-                isLoggedIn: false,
+            return res.status(404).json({ 
                 message: "User not found"
             });
         }
@@ -563,7 +533,6 @@ router.post("/update-notes", async function(req, res) {
 
         if (!note) {
             return res.status(404).json({
-                isLoggedIn: true,
                 message: "Note not found"
             });
         }
@@ -580,14 +549,12 @@ router.post("/update-notes", async function(req, res) {
         await user.save();
 
         return res.json({
-            isLoggedIn: true,
             message: "Labels updated successfully",
             note: note
         });
     } catch (error) {
         return res.status(401).json({
-            isLoggedIn: false,
-            message: "Session is not valid: " + error.message
+            message: "The server was unable to process the request: " + error.message
         });
     }
 });
@@ -602,7 +569,7 @@ function checkAndRenewToken(req, res, next) {
     const token = req.cookies.token;
 
     if (!token) {
-        return res.status(401).json({ isLoggedIn: false, message: "No token provided" });
+        return res.status(420).json({ message: "Your session has expired, please log in again." });
     }
 
     try {
@@ -636,8 +603,7 @@ function checkAndRenewToken(req, res, next) {
         next();
     } catch (error) {
         return res.status(401).json({
-            isLoggedIn: false,
-            message: "Session is not valid: " + error.message
+            message: "The server was unable to process the request: " + error.message
         });
     }
 }

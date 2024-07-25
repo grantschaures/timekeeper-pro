@@ -12,6 +12,12 @@ export async function lastIntervalSwitch(intervalSwitchCount, sessionStartTime) 
             const errorText = await response.text();
             console.error('Response status:', response.status);
             console.error('Response body:', errorText);
+
+            if (response.status === 420) {
+                alert("Your session has expired. Please log in again.");
+                window.location.href = "/login";
+            }
+
             throw new Error('Network response was not ok');
         }
 
@@ -19,7 +25,5 @@ export async function lastIntervalSwitch(intervalSwitchCount, sessionStartTime) 
         // console.log(data);
     } catch (error) {
         console.error('Failed to update last interval switch date:', error);
-        alert("Your session has expired. Please log in again.");
-        window.location.href = "/login";
     }
 }
