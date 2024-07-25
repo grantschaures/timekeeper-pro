@@ -1,14 +1,16 @@
 const express = require("express");
 const User = require("../models/user");
 const Note = require("../models/note");
+const Report = require("../models/report");
 const router = express.Router();  // This is a slight refactor for clarity
 const jwt = require('jsonwebtoken');
+const { report } = require("./data");
 require('dotenv').config();
 
 router.use(express.json());
 
-router.post("/sessionValidation", async function(req, res) {
-    // Assuming the JWT is sent automatically in cookie headers
+router.get("/sessionValidation", async function(req, res) {
+
     const token = req.cookies.token;  // Extract the JWT from cookies directly
 
     if (!token) {
@@ -21,9 +23,11 @@ router.post("/sessionValidation", async function(req, res) {
 
         if (user) {
             const note = await Note.findOne({ userId: user._id });
+            const report = await Report.findOne({ userId: user._id });
             return res.json({ 
                 user: user,
                 note: note,
+                report: report,
                 isLoggedIn: true
             });
         } else {

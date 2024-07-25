@@ -1,4 +1,4 @@
-import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selectedBackgroundIdTemp, selectedBackgroundId, timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, alertVolumes, alertSounds, counters, flags, tempStorage, settingsMappings, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, homeBackground, times } from '../modules/index-objects.js';
+import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selectedBackgroundIdTemp, selectedBackgroundId, timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, alertVolumes, alertSounds, counters, flags, tempStorage, settingsMappings, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, homeBackground, times, perHourData } from '../modules/index-objects.js';
 
 import { chimePath, bellPath, clock_tick, soundMap } from '../modules/sound-map.js';
 
@@ -142,7 +142,7 @@ document.addEventListener("stateUpdated", function() {
         updateLabelArrs(transitionTime, labelFlags, labelArrs);
         
         if (counters.startStop === 1) {
-            veryStartActions(startTimes, hyperChillLogoImage, flags, times);
+            veryStartActions(startTimes, hyperChillLogoImage, flags, times, counters, interruptionsNum);
             triggerSilentAlertAudioMobile(soundMap.Chime, soundMap.Bell, chimePath, bellPath, flags);
             animationsFadeOut(chillAnimation);
             startTimes.lastPomNotification = Date.now();
@@ -376,13 +376,23 @@ document.addEventListener("stateUpdated", function() {
         if (counters.interruptions > 0) {
             counters.interruptions--;
             interruptionsNum.textContent = counters.interruptions;
+
+            if (flags.sessionInProgress) {
+                intervalArrs.interruptionTime.pop();
+            }
         }
     })
-
+    
     incBtn.addEventListener("click", function() {
+        
         if (counters.interruptions < 1000) {
             counters.interruptions++;
             interruptionsNum.textContent = counters.interruptions;
+            
+            if (flags.sessionInProgress) {
+                let currentTime = Date.now();
+                intervalArrs.interruptionTime.push(currentTime);
+            }
         }
     })
 
@@ -1125,6 +1135,8 @@ document.addEventListener("stateUpdated", function() {
         
         display.textContent = `${hours}:${minutes}:${seconds}`;
 
+        updateDataPerHourCheck();
+
         timeRecovery(flags, counters, startTimes, elapsedTime, start_stop_btn, recoverPomState, recoverBreakState, timeAmount, total_time_display, timeConvert, progressBar, progressContainer, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min, flowmodoroWorker, suggestionWorker, isMobile, isIpad);
     }
 
@@ -1138,6 +1150,112 @@ document.addEventListener("stateUpdated", function() {
 // ------------------
 // HELPER FUNCTIONS
 // ------------------
+function updateDataPerHourCheck() {
+    let currentTime = Date.now();
+    let now = new Date(currentTime);
+    
+    // Calculate the start of the current hour
+    let startOfHour = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours()); // final date
+    let hourBeforeStartOfHour = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours() - 1); // initial date
+
+    if (checkStartOfHour(currentTime, startOfHour)) {
+        updateDataPerHour(intervalArrs, startOfHour, hourBeforeStartOfHour, perHourData);
+    }
+
+    // what are we trying to do here?
+    // we need to create an object containing the inDeepWork boolean, distractions, and deepWorkTime variables
+    // ...where the start of the hour Date acts as the key, and the value is the object
+    // this will then be added to the perHourDate object declared and exported in index-objects.js
+}
+
+// conditional to check if current time is 1 second or less after the start of an hour
+function checkStartOfHour(currentTime, startOfHour) {
+    // Get the timestamp for the start of the current hour
+    const startOfHourTimestamp = startOfHour.getTime();
+
+    // Calculate the difference between the current timestamp and the start of the hour
+    const difference = currentTime - startOfHourTimestamp;
+
+    // Check if the difference is one second (1000 milliseconds) or less
+    return difference <= 1000;
+}
+
+export function updateDataPerHour(intervalArrs, finalDate, initialDate, perHourData) {
+    let deepWorkTime = calculateDeepWorkPerHour(intervalArrs.transitionTime, finalDate, initialDate);
+    let distractions = calculateDistractionsPerHour(intervalArrs.interruptionTime, finalDate, initialDate);
+
+    let inDeepWork;
+    if (deepWorkTime > 0) {
+        inDeepWork = true;
+    } else {
+        inDeepWork = false;
+    }
+
+    let perHourDataObj = {
+        "inDeepWork": inDeepWork,
+        "distractions": distractions,
+        "deepWorkTime": deepWorkTime
+    }
+
+    let currentDateKey = initialDate.toISOString();
+    perHourData[currentDateKey] = perHourDataObj;
+}
+
+function calculateDeepWorkPerHour(transitionTimes, finalDate, initialDate) {
+    
+    let breakInterval = false;
+    let deepWorkSumArr = [];
+
+    let finalTime = finalDate.getTime();
+    let initialTime = initialDate.getTime();
+
+    let i = 0;
+    while ((transitionTimes[i] < finalTime) && (i < transitionTimes.length)) {
+        if (transitionTimes[i] >= initialTime) {
+            if (i % 2 === 1) { // if i is odd
+                if (breakInterval) {
+                    deepWorkSumArr.push(transitionTimes[i] - transitionTimes[i-1])
+                    breakInterval = false;
+                } else {
+                    deepWorkSumArr.push(transitionTimes[i] - initialTime)
+                }
+            } else { // if i is even
+                breakInterval = true;
+            }
+        }
+        i++;
+    }
+
+    let lastIndex = transitionTimes.length - 1;
+    if ((transitionTimes[lastIndex] < finalTime) && (lastIndex % 2 === 0)) {
+        if (transitionTimes[lastIndex] < initialTime) {
+            deepWorkSumArr.push(finalTime - initialTime);
+        } else {
+            deepWorkSumArr.push(finalTime - transitionTimes[transitionTimes.length - 1]);
+        }
+    }
+
+    const sum = deepWorkSumArr.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+
+    return sum; // should be total deep work in ms
+}
+
+function calculateDistractionsPerHour(interruptionTimes, finalDate, initialDate) {
+    let finalTime = finalDate.getTime();
+    let initialTime = initialDate.getTime();
+    let distractionsCounter = 0;
+
+    let i = 0;
+    while ((interruptionTimes[i] < finalTime) && (i < interruptionTimes.length)) {
+        if (interruptionTimes[i] >= initialTime) {
+            distractionsCounter++;
+        }
+        i++;
+    }
+
+    return distractionsCounter;
+}
+
 async function checkSessionIntervalSwitch() {
     if (sessionState.loggedIn) {
         if (counters.startStop === 1) {
@@ -2035,6 +2153,10 @@ export function showInterruptionsSubContainer(interruptionsSubContainer) {
 
 function saveResetInterruptions(interruptionsNum, counters, savedInterruptionsArr) {
     savedInterruptionsArr.push(counters.interruptions);
+    resetInterruptions(counters, interruptionsNum);
+}
+
+function resetInterruptions(counters, interruptionsNum) {
     counters.interruptions = 0;
     interruptionsNum.textContent = counters.interruptions;
 }
@@ -2187,8 +2309,9 @@ export function resetDisplay(display) {
     display.innerText = "00:00:00"; //immediately resets display w/ no lag time
 };
 
-function veryStartActions(startTimes, hyperChillLogoImage, flags, times) {
+function veryStartActions(startTimes, hyperChillLogoImage, flags, times, counters, interruptionsNum) {
     let currentTime = Date.now();
+    resetInterruptions(counters, interruptionsNum); // reset distractions
     startTimes.beginning = currentTime;
     times.start = currentTime;
     flags.sessionInProgress = true;

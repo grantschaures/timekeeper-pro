@@ -1,12 +1,16 @@
+const mongoose = require('mongoose');
+require('dotenv').config(); // Load environment variables from .env file
 // After making corresponding changes to user.js model
 // run: node scripts/updateUsers.js
 
-const mongoose = require('mongoose');
 const User = require('../models/user'); // Assuming you've defined your User model
+const Note = require("../models/note");
+const Report = require("../models/report");
 
+console.log(process.env.MONGODB_URI);
 mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+  useNewUrlParser: true,
+  useUnifiedTopology: true
 });
 
 /**
@@ -61,9 +65,6 @@ async function updateSingleUser() {
 }
 // updateSingleUser().then(() => mongoose.disconnect());
 
-
-
-
 /**
  * FUNCTION: Updates single document via deletion of column
  */
@@ -83,8 +84,6 @@ async function removeUserPreferences() {
     }
 }
 // removeUserPreferences().then(() => mongoose.disconnect());
-
-
 
 /**
  * FUNCTION: Add new columns to all users' settings
@@ -138,7 +137,7 @@ async function updateAllUsers() {
     console.error('Failed to update all users:', error);
   }
 }
-updateAllUsers().then(() => mongoose.disconnect());
+// updateAllUsers().then(() => mongoose.disconnect());
 
 
 
@@ -157,3 +156,37 @@ async function removePreferencesForAllUsers() {
     }
 }
 // removePreferencesForAllUsers().then(() => mongoose.disconnect());
+
+/**
+ * FUNCTION: gives users report documents who don't already have them
+ */
+async function linkReportsToUsers() {
+  try {
+    // Fetch all users
+    const users = await User.find();
+
+    // Iterate through each user and create a report for them if not already exists
+    for (const user of users) {
+      const existingReport = await Report.findOne({ userId: user._id });
+
+      if (!existingReport) {
+        const report = new Report({
+          userId: user._id,
+          userEmail: user.email, // Ensure you have the email field in your user schema
+          sessionCount: 0,
+          sessionsArr: []
+        });
+        await report.save();
+      }
+    }
+
+    console.log('Reports linked to all users successfully');
+  } catch (error) {
+    console.error('Error linking reports to users:', error);
+  } finally {
+    mongoose.connection.close();
+  }
+}
+
+// Run the script
+// linkReportsToUsers().then(() => mongoose.disconnect());

@@ -1,26 +1,24 @@
-import { sessionState } from '../modules/state-objects.js';
-
 export function initializeGUI() {
     fetch('/api/user/data', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1")}`
-        }
+        method: 'GET'
     })
-    .then(response => response.json())
+    .then(response => { // fetch returns promise that resolves to response object
+
+        if (!response.ok) { // if res.status not in 200 range
+            if (response.status === 401) { // unauthorized status
+                alert("An error occured when attempting to login");
+            }
+            throw new Error(`HTTP error! status: ${response.status}`); // rejects fetch promise and executes .catch block immediately
+        }
+        return response.json();
+    })
     .then(data => {
         // Apply user-specific settings to the GUI
         if (data.tokenVerified === true) {
-            refreshGUI();
+            window.location.href = "/"; // refresh page
         }
     })
     .catch(error => {
         console.error("Error fetching user data:", error);
     });
-}
-
-function refreshGUI() {
-    sessionState.loggedIn = true;
-    window.location.href = "/";
 }

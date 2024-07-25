@@ -192,7 +192,7 @@ export const progressTextMod = {
 }
 
 //STORAGE
-export const savedInterruptionsArr = [];
+export const savedInterruptionsArr = []; // holds number of interruptions at each interval
 
 export const intervalArrs = {
     flowTime: [],
@@ -206,6 +206,7 @@ export const times = {
     end: null
 }
 
+export const perHourData = {};
 
 // ---------------------
 // HELPER FUNCTIONS

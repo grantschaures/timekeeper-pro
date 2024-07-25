@@ -1,6 +1,7 @@
 const express = require("express");
 const User = require("../models/user");
 const Note = require("../models/note");
+const Report = require("../models/report");
 const router = express.Router();
 const crypto = require('crypto');
 const sgMail = require('@sendgrid/mail');
@@ -48,6 +49,7 @@ router.post('/emailsignup', async (req, res) => {
             // Create the notes entry
             const note = new Note({
                 userId: user._id,
+                userEmail: email,
                 labels: new Map([
                     ["tag-1", "✍️ Homework"],
                     ["tag-2", "📚 Reading"],
@@ -57,7 +59,15 @@ router.post('/emailsignup', async (req, res) => {
                 lastSelectedEmojiId: "books-emoji"  // Default value
             });
             await note.save({ session });
-            console.log('Note saved for user.');
+
+            // Create the report document entry
+            const report = new Report({
+                userId: user._id,
+                userEmail: email,
+                sessionCount: 0,
+                sessionsArr: []
+            })
+            await report.save({ session });
         }
 
         // Save the user (new or updated)

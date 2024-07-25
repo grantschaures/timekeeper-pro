@@ -1,12 +1,13 @@
-import { timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, counters, flags, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, homeBackground, times } from '../modules/index-objects.js';
+import { timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, counters, flags, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, homeBackground, times, perHourData } from '../modules/index-objects.js';
 import { start_stop_btn, end_session_btn, total_time_display, productivity_chill_mode, progressBar, progressContainer, display, interruptionsSubContainer, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, flowAnimation, chillAnimation, hyperChillLogoImage, streaksCount, breakBackground, deepWorkBackground } from '../modules/dom-elements.js';
 import { soundMap } from '../modules/sound-map.js';
 import { sessionState } from '../modules/state-objects.js';
-import { labelFlags, labelArrs } from '../modules/notes-objects.js';
+import { labelFlags, labelArrs, labelDict } from '../modules/notes-objects.js';
 
 import { sessionCompletion } from '../state/session-completion.js'; // minified
-import { animationsFadeIn, animationsFadeOut, getTotalElapsed, returnTotalTimeString, updateLabelArrs, setBackground, pauseAndResetAlertSounds, resetDisplay, updateProgressBar, totalTimeDisplay, setButtonTextAndMode, hideSuggestionBreakContainer, hidePomodorosCompletedContainer, showInterruptionsSubContainer, setFavicon, observer, pomodoroWorker, suggestionWorker, flowmodoroWorker, displayWorker, totalDisplayWorker } from '../main/index.js'; // minified
+import { animationsFadeIn, animationsFadeOut, getTotalElapsed, returnTotalTimeString, updateLabelArrs, setBackground, pauseAndResetAlertSounds, resetDisplay, updateProgressBar, totalTimeDisplay, setButtonTextAndMode, hideSuggestionBreakContainer, hidePomodorosCompletedContainer, showInterruptionsSubContainer, setFavicon, observer, pomodoroWorker, suggestionWorker, flowmodoroWorker, displayWorker, totalDisplayWorker, updateDataPerHour } from '../main/index.js'; // minified
 import { checkInvaliDate } from '../state/check-invaliDate.js'; // minified
+import { addSession } from '../state/add-session.js'; // minified
 
 const defaultFavicon = "/images/logo/HyperChillLogo_circular_white_border.png";
 
@@ -15,11 +16,12 @@ document.addEventListener("stateUpdated", function() {
         if ((flags.sessionInProgress) && (flags.canEndSession)) {
             times.end = Date.now();
 
-            // IF START OF SESSION IS BEFORE invaliDate, RESET GUI BUT DON'T LOG SESSION
-            let logSessionActivity = await checkInvaliDate(times.start); // T or F
-            if ((sessionState.loggedIn) && (logSessionActivity)) {
-                // (1) Collect all necessary information about the session
-                await logSession();
+            if (sessionState.loggedIn) {
+                // IF START OF SESSION IS BEFORE invaliDate, RESET GUI BUT DON'T LOG SESSION
+                let logSessionActivity = await checkInvaliDate(times.start); // T or F
+                if (logSessionActivity) {
+                    await logSession(); // (1) Collect all necessary information about the session
+                }
             }
 
             // (2) Reset everything to the default state
@@ -28,9 +30,9 @@ document.addEventListener("stateUpdated", function() {
     });    
 })
 
-// ---------------------
+// -----------------
 // MAIN FUNCTIONS
-// ---------------------
+// -----------------
 async function logSession() {
     let userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; // determine moment they end session
     if (sessionState.loggedIn) {
@@ -50,16 +52,32 @@ async function logSession() {
     }
     let totalInterruptions = savedInterruptionsArr.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
     console.log("Total Distractions: " + totalInterruptions);
+
+    // update perHourDate object
+    let currentTime = Date.now();
+    let now = new Date(currentTime);
+    let startOfHour = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours()); // initial date
+    let currentHour = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds()); // final date
+    updateDataPerHour(intervalArrs, currentHour, startOfHour, perHourData);
+    console.log(perHourData);
     
     // focus score calculation
     let totalMin = totalTime / timeConvert.msPerMin;
-    let result = (1 - (((totalInterruptions) / (totalMin)) / (0.2))) * 100; // positive values start w/ < 1 distraction / 5 min of deep work
+    let resultFraction = 1 - (((totalInterruptions) / (totalMin)) / (0.5));
+    if (resultFraction < 0) {
+        resultFraction = 0;
+    }
+
+    let result = resultFraction * 100; // positive values start w/ < 1 distraction / 5 min of deep work
     let focusPercent = Math.floor(result);
     if (focusPercent > 0) {
         console.log('Focus Score: ' + focusPercent + '%');
     } else {
         console.log('Focus Score: ' + 0 + '%');
     }
+
+    // quality adjusted deep work
+    let qualityAdjustedDeepWork = totalTime * resultFraction;
     
     // deep work & break intervals
     console.log("Deep Work Intervals: " + counters.flowTimeIntervals);
@@ -79,9 +97,15 @@ async function logSession() {
 
     let flowTimeIntervalArrSum = (intervalArrs.flowTime).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
     let flowTimeArrLength = (intervalArrs.flowTime).length;
-    let avgFlowTimeInterval = (flowTimeIntervalArrSum / flowTimeArrLength);
-    let avgFlowTimeIntervalStr = returnTotalTimeString(avgFlowTimeInterval, timeConvert);
+    let avgFlowTimeInterval = (flowTimeIntervalArrSum / flowTimeArrLength); console.log(avgFlowTimeInterval);
+    let avgFlowTimeIntervalStr = returnTotalTimeString(avgFlowTimeInterval, timeConvert); 
     console.log("Average Flow Time Interval Length: " + avgFlowTimeIntervalStr);
+
+    let chillTimeIntervalArrSum = (intervalArrs.chillTime).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+    let chillTimeArrLength = (intervalArrs.chillTime).length;
+    let avgChillTimeInterval = (chillTimeIntervalArrSum / chillTimeArrLength); console.log(avgChillTimeInterval);
+    let avgChillTimeIntervalStr = returnTotalTimeString(avgChillTimeInterval, timeConvert);
+    console.log("Average Flow Time Interval Length: " + avgChillTimeIntervalStr);
 
     console.log("transition time Arr: " + intervalArrs.transitionTime);
 
@@ -90,9 +114,48 @@ async function logSession() {
     if (flags.inHyperFocus) {
         updateLabelArrs(endTime, labelFlags, labelArrs);
     }
-    displayTotalLabelTime(labelArrs);
+
+    let labelTimeSum = sumTotalLabelTime(labelArrs, labelDict);
 
     console.log(""); // new line
+
+    // SENDING DATA TO BE PROCESSED BY BACKEND
+    
+    // create an object
+
+    const session = {
+        startTime: times.start,
+        endTime: times.end,
+        timeZone: userTimeZone,
+        totalDeepWork: totalTime,
+        focusQuality: focusPercent,
+        qualityAdjustedDeepWork: qualityAdjustedDeepWork,
+        totalDistractions: totalInterruptions,
+        distractionTimesArr: intervalArrs.interruptionTime,
+        distractionsPerIntervalArr: savedInterruptionsArr,
+        deepWorkIntervals: intervalArrs.flowTime,
+        breakIntervals: intervalArrs.chillTime,
+        avgDeepWorkInterval: avgFlowTimeInterval,
+        avgBreakInterval: avgChillTimeInterval,
+        deepWorkIntervalCount: counters.flowTimeIntervals,
+        breakIntervalCount: counters.chillTimeIntervals,
+        targetHours: timeAmount.targetTime,
+        hitTarget: flags.hitTarget,
+        labelTimes: labelTimeSum,
+        perHourData: perHourData
+    }
+
+    await addSession(session);
+
+
+
+
+
+
+
+
+
+
 }
 
 export async function sessionReset() {
@@ -170,11 +233,23 @@ function resetActions(hyperChillLogoImage, flags, intervals, recoverBreakState, 
     resetPropertiesToZero(elapsedTime);
     resetPropertiesToZero(counters);
     resetFlags(flags);
-    savedInterruptionsArr.splice(0, savedInterruptionsArr.length);
-    (intervalArrs.flowTime).splice(0, (intervalArrs.flowTime).length);
-    (intervalArrs.chillTime).splice(0, (intervalArrs.chillTime).length);
+    resetArrays(savedInterruptionsArr);
+    resetArrays(intervalArrs);
 }
 
+function resetArrays(input) {
+    if (Array.isArray(input)) {
+        // If the input is a single array, reset it
+        input.splice(0, input.length);
+    } else if (typeof input === 'object' && input !== null) {
+        // If the input is an object, iterate through each key
+        for (const key in input) {
+            if (Array.isArray(input[key])) {
+                input[key].splice(0, input[key].length);
+            }
+        }
+    }
+}
 
 function clearAllIntervals(intervals) {
     for (let key in intervals) {
@@ -229,7 +304,8 @@ function resetLabelArrs(labelArrs) {
     }
 }
 
-function displayTotalLabelTime(labelArrs) {
+function sumTotalLabelTime(labelArrs, labelDict) {
+    let labelTimeSum = {};
     for (let key in labelArrs) {
         let arr = labelArrs[key];
         let timeSum = 0;
@@ -238,11 +314,16 @@ function displayTotalLabelTime(labelArrs) {
             timeSum += arr[i] - arr[i-1];
         }
 
-        let totalLabelTimeStr = returnTotalTimeString(timeSum, timeConvert);
+        let labelTimesKey = getKeyByValue(labelDict, key);
+        labelTimeSum[labelTimesKey] = timeSum;
 
-        let labelName = key;
-        console.log(labelName + ": " + totalLabelTimeStr);
+        // PRINTING OUT LABEL TIMES
+        // let totalLabelTimeStr = returnTotalTimeString(timeSum, timeConvert);
+        // let labelName = key;
+        // console.log(labelName + ": " + totalLabelTimeStr);
     }
+
+    return labelTimeSum;
 }
 
 async function logSessionCompletion(userTimeZone) { // logging when user ends session
@@ -254,4 +335,13 @@ async function logSessionCompletion(userTimeZone) { // logging when user ends se
 
 function resetHtmlBackground(homeBackground) {
     document.documentElement.style.backgroundImage = homeBackground;
+}
+
+function getKeyByValue(obj, targetValue) {
+    for (const [key, value] of Object.entries(obj)) {
+        if (value === targetValue) {
+            return key;
+        }
+    }
+    return null; // Return null if no key with the given value is found
 }

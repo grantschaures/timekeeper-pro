@@ -5,6 +5,7 @@ const db = require("../db");
 // Note schema
 const Note = db.model("Note", {
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  userEmail: { type: String, required: true },
   labels: {
     type: Map,
     of: String,

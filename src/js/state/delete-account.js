@@ -1,4 +1,4 @@
-export async function deleteUserAccount(settings) {
+export async function deleteUserAccount() {
     try {
         const response = await fetch('/api/data/delete-account', {
             method: 'DELETE',
@@ -21,7 +21,5 @@ export async function deleteUserAccount(settings) {
 
     } catch (error) {
         console.error('Failed to delete user account:', error);
-        alert("Your session has expired. Please log in again.");
-        window.location.href = "/login";
     }
 }

@@ -1,6 +1,7 @@
 const express = require("express");
 const User = require("../models/user");
 const Note = require("../models/note");
+const Report = require("../models/report");
 const router = require("express").Router();
 const bcrypt = require('bcrypt');
 const { OAuth2Client } = require('google-auth-library');
@@ -99,20 +100,22 @@ router.post("/verifyPassword", async function(req, res) {
     }
 });
 
-const CLIENT_ID = '234799271389-bk46do1l3pnvci922g3dmmf5cc8cfpfb.apps.googleusercontent.com';
+const CLIENT_ID = process.env.CLIENT_ID;
 const client = new OAuth2Client(CLIENT_ID);
 
+// Google Sign-In Endpoint
 router.post("/verifyIdToken", async function(req, res) {
     const session = await mongoose.startSession();
     session.startTransaction();
 
     try {
-        console.log("/verifyIdToken endpoint has been reached")
+        console.log("/verifyIdToken endpoint has been reached");
         const token = req.body.idToken;
         const userAgent = req.body.userAgent;
         const userDevice = req.body.userDevice;
         const loginMethod = "Google";
 
+        // Google OAuth2 server verification of token
         const ticket = await client.verifyIdToken({
             idToken: token,
             audience: CLIENT_ID,
@@ -121,7 +124,6 @@ router.post("/verifyIdToken", async function(req, res) {
         
         const email = payload.email; // Extracting email from payload
         let user = await User.findOne({ email: email });
-
         let note;
 
         let loginDate = new Date();
@@ -133,7 +135,7 @@ router.post("/verifyIdToken", async function(req, res) {
         }
 
         if (user) {
-            user.googleAccountLinked = true;
+            user.googleAccountLinked = true; // should already be true anyway
             user.logins++;
             user.loginTimeArr.push(loginData);
             user.lastLogin = loginData;
@@ -154,6 +156,7 @@ router.post("/verifyIdToken", async function(req, res) {
             // Create the note document entry
             note = new Note({
                 userId: user._id,
+                userEmail: email,
                 labels: new Map([
                     ["tag-1", "✍️ Homework"],
                     ["tag-2", "📚 Reading"],
@@ -163,7 +166,15 @@ router.post("/verifyIdToken", async function(req, res) {
                 lastSelectedEmojiId: "books-emoji"  // Default value
             });
             await note.save({ session });
-            console.log('Note saved for user.');
+
+            // Create the report document entry
+            const report = new Report({
+                userId: user._id,
+                userEmail: email,
+                sessionCount: 0,
+                sessionsArr: []
+            })
+            await report.save({ session });
         }
 
         // Commit the transaction
@@ -187,6 +198,7 @@ router.post("/verifyIdToken", async function(req, res) {
     }
 });
 
+// This function sends the JWT within the cookie to the client browser
 function beginSession(user, res) {
     const SECRET_KEY = process.env.SECRET_KEY;
     

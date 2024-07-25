@@ -1,6 +1,7 @@
 const express = require("express");
 const User = require("../models/user");
 const Note = require("../models/note");
+const Report = require("../models/report");
 const router = express.Router();  // This is a slight refactor for clarity
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
@@ -10,6 +11,49 @@ router.use(express.json());
 
 // Middleware for checking and renewing the token
 router.use(checkAndRenewToken);
+
+router.post("/update-report", async function(req, res) {
+    // Assuming the JWT is sent automatically in cookie headers
+    const token = req.cookies.token;  // Extract the JWT from cookies directly
+    const { session } = req.body;
+    // console.log(session);
+
+    if (!token) {
+        return res.status(401).json({ isLoggedIn: false, message: "Token was not found" });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        const userId = decoded.userId;
+        const user = await User.findById(userId);
+
+        if (user) {
+            const report = await Report.findOne({ userId: user._id });
+            report.sessionCount++;
+            report.sessionsArr.push(session);
+
+            if (!report) {
+                return res.status(404).json({
+                    isLoggedIn: true,
+                    message: "Report not found"
+                });
+            }
+
+            await report.save();
+            res.json({ success: true, message: 'update-report endpoint reached successfully' });
+        } else {
+            return res.status(401).json({ 
+                isLoggedIn: false,
+                message: "User not found"
+            });
+        }
+    } catch (error) {
+        return res.status(401).json({
+            isLoggedIn: false,
+            message: "Session is not valid: " + error.message
+        });
+    }
+});
 
 router.post("/update-invaliDate", async function(req, res) {
     // Assuming the JWT is sent automatically in cookie headers
@@ -31,7 +75,7 @@ router.post("/update-invaliDate", async function(req, res) {
             console.log(sessionStartDate);
 
             await user.save();
-            res.json({ success: true, message: 'delete-account endpoint reached successfully' });
+            res.json({ success: true, message: 'update-invaliDate endpoint reached successfully' });
         } else {
             return res.status(401).json({ 
                 isLoggedIn: false,
@@ -52,8 +96,6 @@ router.post("/check-invaliDate", async function(req, res) {
     const { sessionStartTime } = req.body;
     let sessionStartDate = new Date(sessionStartTime);
 
-    console.log(sessionStartDate);
-    
     if (!token) {
         return res.status(401).json({ isLoggedIn: false });
     }
@@ -66,10 +108,9 @@ router.post("/check-invaliDate", async function(req, res) {
         let invaliDate = user.invaliDate;
 
         let sessionStartTimeArr = user.sessionStartTimeArr;
-        console.log(sessionStartTimeArr);
         let targetDate = new Date(sessionStartDate);
         const index = sessionStartTimeArr.findIndex(dateString => new Date(dateString).getTime() === targetDate.getTime());
-        console.log(index);
+        // console.log(index);
 
         let raceCondition;
         if (index !== -1 && sessionStartTimeArr[index + 1] && (new Date(sessionStartTimeArr[index + 1]).getTime() - new Date(sessionStartTimeArr[index]).getTime() < 1000)) {
@@ -86,7 +127,7 @@ router.post("/check-invaliDate", async function(req, res) {
         }
 
         if (user) {
-            res.json({ logSession: logAction, success: true, message: 'delete-account endpoint reached successfully' });
+            res.json({ logSession: logAction, success: true, message: 'check-invaliDate endpoint reached successfully' });
         } else {
             return res.status(401).json({ 
                 isLoggedIn: false,
@@ -115,7 +156,7 @@ router.post("/check-session", async function(req, res) {
         const user = await User.findById(userId);
 
         if (user) {
-            res.json({ sessionStatus: user.sessionRunning, success: true, message: 'delete-account endpoint reached successfully' });
+            res.json({ sessionStatus: user.sessionRunning, success: true, message: 'check-session endpoint reached successfully' });
         } else {
             return res.status(401).json({ 
                 isLoggedIn: false,
@@ -149,6 +190,9 @@ router.delete("/delete-account", async function(req, res) {
 
             // Delete the corresponding note
             await Note.findOneAndDelete({ userId: userId });
+
+            // Delete the corresponding report
+            await Report.findOneAndDelete({ userId: userId });
 
             res.json({ success: true, message: 'delete-account endpoint reached successfully' });
         } else {

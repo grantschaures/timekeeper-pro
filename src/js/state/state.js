@@ -35,7 +35,7 @@ const settingsHeaderFont = {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    checkUserSession().then(() => {
+    checkUserSession().finally(() => {
         document.dispatchEvent(new Event('stateUpdated'));
     });
 });
@@ -43,15 +43,18 @@ document.addEventListener('DOMContentLoaded', () => {
 async function checkUserSession() {
     try {
         const response = await fetch('/api/state/sessionValidation', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            method: 'GET'
         });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const data = await response.json();
         loadFonts([myFontBlog, myFont2, myFont3, settingsHeaderFont]);
         updateUserSession(data);
         return data;
+
     } catch (error) {
         console.error('Error validating user session:', error);
         throw error;
