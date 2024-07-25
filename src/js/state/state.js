@@ -35,9 +35,14 @@ const settingsHeaderFont = {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    checkUserSession().finally(() => {
-        document.dispatchEvent(new Event('stateUpdated'));
-    });
+    checkUserSession()
+        .catch(error => {
+            // Handle the error here if needed
+            console.error('Error in checkUserSession:', error);
+        })
+        .finally(() => {
+            document.dispatchEvent(new Event('stateUpdated'));
+        });
 });
 
 async function checkUserSession() {
