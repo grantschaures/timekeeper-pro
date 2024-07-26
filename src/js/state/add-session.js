@@ -20,7 +20,5 @@ export async function addSession(session) {
         console.log("Settings updated successfully:", data);
     } catch (error) {
         console.error('Failed to add session:', error);
-        // alert("Your session has expired. Please log in again.");
-        // window.location.href = "/login";
     }
 }

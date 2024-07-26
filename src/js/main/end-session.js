@@ -148,6 +148,11 @@ function resetActions(hyperChillLogoImage, flags, intervals, recoverBreakState, 
     resetFlags(flags);
     resetArrays(savedInterruptionsArr);
     resetArrays(intervalArrs);
+    resetPerHourData(perHourData);
+}
+
+function resetPerHourData(perHourData) {
+    Object.assign(perHourData, {});
 }
 
 function resetArrays(input) {

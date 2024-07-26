@@ -23,6 +23,7 @@ let files = [
     'src/js/state/last-interval-switch.js',
     'src/js/state/check-session.js',
     'src/js/state/check-invaliDate.js',
+    'src/js/state/update-invaliDate.js',
     'src/js/state/add-session.js',
     'src/js/utility/initialize_gui.js',
     'src/js/utility/preload.js',
