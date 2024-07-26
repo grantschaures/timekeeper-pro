@@ -16,7 +16,7 @@ router.post("/update-report", async function(req, res) {
     // Assuming the JWT is sent automatically in cookie headers
     const token = req.cookies.token;  // Extract the JWT from cookies directly
     const { session } = req.body;
-    // console.log(session);
+    console.log(session);
 
     if (!token) {
         return res.status(401).json({ message: "Token was not found" });
@@ -31,6 +31,7 @@ router.post("/update-report", async function(req, res) {
             const report = await Report.findOne({ userId: user._id });
             report.sessionCount++;
             report.sessionsArr.push(session);
+            report.lastSession = session;
 
             if (!report) {
                 return res.status(404).json({

@@ -112,6 +112,10 @@ const indexReplacements = [
         replacement: "import { checkSession } from '../minified/check-session.min.js';"
     },
     {
+        pattern: /import { updateInvaliDate } from '..\/main\/update-invaliDate.js';/g,
+        replacement: "import { updateInvaliDate } from '../minified/update-invaliDate.min.js';"
+    },
+    {
         pattern: /import { sessionReset } from '..\/main\/end-session.js';/g,
         replacement: "import { sessionReset } from '../minified/end-session.min.js';"
     }
@@ -181,6 +185,10 @@ const endSessionReplacements = [
     {
         pattern: /import { checkInvaliDate } from '..\/state\/check-invaliDate.js';/g,
         replacement: "import { checkInvaliDate } from '../minified/check-invaliDate.min.js';"
+    },
+    {
+        pattern: /import { addSession } from '..\/state\/add-session.js';/g,
+        replacement: "import { addSession } from '../minified/add-session.min.js';"
     }
 ]
 

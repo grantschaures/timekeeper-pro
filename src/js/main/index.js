@@ -272,8 +272,8 @@ document.addEventListener("stateUpdated", function() {
         }
 
         // console.log(savedInterruptionsArr);
-        console.log(intervalArrs.flowTime);
-        console.log(intervalArrs.chillTime);
+        // console.log(intervalArrs.flowTime);
+        // console.log(intervalArrs.chillTime);
 
         flags.inRecoveryBreak = false;
         flags.inRecoveryPom = false;
@@ -1275,7 +1275,7 @@ export function updateLabelArrs(timeStamp, labelFlags, labelArrs) {
             labelArrs[key].push(timeStamp);
         }
     }
-    console.log(labelArrs);
+    // console.log(labelArrs);
 }
 
 function timeRecovery(flags, counters, startTimes, elapsedTime, start_stop_btn, recoverPomState, recoverBreakState, timeAmount, total_time_display, timeConvert, progressBar, progressContainer, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min, flowmodoroWorker, suggestionWorker, isMobile, isIpad) {

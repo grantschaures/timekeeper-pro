@@ -18,7 +18,7 @@ export async function checkSession() {
         const data = await response.json();
 
         // We'll have to create popup for user if a previous session is already running
-        console.log(data.sessionStatus);
+        // console.log(data.sessionStatus);
 
         if (data.sessionStatus) {
             body.style.overflowY = "hidden";

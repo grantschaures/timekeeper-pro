@@ -14,6 +14,7 @@ const defaultFavicon = "/images/logo/HyperChillLogo_circular_white_border.png";
 document.addEventListener("stateUpdated", function() {
     end_session_btn.addEventListener("click", async function() {
         if ((flags.sessionInProgress) && (flags.canEndSession)) {
+            flags.canEndSession = false; // immediately block another end_session_btn click before rest of flags are reset
             times.end = Date.now();
 
             if (sessionState.loggedIn) {
@@ -35,132 +36,44 @@ document.addEventListener("stateUpdated", function() {
 // -----------------
 async function logSession() {
     let userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; // determine moment they end session
-    if (sessionState.loggedIn) {
-        logSessionCompletion(userTimeZone);
-    } else { // non-logged in user
-        streaksCount.innerText = 1;
-    }
+    updateStreaks(sessionState, userTimeZone, streaksCount);
     
     // total time in deep work
     let totalTime = getTotalElapsed(flags, elapsedTime.hyperFocus, startTimes);
-    let totalTimeStr = returnTotalTimeString(totalTime, timeConvert);
-    console.log("Total Time: " + totalTimeStr);
     
-    // total interruptions
-    if (flags.inHyperFocus) {
-        savedInterruptionsArr.push(counters.interruptions);
-    }
-    let totalInterruptions = savedInterruptionsArr.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-    console.log("Total Distractions: " + totalInterruptions);
+    // total distractions
+    let totalDistractions = calculateTotalInterruptions(flags, savedInterruptionsArr, counters);
 
     // update perHourDate object
-    let currentTime = Date.now();
-    let now = new Date(currentTime);
-    let startOfHour = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours()); // initial date
-    let currentHour = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds()); // final date
-    updateDataPerHour(intervalArrs, currentHour, startOfHour, perHourData);
-    console.log(perHourData);
+    finalPerHourDataUpdate(intervalArrs, perHourData);
     
-    // focus score calculation
-    let totalMin = totalTime / timeConvert.msPerMin;
-    let resultFraction = 1 - (((totalInterruptions) / (totalMin)) / (0.5));
-    if (resultFraction < 0) {
-        resultFraction = 0;
-    }
-
-    let result = resultFraction * 100; // positive values start w/ < 1 distraction / 5 min of deep work
-    let focusPercent = Math.floor(result);
-    if (focusPercent > 0) {
-        console.log('Focus Score: ' + focusPercent + '%');
-    } else {
-        console.log('Focus Score: ' + 0 + '%');
-    }
+    // focus quality calculation
+    let focusQualityFractionV2 = focusQualityCalculation(timeConvert, totalTime, totalDistractions, 0.2);
+    let focusQualityFractionV5 = focusQualityCalculation(timeConvert, totalTime, totalDistractions, 0.5);
 
     // quality adjusted deep work
-    let qualityAdjustedDeepWork = totalTime * resultFraction;
+    let qualityAdjustedDeepWorkV2 = totalTime * focusQualityFractionV2;
+    let qualityAdjustedDeepWorkV5 = totalTime * focusQualityFractionV5;
+        
+    // update interval arrays
+    finalUpdateOfIntervalArrs(flags, startTimes, intervalArrs);
     
-    // deep work & break intervals
-    console.log("Deep Work Intervals: " + counters.flowTimeIntervals);
-    console.log("Break Intervals: " + counters.chillTimeIntervals);
-    
-    // average length of flowTime Intervals
-    let timeInterval;
-    if (flags.inHyperFocus) {
-        timeInterval = Date.now() - startTimes.hyperFocus;
-        intervalArrs.flowTime.push(timeInterval);
-    } else {
-        timeInterval = Date.now() - startTimes.chillTime;
-        intervalArrs.chillTime.push(timeInterval);
-    }
-    console.log(intervalArrs.flowTime)
-    console.log(intervalArrs.chillTime)
+    // average length of Intervals
+    let avgFlowTimeInterval = calculateAvgIntervalTime(intervalArrs.flowTime);
+    let avgChillTimeInterval = calculateAvgIntervalTime(intervalArrs.chillTime);
 
-    let flowTimeIntervalArrSum = (intervalArrs.flowTime).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-    let flowTimeArrLength = (intervalArrs.flowTime).length;
-    let avgFlowTimeInterval = (flowTimeIntervalArrSum / flowTimeArrLength); console.log(avgFlowTimeInterval);
-    let avgFlowTimeIntervalStr = returnTotalTimeString(avgFlowTimeInterval, timeConvert); 
-    console.log("Average Flow Time Interval Length: " + avgFlowTimeIntervalStr);
-
-    let chillTimeIntervalArrSum = (intervalArrs.chillTime).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-    let chillTimeArrLength = (intervalArrs.chillTime).length;
-    let avgChillTimeInterval = (chillTimeIntervalArrSum / chillTimeArrLength); console.log(avgChillTimeInterval);
-    let avgChillTimeIntervalStr = returnTotalTimeString(avgChillTimeInterval, timeConvert);
-    console.log("Average Flow Time Interval Length: " + avgChillTimeIntervalStr);
-
-    console.log("transition time Arr: " + intervalArrs.transitionTime);
-
-    // add final labelArr value (at some point later, we need to reset label Arrs after sending label time data to database)
-    let endTime = Date.now();
-    if (flags.inHyperFocus) {
-        updateLabelArrs(endTime, labelFlags, labelArrs);
-    }
+    // add final labelArr value
+    finalLabelArrsUpdate(flags, labelFlags, labelArrs);
 
     let labelTimeSum = sumTotalLabelTime(labelArrs, labelDict);
 
-    console.log(""); // new line
-
     // SENDING DATA TO BE PROCESSED BY BACKEND
-    
-    // create an object
-
-    const session = {
-        startTime: times.start,
-        endTime: times.end,
-        timeZone: userTimeZone,
-        totalDeepWork: totalTime,
-        focusQuality: focusPercent,
-        qualityAdjustedDeepWork: qualityAdjustedDeepWork,
-        totalDistractions: totalInterruptions,
-        distractionTimesArr: intervalArrs.interruptionTime,
-        distractionsPerIntervalArr: savedInterruptionsArr,
-        deepWorkIntervals: intervalArrs.flowTime,
-        breakIntervals: intervalArrs.chillTime,
-        avgDeepWorkInterval: avgFlowTimeInterval,
-        avgBreakInterval: avgChillTimeInterval,
-        deepWorkIntervalCount: counters.flowTimeIntervals,
-        breakIntervalCount: counters.chillTimeIntervals,
-        targetHours: timeAmount.targetTime,
-        hitTarget: flags.hitTarget,
-        labelTimes: labelTimeSum,
-        perHourData: perHourData
-    }
-
-    await addSession(session);
-
-
-
-
-
-
-
-
-
-
+    finalizeSession(times, userTimeZone, totalTime, focusQualityFractionV2, focusQualityFractionV5, qualityAdjustedDeepWorkV2, qualityAdjustedDeepWorkV5, totalDistractions, intervalArrs, savedInterruptionsArr, avgFlowTimeInterval, avgChillTimeInterval, counters, timeAmount, flags, labelTimeSum, perHourData);
 }
 
 export async function sessionReset() {
     // reset labelArrs
-    // resetLabelArrs(labelArrs);
+    resetLabelArrs(labelArrs);
 
     // reset background to default
     resetBackgrounds(deepWorkBackground, breakBackground);
@@ -222,7 +135,7 @@ function resetBackgrounds(deepWorkBackground, breakBackground) {
 
 function resetActions(hyperChillLogoImage, flags, intervals, recoverBreakState, recoverPomState, startTimes, elapsedTime, counters, savedInterruptionsArr, intervalArrs, times) {
     observer.disconnect();
-    document.title = "Hyperchill.io | Online Productivity Time Tracker";
+    document.title = "Hyperchill.io";
     hyperChillLogoImage.classList.remove('hyperChillLogoRotate'); // currently invisible FYI
 
     clearAllIntervals(intervals);
@@ -271,7 +184,6 @@ function resetFlags(flags) {
     flags.sentSuggestionMinutesNotification = false;
     flags.pomodoroCountIncremented = false;
     flags.sessionInProgress = false;
-    flags.canEndSession = false;
 }
 
 function resetPropertiesToZero(obj) {
@@ -310,6 +222,8 @@ function sumTotalLabelTime(labelArrs, labelDict) {
         let arr = labelArrs[key];
         let timeSum = 0;
 
+        // console.log(labelArrs);
+
         for (let i = 1; i < arr.length; i += 2) {
             timeSum += arr[i] - arr[i-1];
         }
@@ -344,4 +258,93 @@ function getKeyByValue(obj, targetValue) {
         }
     }
     return null; // Return null if no key with the given value is found
+}
+
+async function updateStreaks(sessionState, userTimeZone, streaksCount) {
+    if (sessionState.loggedIn) {
+        logSessionCompletion(userTimeZone);
+    } else { // non-logged in user
+        streaksCount.innerText = 1;
+    }
+}
+
+function calculateTotalInterruptions() {
+    if (flags.inHyperFocus) {
+        savedInterruptionsArr.push(counters.interruptions);
+    }
+    let totalInterruptions = savedInterruptionsArr.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+
+    return totalInterruptions;
+}
+
+function finalPerHourDataUpdate(intervalArrs, perHourData) {
+    let currentTime = Date.now();
+    let now = new Date(currentTime);
+    let startOfHour = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours()); // initial date
+    let currentHour = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds()); // final date
+    updateDataPerHour(intervalArrs, currentHour, startOfHour, perHourData);
+}
+
+function focusQualityCalculation(timeConvert, totalTime, totalDistractions, constant) {
+    let totalMin = totalTime / timeConvert.msPerMin;
+    let focusQualityFraction = 1 - ((totalDistractions / totalMin) / (constant));
+    if (focusQualityFraction < 0) {
+        focusQualityFraction = 0;
+    }
+
+    return focusQualityFraction;
+}
+
+function finalUpdateOfIntervalArrs(flags, startTimes, intervalArrs) {
+    let timeInterval;
+    if (flags.inHyperFocus) {
+        timeInterval = Date.now() - startTimes.hyperFocus;
+        intervalArrs.flowTime.push(timeInterval);
+    } else {
+        timeInterval = Date.now() - startTimes.chillTime;
+        intervalArrs.chillTime.push(timeInterval);
+    }
+}
+
+function calculateAvgIntervalTime(intervalArrType) {
+    let intervalArrSum = (intervalArrType).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+    let intervalArrLength = (intervalArrType).length;
+    let avgInterval = (intervalArrSum / intervalArrLength);
+
+    return avgInterval;
+}
+
+function finalLabelArrsUpdate(flags, labelFlags, labelArrs) {
+    let endTime = Date.now();
+    if (flags.inHyperFocus) {
+        updateLabelArrs(endTime, labelFlags, labelArrs);
+    }
+}
+
+async function finalizeSession(times, userTimeZone, totalTime, focusQualityFractionV2, focusQualityFractionV5, qualityAdjustedDeepWorkV2, qualityAdjustedDeepWorkV5, totalDistractions, intervalArrs, savedInterruptionsArr, avgFlowTimeInterval, avgChillTimeInterval, counters, timeAmount, flags, labelTimeSum, perHourData) {
+    const session = {
+        startTime: times.start,
+        endTime: times.end,
+        timeZone: userTimeZone,
+        totalDeepWork: totalTime,
+        focusQualityV2: focusQualityFractionV2, // w/ 1 distraction, score starts to increase after 5 min
+        focusQualityV5: focusQualityFractionV5, // w/ 1 distraction, score starts to increase after 2 min
+        qualityAdjustedDeepWorkV2: qualityAdjustedDeepWorkV2,
+        qualityAdjustedDeepWorkV5: qualityAdjustedDeepWorkV5,
+        totalDistractions: totalDistractions,
+        distractionTimesArr: intervalArrs.interruptionTime,
+        distractionsPerIntervalArr: savedInterruptionsArr,
+        deepWorkIntervals: intervalArrs.flowTime,
+        breakIntervals: intervalArrs.chillTime,
+        avgDeepWorkInterval: avgFlowTimeInterval,
+        avgBreakInterval: avgChillTimeInterval,
+        deepWorkIntervalCount: counters.flowTimeIntervals,
+        breakIntervalCount: counters.chillTimeIntervals,
+        targetHours: timeAmount.targetTime,
+        hitTarget: flags.hitTarget,
+        labelTimes: labelTimeSum,
+        perHourData: perHourData
+    }
+
+    await addSession(session);
 }

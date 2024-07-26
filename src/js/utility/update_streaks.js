@@ -5,10 +5,7 @@ document.addEventListener('updateStreak', () => {
 function checkUserSession() {
     // Make a request to a server endpoint that will validate the session
     fetch('/api/state/sessionValidation', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        }
+        method: 'GET'
     })
     .then(response => response.json())
     .then(data => {

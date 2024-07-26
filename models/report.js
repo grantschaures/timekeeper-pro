@@ -16,8 +16,12 @@ const sessionSchema = new Schema({
     timeZone: { type: String },
 
     totalDeepWork: { type: Number },
-    focusQuality: { type: Number },
-    qualityAdjustedDeepWork: { type: Number },
+
+    focusQualityV2: { type: Number },
+    focusQualityV5: { type: Number },
+    qualityAdjustedDeepWorkV2: { type: Number },
+    qualityAdjustedDeepWorkV5: { type: Number },
+    
     totalDistractions: { type: Number },
     distractionTimesArr: [{ type: Date }],
     distractionsPerIntervalArr: [{ type: Number }],
@@ -49,7 +53,8 @@ const reportSchema = new Schema({
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     userEmail: { type: String, required: true },
     sessionCount: { type: Number },
-    sessionsArr: [sessionSchema]
+    sessionsArr: [sessionSchema],
+    lastSession: sessionSchema,
 }, { collection: 'Reports' });
 
 // Create the Report model

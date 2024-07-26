@@ -31,14 +31,12 @@ router.get("/sessionValidation", async function(req, res) {
                 isLoggedIn: true
             });
         } else {
-            return res.status(401).json({ 
-                isLoggedIn: false,
+            return res.status(404).json({ 
                 message: "User not found"
             });
         }
     } catch (error) {
         return res.status(401).json({
-            isLoggedIn: false,
             message: "Session is not valid: " + error.message
         });
     }
