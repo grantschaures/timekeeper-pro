@@ -17,7 +17,7 @@ export async function addSession(session) {
         }
 
         const data = await response.json();
-        // console.log("Settings updated successfully:", data);
+        console.log("Settings updated successfully:", data);
     } catch (error) {
         console.error('Failed to add session:', error);
         // alert("Your session has expired. Please log in again.");

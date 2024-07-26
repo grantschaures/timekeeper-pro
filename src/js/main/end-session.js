@@ -327,8 +327,8 @@ async function finalizeSession(times, userTimeZone, totalTime, focusQualityFract
         endTime: times.end,
         timeZone: userTimeZone,
         totalDeepWork: totalTime,
-        focusQualityV2: focusQualityFractionV2, // w/ 1 distraction, score starts to increase after 5 min
-        focusQualityV5: focusQualityFractionV5, // w/ 1 distraction, score starts to increase after 2 min
+        focusQualityV2: focusQualityFractionV2, // w/ for score > 0%, less than 1 distraction per 5 minutes
+        focusQualityV5: focusQualityFractionV5, // w/ for score > 0%, less than 1 distraction per 2 minutes
         qualityAdjustedDeepWorkV2: qualityAdjustedDeepWorkV2,
         qualityAdjustedDeepWorkV5: qualityAdjustedDeepWorkV5,
         totalDistractions: totalDistractions,

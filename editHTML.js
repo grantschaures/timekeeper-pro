@@ -112,7 +112,7 @@ const indexReplacements = [
         replacement: "import { checkSession } from '../minified/check-session.min.js';"
     },
     {
-        pattern: /import { updateInvaliDate } from '..\/main\/update-invaliDate.js';/g,
+        pattern: /import { updateInvaliDate } from '..\/state\/update-invaliDate.js';/g,
         replacement: "import { updateInvaliDate } from '../minified/update-invaliDate.min.js';"
     },
     {
