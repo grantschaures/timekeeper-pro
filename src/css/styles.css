@@ -1227,8 +1227,8 @@ header {
 }
 
 .overlay {
-    display: none;
-    /* display: flex; */
+    /* display: none; */
+    display: flex;
     position: fixed;
     top: 0;
     left: 0;
@@ -1602,4 +1602,189 @@ header {
 
 #labelToDeleteContainer {
     margin: 25px;
+}
+
+#sessionSummaryPopup {
+    /* display: none; */
+    display: flex;
+    flex-direction: column;
+    background: whitesmoke;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 25px;
+    text-align: center;
+    max-width: 500px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    font-family: 'settingsHeaderFont';
+    color: rgb(0, 0, 0);
+    width: 350px;
+    /* font-size: 24px; */
+    /* opacity: 0; */
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+    min-width: 225px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#sessionSummaryText {
+    color: black;
+    font-family: myFont3;
+}
+
+#summaryContainer {
+    display: flex;
+    align-items: top;
+    justify-content: center;
+    flex-direction: column;
+
+    /* border: 3px solid black; */
+}
+
+#multiSeriesPiePlotContainer {
+    display: flex;
+    justify-content: center;
+    padding-left: 50px;
+    padding-right: 50px;
+
+    /* border: 3px solid brown; */
+}
+
+@media(min-width: 410px) {
+    #multiSeriesPiePlotContainer {
+        height: 240px;
+    } 
+}
+
+#sessionSummaryChart {
+    width: 100%;
+    height: 100%;
+}
+
+#summaryStatsContainer {
+    display: flex;
+    justify-content: space-between;
+    /* border: 3px solid cyan; */
+    margin-top: 15px;
+}
+
+#deepWorkTimeContainer {
+    background-color: rgba(83, 230, 88, 1);
+    border-radius: 15px;
+}
+
+#focusPercentageContainer {
+    background-color: rgba(59, 143, 227, 1);
+    border-radius: 15px;
+}
+
+#deepWorkText, #focusPercentageText {
+    font-size: 16px;
+}
+
+#focusPercentage, #deepWorkTime {
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.summaryStatsContainer {
+    height: 50px;
+    width: 125px;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+}
+
+#commentsContainer {
+    margin-top: 15px;
+    border-radius: 15px;
+    height: 100px;
+    padding: 5px;
+    width: 100%; /* Ensure the container takes the full width of the parent element */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+#commentsTextArea {
+    height: 100%;
+    width: 100%;
+    border: none;
+    resize: none; /* Prevent resizing of the textarea */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    background-color: rgba(0, 0, 0, 0);
+    font-size: 18px;
+    font-family: settingsHeaderFont;
+}
+
+#commentsTextArea:focus {
+    outline: none; /* Remove the focus outline */
+    border: none; /* Ensure the border stays hidden on focus */
+}
+
+#commentsTextArea::-webkit-scrollbar {
+    width: 0px;
+    height: 8px;
+}
+
+#commentsTextArea::-webkit-scrollbar:hover {
+    cursor: pointer;
+}
+
+#commentsTextArea::-webkit-scrollbar-track {
+    /* background: transparent; */
+    background: rgba(255, 255, 255, 0);
+}
+
+#commentsTextArea::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+}
+
+#bottomRow {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+#sessionSummaryOkBtn {
+    color: black;
+    background-color: rgba(0, 0, 0, 0.15);
+    border: none;
+    font-family: settingsHeaderFont;
+    font-size: 18px;
+    height: 35px;
+}
+
+#sessionSummaryOkBtn:hover {
+    background-color: rgba(0, 0, 0, 0.20);
+}
+
+#subjectiveFeedbackDropdown {
+    border: none;
+    background-color: rgba(0, 0, 0, 0.15);
+    border-radius: 15px;
+    width: 160px;
+    height: 35px;
+    font-family: settingsHeaderFont;
+    font-size: 18px;
+    text-align-last: center; /* Center the selected option in some browsers */
+    cursor: pointer;
+
+    transition: background-color 0.15s ease-in-out;
+}
+
+#subjectiveFeedbackDropdown:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.20);
+}
+
+#subjectiveFeedbackContainer {
+    display: flex;
+    flex-direction: column;
 }

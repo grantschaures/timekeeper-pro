@@ -22,6 +22,9 @@
         <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
         <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script type="module" src="/js/api/session-summary-chart.js"></script>
+
         <script src="/js/utility/preload.js"></script>
         <script type="module" src="/js/state/state.js"></script>
         <script type="module" src="/js/main/index.js"></script>
@@ -29,6 +32,7 @@
         <script type="module" src="/js/main/notes.js"></script>
         <script type="module" src="/js/main/end-session.js"></script>
         <script type="module" src="/js/api/google-signin.js"></script>
+
         
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data.min.js"></script>
@@ -152,6 +156,52 @@
                         </label>
                     </div>
                     <button id="previousSessionStartedOkBtn" type="submit">Ok</button>
+                </div>
+            </div>
+            <div id="sessionSummaryPopup">
+                <div id="sessionSummaryHeader">
+                    <h1 id="sessionSummaryText">Session Summary</h1>
+                </div>
+                <div id="summaryContainer">
+                    <div id="multiSeriesPiePlotContainer">
+                        <canvas id="sessionSummaryChart"></canvas>
+                    </div>
+                    <div id="summaryStatsContainer">
+                        <div id="deepWorkTimeContainer" class="summaryStatsContainer">
+                            <div id="deepWorkText">
+                                <b>Deep Work</b>
+                            </div>
+                            <div id="deepWorkTime">
+                                <b>5h 16m</b>
+                            </div>
+                        </div>
+                        <div id="focusPercentageContainer" class="summaryStatsContainer">
+                            <div id="focusPercentageText">
+                                <b>Focus Quality</b>
+                            </div>
+                            <div id="focusPercentage">
+                                <b>34%</b>
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+                <div id="commentsContainer">
+                    <textarea id="commentsTextArea" placeholder="Comments"></textarea>
+                </div>
+                <div id="bottomRow">
+                    <div id="subjectiveFeedbackContainer">
+                        <label for="subjectiveFeedbackDropdown"></label>
+                        <select id="subjectiveFeedbackDropdown" name="subjectiveFeedbackDropdown">
+                            <option value="" disabled selected>Rate Session</option>
+                            <option value="option_good">😆 hella fire</option>
+                            <option value="option_OK">🤨 mid</option>
+                            <option value="option_bad">😩 lowkey cringe</option>
+                            <option value="option_notsure">🤔 not sure tbh</option>
+                        </select>
+                    </div>
+                    <button id="sessionSummaryOkBtn">
+                        bet
+                    </button>
                 </div>
             </div>
         </div>
