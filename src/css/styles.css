@@ -1834,8 +1834,8 @@ header {
     border: none;
     background-color: rgba(0, 0, 0, 0.15);
     border-radius: 15px;
-    width: 160px;
-    min-width: 160px;
+    width: 170px;
+    min-width: 170px;
     height: 50px;
     font-family: settingsHeaderFont;
     font-size: 18px;
