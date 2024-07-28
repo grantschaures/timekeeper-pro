@@ -77,9 +77,6 @@ function resetSessionSummary() {
     
     commentsTextArea.value = "";
     subjectiveFeedbackDropdown.value = "";
-
-    // alert(commentsTextArea.value);
-    // alert(subjectiveFeedbackDropdown.value);
 }
 
 // hide popup and overlay (immediately)
@@ -98,14 +95,9 @@ function hideSessionSummaryPopup() {
 }
 
 async function updateSessionSummary(tempStorage, commentsTextArea, subjectiveFeedbackDropdown) {
-    alert("test090909");
     let userComments = commentsTextArea.value;
     let sessionRating = subjectiveFeedbackDropdown.value;
     let sessionId = tempStorage.sessionId;
-
-    alert("userComments: " + userComments);
-    alert("sessionRating: " + sessionRating);
-    alert("sessionId: " + sessionId);
 
     try {
         const response = await fetch('/api/data/update-session-summary', {
@@ -118,7 +110,6 @@ async function updateSessionSummary(tempStorage, commentsTextArea, subjectiveFee
 
         if (!response.ok) {
             const errorText = await response.text();
-            alert(errorText);
             console.error('Response status:', response.status);
             console.error('Response body:', errorText);
             throw new Error('Network response was not ok');
