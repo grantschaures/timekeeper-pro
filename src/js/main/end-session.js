@@ -77,6 +77,9 @@ function resetSessionSummary() {
     
     commentsTextArea.value = "";
     subjectiveFeedbackDropdown.value = "";
+    
+    alert(commentsTextArea.value);
+    alert(subjectiveFeedbackDropdown.value);
 }
 
 // hide popup and overlay (immediately)
