@@ -101,6 +101,7 @@ function hideSessionSummaryPopup() {
 }
 
 async function updateSessionSummary(tempStorage) {
+    alert("test2.5")
     let userComments = commentsTextArea.value;
     let sessionRating = subjectiveFeedbackDropdown.value;
     let sessionId = tempStorage.sessionId;
