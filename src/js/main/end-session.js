@@ -105,6 +105,7 @@ async function updateSessionSummary(tempStorage) {
     alert(userComments);
     alert(sessionRating);
     alert(sessionId);
+    alert("test");
 
     try {
         const response = await fetch('/api/data/update-session-summary', {
