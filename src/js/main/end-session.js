@@ -123,6 +123,7 @@ async function updateSessionSummary(tempStorage) {
 
         const data = await response.json();
         console.log("Session summary updated successfully:", data);
+        alert("Session summary updated successfully:", data);
         
     } catch (error) {
         console.error('Failed to update session summary:', error);
