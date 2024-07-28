@@ -50,7 +50,7 @@ document.addEventListener("stateUpdated", function() {
             hideSessionSummaryPopup();
             
             // send user analysis to database
-            await updateSessionSummary(tempStorage);
+            await updateSessionSummary(tempStorage, commentsTextArea, subjectiveFeedbackDropdown);
             
             // reset session summary
             resetSessionSummary();
@@ -97,7 +97,7 @@ function hideSessionSummaryPopup() {
     document.body.style.overflowY = "scroll"; // stop scrolling
 }
 
-async function updateSessionSummary(tempStorage) {
+async function updateSessionSummary(tempStorage, commentsTextArea, subjectiveFeedbackDropdown) {
     alert("test090909");
     let userComments = commentsTextArea.value;
     let sessionRating = subjectiveFeedbackDropdown.value;
