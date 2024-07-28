@@ -190,6 +190,10 @@ const endSessionReplacements = [
     {
         pattern: /import { addSession } from '..\/state\/add-session.js';/g,
         replacement: "import { addSession } from '../minified/add-session.min.js';"
+    },
+    {
+        pattern: /import { subMainContainerTransition } from '..\/main\/navigation.js';/g,
+        replacement: "import { subMainContainerTransition } from '../minified/navigation.min.js';"
     }
 ]
 
