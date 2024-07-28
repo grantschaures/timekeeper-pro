@@ -1,3 +1,5 @@
+import { displaySessionSummaryPopup } from "../modules/session-summary.js";
+
 export async function addSession(session) {
     console.log(session);
     try {
@@ -18,6 +20,10 @@ export async function addSession(session) {
 
         const data = await response.json();
         console.log("Settings updated successfully:", data);
+
+        // call function in session-summary-popup.js to display the session summary popup
+        displaySessionSummaryPopup(data.sessionId);
+        
     } catch (error) {
         console.error('Failed to add session:', error);
     }

@@ -31,7 +31,8 @@ router.post("/update-report", async function(req, res) {
             const report = await Report.findOne({ userId: user._id });
             report.sessionCount++;
             report.sessionsArr.push(session);
-            report.lastSession = session;
+            const newSession = report.sessionsArr[report.sessionsArr.length - 1];
+            report.lastSession = newSession;
 
             if (!report) {
                 return res.status(404).json({
@@ -40,7 +41,7 @@ router.post("/update-report", async function(req, res) {
             }
 
             await report.save();
-            res.json({ success: true, message: 'update-report endpoint reached successfully' });
+            res.json({ success: true, message: 'update-report endpoint reached successfully', sessionId: newSession._id });
         } else {
             return res.status(404).json({ 
                 message: "User not found"

@@ -23,7 +23,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script type="module" src="/js/api/session-summary-chart.js"></script>
+        <script type="module" src="/js/utility/session-summary-chart.js"></script>
 
         <script src="/js/utility/preload.js"></script>
         <script type="module" src="/js/state/state.js"></script>
@@ -165,9 +165,10 @@
                 <div id="summaryContainer">
                     <div id="multiSeriesPiePlotContainer">
                         <canvas id="sessionSummaryChart"></canvas>
+                        <img id="HC_icon_session_summary" src="images/logo/HyperchillSummaryLogo.png" class="hyperChillLogoRotate">
                     </div>
                     <div id="summaryStatsContainer">
-                        <div id="deepWorkTimeContainer" class="summaryStatsContainer">
+                        <div id="deepWorkTimeContainer" class="summaryStats">
                             <div id="deepWorkText">
                                 <b>Deep Work</b>
                             </div>
@@ -175,7 +176,7 @@
                                 <b>5h 16m</b>
                             </div>
                         </div>
-                        <div id="focusPercentageContainer" class="summaryStatsContainer">
+                        <div id="focusPercentageContainer" class="summaryStats">
                             <div id="focusPercentageText">
                                 <b>Focus Quality</b>
                             </div>
@@ -186,7 +187,7 @@
                     </div>  
                 </div>
                 <div id="commentsContainer">
-                    <textarea id="commentsTextArea" placeholder="Comments"></textarea>
+                    <textarea id="commentsTextArea" placeholder="How'd it go fam?"></textarea>
                 </div>
                 <div id="bottomRow">
                     <div id="subjectiveFeedbackContainer">
@@ -200,7 +201,7 @@
                         </select>
                     </div>
                     <button id="sessionSummaryOkBtn">
-                        bet
+                        OK
                     </button>
                 </div>
             </div>

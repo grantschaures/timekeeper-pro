@@ -3,6 +3,7 @@ import { start_stop_btn, end_session_btn, total_time_display, productivity_chill
 import { soundMap } from '../modules/sound-map.js';
 import { sessionState } from '../modules/state-objects.js';
 import { labelFlags, labelArrs, labelDict } from '../modules/notes-objects.js';
+import { tempStorage } from '../modules/summary-stats.js';
 
 import { sessionCompletion } from '../state/session-completion.js'; // minified
 import { animationsFadeIn, animationsFadeOut, getTotalElapsed, returnTotalTimeString, updateLabelArrs, setBackground, pauseAndResetAlertSounds, resetDisplay, updateProgressBar, totalTimeDisplay, setButtonTextAndMode, hideSuggestionBreakContainer, hidePomodorosCompletedContainer, showInterruptionsSubContainer, setFavicon, observer, pomodoroWorker, suggestionWorker, flowmodoroWorker, displayWorker, totalDisplayWorker, updateDataPerHour } from '../main/index.js'; // minified
@@ -67,6 +68,9 @@ async function logSession() {
 
     let labelTimeSum = sumTotalLabelTime(labelArrs, labelDict);
 
+    // FILL TEMP STORAGE FOR SESSION SUMMARY POPUP
+    fillTempStorage(totalTime, focusQualityFractionV5, timeAmount.targetTime, tempStorage);
+
     // SENDING DATA TO BE PROCESSED BY BACKEND
     finalizeSession(times, userTimeZone, totalTime, focusQualityFractionV2, focusQualityFractionV5, qualityAdjustedDeepWorkV2, qualityAdjustedDeepWorkV5, totalDistractions, intervalArrs, savedInterruptionsArr, avgFlowTimeInterval, avgChillTimeInterval, counters, timeAmount, flags, labelTimeSum, perHourData);
 }
@@ -128,6 +132,12 @@ export async function sessionReset() {
 // ---------------------
 // HELPER FUNCTIONS
 // ---------------------
+function fillTempStorage(deepWork, focusQuality, targetHours, tempStorage) {
+    tempStorage.deepWork = deepWork;
+    tempStorage.focusQuality = focusQuality;
+    tempStorage.targetHours = targetHours;
+}
+
 function resetBackgrounds(deepWorkBackground, breakBackground) {
     deepWorkBackground.style.opacity = 0;
     breakBackground.style.opacity = 0;

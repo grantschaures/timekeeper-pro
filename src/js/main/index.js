@@ -320,7 +320,7 @@ document.addEventListener("stateUpdated", function() {
                 progressContainer.classList.remove("glowing-effect");
             }
 
-            changeTargetHours(flags, sessionState);
+            changeTargetHours(flags, sessionState, timeAmount);
 
             /* Update progress bar & percentage ONCE to demonstrate submitted change in Break.
                 In Deep Work, this code makes the change happen just a little bit faster. */
@@ -2217,8 +2217,9 @@ async function enableNotifications() {
     return true;
 }
 
-async function changeTargetHours(flags, sessionState) {
+async function changeTargetHours(flags, sessionState, timeAmount) {
     flags.submittedTarget = false;
+    timeAmount.targetTime = null;
     
     document.getElementById("target-hours").remove();
     

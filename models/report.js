@@ -2,11 +2,15 @@ const db = require("../db");
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// Define the hourlyData schema
 const hourlyData = new Schema({
     deepWorkTime: { type: Number },
     distractions: { type: Number },
     inDeepWork: { type: Boolean }
+});
+
+const sessionSummarySchema = new Schema({
+    comments: { type: String },
+    subjectiveFeedback: { type: String }
 });
 
 // Define the sessions schema
@@ -45,12 +49,9 @@ const sessionSchema = new Schema({
         type: Object,
         of: hourlyData,
         default: {}
-    }
-});
+    },
 
-const sessionSummarySchema = new Schema({
-    comments: { type: String },
-    subjectiveFeedback: { type: String }
+    sessionSummary: sessionSummarySchema
 });
 
 // Define the Report schema
@@ -59,8 +60,7 @@ const reportSchema = new Schema({
     userEmail: { type: String, required: true },
     sessionCount: { type: Number },
     sessionsArr: [sessionSchema],
-    lastSession: sessionSchema,
-    sessionSummary: sessionSummarySchema
+    lastSession: sessionSchema
 }, { collection: 'Reports' });
 
 // Create the Report model

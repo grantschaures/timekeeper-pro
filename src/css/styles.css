@@ -241,19 +241,6 @@ h4 {
     opacity: 0;
 }
 
-.hyperChillLogoRotate {
-    animation: logoRotate 60s linear infinite;
-}
-
-@keyframes logoRotate {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
 .caption {
     font-family: myFont2;
 }
@@ -1227,8 +1214,8 @@ header {
 }
 
 .overlay {
-    /* display: none; */
-    display: flex;
+    display: none;
+    /* display: flex; */
     position: fixed;
     top: 0;
     left: 0;
@@ -1608,7 +1595,7 @@ header {
     /* display: none; */
     display: flex;
     flex-direction: column;
-    background: whitesmoke;
+    background: white;
     padding-left: 20px;
     padding-right: 20px;
     border-radius: 25px;
@@ -1619,8 +1606,8 @@ header {
     color: rgb(0, 0, 0);
     width: 350px;
     /* font-size: 24px; */
-    /* opacity: 0; */
-    opacity: 1;
+    opacity: 0;
+    /* opacity: 1; */
     transition: opacity 0.5s ease-in-out;
     min-width: 225px;
     margin-left: 10px;
@@ -1643,11 +1630,49 @@ header {
 
 #multiSeriesPiePlotContainer {
     display: flex;
+    /* display: none; */
     justify-content: center;
     padding-left: 50px;
     padding-right: 50px;
+    align-items: center;
+    position: relative;
 
     /* border: 3px solid brown; */
+}
+
+#HC_icon_session_summary {
+    position: absolute;
+    height: 100px;
+    width: 100px;
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust the position to be exactly centered */
+    z-index: 0; /* Ensure the image is on top */
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.hyperChillLogoRotate {
+    animation: logoRotate 2s cubic-bezier(0.1, 0.9, 0.4, 1) forwards;
+}
+
+@keyframes logoRotate {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+#sessionSummaryChart {
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0;
+
+    transition: opacity 1s ease-out;
+    /* border: 3px solid blue; */
 }
 
 @media(min-width: 410px) {
@@ -1656,9 +1681,19 @@ header {
     } 
 }
 
-#sessionSummaryChart {
-    width: 100%;
-    height: 100%;
+@media(max-width: 410px) {
+    #HC_icon_session_summary {
+        opacity: 0;
+    }
+}
+
+@media(max-width: 300px) {
+    #sessionSummaryChart {
+        pointer-events: none;
+    }
+    #multiSeriesPiePlotContainer {
+        height: 150px;
+    } 
 }
 
 #summaryStatsContainer {
@@ -1687,9 +1722,9 @@ header {
     font-size: 20px;
 }
 
-.summaryStatsContainer {
+.summaryStats {
     height: 50px;
-    width: 125px;
+    width: 126px;
     
     display: flex;
     flex-direction: column;
@@ -1697,6 +1732,20 @@ header {
     justify-content: center;
     color: white;
     font-size: 18px;
+    position: relative;
+    opacity: 0;
+    transition: opacity 0.25s ease-out;
+    animation: moveDown 0.5s ease-out;
+
+}
+
+@keyframes moveDown {
+    from {
+        top: -15px;
+    }
+    to {
+        top: 0px;
+    }
 }
 
 #commentsContainer {
@@ -1707,6 +1756,16 @@ header {
     width: 100%; /* Ensure the container takes the full width of the parent element */
     box-sizing: border-box; /* Include padding and border in the element's total width and height */
     background-color: rgba(0, 0, 0, 0.15);
+    animation: expand 0.5s ease-out;
+}
+
+@keyframes expand {
+    from {
+        height: 0px;
+    }
+    to {
+        height: 100px;
+    }
 }
 
 #commentsTextArea {
@@ -1758,7 +1817,8 @@ header {
     border: none;
     font-family: settingsHeaderFont;
     font-size: 18px;
-    height: 35px;
+    height: 50px;
+    width: 63px;
 }
 
 #sessionSummaryOkBtn:hover {
@@ -1770,7 +1830,7 @@ header {
     background-color: rgba(0, 0, 0, 0.15);
     border-radius: 15px;
     width: 160px;
-    height: 35px;
+    height: 50px;
     font-family: settingsHeaderFont;
     font-size: 18px;
     text-align-last: center; /* Center the selected option in some browsers */

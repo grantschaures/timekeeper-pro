@@ -225,6 +225,11 @@ export const previousSessionStartedOkBtn = document.getElementById("previousSess
 export const invalidatePreviousSessionInput = document.getElementById("invalidatePreviousSessionInput");
 export const quitCurrentSessionInput = document.getElementById("quitCurrentSessionInput");
 
+export const sessionSummaryPopup = document.getElementById("sessionSummaryPopup");
+export const multiSeriesPiePlotContainer = document.getElementById("multiSeriesPiePlotContainer");
+export const summaryStats = document.querySelectorAll('.summaryStats');
+export const sessionSummaryChart = document.getElementById('sessionSummaryChart');
+
 export let hoverTimer;
 export var backgroundVideoSource = document.getElementById('background-video-source');
 export var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
