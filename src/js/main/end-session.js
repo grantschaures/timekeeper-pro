@@ -103,9 +103,9 @@ async function updateSessionSummary(tempStorage) {
     let sessionRating = subjectiveFeedbackDropdown.value;
     let sessionId = tempStorage.sessionId;
 
-    alert(userComments);
-    alert(sessionRating);
-    alert(sessionId);
+    alert("userComments: " + userComments);
+    alert("sessionRating: " + sessionRating);
+    alert("sessionId: " + sessionId);
 
     try {
         const response = await fetch('/api/data/update-session-summary', {
