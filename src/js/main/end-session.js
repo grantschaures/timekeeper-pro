@@ -46,15 +46,12 @@ document.addEventListener("stateUpdated", function() {
 
     sessionSummaryOkBtn.addEventListener("click", async function() {
         if (summaryFlags.canSubmitSessionSummary) {
-            alert("test1");
             // hide summary popup & overlay
             hideSessionSummaryPopup();
             
-            alert("test2");
             // send user analysis to database
             await updateSessionSummary(tempStorage);
             
-            alert("test3");
             // reset session summary
             resetSessionSummary();
             
@@ -101,7 +98,6 @@ function hideSessionSummaryPopup() {
 }
 
 async function updateSessionSummary(tempStorage) {
-    alert("test2.5")
     let userComments = commentsTextArea.value;
     let sessionRating = subjectiveFeedbackDropdown.value;
     let sessionId = tempStorage.sessionId;
@@ -115,7 +111,6 @@ async function updateSessionSummary(tempStorage) {
             body: JSON.stringify({ userComments, sessionRating, sessionId })
         });
 
-        alert("test2.6");
         if (!response.ok) {
             const errorText = await response.text();
             console.error('Response status:', response.status);
@@ -123,7 +118,6 @@ async function updateSessionSummary(tempStorage) {
             throw new Error('Network response was not ok');
         }
 
-        alert("test2.7");
         const data = await response.json();
         console.log("Session summary updated successfully:", data);
         alert("Session summary updated successfully:", data);

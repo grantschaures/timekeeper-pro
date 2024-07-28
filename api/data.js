@@ -16,8 +16,8 @@ router.post("/update-session-summary", async function(req, res) {
     // Assuming the JWT is sent automatically in cookie headers
     const token = req.cookies.token;  // Extract the JWT from cookies directly
     const { userComments, sessionRating, sessionId } = req.body;
-    // console.log(userComments);
-    // console.log(sessionRating);
+    console.log(userComments);
+    console.log(sessionRating);
 
     if (!token) {
         return res.status(401).json({ message: "Token was not found" });
