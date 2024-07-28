@@ -46,13 +46,15 @@ document.addEventListener("stateUpdated", function() {
 
     sessionSummaryOkBtn.addEventListener("click", async function() {
         if (summaryFlags.canSubmitSessionSummary) {
-            alert("test");
+            alert("test1");
             // hide summary popup & overlay
             hideSessionSummaryPopup();
-    
+            
+            alert("test2");
             // send user analysis to database
             await updateSessionSummary(tempStorage);
-    
+            
+            alert("test3");
             // reset session summary
             resetSessionSummary();
             
