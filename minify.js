@@ -29,6 +29,7 @@ let files = [
     'src/js/utility/preload.js',
     'src/js/utility/update_streaks.js',
     'src/js/utility/identification.js',
+    'src/js/utility/session-summary-chart.js',
     'src/js/login_signup/login.js',
     'src/js/login_signup/signup.js',
     'src/js/login_signup/reset-password.js',

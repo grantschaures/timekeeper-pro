@@ -45,7 +45,8 @@ const indexHtmlReplacements = [
     { pattern: /\/js\/main\/end-session\.js/g, replacement: '/js/minified/end-session.min.js' },
     { pattern: /\/js\/state\/state\.js/g, replacement: '/js/minified/state.min.js' },
     { pattern: /\/js\/api\/google-signin\.js/g, replacement: '/js/minified/google-signin.min.js' },
-    { pattern: /\/js\/utility\/preload\.js/g, replacement: '/js/minified/preload.min.js' }
+    { pattern: /\/js\/utility\/preload\.js/g, replacement: '/js/minified/preload.min.js' },
+    { pattern: /\/js\/utility\/session-summary-chart\.js/g, replacement: '/js/minified/session-summary-chart.min.js' }
 ];
 
 const loginHtmlReplacements = [
