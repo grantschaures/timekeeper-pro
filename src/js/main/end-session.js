@@ -113,6 +113,7 @@ async function updateSessionSummary(tempStorage) {
 
         if (!response.ok) {
             const errorText = await response.text();
+            alert(errorText);
             console.error('Response status:', response.status);
             console.error('Response body:', errorText);
             throw new Error('Network response was not ok');
@@ -120,7 +121,6 @@ async function updateSessionSummary(tempStorage) {
 
         const data = await response.json();
         console.log("Session summary updated successfully:", data);
-        alert("Session summary updated successfully:", data);
         
     } catch (error) {
         console.error('Failed to update session summary:', error);
