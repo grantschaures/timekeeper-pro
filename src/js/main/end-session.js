@@ -46,6 +46,7 @@ document.addEventListener("stateUpdated", function() {
 
     sessionSummaryOkBtn.addEventListener("click", async function() {
         if (summaryFlags.canSubmitSessionSummary) {
+            alert("test");
             // hide summary popup & overlay
             hideSessionSummaryPopup();
     
@@ -53,7 +54,6 @@ document.addEventListener("stateUpdated", function() {
             await updateSessionSummary(tempStorage);
     
             // reset session summary
-            alert("test");
             resetSessionSummary();
             
             // clear tempStorage in summary-stats.js
