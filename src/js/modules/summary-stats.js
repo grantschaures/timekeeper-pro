@@ -4,5 +4,14 @@
 export const tempStorage = {
     deepWork: null,
     focusQuality: null,
-    targetHours: null
+    targetHours: null,
+    sessionId: null
+}
+
+export const charts = {
+    summary: null
+}
+
+export const flags = {
+    canSubmitSessionSummary: false
 }

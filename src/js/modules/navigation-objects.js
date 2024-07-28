@@ -10,7 +10,8 @@ export const flags = {
     deleteAccountWindowShowing: false,
     shortcutsWindowShowing: false,
     allowToggleSwitch: true,
-    settingsContainerShowing: false
+    settingsContainerShowing: false,
+    sessionSummaryPopupShowing: false
 }
 
 export const counters = {

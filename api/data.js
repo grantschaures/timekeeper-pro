@@ -12,11 +12,71 @@ router.use(express.json());
 // Middleware for checking and renewing the token (also checks if session token/ cookie has expired)
 router.use(checkAndRenewToken);
 
+router.post("/update-session-summary", async function(req, res) {
+    // Assuming the JWT is sent automatically in cookie headers
+    const token = req.cookies.token;  // Extract the JWT from cookies directly
+    const { userComments, sessionRating, sessionId } = req.body;
+    // console.log(userComments);
+    // console.log(sessionRating);
+
+    if (!token) {
+        return res.status(401).json({ message: "Token was not found" });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        const userId = decoded.userId;
+        const user = await User.findById(userId);
+
+        if (user) {
+            const report = await Report.findOne({ userId: user._id });
+
+            if (!report) {
+                return res.status(404).json({
+                    message: "Report not found"
+                });
+            }
+
+            // Find the session by sessionId
+            const session = report.sessionsArr.id(sessionId);
+
+            if (!session) {
+                return res.status(404).json({
+                    message: "Session not found"
+                });
+            }
+
+            // Update the session summary
+            session.sessionSummary.comments = userComments;
+            session.sessionSummary.subjectiveFeedback = sessionRating;
+            
+            // Update latest session
+
+            const lastSession = report.lastSession;
+            if (lastSession.id === sessionId) {
+                lastSession.sessionSummary.comments = userComments;
+                lastSession.sessionSummary.subjectiveFeedback = sessionRating;
+            }
+
+            await report.save();
+            res.json({ success: true, message: 'update-session-summary endpoint reached successfully'});
+        } else {
+            return res.status(404).json({ 
+                message: "User not found"
+            });
+        }
+    } catch (error) {
+        return res.status(401).json({
+            message: "The server was unable to process the request: " + error.message
+        });
+    }
+});
+
 router.post("/update-report", async function(req, res) {
     // Assuming the JWT is sent automatically in cookie headers
     const token = req.cookies.token;  // Extract the JWT from cookies directly
     const { session } = req.body;
-    console.log(session);
+    // console.log(session);
 
     if (!token) {
         return res.status(401).json({ message: "Token was not found" });

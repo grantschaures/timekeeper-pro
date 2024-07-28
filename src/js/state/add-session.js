@@ -1,7 +1,7 @@
-import { displaySessionSummaryPopup } from "../modules/session-summary.js";
+import { tempStorage, flags as summaryFlags } from "../modules/summary-stats.js";
 
 export async function addSession(session) {
-    console.log(session);
+    // console.log(session);
     try {
         const response = await fetch('/api/data/update-report', {
             method: 'POST',
@@ -19,10 +19,14 @@ export async function addSession(session) {
         }
 
         const data = await response.json();
-        console.log("Settings updated successfully:", data);
+        console.log("Report updated successfully with new session:", data);
 
-        // call function in session-summary-popup.js to display the session summary popup
-        displaySessionSummaryPopup(data.sessionId);
+        setTimeout(() => {
+            summaryFlags.canSubmitSessionSummary = true;
+        }, 1000)
+
+        //update tempStorage w/ sessionId
+        tempStorage.sessionId = data.sessionId;
         
     } catch (error) {
         console.error('Failed to add session:', error);

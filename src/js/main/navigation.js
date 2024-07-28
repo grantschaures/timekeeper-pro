@@ -201,6 +201,7 @@ document.addEventListener("stateUpdated", function() {
         showShortcutsPopup(popupOverlay, shortcutsPopup);
     })
     
+    // TO-DO: update this for sessionSummaryPopup
     popupOverlay.addEventListener("click", function(event) {
         if ((flags.accountWindowShowing) && (!accountPopup.contains(event.target))) {
             goBackBtn.click();
@@ -210,6 +211,8 @@ document.addEventListener("stateUpdated", function() {
             hideShortcutsPopup(popupOverlay, shortcutsPopup);
         } else if ((notesFlags.confirmLabelDeletionWindowShowing) && (!confirmLabelDeletionPopup.contains(event.target))) {
             confirmLabelDeletionNoBtn.click();
+        } else if ((flags.sessionSummaryPopupShowing) && (!sessionSummaryPopup.contains(event.target))) {
+            sessionSummaryOkBtn.click();
         }
     })
 
@@ -420,9 +423,8 @@ function setDinkleDoinkSetting(mode) { // and also state.lastSelectedMode value
     state.lastSelectedMode = mode;
 }
 
-function subMainContainerTransition(display) {
+export function subMainContainerTransition(display) {
     if (display === "none") {
-    
         subMainContainer.style.opacity = 0;
         subMainContainer.offsetHeight; // forcing reflow
         body.style.overflowY = 'hidden'; // ensuring no scroll can occur during 150ms transition
@@ -503,7 +505,7 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
         }
         
         // when hitting a blog or about exit (or clicking outside those containers), or a settings exit if in home mode
-        if ((exitTargets.includes(event.target)) || (state.lastSelectedMode === 'home')) {
+        if (((exitTargets.includes(event.target)) || (state.lastSelectedMode === 'home')) && (!flags.sessionSummaryPopupShowing)) {
             setDinkleDoinkSetting("home");
             subMainContainerTransition("flex");
             resetMode(reportContainer);
@@ -579,17 +581,6 @@ function fadeInAnimations() {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 function showBlog(blog_id, blogContainer, blog_post_container, blogIdList, flags) {

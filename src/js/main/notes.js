@@ -8,7 +8,7 @@ import {
     confirmLabelDeletionText
 } from '../modules/dom-elements.js';
 import { flags as indexflags } from '../modules/index-objects.js';
-import { state as navigationState } from '../modules/navigation-objects.js';
+import { state as navigationState, flags as navFlags } from '../modules/navigation-objects.js';
 import { notesFlags, counters, state, flags, emojiMap, tutorialContainerMap, fontSizeArr, fontNumArr, labelDict, notesArr, selectedLabelDict, labelFlags, labelArrs } from '../modules/notes-objects.js';
 import { sessionState } from '../modules/state-objects.js';
 
@@ -1641,16 +1641,16 @@ function handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInpu
         } else if ((event.key === 'n') && (canOpenNotes(blogContainer, aboutContainer, settingsContainer, main_elements))) {
             if (!notesFlags.notesShowing) {
                 openNotesContainer(notesContainer, notesFlags);
-            } else if ((!flags.noteTaskInputContainerShowing) && (!flags.noteTaskInputContainerEditShowing) && (notesFlags.notesConsoleShowing)) {
+            } else if ((!flags.noteTaskInputContainerShowing) && (!flags.noteTaskInputContainerEditShowing) && (notesFlags.notesConsoleShowing) && (!navFlags.sessionSummaryPopupShowing)) {
                 addNoteTaskContainer.click();
                 taskCheckbox.checked = false;
                 event.preventDefault();
             }
-        }  else if ((event.key === 't') && (notesFlags.notesShowing) && (notesFlags.notesConsoleShowing) && (!flags.noteTaskInputContainerShowing) && (!flags.noteTaskInputContainerEditShowing)) {
+        }  else if ((event.key === 't') && (notesFlags.notesShowing) && (notesFlags.notesConsoleShowing) && (!flags.noteTaskInputContainerShowing) && (!flags.noteTaskInputContainerEditShowing) && (!navFlags.sessionSummaryPopupShowing)) {
             addNoteTaskContainer.click();
             taskCheckbox.checked = true;
             event.preventDefault();
-        } else if ((event.key === 'Escape') && (notesFlags.notesShowing)) {
+        } else if ((event.key === 'Escape') && (notesFlags.notesShowing) && (!navFlags.sessionSummaryPopupShowing)) {
             if (document.activeElement === noteTaskInputText) {
                 noteInputCancelBtn.click();
             } else {
@@ -1669,7 +1669,7 @@ function canOpenNotes(blogContainer, aboutContainer, settingsContainer, main_ele
     if ((blogContainer.style.display === "") && (aboutContainer.style.display === "") && (settingsContainer.style.display === "")) {
         return true; //if very first action is hitting 'n'
     } else {
-        return ((settingsContainer.style.display === "none" || settingsContainer.style.display === "") && (main_elements.style.display !== "none"));
+        return ((settingsContainer.style.display === "none" || settingsContainer.style.display === "") && (main_elements.style.display !== "none") && (!navFlags.sessionSummaryPopupShowing));
     }
 
 }

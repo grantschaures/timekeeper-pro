@@ -160,7 +160,8 @@ export const flags = {
     pomodoroCountIncremented: false,
     sessionInProgress: false,
     triggeredSilentAudio: false,
-    canEndSession: false
+    canEndSession: false,
+    canSubmitSummary: false
 }
 
 export const tempStorage = {

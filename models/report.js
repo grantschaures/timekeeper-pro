@@ -9,8 +9,8 @@ const hourlyData = new Schema({
 });
 
 const sessionSummarySchema = new Schema({
-    comments: { type: String },
-    subjectiveFeedback: { type: String }
+    comments: { type: String, default: ""},
+    subjectiveFeedback: { type: String, default: ""}
 });
 
 // Define the sessions schema
@@ -51,7 +51,7 @@ const sessionSchema = new Schema({
         default: {}
     },
 
-    sessionSummary: sessionSummarySchema
+    sessionSummary: { type: sessionSummarySchema, default: {} } // Ensure sessionSummary is always included
 });
 
 // Define the Report schema

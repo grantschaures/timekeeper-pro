@@ -2349,6 +2349,8 @@ function handleEnter(event, start_stop_btn, submit_change_btn, createLabelInput,
             // DO NOTHING - code for this event is implemented in notes.js instead  
         } else if (document.activeElement.id === "note-task-input-text-edit") {
             // DO NOTHING - code for this event is implemented in notes.js instead  
+        } else if (navFlags.sessionSummaryPopupShowing) {
+            // DO NOTHING
         } else {
             flags.autoSwitchedModes = false;
             start_stop_btn.click();

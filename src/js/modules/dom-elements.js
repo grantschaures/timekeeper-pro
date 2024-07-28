@@ -229,6 +229,12 @@ export const sessionSummaryPopup = document.getElementById("sessionSummaryPopup"
 export const multiSeriesPiePlotContainer = document.getElementById("multiSeriesPiePlotContainer");
 export const summaryStats = document.querySelectorAll('.summaryStats');
 export const sessionSummaryChart = document.getElementById('sessionSummaryChart');
+export const deepWorkTime = document.getElementById('deepWorkTime');
+export const focusPercentage = document.getElementById('focusPercentage');
+export const commentsTextArea = document.getElementById('commentsTextArea');
+export const sessionSummaryOkBtn = document.getElementById('sessionSummaryOkBtn');
+export const subjectiveFeedbackDropdown = document.getElementById('subjectiveFeedbackDropdown');
+export const HC_icon_session_summary = document.getElementById('HC_icon_session_summary');
 
 export let hoverTimer;
 export var backgroundVideoSource = document.getElementById('background-video-source');

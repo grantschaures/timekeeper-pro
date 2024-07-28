@@ -1228,6 +1228,11 @@ header {
     z-index: 1000;
 }
 
+.opacityChange {
+    opacity: 0;
+    transition: opacity 1s ease-out;
+}
+
 #deleteAccountPopup {
     display: none;
     background: rgb(50, 50, 50);
@@ -1592,8 +1597,8 @@ header {
 }
 
 #sessionSummaryPopup {
-    /* display: none; */
-    display: flex;
+    display: none;
+    /* display: flex; */
     flex-direction: column;
     background: white;
     padding-left: 20px;
@@ -1647,7 +1652,7 @@ header {
     top: 50%; /* Center vertically */
     left: 50%; /* Center horizontally */
     transform: translate(-50%, -50%); /* Adjust the position to be exactly centered */
-    z-index: 0; /* Ensure the image is on top */
+    z-index: 2; /* Ensure the image is on top */
     opacity: 1;
     transition: opacity 0.5s ease-in-out;
 }
@@ -1756,7 +1761,7 @@ header {
     width: 100%; /* Ensure the container takes the full width of the parent element */
     box-sizing: border-box; /* Include padding and border in the element's total width and height */
     background-color: rgba(0, 0, 0, 0.15);
-    animation: expand 0.5s ease-out;
+    animation: expand 1s cubic-bezier(0.5, 0, 0, 1) forwards;
 }
 
 @keyframes expand {

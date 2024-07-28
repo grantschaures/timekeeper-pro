@@ -1,14 +1,16 @@
 import { timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, counters, flags, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, homeBackground, times, perHourData } from '../modules/index-objects.js';
-import { start_stop_btn, end_session_btn, total_time_display, productivity_chill_mode, progressBar, progressContainer, display, interruptionsSubContainer, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, flowAnimation, chillAnimation, hyperChillLogoImage, streaksCount, breakBackground, deepWorkBackground } from '../modules/dom-elements.js';
+import { start_stop_btn, end_session_btn, total_time_display, productivity_chill_mode, progressBar, progressContainer, display, interruptionsSubContainer, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, flowAnimation, chillAnimation, hyperChillLogoImage, streaksCount, breakBackground, deepWorkBackground, commentsTextArea, sessionSummaryOkBtn, subjectiveFeedbackDropdown, sessionSummaryPopup, summaryStats, HC_icon_session_summary } from '../modules/dom-elements.js';
 import { soundMap } from '../modules/sound-map.js';
 import { sessionState } from '../modules/state-objects.js';
 import { labelFlags, labelArrs, labelDict } from '../modules/notes-objects.js';
-import { tempStorage } from '../modules/summary-stats.js';
+import { tempStorage, flags as summaryFlags } from '../modules/summary-stats.js';
+import { flags as navFlags } from '../modules/navigation-objects.js';
 
 import { sessionCompletion } from '../state/session-completion.js'; // minified
 import { animationsFadeIn, animationsFadeOut, getTotalElapsed, returnTotalTimeString, updateLabelArrs, setBackground, pauseAndResetAlertSounds, resetDisplay, updateProgressBar, totalTimeDisplay, setButtonTextAndMode, hideSuggestionBreakContainer, hidePomodorosCompletedContainer, showInterruptionsSubContainer, setFavicon, observer, pomodoroWorker, suggestionWorker, flowmodoroWorker, displayWorker, totalDisplayWorker, updateDataPerHour } from '../main/index.js'; // minified
 import { checkInvaliDate } from '../state/check-invaliDate.js'; // minified
 import { addSession } from '../state/add-session.js'; // minified
+import { subMainContainerTransition } from '../main/navigation.js';
 
 const defaultFavicon = "/images/logo/HyperChillLogo_circular_white_border.png";
 
@@ -23,19 +25,123 @@ document.addEventListener("stateUpdated", function() {
                 let logSessionActivity = await checkInvaliDate(times.start); // T or F
                 if (logSessionActivity) {
                     await logSession(); // (1) Collect all necessary information about the session
+                    setTimeout(() => {
+                        // reset displays
+                        initialVisualReset()
+                    }, 500)
                 }
             }
 
             // (2) Reset everything to the default state
-            await sessionReset();
+            sessionReset();
         }
-    });    
+    });
+    
+    // Session Summary Behavior
+    document.addEventListener("keydown", function(event) {
+        if (event.key === "Enter" && navFlags.sessionSummaryPopupShowing) {
+            insertNewLine(event, commentsTextArea);
+        }
+    });
+
+    sessionSummaryOkBtn.addEventListener("click", async function() {
+        if (summaryFlags.canSubmitSessionSummary) {
+            // hide summary popup & overlay
+            hideSessionSummaryPopup();
+    
+            // send user analysis to database
+            await updateSessionSummary(tempStorage);
+    
+            // reset session summary
+            resetSessionSummary();
+            
+            // clear tempStorage in summary-stats.js
+            resetPropertiesToNull(tempStorage);
+
+            summaryFlags.canSubmitSessionSummary = false;
+
+            // Reset session summary HC icon depth
+            HC_icon_session_summary.style.zIndex = 2;
+        }
+    })
 })
 
 // -----------------
 // MAIN FUNCTIONS
 // -----------------
+
+// reset comments and rating elements
+function resetSessionSummary() {
+    document.getElementById('deepWorkTime').innerHTML = "";
+    document.getElementById('focusPercentage').innerHTML = "";
+    
+    commentsTextArea.value = "";
+    subjectiveFeedbackDropdown.value = "";
+}
+
+// hide popup and overlay (immediately)
+function hideSessionSummaryPopup() {
+    popupOverlay.style.display = 'none';
+    sessionSummaryPopup.style.display = 'none';
+    navFlags.sessionSummaryPopupShowing = false;
+
+    sessionSummaryPopup.style.opacity = 0;
+    multiSeriesPiePlotContainer.style.opacity = 0;
+    sessionSummaryChart.style.opacity = 0;
+    summaryStats.forEach(container => {
+        container.style.opacity = 0;
+    })
+    document.body.style.overflowY = "scroll"; // stop scrolling
+}
+
+async function updateSessionSummary(tempStorage) {
+    let userComments = commentsTextArea.value;
+    let sessionRating = subjectiveFeedbackDropdown.value;
+    let sessionId = tempStorage.sessionId;
+
+    try {
+        const response = await fetch('/api/data/update-session-summary', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ userComments, sessionRating, sessionId })
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Response status:', response.status);
+            console.error('Response body:', errorText);
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        console.log("Session summary updated successfully:", data);
+        
+    } catch (error) {
+        console.error('Failed to update session summary:', error);
+    }
+}
+
+function insertNewLine(event, textarea) {
+    // Prevent default behavior of Enter key
+    event.preventDefault();
+
+    // Insert a new line at the current cursor position
+    const cursorPosition = textarea.selectionStart;
+    const value = textarea.value;
+    textarea.value = value.slice(0, cursorPosition) + '\n' + value.slice(cursorPosition);
+
+    // Move the cursor to the new position
+    textarea.selectionStart = textarea.selectionEnd = cursorPosition + 1;
+
+    // Scroll the textarea to the bottom to make the new line visible
+    textarea.scrollTop = textarea.scrollHeight;
+}
+
 async function logSession() {
+    subMainContainerTransition("none");
+
     let userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; // determine moment they end session
     updateStreaks(sessionState, userTimeZone, streaksCount);
     
@@ -73,9 +179,39 @@ async function logSession() {
 
     // SENDING DATA TO BE PROCESSED BY BACKEND
     finalizeSession(times, userTimeZone, totalTime, focusQualityFractionV2, focusQualityFractionV5, qualityAdjustedDeepWorkV2, qualityAdjustedDeepWorkV5, totalDistractions, intervalArrs, savedInterruptionsArr, avgFlowTimeInterval, avgChillTimeInterval, counters, timeAmount, flags, labelTimeSum, perHourData);
+    
+    // SHOW SUMMARY POPUP
+    displaySessionSummaryPopup();
 }
 
-export async function sessionReset() {
+function displaySessionSummaryPopup() {
+    popupOverlay.classList.add('opacityChange');
+    popupOverlay.style.display = 'flex';
+    setTimeout(() => {
+        popupOverlay.style.opacity = 1;
+        setTimeout(() => {
+            popupOverlay.classList.remove('opacityChange');
+            HC_icon_session_summary.style.zIndex = 0;
+        }, 1000);
+    }, 0)
+    sessionSummaryPopup.style.display = 'flex';
+    navFlags.sessionSummaryPopupShowing = true;
+    commentsTextArea.focus();
+
+    setTimeout(() => {
+        sessionSummaryPopup.style.opacity = 1;
+        multiSeriesPiePlotContainer.style.opacity = 1;
+        sessionSummaryChart.style.opacity = 1;
+        summaryStats.forEach(container => {
+            container.style.opacity = 1;
+        })
+        document.body.style.overflowY = "hidden"; // stop scrolling
+
+        document.dispatchEvent(new Event('triggerSessionSummaryChartAnimation'));
+    }, 100);
+}
+
+export function sessionReset() {
     // reset labelArrs
     resetLabelArrs(labelArrs);
 
@@ -100,13 +236,9 @@ export async function sessionReset() {
     // fade out animations
     animationsFadeOut(flowAnimation);
 
-    // reset displays
-    resetDisplay(display);
-    updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer);
-    totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod);
-
-    // reset header text
-    setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", "Press 'Start' to begin session");
+    if (!sessionState.loggedIn) {
+        initialVisualReset();
+    }
 
     // get rid of glowing green on start/ stop btn and progress bar
     start_stop_btn.classList.remove('glowing-effect');
@@ -116,9 +248,6 @@ export async function sessionReset() {
     hideSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min);
     hidePomodorosCompletedContainer(completedPomodorosContainer);
     showInterruptionsSubContainer(interruptionsSubContainer);
-
-    // reset interruptions text to counters.interruptions, which has already been reset to 0
-    interruptionsNum.textContent = counters.interruptions;
 
     // fade in animation (if not already faded in)
     setTimeout(() => {
@@ -362,4 +491,17 @@ async function finalizeSession(times, userTimeZone, totalTime, focusQualityFract
     }
 
     await addSession(session);
+}
+
+function initialVisualReset() {
+    // reset displays
+    resetDisplay(display);
+    updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer);
+    totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod);
+
+    // reset header text
+    setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", "Press 'Start' to begin session");
+    
+    // reset interruptions text to counters.interruptions, which has already been reset to 0
+    interruptionsNum.textContent = 0;
 }

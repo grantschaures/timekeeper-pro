@@ -1,4 +1,4 @@
-import { tempStorage } from "../modules/summary-stats.js";
+import { tempStorage, charts } from "../modules/summary-stats.js";
 
 document.addEventListener("triggerSessionSummaryChartAnimation", function() {
     const ctx = document.getElementById('sessionSummaryChart').getContext('2d');
@@ -15,8 +15,7 @@ document.addEventListener("triggerSessionSummaryChartAnimation", function() {
     let deepWorkHours = Math.floor(deepWork);
     let deepWorkMinutes = Math.floor((deepWork - deepWorkHours) * 60);
 
-    console.log(deepWork);
-    console.log(focusQuality);
+    updateSummaryStats(deepWorkHours, deepWorkMinutes, focusQuality);
 
     const data = {
         datasets: [
@@ -96,7 +95,7 @@ document.addEventListener("triggerSessionSummaryChartAnimation", function() {
                     callbacks: {
                         label: function(tooltipItem) {
                             if (tooltipItem.datasetIndex === 0) {
-                                return ' Focus Quality: ' + tooltipItem.raw + '%';
+                                return ' Focus Quality: ' + focusQuality + '%';
                             } else if (tooltipItem.datasetIndex === 1) {
                                 return ' Deep Work: ' + deepWorkHours + 'h ' + deepWorkMinutes + 'm';
                             }
@@ -108,7 +107,14 @@ document.addEventListener("triggerSessionSummaryChartAnimation", function() {
         }
     };
 
-    new Chart(ctx, config);
+    // Destroy the existing chart instance if it exists
+    if (charts.summary) {
+        charts.summary.destroy();
+        charts.summary = null;
+    }
+
+    // Create a new chart instance
+    charts.summary = new Chart(ctx, config);
 })
 
 // HELPER FUNCTIONS
@@ -133,7 +139,13 @@ function getTargetHours(targetHours) {
         newTargetHours = 0;
     }
 
-    console.log(newTargetHours);
-
     return newTargetHours;
+}
+
+function updateSummaryStats(deepWorkHours, deepWorkMinutes, focusQuality) {
+    let deepWorkStr = `${deepWorkHours}h ${deepWorkMinutes}m`;
+    let focusQualityStr = `${focusQuality}%`;
+
+    document.getElementById('deepWorkTime').innerHTML = `<b>${deepWorkStr}</b>`;
+    document.getElementById('focusPercentage').innerHTML = `<b>${focusQualityStr}</b>`;
 }
