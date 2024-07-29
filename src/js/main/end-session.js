@@ -1,5 +1,5 @@
 import { timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, counters, flags, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, homeBackground, times, perHourData } from '../modules/index-objects.js';
-import { start_stop_btn, end_session_btn, total_time_display, productivity_chill_mode, progressBar, progressContainer, display, interruptionsSubContainer, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, flowAnimation, chillAnimation, hyperChillLogoImage, streaksCount, breakBackground, deepWorkBackground, commentsTextArea, sessionSummaryOkBtn, subjectiveFeedbackDropdown, sessionSummaryPopup, summaryStats, HC_icon_session_summary } from '../modules/dom-elements.js';
+import { start_stop_btn, end_session_btn, total_time_display, productivity_chill_mode, progressBar, progressContainer, display, interruptionsSubContainer, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, flowAnimation, chillAnimation, hyperChillLogoImage, streaksCount, breakBackground, deepWorkBackground, commentsTextArea, sessionSummaryOkBtn, subjectiveFeedbackDropdown, sessionSummaryPopup, summaryStats, HC_icon_session_summary, commentsContainer } from '../modules/dom-elements.js';
 import { soundMap } from '../modules/sound-map.js';
 import { sessionState } from '../modules/state-objects.js';
 import { labelFlags, labelArrs, labelDict } from '../modules/notes-objects.js';
@@ -184,6 +184,7 @@ async function logSession() {
     displaySessionSummaryPopup();
 }
 
+// ?? commentsContainer expansion is slightly different on subsequent popup display (not sure why)
 function displaySessionSummaryPopup() {
     popupOverlay.classList.add('opacityChange');
     popupOverlay.style.display = 'flex';

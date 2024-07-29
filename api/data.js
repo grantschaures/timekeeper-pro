@@ -2,6 +2,7 @@ const express = require("express");
 const User = require("../models/user");
 const Note = require("../models/note");
 const Report = require("../models/report");
+const { Session } = require("../models/session");
 const router = express.Router();  // This is a slight refactor for clarity
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
@@ -27,6 +28,7 @@ router.post("/update-session-summary", async function(req, res) {
         const user = await User.findById(userId);
 
         if (user) {
+
             const report = await Report.findOne({ userId: user._id });
 
             if (!report) {
@@ -35,21 +37,19 @@ router.post("/update-session-summary", async function(req, res) {
                 });
             }
 
-            // Find the session by sessionId
-            const session = report.sessionsArr.id(sessionId);
+            const session = await Session.findById(sessionId);
 
             if (!session) {
                 return res.status(404).json({
                     message: "Session not found"
                 });
             }
-
+            
             // Update the session summary
             session.sessionSummary.comments = userComments;
             session.sessionSummary.subjectiveFeedback = sessionRating;
             
-            // Update latest session
-
+            // Update latest session (if latest session still corresponds w/ sessionId, which may not always be the case)
             const lastSession = report.lastSession;
             if (lastSession.id === sessionId) {
                 lastSession.sessionSummary.comments = userComments;
@@ -57,6 +57,7 @@ router.post("/update-session-summary", async function(req, res) {
             }
 
             await report.save();
+            await session.save();
             res.json({ success: true, message: 'update-session-summary endpoint reached successfully'});
         } else {
             return res.status(404).json({ 
@@ -70,6 +71,7 @@ router.post("/update-session-summary", async function(req, res) {
     }
 });
 
+// update report and add session to Sessions collection
 router.post("/update-report", async function(req, res) {
     // Assuming the JWT is sent automatically in cookie headers
     const token = req.cookies.token;  // Extract the JWT from cookies directly
@@ -87,10 +89,6 @@ router.post("/update-report", async function(req, res) {
 
         if (user) {
             const report = await Report.findOne({ userId: user._id });
-            report.sessionCount++;
-            report.sessionsArr.push(session);
-            const newSession = report.sessionsArr[report.sessionsArr.length - 1];
-            report.lastSession = newSession;
 
             if (!report) {
                 return res.status(404).json({
@@ -98,7 +96,18 @@ router.post("/update-report", async function(req, res) {
                 });
             }
 
+            report.sessionCount++;
+            
+            const newSession = new Session({
+                userId: user._id,
+                userEmail: user.email,
+                ...session
+            });
+            
+            report.lastSession = newSession;
+
             await report.save();
+            await newSession.save();
             res.json({ success: true, message: 'update-report endpoint reached successfully', sessionId: newSession._id });
         } else {
             return res.status(404).json({ 

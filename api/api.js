@@ -171,8 +171,7 @@ router.post("/verifyIdToken", async function(req, res) {
             const report = new Report({
                 userId: user._id,
                 userEmail: email,
-                sessionCount: 0,
-                sessionsArr: []
+                sessionCount: 0
             })
             await report.save({ session });
         }

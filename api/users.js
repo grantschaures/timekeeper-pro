@@ -64,8 +64,7 @@ router.post('/emailsignup', async (req, res) => {
             const report = new Report({
                 userId: user._id,
                 userEmail: email,
-                sessionCount: 0,
-                sessionsArr: []
+                sessionCount: 0
             })
             await report.save({ session });
         }
@@ -84,7 +83,7 @@ router.post('/emailsignup', async (req, res) => {
             to: email,
             from: {
                 email: 'noreply@hyperchill.io',
-                name: 'HyperChill.io',
+                name: 'Hyperchill.io',
             },
             subject: 'Please set your password',
             text: 'Visit hyperchill.io/login',

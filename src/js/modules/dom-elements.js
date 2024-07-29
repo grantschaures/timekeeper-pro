@@ -235,6 +235,7 @@ export const commentsTextArea = document.getElementById('commentsTextArea');
 export const sessionSummaryOkBtn = document.getElementById('sessionSummaryOkBtn');
 export const subjectiveFeedbackDropdown = document.getElementById('subjectiveFeedbackDropdown');
 export const HC_icon_session_summary = document.getElementById('HC_icon_session_summary');
+export const commentsContainer = document.getElementById('commentsContainer');
 
 export let hoverTimer;
 export var backgroundVideoSource = document.getElementById('background-video-source');
