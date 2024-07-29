@@ -159,7 +159,7 @@
                 </div>
             </div>
             <div id="sessionSummaryPopup">
-                <div id="sessionSummaryHeader">
+                <div id="sessionSummaryTextContainer">
                     <h1 id="sessionSummaryText">Session Summary</h1>
                 </div>
                 <div id="summaryContainer">
@@ -192,16 +192,28 @@
                         <label for="subjectiveFeedbackDropdown"></label>
                         <select id="subjectiveFeedbackDropdown" name="subjectiveFeedbackDropdown">
                             <option value="" disabled selected>Rate Session</option>
-                            <option value="😆 hella fire">😆 hella fire</option>
-                            <option value="🤨 mid">🤨 mid</option>
-                            <option value="😩 lowkey cringe">😩 lowkey cringe</option>
-                            <option value="🤔 not sure tbh">🤔 not sure tbh</option>
+                            <option value="good">😆 hella fire</option>
+                            <option value="ok">🤨 mid</option>
+                            <option value="bad">😩 lowkey cringe</option>
+                            <option value="unsure">🤔 not sure tbh</option>
                         </select>
                     </div>
                     <button id="sessionSummaryOkBtn">
                         OK
                     </button>
                 </div>
+            </div>
+            <div id="sessionSummarySignupPromptPopup">
+                <div id="signupPromptHeaderTextContainer">
+                    <h1 id="signupPromptHeaderText">Would you like to save your sessions?</h1>
+                </div>
+                <div id="HC_icon_signup_prompt_container">
+                    <img id="HC_icon_signup_prompt" src="images/logo/HyperchillSummaryLogo.png">
+                </div>
+               <div id="createAccountHere"><b>If so, create an account here!</b></div>
+               <div id="signupPromptPopupBtnContainer">
+                   <button id="signupPromptPopupBtn">Create Account</button>
+               </div>
             </div>
         </div>
 
@@ -292,7 +304,7 @@
                     </div>
                 </div>
                 <div id="streaksLoginSuggestionPopup"> <!-- z-index: 35 when showing only, 0 otherwise -->
-                    Complete a deep work session every day to build up your streak! Log in to save your progress 😛
+                    Complete a deep work session every day to build up your streak! Log in to save your progress.
                 </div>
                 <div id="popupQuestionMenu" data-testid="popupQuestionMenu" class="no-select"> <!-- z-index: 30 -->
                     <div id="loginQuestionMenuContainer" class="menuContainer"> 

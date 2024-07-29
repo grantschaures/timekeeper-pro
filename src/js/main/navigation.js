@@ -1,4 +1,4 @@
-import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn, spaceContainer, shortcutsContainer, shortcutsPopup, shortcutsExit, reportContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, flowAnimation, chillAnimation, target_hours_input, streaksContainer, threeWayToggle, labelToDeleteContainer, confirmLabelDeletionPopup, labelSelectionRow, confirmLabelDeletionNoBtn } from '../modules/dom-elements.js';
+import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn, spaceContainer, shortcutsContainer, shortcutsPopup, shortcutsExit, reportContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, flowAnimation, chillAnimation, target_hours_input, streaksContainer, threeWayToggle, labelToDeleteContainer, confirmLabelDeletionPopup, labelSelectionRow, confirmLabelDeletionNoBtn, sessionSummaryOkBtn, sessionSummarySignupPromptPopup, HC_icon_signup_prompt } from '../modules/dom-elements.js';
 import { blogIdList, flags, counters, state } from '../modules/navigation-objects.js';
 import { sessionState } from '../modules/state-objects.js';
 import { flags as indexFlags} from '../modules/index-objects.js';
@@ -213,6 +213,10 @@ document.addEventListener("stateUpdated", function() {
             confirmLabelDeletionNoBtn.click();
         } else if ((flags.sessionSummaryPopupShowing) && (!sessionSummaryPopup.contains(event.target))) {
             sessionSummaryOkBtn.click();
+        } else if ((flags.sessionSummarySignupPromptPopupShowing) && (!sessionSummarySignupPromptPopup.contains(event.target) && (event.target !== sessionSummaryOkBtn))) {
+            hideSessionSummarySignupPromptPopup();
+            popupOverlay.style.display = 'none';
+            subMainContainerTransition("flex");
         }
     })
 
@@ -505,12 +509,14 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
         }
         
         // when hitting a blog or about exit (or clicking outside those containers), or a settings exit if in home mode
-        if (((exitTargets.includes(event.target)) || (state.lastSelectedMode === 'home')) && (!flags.sessionSummaryPopupShowing)) {
-            setDinkleDoinkSetting("home");
-            subMainContainerTransition("flex");
-            resetMode(reportContainer);
-            resetMode(spaceContainer);
-        }
+        setTimeout(() => {
+            if (((exitTargets.includes(event.target)) || (state.lastSelectedMode === 'home')) && (!flags.sessionSummaryPopupShowing) && (!flags.sessionSummarySignupPromptPopupShowing)) {
+                setDinkleDoinkSetting("home");
+                subMainContainerTransition("flex");
+                resetMode(reportContainer);
+                resetMode(spaceContainer);
+            }
+        }, 0)
         
         // hiding blog content
         if (flags.blogShowing == true) {
@@ -684,4 +690,14 @@ function hideShortcutsPopup(popupOverlay, shortcutsPopup) {
     shortcutsPopup.style.display = "none";
     popupOverlay.style.display = "none";
     body.style.overflowY = 'scroll';
+}
+
+// session summary signup prompt popup hide
+function hideSessionSummarySignupPromptPopup() {
+    flags.sessionSummarySignupPromptPopupShowing = false;
+    sessionSummarySignupPromptPopup.style.display = "none";
+    HC_icon_signup_prompt.classList.remove('hyperChillSlowRotate');
+    setTimeout(() => {
+        sessionSummarySignupPromptPopup.style.opacity = 1;
+    }, 100)
 }

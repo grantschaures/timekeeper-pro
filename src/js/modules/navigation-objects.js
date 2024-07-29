@@ -11,7 +11,8 @@ export const flags = {
     shortcutsWindowShowing: false,
     allowToggleSwitch: true,
     settingsContainerShowing: false,
-    sessionSummaryPopupShowing: false
+    sessionSummaryPopupShowing: false,
+    sessionSummarySignupPromptPopupShowing: false
 }
 
 export const counters = {

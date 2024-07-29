@@ -201,10 +201,10 @@ document.addEventListener("stateUpdated", function() {
             }
 
             if (flags.pomodoroNotificationToggle) {
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop", setPomodoroIntervalText(counters, timeAmount));
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Stop", setPomodoroIntervalText(counters, timeAmount));
                 setPomodoroWorker(flags, elapsedTime, counters, recoverPomState, pomodoroWorker);
             } else {
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop","Deep Work");
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Stop","Deep Work");
             }
 
             if (counters.startStop > 1) { // runs first during first break interval
@@ -256,10 +256,10 @@ document.addEventListener("stateUpdated", function() {
                 setCurrentPomodoroNotification(counters, timeAmount);
                 recoverToBreakUpdateProgressBarAndTotalElapsed(flags, timeAmount, startTimes, elapsedTime, progressBar, progressContainer);
                 setPomodoroNotificationSeconds(flags, elapsedTime, counters, recoverBreakState, pomodoroWorker);
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", setBothBreakIntervalText(counters, timeAmount));
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Start", setBothBreakIntervalText(counters, timeAmount));
             } else {
                 showSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, timeAmount, counters, flags);
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", "Break");
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Start", "Break");
             }
 
             totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod);
@@ -631,9 +631,9 @@ document.addEventListener("stateUpdated", function() {
             flags.breakSuggestionToggle = true;
 
             if (flags.inHyperFocus) {
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop","Deep Work");
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Stop", "Deep Work");
             } else {
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start","Break");
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Start","Break");
             }
 
             resetPomodoroCounters(counters);
@@ -715,7 +715,7 @@ document.addEventListener("stateUpdated", function() {
             // When toggle for break notification is turned on whilst in flow time
             if (flags.inHyperFocus) {
                 let pomodoroString = "Pomodoro #1 | " + String(timeAmount.pomodoroIntervalArr[0]) + " min";
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop", pomodoroString);
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Stop", pomodoroString);
                 elapsedTime.pomodoroNotificationSeconds = ((counters.currentPomodoroNotification * 60) - elapsedTimeInHyperfocus);
                 pomodoroWorker.postMessage(elapsedTime.pomodoroNotificationSeconds);
             }
@@ -727,9 +727,9 @@ document.addEventListener("stateUpdated", function() {
             pomodoroWorker.postMessage("clearInterval");
             start_stop_btn.classList.remove('glowing-effect');
             if (flags.inHyperFocus) {
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Stop","Deep Work");
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Stop","Deep Work");
             } else if (counters.startStop > 1) {
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start","Break");
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Start","Break");
                 hidePomodorosCompletedContainer(completedPomodorosContainer);
                 showSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, timeAmount, counters, flags);
             }
@@ -2259,10 +2259,10 @@ function targetHoursValidate(inputHours, timeConvert, startTimes, elapsedTime, f
     return true;
 };
 
-export function setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, stop_start, hf_ct) {
+// Latest edit: removed flags.inHyperFocus = stop_start === "Stop";
+export function setButtonTextAndMode(start_stop_btn, productivity_chill_mode, stop_start, hf_ct) {
     start_stop_btn.innerText = stop_start;
     productivity_chill_mode.innerText = hf_ct;
-    flags.inHyperFocus = stop_start === "Stop";
 };
 
 export function updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer) {

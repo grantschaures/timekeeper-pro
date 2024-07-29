@@ -1596,7 +1596,7 @@ header {
     margin: 25px;
 }
 
-#sessionSummaryPopup {
+#sessionSummaryPopup, #sessionSummarySignupPromptPopup {
     display: none;
     /* display: flex; */
     flex-direction: column;
@@ -1619,9 +1619,10 @@ header {
     margin-right: 10px;
 }
 
-#sessionSummaryText {
+#sessionSummaryText, #signupPromptHeaderText {
     color: black;
-    font-family: myFont3;
+    font-family: settingsHeaderFont;
+    font-size: 28px;
 }
 
 #summaryContainer {
@@ -1667,6 +1668,19 @@ header {
     }
     to {
         transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+.hyperChillSlowRotate {
+    animation: logoSlowRotate 15s linear infinite;
+}
+
+@keyframes logoSlowRotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
     }
 }
 
@@ -1824,6 +1838,61 @@ header {
     font-size: 18px;
     height: 50px;
     width: 63px;
+}
+
+#signupPromptPopupBtn {
+    color: black;
+    background-color: rgba(0, 0, 0, 0.15);
+    border: none;
+    font-family: settingsHeaderFont;
+    font-size: 18px;
+    height: 50px;
+    min-width: 133px;
+    max-width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+#signupPromptPopupBtn:hover {
+    background-color: rgba(0, 0, 0, 0.20);
+}
+
+#signupPromptPopupBtnContainer {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 25px;
+
+    /* border: 2px solid orange; */
+}
+
+#HC_icon_signup_prompt_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* border: 2px solid cyan; */
+}
+
+#createAccountHere {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-family: settingsHeaderFont;
+    font-size: 20px;
+
+    /* border: 2px solid brown; */
+}
+
+#HC_icon_signup_prompt {
+    position: relative;
+    height: 100px;
+    width: 100px;
+    z-index: 2; /* Ensure the image is on top */
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
 }
 
 #sessionSummaryOkBtn:hover {

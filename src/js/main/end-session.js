@@ -1,5 +1,5 @@
 import { timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, counters, flags, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, homeBackground, times, perHourData } from '../modules/index-objects.js';
-import { start_stop_btn, end_session_btn, total_time_display, productivity_chill_mode, progressBar, progressContainer, display, interruptionsSubContainer, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, flowAnimation, chillAnimation, hyperChillLogoImage, streaksCount, breakBackground, deepWorkBackground, commentsTextArea, sessionSummaryOkBtn, subjectiveFeedbackDropdown, sessionSummaryPopup, summaryStats, HC_icon_session_summary, commentsContainer } from '../modules/dom-elements.js';
+import { start_stop_btn, end_session_btn, total_time_display, productivity_chill_mode, progressBar, progressContainer, display, interruptionsSubContainer, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, flowAnimation, chillAnimation, hyperChillLogoImage, streaksCount, breakBackground, deepWorkBackground, commentsTextArea, sessionSummaryOkBtn, subjectiveFeedbackDropdown, sessionSummaryPopup, summaryStats, HC_icon_session_summary, commentsContainer, sessionSummarySignupPromptPopup, popupOverlay, HC_icon_signup_prompt, signupPromptPopupBtn } from '../modules/dom-elements.js';
 import { soundMap } from '../modules/sound-map.js';
 import { sessionState } from '../modules/state-objects.js';
 import { labelFlags, labelArrs, labelDict } from '../modules/notes-objects.js';
@@ -20,20 +20,28 @@ document.addEventListener("stateUpdated", function() {
             flags.canEndSession = false; // immediately block another end_session_btn click before rest of flags are reset
             times.end = Date.now();
 
+            let logSessionActivity;
             if (sessionState.loggedIn) {
                 // IF START OF SESSION IS BEFORE invaliDate, RESET GUI BUT DON'T LOG SESSION
-                let logSessionActivity = await checkInvaliDate(times.start); // T or F
+                logSessionActivity = await checkInvaliDate(times.start); // T or F
                 if (logSessionActivity) {
                     await logSession(); // (1) Collect all necessary information about the session
-                    setTimeout(() => {
-                        // reset displays
+                    setTimeout(() => { // reset displays after popup
                         initialVisualReset()
                     }, 500)
+                } else {
+                    initialVisualReset()
                 }
+            } else {
+                await logSession(); // "logs session"
+                setTimeout(() => { // reset displays after popup
+                    initialVisualReset()
+                    summaryFlags.canSubmitSessionSummary = true;
+                }, 500)
             }
 
             // (2) Reset everything to the default state
-            sessionReset();
+            sessionReset(logSessionActivity);
         }
     });
     
@@ -46,11 +54,16 @@ document.addEventListener("stateUpdated", function() {
 
     sessionSummaryOkBtn.addEventListener("click", async function() {
         if (summaryFlags.canSubmitSessionSummary) {
-            // hide summary popup & overlay
+
+            // hide summary popup
             hideSessionSummaryPopup();
             
-            // send user analysis to database
-            await updateSessionSummary(tempStorage, commentsTextArea, subjectiveFeedbackDropdown);
+            if (sessionState.loggedIn) {
+                hidePopupOverlay();
+                await updateSessionSummary(tempStorage, commentsTextArea, subjectiveFeedbackDropdown);
+            } else {
+                displaySessionSummarySignupPromptPopup();
+            }
             
             // reset session summary
             resetSessionSummary();
@@ -64,11 +77,25 @@ document.addEventListener("stateUpdated", function() {
             HC_icon_session_summary.style.zIndex = 2;
         }
     })
+
+    signupPromptPopupBtn.addEventListener("click", function() {
+        window.location.href = "/signup";
+    })
 })
 
 // -----------------
 // MAIN FUNCTIONS
 // -----------------
+
+// corresonding hide function defined in navigation.js
+function displaySessionSummarySignupPromptPopup() {
+    navFlags.sessionSummarySignupPromptPopupShowing = true;
+    sessionSummarySignupPromptPopup.style.display = "flex";
+    HC_icon_signup_prompt.classList.add('hyperChillSlowRotate');
+    setTimeout(() => {
+        sessionSummarySignupPromptPopup.style.opacity = 1;
+    }, 100)
+}
 
 // reset comments and rating elements
 function resetSessionSummary() {
@@ -81,7 +108,6 @@ function resetSessionSummary() {
 
 // hide popup and overlay (immediately)
 function hideSessionSummaryPopup() {
-    popupOverlay.style.display = 'none';
     sessionSummaryPopup.style.display = 'none';
     navFlags.sessionSummaryPopupShowing = false;
 
@@ -92,6 +118,10 @@ function hideSessionSummaryPopup() {
         container.style.opacity = 0;
     })
     document.body.style.overflowY = "scroll"; // stop scrolling
+}
+
+function hidePopupOverlay() {
+    popupOverlay.style.display = 'none';
 }
 
 async function updateSessionSummary(tempStorage, commentsTextArea, subjectiveFeedbackDropdown) {
@@ -177,8 +207,10 @@ async function logSession() {
     // FILL TEMP STORAGE FOR SESSION SUMMARY POPUP
     fillTempStorage(totalTime, focusQualityFractionV5, timeAmount.targetTime, tempStorage);
 
-    // SENDING DATA TO BE PROCESSED BY BACKEND
-    finalizeSession(times, userTimeZone, totalTime, focusQualityFractionV2, focusQualityFractionV5, qualityAdjustedDeepWorkV2, qualityAdjustedDeepWorkV5, totalDistractions, intervalArrs, savedInterruptionsArr, avgFlowTimeInterval, avgChillTimeInterval, counters, timeAmount, flags, labelTimeSum, perHourData);
+    if (sessionState.loggedIn) {
+        // SENDING DATA TO BE PROCESSED BY BACKEND
+        finalizeSession(times, userTimeZone, totalTime, focusQualityFractionV2, focusQualityFractionV5, qualityAdjustedDeepWorkV2, qualityAdjustedDeepWorkV5, totalDistractions, intervalArrs, savedInterruptionsArr, avgFlowTimeInterval, avgChillTimeInterval, counters, timeAmount, flags, labelTimeSum, perHourData);
+    }
     
     // SHOW SUMMARY POPUP
     displaySessionSummaryPopup();
@@ -212,7 +244,7 @@ function displaySessionSummaryPopup() {
     }, 100);
 }
 
-export function sessionReset() {
+export function sessionReset(logSessionActivity) {
     // reset labelArrs
     resetLabelArrs(labelArrs);
 
@@ -237,13 +269,19 @@ export function sessionReset() {
     // fade out animations
     animationsFadeOut(flowAnimation);
 
-    if (!sessionState.loggedIn) {
-        initialVisualReset();
-    }
-
     // get rid of glowing green on start/ stop btn and progress bar
     start_stop_btn.classList.remove('glowing-effect');
     progressContainer.classList.remove("glowing-effect");
+
+    if ((logSessionActivity) || (!sessionState.loggedIn)) { // if we can log session activity (session is valid) OR user not logged in
+        setTimeout(() => { // reset progress bar and total time w/ delay
+            updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer);
+            totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod);
+        }, 500);
+    } else { // reset progress bar and total time wout/ delay
+        updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer);
+        totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod);
+    }
 
     // reset containers
     hideSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min);
@@ -497,11 +535,9 @@ async function finalizeSession(times, userTimeZone, totalTime, focusQualityFract
 function initialVisualReset() {
     // reset displays
     resetDisplay(display);
-    updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer);
-    totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod);
 
     // reset header text
-    setButtonTextAndMode(start_stop_btn, productivity_chill_mode, flags, "Start", "Press 'Start' to begin session");
+    setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Start", "Press 'Start' to begin session");
     
     // reset interruptions text to counters.interruptions, which has already been reset to 0
     interruptionsNum.textContent = 0;
