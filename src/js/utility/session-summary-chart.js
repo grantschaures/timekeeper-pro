@@ -15,7 +15,16 @@ document.addEventListener("triggerSessionSummaryChartAnimation", function() {
     let deepWorkHours = Math.floor(deepWork);
     let deepWorkMinutes = Math.floor((deepWork - deepWorkHours) * 60);
 
-    updateSummaryStats(deepWorkHours, deepWorkMinutes, focusQuality);
+    let lessThanOneMin = false;
+    let deepWorkSeconds;
+
+    // if total deep work is < 1m, calculate number of seconds
+    if (tempStorage.deepWork < 60000) {
+        lessThanOneMin = true;
+        deepWorkSeconds = Math.floor(tempStorage.deepWork / 1000);
+    }
+
+    updateSummaryStats(deepWorkHours, deepWorkMinutes, focusQuality, lessThanOneMin, deepWorkSeconds);
 
     const data = {
         datasets: [
@@ -97,7 +106,11 @@ document.addEventListener("triggerSessionSummaryChartAnimation", function() {
                             if (tooltipItem.datasetIndex === 0) {
                                 return ' Focus Quality: ' + focusQuality + '%';
                             } else if (tooltipItem.datasetIndex === 1) {
-                                return ' Deep Work: ' + deepWorkHours + 'h ' + deepWorkMinutes + 'm';
+                                if (!lessThanOneMin) {
+                                    return ' Deep Work: ' + deepWorkHours + 'h ' + deepWorkMinutes + 'm';
+                                } else {
+                                    return ' Deep Work: ' + deepWorkSeconds + 's';
+                                }
                             }
                             return ''; // Default return value
                         }
@@ -142,9 +155,15 @@ function getTargetHours(targetHours) {
     return newTargetHours;
 }
 
-function updateSummaryStats(deepWorkHours, deepWorkMinutes, focusQuality) {
-    let deepWorkStr = `${deepWorkHours}h ${deepWorkMinutes}m`;
+function updateSummaryStats(deepWorkHours, deepWorkMinutes, focusQuality, lessThanOneMin, deepWorkSeconds) {
+    let deepWorkStr;
     let focusQualityStr = `${focusQuality}%`;
+
+    if (!lessThanOneMin) {
+        deepWorkStr = `${deepWorkHours}h ${deepWorkMinutes}m`;
+    } else {
+        deepWorkStr = `${deepWorkSeconds}s`;
+    }
 
     document.getElementById('deepWorkTime').innerHTML = `<b>${deepWorkStr}</b>`;
     document.getElementById('focusPercentage').innerHTML = `<b>${focusQualityStr}</b>`;
