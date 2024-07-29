@@ -697,7 +697,5 @@ function hideSessionSummarySignupPromptPopup() {
     flags.sessionSummarySignupPromptPopupShowing = false;
     sessionSummarySignupPromptPopup.style.display = "none";
     HC_icon_signup_prompt.classList.remove('hyperChillSlowRotate');
-    setTimeout(() => {
-        sessionSummarySignupPromptPopup.style.opacity = 1;
-    }, 100)
+    sessionSummarySignupPromptPopup.style.opacity = 0;
 }
