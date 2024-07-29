@@ -254,6 +254,12 @@ router.delete("/delete-account", async function(req, res) {
             // Delete the corresponding report
             await Report.findOneAndDelete({ userId: userId });
 
+            // Delete all corresponding sessions
+            const sessions = await Session.find({ userId: userId });
+            if (sessions.length > 0) {
+                await Session.deleteMany({ userId: userId });
+            }
+
             res.json({ success: true, message: 'delete-account endpoint reached successfully' });
         } else {
             return res.status(404).json({ 
