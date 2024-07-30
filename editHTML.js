@@ -117,8 +117,8 @@ const indexReplacements = [
         replacement: "import { updateInvaliDate } from '../minified/update-invaliDate.min.js';"
     },
     {
-        pattern: /import { sessionReset } from '..\/main\/end-session.js';/g,
-        replacement: "import { sessionReset } from '../minified/end-session.min.js';"
+        pattern: /import { initialVisualReset, sessionReset } from '..\/main\/end-session.js';/g,
+        replacement: "import { initialVisualReset, sessionReset } from '../minified/end-session.min.js';"
     }
 ];
 

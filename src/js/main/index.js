@@ -29,7 +29,7 @@ import { updateShowingTimeLeft } from '../state/update-showing-time-left.js'; //
 import { lastIntervalSwitch } from '../state/last-interval-switch.js'; // minified
 import { checkSession } from '../state/check-session.js'; // minified
 import { updateInvaliDate } from '../state/update-invaliDate.js'; // minified
-import { sessionReset } from '../main/end-session.js'; // minified
+import { initialVisualReset, sessionReset } from '../main/end-session.js'; // minified
 
 export const pomodoroWorker = new Worker('/js/displayWorkers/pomodoroWorker.js');
 export const suggestionWorker = new Worker('/js/displayWorkers/suggestionWorker.js');
@@ -1062,8 +1062,7 @@ document.addEventListener("stateUpdated", function() {
             console.log("invalidate previous session and continue was selected");
             updateInvaliDate(startTimes.beginning);
         } else {
-            // basically reset GUI but don't log (similar to what happens when session that started before invaliDate ends)
-            // made function for this
+            initialVisualReset();
             sessionReset();
 
             quitCurrentSessionInput.checked = false;

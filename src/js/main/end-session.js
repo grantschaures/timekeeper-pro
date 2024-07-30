@@ -532,7 +532,7 @@ async function finalizeSession(times, userTimeZone, totalTime, focusQualityFract
     await addSession(session);
 }
 
-function initialVisualReset() {
+export function initialVisualReset() {
     // reset displays
     resetDisplay(display);
 

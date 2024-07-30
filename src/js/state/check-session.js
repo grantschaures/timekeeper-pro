@@ -1,4 +1,4 @@
-import { popupOverlay, previousSessionStartedPopup, previousSessionStartedOkBtn, body } from '../modules/dom-elements.js';
+import { popupOverlay, previousSessionStartedPopup, body } from '../modules/dom-elements.js';
 export async function checkSession() {
     try {
         const response = await fetch('/api/data/check-session', {
