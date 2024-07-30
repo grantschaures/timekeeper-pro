@@ -878,36 +878,6 @@ document.addEventListener("stateUpdated", function() {
         handleViewportWidthChange(settingsMappings, tempStorage, end_session_btn);
     });
 
-    // document.addEventListener('visibilitychange', function() {
-    //     if (document.visibilityState === 'hidden') {
-    //         if (flags.inHyperFocus) {
-    //             flowAnimation.style.opacity = 0;
-    //             flowAnimation.style.display = 'none';
-    //             flowAnimation.classList.remove('intoOpacityTransition');
-    //         } else {
-    //             chillAnimation.style.opacity = 0;
-    //             chillAnimation.style.display = 'none';
-    //             chillAnimation.classList.remove('intoOpacityTransition');
-    //         }
-            
-    //     } else if ((document.visibilityState === 'visible') && (state.lastSelectedMode === 'home')) { //user returns to tab
-    //         if ((flags.inHyperFocus) && (flags.flowTimeAnimationToggle)) {
-    //             flowAnimation.style.display = 'block';
-    //             flowAnimation.classList.add('intoOpacityTransition');
-    //         } else if ((!flags.inHyperFocus) && (flags.chillTimeAnimationToggle)) {
-    //             if (counters.startStop > 0) {
-    //                 chillAnimation.style.display = 'flex';
-    //                 chillAnimation.classList.add('intoOpacityTransition');
-    //             }
-    //         }
-    //     }
-    // });
-
-    window.addEventListener('blur', function() {
-        flowAnimation.style.display = 'none';
-        // console.log(Date.now())
-    })
-
     /**
      * setTimeout delay of 0 allows the event listener callback function in menu.js
      * dealing with opening the settings menu to execute first before

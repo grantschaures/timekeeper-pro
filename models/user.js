@@ -1,6 +1,6 @@
 const db = require("../db");
 
-// User model from the schema (we're just gonna have to roll w/ this nesting :P)
+// User model from the schema
 const User = db.model("User", {
   email:    { type: String, required: true },
   password: { type: String, required: false },
@@ -21,7 +21,7 @@ const User = db.model("User", {
   sessionRunning: { type: Boolean },
   invaliDate: { type: Date },
   sessionStartTimeArr: [{ type: Date, expires: '24h' }], // array elements expire after 24 hours
-  settings: {
+  settings: { // could potentially be independent schema w/ own collection
     pomodoro: {
       notificationToggle: { type: Boolean, default: false },
       intervalArr: { 

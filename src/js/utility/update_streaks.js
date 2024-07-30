@@ -28,8 +28,6 @@ export function updateStreak(sessionData) {
 // HELPER FUNCTIONS
 // // // // // // //
 
-
-
 function calculateConsecutiveDays(activityDates) {
 
     if (activityDates.length === 0) return 0; // base case (it's not a recursive function but who cares)

@@ -20,14 +20,11 @@ const sessionSchema = new Schema({
     startTime: { type: Date },
     endTime: { type: Date },
     timeZone: { type: String },
-
     totalDeepWork: { type: Number },
-
     focusQualityV2: { type: Number },
     focusQualityV5: { type: Number },
     qualityAdjustedDeepWorkV2: { type: Number },
     qualityAdjustedDeepWorkV5: { type: Number },
-
     totalDistractions: { type: Number },
     distractionTimesArr: [{ type: Date }],
     distractionsPerIntervalArr: [{ type: Number }],
@@ -37,22 +34,18 @@ const sessionSchema = new Schema({
     avgBreakInterval: { type: Number },
     deepWorkIntervalCount: { type: Number },
     breakIntervalCount: { type: Number },
-
     targetHours: { type: Number },
     hitTarget: { type: Boolean },
-
     labelTimes: {
         type: Map,
         of: Number,
         default: {}
     },
-
     perHourData: {
         type: Object,
         of: hourlyData,
         default: {}
     },
-
     sessionSummary: { type: sessionSummarySchema, default: {} } // Ensure sessionSummary is always included
 }, { collection: 'Sessions' });
 
