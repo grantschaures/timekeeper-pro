@@ -14,6 +14,8 @@ import { subMainContainerTransition } from '../main/navigation.js'; // minified
 
 const defaultFavicon = "/images/logo/HyperChillLogo_circular_white_border.png";
 
+var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
 document.addEventListener("stateUpdated", function() {
     end_session_btn.addEventListener("click", async function() {
         if ((flags.sessionInProgress) && (flags.canEndSession)) {
@@ -229,7 +231,9 @@ function displaySessionSummaryPopup() {
     }, 0)
     sessionSummaryPopup.style.display = 'flex';
     navFlags.sessionSummaryPopupShowing = true;
-    commentsTextArea.focus();
+    if (!isMobile) {
+        commentsTextArea.focus();
+    }
 
     setTimeout(() => {
         sessionSummaryPopup.style.opacity = 1;
