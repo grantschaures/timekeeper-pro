@@ -2,6 +2,7 @@ const express = require("express");
 const User = require("../models/user");
 const Note = require("../models/note");
 const Report = require("../models/report");
+const Login = require("../models/login");
 const router = require("express").Router();
 const bcrypt = require('bcrypt');
 const { OAuth2Client } = require('google-auth-library');
@@ -51,9 +52,16 @@ router.post("/validateUser", loginLimiter, async function(req, res) {
         const user = await User.findOne({ email: email });
         if (user && await bcrypt.compare(password, user.password)) {
             user.logins++;
-            user.loginTimeArr.push(loginData);
             user.lastLogin = loginData;
-            user.save();
+            await user.save();
+
+            const newLogin = new Login({
+                userId: user._id,
+                userEmail: user.email,
+                ...loginData
+            })
+            await newLogin.save();
+            
 
             beginSession(user, res);
         } else {
@@ -124,7 +132,6 @@ router.post("/verifyIdToken", async function(req, res) {
         
         const email = payload.email; // Extracting email from payload
         let user = await User.findOne({ email: email });
-        let note;
 
         let loginDate = new Date();
         let loginData = {
@@ -134,12 +141,20 @@ router.post("/verifyIdToken", async function(req, res) {
             loginMethod
         }
 
+        let newLogin;
         if (user) {
             user.googleAccountLinked = true; // should already be true anyway
             user.logins++;
-            user.loginTimeArr.push(loginData);
             user.lastLogin = loginData;
             await user.save({ session });
+
+            newLogin = new Login({
+                userId: user._id,
+                userEmail: user.email,
+                ...loginData
+            })
+            await newLogin.save({ session });
+
         } else {
             // If no user exists, create a new one
             user = new User({
@@ -147,14 +162,20 @@ router.post("/verifyIdToken", async function(req, res) {
                 emailVerified: false,
                 logins: 1,
                 googleAccountLinked: true,
-                loginTimeArr: [loginData],
                 lastLogin: loginData
                 // settings are added w/ default values based on defined schema
             });
             await user.save({ session });
 
+            newLogin = new Login({
+                userId: user._id,
+                userEmail: user.email,
+                ...loginData
+            })
+            await newLogin.save({ session });
+
             // Create the note document entry
-            note = new Note({
+            let note = new Note({
                 userId: user._id,
                 userEmail: email,
                 labels: new Map([

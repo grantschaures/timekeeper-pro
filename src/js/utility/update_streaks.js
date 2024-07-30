@@ -9,14 +9,16 @@ function checkUserSession() {
     })
     .then(response => response.json())
     .then(data => {
-        updateStreak(data.user);
+        updateStreak(data.sessions);
     })
     .catch(error => console.error('Error validating user session:', error));
 }
 
-export function updateStreak(userData) {
-    const activityTimeData = userData.sessionCompletionTimeArr; // contains array of objects w/ timeZone and activityDateUTC
-    const activityDates = activityTimeData.map(entry => convertUTCToLocalTimeZone(entry.sessionCompletionDateUTC, entry.timeZone));
+export function updateStreak(sessionData) {
+    const sessionTimeArr = sessionData.map(({ timeZone, endTime }) => ({ timeZone, endTime }));
+
+    const activityTimeData = sessionTimeArr; // contains array of objects w/ timeZone and activityDateUTC
+    const activityDates = activityTimeData.map(entry => convertUTCToLocalTimeZone(entry.endTime, entry.timeZone));
 
     let streak = calculateConsecutiveDays(activityDates);
     streaksCount.innerText = streak;
@@ -25,6 +27,8 @@ export function updateStreak(userData) {
 // // // // // // //
 // HELPER FUNCTIONS
 // // // // // // //
+
+
 
 function calculateConsecutiveDays(activityDates) {
 

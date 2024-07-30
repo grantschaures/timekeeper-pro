@@ -10,22 +10,12 @@ const User = db.model("User", {
   emailVerified: { type: Boolean, required: true},
   googleAccountLinked: { type: Boolean, required: false},
   logins: { type: Number, required: true, default: 0 },
-  loginTimeArr: [{
-    loginDate: { type: Date },
-    userAgent: { type: String },
-    userDevice: { type: String },
-    loginMethod: { type: String }
-  }],
   lastLogin: {
     loginDate: { type: Date },
     userAgent: { type: String },
     userDevice: { type: String },
     loginMethod: { type: String }
   },
-  sessionCompletionTimeArr: [{ // this effectively contains a count of the number of session the user has logged
-    timeZone: { type: String },
-    sessionCompletionDateUTC: { type: Date }
-  }],
   lastIntervalSwitch: { type: Date }, // last time the user (value gets replaced each time user switches interval)
   lastActivity: { type: Date },
   sessionRunning: { type: Boolean },

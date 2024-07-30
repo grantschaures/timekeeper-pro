@@ -2,6 +2,7 @@ const express = require("express");
 const User = require("../models/user");
 const Note = require("../models/note");
 const Report = require("../models/report");
+const Login = require("../models/login");
 const { Session } = require("../models/session");
 const router = express.Router();  // This is a slight refactor for clarity
 const jwt = require('jsonwebtoken');
@@ -86,28 +87,34 @@ router.post("/update-report", async function(req, res) {
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
         const userId = decoded.userId;
         const user = await User.findById(userId);
+        // console.log("update-report endpoint: " + Date.now());
 
         if (user) {
+            // update user
+            user.sessionRunning = false;
+            user.lastActivity = session.endTime;
+            
+            // update report
             const report = await Report.findOne({ userId: user._id });
-
             if (!report) {
                 return res.status(404).json({
                     message: "Report not found"
                 });
             }
-
             report.sessionCount++;
             
+            // update session
             const newSession = new Session({
                 userId: user._id,
                 userEmail: user.email,
                 ...session
             });
-            
             report.lastSession = newSession;
-
+            
+            await user.save();
             await report.save();
             await newSession.save();
+
             res.json({ success: true, message: 'update-report endpoint reached successfully', sessionId: newSession._id });
         } else {
             return res.status(404).json({ 
@@ -138,9 +145,8 @@ router.post("/update-invaliDate", async function(req, res) {
 
         if (user) {
             user.invaliDate = sessionStartDate;
-            console.log(sessionStartDate);
-
             await user.save();
+
             res.json({ success: true, message: 'update-invaliDate endpoint reached successfully' });
         } else {
             return res.status(404).json({ 
@@ -260,6 +266,12 @@ router.delete("/delete-account", async function(req, res) {
                 await Session.deleteMany({ userId: userId });
             }
 
+            // Delete all corresponding logins
+            const logins = await Login.find({ userId: userId });
+            if (logins.length > 0) {
+                await Login.deleteMany({ userId: userId });
+            }
+
             res.json({ success: true, message: 'delete-account endpoint reached successfully' });
         } else {
             return res.status(404).json({ 
@@ -314,52 +326,6 @@ router.post("/last-interval-switch", async function(req, res) {
     }
 });
 
-router.post("/session-completion", async function(req, res) {
-    // Assuming the JWT is sent automatically in cookie headers
-    const token = req.cookies.token;  // Extract the JWT from cookies directly
-    const { userTimeZone } = req.body;
-
-    if (!token) {
-        return res.status(401).json({ message: 'Unauthorized: No token provided' });
-    }
-
-    try {
-        const decoded = jwt.verify(token, process.env.SECRET_KEY);
-        const userId = decoded.userId;
-        const user = await User.findById(userId);
-
-        if (user) {
-            let currentUTCDate = new Date();
-
-            // TESTING
-            // let testDateStr = '2024-07-06T23:12:27.354Z';
-            // currentUTCDate = new Date(testDateStr);
-            // TESTING
-
-            user.sessionCompletionTimeArr.push({
-                timeZone: userTimeZone,
-                sessionCompletionDateUTC: currentUTCDate
-            });
-
-            user.sessionRunning = false;
-
-            user.lastActivity = currentUTCDate;
-
-            await user.save();
-            res.json({ success: true, message: 'User activity time logged' });
-
-        } else {
-            return res.status(404).json({ 
-                message: "User not found"
-            });
-        }
-    } catch (error) {
-        return res.status(401).json({
-            message: "The server was unable to process the request: " + error.message
-        });
-    }
-});
-
 router.post("/update-showing-time-left", async function(req, res) {
     // Assuming the JWT is sent automatically in cookie headers
     const token = req.cookies.token;  // Extract the JWT from cookies directly
@@ -378,6 +344,7 @@ router.post("/update-showing-time-left", async function(req, res) {
             user.showingTimeLeft = showingTimeLeft;
             user.lastActivity = currentUTCDate;
             await user.save();
+
             res.json({ success: true, message: 'Target Hours updated successfully' });
         } else {
             return res.status(404).json({ 
@@ -451,8 +418,8 @@ router.post("/update-settings", async function(req, res) {
             }
 
             user.lastActivity = currentUTCDate;
-
             await user.save();
+
             res.json({ success: true, message: 'Settings updated successfully' });
         } else {
             return res.status(404).json({ 
@@ -505,7 +472,6 @@ router.post("/update-deleted-labels", async function(req, res) {
         for (const [key, value] of Object.entries(deletedLabel)) {
             note.deletedLabels.set(key, value);
         }
-
         await note.save();
 
         return res.json({
@@ -568,6 +534,7 @@ router.post("/update-labels", async function(req, res) {
         // Save the updated note
         await note.save();
 
+        // save the updated user
         await user.save();
 
         return res.json({

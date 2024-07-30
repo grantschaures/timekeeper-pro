@@ -2,6 +2,7 @@ const express = require("express");
 const User = require("../models/user");
 const Note = require("../models/note");
 const Report = require("../models/report");
+const { Session } = require("../models/session");
 const router = express.Router();  // This is a slight refactor for clarity
 const jwt = require('jsonwebtoken');
 const { report } = require("./data");
@@ -24,10 +25,13 @@ router.get("/sessionValidation", async function(req, res) {
         if (user) {
             const note = await Note.findOne({ userId: user._id });
             const report = await Report.findOne({ userId: user._id });
+            const sessions = await Session.find({ userId: user._id });
+            
             return res.json({ // the only place where isLoggedIn = true matters
                 user: user,
                 note: note,
                 report: report,
+                sessions: sessions,
                 isLoggedIn: true
             });
         } else {

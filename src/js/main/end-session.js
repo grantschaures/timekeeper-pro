@@ -176,8 +176,8 @@ async function logSession() {
     subMainContainerTransition("none");
 
     let userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; // determine moment they end session
-    updateStreaks(sessionState, userTimeZone, streaksCount);
-    
+    updateStreaks(sessionState, streaksCount); // for non-logged in user
+
     // total time in deep work
     let totalTime = getTotalElapsed(flags, elapsedTime.hyperFocus, startTimes);
     
@@ -427,13 +427,6 @@ function sumTotalLabelTime(labelArrs, labelDict) {
     return labelTimeSum;
 }
 
-async function logSessionCompletion(userTimeZone) { // logging when user ends session
-    await sessionCompletion(userTimeZone);
-
-    // Eventually, we'll want to update the GUI
-    document.dispatchEvent(new Event('updateStreak'));
-}
-
 function resetHtmlBackground(homeBackground) {
     document.documentElement.style.backgroundImage = homeBackground;
 }
@@ -447,10 +440,9 @@ function getKeyByValue(obj, targetValue) {
     return null; // Return null if no key with the given value is found
 }
 
-async function updateStreaks(sessionState, userTimeZone, streaksCount) {
-    if (sessionState.loggedIn) {
-        logSessionCompletion(userTimeZone);
-    } else { // non-logged in user
+// fix timing later
+async function updateStreaks(sessionState, streaksCount) {
+    if (!sessionState.loggedIn) {
         streaksCount.innerText = 1;
     }
 }
