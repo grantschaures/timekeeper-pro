@@ -30,7 +30,7 @@ const User = db.model("User", {
   lastActivity: { type: Date },
   sessionRunning: { type: Boolean },
   invaliDate: { type: Date },
-  sessionStartTimeArr: [{ type: Date }],
+  sessionStartTimeArr: [{ type: Date }], // get rid of
   settings: {
     pomodoro: {
       notificationToggle: { type: Boolean, default: false },

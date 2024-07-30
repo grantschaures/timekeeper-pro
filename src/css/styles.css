@@ -1226,10 +1226,6 @@ header {
     align-items: center;
     /* we'll always want the overlay to be on top of everything */
     z-index: 1000;
-}
-
-.opacityChange {
-    opacity: 0;
     transition: opacity 1s ease-out;
 }
 

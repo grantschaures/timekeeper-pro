@@ -21,8 +21,8 @@ const Note = db.model("Note", {
     of: String,
     default: {}
   },
-  lastLabelIdNum: { type: Number, default: 3 },
-  lastSelectedEmojiId: { type: String, default: "books-emoji" },
+  lastLabelIdNum: { type: Number, default: 3, required: true },
+  lastSelectedEmojiId: { type: String, default: "books-emoji", required: true },
   noteTasks: [
     {
       id: { type: String },

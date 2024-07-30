@@ -666,7 +666,7 @@ function hideAccountPopup(popupOverlay, accountPopup) {
 // delete account functions
 function showDeleteAccountPopup(popupOverlay, deleteAccountPopup) {
     flags.deleteAccountWindowShowing = true;
-    popupOverlay.style.display = "flex"; 
+    popupOverlay.style.display = "flex";
     deleteAccountPopup.style.display = "block";
 }
 

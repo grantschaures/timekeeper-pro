@@ -7,7 +7,7 @@ const Schema = mongoose.Schema;
 const reportSchema = new Schema({
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     userEmail: { type: String, required: true },
-    sessionCount: { type: Number },
+    sessionCount: { type: Number, required: true },
     lastSession: sessionSchema
 }, { collection: 'Reports' });
 

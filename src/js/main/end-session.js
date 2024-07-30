@@ -122,6 +122,7 @@ function hideSessionSummaryPopup() {
 
 function hidePopupOverlay() {
     popupOverlay.style.display = 'none';
+    popupOverlay.style.opacity = 1;
 }
 
 async function updateSessionSummary(tempStorage, commentsTextArea, subjectiveFeedbackDropdown) {
@@ -218,12 +219,11 @@ async function logSession() {
 
 // ?? commentsContainer expansion is slightly different on subsequent popup display (not sure why)
 function displaySessionSummaryPopup() {
-    popupOverlay.classList.add('opacityChange');
+    popupOverlay.style.opacity = 0;
     popupOverlay.style.display = 'flex';
     setTimeout(() => {
         popupOverlay.style.opacity = 1;
         setTimeout(() => {
-            popupOverlay.classList.remove('opacityChange');
             HC_icon_session_summary.style.zIndex = 0;
         }, 1000);
     }, 0)
