@@ -3,6 +3,7 @@ const User = require("../models/user");
 const Note = require("../models/note");
 const Report = require("../models/report");
 const Login = require("../models/login");
+const DeletedAccount = require("../models/deleted-account");
 const { Session } = require("../models/session");
 const router = express.Router();  // This is a slight refactor for clarity
 const jwt = require('jsonwebtoken');
@@ -251,6 +252,14 @@ router.delete("/delete-account", async function(req, res) {
         const user = await User.findById(userId);
 
         if (user) {
+            // Add new entry to Deleted-Account Collection
+            const newDeletedAccount = new DeletedAccount({
+                userId: user._id,
+                userEmail: user.email,
+                deletionDate: new Date(Date.now())
+            });
+            await newDeletedAccount.save();
+
             // Delete the user document
             await User.findByIdAndDelete(userId);
 
