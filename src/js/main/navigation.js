@@ -211,8 +211,6 @@ document.addEventListener("stateUpdated", function() {
             hideShortcutsPopup(popupOverlay, shortcutsPopup);
         } else if ((notesFlags.confirmLabelDeletionWindowShowing) && (!confirmLabelDeletionPopup.contains(event.target))) {
             confirmLabelDeletionNoBtn.click();
-        } else if ((flags.sessionSummaryPopupShowing) && (!sessionSummaryPopup.contains(event.target))) {
-            sessionSummaryOkBtn.click();
         } else if ((flags.sessionSummarySignupPromptPopupShowing) && (!sessionSummarySignupPromptPopup.contains(event.target) && (event.target !== sessionSummaryOkBtn))) {
             hideSessionSummarySignupPromptPopup();
             popupOverlay.style.display = 'none';
