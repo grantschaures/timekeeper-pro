@@ -9,7 +9,7 @@ const User = db.model("User", {
   tokenExpire: { type: Date, required: false },
   emailVerified: { type: Boolean, required: true},
   googleAccountLinked: { type: Boolean, required: false},
-  signupDate: { type: Date, required: true },
+  signupDate: { type: Date, required: true, default: Date.now },
   logins: { type: Number, required: true, default: 0 },
   lastLogin: {
     loginDate: { type: Date },

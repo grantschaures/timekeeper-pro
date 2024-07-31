@@ -5,7 +5,6 @@ const Report = require("../models/report");
 const { Session } = require("../models/session");
 const router = express.Router();  // This is a slight refactor for clarity
 const jwt = require('jsonwebtoken');
-const { report } = require("./data");
 require('dotenv').config();
 
 router.use(express.json());
