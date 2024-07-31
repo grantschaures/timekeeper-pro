@@ -317,7 +317,7 @@ router.post("/last-interval-switch", async function(req, res) {
 
             if (intervalSwitchCount === 1) {
                 user.sessionRunning = true;
-                user.sessionStartTimeArr.push(sessionStartTime);
+                user.sessionStartTimeArr.push({ startTime: new Date(sessionStartTime) });
             }
 
             await user.save();
