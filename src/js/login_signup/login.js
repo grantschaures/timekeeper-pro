@@ -5,9 +5,16 @@ document.addEventListener("DOMContentLoaded", function () {
     const loginSubmitBtn = document.getElementById("loginSubmitBtn");
     const forgotPasswordBtn = document.getElementById("forgotPassword_h3");
     const createAccountBtn = document.getElementById("createAccount2_h3");
+    const email = document.getElementById("emailInputSignin").value;
+    const password = document.getElementById("passwordInput").value;
 
     loginSubmitBtn.addEventListener("click", async function() {
-        addUser();
+
+        if (isValidEmail(email)) {
+            addUser(email, password);
+        } else {
+            alert("Invalid email address. Please try again.");
+        }
     });
 
     createAccountBtn.addEventListener("click", async function() {
@@ -25,14 +32,12 @@ function handleLoginEnter(event) {
 
     if ((event.key === 'Enter') && (document.activeElement.id === 'passwordInput')) {
         event.preventDefault();
-        addUser();
+        loginSubmitBtn.click();
     }
 };
 
 // similar function present in index.js
-window.addUser = function() {
-    const email = document.getElementById("emailInputSignin").value;
-    const password = document.getElementById("passwordInput").value;
+window.addUser = function(email, password) {
 
     const user = {
         email: email,
@@ -70,4 +75,11 @@ window.addUser = function() {
         console.error(error);
         // Handle the error (e.g., display an error message to the user).
     });
+}
+
+function isValidEmail(email) {
+    // You can add your email validation logic here
+    // For a simple check, you can use a regular expression
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
 }

@@ -902,6 +902,7 @@
 }
 
 .editRemoveContainer:hover .editRemoveBtn {
+    background-color:rgba(0, 0, 0, 0.85);
     opacity: 1;
 }
 

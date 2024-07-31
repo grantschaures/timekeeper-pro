@@ -957,10 +957,23 @@ document.addEventListener("stateUpdated", function() {
             // Handle the error (e.g., display an error message to the user).
         });
     }
-
+    
     loginBtn.addEventListener("click", async function() {
-        addUser();
+
+        if (isValidEmail(loginEmailInput.value)) {
+            addUser(loginEmailInput.value, loginPasswordInput.value);
+        } else {
+            alert("Invalid email address. Please try again.");
+        }
+
     })
+
+    function isValidEmail(email) {
+        // You can add your email validation logic here
+        // For a simple check, you can use a regular expression
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
 
     forgotPasswordSettings.addEventListener("click", function() {
         window.location.href = "/reset-password";
@@ -2318,7 +2331,7 @@ function handleEnter(event, start_stop_btn, submit_change_btn, createLabelInput,
             // DO NOTHING - code for this event is implemented in notes.js instead  
         } else if (document.activeElement.id === "note-task-input-text-edit") {
             // DO NOTHING - code for this event is implemented in notes.js instead  
-        } else if (navFlags.sessionSummaryPopupShowing) {
+        } else if ((navFlags.sessionSummaryPopupShowing) || (navFlags.sessionSummarySignupPromptPopupShowing)) {
             // DO NOTHING
         } else {
             flags.autoSwitchedModes = false;

@@ -917,6 +917,12 @@ function noteInputSave(noteTaskInputContainer, addNoteTaskContainer, flags, note
         return;
     }
 
+    // if length of the note/task is 1000 characters or more
+    if (isMoreThan1000Chars(inputStr)) {
+        alert("Please keep your notes/tasks less than 1000 characters. Thanks!");
+        return;
+    }
+
     let container;
     let noteTaskDiv = document.createElement('div');
     noteTaskDiv.classList.add('noteTask');
@@ -957,6 +963,14 @@ function noteInputSave(noteTaskInputContainer, addNoteTaskContainer, flags, note
             lastTaskInputIdNum
         }
         updateNotes(notesObj);
+    }
+}
+
+function isMoreThan1000Chars(inputStr) {
+    if (inputStr.length > 1000) {
+        return true;
+    } else {
+        return false;
     }
 }
 
