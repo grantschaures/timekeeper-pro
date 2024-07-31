@@ -55,6 +55,12 @@ document.addEventListener("stateUpdated", function() {
     });
 
     sessionSummaryOkBtn.addEventListener("click", async function() {
+        if (isMoreThan1000Chars(commentsTextArea.value)) {
+            alert("Please keep your comments 1000 characters or less. Thanks!");
+            commentsTextArea.focus();
+            return;
+        }
+
         if (summaryFlags.canSubmitSessionSummary) {
 
             // hide summary popup
@@ -88,6 +94,13 @@ document.addEventListener("stateUpdated", function() {
 // -----------------
 // MAIN FUNCTIONS
 // -----------------
+function isMoreThan1000Chars(inputStr) {
+    if (inputStr.length > 1000) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 // corresonding hide function defined in navigation.js
 function displaySessionSummarySignupPromptPopup() {
@@ -521,6 +534,7 @@ async function finalizeSession(times, userTimeZone, totalTime, focusQualityFract
         breakIntervalCount: counters.chillTimeIntervals,
         targetHours: timeAmount.targetTime,
         hitTarget: flags.hitTarget,
+        pomodorosCompleted: counters.pomodorosCompleted,
         labelTimes: labelTimeSum,
         perHourData: perHourData
     }

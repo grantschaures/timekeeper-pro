@@ -36,6 +36,7 @@ const sessionSchema = new Schema({
     breakIntervalCount: { type: Number },
     targetHours: { type: Number },
     hitTarget: { type: Boolean },
+    pomodorosCompleted: { type: Number },
     labelTimes: {
         type: Map,
         of: Number,

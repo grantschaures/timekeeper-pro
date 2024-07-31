@@ -5,10 +5,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const loginSubmitBtn = document.getElementById("loginSubmitBtn");
     const forgotPasswordBtn = document.getElementById("forgotPassword_h3");
     const createAccountBtn = document.getElementById("createAccount2_h3");
-    const email = document.getElementById("emailInputSignin").value;
-    const password = document.getElementById("passwordInput").value;
-
+    
     loginSubmitBtn.addEventListener("click", async function() {
+        const email = document.getElementById("emailInputSignin").value;
+        const password = document.getElementById("passwordInput").value;
 
         if (isValidEmail(email)) {
             addUser(email, password);

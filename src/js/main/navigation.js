@@ -354,7 +354,7 @@ function addPseudoElementStyle(transformValue) {
 function handleLeftRightArrowKeys(event) {
 
     // add any additional inputs here
-    let flagArr = [notesFlags.noteTaskInputContainerShowing, notesFlags.createLabelWindowOpen, notesFlags.updateLabelWindowOpen, flags.settingsContainerShowing, (document.activeElement.id === 'target-hours')]
+    let flagArr = [notesFlags.noteTaskInputContainerShowing, notesFlags.createLabelWindowOpen, notesFlags.updateLabelWindowOpen, flags.settingsContainerShowing, flags.sessionSummaryPopupShowing, flags.sessionSummarySignupPromptPopupShowing, (document.activeElement.id === 'target-hours')]
 
     if (flags.allowToggleSwitch && flagArr.every(flag => !flag)) {
         if (event.key === 'ArrowLeft') {

@@ -162,7 +162,8 @@ router.post("/verifyIdToken", async function(req, res) {
                 emailVerified: false,
                 logins: 1,
                 googleAccountLinked: true,
-                lastLogin: loginData
+                lastLogin: loginData,
+                signupDate: new Date(Date.now())
                 // settings are added w/ default values based on defined schema
             });
             await user.save({ session });
