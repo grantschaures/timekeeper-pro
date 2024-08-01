@@ -482,6 +482,8 @@ function focusQualityCalculation(timeConvert, totalTime, totalDistractions, cons
     let focusQualityFraction = 1 - ((totalDistractions / totalMin) / (constant));
     if (focusQualityFraction < 0) {
         focusQualityFraction = 0;
+    } else if (isNaN(focusQualityFraction)) {
+        focusQualityFraction = 1;
     }
 
     return focusQualityFraction;

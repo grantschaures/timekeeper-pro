@@ -26,6 +26,12 @@ document.addEventListener("triggerSessionSummaryChartAnimation", function() {
 
     updateSummaryStats(deepWorkHours, deepWorkMinutes, focusQuality, lessThanOneMin, deepWorkSeconds);
 
+    // edge case: user switches mode really fast and thus get 0ms of deep work
+    // allows for correct visual representation on chart
+    if (deepWork === 0) {
+        deepWork = 0.0000000000000001;
+    }
+
     const data = {
         datasets: [
             {

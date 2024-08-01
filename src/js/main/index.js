@@ -174,8 +174,8 @@ document.addEventListener("stateUpdated", function() {
             
             let lastChillTimeInterval
             if (flags.inRecoveryPom) {
-                lastChillTimeInterval = recoverPomState.breakIntervalTime;
-                startTimes.hyperFocus = recoverPomState.localStartTime;
+                // lastChillTimeInterval = recoverPomState.breakIntervalTime;
+                // startTimes.hyperFocus = recoverPomState.localStartTime;
             } else {
                 startTimes.hyperFocus = Date.now();
                 lastChillTimeInterval = startTimes.hyperFocus - startTimes.chillTime;
@@ -235,9 +235,9 @@ document.addEventListener("stateUpdated", function() {
 
             let lastFlowTimeInterval;
             if (flags.inRecoveryBreak) {
-                elapsedTime.hyperFocus = recoverBreakState.hyperFocusElapsedTime;
-                lastFlowTimeInterval = recoverBreakState.pomIntervalTime;
-                startTimes.chillTime = recoverBreakState.localStartTime;
+                // elapsedTime.hyperFocus = recoverBreakState.hyperFocusElapsedTime;
+                // lastFlowTimeInterval = recoverBreakState.pomIntervalTime;
+                // startTimes.chillTime = recoverBreakState.localStartTime;
             } else {
                 lastFlowTimeInterval = Date.now() - startTimes.hyperFocus;
             }
@@ -1642,7 +1642,6 @@ function chillTimeRecovery(flags, counters, elapsedTime, startTimes, start_stop_
         setCurrentPomodoroNotificationRecovery(currentPomodoro, timeAmount);
 
         localStartTime = Date.now() - displayTime;
-        // console.log(Date.now() - (Date.now() - displayTime))
         startTimes.hyperFocus = localStartTime;
 
         setRecoverPomState(recoverPomState, displayTime, pomodorosCompleted, hyperFocusElapsedTime, localStartTime, counters, flags, start_stop_btn, setBreakIntervalTime);
