@@ -1141,13 +1141,10 @@ function updateDataPerHourCheck() {
     let hourBeforeStartOfHour = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours() - 1); // initial date
 
     if (checkStartOfHour(currentTime, startOfHour)) {
+
+        // We are now going to check every hour since the start of session
         updateDataPerHour(intervalArrs, startOfHour, hourBeforeStartOfHour, perHourData);
     }
-
-    // what are we trying to do here?
-    // we need to create an object containing the inDeepWork boolean, distractions, and deepWorkTime variables
-    // ...where the start of the hour Date acts as the key, and the value is the object
-    // this will then be added to the perHourDate object declared and exported in index-objects.js
 }
 
 // conditional to check if current time is 1 second or less after the start of an hour
@@ -2471,8 +2468,6 @@ export function setInitialBackgroundCellSelection() {
 }
 
 export function setBackground(background_color, opacity) {
-    if (state.lastSelectedMode !== 'home') return;
-    
     if (background_color === "") { // when ending a session
         deepWorkBackground.style.opacity = 0;
         breakBackground.style.opacity = 0;
