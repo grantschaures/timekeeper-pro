@@ -482,7 +482,7 @@ function focusQualityCalculation(timeConvert, totalTime, totalDistractions, cons
     let focusQualityFraction = 1 - ((totalDistractions / totalMin) / (constant));
     if (focusQualityFraction < 0) {
         focusQualityFraction = 0;
-    } else if (isNaN(focusQualityFraction)) {
+    } else if (isNaN(focusQualityFraction)) { // edge case: if user has 0ms of deep work + no distractions
         focusQualityFraction = 1;
     }
 
