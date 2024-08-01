@@ -173,13 +173,8 @@ document.addEventListener("stateUpdated", function() {
             counters.flowTimeIntervals++;
             
             let lastChillTimeInterval
-            if (flags.inRecoveryPom) {
-                lastChillTimeInterval = recoverPomState.breakIntervalTime;
-                startTimes.hyperFocus = recoverPomState.localStartTime;
-            } else {
-                startTimes.hyperFocus = Date.now();
-                lastChillTimeInterval = startTimes.hyperFocus - startTimes.chillTime;
-            }
+            startTimes.hyperFocus = Date.now();
+            lastChillTimeInterval = startTimes.hyperFocus - startTimes.chillTime;
 
             if (counters.startStop > 2) { // if 2nd round of deep work (1 round of break has already happened)
                 intervalArrs.chillTime.push(lastChillTimeInterval);
@@ -234,13 +229,7 @@ document.addEventListener("stateUpdated", function() {
             // or starting at Date.now() - displayTime (only auto start break is on)
 
             let lastFlowTimeInterval;
-            if (flags.inRecoveryBreak) {
-                elapsedTime.hyperFocus = recoverBreakState.hyperFocusElapsedTime;
-                lastFlowTimeInterval = recoverBreakState.pomIntervalTime;
-                startTimes.chillTime = recoverBreakState.localStartTime;
-            } else {
-                lastFlowTimeInterval = Date.now() - startTimes.hyperFocus;
-            }
+            lastFlowTimeInterval = Date.now() - startTimes.hyperFocus;
             intervalArrs.flowTime.push(lastFlowTimeInterval);
                 
             let previousHyperFocusElapsedTime = elapsedTime.hyperFocus;
@@ -253,7 +242,6 @@ document.addEventListener("stateUpdated", function() {
             if (flags.pomodoroNotificationToggle) {
                 showPomodorosCompletedContainer(completedPomodorosContainer, completedPomodoros_label, completedPomodoros_min, counters);
                 setCurrentPomodoroNotification(counters, timeAmount);
-                recoverToBreakUpdateProgressBarAndTotalElapsed(flags, timeAmount, startTimes, elapsedTime, progressBar, progressContainer);
                 setPomodoroNotificationSeconds(flags, elapsedTime, counters, recoverBreakState, pomodoroWorker);
                 setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Start", setBothBreakIntervalText(counters, timeAmount));
             } else {
@@ -274,10 +262,7 @@ document.addEventListener("stateUpdated", function() {
         // console.log(intervalArrs.flowTime);
         // console.log(intervalArrs.chillTime);
 
-        flags.inRecoveryBreak = false;
-        flags.inRecoveryPom = false;
         flags.sentSuggestionMinutesNotification = false;
-        flags.autoSwitchedModes = false;
 
         setTimeout(() => {
             flags.modeChangeExecuted = false;
@@ -1055,7 +1040,6 @@ document.addEventListener("stateUpdated", function() {
     // ---------------------
     // DISPLAY WORKERS
     // ---------------------
-
     pomodoroWorker.onmessage = function(message) {
         console.log("pomodoroWorker.onmessage")
         pomodoroTransition(isMobile, isIpad);
@@ -1092,7 +1076,7 @@ document.addEventListener("stateUpdated", function() {
 
         updateDataPerHourCheck();
 
-        timeRecovery(flags, counters, startTimes, elapsedTime, start_stop_btn, recoverPomState, recoverBreakState, timeAmount, total_time_display, timeConvert, progressBar, progressContainer, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min, flowmodoroWorker, suggestionWorker, isMobile, isIpad);
+        timeRecovery(flags, counters, startTimes, start_stop_btn, timeAmount, alertSounds, alertVolumes, flowmodoroWorker, suggestionWorker, isMobile, isIpad);
     }
 
     totalDisplayWorker.onmessage = function(message) {
@@ -1125,7 +1109,6 @@ function pomodoroTransition(isMobile, isIpad) {
         //IF AUTO START FLOW TIME INTERVAL OPTION IS SELECTED
         if (((flags.inHyperFocus) && (flags.autoStartBreakInterval)) || ((!flags.inHyperFocus) && (flags.autoStartPomodoroInterval))) {
             setTimeout(() => {
-                flags.autoSwitchedModes = true;
                 start_stop_btn.click();
             }, 0)
             return;
@@ -1260,20 +1243,12 @@ export function updateLabelArrs(timeStamp, labelFlags, labelArrs) {
     // console.log(labelArrs);
 }
 
-function timeRecovery(flags, counters, startTimes, elapsedTime, start_stop_btn, recoverPomState, recoverBreakState, timeAmount, total_time_display, timeConvert, progressBar, progressContainer, alertSounds, alertVolumes, completedPomodoros_label, completedPomodoros_min, flowmodoroWorker, suggestionWorker, isMobile, isIpad) {
+function timeRecovery(flags, counters, startTimes, start_stop_btn, timeAmount, alertSounds, alertVolumes, flowmodoroWorker, suggestionWorker, isMobile, isIpad) {
     if (flags.pomodoroNotificationToggle) {
-        if ((!flags.inHyperFocus) && ((counters.currentPomodoroNotification * 60 * 1000) < ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000)) && (!flags.modeChangeExecuted)) {
-            // flags.modeChangeExecuted = true;
-            flags.autoSwitchedModes = false;
-            // debuggingPopup("purple");
-            chillTimeRecovery(flags, counters, elapsedTime, startTimes, start_stop_btn, recoverPomState, timeAmount, alertSounds, alertVolumes, isMobile, isIpad);
-        } else if ((flags.inHyperFocus) && ((counters.currentPomodoroNotification * 60 * 1000) < ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000)) && (!flags.modeChangeExecuted)) {
-            // flags.modeChangeExecuted = true;
-            flags.autoSwitchedModes = false;
-            flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, start_stop_btn, recoverBreakState, alertSounds, alertVolumes, isMobile, isIpad);
+        if (((counters.currentPomodoroNotification * 60 * 1000) < ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000)) && (!flags.modeChangeExecuted)) {
+            pomodoroTimeRecovery(isMobile, isIpad);
         }
         
-        // console.log("Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000: " + ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000)));
     } else {
         if ((flags.flowmodoroNotificationToggle) && (!flags.inHyperFocus) && ((counters.currentFlowmodoroNotification * 60 * 1000) < ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000)) && (!flags.sentFlowmodoroNotification)) {
             // console.log("TIME RECOVERY FOR FLOWMODORO")
@@ -1281,6 +1256,7 @@ function timeRecovery(flags, counters, startTimes, elapsedTime, start_stop_btn, 
             sendFlowmodoroNotification(timeAmount, counters, startTimes, alertSounds, alertVolumes, isMobile, isIpad);
             flags.sentFlowmodoroNotification = true;
             start_stop_btn.classList.add('glowing-effect');
+
         }
         if ((flags.breakSuggestionToggle) && (flags.inHyperFocus) && ((timeAmount.suggestionMinutes * 60 * 1000) < ((Math.floor((Date.now() - startTimes.local) / 1000) * 1000) + 1000)) && (!flags.sentSuggestionMinutesNotification)) {
             // console.log("TIME RECOVERY FOR SUGGESTION MINUTES")
@@ -1288,13 +1264,14 @@ function timeRecovery(flags, counters, startTimes, elapsedTime, start_stop_btn, 
             sendSuggestionBreakNotification(timeAmount, startTimes, alertSounds, alertVolumes, isMobile, isIpad);
             flags.sentSuggestionMinutesNotification = true;
             start_stop_btn.classList.add('glowing-effect');
+
         }
     }
 }
 
 function getPomodoroNotificationString(counters, timeAmount) {
     let notificationString;
-    if (counters.currentPomodoroIntervalOrderIndex == 0 || counters.currentPomodoroIntervalOrderIndex == 2 || counters.currentPomodoroIntervalOrderIndex == 4) { // 1st-3rd pomodoro
+    if ((flags.inHyperFocus) && (counters.currentPomodoroIntervalOrderIndex !== 6)) { // 1st-3rd pomodoro
         if (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] == 1) {
             notificationString = "It's been " + counters.currentPomodoroNotification + " minute! Are you ready to take a short break?";
         } else {
@@ -1378,26 +1355,9 @@ async function setUserAlertSound(alertType, soundType) {
 }
 
 function setPomodoroNotificationSeconds(flags, elapsedTime, counters, recoverBreakState, pomodoroWorker) {
-    if ((flags.inRecoveryBreak) && !(flags.autoStartPomodoroInterval)) {
-        elapsedTime.pomodoroNotificationSeconds = Math.round((counters.currentPomodoroNotification * 60) - ((recoverBreakState.displayTime / 1000) - 1));
-    } else {
-        elapsedTime.pomodoroNotificationSeconds = (counters.currentPomodoroNotification * 60);
-    }
+    elapsedTime.pomodoroNotificationSeconds = (counters.currentPomodoroNotification * 60);
     pomodoroWorker.postMessage("clearInterval");
     pomodoroWorker.postMessage(elapsedTime.pomodoroNotificationSeconds);
-}
-
-function recoverToBreakUpdateProgressBarAndTotalElapsed(flags, timeAmount, startTimes, elapsedTime, progressBar, progressContainer) {
-    if (flags.inRecoveryBreak) {
-        setTimeout(() => {
-            updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer);
-        }, 1000)
-
-        if (getTotalElapsed(flags, elapsedTime.hyperFocus, startTimes) < timeAmount.targetTime) {
-            progressContainer.classList.remove("glowing-effect");
-            flags.hitTarget = false;
-        }
-    }
 }
 
 function flowmodoroAndBreakSuggestionActions(flags, elapsedTime, counters, timeAmount, flowmodoroWorker, suggestionWorker) {
@@ -1442,11 +1402,7 @@ function setBothBreakIntervalText(counters, timeAmount) {
 
 // If pomodoro notification toggle is set BEFORE entering Flow Time
 function setPomodoroWorker(flags, elapsedTime, counters, recoverPomState, pomodoroWorker) {
-    if ((flags.inRecoveryPom) && !((flags.autoStartPomodoroInterval) && (flags.autoStartBreakInterval))) {
-        elapsedTime.pomodoroNotificationSeconds = Math.round((counters.currentPomodoroNotification * 60) - ((recoverPomState.displayTime / 1000) - 1));
-    } else {
-        elapsedTime.pomodoroNotificationSeconds = (counters.currentPomodoroNotification * 60);
-    }
+    elapsedTime.pomodoroNotificationSeconds = (counters.currentPomodoroNotification * 60);
     pomodoroWorker.postMessage("clearInterval");
     pomodoroWorker.postMessage(elapsedTime.pomodoroNotificationSeconds);
 }
@@ -1501,13 +1457,7 @@ function flowTimeAnimationActions(counters, flags, chillAnimation, flowAnimation
 
 // Sets local start time depending on notification mode
 function setLocalStartTime(flags, startTimes, recoverBreakState, recoverPomState) {
-    if (flags.inRecoveryBreak) {
-        startTimes.local = recoverBreakState.localStartTime; //could be equal to Date.now() or Date.now() - displayTime
-    } else if (flags.inRecoveryPom) {
-        startTimes.local = recoverPomState.localStartTime; //could be equal to Date.now() or Date.now() - displayTime
-    } else {
-        startTimes.local = Date.now();
-    }
+    startTimes.local = Date.now();
 }
 
 // If in pomodoro mode AND not coming from non-pomodoro mode,
@@ -1589,75 +1539,10 @@ function sendPomodoroDelayNotification(startTimes, counters, timeAmount, alertSo
     startTimes.lastPomNotification = Date.now();
 }
 
-function chillTimeRecovery(flags, counters, elapsedTime, startTimes, start_stop_btn, recoverPomState, timeAmount, alertSounds, alertVolumes, isMobile, isIpad) {
-    console.log("chilltime recovery initiated")
-    let displayTime = Date.now() - startTimes.local;
-    
-    // When both auto start toggles are turned on
-    if ((flags.autoStartPomodoroInterval) && ((((Math.round(displayTime / 1000)) - (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60)) <= 2) && (((Date.now() - startTimes.lastPomNotification) / 1000) > 30))) {
-        sendPomodoroDelayNotification(startTimes, counters, timeAmount, alertSounds, alertVolumes, flags, isMobile, isIpad);
-    }
-    
-    if (flags.autoStartPomodoroInterval) {
-        pomodoroTransition(isMobile, isIpad);
-
-    } else if ((((Math.round(displayTime / 1000)) - (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60)) <= 2) && (((Date.now() - startTimes.lastPomNotification) / 1000) > 30)) {
-        // This evaluates when a the computer sleeps and then awakens during the same interval when autoswitchtobreak isn't turned on
-        // debuggingPopup("black");
-        pomodoroWorker.postMessage("clearInterval");
-        sendPomodoroDelayNotification(startTimes, counters, timeAmount, alertSounds, alertVolumes, flags, isMobile, isIpad);
-        start_stop_btn.classList.add('glowing-effect');
-    } else {
-        start_stop_btn.classList.add('glowing-effect');
-    }
-}
-
-/* 
-    This function deals w/ the situation where the computer goes to sleep during a pomodoro interval
-    and calculates the future state of the program based on which intervals should have occured.
-*/
-function flowTimeRecovery(flags, counters, elapsedTime, timeAmount, startTimes, start_stop_btn, recoverBreakState, alertSounds, alertVolumes, isMobile, isIpad) {
-    console.log("flowtime recovery initiated")
-    
-    let displayTime = Date.now() - startTimes.local;
-    
-    // if autoStartBreakInterval toggled on, and display time is 2s or less past the set interval time, and there's been at least 30s since the last pomodoro notification
-    // console.log((timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60));
-    if ((flags.autoStartBreakInterval) && ((((Math.round(displayTime / 1000)) - (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60)) <= 2) && (((Date.now() - startTimes.lastPomNotification) / 1000) > 30))) {
-        sendPomodoroDelayNotification(startTimes, counters, timeAmount, alertSounds, alertVolumes, flags, isMobile, isIpad);
-    }
-    
-    if (flags.autoStartBreakInterval) {
-        pomodoroTransition(isMobile, isIpad);
-
-    } else if ((((Math.round(displayTime / 1000)) - (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] * 60)) <= 2) && (((Date.now() - startTimes.lastPomNotification) / 1000) > 30)) {
-        // This evaluates when a the computer sleeps and then awakens during the same interval when autoswitchtobreak isn't turned on
-        // debuggingPopup("orange");
-        pomodoroWorker.postMessage("clearInterval");
-        sendPomodoroDelayNotification(startTimes, counters, timeAmount, alertSounds, alertVolumes, flags, isMobile, isIpad);
-        start_stop_btn.classList.add('glowing-effect');
-    } else { // when pom toggle turned after after time has passed pom interval time
-        start_stop_btn.classList.add('glowing-effect');
-        if (!flags.pomodoroCountIncremented) {
-            counters.pomodorosCompleted++;
-            flags.pomodoroCountIncremented = true;
-        }
-    }
-}
-
-function convertMinutesToTimeFormat(minutes) {
-    // Calculate hours, minutes, and seconds
-    const hours = Math.floor(minutes / 60);
-    const remainingMinutes = minutes % 60;
-    const seconds = Math.floor((minutes - Math.floor(minutes)) * 60);
-
-    // Format the time components to have leading zeros if necessary
-    const formattedHours = String(hours).padStart(2, '0');
-    const formattedMinutes = String(remainingMinutes).padStart(2, '0');
-    const formattedSeconds = String(seconds).padStart(2, '0');
-
-    // Combine the components into the desired format
-    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+function pomodoroTimeRecovery(isMobile, isIpad) {
+    console.log("pomodoro time recovery initiated");
+    pomodoroTransition(isMobile, isIpad);
+    pomodoroWorker.postMessage("clearInterval");
 }
 
 function resetPomodoroCounters(counters) {
@@ -2185,7 +2070,6 @@ function handleEnter(event, start_stop_btn, submit_change_btn, createLabelInput,
         } else if ((navFlags.sessionSummaryPopupShowing) || (navFlags.sessionSummarySignupPromptPopupShowing)) {
             // DO NOTHING
         } else {
-            flags.autoSwitchedModes = false;
             start_stop_btn.click();
         }
     } else if (event.key === 'ArrowLeft') {

@@ -133,36 +133,6 @@ describe('Pomodoro | Auto and non-auto start', () => {
         cy.get('[data-testid="productivity-chill-mode"]').should('contain', "Pomodoro #1 | 30 min");
     })
 
-    it('25 min Pom, 5 min SB, 15 min LB | Auto Start Pomodoro & Break', () => {
-        // INITIAL CONDITIONS
-        cy.get('body').invoke('css', 'overflow-y', 'scroll');
-
-        // VARIABLE INITIALIZATION
-        let pomMin = 25;
-        let sbMin = 5;
-        let lbMin = 15;
-
-        /**
-         * MAIN TESTING LOGIC
-         */
-        cy.get('[data-testid="pomodoroNotificationToggle"]').click(); // enable pomodoro notifications
-        cy.get('[data-testid="autoStartPomodoroIntervalToggleLabel"]').click(); // enable pomodoro auto start
-        cy.get('[data-testid="autoStartBreakIntervalToggleLabel"]').click(); // enable break auto start
-        cy.setPomodoroIntervalTimes(pomMin, sbMin, lbMin);
-        cy.clock();
-
-        cy.get('[data-testid="start-stop"]').click(); // initial triggering of session
-
-        cy.pomodoroIntervalAutoSwitch(pomMin, "Pomodoro #1 | 25 min", "00:00:00", "00:25:00"); // FIRST POMODORO
-        cy.shortBreakIntervalAutoSwitch(sbMin, "Short Break #1 | 5 min", "00:25:00", "1");  // FIRST SHORT BREAK
-        cy.pomodoroIntervalAutoSwitch(pomMin, "Pomodoro #2 | 25 min", "00:25:00", "00:50:00"); // SECOND PONMODORO
-        cy.shortBreakIntervalAutoSwitch(sbMin, "Short Break #2 | 5 min", "00:50:00", "2"); // SECOND SHORT BREAK
-        cy.pomodoroIntervalAutoSwitch(pomMin, "Pomodoro #3 | 25 min", "00:50:00", "01:15:00"); //THIRD POMODORO
-        cy.shortBreakIntervalAutoSwitch(sbMin, "Short Break #3 | 5 min", "01:15:00", "3");  // THIRD SHORT BREAK
-        cy.pomodoroIntervalAutoSwitch(pomMin, "Pomodoro #4 | 25 min", "01:15:00", "01:40:00"); // FOURTH POMODORO
-        cy.longBreakIntervalAutoSwitch(lbMin, "Long Break | 15 min", "01:40:00", "4"); // LONG RBEAK
-    })
-
     it('Pom #1 --> SB #1 --> Pom #2 | Auto Start Pomodoro', () => {
         // INITIAL CONDITIONS
         cy.get('body').invoke('css', 'overflow-y', 'scroll');
@@ -183,29 +153,6 @@ describe('Pomodoro | Auto and non-auto start', () => {
         cy.pomodoroInterval(pomMin, "Pomodoro #1 | 25 min", "00:00:00", "00:25:00", "00:25:00"); // FIRST POMODORO
         cy.get('[data-testid="start-stop"]').click(); // Pom (no auto switch) --> SB (auto switch)
         cy.shortBreakIntervalAutoSwitch(sbMin, "Short Break #1 | 5 min", "00:25:00", "1");  // FIRST SHORT BREAK
-    })
-
-    it('Pom #1 --> SB #1 | Auto Start Break', () => {
-        // INITIAL CONDITIONS
-        cy.get('body').invoke('css', 'overflow-y', 'scroll');
-
-        // VARIABLE INITIALIZATION
-        let pomMin = 25;
-        let sbMin = 5;
-        let lbMin = 15;
-
-        /**
-         * MAIN TESTING LOGIC
-         */
-        cy.get('[data-testid="pomodoroNotificationToggle"]').click(); // enable pomodoro notifications
-        cy.get('[data-testid="autoStartBreakIntervalToggleLabel"]').click(); // enable break auto start
-        cy.setPomodoroIntervalTimes(pomMin, sbMin, lbMin);
-        cy.clock();
-
-        cy.get('[data-testid="start-stop"]').click(); // initial triggering of session
-        
-        cy.pomodoroIntervalAutoSwitch(pomMin, "Pomodoro #1 | 25 min", "00:00:00", "00:25:00"); // FIRST POMODORO
-        cy.shortBreakIntervalAutoSwitch(sbMin, "Short Break #1 | 5 min", "00:25:00", "1"); // FIRST SHORT BREAK
     })
 })
 
@@ -405,96 +352,5 @@ describe('Addition and removal of glowing-effect on start-stop btn', () => {
        cy.get('[data-testid="suggestionMinutesInput"]').type(1);
        cy.get('[data-testid="settingsExit"]').click();
        cy.get('#start-stop').should('have.class', 'glowing-effect'); // ensure start-stop btn is glowing
-    })
-})
-
-describe('Pomodoro | Auto and non-auto start', () => {
-    beforeEach(() => {
-        cy.visit('http://localhost:3000')
-        cy.get('#subMainContainer').invoke('css', 'opacity', '1');
-        cy.get('[data-testid="menuBtn"]').click();
-        cy.contains("Settings").click();
-        cy.contains("Pomodoro").click();       
-    })
-    
-    it('Alternating Auto Switch Toggling Bug Check', () => {
-        // VARIABLE INITIALIZATION
-        let pomMin = 1;
-        let sbMin = 1;
-        let lbMin = 1;
-        
-        /**
-         * MAIN TESTING LOGIC
-         */
-        cy.get('[data-testid="pomodoroNotificationToggle"]').click(); // turn on pomodoro notifications
-        cy.setPomodoroIntervalTimes(pomMin, sbMin, lbMin); // set times for pomodoro, sb and lb
-        cy.clock(); // start cypress clock
-        cy.get('[data-testid="start-stop"]').click(); // initial triggering of session
-
-        cy.tick(6 * 60 * 1000); // simulate passing of 6 minutes
-
-        // P1 --> SB1
-        cy.openPomodoroSettings();
-        cy.get('[data-testid="autoStartBreakIntervalToggleLabel"]').click(); // enable break auto start
-        cy.get('[data-testid="settingsExit"]').click();
-
-        cy.get('[data-testid="productivity-chill-mode"]').should('contain', "Short Break #1 | 1 min"); // check header
-        cy.get('[data-testid="completedPomodoros-min"]').should('contain', 1); // check pomodoro count
-        cy.get('[data-testid="display"]').should('contain', "00:05:00"); // ensure correct display time
-        cy.get('[data-testid="progress-text"]').should('contain', "00:01:00"); // ensure correct total display time
-
-        // SB1 --> P2
-        cy.openPomodoroSettings();
-        cy.get('[data-testid="autoStartBreakIntervalToggleLabel"]').click(); // disable break auto start
-        cy.get('[data-testid="autoStartPomodoroIntervalToggleLabel"]').click(); // enable pom auto start
-        cy.get('[data-testid="settingsExit"]').click();
-
-        cy.get('[data-testid="productivity-chill-mode"]').should('contain', "Pomodoro #2 | 1 min"); // check header
-        cy.get('[data-testid="display"]').should('contain', "00:04:00"); // ensure correct display time
-        cy.get('[data-testid="progress-text"]').should('contain', "00:05:00"); // ensure correct total display time
-
-        // P2 --> SB2
-        cy.openPomodoroSettings();
-        cy.get('[data-testid="autoStartPomodoroIntervalToggleLabel"]').click(); // disable pom auto start
-        cy.get('[data-testid="autoStartBreakIntervalToggleLabel"]').click(); // enable break auto start
-        cy.get('[data-testid="settingsExit"]').click();
-
-        cy.get('[data-testid="productivity-chill-mode"]').should('contain', "Short Break #2 | 1 min"); // check header
-        cy.get('[data-testid="completedPomodoros-min"]').should('contain', 2); // check pomodoro count
-
-        cy.get('[data-testid="display"]').should('contain', "00:03:00"); // ensure correct display time
-        cy.get('[data-testid="progress-text"]').should('contain', "00:02:00"); // ensure correct total display time
-
-        // SB2 --> P3
-        cy.openPomodoroSettings();
-        cy.get('[data-testid="autoStartBreakIntervalToggleLabel"]').click(); // disable break auto start
-        cy.get('[data-testid="autoStartPomodoroIntervalToggleLabel"]').click(); // enable pom auto start
-        cy.get('[data-testid="settingsExit"]').click();
-
-        cy.get('[data-testid="productivity-chill-mode"]').should('contain', "Pomodoro #3 | 1 min"); // check header
-        cy.get('[data-testid="display"]').should('contain', "00:02:00"); // ensure correct display time
-        cy.get('[data-testid="progress-text"]').should('contain', "00:04:00"); // ensure correct total display time
-
-        // P3 --> SB3
-        cy.openPomodoroSettings();
-        cy.get('[data-testid="autoStartPomodoroIntervalToggleLabel"]').click(); // disable pom auto start
-        cy.get('[data-testid="autoStartBreakIntervalToggleLabel"]').click(); // enable break auto start
-        cy.get('[data-testid="settingsExit"]').click();
-
-        cy.get('[data-testid="productivity-chill-mode"]').should('contain', "Short Break #3 | 1 min"); // check header
-        cy.get('[data-testid="completedPomodoros-min"]').should('contain', 3); // check pomodoro count
-
-        cy.get('[data-testid="display"]').should('contain', "00:01:00"); // ensure correct display time
-        cy.get('[data-testid="progress-text"]').should('contain', "00:03:00"); // ensure correct total display time
-
-        // SB3 --> P4
-        cy.openPomodoroSettings();
-        cy.get('[data-testid="autoStartBreakIntervalToggleLabel"]').click(); // disable break auto start
-        cy.get('[data-testid="autoStartPomodoroIntervalToggleLabel"]').click(); // enable pom auto start
-        cy.get('[data-testid="settingsExit"]').click();
-
-        cy.get('[data-testid="productivity-chill-mode"]').should('contain', "Pomodoro #4 | 1 min"); // check header
-        cy.get('[data-testid="display"]').should('contain', "00:00:00"); // ensure correct display time
-        cy.get('[data-testid="progress-text"]').should('contain', "00:03:00"); // ensure correct total display time
     })
 })

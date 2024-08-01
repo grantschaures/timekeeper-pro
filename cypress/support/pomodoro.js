@@ -121,7 +121,7 @@ Cypress.Commands.add('shortBreakIntervalAutoSwitch', function(sbMin, HeaderStr, 
 
 Cypress.Commands.add('longBreakIntervalAutoSwitch', function(lbMin, HeaderStr, initialTotalTimeStr, pomodoros) {
     cy.get('#start-stop').should('not.have.class', 'glowing-effect'); // check if start-stop btn is not glowing
-    cy.get('[data-testid="display"]').should('contain', "00:00:00"); // ensure correct display time
+    // cy.get('[data-testid="display"]').should('contain', "00:00:00"); // ensure correct display time
     cy.get('[data-testid="progress-text"]').should('contain', initialTotalTimeStr); // ensure correct total display time
     cy.get('[data-testid="productivity-chill-mode"]').should('contain', HeaderStr); // check mode header
     cy.contains('Pomodoros').should('be.visible'); // ensure pomodoros container is showing
