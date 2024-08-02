@@ -67,7 +67,8 @@ const User = db.model("User", {
     },
     display: {
       intervalTime: { type: Boolean, default: true },
-      totalTime: { type: Boolean, default: true }
+      totalTime: { type: Boolean, default: true },
+      muffinToggle: { type: Boolean, default: true }
     },
     notes: {
       autoSwitchToggle: { type: Boolean, default: false },

@@ -550,6 +550,7 @@ button:hover {
 #targetHoursInterruptionsContainer {
     display: flex;
     justify-content: space-between;
+    position: relative;
     /* justify-content: center; */
     width: 575px;
 
@@ -574,6 +575,7 @@ button:hover {
 #interruptions-container {
     display: flex;
     align-items: center;
+    position: relative;
 
     justify-content: center;
     
@@ -1950,4 +1952,69 @@ header {
 #subjectiveFeedbackContainer {
     display: flex;
     flex-direction: column;
+}
+
+#catsContainer {
+    position: absolute;
+    width: 100%;
+
+    /* border: 3px solid black; */
+}
+
+#cat1 {
+    width: 60px;
+    top: -47px; /* Align the image to the top */
+    right: 75px;;
+}
+
+#cat2 {
+    width: 80px;
+    top: -46px; /* Align the image to the top */
+    right: 75px;
+}
+
+#cat3 {
+    width: 85px;
+    top: -50px; /* Align the image to the top */
+    right: 70px;
+
+}
+
+#cat4 {
+    width: 110px;
+    top: -40px; /* Align the image to the top */
+    right: 50px;
+}
+
+#cat5 {
+    width: 100px;
+    top: -46px; /* Align the image to the top */
+    right: 50px;
+}
+
+#cat6 {
+    width: 80px;
+    top: -42px; /* Align the image to the top */
+    right: 75px;
+}
+
+#cat7 {
+    width: 80px;
+    top: -45px; /* Align the image to the top */
+    right: 75px;
+}
+
+#cat8 {
+    width: 80px;
+    top: -45px; /* Align the image to the top */
+    right: 75px;
+}
+
+.cat {
+    display: none;
+    z-index: 26;
+    height: auto;
+    position: absolute;
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
 }

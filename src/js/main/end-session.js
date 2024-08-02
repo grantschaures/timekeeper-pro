@@ -1,4 +1,4 @@
-import { timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, counters, flags, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, homeBackground, times, perHourData } from '../modules/index-objects.js';
+import { timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, counters, flags, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, homeBackground, times, perHourData, catIds } from '../modules/index-objects.js';
 import { start_stop_btn, end_session_btn, total_time_display, productivity_chill_mode, progressBar, progressContainer, display, interruptionsSubContainer, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, flowAnimation, chillAnimation, hyperChillLogoImage, streaksCount, breakBackground, deepWorkBackground, commentsTextArea, sessionSummaryOkBtn, subjectiveFeedbackDropdown, sessionSummaryPopup, summaryStats, HC_icon_session_summary, commentsContainer, sessionSummarySignupPromptPopup, popupOverlay, HC_icon_signup_prompt, signupPromptPopupBtn } from '../modules/dom-elements.js';
 import { soundMap } from '../modules/sound-map.js';
 import { sessionState } from '../modules/state-objects.js';
@@ -7,7 +7,7 @@ import { tempStorage, flags as summaryFlags } from '../modules/summary-stats.js'
 import { flags as navFlags } from '../modules/navigation-objects.js';
 
 import { sessionCompletion } from '../state/session-completion.js'; // minified
-import { animationsFadeIn, animationsFadeOut, getTotalElapsed, returnTotalTimeString, updateLabelArrs, setBackground, pauseAndResetAlertSounds, resetDisplay, updateProgressBar, totalTimeDisplay, setButtonTextAndMode, hideSuggestionBreakContainer, hidePomodorosCompletedContainer, showInterruptionsSubContainer, setFavicon, observer, pomodoroWorker, suggestionWorker, flowmodoroWorker, displayWorker, totalDisplayWorker, updateDataPerHour } from '../main/index.js'; // minified
+import { animationsFadeIn, animationsFadeOut, getTotalElapsed, returnTotalTimeString, updateLabelArrs, setBackground, pauseAndResetAlertSounds, resetDisplay, updateProgressBar, totalTimeDisplay, setButtonTextAndMode, hideSuggestionBreakContainer, hidePomodorosCompletedContainer, showInterruptionsSubContainer, setFavicon, observer, pomodoroWorker, suggestionWorker, flowmodoroWorker, displayWorker, totalDisplayWorker, updateDataPerHour, hideCat } from '../main/index.js'; // minified
 import { checkInvaliDate } from '../state/check-invaliDate.js'; // minified
 import { addSession } from '../state/add-session.js'; // minified
 import { subMainContainerTransition } from '../main/navigation.js'; // minified
@@ -16,11 +16,16 @@ const defaultFavicon = "/images/logo/HyperChillLogo_circular_white_border.png";
 
 var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
+let tempCounters = {
+    catIdsArrIndex: 0
+}
+
 document.addEventListener("stateUpdated", function() {
     end_session_btn.addEventListener("click", async function() {
         if ((flags.sessionInProgress) && (flags.canEndSession)) {
             flags.canEndSession = false; // immediately block another end_session_btn click before rest of flags are reset
             times.end = Date.now();
+            tempCounters.catIdsArrIndex = counters.catIdsArrIndex;
 
             let logSessionActivity;
             if (sessionState.loggedIn) {
@@ -29,15 +34,15 @@ document.addEventListener("stateUpdated", function() {
                 if (logSessionActivity) {
                     await logSession(); // (1) Collect all necessary information about the session
                     setTimeout(() => { // reset displays after popup
-                        initialVisualReset()
+                        initialVisualReset(tempCounters)
                     }, 500)
                 } else {
-                    initialVisualReset()
+                    initialVisualReset(tempCounters)
                 }
             } else {
                 await logSession(); // "logs session"
                 setTimeout(() => { // reset displays after popup
-                    initialVisualReset()
+                    initialVisualReset(tempCounters)
                     summaryFlags.canSubmitSessionSummary = true;
                 }, 500)
             }
@@ -549,12 +554,15 @@ async function finalizeSession(times, userTimeZone, totalTime, focusQualityFract
     await addSession(session);
 }
 
-export function initialVisualReset() {
+export function initialVisualReset(tempCounters) {
     // reset displays
     resetDisplay(display);
 
     // reset header text
     setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Start", "Press 'Start' to begin session");
+
+    // remove cats
+    hideCat(catIds, tempCounters);
     
     // reset interruptions text to counters.interruptions, which has already been reset to 0
     interruptionsNum.textContent = 0;

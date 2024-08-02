@@ -118,7 +118,8 @@ export const counters = {
     currentPomodoroIntervalOrderIndex: 0,
     pomodorosCompleted: 0,
     flowTimeIntervals: 0,
-    chillTimeIntervals: 0
+    chillTimeIntervals: 0,
+    catIdsArrIndex: 0
 }
 
 export const flags = {
@@ -139,6 +140,7 @@ export const flags = {
     showingFlowTimeBreakNotificationInfoWindow: false,
     showingIntervalTimeInfoWindow: false,
     showingTotalTimeInfoWindow: false,
+    showingMuffinInfoWindow: false,
     showingNotesAutoSwitchInfoWindow: false,
     showingPropagateUnfinishedTasksInfoWindow: false,
     generalThumbIsDragging: false,
@@ -165,7 +167,9 @@ export const flags = {
     canEndSession: false,
     canSubmitSummary: false,
     intervalTimeToggle: true,
-    totalTimeToggle: true
+    totalTimeToggle: true,
+    muffinToggle: true
+
 }
 
 export const tempStorage = {
@@ -206,6 +210,17 @@ export const intervalArrs = {
     transitionTime: [],
     interruptionTime: []
 }
+
+export const catIds = [
+    'cat1',
+    'cat2',
+    'cat3',
+    'cat4',
+    'cat5',
+    'cat6',
+    'cat7',
+    'cat8',
+]
 
 export const times = {
     start: null,

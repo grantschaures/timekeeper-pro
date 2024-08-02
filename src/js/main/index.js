@@ -1,4 +1,4 @@
-import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selectedBackgroundIdTemp, selectedBackgroundId, timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, alertVolumes, alertSounds, counters, flags, tempStorage, settingsMappings, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, homeBackground, times, perHourData } from '../modules/index-objects.js';
+import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selectedBackgroundIdTemp, selectedBackgroundId, timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, alertVolumes, alertSounds, counters, flags, tempStorage, settingsMappings, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, homeBackground, times, perHourData, catIds } from '../modules/index-objects.js';
 
 import { chimePath, bellPath, clock_tick, soundMap } from '../modules/sound-map.js';
 
@@ -23,6 +23,8 @@ import {
     totalTimeToggle,
     stopwatch,
     settingsGUIContainer,
+    muffinInfoWindow,
+    toggleMuffin,
 } from '../modules/dom-elements.js';
 
 import { sessionState } from '../modules/state-objects.js';
@@ -146,14 +148,17 @@ document.addEventListener("stateUpdated", function() {
         counters.startStop++; //keep track of button presses (doesn't account for time recovery iterations)
         playClick(clock_tick, flags);
         resetDisplay(display);
-        
         updateLabelArrs(transitionTime, labelFlags, labelArrs);
+
         
         if (counters.startStop === 1) {
             veryStartActions(startTimes, hyperChillLogoImage, flags, times, counters, interruptionsNum);
             triggerSilentAlertAudioMobile(soundMap.Chime, soundMap.Bell, chimePath, bellPath, flags);
             animationsFadeOut(chillAnimation);
             startTimes.lastPomNotification = Date.now();
+
+            // randomize cat order
+            reorderArray(catIds);
             
             setTimeout(() => {
                 document.documentElement.style.backgroundSize = '100%';
@@ -212,6 +217,7 @@ document.addEventListener("stateUpdated", function() {
 
             if (counters.startStop > 1) { // runs first during first break interval
                 elapsedTime.chillTime += Date.now() - startTimes.chillTime;
+                hideCat(catIds, counters);
             }
 
             // backgroundVideoSource.src = "videos/cyan_gradient_480p.mp4";
@@ -225,6 +231,7 @@ document.addEventListener("stateUpdated", function() {
             counters.chillTimeIntervals++;
             setFavicon(blueFavicon);
             chillTimeAnimationActions(flags, flowAnimation, chillAnimation);
+            displayCat(catIds, counters);
 
             
             // EDIT: temporary change to see total interruptions for my own data collection
@@ -417,6 +424,10 @@ document.addEventListener("stateUpdated", function() {
     toggleTotalTime.addEventListener('click', function() {
         toggleInfoWindow(totalTimeInfoWindow, 'showingTotalTimeInfoWindow', flags);
     });
+
+    toggleMuffin.addEventListener('click', function() {
+        toggleInfoWindow(muffinInfoWindow, 'showingMuffinInfoWindow', flags)
+    })
 
     notesAutoSwitch.addEventListener('click', function() {
         toggleInfoWindow(notesAutoSwitchInfoWindow, 'showingNotesAutoSwitchInfoWindow', flags);
@@ -1077,6 +1088,34 @@ document.addEventListener("stateUpdated", function() {
         }
     });
 
+    muffinToggle.addEventListener("click", async function() {
+        if (muffinToggle.checked) {
+            flags.muffinToggle = true;
+            
+            // show muffin if in break mode
+            if (!flags.inHyperFocus) {
+                displayCat(catIds, counters);
+            }
+            
+        } else {
+            flags.muffinToggle = false;
+            
+            // hide muffin if in break mode
+            if (!flags.inHyperFocus) {
+                hideMuffin(catIds, counters);
+            }
+            
+        }
+
+        if (sessionState.loggedIn) {
+            await updateUserSettings({
+                display: {
+                    muffinToggle: flags.muffinToggle
+                }
+            });
+        }
+    })
+
     // ---------------------
     // DISPLAY WORKERS
     // ---------------------
@@ -1129,6 +1168,43 @@ document.addEventListener("stateUpdated", function() {
 // ------------------
 // HELPER FUNCTIONS
 // ------------------
+export function hideCat(catIds, counters) {
+    if (flags.muffinToggle) {
+        hideMuffin(catIds, counters);
+        updateCatIdsArrIndex(counters);
+    }
+}
+
+function hideMuffin(catIds, counters) {
+    document.getElementById([catIds[counters.catIdsArrIndex]]).style.display = "none";
+    document.getElementById([catIds[counters.catIdsArrIndex]]).style.opacity = '0';
+}
+
+function updateCatIdsArrIndex(counters) {
+    if (counters.catIdsArrIndex === 7) {
+        counters.catIdsArrIndex = 0;
+    } else {
+        counters.catIdsArrIndex++;
+    }
+}
+
+function displayCat(catIds, counters) {
+    if (flags.muffinToggle) {
+        document.getElementById([catIds[counters.catIdsArrIndex]]).style.display = "block";
+        setTimeout(() => {
+            document.getElementById([catIds[counters.catIdsArrIndex]]).style.opacity = '1';
+        }, 0)
+    }
+}
+
+function reorderArray(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+
 export function totalTimeToggleGUIUpdate() {
     if (totalTimeToggle.checked) {
         flags.totalTimeToggle = true;

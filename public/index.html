@@ -339,6 +339,16 @@
             <main class="main" data-testid="main">
                 <div id="subMainContainer" data-testid="subMainContainer" class="introTransition">
                     <div id="targetHoursInterruptionsContainer">
+                        <div id="catsContainer"> <!-- Credit to Gamedev Kitty on itch.io -->
+                            <img id="cat1" src="images/sprites/white-kitten1.png" class="cat">
+                            <img id="cat2" src="images/sprites/white-kitten2.png" class="cat">
+                            <img id="cat3" src="images/sprites/white-kitten3.png" class="cat">
+                            <img id="cat4" src="images/sprites/white-kitten4.png" class="cat">
+                            <img id="cat5" src="images/sprites/white-kitten5.png" class="cat">
+                            <img id="cat6" src="images/sprites/white-kitten6.png" class="cat">
+                            <img id="cat7" src="images/sprites/white-kitten7.png" class="cat">
+                            <img id="cat8" src="images/sprites/white-kitten8.png" class="cat">
+                        </div>
                         <div id="targetHoursContainer">
                             <div id="targetHoursSubContainer">
                                 <h4 id="targetLabel" style="font-size: 20px" class="no-select">Target Hours</h4>
@@ -1438,6 +1448,21 @@
                                     <div id="totalTimeInfoWindow" class="notificationInfoWindow">
                                         Show the total (deep work) time display
                                     </div>
+                                </div>
+                            </div>
+                            <hr id="displaySettingsHr1">
+                            <div id="toggleMuffinContainer" class="settingsMicroContainer">
+                                <div id="toggleMuffinText" class="settingsText">
+                                    <p id="toggleMuffin"><b class="settingsCategoryHeading">Show Muffin The Cat</b></p>
+                                </div>
+                                <div id="muffinToggleContainer" class="toggleContainer">
+                                    <input type="checkbox" id="muffinToggle" data-testid="muffinToggle" class="toggle-checkbox" aria-labelledby="muffinToggle" checked>
+                                    <label for="muffinToggle" id="muffinToggleLabel" class="toggle-label">
+                                        <span id="muffinToggleBall" class="toggle-ball"></span>
+                                    </label>
+                                </div>
+                                <div id="muffinInfoWindow" class="notificationInfoWindow">
+                                    Show Muffin the cat during breaks
                                 </div>
                             </div>
                         </div>

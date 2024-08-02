@@ -388,7 +388,7 @@
     opacity: 0;
 }
 
-#flowmodoroNotificationInfoWindow.infoWindowOpacity, #flowTimeBreakNotificationInfoWindow.infoWindowOpacity, #pomodoroNotificationInfoWindow.infoWindowOpacity, #intervalTimeInfoWindow.infoWindowOpacity, #totalTimeInfoWindow.infoWindowOpacity, #notesAutoSwitchInfoWindow.infoWindowOpacity, #propagateUnfinishedTasksInfoWindow.infoWindowOpacity {
+#flowmodoroNotificationInfoWindow.infoWindowOpacity, #flowTimeBreakNotificationInfoWindow.infoWindowOpacity, #pomodoroNotificationInfoWindow.infoWindowOpacity, #intervalTimeInfoWindow.infoWindowOpacity, #totalTimeInfoWindow.infoWindowOpacity, #muffinInfoWindow.infoWindowOpacity, #notesAutoSwitchInfoWindow.infoWindowOpacity, #propagateUnfinishedTasksInfoWindow.infoWindowOpacity {
     opacity: 1;
 }
 
@@ -512,6 +512,14 @@
 }
 
 #totalTimeToggle:checked + #totalTimeToggleLabel #totalTimeToggleBall {
+    left: 40px;
+}
+
+#muffinToggle:checked + #muffinToggleLabel {
+    background-color: #53e658;
+}
+
+#muffinToggle:checked + #muffinToggleLabel #muffinToggleBall {
     left: 40px;
 }
 
