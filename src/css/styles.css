@@ -1067,13 +1067,19 @@ button:hover {
     white-space: nowrap;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 480px) {
     #progress-text {
         font-size: 20px;
     }
 }
 
-@media (max-width: 420px) {
+@media (max-width: 400px) {
+    #progress-text {
+        font-size: 17px;
+    }
+}
+
+@media (max-width: 342px) {
     #progress-text {
         font-size: 14px;
     }
