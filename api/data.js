@@ -15,6 +15,9 @@ router.use(express.json());
 // Middleware for checking and renewing the token (also checks if session token/ cookie has expired)
 router.use(checkAndRenewToken);
 
+// CONSTANTS
+MAX_ITEMS_SESSION_START_TIME_ARR = 5; // can reduce if necessary
+
 router.post("/update-session-summary", async function(req, res) {
     // Assuming the JWT is sent automatically in cookie headers
     const token = req.cookies.token;  // Extract the JWT from cookies directly
@@ -318,6 +321,11 @@ router.post("/last-interval-switch", async function(req, res) {
             if (intervalSwitchCount === 1) {
                 user.sessionRunning = true;
                 user.sessionStartTimeArr.push({ startTime: new Date(sessionStartTime) });
+
+                // Trim the array to the last 100 items
+                if (user.sessionStartTimeArr.length > MAX_ITEMS_SESSION_START_TIME_ARR) {
+                    user.sessionStartTimeArr = user.sessionStartTimeArr.slice(-MAX_ITEMS_SESSION_START_TIME_ARR);
+                }
             }
 
             await user.save();
