@@ -347,7 +347,12 @@ function resetActions(hyperChillLogoImage, flags, intervals, recoverBreakState, 
 }
 
 function resetPerHourData(perHourData) {
-    Object.assign(perHourData, {});
+    for (let key in perHourData) {
+        if (perHourData.hasOwnProperty(key)) {
+            delete perHourData[key];
+        }
+    }
+    console.log(perHourData);
 }
 
 function resetArrays(input) {
@@ -482,7 +487,7 @@ function focusQualityCalculation(timeConvert, totalTime, totalDistractions, cons
     let focusQualityFraction = 1 - ((totalDistractions / totalMin) / (constant));
     if (focusQualityFraction < 0) {
         focusQualityFraction = 0;
-    } else if (isNaN(focusQualityFraction)) { // edge case: if user has 0ms of deep work + no distractions
+    } else if (isNaN(focusQualityFraction)) { // edge case: if user has 0ms of deep work + no distractions (which shouldn't happen, but just in case)
         focusQualityFraction = 1;
     }
 

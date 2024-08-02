@@ -815,7 +815,8 @@ button:hover {
 
     width: 100%;
     max-width: 575px;
-    height: 350px;
+    /* height: 350px; */
+    height: 150px; /* Change */
 
     box-sizing: border-box;
     
@@ -929,12 +930,12 @@ button:hover {
 }
 
 .stopwatch {
+    display: none;
     padding-block: 25px;
     font-size: 48px;
     /* border: 1px solid yellow; */
     color: white;
     text-align: center;
-
     width: 100%;
 }
 
@@ -1056,6 +1057,7 @@ button:hover {
 }
 
 #progress-text {
+    display: none;
     font-family: myFont3;
     font-size: 24px;
     position: absolute;

@@ -23,7 +23,7 @@ export async function addSession(session) {
 
         setTimeout(() => {
             summaryFlags.canSubmitSessionSummary = true;
-        }, 1000)
+        }, 500)
         document.dispatchEvent(new Event('updateStreak'));
 
         //update tempStorage w/ sessionId
