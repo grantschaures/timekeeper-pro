@@ -1128,7 +1128,7 @@ function updateDataPerHourCheck() {
 
     if (checkStartOfHour(currentTime, startOfHour)) {
 
-        // We are now going to check every hour since the start of session
+        // We are now going to check every hour from the current time to the start if necessary
         updateDataPerHour(intervalArrs, startOfHour, hourBeforeStartOfHour, perHourData);
     }
 }
@@ -1146,6 +1146,13 @@ function checkStartOfHour(currentTime, startOfHour) {
 }
 
 export function updateDataPerHour(intervalArrs, finalDate, initialDate, perHourData) {
+
+    // Base Case
+    console.log(finalDate <= new Date(startTimes.beginning));
+    if ((finalDate <= new Date(startTimes.beginning)) || (perHourData[initialDate.toISOString()])) {
+        return;
+    }
+
     let deepWorkTime = calculateDeepWorkPerHour(intervalArrs.transitionTime, finalDate, initialDate);
     let distractions = calculateDistractionsPerHour(intervalArrs.interruptionTime, finalDate, initialDate);
 
@@ -1164,6 +1171,14 @@ export function updateDataPerHour(intervalArrs, finalDate, initialDate, perHourD
 
     let currentDateKey = initialDate.toISOString();
     perHourData[currentDateKey] = perHourDataObj;
+
+    // check previous hour time slots
+    let previousFinalDate = initialDate;
+
+    let previousInitialDate = new Date(initialDate);
+    previousInitialDate.setHours(previousInitialDate.getHours() - 1);
+
+    updateDataPerHour(intervalArrs, previousFinalDate, previousInitialDate, perHourData);
 }
 
 function calculateDeepWorkPerHour(transitionTimes, finalDate, initialDate) {

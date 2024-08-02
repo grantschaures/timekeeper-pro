@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const sessionStartTimeSchema = new Schema({
-  startTime: { type: Date, expires: '24h' }
+  startTime: { type: Date }
 })
 
 // User model from the schema
