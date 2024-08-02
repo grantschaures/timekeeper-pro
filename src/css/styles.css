@@ -343,7 +343,7 @@ body[dinkle-doink-setting=space] .dinkle-doink-mode .caption [dinkle-doink=space
 .bottom {
     display: flex;
     flex-direction: row;
-    justify-content: right;
+    justify-content: space-between;
     align-items: center;
     
     position: fixed;
@@ -359,6 +359,28 @@ body[dinkle-doink-setting=space] .dinkle-doink-mode .caption [dinkle-doink=space
     box-sizing: border-box; /* Ensure padding and border are included in the element's width and height */
 
     margin: 25px;
+}
+
+.bottomRight {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    align-items: center;
+    
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    
+    z-index: 15;
+    
+    /* border: 3px solid rgb(230, 0, 220); */
+    height: auto; /* Adjust height as needed */
+    /* margin: 0; */
+    box-sizing: border-box; /* Ensure padding and border are included in the element's width and height */
+    
+    margin: 25px;
+
 }
 
 main {
@@ -474,14 +496,14 @@ button:hover {
     z-index: 2;
 }
 
-#menuIcon {
+#menuIcon, #settingsGUIconWhite {
     width: 30px;
     height: 30px;
     display: flex;
     /* border: 1px solid yellow; */
 }
 
-#menuIcon-black {
+#menuIcon-black, #settingsGUIconBlack {
     width: 30px;
     height: 30px;
     display: none;
@@ -495,17 +517,19 @@ button:hover {
     display: flex;
 }
 
+#settingsGUIContainer:hover #settingsGUIconWhite {
+    display: none;
+}
+
+#settingsGUIContainer:hover #settingsGUIconBlack {
+    display: flex;
+}
+
 .headerBtns button {
     width: 100px;
 }
 
 @media (max-width: 599px) {
-    /* #reportBtn div {
-        display: none;
-    }
-    #reportBtn {
-        width: 50px;
-    } */
     #reportIcon {
         display: flex;
     }
@@ -815,8 +839,8 @@ button:hover {
 
     width: 100%;
     max-width: 575px;
-    /* height: 350px; */
-    height: 150px; /* Change */
+    height: 350px;
+    /* height: 150px */
 
     box-sizing: border-box;
     
@@ -930,7 +954,7 @@ button:hover {
 }
 
 .stopwatch {
-    display: none;
+    display: block;
     padding-block: 25px;
     font-size: 48px;
     /* border: 1px solid yellow; */
@@ -1057,7 +1081,7 @@ button:hover {
 }
 
 #progress-text {
-    display: none;
+    display: block;
     font-family: myFont3;
     font-size: 24px;
     position: absolute;
@@ -1515,7 +1539,7 @@ header {
     border-top: 10px solid rgba(0, 0, 0, 0.9); /* Same color as background */
 }
 
-#questionIconContainer {
+#questionIconContainer, #settingsGUIContainer {
     display: none;
     opacity: 0;
     transition: opacity 1s ease-in-out, background-color 0.25s ease;
@@ -1536,7 +1560,7 @@ header {
     margin-right: 2px;
 }
 
-#questionIconContainer:hover {
+#questionIconContainer:hover, #settingsGUIContainer:hover {
     background-color: white;
     color: black;
     cursor: pointer;

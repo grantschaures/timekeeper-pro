@@ -291,16 +291,24 @@
                     </div>
                 </div>
                 <div class="bottom">
-                    <div id="streaksContainer" class="no-select">
-                        <div id="streaksEmoji" class="streaksComponent">
-                            🔥
-                        </div>
-                        <div id="streaksCount" class="streaksComponent">
-                            0
+                    <div class="bottomLeft">
+                        <div id="settingsGUIContainer" data-testid="settingsGUIContainer" alt="Settings Button" class="no-select">  <!-- z-index: 20 -->
+                            <img src="images/icons/settingsIcon1.png" id="settingsGUIconWhite">
+                            <img src="images/icons/settingsIcon2.png" id="settingsGUIconBlack">
                         </div>
                     </div>
-                    <div id="questionIconContainer" data-testid="questionIcon" src="/images/icons/questionIcon.png" alt="Question Button" class="no-select">  <!-- z-index: 20 -->
-                        ?
+                    <div class="bottomRight">
+                        <div id="streaksContainer" class="no-select">
+                            <div id="streaksEmoji" class="streaksComponent">
+                                🔥
+                            </div>
+                            <div id="streaksCount" class="streaksComponent">
+                                0
+                            </div>
+                        </div>
+                        <div id="questionIconContainer" data-testid="questionIcon" alt="Question Button" class="no-select">  <!-- z-index: 20 -->
+                            ?
+                        </div>
                     </div>
                 </div>
                 <div id="streaksLoginSuggestionPopup"> <!-- z-index: 35 when showing only, 0 otherwise -->
@@ -377,7 +385,7 @@
                         <div class="mode-text">
                             <h3 id="productivity-chill-mode" data-testid="productivity-chill-mode" class="no-select">Press 'Start' to begin session</h3>
                         </div>
-                        <div class="stopwatch">
+                        <div class="stopwatch" id="stopwatch">
                             <div id="display" data-testid="display" class="no-select">00:00:00</div>
                         </div>
                         <div class="lower-buttons">
@@ -905,6 +913,14 @@
                                 <b>Backgrounds & Themes</b>
                             </div>
                         </div>
+                        <div id="displayBtnContainer" class="settingsHeaderRow">
+                            <div class="settingsIconContainer">
+                                <img src="images/icons/displayIcon.png" id="displayIcon" class="settingsIcon" draggable="false" alt="Display Settings">
+                            </div>
+                            <div id="displayHeader" class="settingsHeader">
+                                <b>Display</b>
+                            </div>
+                        </div>
                         <div id="notesBtnContainer" class="settingsHeaderRow">
                             <div class="settingsIconContainer">
                                 <img src="images/icons/whitepencil.png" id="notesIcon" class="settingsIcon" draggable="false" alt="Notes Settings">
@@ -1383,6 +1399,44 @@
                                         <label for="chillTimeAnimationToggle" id="chillTimeAnimationToggleLabel" class="toggle-label">
                                             <span id="chillTimeAnimationToggleBall" class="toggle-ball"></span>
                                         </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="displaySettingsContainer" class="settingsContentContainer">
+                            <div id="displayContainer" class="settingsIconTextContainer">
+                                <h2>Display</h2>
+                            </div>
+                            <div id="intervalTimeBlock">
+                                <div id="toggleIntervalTimeContainer" class="settingsMicroContainer">
+                                    <div id="toggleIntervalTimeText" class="settingsText">
+                                        <p id="toggleIntervalTime"><b class="settingsCategoryHeading">Interval Time</b></p>
+                                    </div>
+                                    <div id="intervalTimeToggleContainer" class="toggleContainer">
+                                        <input type="checkbox" id="intervalTimeToggle" data-testid="intervalTimeToggle" class="toggle-checkbox" aria-labelledby="intervalTimeToggle" checked>
+                                        <label for="intervalTimeToggle" id="intervalTimeToggleLabel" class="toggle-label">
+                                            <span id="intervalTimeToggleBall" class="toggle-ball"></span>
+                                        </label>
+                                    </div>
+                                    <div id="intervalTimeInfoWindow" class="notificationInfoWindow">
+                                        Show the main interval time display
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="totalTimeBlock">
+                                <div id="toggleTotalTimeContainer" class="settingsMicroContainer">
+                                    <div id="toggleTotalTimeText" class="settingsText">
+                                        <p id="toggleTotalTime"><b class="settingsCategoryHeading">Total Time</b></p>
+                                    </div>
+                                    <div id="totalTimeToggleContainer" class="toggleContainer">
+                                        <input type="checkbox" id="totalTimeToggle" data-testid="totalTimeToggle" class="toggle-checkbox" aria-labelledby="totalTimeToggle" checked>
+                                        <label for="totalTimeToggle" id="totalTimeToggleLabel" class="toggle-label">
+                                            <span id="totalTimeToggleBall" class="toggle-ball"></span>
+                                        </label>
+                                    </div>
+                                    <div id="totalTimeInfoWindow" class="notificationInfoWindow">
+                                        Show the total (deep work) time display
                                     </div>
                                 </div>
                             </div>

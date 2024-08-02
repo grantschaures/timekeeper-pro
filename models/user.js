@@ -65,6 +65,10 @@ const User = db.model("User", {
       flowTimeAnimation:  { type: Boolean, default: false },
       chillTimeAnimation: { type: Boolean, default: false }
     },
+    display: {
+      intervalTime: { type: Boolean, default: true },
+      totalTime: { type: Boolean, default: true }
+    },
     notes: {
       autoSwitchToggle: { type: Boolean, default: false },
       propagateUnfinishedTasksToggle: { type: Boolean, default: false }

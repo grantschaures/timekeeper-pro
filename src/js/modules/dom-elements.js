@@ -15,6 +15,7 @@ export const progressBarContainer = document.getElementById("progress-bar-contai
 export const progressBar = document.getElementById("progress-bar");
 export const progressContainer = document.getElementById("progress-container");
 export const display = document.getElementById("display");
+export const stopwatch = document.getElementById("stopwatch");
 export const hyperChillTitle = document.getElementById("hyperChillTitle");
 export const subMainContainer = document.getElementById("subMainContainer");
 export const interruptionsContainer = document.getElementById("interruptions-container");
@@ -194,6 +195,8 @@ export const deleteAccountPopupNoBtn = document.getElementById("deleteAccountPop
 export const questionIcon = document.getElementById("questionIconContainer");
 export const popupQuestionMenu = document.getElementById("popupQuestionMenu");
 
+export const settingsGUIContainer = document.getElementById("settingsGUIContainer");
+
 export const streaksContainer = document.getElementById("streaksContainer");
 export const streaksLoginSuggestionPopup = document.getElementById("streaksLoginSuggestionPopup");
 export const streaksCount = document.getElementById("streaksCount");
@@ -240,6 +243,15 @@ export const HC_icon_signup_prompt = document.getElementById('HC_icon_signup_pro
 
 export const sessionSummarySignupPromptPopup = document.getElementById('sessionSummarySignupPromptPopup');
 export const signupPromptPopupBtn = document.getElementById('signupPromptPopupBtn');
+
+export const toggleIntervalTime = document.getElementById('toggleIntervalTime');
+export const toggleTotalTime = document.getElementById('toggleTotalTime');
+
+export const intervalTimeInfoWindow = document.getElementById('intervalTimeInfoWindow');
+export const totalTimeInfoWindow = document.getElementById('totalTimeInfoWindow');
+
+export const intervalTimeToggle = document.getElementById('intervalTimeToggle');
+export const totalTimeToggle = document.getElementById('totalTimeToggle');
 
 export let hoverTimer;
 export var backgroundVideoSource = document.getElementById('background-video-source');

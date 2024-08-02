@@ -388,7 +388,7 @@
     opacity: 0;
 }
 
-#flowmodoroNotificationInfoWindow.infoWindowOpacity, #flowTimeBreakNotificationInfoWindow.infoWindowOpacity, #pomodoroNotificationInfoWindow.infoWindowOpacity, #notesAutoSwitchInfoWindow.infoWindowOpacity, #propagateUnfinishedTasksInfoWindow.infoWindowOpacity {
+#flowmodoroNotificationInfoWindow.infoWindowOpacity, #flowTimeBreakNotificationInfoWindow.infoWindowOpacity, #pomodoroNotificationInfoWindow.infoWindowOpacity, #intervalTimeInfoWindow.infoWindowOpacity, #totalTimeInfoWindow.infoWindowOpacity, #notesAutoSwitchInfoWindow.infoWindowOpacity, #propagateUnfinishedTasksInfoWindow.infoWindowOpacity {
     opacity: 1;
 }
 
@@ -495,6 +495,23 @@
 }
 
 #pomodoroNotificationToggle:checked + #pomodoroNotificationToggleLabel #pomodoroNotificationToggleBall {
+    left: 40px;
+}
+
+/* Display Mode */
+#intervalTimeToggle:checked + #intervalTimeToggleLabel {
+    background-color: #53e658;
+}
+
+#intervalTimeToggle:checked + #intervalTimeToggleLabel #intervalTimeToggleBall {
+    left: 40px;
+}
+
+#totalTimeToggle:checked + #totalTimeToggleLabel {
+    background-color: #53e658;
+}
+
+#totalTimeToggle:checked + #totalTimeToggleLabel #totalTimeToggleBall {
     left: 40px;
 }
 

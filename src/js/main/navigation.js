@@ -1,4 +1,4 @@
-import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn, spaceContainer, shortcutsContainer, shortcutsPopup, shortcutsExit, reportContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, flowAnimation, chillAnimation, target_hours_input, streaksContainer, threeWayToggle, labelToDeleteContainer, confirmLabelDeletionPopup, labelSelectionRow, confirmLabelDeletionNoBtn, sessionSummaryOkBtn, sessionSummarySignupPromptPopup, HC_icon_signup_prompt } from '../modules/dom-elements.js';
+import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn, spaceContainer, shortcutsContainer, shortcutsPopup, shortcutsExit, reportContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, flowAnimation, chillAnimation, target_hours_input, streaksContainer, threeWayToggle, labelToDeleteContainer, confirmLabelDeletionPopup, labelSelectionRow, confirmLabelDeletionNoBtn, sessionSummaryOkBtn, sessionSummarySignupPromptPopup, HC_icon_signup_prompt, settingsGUIContainer } from '../modules/dom-elements.js';
 import { blogIdList, flags, counters, state } from '../modules/navigation-objects.js';
 import { sessionState } from '../modules/state-objects.js';
 import { flags as indexFlags} from '../modules/index-objects.js';
@@ -20,6 +20,7 @@ document.addEventListener("stateUpdated", function() {
     if (!isMobile) {
         questionIcon.style.display = 'flex';
         streaksContainer.style.display = 'flex';
+        settingsGUIContainer.style.display = 'flex';
     }
 
     setTimeout(() => {
@@ -28,6 +29,7 @@ document.addEventListener("stateUpdated", function() {
         if (!(isMobile)) {
             questionIcon.style.opacity = '1';
             streaksContainer.style.opacity = '1';
+            settingsGUIContainer.style.opacity = '1';
 
             setTimeout(() => {
                 streaksContainer.style.transition = 'opacity 0.25s ease-in-out, background-color 0.25s ease';
@@ -137,6 +139,14 @@ document.addEventListener("stateUpdated", function() {
         counters.settingsBtnClicked++;
         body.style.overflowY = 'hidden'; // no scroll    
         settings_exit.classList.add('resetRotation'); // reset animation
+    });
+
+    settingsGUIContainer.addEventListener("click", function() {
+        if (!flags.settingsContainerShowing) {
+            settings_menu_container.click();
+        } else {
+            hideSettingsContainer();
+        }
     });
 
     // Question Menu
@@ -558,14 +568,17 @@ function isClickNotOnQuestionMenuElements(event, questionIcon, flags, popupQuest
 
 function isClickNotOnSettingsElements(event, settingsContainer, settings_exit, body) {
     if ((event.target === settings_exit)) {
-
-        // Programmatic Changes
-        flags.settingsContainerShowing = false;
-
-        // GUI changes
-        settingsContainer.style.display = "none";
-        body.style.overflowY = 'scroll';
+        hideSettingsContainer();
     }
+}
+
+function hideSettingsContainer() {
+    // Programmatic Changes
+    flags.settingsContainerShowing = false;
+    
+    // GUI changes
+    settingsContainer.style.display = "none";
+    body.style.overflowY = 'scroll';
 }
 
 function fadeOutAnimations() {

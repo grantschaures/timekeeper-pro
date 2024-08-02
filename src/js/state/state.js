@@ -1,4 +1,4 @@
-import { pomodoroNotificationToggle, pomodoroInputs, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, pomodoroVolumeThumb, pomodoroVolumeThumb2, pomodoroRadios, flowmodoroNotificationToggle, flowmodoroInputs, flowmodoroVolumeThumb, flowmodoroVolumeThumb2, flowmodoroRadios, breakSuggestionToggle, suggestionMinutesInput, generalRadios, targetTimeReachedToggle, darkGrayTheme, defaultTheme, interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, emojiContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, transitionClockSoundToggle, labelSelectionRow, emojiImg, emojiImg2, dynamicList, propagateUnfinishedTasksToggle as propagateUnfinishedTasksToggleElement, blackFlowtimeBackground, blackChilltimeBackground, total_time_display, streaksContainer, labelInputContainer, tagIcon, promptContainer, clearIcon, addDoneContainer, tagSelectionDivider, taskPrompt } from '../modules/dom-elements.js';
+import { pomodoroNotificationToggle, pomodoroInputs, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, pomodoroVolumeThumb, pomodoroVolumeThumb2, pomodoroRadios, flowmodoroNotificationToggle, flowmodoroInputs, flowmodoroVolumeThumb, flowmodoroVolumeThumb2, flowmodoroRadios, breakSuggestionToggle, suggestionMinutesInput, generalRadios, targetTimeReachedToggle, darkGrayTheme, defaultTheme, interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, emojiContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, transitionClockSoundToggle, labelSelectionRow, emojiImg, emojiImg2, dynamicList, propagateUnfinishedTasksToggle as propagateUnfinishedTasksToggleElement, blackFlowtimeBackground, blackChilltimeBackground, total_time_display, streaksContainer, labelInputContainer, tagIcon, promptContainer, clearIcon, addDoneContainer, tagSelectionDivider, taskPrompt, intervalTimeToggle, totalTimeToggle } from '../modules/dom-elements.js';
 
 import { sessionState } from '../modules/state-objects.js';
 
@@ -8,7 +8,7 @@ import { flags as notesflags, counters as notesCounters, state as notesState, la
 
 import { updateStreak } from '../utility/update_streaks.js';
 
-import { setInitialBackgroundCellSelection, setBackground, deactivateDarkTheme, activateDarkTheme, replaceTargetHours, totalTimeDisplay } from '../main/index.js';
+import { setInitialBackgroundCellSelection, deactivateDarkTheme, activateDarkTheme, replaceTargetHours, totalTimeDisplay, intervalTimeToggleGUIUpdate, totalTimeToggleGUIUpdate } from '../main/index.js';
 
 import { appendEditRemoveContainer, createCheckElements, getLastNumberFromId, addLabelInputContainerTagDivider, addLabelInitialActions, removeTagSelectionDivider, adjustLabelFontSize } from '../main/notes.js';
 
@@ -163,6 +163,7 @@ function updateSettings(userData) {
     updateFlowTime(userData);
 
     updateBackgroundsThemes(userData);
+    updateDisplay(userData);
     updateNotes(userData);
     updateSounds(userData);
 }
@@ -423,6 +424,26 @@ function updateAnimations(userData) {
 
     flags.chillTimeAnimationToggle = chillTimeAnimation;
     chillTimeAnimationToggle.checked = chillTimeAnimation;
+}
+
+// DISPLAY
+function updateDisplay(userData) {
+    updateIntervalTimeToggle(userData);
+    updateTotalTimeToggle(userData);
+}
+
+function updateIntervalTimeToggle(userData) {
+    const { intervalTime } = userData.settings.display;
+    intervalTimeToggle.checked = intervalTime;
+
+    intervalTimeToggleGUIUpdate();
+}
+
+function updateTotalTimeToggle(userData) {
+    const { totalTime } = userData.settings.display;
+    totalTimeToggle.checked = totalTime;
+
+    totalTimeToggleGUIUpdate();
 }
 
 // NOTES

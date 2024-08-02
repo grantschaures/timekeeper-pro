@@ -15,6 +15,14 @@ import {
     previousSessionStartedPopup,
     invalidatePreviousSessionInput,
     quitCurrentSessionInput,
+    toggleIntervalTime,
+    intervalTimeInfoWindow,
+    toggleTotalTime,
+    totalTimeInfoWindow,
+    intervalTimeToggle,
+    totalTimeToggle,
+    stopwatch,
+    settingsGUIContainer,
 } from '../modules/dom-elements.js';
 
 import { sessionState } from '../modules/state-objects.js';
@@ -402,13 +410,21 @@ document.addEventListener("stateUpdated", function() {
         toggleInfoWindow(flowTimeBreakNotificationInfoWindow, 'showingFlowTimeBreakNotificationInfoWindow', flags);
     });
 
+    toggleIntervalTime.addEventListener('click', function() {
+        toggleInfoWindow(intervalTimeInfoWindow, 'showingIntervalTimeInfoWindow', flags);
+    });
+
+    toggleTotalTime.addEventListener('click', function() {
+        toggleInfoWindow(totalTimeInfoWindow, 'showingTotalTimeInfoWindow', flags);
+    });
+
     notesAutoSwitch.addEventListener('click', function() {
         toggleInfoWindow(notesAutoSwitchInfoWindow, 'showingNotesAutoSwitchInfoWindow', flags);
-    })
+    });
 
     propagateUnfinishedTasks.addEventListener('click', function() {
         toggleInfoWindow(propagateUnfinishedTasksInfoWindow, 'showingPropagateUnfinishedTasksInfoWindow', flags);
-    })
+    });
 
     // ALERT VOLUME TOGGLING FUNCTIONALITY
     flowmodoroVolumeThumb.addEventListener('mousedown', (event) => handleMouseDown(event, 'flowmodoroThumbIsDragging'));
@@ -976,7 +992,7 @@ document.addEventListener("stateUpdated", function() {
     });
 
     progressContainer.addEventListener("click", async function() {
-        if (((!progressBarContainer.classList.contains('small')) && (counters.startStop >= 1)) || ((counters.startStop === 0) && (flags.submittedTarget))) {
+        if ((((!progressBarContainer.classList.contains('small')) && (counters.startStop >= 1)) || ((counters.startStop === 0) && (flags.submittedTarget))) && (flags.totalTimeToggle)) {
             if (!progressTextMod.showingTimeLeft) {
                 progressTextMod.showingTimeLeft = true; // show time left
                 total_time_display.textContent = progressTextMod.targetTimeLeftStr; // for immediate change
@@ -1037,6 +1053,30 @@ document.addEventListener("stateUpdated", function() {
         }
     })
 
+    intervalTimeToggle.addEventListener("click", async function() {
+        intervalTimeToggleGUIUpdate();
+
+        if (sessionState.loggedIn) {
+            await updateUserSettings({
+                display: {
+                    intervalTime: flags.intervalTimeToggle
+                }
+            });
+        }
+    })
+
+    totalTimeToggle.addEventListener("click", async function() {
+        totalTimeToggleGUIUpdate();
+
+        if (sessionState.loggedIn) {
+            await updateUserSettings({
+                display: {
+                    totalTime: flags.totalTimeToggle
+                }
+            });
+        }
+    });
+
     // ---------------------
     // DISPLAY WORKERS
     // ---------------------
@@ -1089,6 +1129,38 @@ document.addEventListener("stateUpdated", function() {
 // ------------------
 // HELPER FUNCTIONS
 // ------------------
+export function totalTimeToggleGUIUpdate() {
+    if (totalTimeToggle.checked) {
+        flags.totalTimeToggle = true;
+
+        // show total time text
+        total_time_display.style.display = 'block';
+
+    } else {
+        flags.totalTimeToggle = false;
+
+        // hide total time text
+        total_time_display.style.display = 'none';
+    }
+}
+
+export function intervalTimeToggleGUIUpdate() {
+    if (intervalTimeToggle.checked) {
+        flags.intervalTimeToggle = true;
+
+        // show interval time display
+        timekeepingContainer.style.height = '350px';
+        stopwatch.style.display = 'block';
+
+    } else {
+        flags.intervalTimeToggle = false;
+
+        // hide interval time display
+        timekeepingContainer.style.height = '150px';
+        stopwatch.style.display = 'none';
+    }
+}
+
 function pomodoroTransition(isMobile, isIpad) {
     if (!flags.modeChangeExecuted) {
         flags.modeChangeExecuted = true;

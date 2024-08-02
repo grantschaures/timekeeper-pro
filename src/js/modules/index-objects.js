@@ -137,6 +137,8 @@ export const flags = {
     showingPomodoroNotificationInfoWindow: false,
     showingFlowmodoroNotificationInfoWindow: false,
     showingFlowTimeBreakNotificationInfoWindow: false,
+    showingIntervalTimeInfoWindow: false,
+    showingTotalTimeInfoWindow: false,
     showingNotesAutoSwitchInfoWindow: false,
     showingPropagateUnfinishedTasksInfoWindow: false,
     generalThumbIsDragging: false,
@@ -161,7 +163,9 @@ export const flags = {
     sessionInProgress: false,
     triggeredSilentAudio: false,
     canEndSession: false,
-    canSubmitSummary: false
+    canSubmitSummary: false,
+    intervalTimeToggle: true,
+    totalTimeToggle: true
 }
 
 export const tempStorage = {
@@ -173,6 +177,7 @@ export const settingsMappings = {
     'flowmodoroBtnContainer': 'flowmodoroSettingsContainer',
     'generalBtnContainer': 'generalSettingsContainer',
     'backgroundsBtnContainer': 'backgroundsSettingsContainer',
+    'displayBtnContainer': 'displaySettingsContainer',
     'notesBtnContainer': 'notesSettingsContainer',
     'soundsBtnContainer': 'soundsSettingsContainer',
     'accountBtnContainer': 'accountSettingsContainer',
