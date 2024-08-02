@@ -320,7 +320,7 @@ router.post("/last-interval-switch", async function(req, res) {
 
             if (intervalSwitchCount === 1) {
                 user.sessionRunning = true;
-                user.sessionStartTimeArr.push(sessionStartTime);
+                user.sessionStartTimeArr.push({ startTime: new Date(sessionStartTime) });
 
                 // Trim the array to the last 100 items
                 if (user.sessionStartTimeArr.length > MAX_ITEMS_SESSION_START_TIME_ARR) {
@@ -332,7 +332,7 @@ router.post("/last-interval-switch", async function(req, res) {
             res.json({ success: true, message: 'User last interval switch time logged' });
 
         } else {
-            return res.status(404).json({ 
+            return res.status(404).json({
                 message: "User not found"
             });
         }
