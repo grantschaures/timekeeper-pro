@@ -320,7 +320,7 @@ router.post("/last-interval-switch", async function(req, res) {
 
             if (intervalSwitchCount === 1) {
                 user.sessionRunning = true;
-                user.sessionStartTimeArr.push({ startTime: new Date(sessionStartTime) });
+                user.sessionStartTimeArr.push(sessionStartTime);
 
                 // Trim the array to the last 100 items
                 if (user.sessionStartTimeArr.length > MAX_ITEMS_SESSION_START_TIME_ARR) {

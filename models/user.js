@@ -1,10 +1,4 @@
 const db = require("../db");
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-
-const sessionStartTimeSchema = new Schema({
-  startTime: { type: Date }
-})
 
 // User model from the schema
 const User = db.model("User", {
@@ -27,7 +21,7 @@ const User = db.model("User", {
   lastActivity: { type: Date },
   sessionRunning: { type: Boolean },
   invaliDate: { type: Date },
-  sessionStartTimeArr: [sessionStartTimeSchema], // array elements expire after 24 hours
+  sessionStartTimeArr: [Date], // array of Dates
   settings: { // could potentially be independent schema w/ own collection
     pomodoro: {
       notificationToggle: { type: Boolean, default: false },
