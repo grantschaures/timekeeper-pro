@@ -1964,7 +1964,7 @@ header {
 #cat1 {
     width: 60px;
     top: -47px; /* Align the image to the top */
-    right: 75px;;
+    right: 85px;;
 }
 
 #cat2 {
@@ -2017,4 +2017,22 @@ header {
     position: absolute;
     opacity: 0;
     transition: opacity 0.5s ease-out;
+}
+
+.cat:hover {
+    cursor: pointer;
+}
+
+#zzz {
+    position: absolute;
+    /* display: block; */
+    display: none;
+    opacity: 0;
+    z-index: 26;
+    width: 30px;
+    height: auto;
+    top: -90px;
+    right: 120px;
+    transform: rotateZ(-15deg);
+    transition: opacity 0.25s ease-out;
 }

@@ -168,7 +168,8 @@ export const flags = {
     canSubmitSummary: false,
     intervalTimeToggle: true,
     totalTimeToggle: true,
-    muffinToggle: true
+    muffinToggle: true,
+    canTriggerZZZ: true
 
 }
 

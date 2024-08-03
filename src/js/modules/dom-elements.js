@@ -257,6 +257,9 @@ export const muffinInfoWindow = document.getElementById('muffinInfoWindow');
 export const toggleMuffin = document.getElementById('toggleMuffin');
 export const muffinToggle = document.getElementById('muffinToggle');
 
+export const cats = document.querySelectorAll('.cat');
+export const zzz = document.getElementById("zzz");
+
 export let hoverTimer;
 export var backgroundVideoSource = document.getElementById('background-video-source');
 export var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);

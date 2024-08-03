@@ -25,6 +25,8 @@ import {
     settingsGUIContainer,
     muffinInfoWindow,
     toggleMuffin,
+    cats,
+    zzz,
 } from '../modules/dom-elements.js';
 
 import { sessionState } from '../modules/state-objects.js';
@@ -1115,6 +1117,27 @@ document.addEventListener("stateUpdated", function() {
             });
         }
     })
+
+    cats.forEach(cat => {
+        cat.addEventListener("click", function() {
+            if (flags.canTriggerZZZ) {
+                flags.canTriggerZZZ = false;
+                let rotationStr = `rotateZ(-${Math.floor(Math.random() * 30)}deg)`;
+                zzz.style.transform = rotationStr;
+                zzz.style.display = "block";
+                setTimeout(() => {
+                    zzz.style.opacity = 1;
+                    setTimeout(() => {
+                        zzz.style.opacity = 0;
+                        setTimeout(() => {
+                            zzz.style.display = "none";
+                            flags.canTriggerZZZ = true;
+                        }, 250);
+                    }, 1000);
+                }, 0);
+            }
+        });
+    });
 
     // ---------------------
     // DISPLAY WORKERS
