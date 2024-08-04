@@ -1,4 +1,4 @@
-import { timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, counters, flags, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, homeBackground, times, perHourData, catIds } from '../modules/index-objects.js';
+import { timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, counters, flags, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, lightHtmlBackground, darkHtmlBackground, times, perHourData, catIds } from '../modules/index-objects.js';
 import { start_stop_btn, end_session_btn, total_time_display, productivity_chill_mode, progressBar, progressContainer, display, interruptionsSubContainer, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, flowAnimation, chillAnimation, hyperChillLogoImage, streaksCount, breakBackground, deepWorkBackground, commentsTextArea, sessionSummaryOkBtn, subjectiveFeedbackDropdown, sessionSummaryPopup, summaryStats, HC_icon_session_summary, commentsContainer, sessionSummarySignupPromptPopup, popupOverlay, HC_icon_signup_prompt, signupPromptPopupBtn } from '../modules/dom-elements.js';
 import { soundMap } from '../modules/sound-map.js';
 import { sessionState } from '../modules/state-objects.js';
@@ -272,7 +272,7 @@ export function sessionReset(logSessionActivity) {
 
     // reset background to default
     resetBackgrounds(deepWorkBackground, breakBackground);
-    resetHtmlBackground(homeBackground);
+    resetHtmlBackground(lightHtmlBackground, darkHtmlBackground);
     document.documentElement.style.backgroundSize = '400% 400%';
 
     // reset alerts
@@ -450,8 +450,12 @@ function sumTotalLabelTime(labelArrs, labelDict) {
     return labelTimeSum;
 }
 
-function resetHtmlBackground(homeBackground) {
-    document.documentElement.style.backgroundImage = homeBackground;
+function resetHtmlBackground(lightHtmlBackground, darkHtmlBackground) {
+    if (flags.darkThemeActivated) {
+        document.documentElement.style.backgroundImage = darkHtmlBackground;
+    } else {
+        document.documentElement.style.backgroundImage = lightHtmlBackground;
+    }
 }
 
 function getKeyByValue(obj, targetValue) {

@@ -196,6 +196,7 @@ export const questionIcon = document.getElementById("questionIconContainer");
 export const popupQuestionMenu = document.getElementById("popupQuestionMenu");
 
 export const settingsGUIContainer = document.getElementById("settingsGUIContainer");
+export const darkLightThemeGUIContainer = document.getElementById("darkLightThemeGUIContainer");
 
 export const streaksContainer = document.getElementById("streaksContainer");
 export const streaksLoginSuggestionPopup = document.getElementById("streaksLoginSuggestionPopup");
@@ -259,6 +260,9 @@ export const muffinToggle = document.getElementById('muffinToggle');
 
 export const cats = document.querySelectorAll('.cat');
 export const zzz = document.getElementById("zzz");
+
+export const darkContainer = document.getElementById("darkContainer");
+export const lightContainer = document.getElementById("lightContainer");
 
 export let hoverTimer;
 export var backgroundVideoSource = document.getElementById('background-video-source');

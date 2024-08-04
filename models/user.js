@@ -27,7 +27,7 @@ const User = db.model("User", {
   lastActivity: { type: Date },
   sessionRunning: { type: Boolean },
   invaliDate: { type: Date },
-  sessionStartTimeArr: [sessionStartTimeSchema], // array elements expire after 24 hours
+  sessionStartTimeArr: [sessionStartTimeSchema],
   settings: { // could potentially be independent schema w/ own collection
     pomodoro: {
       notificationToggle: { type: Boolean, default: false },

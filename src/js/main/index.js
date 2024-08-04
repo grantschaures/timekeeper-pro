@@ -1,4 +1,4 @@
-import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selectedBackgroundIdTemp, selectedBackgroundId, timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, alertVolumes, alertSounds, counters, flags, tempStorage, settingsMappings, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, homeBackground, times, perHourData, catIds } from '../modules/index-objects.js';
+import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selectedBackgroundIdTemp, selectedBackgroundId, timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, alertVolumes, alertSounds, counters, flags, tempStorage, settingsMappings, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, times, perHourData, catIds, lightHtmlBackground, darkHtmlBackground } from '../modules/index-objects.js';
 
 import { chimePath, bellPath, clock_tick, soundMap } from '../modules/sound-map.js';
 
@@ -27,6 +27,8 @@ import {
     toggleMuffin,
     cats,
     zzz,
+    darkContainer,
+    lightContainer,
 } from '../modules/dom-elements.js';
 
 import { sessionState } from '../modules/state-objects.js';
@@ -856,35 +858,19 @@ document.addEventListener("stateUpdated", function() {
     })
 
     defaultThemeContainer.addEventListener("click", async function() {
-        darkGrayTheme.classList.remove('selected-background');
-        defaultTheme.classList.add('selected-background');
-        flags.darkThemeActivated = false;
-
-        deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, isMobile, streaksContainer);
-
-        if (sessionState.loggedIn) {
-            await updateUserSettings({
-                backgroundsThemes: {
-                    darkThemeActivated: flags.darkThemeActivated // false
-                }
-            });
-        }
+        triggerLightMode(isMobile);
     })
 
     darkThemeContainer.addEventListener("click", async function() {
-        defaultTheme.classList.remove('selected-background');
-        darkGrayTheme.classList.add('selected-background');
-        flags.darkThemeActivated = true;
+        triggerDarkMode(isMobile);
+    })
 
-        activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, streaksContainer);
+    darkContainer.addEventListener("click", async function() {
+        triggerDarkMode(isMobile);
+    })
 
-        if (sessionState.loggedIn) {
-            await updateUserSettings({
-                backgroundsThemes: {
-                    darkThemeActivated: flags.darkThemeActivated // true
-                }
-            });
-        }
+    lightContainer.addEventListener("click", async function() {
+        triggerLightMode(isMobile);
     })
 
     window.addEventListener("resize", function() {
@@ -1184,13 +1170,49 @@ document.addEventListener("stateUpdated", function() {
     totalDisplayWorker.onmessage = function(message) {
         totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod);
     }
-
-    // document.dispatchEvent(new Event('updateState'));
 });
 
 // ------------------
 // HELPER FUNCTIONS
 // ------------------
+async function triggerLightMode(isMobile) {
+    // adjust settings container selection & flag
+    darkGrayTheme.classList.remove('selected-background');
+    defaultTheme.classList.add('selected-background');
+    flags.darkThemeActivated = false;
+
+    deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, isMobile, streaksContainer, lightHtmlBackground);
+    lightContainer.style.display = "none";
+    darkContainer.style.display = "flex";
+
+    if (sessionState.loggedIn) {
+        await updateUserSettings({
+            backgroundsThemes: {
+                darkThemeActivated: flags.darkThemeActivated // false
+            }
+        });
+    }
+}
+
+async function triggerDarkMode(isMobile) {
+    // adjust settings container selection & flag
+    darkGrayTheme.classList.add('selected-background');
+    defaultTheme.classList.remove('selected-background');
+    flags.darkThemeActivated = true;
+
+    activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, streaksContainer, darkHtmlBackground);
+    darkContainer.style.display = "none";
+    lightContainer.style.display = "flex";
+
+    if (sessionState.loggedIn) {
+        await updateUserSettings({
+            backgroundsThemes: {
+                darkThemeActivated: flags.darkThemeActivated // true
+            }
+        });
+    }
+}
+
 export function hideCat(catIds, counters) {
     if (flags.muffinToggle) {
         hideMuffin(catIds, counters);
@@ -2409,7 +2431,7 @@ export function setBackground(background_color, opacity) {
 }
 
 
-export function deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, isMobile, streaksContainer) {
+export function deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, isMobile, streaksContainer, lightHtmlBackground) {
     let componentArr1 = [interruptionsContainer, targetHoursContainer, timekeepingContainer, notesContainer, aboutContainer, blogContainer, streaksContainer];
 
     let darkBackgroundTranslucent = "rgba(0, 0, 0, 0.9)"; // changed from 0.8 alpha value
@@ -2442,13 +2464,15 @@ export function deactivateDarkTheme(interruptionsContainer, targetHoursContainer
     emojiContainer.style.backgroundColor = emojiContainerBlackBackground;
     emojiContainer.style.border = "5px solid #FFFFFF";
 
+    document.documentElement.style.backgroundImage = lightHtmlBackground; // set html background
+
     if ((selectedBackgroundId.flowtime === "black-flowtime") && (selectedBackgroundId.chilltime === "black-chilltime")) {
         document.getElementById(selectedBackgroundIdTemp.flowtime).click();
         document.getElementById(selectedBackgroundIdTemp.chilltime).click();
     }
 };
 
-export async function activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, streaksContainer) {
+export async function activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, streaksContainer, darkHtmlBackground) {
     let componentArr1 = [interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, notesContainer, aboutContainer, blogContainer, streaksContainer];
     let componentArr2 = [popupMenu, settingsContainer, emojiContainer];
 
@@ -2466,6 +2490,8 @@ export async function activateDarkTheme(interruptionsContainer, targetHoursConta
     })
 
     emojiContainer.style.border = "5px solid white";
+
+    document.documentElement.style.backgroundImage = darkHtmlBackground; // set html background
 
     if (!sessionState.updatingState) {
         selectedBackgroundIdTemp["flowtime"] = selectedBackgroundId.flowtime;
