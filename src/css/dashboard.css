@@ -211,7 +211,9 @@
     border-radius: 25px;
     z-index: 10;
     margin-right: 10px;
-    padding: 10px;
+    padding-top: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
     flex-direction: column;
 
     /* border: 3px solid rgb(255, 255, 255); */
@@ -263,9 +265,18 @@
     height: auto;
 }
 
+.dailyArrow:hover {
+    cursor:  pointer;
+}
+
 #weeklySummaries {
     width: 100%;
     height: 50px;
 
+    /* border: 2px solid blue; */
+}
+
+.dailyContainer {
+    box-sizing: border-box;
     /* border: 2px solid blue; */
 }
