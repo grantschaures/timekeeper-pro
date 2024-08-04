@@ -1,4 +1,4 @@
-import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn, spaceContainer, shortcutsContainer, shortcutsPopup, shortcutsExit, reportContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, flowAnimation, chillAnimation, target_hours_input, streaksContainer, threeWayToggle, labelToDeleteContainer, confirmLabelDeletionPopup, labelSelectionRow, confirmLabelDeletionNoBtn, sessionSummaryOkBtn, sessionSummarySignupPromptPopup, HC_icon_signup_prompt, settingsGUIContainer } from '../modules/dom-elements.js';
+import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn, spaceContainer, shortcutsContainer, shortcutsPopup, shortcutsExit, dashboardContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, flowAnimation, chillAnimation, target_hours_input, streaksContainer, threeWayToggle, labelToDeleteContainer, confirmLabelDeletionPopup, labelSelectionRow, confirmLabelDeletionNoBtn, sessionSummaryOkBtn, sessionSummarySignupPromptPopup, HC_icon_signup_prompt, settingsGUIContainer } from '../modules/dom-elements.js';
 import { blogIdList, flags, counters, state } from '../modules/navigation-objects.js';
 import { sessionState } from '../modules/state-objects.js';
 import { flags as indexFlags} from '../modules/index-objects.js';
@@ -25,6 +25,7 @@ document.addEventListener("stateUpdated", function() {
 
     setTimeout(() => {
         menuBtn.style.opacity = '1';
+        flags.canToggleSwitch = true;
 
         if (!(isMobile)) {
             questionIcon.style.opacity = '1';
@@ -77,7 +78,7 @@ document.addEventListener("stateUpdated", function() {
         subMainContainerTransition("none");
         fadeInAnimations(); // needs to execute second
 
-        resetMode(reportContainer);
+        resetMode(dashboardContainer);
         resetMode(spaceContainer);
     });
 
@@ -104,7 +105,7 @@ document.addEventListener("stateUpdated", function() {
         subMainContainerTransition("none");
         fadeInAnimations(); // needs to execute second
 
-        resetMode(reportContainer);
+        resetMode(dashboardContainer);
         resetMode(spaceContainer);
     });
 
@@ -364,7 +365,7 @@ function addPseudoElementStyle(transformValue) {
 function handleLeftRightArrowKeys(event) {
 
     // add any additional inputs here
-    let flagArr = [notesFlags.noteTaskInputContainerShowing, notesFlags.noteTaskInputContainerEditShowing, notesFlags.createLabelWindowOpen, notesFlags.updateLabelWindowOpen, flags.settingsContainerShowing, flags.sessionSummaryPopupShowing, flags.sessionSummarySignupPromptPopupShowing, (document.activeElement.id === 'target-hours')]
+    let flagArr = [notesFlags.noteTaskInputContainerShowing, notesFlags.noteTaskInputContainerEditShowing, notesFlags.createLabelWindowOpen, notesFlags.updateLabelWindowOpen, flags.settingsContainerShowing, flags.sessionSummaryPopupShowing, flags.sessionSummarySignupPromptPopupShowing, !flags.canToggleSwitch, (document.activeElement.id === 'target-hours')]
 
     if (flags.allowToggleSwitch && flagArr.every(flag => !flag)) {
         if (event.key === 'ArrowLeft') {
@@ -372,7 +373,7 @@ function handleLeftRightArrowKeys(event) {
                 slimeSwitch();
                 fadeInStreaks(streaksContainer, isMobile);
                 setDinkleDoinkSetting("home"); // needs to execute first
-                resetMode(reportContainer);
+                resetMode(dashboardContainer);
                 resetMode(spaceContainer);
                 subMainContainerTransition("flex");
                 fadeInAnimations(); // needs to execute second
@@ -380,7 +381,7 @@ function handleLeftRightArrowKeys(event) {
             } else if (state.lastSelectedMode === 'home') { // --> REPORT
                 slimeSwitch();
                 fadeOutStreaks(streaksContainer);
-                initializeNewMode(reportContainer);
+                initializeNewMode(dashboardContainer);
                 isClickNotOnAboutElements(event, about_menu_container, aboutContainer, menuBtn, about_exit, reportIcon, reportPath);
                 isClickNotOnBlogElements(event, blogMenuContainer, blog_post_container, menuBtn, blog_exit);
                 subMainContainerTransition("none");
@@ -397,7 +398,7 @@ function handleLeftRightArrowKeys(event) {
                 slimeSwitch();
                 fadeInStreaks(streaksContainer, isMobile);
                 setDinkleDoinkSetting("home"); // needs to execute first
-                resetMode(reportContainer);
+                resetMode(dashboardContainer);
                 resetMode(spaceContainer);
                 subMainContainerTransition("flex");
                 fadeInAnimations(); // needs to execute second
@@ -485,7 +486,7 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
             }
 
             fadeOutStreaks(streaksContainer);
-            initializeNewMode(reportContainer);
+            initializeNewMode(dashboardContainer);
             resetMode(spaceContainer);
             subMainContainerTransition("none");
             fadeOutAnimations(); // needs to execute first
@@ -498,7 +499,7 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
 
             fadeInStreaks(streaksContainer, isMobile);
             setDinkleDoinkSetting("home"); // needs to execute first
-            resetMode(reportContainer);
+            resetMode(dashboardContainer);
             resetMode(spaceContainer);
             subMainContainerTransition("flex");
             fadeInAnimations(); // needs to execute second
@@ -510,7 +511,7 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
 
             fadeOutStreaks(streaksContainer);
             initializeNewMode(spaceContainer);
-            resetMode(reportContainer);
+            resetMode(dashboardContainer);
             subMainContainerTransition("none");
             fadeOutAnimations(); // needs to execute first
             setDinkleDoinkSetting("space"); // needs to execute second
@@ -521,7 +522,7 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
             if (((exitTargets.includes(event.target)) || (state.lastSelectedMode === 'home')) && (!flags.sessionSummaryPopupShowing) && (!flags.sessionSummarySignupPromptPopupShowing)) {
                 setDinkleDoinkSetting("home");
                 subMainContainerTransition("flex");
-                resetMode(reportContainer);
+                resetMode(dashboardContainer);
                 resetMode(spaceContainer);
             }
         }, 0)

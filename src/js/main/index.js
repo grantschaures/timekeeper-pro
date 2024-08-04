@@ -1316,10 +1316,10 @@ function checkStartOfHour(currentTime, startOfHour) {
     return difference <= 1000;
 }
 
+// First practical use for recursion in the program !!
 export function updateDataPerHour(intervalArrs, finalDate, initialDate, perHourData) {
 
     // Base Case
-    console.log(finalDate <= new Date(startTimes.beginning));
     if ((finalDate <= new Date(startTimes.beginning)) || (perHourData[initialDate.toISOString()])) {
         return;
     }

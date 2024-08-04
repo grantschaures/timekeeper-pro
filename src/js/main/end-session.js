@@ -487,7 +487,7 @@ function finalPerHourDataUpdate(intervalArrs, perHourData) {
     updateDataPerHour(intervalArrs, currentHour, startOfHour, perHourData);
 }
 
-function focusQualityCalculation(timeConvert, totalTime, totalDistractions, constant) {
+export function focusQualityCalculation(timeConvert, totalTime, totalDistractions, constant) {
     let totalMin = totalTime / timeConvert.msPerMin;
     let focusQualityFraction = 1 - ((totalDistractions / totalMin) / (constant));
     if (focusQualityFraction < 0) {

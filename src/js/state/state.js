@@ -12,6 +12,8 @@ import { setInitialBackgroundCellSelection, deactivateDarkTheme, activateDarkThe
 
 import { appendEditRemoveContainer, createCheckElements, getLastNumberFromId, addLabelInputContainerTagDivider, addLabelInitialActions, removeTagSelectionDivider, adjustLabelFontSize } from '../main/notes.js';
 
+import { populateDashboard } from './populate-dashboard.js';
+
 var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
 const myFontBlog = {
@@ -103,6 +105,9 @@ async function updateGUIForLoggedInUser(userData, noteData, sessionData) {
     
     // notes (--> logged in version)
     updateUserNotes(noteData);
+
+    // dashboard (--> logged in version)
+    populateDashboard(sessionData, noteData);
 }
 
 function updateShowingTimeLeft(userData) {

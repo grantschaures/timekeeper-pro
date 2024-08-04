@@ -138,7 +138,7 @@ document.addEventListener("triggerSessionSummaryChartAnimation", function() {
 
 // HELPER FUNCTIONS
 
-function getFocusQuality(focusQuality) {
+export function getFocusQuality(focusQuality) {
     let newFocusQuality = Math.floor(focusQuality * 100);
 
     return newFocusQuality;

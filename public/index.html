@@ -13,7 +13,7 @@
         <link rel='stylesheet' href='/css/icons.css'>
         <link rel='stylesheet' href='/css/blog.css'>
         <link rel='stylesheet' href='/css/menu.css'>
-        <link rel='stylesheet' href='/css/report.css'>
+        <link rel='stylesheet' href='/css/dashboard.css'>
         <link rel='stylesheet' href='/css/space.css'>
         <link rel='stylesheet' href='/css/background-animations.css'>
 
@@ -348,7 +348,7 @@
                             <img id="cat6" src="images/sprites/white-kitten6.png" class="cat no-select">
                             <img id="cat7" src="images/sprites/white-kitten7.png" class="cat no-select">
                             <img id="cat8" src="images/sprites/white-kitten8.png" class="cat no-select">
-                            <img id="zzz" src="images/icons/zzz.png" class="no-select">
+                            <img id="zzz" src="images/icons/zzz_bigger.png" class="no-select">
                         </div>
                         <div id="targetHoursContainer">
                             <div id="targetHoursSubContainer">
@@ -557,9 +557,59 @@
                 </div>
             </main>
 
-            <div id="reportContainer" data-testid="reportContainer">
-                <div id="reportSubContainer">
+            <div id="dashboardContainer" data-testid="dashboardContainer">
+                <!-- <div id="dashboardSubContainer">
                     DASHBOARD FEATURE COMING SOON
+                </div> -->
+                <div id="dashboardSubContainer">
+                    <div id="dashboardSummaryStatsContainer">
+                        <div id="totalDeepWorkSummaryStatContainer" class="summaryStatContainer">
+                            <div class="summaryStatHeader">Total Deep Work</div>
+                            <div id="totalDeepWorkSummaryStat" class="summaryStat"></div>
+                        </div>
+                        <div id="avgDeepWorkPerDayStatContainer" class="summaryStatContainer">
+                            <div class="summaryStatHeader">Avg. Deep Work Per Day</div>
+                            <div id="avgDeepWorkSummaryStat" class="summaryStat"></div>
+                        </div>
+                        <div id="avgFocusQualityPerDayStatContainer" class="summaryStatContainer">
+                            <div class="summaryStatHeader">Avg. Focus Quality Per Day</div>
+                            <div id="avgFocusQualitySummaryStat" class="summaryStat"></div>
+                        </div>
+                        <div id="avgDistractionsPerHourStatContainer" class="summaryStatContainer">
+                            <div class="summaryStatHeader">Avg. Distractions Per Hour</div>
+                            <div id="avgDistractionsSummaryStat" class="summaryStat"></div>
+                        </div>
+                        <div id="mostFocusedHourStatContainer" class="summaryStatContainer">
+                            <div class="summaryStatHeader">Most Focused Hour</div>
+                            <div id="mostFocusedHourSummaryStat" class="summaryStat"></div>
+                        </div>
+                    </div>
+                    <div id="mainDashboardContainers">
+                        <div id="dailyContainer">
+                            <div id="dailyHeaderContainer">
+                                <div id="dateAndSwitchContainer">
+                                    <div id="dailyDateContainer">
+                                        <div id="dailyDay" class="dailyText"></div>
+                                        <div id="dailyDate" class="dailyText"></div>
+                                    </div>
+                                    <div id="switchContainer">
+                                        <img id="leftDailyArrow" src="images/icons/left_arrow.png" class="dailyArrow">
+                                        <img id="rightDailyArrow" src="images/icons/right_arrow.png" class="dailyArrow">
+                                    </div>
+                                </div>
+                                <div id="weeklySummaries">
+                                    weekly summaries go here
+                                </div>
+                            </div>
+                            <div id="dailyBodyContainer">
+                                <!-- Will hold daily sessions -->
+                            </div>
+                        </div>
+                        <div id="distributionsContainer">
+                            <div id="metricDistributionContainer"></div>
+                            <div id="labelDistributionContainer"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
 

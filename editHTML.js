@@ -80,6 +80,10 @@ const stateReplacements = [
     {
         pattern: /import { updateStreak } from '..\/utility\/update_streaks.js';/g,
         replacement: "import { updateStreak } from '../minified/update_streaks.min.js';"
+    },
+    {
+        pattern: /import { populateDashboard } from '..\/state\/populate-dashboard.js';/g,
+        replacement: "import { populateDashboard } from '../minified/populate-dashboard.min.js';"
     }
 ];
 
