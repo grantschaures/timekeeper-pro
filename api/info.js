@@ -12,7 +12,7 @@ async function getIpInfo(ip) {
         const response = await fetch(`https://ipinfo.io/${ip}/json?token=${IP_INFO_TOKEN}`);
         const data = await response.json();
 
-        console.log(ip);
+        console.log(data);
 
         const locationInfo = {
             ip: data.ip,
@@ -37,6 +37,9 @@ async function getIpInfo(ip) {
 
 router.get('/location', async (req, res) => {
     const ip = req.ip; // Use the request IP address
+    console.log("")
+    console.log(ip)
+    console.log("")
     try {
         const locationInfo = await getIpInfo(ip);
         res.json(locationInfo);
