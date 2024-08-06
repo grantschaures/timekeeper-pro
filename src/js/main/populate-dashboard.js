@@ -3,15 +3,18 @@ import { dashboardData } from '../modules/dashboard-objects.js';
 import { timeConvert } from '../modules/index-objects.js';
 
 export async function populateDashboard(sessionData, noteData) {
-    console.log("Sessions")
-    console.log(sessionData);
-    console.log("")
 
     // create sorted array of data for each day
     const dailySummarizedData = await initializeDailyData(sessionData);
 
     // setDashboardData
     setDashboardData(sessionData, dailySummarizedData); // ensure this has executed before constructing chart.js charts
+
+    populateDashboardSummaryStats(sessionData, dailySummarizedData);
+
+    console.log(sessionData);
+    console.log(dailySummarizedData);
+    console.log(dashboardData.hourlyArr);
 
     // set initial date of dailyDateContainer
     setInitialDate();
@@ -49,10 +52,8 @@ function setInitialDate() {
 
 async function initializeDailyData(sessionData) {
     const adjustedDataArray = adjustPerHourDataKeys(sessionData);
-    console.log(adjustedDataArray)
 
     const dailySummarizedData = summarizeDailyData(adjustedDataArray, sessionData);
-    console.log(dailySummarizedData)
 
     return dailySummarizedData;
 }
@@ -116,8 +117,6 @@ function adjustPerHourDataKeys(sessions) {
             }
         });
     });
-
-    console.log(dashboardData);
 
     return adjustedPerHourDataArray;
 }
@@ -235,7 +234,7 @@ function populateDashboardSummaryStats(sessionData, dailySummarizedData) {
         populateFocusQualitySummaryStat(dailyFocusQualityArr, dailySummarizedData);
 
         // avg. interval length
-        populateAvgIntervalLengthSummaryStat();
+        // populateAvgIntervalLengthSummaryStat();
         
 
         // most focused hour

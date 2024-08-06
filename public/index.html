@@ -64,9 +64,9 @@
         <div id="popupOverlay" data-testid="popupOverlay" class="overlay"> <!-- z-index: 1000 -->
             <div id="deleteAccountPopup">
                 <div id="deleteAccountPopupHeader">
-                    <h2 style="color: gray">💀 Delete Account 💀</h2>
+                    <h2>💀 Delete Account 💀</h2>
                 </div>
-                <hr>
+                <hr id="deleteAccountHr" class="popupHr">
                 <p id="deleteAccountPopupText">This action will delete all of your saved data and cannot be undone. Are you sure you want to delete your account?</p>
                 <div id="deleteAccountPopupBtnContainer">
                     <button id="deleteAccountPopupYesBtn">Yes</button>
@@ -78,7 +78,7 @@
                     <h2 id="welcomeText" style="color: white"></h2>
                     <div id="questionPopupUserEmail"></div>
                 </div>
-                <hr>
+                <hr id="accountPopupHr" class="popupHr">
                 <div id="accountPopupButtonsContainer">
                     <button id="goBackBtn" >Go Back</button>
                     <button id="logoutBtn2" >Log Out</button>
@@ -89,7 +89,7 @@
                     <h2 id="shortcutsHeaderText">Keyboard Shortcuts</h2>
                     <img class="exitIcon" id="shortcutsExit" data-testid="shortcutsExit" src="images/icons/exit-button-261420-white.png" draggable="false" alt="Exit">
                 </div>
-                <hr id="shortcutsHr">
+                <hr id="shortcutsHr" class="popupHr">
                 <div id="shortcutsPopupContainer">
                     <div id="generalShortcutsContainer" class="shortcutsContainer">
                         <div id="enterShortcut" class="shortcut">
@@ -120,6 +120,10 @@
                             <div class="shortcutDescription">Create Task</div>
                             <div class="shortcutKey">n, t</div>
                         </div>
+                        <div id="openLabelsShortcut" class="shortcut">
+                            <div class="shortcutDescription">Open Label Container</div>
+                            <div class="shortcutKey">n, l</div>
+                        </div>
                         <div id="escapeShortcut" class="shortcut">
                             <div class="shortcutDescription">Exit Current Container (Notes)</div>
                             <div class="shortcutKey">Escape (esc)</div>
@@ -130,7 +134,7 @@
             <div id="confirmLabelDeletionPopup">
                 <div id="confirmLabelDeletionPromptContainer">
                     <div id="labelToDeleteContainer"></div> <!-- dynamically load in label -->
-                    <hr>
+                    <hr class="popupHr">
                     <p id="confirmLabelDeletionText">
                         Are you sure you want to delete the following label?
                     </p>

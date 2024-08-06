@@ -216,7 +216,7 @@ document.addEventListener("stateUpdated", function() {
         if (notesFlags.notesShowing === false) {
             openNotesContainer(notesContainer, notesFlags);
         } else {
-            closeNotesContainer(notesContainer, notesFlags, flags, noteInputCancelBtn, isMobile);
+            closeNotesContainer(notesContainer, notesFlags, isMobile);
         }
     })
     
@@ -1352,6 +1352,26 @@ function buildNoteTaskInputContainerEdit(noteTaskDivContent) {
 
     // Finally, append the main container to the body or another element in your document
     return noteTaskInputContainer;
+
+    /** END PRODUCT
+     * <div id="note-task-input-container-edit">
+            <div id="upper-half-note-task-input-edit">
+                <textarea id="note-task-input-text-edit" data-testid="note-task-input-text-edit" placeholder="Description">
+                    <!-- Content from noteTaskDivContent will be here -->
+                </textarea>
+            </div>
+            <div id="lower-half-note-task-input-edit">
+                <div id="save-cancel-container-edit">
+                    <div id="note-input-save-container-edit" class="save-cancel-task-container">
+                        <div id="note-input-save-btn-edit">Save</div>
+                    </div>
+                    <div id="note-input-cancel-container-edit" class="save-cancel-task-container">
+                        <div id="note-input-cancel-btn-edit">Cancel</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     */
 }
 
 /** 
@@ -1478,13 +1498,7 @@ export function getLastNumberFromId(targetId) {
     }
 }
 
-function closeNotesContainer(notesContainer, notesFlags, flags, noteInputCancelBtn, isMobile) {
-
-    if (flags.noteTaskInputContainerShowing) {
-        noteInputCancelBtn.click();
-        flags.noteTaskInputContainerShowing = false;
-    }
-
+function closeNotesContainer(notesContainer, notesFlags, isMobile) {
     notesContainer.classList.remove('fullsize');
     notesContainer.classList.remove('fullopacity');
 
@@ -1500,6 +1514,8 @@ function openNotesContainer(notesContainer, notesFlags) {
     notesContainer.classList.add('fullopacity');
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     notesFlags.notesShowing = true;
+
+    // re-establishing focus on input element if it was last open is an optional feature you can add later if you have time
 }
 
 function noteInputCancel(noteTaskInputContainer, addNoteTaskContainer, flags, noteTaskInputText) {
@@ -1664,11 +1680,24 @@ function handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInpu
             addNoteTaskContainer.click();
             taskCheckbox.checked = true;
             event.preventDefault();
+        } else if ((event.key === 'l') && (notesFlags.notesShowing) && (notesFlags.notesConsoleShowing) && (!flags.noteTaskInputContainerShowing) && (!flags.noteTaskInputContainerEditShowing) && (!navFlags.sessionSummaryPopupShowing)) {
+            taskPrompt.click();
+            event.preventDefault();
         } else if ((event.key === 'Escape') && (notesFlags.notesShowing) && (!navFlags.sessionSummaryPopupShowing)) {
-            if (document.activeElement === noteTaskInputText) {
+            if (flags.noteTaskInputContainerShowing) {
                 noteInputCancelBtn.click();
+            } else if (flags.noteTaskInputContainerEditShowing) {
+                document.getElementById('note-input-cancel-btn-edit').click();
+            } else if (flags.createLabelWindowOpen) {
+                createLabelCancel.click();
+            } else if (flags.updateLabelWindowOpen) {
+                updateLabelCancel.click();
+            } else if (flags.confirmLabelDeletionWindowShowing) {
+                confirmLabelDeletionNoBtn.click();
+            } else if (!notesFlags.notesConsoleShowing) { // aka if label container is open
+                selectionDone.click();
             } else {
-                closeNotesContainer(notesContainer, notesFlags, flags, noteInputCancelBtn, isMobile);
+                closeNotesContainer(notesContainer, notesFlags, isMobile);
             }
         }
     }

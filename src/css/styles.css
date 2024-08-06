@@ -501,7 +501,7 @@ button:hover {
     justify-content: center;
 
     font-size: 32px;
-    font-family: settingsHeaderFont;
+    font-family: settingsHeaderFontBold;
     color: white;
     z-index: 20;
     width: 38px;
@@ -510,10 +510,6 @@ button:hover {
     border-radius: 15px;
 
     margin-right: 2px;
-}
-
-#questionIconContainer {
-    border-radius: 25px;
 }
 
 .UIContainer:hover {
@@ -1457,6 +1453,8 @@ header {
 
 #shortcutsHeaderText {
     position: relative;
+    font-family: settingsHeaderFont;
+    letter-spacing: 2px;
     margin: 0;
 }
 
@@ -1498,8 +1496,8 @@ header {
     color: white;
 }
 
-#shortcutsHr {
-    border: 1px solid white;
+.popupHr {
+    border: 1px solid rgb(255, 255, 255, 0.25);
 }
 
 #accountIcon2 {
