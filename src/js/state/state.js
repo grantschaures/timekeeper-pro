@@ -12,7 +12,7 @@ import { setInitialBackgroundCellSelection, deactivateDarkTheme, activateDarkThe
 
 import { appendEditRemoveContainer, createCheckElements, getLastNumberFromId, addLabelInputContainerTagDivider, addLabelInitialActions, removeTagSelectionDivider, adjustLabelFontSize } from '../main/notes.js';
 
-import { populateDashboard } from './populate-dashboard.js';
+import { populateDashboard } from '../main/populate-dashboard.js';
 
 var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
@@ -146,9 +146,9 @@ function updateQuestionMenuContainer(userData) {
     document.getElementById('questionPopupUserEmail').innerText = userData.email;
 
     if (userData.logins <= 1) {
-        document.getElementById('welcomeText').innerText = "Welcome! 😄";
+        document.getElementById('welcomeText').innerText = "Welcome!";
     } else {
-        document.getElementById('welcomeText').innerText = "Welcome Back! 😄";
+        document.getElementById('welcomeText').innerText = "Welcome Back!";
     }
 }
 

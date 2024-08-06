@@ -10,6 +10,7 @@ let files = [
     'src/js/main/navigation.js',
     'src/js/main/notes.js',
     'src/js/main/end-session.js',
+    'src/js/main/populate-dashboard.js',
     'src/js/api/google-signin.js',
     'src/js/state/state.js',
     'src/js/state/update-labels.js',

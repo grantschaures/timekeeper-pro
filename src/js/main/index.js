@@ -2000,7 +2000,7 @@ function handleViewportWidthChange(settingsMappings, tempStorage, end_session_bt
 }
 
 function setEndSessionBtnText(initialViewportWidth, end_session_btn) {
-    if (initialViewportWidth <= 522) {
+    if (initialViewportWidth <= 536) {
         end_session_btn.innerText = "End";
     } else {
         end_session_btn.innerText = "End Session";
@@ -2456,6 +2456,8 @@ export function deactivateDarkTheme(interruptionsContainer, targetHoursContainer
     }
     popupMenu.style.border = null;
 
+    notesContainer.style.marginTop = "0px";
+
     progressBarContainer.style.backgroundColor = progressBarBackground;
     progressBarContainer.style.border = progressBarBorder;
 
@@ -2490,6 +2492,8 @@ export async function activateDarkTheme(interruptionsContainer, targetHoursConta
     })
 
     emojiContainer.style.border = "5px solid white";
+
+    notesContainer.style.marginTop = "-3px"; // fixed issue w/ notes container location being affected by dark mode
 
     document.documentElement.style.backgroundImage = darkHtmlBackground; // set html background
 

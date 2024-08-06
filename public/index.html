@@ -292,11 +292,11 @@
                 </div>
                 <div class="bottom">
                     <div class="bottomLeft">
-                        <div id="settingsGUIContainer" data-testid="settingsGUIContainer" alt="Settings Button" class="no-select">  <!-- z-index: 20 -->
+                        <div id="settingsGUIContainer" data-testid="settingsGUIContainer" alt="Settings Button" class="no-select UIContainer">  <!-- z-index: 20 -->
                             <img src="images/icons/settingsIcon1.png" id="settingsGUIconWhite">
                             <img src="images/icons/settingsIcon2.png" id="settingsGUIconBlack">
                         </div>
-                        <div id="darkLightThemeGUIContainer" data-testid="darkLightThemeGUIContainer" alt="Dark & Light Theme Button" class="no-select">  <!-- z-index: 20 -->
+                        <div id="darkLightThemeGUIContainer" data-testid="darkLightThemeGUIContainer" alt="Dark & Light Theme Button" class="no-select UIContainer">  <!-- z-index: 20 -->
                             <div id="darkContainer">
                                 <img src="images/icons/darkModeWhiteThick.png" id="darkModeGUIconWhite">
                                 <img src="images/icons/darkModeBlackThick.png" id="darkModeGUIconBlack">
@@ -316,7 +316,7 @@
                                 0
                             </div>
                         </div>
-                        <div id="questionIconContainer" data-testid="questionIcon" alt="Question Button" class="no-select">  <!-- z-index: 20 -->
+                        <div id="questionIconContainer" data-testid="questionIcon" alt="Question Button" class="no-select UIContainer">  <!-- z-index: 20 -->
                             ?
                         </div>
                     </div>
@@ -572,52 +572,50 @@
                     DASHBOARD FEATURE COMING SOON
                 </div> -->
                 <div id="dashboardSubContainer">
-                    <div id="dashboardSummaryStatsContainer">
-                        <div id="totalDeepWorkSummaryStatContainer" class="summaryStatContainer">
+                    <div id="dailyContainer" class="dashboardSideContainer">
+                        <div id="dailyHeaderContainer" class="dailyContainer">
+                            <div id="dateAndSwitchContainer">
+                                <div id="dailyDateContainer">
+                                    <div id="dailyDay" class="dailyText"></div>
+                                    <div id="dailyDate" class="dailyText"></div>
+                                </div>
+                                <div id="switchContainer">
+                                    <img id="leftDailyArrow" src="images/icons/left_arrow.png" class="dailyArrow">
+                                    <img id="rightDailyArrow" src="images/icons/right_arrow.png" class="dailyArrow">
+                                </div>
+                            </div>
+                            <div id="weeklySummaries" class="dailyContainer">
+                                
+                            </div>
+                        </div>
+                        <div id="dailyBodyContainer">
+                            <!-- Will hold daily sessions -->
+                        </div>
+                    </div>
+                    <div id="distributionsContainer">
+                        <div id="metricDistributionContainer"></div>
+                        <div id="labelDistributionContainer"></div>
+                    </div>
+                    <div id="dashboardSummaryStatsContainer"  class="dashboardSideContainer">
+                        <div id="totalDeepWorkSummaryStatContainer" class="summaryStatContainer margin-bottom">
                             <div class="summaryStatHeader">Total Deep Work</div>
-                            <div id="totalDeepWorkSummaryStat" class="summaryStat"></div>
+                            <div id="totalDeepWorkSummaryStat" class="summaryStat">5h 31m</div>
                         </div>
-                        <div id="avgDeepWorkPerDayStatContainer" class="summaryStatContainer">
-                            <div class="summaryStatHeader">Avg. Deep Work Per Day</div>
-                            <div id="avgDeepWorkSummaryStat" class="summaryStat"></div>
+                        <div id="avgDeepWorkPerDayStatContainer" class="summaryStatContainer margin-bottom">
+                            <div class="summaryStatHeader">Avg Deep Work Per Day</div>
+                            <div id="avgDeepWorkSummaryStat" class="summaryStat">2h 14m</div>
                         </div>
-                        <div id="avgFocusQualityPerDayStatContainer" class="summaryStatContainer">
-                            <div class="summaryStatHeader">Avg. Focus Quality Per Day</div>
-                            <div id="avgFocusQualitySummaryStat" class="summaryStat"></div>
+                        <div id="avgFocusQualityPerDayStatContainer" class="summaryStatContainer margin-bottom">
+                            <div class="summaryStatHeader">Avg Focus Quality</div>
+                            <div id="avgFocusQualitySummaryStat" class="summaryStat">33%</div>
                         </div>
-                        <div id="avgDistractionsPerHourStatContainer" class="summaryStatContainer">
-                            <div class="summaryStatHeader">Avg. Distractions Per Hour</div>
-                            <div id="avgDistractionsSummaryStat" class="summaryStat"></div>
+                        <div id="avgIntervalLengthStatContainer" class="summaryStatContainer margin-bottom">
+                            <div class="summaryStatHeader">Avg Deep Work Interval Length</div>
+                            <div id="avgIntervalLengthSummaryStat" class="summaryStat">34m</div>
                         </div>
                         <div id="mostFocusedHourStatContainer" class="summaryStatContainer">
                             <div class="summaryStatHeader">Most Focused Hour</div>
-                            <div id="mostFocusedHourSummaryStat" class="summaryStat"></div>
-                        </div>
-                    </div>
-                    <div id="mainDashboardContainers">
-                        <div id="dailyContainer">
-                            <div id="dailyHeaderContainer" class="dailyContainer">
-                                <div id="dateAndSwitchContainer">
-                                    <div id="dailyDateContainer">
-                                        <div id="dailyDay" class="dailyText"></div>
-                                        <div id="dailyDate" class="dailyText"></div>
-                                    </div>
-                                    <div id="switchContainer">
-                                        <img id="leftDailyArrow" src="images/icons/left_arrow.png" class="dailyArrow">
-                                        <img id="rightDailyArrow" src="images/icons/right_arrow.png" class="dailyArrow">
-                                    </div>
-                                </div>
-                                <div id="weeklySummaries" class="dailyContainer">
-                                   
-                                </div>
-                            </div>
-                            <div id="dailyBodyContainer">
-                                <!-- Will hold daily sessions -->
-                            </div>
-                        </div>
-                        <div id="distributionsContainer">
-                            <div id="metricDistributionContainer"></div>
-                            <div id="labelDistributionContainer"></div>
+                            <div id="mostFocusedHourSummaryStat" class="summaryStat">11am-12pm</div>
                         </div>
                     </div>
                 </div>

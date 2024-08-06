@@ -36,7 +36,7 @@ document.addEventListener("stateUpdated", function() {
 
             setTimeout(() => {
                 streaksContainer.style.transition = 'opacity 0.25s ease-in-out, background-color 0.25s ease';
-                darkLightThemeGUIContainer.style.transition = 'opacity 0.25s ease-in-out';
+                darkLightThemeGUIContainer.style.transition = 'opacity 0.25s ease-in-out, background-color 0.25s ease';
             }, 1000)
         }
     }, 1000)
@@ -345,7 +345,7 @@ function fadeOutUIContainer(container) {
 }
 
 function slimeSwitch() {
-    addPseudoElementStyle('scaleX(1.5)');
+    addPseudoElementStyle('scaleX(1.2)');
     setTimeout(() => {
         addPseudoElementStyle('scaleX(1)');
     }, 150) // halfway through toggle switch

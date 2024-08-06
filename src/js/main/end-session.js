@@ -99,6 +99,7 @@ document.addEventListener("stateUpdated", function() {
 // -----------------
 // MAIN FUNCTIONS
 // -----------------
+
 function isMoreThan1000Chars(inputStr) {
     if (inputStr.length > 1000) {
         return true;
