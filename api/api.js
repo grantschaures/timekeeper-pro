@@ -116,8 +116,6 @@ router.post("/verifyIdToken", async function(req, res) {
     const session = await mongoose.startSession();
     session.startTransaction();
 
-    console.log("test")
-
     try {
         console.log("/verifyIdToken endpoint has been reached");
         const token = req.body.idToken;
