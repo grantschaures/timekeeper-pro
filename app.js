@@ -139,7 +139,6 @@ app.use('/api/user', require('./api/user'));
 app.use("/api/users", require("./api/users"));
 app.use("/api/state", require("./api/state"));
 app.use("/api/data", require("./api/data"));
-app.use("/api/info", require("./api/info"));
 
 const PORT = process.env.PORT || 3000;
 // Start the web server

@@ -36,7 +36,7 @@ import { state, flags as navFlags } from '../modules/navigation-objects.js';
 import { labelFlags, labelArrs } from '../modules/notes-objects.js';
 
 import { initializeGUI } from '../utility/initialize_gui.js'; // minified
-import { userAgent, userDevice } from '../utility/identification.js'; // minified
+import { userAgent, userDevice, userTimeZone } from '../utility/identification.js'; // minified
 import { updateUserSettings } from '../state/update-settings.js'; // minified
 import { updateTargetHours } from '../state/update-target-hours.js'; // minified
 import { updateShowingTimeLeft } from '../state/update-showing-time-left.js'; // minified
@@ -927,7 +927,7 @@ document.addEventListener("stateUpdated", function() {
         fetch("/api/api/validateUser", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ user: user, userAgent: userAgent, userDevice: userDevice })
+            body: JSON.stringify({ user: user, userAgent: userAgent, userDevice: userDevice, userTimeZone: userTimeZone })
         })
         .then(response => {
             if (!response.ok) {

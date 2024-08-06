@@ -20,20 +20,20 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    # - name: Run tests
-    #   run: npm test
+    - name: Run tests
+      run: npm test
 
-    # - name: Edit HTML
-    #   run: npm run editHTML
+    - name: Edit HTML
+      run: npm run editHTML
 
-    # - name: Minify js files
-    #   run: npm run build
+    - name: Minify js files
+      run: npm run build
 
-    # - name: Run HTML minification
-    #   run: node minifyHTML.js
+    - name: Run HTML minification
+      run: node minifyHTML.js
 
-    # - name: Run CSS minification
-    #   run: node minifyCSS.js
+    - name: Run CSS minification
+      run: node minifyCSS.js
 
     - name: Deploy to Heroku
       uses: AkhileshNS/heroku-deploy@v3.13.15  # Use the latest version

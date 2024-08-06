@@ -1,6 +1,6 @@
 export const userAgent = navigator.userAgent;
 export const userDevice = getDeviceType();
-export const userLocationInfo = getLocationInfo();
+export const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 function getDeviceType() {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -22,31 +22,4 @@ function getDeviceType() {
         return "iPad or Tablet";
     }
     return "Desktop";
-}
-
-async function getLocationInfo() {
-    try {
-        const response = await fetch('/api/info/location');
-        const data = await response.json();
-
-        const locationInfo = {
-            ip: data.ip,
-            city: data.city,
-            region: data.region,
-            country: data.country,
-            postal: data.postal,
-            loc: data.loc,
-            org: data.org,
-            timezone: data.timezone
-        };
-
-        console.log(locationInfo);
-
-        return locationInfo;
-
-    } catch (error) {
-        console.error('Error fetching location information:', error);
-
-        return "There was an error fetching the location info";
-    }
 }

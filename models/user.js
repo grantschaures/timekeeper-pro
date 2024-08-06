@@ -19,11 +19,10 @@ const User = db.model("User", {
   logins: { type: Number, required: true, default: 0 },
   lastLogin: {
     loginDate: { type: Date },
-    timeZone: { type: String },
-    IP: { type: String },
     userAgent: { type: String },
     userDevice: { type: String },
-    loginMethod: { type: String }
+    loginMethod: { type: String },
+    timeZone: { type: String }
   },
   lastIntervalSwitch: { type: Date }, // last time the user (value gets replaced each time user switches interval)
   lastActivity: { type: Date },

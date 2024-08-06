@@ -47,7 +47,7 @@ window.addUser = function(email, password) {
     fetch("/api/api/validateUser", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user: user, userAgent: userAgent, userDevice: userDevice })
+        body: JSON.stringify({ user: user, userAgent: userAgent, userDevice: userDevice, userTimeZone: userTimeZone })
     })
     .then(response => {
         if (!response.ok) {
