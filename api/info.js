@@ -25,7 +25,7 @@ async function getIpInfo(ip) {
             timezone: data.timezone
         };
 
-        // console.log(locationInfo);
+        console.log(locationInfo);
 
         return locationInfo;
 
