@@ -345,7 +345,7 @@ function fadeOutUIContainer(container) {
 }
 
 function slimeSwitch() {
-    addPseudoElementStyle('scaleX(1.2)');
+    addPseudoElementStyle('scaleX(1.5)');
     setTimeout(() => {
         addPseudoElementStyle('scaleX(1)');
     }, 150) // halfway through toggle switch
@@ -466,11 +466,13 @@ export function subMainContainerTransition(display) {
 }
 
 function initializeNewMode(containerType) {
-    containerType.style.display = "flex";
-    containerType.offsetHeight; // forcing reflow
     setTimeout(() => {
-        containerType.style.opacity = 1;
-    }, 0)
+        containerType.style.display = "flex";
+        containerType.offsetHeight; // forcing reflow
+        setTimeout(() => {
+            containerType.style.opacity = 1;
+        }, 0)
+    }, 100)
 }
 
 function resetMode(containerType) {

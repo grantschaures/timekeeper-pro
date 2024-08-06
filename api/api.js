@@ -49,7 +49,7 @@ router.post("/validateUser", loginLimiter, async function(req, res) {
         loginMethod,
         timeZone
     }
-
+    
     try {
         const user = await User.findOne({ email: email });
         if (user && await bcrypt.compare(password, user.password)) {
