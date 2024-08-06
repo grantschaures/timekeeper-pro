@@ -345,7 +345,7 @@ function fadeOutUIContainer(container) {
 }
 
 function slimeSwitch() {
-    addPseudoElementStyle('scaleX(1.5)');
+    addPseudoElementStyle('scaleX(1.25)');
     setTimeout(() => {
         addPseudoElementStyle('scaleX(1)');
     }, 150) // halfway through toggle switch

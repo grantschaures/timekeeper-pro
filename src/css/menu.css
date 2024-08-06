@@ -14,7 +14,7 @@
     height: 200px;
     /* background-image: url('/images/DALLE/DALLE4.png'); */
     /* background-color: black; */
-    background-color: rgb(0, 0, 0, 0.9);
+    background-color: rgba(0, 0, 0, 0.9);
 
     /* DARK GREY THEME BACKGROUND */
     /* background-color: rgba(32, 32, 32, 1); */
@@ -41,17 +41,18 @@
 #popupQuestionMenu {
     position: fixed;
     font-family: menuFont;
-    color: rgb(187, 187, 187);
+    color: rgb(255, 255, 255);
 
     letter-spacing: 1px;
     font-size: 15px;
     min-width: 210px;
     height: 200px;
-    background-color: rgba(32, 32, 32, 1);
+    /* background-color: rgba(255, 255, 255, 0.25); */
+    backdrop-filter: blur(100px);
 
     padding: 10px 10px;
     border-radius: 15px;
-    border: 3px solid white;
+    border: 2px solid rgba(255, 255, 255, 0.25);
     right: 25px;
     bottom: 100px;
     display: none;
