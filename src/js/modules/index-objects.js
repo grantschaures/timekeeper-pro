@@ -224,6 +224,10 @@ export const catIds = [
     'cat8',
 ]
 
+export const tempCounters = {
+    catIdsArrIndex: 0
+}
+
 export const times = {
     start: null,
     end: null

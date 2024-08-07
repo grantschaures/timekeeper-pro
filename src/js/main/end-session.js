@@ -1,4 +1,4 @@
-import { timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, counters, flags, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, lightHtmlBackground, darkHtmlBackground, times, perHourData, catIds } from '../modules/index-objects.js';
+import { timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, counters, flags, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, lightHtmlBackground, darkHtmlBackground, times, perHourData, catIds, tempCounters } from '../modules/index-objects.js';
 import { start_stop_btn, end_session_btn, total_time_display, productivity_chill_mode, progressBar, progressContainer, display, interruptionsSubContainer, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, flowAnimation, chillAnimation, hyperChillLogoImage, streaksCount, breakBackground, deepWorkBackground, commentsTextArea, sessionSummaryOkBtn, subjectiveFeedbackDropdown, sessionSummaryPopup, summaryStats, HC_icon_session_summary, commentsContainer, sessionSummarySignupPromptPopup, popupOverlay, HC_icon_signup_prompt, signupPromptPopupBtn } from '../modules/dom-elements.js';
 import { soundMap } from '../modules/sound-map.js';
 import { sessionState } from '../modules/state-objects.js';
@@ -15,10 +15,6 @@ import { subMainContainerTransition } from '../main/navigation.js'; // minified
 const defaultFavicon = "/images/logo/HyperChillLogo_circular_white_border.png";
 
 var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-let tempCounters = {
-    catIdsArrIndex: 0
-}
 
 document.addEventListener("stateUpdated", function() {
     end_session_btn.addEventListener("click", async function() {
@@ -568,6 +564,9 @@ export function initialVisualReset(tempCounters) {
 
     // remove cats
     hideCat(catIds, tempCounters);
+
+    // reset tempCounters
+    resetPropertiesToZero(tempCounters);
     
     // reset interruptions text to counters.interruptions, which has already been reset to 0
     interruptionsNum.textContent = 0;

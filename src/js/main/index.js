@@ -1,4 +1,4 @@
-import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selectedBackgroundIdTemp, selectedBackgroundId, timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, alertVolumes, alertSounds, counters, flags, tempStorage, settingsMappings, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, times, perHourData, catIds, lightHtmlBackground, darkHtmlBackground } from '../modules/index-objects.js';
+import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selectedBackgroundIdTemp, selectedBackgroundId, timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, alertVolumes, alertSounds, counters, flags, tempStorage, settingsMappings, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, times, perHourData, catIds, lightHtmlBackground, darkHtmlBackground, tempCounters } from '../modules/index-objects.js';
 
 import { chimePath, bellPath, clock_tick, soundMap } from '../modules/sound-map.js';
 
@@ -1034,6 +1034,7 @@ document.addEventListener("stateUpdated", function() {
         }
     })
 
+    // CURRENTLY OMITTED
     previousSessionStartedOkBtn.addEventListener("click", function() {
         popupOverlay.style.display = "none";
         previousSessionStartedPopup.style.display = "none";
@@ -1044,8 +1045,8 @@ document.addEventListener("stateUpdated", function() {
             console.log("invalidate previous session and continue was selected");
             updateInvaliDate(startTimes.beginning);
         } else {
-            initialVisualReset();
-            sessionReset();
+            initialVisualReset(tempCounters);
+            sessionReset(false); // false implies no delay for resetting progress bar & total time display
 
             quitCurrentSessionInput.checked = false;
             invalidatePreviousSessionInput.checked = true;
@@ -1150,8 +1151,8 @@ document.addEventListener("stateUpdated", function() {
     }
     
     displayWorker.onmessage = function(message) {
-        const timeDiff = Date.now() - startTimes.local;
-    
+        const timeDiff = Math.round((Date.now() - startTimes.local) / 1000) * 1000;
+        
         let hours = Math.floor(timeDiff / timeConvert.msPerHour);
         let minutes = Math.floor((timeDiff - hours * timeConvert.msPerHour) / timeConvert.msPerMin);
         let seconds = Math.floor((timeDiff - hours * timeConvert.msPerHour - minutes * timeConvert.msPerMin) / timeConvert.msPerSec);
@@ -2535,7 +2536,7 @@ export function replaceTargetHours(inputHours, timeAmount, flags) {
 };
 
 export function totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod) {
-    let timeDiff = getTotalElapsed(flags, elapsedTime.hyperFocus, startTimes);
+    let timeDiff = Math.round(getTotalElapsed(flags, elapsedTime.hyperFocus, startTimes) / 1000) * 1000;
 
     // if 24 hours reached, end session
     if (timeDiff >= 86400000) {

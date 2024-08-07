@@ -146,9 +146,9 @@ function updateQuestionMenuContainer(userData) {
     document.getElementById('questionPopupUserEmail').innerText = userData.email;
 
     if (userData.logins <= 1) {
-        document.getElementById('welcomeText').innerText = "Welcome!";
+        document.getElementById('welcomeText').innerText = "Welcome";
     } else {
-        document.getElementById('welcomeText').innerText = "Welcome Back!";
+        document.getElementById('welcomeText').innerText = "Welcome Back";
     }
 }
 

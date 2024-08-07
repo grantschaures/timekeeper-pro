@@ -5,3 +5,4 @@ export const avgDeepWorkSummaryStat = document.getElementById('avgDeepWorkSummar
 export const avgFocusQualitySummaryStat = document.getElementById('avgFocusQualitySummaryStat');
 export const avgIntervalLengthSummaryStat = document.getElementById('avgIntervalLengthSummaryStat');
 export const mostFocusedHourSummaryStat = document.getElementById('mostFocusedHourSummaryStat');
+
