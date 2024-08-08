@@ -1013,7 +1013,8 @@ function addLabel(target, labelInputContainer) {
     selectedDiv.firstElementChild.style.backgroundColor = selectedBackgroundColor;
     labelInputContainer.appendChild(selectedDiv);  
 
-    selectedLabelDict[selectionTagId] = document.getElementById(selectionTagId).innerText; // update selectedLabelDict
+    // selectedLabelDict[selectionTagId] = document.getElementById(selectionTagId).innerText; // update selectedLabelDict
+    selectedLabelDict[selectionTagId] = labelDict[selectionTagId]; // update selectedLabelDict
 
     // set corresponding label in notesFlags to true
     const labelName = selectedLabelDict[selectionTagId];
