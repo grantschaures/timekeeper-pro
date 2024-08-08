@@ -30,6 +30,7 @@ router.post("/update-session-summary", async function(req, res) {
     try {
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
         const userId = decoded.userId;
+
         const user = await User.findById(userId);
 
         if (user) {
@@ -91,6 +92,7 @@ router.post("/update-report", async function(req, res) {
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
         const userId = decoded.userId;
         const user = await User.findById(userId);
+
         // console.log("update-report endpoint: " + Date.now());
 
         if (user) {

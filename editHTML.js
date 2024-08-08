@@ -78,8 +78,8 @@ const stateReplacements = [
         replacement: "import { appendEditRemoveContainer, createCheckElements, getLastNumberFromId, addLabelInputContainerTagDivider, addLabelInitialActions, removeTagSelectionDivider, adjustLabelFontSize } from '../minified/notes.min.js';"
     },
     {
-        pattern: /import { updateStreak } from '..\/utility\/update_streaks.js';/g,
-        replacement: "import { updateStreak } from '../minified/update_streaks.min.js';"
+        pattern: /import { updateStreak } from '..\/utility\/update-streaks.js';/g,
+        replacement: "import { updateStreak } from '../minified/update-streaks.min.js';"
     },
     {
         pattern: /import { populateDashboard } from '..\/main\/populate-dashboard.js';/g,
@@ -89,8 +89,8 @@ const stateReplacements = [
 
 const indexReplacements = [
     {
-        pattern: /import { initializeGUI } from '..\/utility\/initialize_gui.js';/g,
-        replacement: "import { initializeGUI } from '../minified/initialize_gui.min.js';"
+        pattern: /import { initializeGUI } from '..\/utility\/initialize-gui.js';/g,
+        replacement: "import { initializeGUI } from '../minified/initialize-gui.min.js';"
     },
     {
         pattern: /import { updateUserSettings } from '..\/state\/update-settings.js';/g,
@@ -158,8 +158,8 @@ const navigationReplacements = [
 
 const googleSignInReplacements = [
     {
-        pattern: /import { initializeGUI } from '..\/utility\/initialize_gui.js';/g,
-        replacement: "import { initializeGUI } from '../minified/initialize_gui.min.js';"
+        pattern: /import { initializeGUI } from '..\/utility\/initialize-gui.js';/g,
+        replacement: "import { initializeGUI } from '../minified/initialize-gui.min.js';"
     },
     {
         pattern: /import { userAgent, userDevice } from '..\/utility\/identification.js';/g,
@@ -169,8 +169,8 @@ const googleSignInReplacements = [
 
 const loginReplacements = [
     {
-        pattern: /import { initializeGUI } from '..\/utility\/initialize_gui.js';/g,
-        replacement: "import { initializeGUI } from '../minified/initialize_gui.min.js';"
+        pattern: /import { initializeGUI } from '..\/utility\/initialize-gui.js';/g,
+        replacement: "import { initializeGUI } from '../minified/initialize-gui.min.js';"
     },
     {
         pattern: /import { userAgent, userDevice } from '..\/utility\/identification.js';/g,

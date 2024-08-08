@@ -429,8 +429,6 @@ function sumTotalLabelTime(labelArrs, labelDict) {
         let arr = labelArrs[key];
         let timeSum = 0;
 
-        // console.log(labelArrs);
-
         for (let i = 1; i < arr.length; i += 2) {
             timeSum += arr[i] - arr[i-1];
         }
@@ -439,10 +437,11 @@ function sumTotalLabelTime(labelArrs, labelDict) {
         labelTimeSum[labelTimesKey] = timeSum;
 
         // PRINTING OUT LABEL TIMES
-        // let totalLabelTimeStr = returnTotalTimeString(timeSum, timeConvert);
-        // let labelName = key;
-        // console.log(labelName + ": " + totalLabelTimeStr);
+        let totalLabelTimeStr = returnTotalTimeString(timeSum, timeConvert);
+        let labelName = key;
+        console.log(labelName + ": " + totalLabelTimeStr);
     }
+    console.log(labelArrs)
 
     return labelTimeSum;
 }

@@ -1,5 +1,5 @@
 // Import necessary functions
-import { initializeGUI } from '../utility/initialize_gui.js'; // minified
+import { initializeGUI } from '../utility/initialize-gui.js'; // minified
 import { userAgent, userDevice, userTimeZone } from '../utility/identification.js'; // minified
 
 // handleCredentialResponse attached to window object to ensure global availability

@@ -33,6 +33,12 @@
         <script type="module" src="/js/main/end-session.js"></script>
         <script type="module" src="/js/api/google-signin.js"></script>
 
+        <!-- ADD THESE TO MINIFICATION PROCESS -->
+        <script type="module" src="/js/dashboard/daily-sessions.js"></script>
+        <script type="module" src="/js/dashboard/label-distribution.js"></script>
+        <script type="module" src="/js/dashboard/main-charts.js"></script>
+        <script type="module" src="/js/dashboard/summary-stats.js"></script>
+
         
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data.min.js"></script>
@@ -596,16 +602,63 @@
                     <div id="distributionsContainer">
                         <div id="metricDistributionContainer"></div>
                         <div id="labelDistributionContainer">
+                            <div id="labelDistributionHeaderContainer">
+                                <div id="labelDistributionArrowsAndSelections">
+                                    <div id="labelDistributionSelections">
+                                        <div id="labelDistributionWeek" class="labelDistributionSelection labelDistributionSelected no-select">Week</div>
+                                        <div id="labelDistributionMonth" class="labelDistributionSelection no-select">Month</div>
+                                        <div id="labelDistributionYear" class="labelDistributionSelection no-select">Year</div>
+                                    </div>
+                                    <div id="labelDistributionArrows">
+                                        <img id="leftLabelDistributionArrow" src="images/icons/left_arrow.png" class="dailyArrow">
+                                        <img id="rightLabelDistributionArrow" src="images/icons/right_arrow.png" class="dailyArrow">
+                                    </div>
+                                </div>
+                                <div id="labelDistributionTimeFrame">
+                                    <!-- June 4th - June 11th -->
+                                    <!-- June -->
+                                    June '23
+                                </div>
+                            </div>
                             <div class="labelDistributionElement">
-                                <div id="labelNamesContainer">
+                                <div class="labelNamesContainer">
                                     <div class="labelName">
                                         📚 Reading
                                     </div>
+                                    <div class="labelName">
+                                        🔬 Experimenting
+                                    </div>
+                                    <div class="labelName">
+                                        🤪 Having Fun
+                                    </div>
+                                    <div class="labelName">
+                                        [Unlabeled]
+                                    </div>
                                 </div>
                                 <div id="labelLinesAndTimesContainer">
-                                    <div id="testLabelLine" class="labelLine"></div>
-                                    <div class="labelTime">
-                                        13h 26m
+                                    <div class="lineAndTimeBundle">
+                                        <div id="testLabelLine1" class="labelLine"></div>
+                                        <div class="labelTime">
+                                            6h 0m (43%)
+                                        </div>
+                                    </div>
+                                    <div class="lineAndTimeBundle">
+                                        <div id="testLabelLine2" class="labelLine"></div>
+                                        <div class="labelTime">
+                                            4h 0m (29%)
+                                        </div>
+                                    </div>
+                                    <div class="lineAndTimeBundle">
+                                        <div id="testLabelLine3" class="labelLine"></div>
+                                        <div class="labelTime">
+                                            3h 0m (21%)
+                                        </div>
+                                    </div>
+                                    <div class="lineAndTimeBundle">
+                                        <div id="testLabelLine4" class="labelLine"></div>
+                                        <div class="labelTime">
+                                            1h 0m (7%)
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1062,7 +1115,7 @@
                                             </label>
                                         </div>
                                         <div id="pomodoroNotificationInfoWindow" data-testid="pomodoroNotificationInfoWindow" class="notificationInfoWindow">
-                                            This will notify you after each interval specified for Pomodoro, Short Break, and Long Break
+                                            This will notify you after the time specified for Pomodoro, Short Break, and Long Break
                                         </div>  
                                     </div>
                                     <div id="flowTimeBreakDemoImages" class="settingsMicroContainer">
@@ -1187,7 +1240,7 @@
                                             </label>
                                         </div>
                                         <div id="flowmodoroNotificationInfoWindow" class="notificationInfoWindow">
-                                            This will notify you after the specified number of minutes in Break
+                                            This will notify you (in break) after a period of time based on previous deep work interval
                                         </div>  
                                     </div>
                                     <div id="flowTimeBreakDemoImages" class="settingsMicroContainer">

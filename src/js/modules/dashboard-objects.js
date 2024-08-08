@@ -9,3 +9,10 @@ export const dashboardData = {
     dailyArr: [],
     hourlyArr: dailyHours
 }
+
+export const labelDistContainer = {
+    timeFrame: 'week',
+    currentDay: null,
+    lowerBound: null,
+    upperBound: null
+}

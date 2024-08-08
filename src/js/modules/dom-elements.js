@@ -165,6 +165,7 @@ export const transitionNotesAutoSwitchToggle = document.getElementById('transiti
 export const propagateUnfinishedTasksToggle = document.getElementById('propagateUnfinishedTasksToggle');
 export const tutorialImgContainers = document.querySelectorAll('.tutorialImgContainer');
 export const notesBtnContainer = document.getElementById("notesBtnContainer");
+export const flowmodoroBtnContainer = document.getElementById("flowmodoroBtnContainer");
 export const notesSettingsHr1 = document.getElementById('notesSettingsHr1');
 export const notesSettingsHr2 = document.getElementById('notesSettingsHr2');
 export const addingDeletingUpdatingLabelsInfoBlock = document.getElementById('addingDeletingUpdatingLabelsInfoBlock');

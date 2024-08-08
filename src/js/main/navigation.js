@@ -2,7 +2,7 @@ import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_me
 import { blogIdList, flags, counters, state } from '../modules/navigation-objects.js';
 import { sessionState } from '../modules/state-objects.js';
 import { flags as indexFlags} from '../modules/index-objects.js';
-import { flags as notesFlags } from '../modules/notes-objects.js';
+import { labelArrs, labelDict, labelFlags, flags as notesFlags, selectedLabelDict } from '../modules/notes-objects.js';
 import { chimePath, bellPath, soundMap } from '../modules/sound-map.js';
 
 import { deleteUserAccount } from '../state/delete-account.js'; // minified
@@ -496,10 +496,10 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
                 slimeSwitch(); 
             }
 
-            const element = document.getElementById("testLabelLine");
+            const element = document.getElementById("testLabelLine1");
             element.offsetWidth;
             setTimeout(() => {
-                element.style.width = 'calc(100% - 100px)';
+                // element.style.width = 'calc(100% - 100px)';
                 // subtract what ever the max digit length is (times pixel size for the digit length - which should be the same for all digits if using font-family: myFont2 or myFont3)
                 // ...for the max hours + min for a week (3 digits + 3 digits + 2 digits), month (3 digits + 3 digits + 2 digits), and year (4 digits + 3 digits + 2 digits )
                 // That makes 8 spaces for week and month, and 9 spaces for a year

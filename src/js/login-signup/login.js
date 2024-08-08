@@ -1,4 +1,4 @@
-import { initializeGUI } from '../utility/initialize_gui.js'; // minified
+import { initializeGUI } from '../utility/initialize-gui.js'; // minified
 import { userAgent, userDevice } from '../utility/identification.js'; // minified
 
 document.addEventListener("DOMContentLoaded", function () {

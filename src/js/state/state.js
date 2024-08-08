@@ -6,13 +6,13 @@ import { flags, timeAmount, alertVolumes, alertSounds, selectedBackgroundId, sel
 
 import { flags as notesflags, counters as notesCounters, state as notesState, labelDict, notesArr, selectedLabelDict, notesFlags, fontSizeArr, fontNumArr, labelFlags, labelArrs } from '../modules/notes-objects.js';
 
-import { updateStreak } from '../utility/update_streaks.js';
+import { updateStreak } from '../utility/update-streaks.js';
 
 import { setInitialBackgroundCellSelection, deactivateDarkTheme, activateDarkTheme, replaceTargetHours, totalTimeDisplay, intervalTimeToggleGUIUpdate, totalTimeToggleGUIUpdate } from '../main/index.js';
 
 import { appendEditRemoveContainer, createCheckElements, getLastNumberFromId, addLabelInputContainerTagDivider, addLabelInitialActions, removeTagSelectionDivider, adjustLabelFontSize } from '../main/notes.js';
 
-import { populateDashboard } from '../main/populate-dashboard.js';
+import { populateDashboard } from '../dashboard/populate-dashboard.js';
 
 var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 

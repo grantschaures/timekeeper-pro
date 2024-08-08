@@ -14,13 +14,14 @@ router.get("/sessionValidation", async function(req, res) {
     const token = req.cookies.token;  // Extract the JWT from cookies directly
 
     if (!token) {
-        return res.status(401).json({ isLoggedIn: false });
+        // return res.status(401).json({ isLoggedIn: false });
     }
 
     try {
         console.log("Endpoint 1 reached")
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
-        const user = await User.findById(decoded.userId);
+        // const user = await User.findById(decoded.userId);
+        const user = await User.findById('66aebd43e9e0ce6eb2786d0e');
 
         if (user) {
             console.log("Endpoint 2 reached")

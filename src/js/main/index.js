@@ -29,13 +29,14 @@ import {
     zzz,
     darkContainer,
     lightContainer,
+    flowmodoroBtnContainer,
 } from '../modules/dom-elements.js';
 
 import { sessionState } from '../modules/state-objects.js';
 import { state, flags as navFlags } from '../modules/navigation-objects.js';
-import { labelFlags, labelArrs } from '../modules/notes-objects.js';
+import { labelFlags, labelArrs, labelDict, selectedLabelDict } from '../modules/notes-objects.js';
 
-import { initializeGUI } from '../utility/initialize_gui.js'; // minified
+import { initializeGUI } from '../utility/initialize-gui.js'; // minified
 import { userAgent, userDevice, userTimeZone } from '../utility/identification.js'; // minified
 import { updateUserSettings } from '../state/update-settings.js'; // minified
 import { updateTargetHours } from '../state/update-target-hours.js'; // minified
@@ -45,11 +46,11 @@ import { checkSession } from '../state/check-session.js'; // minified
 import { updateInvaliDate } from '../state/update-invaliDate.js'; // minified
 import { initialVisualReset, sessionReset } from '../main/end-session.js'; // minified
 
-export const pomodoroWorker = new Worker('/js/displayWorkers/pomodoroWorker.js');
-export const suggestionWorker = new Worker('/js/displayWorkers/suggestionWorker.js');
-export const flowmodoroWorker = new Worker('/js/displayWorkers/flowmodoroWorker.js');
-export const displayWorker = new Worker('/js/displayWorkers/displayWorker.js');
-export const totalDisplayWorker = new Worker('/js/displayWorkers/totalDisplayWorker.js');
+export const pomodoroWorker = new Worker('/js/web-workers/pomodoroWorker.js');
+export const suggestionWorker = new Worker('/js/web-workers/suggestionWorker.js');
+export const flowmodoroWorker = new Worker('/js/web-workers/flowmodoroWorker.js');
+export const displayWorker = new Worker('/js/web-workers/displayWorker.js');
+export const totalDisplayWorker = new Worker('/js/web-workers/totalDisplayWorker.js');
 
 // Create a new mutation observer to watch for changes to the #display div
 export const observer = new MutationObserver(setTabTitleFromDisplay);
@@ -148,6 +149,9 @@ document.addEventListener("stateUpdated", function() {
 
     start_stop_btn.addEventListener("click", function() {
 
+        console.log(labelDict)
+        console.log(selectedLabelDict)
+
         let transitionTime = Date.now();
         counters.startStop++; //keep track of button presses (doesn't account for time recovery iterations)
         playClick(clock_tick, flags);
@@ -236,7 +240,6 @@ document.addEventListener("stateUpdated", function() {
             setFavicon(blueFavicon);
             chillTimeAnimationActions(flags, flowAnimation, chillAnimation);
             displayCat(catIds, counters);
-
             
             // EDIT: temporary change to see total interruptions for my own data collection
             saveResetInterruptions(interruptionsNum, counters, savedInterruptionsArr);
@@ -1125,6 +1128,14 @@ document.addEventListener("stateUpdated", function() {
             }
         });
     });
+
+    suggestionBreak_min.addEventListener("click", function() {
+        // open up break notifications in settings
+        settings_menu_container.click();
+        setTimeout(() => {
+            flowmodoroBtnContainer.click();
+        }, 0)
+    })
 
     // ---------------------
     // DISPLAY WORKERS
@@ -2059,7 +2070,7 @@ async function setBreakTimeSuggestionsArr(event, timeAmount, validatedFinalInput
 
 function changeSuggestionBreakContainerHeader(flags, suggestionBreak_label, suggestionBreak_min, counters) {
     if (flags.flowmodoroNotificationToggle) {
-        suggestionBreak_label.textContent = "Break";
+        suggestionBreak_label.textContent = "🔔 Break";
     } else {
         suggestionBreak_label.textContent = "Suggested Break";
     }
