@@ -149,9 +149,6 @@ document.addEventListener("stateUpdated", function() {
 
     start_stop_btn.addEventListener("click", function() {
 
-        console.log(labelDict)
-        console.log(selectedLabelDict)
-
         let transitionTime = Date.now();
         counters.startStop++; //keep track of button presses (doesn't account for time recovery iterations)
         playClick(clock_tick, flags);

@@ -1,6 +1,4 @@
 import { popupOverlay, previousSessionStartedPopup, body, previousSessionStartedOkBtn } from '../modules/dom-elements.js';
-import { startTimes } from '../modules/index-objects.js';
-import { updateInvaliDate } from './update-invaliDate.js';
 
 export async function checkSession() {
     try {
