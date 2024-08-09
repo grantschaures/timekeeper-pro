@@ -233,6 +233,13 @@ const populateDashboardReplacements = [
     }
 ]
 
+const labelDistributionReplacements = [
+    {
+        pattern: /import { userTimeZone } from '..\/utility\/identification.js';/g,
+        replacement: "import { userTimeZone } from '../minified/identification.min.js';"
+    }
+]
+
 // Update index.html
 readFileAndReplace(indexHtmlPath, indexHtmlReplacements);
 
@@ -259,3 +266,4 @@ readFileAndReplace(endSessionJsPath, endSessionReplacements);
 readFileAndReplace(dailySessionsJsPath, dailySessionsReplacements);
 readFileAndReplace(summaryStatsJsPath, summaryStatsReplacements);
 readFileAndReplace(populateDashboardJsPath, populateDashboardReplacements);
+readFileAndReplace(labelDistributionJsPath, labelDistributionReplacements);
