@@ -1,8 +1,9 @@
 import { dashboardData, labelDistContainer } from "../modules/dashboard-objects.js";
-import { labelDistributionMonth, labelDistributionTimeFrame, labelDistributionWeek, labelDistributionYear, labelLinesContainer, labelNamesContainer, labelTimesContainer, leftLabelDistributionArrow, rightLabelDistributionArrow } from "../modules/dashboard-elements.js";
+import { labelDistributionElement, labelDistributionMonth, labelDistributionTimeFrame, labelDistributionWeek, labelDistributionYear, labelLinesContainer, labelNamesContainer, labelTimesContainer, leftLabelDistributionArrow, rightLabelDistributionArrow } from "../modules/dashboard-elements.js";
 import { timeConvert } from "../modules/index-objects.js";
 
 import { userTimeZone } from "../utility/identification.js";
+import { sessionState } from "../modules/state-objects.js";
 
 // initialization of labelDistContainer (called in populate-dashboard.js)
 export function populateLabelDistContainer(dashboardData, labelDistContainer) {
@@ -17,79 +18,91 @@ export function populateLabelDistContainer(dashboardData, labelDistContainer) {
 
 document.addEventListener("stateUpdated", function() {
     // add click event listeners for week, month, year and label dist arrow btns
-    labelDistributionWeek.addEventListener("click", function() {
-        // add class
-        labelDistributionWeek.classList.add('labelDistributionSelected');
-
-        // remove class
-        labelDistributionMonth.classList.remove('labelDistributionSelected');
-        labelDistributionYear.classList.remove('labelDistributionSelected');
-
-        // set timeFrame
-        labelDistContainer.timeFrame = 'week';
-
-        // call function which resets bounds
-        setBounds(labelDistContainer.timeFrame);
-
-        // visualize data
-        updateLabelData(dashboardData, labelDistContainer);
-    })
+    if (sessionState.loggedIn) {
+        labelDistributionWeek.addEventListener("click", function() {
+            // add class
+            labelDistributionWeek.classList.add('labelDistributionSelected');
     
-    labelDistributionMonth.addEventListener("click", function() {
-        // add class
-        labelDistributionMonth.classList.add('labelDistributionSelected');
-        
-        // remove class
-        labelDistributionWeek.classList.remove('labelDistributionSelected');
-        labelDistributionYear.classList.remove('labelDistributionSelected');
-        
-        // set timeFrame
-        labelDistContainer.timeFrame = 'month';
-        
-        // call function which resets bounds
-        setBounds(labelDistContainer.timeFrame);
-
-        // visualize data
-        updateLabelData(dashboardData, labelDistContainer);
-
-    })
+            // remove class
+            labelDistributionMonth.classList.remove('labelDistributionSelected');
+            labelDistributionYear.classList.remove('labelDistributionSelected');
     
-    labelDistributionYear.addEventListener("click", function() {
-        // add class
-        labelDistributionYear.classList.add('labelDistributionSelected');
-        
-        // remove class
-        labelDistributionWeek.classList.remove('labelDistributionSelected');
-        labelDistributionMonth.classList.remove('labelDistributionSelected');
-        
-        // set timeFrame
-        labelDistContainer.timeFrame = 'year';
-        
-        // call function which resets bounds
-        setBounds(labelDistContainer.timeFrame);
-
-        // visualize data
-        updateLabelData(dashboardData, labelDistContainer);
-
-    })
-
-    leftLabelDistributionArrow.addEventListener("click", function() {
-        // decrease current bounds
-        alterBounds(labelDistContainer.timeFrame, 'shiftdown');
-
-        // visualize data
-        updateLabelData(dashboardData, labelDistContainer);
-
-    })
+            // set timeFrame
+            labelDistContainer.timeFrame = 'week';
     
-    rightLabelDistributionArrow.addEventListener("click", function() {
-        // increase current bounds
-        alterBounds(labelDistContainer.timeFrame, 'shiftup');
-
-        // visualize data
-        updateLabelData(dashboardData, labelDistContainer);
-
-    })
+            // call function which resets bounds
+            setBounds(labelDistContainer.timeFrame);
+    
+            // visualize data
+            updateLabelData(dashboardData, labelDistContainer);
+        })
+        
+        labelDistributionMonth.addEventListener("click", function() {
+            // add class
+            labelDistributionMonth.classList.add('labelDistributionSelected');
+            
+            // remove class
+            labelDistributionWeek.classList.remove('labelDistributionSelected');
+            labelDistributionYear.classList.remove('labelDistributionSelected');
+            
+            // set timeFrame
+            labelDistContainer.timeFrame = 'month';
+            
+            // call function which resets bounds
+            setBounds(labelDistContainer.timeFrame);
+    
+            // visualize data
+            updateLabelData(dashboardData, labelDistContainer);
+    
+        })
+        
+        labelDistributionYear.addEventListener("click", function() {
+            // add class
+            labelDistributionYear.classList.add('labelDistributionSelected');
+            
+            // remove class
+            labelDistributionWeek.classList.remove('labelDistributionSelected');
+            labelDistributionMonth.classList.remove('labelDistributionSelected');
+            
+            // set timeFrame
+            labelDistContainer.timeFrame = 'year';
+            
+            // call function which resets bounds
+            setBounds(labelDistContainer.timeFrame);
+    
+            // visualize data
+            updateLabelData(dashboardData, labelDistContainer);
+    
+        })
+    
+        leftLabelDistributionArrow.addEventListener("click", function() {
+            // decrease current bounds
+            alterBounds(labelDistContainer.timeFrame, 'shiftdown');
+    
+            // visualize data
+            updateLabelData(dashboardData, labelDistContainer);
+    
+        })
+        
+        rightLabelDistributionArrow.addEventListener("click", function() {
+            // increase current bounds
+            alterBounds(labelDistContainer.timeFrame, 'shiftup');
+    
+            // visualize data
+            updateLabelData(dashboardData, labelDistContainer);
+    
+        })
+    } else {
+        const labelDistMessage = document.createElement('div');
+        labelDistMessage.innerText = "Log in to see your time label distribution";
+        labelDistMessage.classList.add('notLoggedInMessage');
+        labelDistributionElement.style.height = '100%';
+        labelDistributionElement.style.justifyContent = 'center';
+        labelNamesContainer.style.display = 'none';
+        labelLinesContainer.style.display = 'none';
+        labelTimesContainer.style.display = 'none';
+        labelDistributionElement.appendChild(labelDistMessage);
+    }
 })
 
 function updateLabelData(dashboardData, labelDistContainer) {

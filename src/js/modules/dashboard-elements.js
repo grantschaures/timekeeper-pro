@@ -23,3 +23,4 @@ export const rightLabelDistributionArrow = document.getElementById('rightLabelDi
 export const labelNamesContainer = document.getElementById('labelNamesContainer');
 export const labelLinesContainer = document.getElementById('labelLinesContainer');
 export const labelTimesContainer = document.getElementById('labelTimesContainer');
+export const labelDistributionElement = document.getElementById('labelDistributionElement');

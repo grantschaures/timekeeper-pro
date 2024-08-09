@@ -33,7 +33,7 @@
     justify-content: center;
 
     color: white;
-    font-family: myFont2;
+    font-family: settingsHeaderFontBold;
 }
 
 #dashboardSubContainer {
@@ -49,7 +49,7 @@
     min-height: 250px;
 
     color: white;
-    font-family: myFont2;
+    font-family: settingsHeaderFontBold;
 }
 
 .no-transition {
@@ -78,16 +78,16 @@
     margin-bottom: 10px;
 
     color: white;
-    font-family: myFont2;
 }
 
 #dashboardSummaryStatsContainer {
     display: flex;
+    box-sizing: border-box;
     justify-content: space-around;
-    width: 250px;
-    min-width: 250px;
+    width: 225px;
     margin-left: 10px;
-
+    flex-shrink: 0;
+    flex-grow: 0;
 }
 
 .summaryStatContainer {
@@ -101,6 +101,7 @@
     border-radius: 25px;
     padding-top: 25px;
     padding-bottom: 25px;
+    min-height: 125px;
     
     /* border: 3px solid rgb(255, 255, 255); */
 }
@@ -166,7 +167,7 @@
 }
 
 .dashboardSideContainer::-webkit-scrollbar {
-    width: 0px;
+    width: 5px;
     height: 8px;
 }
 
@@ -176,7 +177,7 @@
 
 .dashboardSideContainer::-webkit-scrollbar-track {
     /* background: transparent; */
-    background: rgba(255, 255, 255, 0);
+    background: rgba(0, 0, 0, 0)
 }
 
 .dashboardSideContainer::-webkit-scrollbar-thumb {
@@ -294,7 +295,7 @@
     border-radius: 10px;
 }
 
-.labelDistributionElement {
+#labelDistributionElement {
     display: flex;
     width: 100%;
     box-sizing: border-box;
@@ -474,4 +475,35 @@
     align-items: center;
     justify-content: center;
     height: 100%;
+    font-family: settingsHeaderFontBold;
+    font-size: 24px;
+}
+
+.notLoggedInMessage {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    font-family: settingsHeaderFontBold;
+    font-size: 24px;
+    /* border: 1px solid white; */
+}
+
+/* TEMPORARY RESPONSIVE DESIGN CHANGES */
+@media (max-width: 1168px) {
+    #dailyContainer {
+        display: none;
+    }
+    #distributionsContainer {
+        margin-left: 0px;
+    }
+}
+
+@media (max-width: 908px) {
+    #dashboardSummaryStatsContainer {
+        display: none;
+    }
+    #distributionsContainer {
+        width: 100%;
+        margin-right: 0px;
+    }
 }
