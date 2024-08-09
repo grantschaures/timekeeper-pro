@@ -1,9 +1,9 @@
-import { dashboardData, labelDistContainer } from "../modules/dashboard-objects.js";
-import { labelDistributionElement, labelDistributionMonth, labelDistributionTimeFrame, labelDistributionWeek, labelDistributionYear, labelLinesContainer, labelNamesContainer, labelTimesContainer, leftLabelDistributionArrow, rightLabelDistributionArrow } from "../modules/dashboard-elements.js";
-import { timeConvert } from "../modules/index-objects.js";
-import { sessionState } from "../modules/state-objects.js";
+import { dashboardData, labelDistContainer } from '../modules/dashboard-objects.js';
+import { labelDistributionElement, labelDistributionMonth, labelDistributionTimeFrame, labelDistributionWeek, labelDistributionYear, labelLinesContainer, labelNamesContainer, labelTimesContainer, leftLabelDistributionArrow, rightLabelDistributionArrow } from '../modules/dashboard-elements.js';
+import { timeConvert } from '../modules/index-objects.js';
+import { sessionState } from '../modules/state-objects.js';
 
-import { userTimeZone } from "../utility/identification.js";
+import { userTimeZone } from '../utility/identification.js';
 
 // initialization of labelDistContainer (called in populate-dashboard.js)
 export function populateLabelDistContainer(dashboardData, labelDistContainer) {
