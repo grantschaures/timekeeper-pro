@@ -206,7 +206,7 @@ const endSessionReplacements = [
         replacement: "import { subMainContainerTransition } from '../minified/navigation.min.js';"
     },
     {
-        pattern: /import { populateDashboard } '..\/dashboard\/populate-dashboard.js';/g,
+        pattern: /import { populateDashboard } from '..\/dashboard\/populate-dashboard.js';/g,
         replacement: "import { populateDashboard } from '../minified/populate-dashboard.min.js';"
     }
 ]
