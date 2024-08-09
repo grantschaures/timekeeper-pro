@@ -40,7 +40,7 @@ Cypress.Commands.add('reportIconClick', function() {
     cy.clock();
     cy.tick(1000);
     // visible
-    cy.get('[data-testid="reportContainer"]').should('be.visible');
+    cy.get('[data-testid="dashboardContainer"]').should('be.visible');
 })
 
 Cypress.Commands.add('homeIconClick', function() {
@@ -50,7 +50,7 @@ Cypress.Commands.add('homeIconClick', function() {
 
     // invisible
     cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
-    cy.get('[data-testid="reportContainer"]').should('not.be.visible');
+    cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
     cy.get('[data-testid="blogContainer"]').should('not.be.visible');
     cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
     
@@ -65,7 +65,7 @@ Cypress.Commands.add('spaceIconClick', function() {
 
     // invisible
     cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
-    cy.get('[data-testid="reportContainer"]').should('not.be.visible');
+    cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
     cy.get('[data-testid="blogContainer"]').should('not.be.visible');
     cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
     

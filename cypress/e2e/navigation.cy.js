@@ -98,58 +98,58 @@ describe('Navigation', () => {
     //     cy.homeIconClick();
     // })
 
-    it('Basic Three-Way Toggle Arrow-Key Testing', () => {
-        cy.clock();
+    // it('Basic Three-Way Toggle Arrow-Key Testing', () => {
+    //     cy.clock();
 
-        // REPORT <--
-        cy.leftArrowKeyPress();
-            cy.tick(250);
+    //     // REPORT <--
+    //     cy.leftArrowKeyPress();
+    //         cy.tick(250);
 
-            // invisible
-            cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
-            cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
+    //         // invisible
+    //         cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
+    //         cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
 
-            // visible
-            cy.get('[data-testid="reportContainer"]').should('be.visible');
+    //         // visible
+    //         cy.get('[data-testid="dashboardContainer"]').should('be.visible');
 
-            cy.tick(250);
-        // --> HOME
-        cy.rightArrowKeyPress();
-            cy.tick(250);
+    //         cy.tick(250);
+    //     // --> HOME
+    //     cy.rightArrowKeyPress();
+    //         cy.tick(250);
 
-            // invisible
-            cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
-            cy.get('[data-testid="reportContainer"]').should('not.be.visible');
+    //         // invisible
+    //         cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
+    //         cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
             
-            // visible
-            cy.get('[data-testid="subMainContainer"]').should('have.css', 'display', 'flex');
+    //         // visible
+    //         cy.get('[data-testid="subMainContainer"]').should('have.css', 'display', 'flex');
 
-            cy.tick(250);
+    //         cy.tick(250);
         
-        // --> SPACE
-        cy.rightArrowKeyPress();
-            cy.tick(250);
+    //     // --> SPACE
+    //     cy.rightArrowKeyPress();
+    //         cy.tick(250);
 
-            // invisible
-            cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
-            cy.get('[data-testid="reportContainer"]').should('not.be.visible');
+    //         // invisible
+    //         cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
+    //         cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
             
-            // visible
-            cy.get('[data-testid="spaceContainer"]').should('be.visible');
+    //         // visible
+    //         cy.get('[data-testid="spaceContainer"]').should('be.visible');
 
-            cy.tick(250);
+    //         cy.tick(250);
 
-        // HOME <--
-        cy.leftArrowKeyPress();
-            cy.tick(250);
+    //     // HOME <--
+    //     cy.leftArrowKeyPress();
+    //         cy.tick(250);
 
-            // invisible
-            cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
-            cy.get('[data-testid="reportContainer"]').should('not.be.visible');
+    //         // invisible
+    //         cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
+    //         cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
             
-            // visible
-            cy.get('[data-testid="subMainContainer"]').should('have.css', 'display', 'flex');
-    })
+    //         // visible
+    //         cy.get('[data-testid="subMainContainer"]').should('have.css', 'display', 'flex');
+    // })
 
     it('Basic Blog and About Container Testing (in home)', () => {
         cy.openBlog();
@@ -196,7 +196,7 @@ describe('Navigation', () => {
         cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
 
         // visible
-        cy.get('[data-testid="reportContainer"]').should('be.visible');
+        cy.get('[data-testid="dashboardContainer"]').should('be.visible');
         cy.homeIconClick();
 
         // ------------
@@ -208,7 +208,7 @@ describe('Navigation', () => {
 
         // invisible
         cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
-        cy.get('[data-testid="reportContainer"]').should('not.be.visible');
+        cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
         cy.get('[data-testid="blogContainer"]').should('not.be.visible');
         cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
         
@@ -232,7 +232,7 @@ describe('Navigation', () => {
         cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
 
         // visible
-        cy.get('[data-testid="reportContainer"]').should('be.visible');
+        cy.get('[data-testid="dashboardContainer"]').should('be.visible');
 
         cy.homeIconClick();
 
@@ -245,7 +245,7 @@ describe('Navigation', () => {
 
         // invisible
         cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
-        cy.get('[data-testid="reportContainer"]').should('not.be.visible');
+        cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
         cy.get('[data-testid="blogContainer"]').should('not.be.visible');
         cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
         
@@ -263,7 +263,7 @@ describe('Navigation', () => {
         cy.tick(250)
 
         cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
-        cy.get('[data-testid="reportContainer"]').should('not.be.visible');
+        cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
         cy.get('[data-testid="blogContainer"]').should('not.be.visible');
         cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
         cy.get('[data-testid="main"]').should('be.visible');
@@ -277,7 +277,7 @@ describe('Navigation', () => {
         cy.tick(250)
 
         cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
-        cy.get('[data-testid="reportContainer"]').should('not.be.visible');
+        cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
         cy.get('[data-testid="blogContainer"]').should('not.be.visible');
         cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
         cy.get('[data-testid="main"]').should('be.visible');
@@ -291,7 +291,7 @@ describe('Navigation', () => {
         cy.tick(250)
 
         cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
-        cy.get('[data-testid="reportContainer"]').should('not.be.visible');
+        cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
         cy.get('[data-testid="blogContainer"]').should('not.be.visible');
         cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
         cy.get('[data-testid="main"]').should('be.visible');
@@ -305,7 +305,7 @@ describe('Navigation', () => {
         cy.tick(250)
 
         cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
-        cy.get('[data-testid="reportContainer"]').should('not.be.visible');
+        cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
         cy.get('[data-testid="blogContainer"]').should('not.be.visible');
         cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
         cy.get('[data-testid="main"]').should('be.visible');
@@ -335,12 +335,12 @@ describe('Navigation', () => {
         cy.get('[data-testid="blogContainer"]').should('not.be.visible');
         cy.get('[data-testid="blogPostContainer"]').should('not.be.visible');
         cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
-        cy.get('[data-testid="reportContainer"]').should('be.visible');
+        cy.get('[data-testid="dashboardContainer"]').should('be.visible');
         cy.tick(250)
         cy.rightArrowKeyPress(); // --> home
         cy.tick(250)
         cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
-        cy.get('[data-testid="reportContainer"]').should('not.be.visible');
+        cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
         cy.get('[data-testid="blogContainer"]').should('not.be.visible');
         cy.get('[data-testid="blogPostContainer"]').should('not.be.visible');
         cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
@@ -352,7 +352,7 @@ describe('Navigation', () => {
         cy.rightArrowKeyPress(); // --> space
         cy.tick(250)
         cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
-        cy.get('[data-testid="reportContainer"]').should('not.be.visible');
+        cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
         cy.get('[data-testid="blogContainer"]').should('not.be.visible');
         cy.get('[data-testid="blogPostContainer"]').should('not.be.visible');
         cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
@@ -361,7 +361,7 @@ describe('Navigation', () => {
         cy.leftArrowKeyPress(); // home <--
         cy.tick(250)
         cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
-        cy.get('[data-testid="reportContainer"]').should('not.be.visible');
+        cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
         cy.get('[data-testid="blogContainer"]').should('not.be.visible');
         cy.get('[data-testid="blogPostContainer"]').should('not.be.visible');
         cy.get('[data-testid="aboutContainer"]').should('not.be.visible');

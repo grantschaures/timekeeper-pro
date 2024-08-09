@@ -9,10 +9,10 @@ describe('Flowmodoro (Break Notification) Testing', () => {
         cy.get('body').invoke('css', 'overflow-y', 'scroll');
 
         cy.contains("Break Notifications").click();
-        cy.contains("This will notify you after the specified number of minutes in Break").should('be.visible');
+        cy.contains("This will notify you (in break) after a period of time based on previous deep work interval").should('be.visible');
         
         cy.contains("Break Notifications").click();
-        cy.contains("This will notify you after the specified number of minutes in Break").should('not.be.visible');
+        cy.contains("This will notify you (in break) after a period of time based on previous deep work interval").should('not.be.visible');
     })
 
     it('Break Notifications | < 25 min', () => {

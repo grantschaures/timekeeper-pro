@@ -37,7 +37,7 @@ document.addEventListener("stateUpdated", function() {
 
         // If auto switch is turned on, auto switch modes based on presence of labels
         if (flags.transitionNotesAutoSwitchToggle) {
-            if (((flags.tagSelected) && (start_stop_btn.innerText === "Start")) || ((!flags.tagSelected) && (start_stop_btn.innerText === "Stop"))) {
+            if ((flags.tagSelected && !indexflags.inHyperFocus) || (!flags.tagSelected && indexflags.inHyperFocus)) {
                 start_stop_btn.click();
             }
         }
