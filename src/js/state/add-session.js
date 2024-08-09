@@ -28,6 +28,9 @@ export async function addSession(session) {
 
         //update tempStorage w/ sessionId
         tempStorage.sessionId = data.sessionId;
+
+        // update dashboard
+        
         
     } catch (error) {
         console.error('Failed to add session:', error);

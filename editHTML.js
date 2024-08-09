@@ -172,8 +172,8 @@ const googleSignInReplacements = [
         replacement: "import { initializeGUI } from '../minified/initialize-gui.min.js';"
     },
     {
-        pattern: /import { userAgent, userDevice } from '..\/utility\/identification.js';/g,
-        replacement: "import { userAgent, userDevice } from '../minified/identification.min.js';"
+        pattern: /import { userAgent, userDevice, userTimeZone } from '..\/utility\/identification.js';/g,
+        replacement: "import { userAgent, userDevice, userTimeZone } from '../minified/identification.min.js';"
     }
 ];
 
