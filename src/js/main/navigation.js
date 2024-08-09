@@ -1,12 +1,12 @@
-import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn, spaceContainer, shortcutsContainer, shortcutsPopup, shortcutsExit, dashboardContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, flowAnimation, chillAnimation, target_hours_input, streaksContainer, threeWayToggle, labelToDeleteContainer, confirmLabelDeletionPopup, labelSelectionRow, confirmLabelDeletionNoBtn, sessionSummaryOkBtn, sessionSummarySignupPromptPopup, HC_icon_signup_prompt, settingsGUIContainer } from '../modules/dom-elements.js';
+import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn, spaceContainer, shortcutsContainer, shortcutsPopup, shortcutsExit, dashboardContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, flowAnimation, chillAnimation, target_hours_input, streaksContainer, threeWayToggle, labelToDeleteContainer, confirmLabelDeletionPopup, labelSelectionRow, confirmLabelDeletionNoBtn, sessionSummaryOkBtn, sessionSummarySignupPromptPopup, HC_icon_signup_prompt, settingsGUIContainer, darkLightThemeGUIContainer } from '../modules/dom-elements.js';
 import { blogIdList, flags, counters, state } from '../modules/navigation-objects.js';
 import { sessionState } from '../modules/state-objects.js';
 import { flags as indexFlags} from '../modules/index-objects.js';
-import { flags as notesFlags } from '../modules/notes-objects.js';
+import { labelArrs, labelDict, labelFlags, flags as notesFlags, selectedLabelDict } from '../modules/notes-objects.js';
 import { chimePath, bellPath, soundMap } from '../modules/sound-map.js';
 
 import { deleteUserAccount } from '../state/delete-account.js'; // minified
-import { animationsFadeIn, animationsFadeOut, triggerSilentAlertAudioMobile } from '../main/index.js'; // minified
+import { animationsFadeIn, animationsFadeOut, triggerSilentAlertAudioMobile } from './index.js'; // minified
 
 document.addEventListener("stateUpdated", function() {
 
@@ -21,6 +21,7 @@ document.addEventListener("stateUpdated", function() {
         questionIcon.style.display = 'flex';
         streaksContainer.style.display = 'flex';
         settingsGUIContainer.style.display = 'flex';
+        darkLightThemeGUIContainer.style.display = 'flex';
     }
 
     setTimeout(() => {
@@ -31,9 +32,11 @@ document.addEventListener("stateUpdated", function() {
             questionIcon.style.opacity = '1';
             streaksContainer.style.opacity = '1';
             settingsGUIContainer.style.opacity = '1';
+            darkLightThemeGUIContainer.style.opacity = '1';
 
             setTimeout(() => {
                 streaksContainer.style.transition = 'opacity 0.25s ease-in-out, background-color 0.25s ease';
+                darkLightThemeGUIContainer.style.transition = 'opacity 0.25s ease-in-out, background-color 0.25s ease';
             }, 1000)
         }
     }, 1000)
@@ -69,7 +72,8 @@ document.addEventListener("stateUpdated", function() {
     
         // SHOWING ELEMENTS
         blogContainer.style.display = "flex"; // show main blog container
-        fadeInStreaks(streaksContainer, isMobile); // showing streaks container
+        fadeInUIContainer(streaksContainer, isMobile); // showing streaks container
+        fadeInUIContainer(darkLightThemeGUIContainer, isMobile); // showing darkLightThemeGUIContainer
 
         // OTHER CHANGES
         body.style.overflowY = 'hidden'; // no scroll
@@ -96,7 +100,8 @@ document.addEventListener("stateUpdated", function() {
 
         // SHOWING ELEMENTS
         aboutContainer.style.display = "flex"; // show about container
-        fadeInStreaks(streaksContainer, isMobile); // showing streaks container
+        fadeInUIContainer(streaksContainer, isMobile); // showing streaks container
+        fadeInUIContainer(darkLightThemeGUIContainer, isMobile); // showing darkLightThemeGUIContainer
 
         // OTHER CHANGES
         body.style.overflowY = 'hidden'; // no scroll
@@ -323,24 +328,24 @@ document.addEventListener("stateUpdated", function() {
 
 });
 
-function fadeInStreaks(streaksContainer, isMobile) {
+function fadeInUIContainer(container, isMobile) {
     if (!isMobile) {
-        streaksContainer.style.display = 'flex';
+        container.style.display = 'flex';
         setTimeout(() => {
-            streaksContainer.style.opacity = 1;
+            container.style.opacity = 1;
         }, 0)
     }
 }
 
-function fadeOutStreaks(streaksContainer) {
-    streaksContainer.style.opacity = 0;
+function fadeOutUIContainer(container) {
+    container.style.opacity = 0;
     setTimeout(() => {
-        streaksContainer.style.display = 'none';
+        container.style.display = 'none';
     }, 250)
 }
 
 function slimeSwitch() {
-    addPseudoElementStyle('scaleX(1.5)');
+    addPseudoElementStyle('scaleX(1.25)');
     setTimeout(() => {
         addPseudoElementStyle('scaleX(1)');
     }, 150) // halfway through toggle switch
@@ -371,7 +376,8 @@ function handleLeftRightArrowKeys(event) {
         if (event.key === 'ArrowLeft') {
             if (state.lastSelectedMode === 'space') { // --> HOME
                 slimeSwitch();
-                fadeInStreaks(streaksContainer, isMobile);
+                fadeInUIContainer(streaksContainer, isMobile);
+                fadeInUIContainer(darkLightThemeGUIContainer, isMobile); // showing darkLightThemeGUIContainer
                 setDinkleDoinkSetting("home"); // needs to execute first
                 resetMode(dashboardContainer);
                 resetMode(spaceContainer);
@@ -380,7 +386,8 @@ function handleLeftRightArrowKeys(event) {
                 
             } else if (state.lastSelectedMode === 'home') { // --> REPORT
                 slimeSwitch();
-                fadeOutStreaks(streaksContainer);
+                fadeOutUIContainer(streaksContainer);
+                fadeOutUIContainer(darkLightThemeGUIContainer);
                 initializeNewMode(dashboardContainer);
                 isClickNotOnAboutElements(event, about_menu_container, aboutContainer, menuBtn, about_exit, reportIcon, reportPath);
                 isClickNotOnBlogElements(event, blogMenuContainer, blog_post_container, menuBtn, blog_exit);
@@ -396,7 +403,8 @@ function handleLeftRightArrowKeys(event) {
         } else if (event.key === 'ArrowRight') {
             if (state.lastSelectedMode === 'report') { // --> HOME
                 slimeSwitch();
-                fadeInStreaks(streaksContainer, isMobile);
+                fadeInUIContainer(streaksContainer, isMobile);
+                fadeInUIContainer(darkLightThemeGUIContainer, isMobile); // showing darkLightThemeGUIContainer
                 setDinkleDoinkSetting("home"); // needs to execute first
                 resetMode(dashboardContainer);
                 resetMode(spaceContainer);
@@ -405,7 +413,8 @@ function handleLeftRightArrowKeys(event) {
                 
             } else if (state.lastSelectedMode === 'home') { // --> SPACE
                 slimeSwitch();
-                fadeOutStreaks(streaksContainer);
+                fadeOutUIContainer(streaksContainer);
+                fadeOutUIContainer(darkLightThemeGUIContainer);
                 initializeNewMode(spaceContainer);
                 isClickNotOnAboutElements(event, about_menu_container, aboutContainer, menuBtn, about_exit, reportIcon, reportPath);
                 isClickNotOnBlogElements(event, blogMenuContainer, blog_post_container, menuBtn, blog_exit);
@@ -457,11 +466,13 @@ export function subMainContainerTransition(display) {
 }
 
 function initializeNewMode(containerType) {
-    containerType.style.display = "flex";
-    containerType.offsetHeight; // forcing reflow
     setTimeout(() => {
-        containerType.style.opacity = 1;
-    }, 0)
+        containerType.style.display = "flex";
+        containerType.offsetHeight; // forcing reflow
+        setTimeout(() => {
+            containerType.style.opacity = 1;
+        }, 0)
+    }, 100)
 }
 
 function resetMode(containerType) {
@@ -485,7 +496,8 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
                 slimeSwitch(); 
             }
 
-            fadeOutStreaks(streaksContainer);
+            fadeOutUIContainer(streaksContainer);
+            fadeOutUIContainer(darkLightThemeGUIContainer);
             initializeNewMode(dashboardContainer);
             resetMode(spaceContainer);
             subMainContainerTransition("none");
@@ -497,7 +509,8 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
                 slimeSwitch(); 
             }
 
-            fadeInStreaks(streaksContainer, isMobile);
+            fadeInUIContainer(streaksContainer, isMobile);
+            fadeInUIContainer(darkLightThemeGUIContainer, isMobile); // showing darkLightThemeGUIContainer
             setDinkleDoinkSetting("home"); // needs to execute first
             resetMode(dashboardContainer);
             resetMode(spaceContainer);
@@ -509,7 +522,8 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
                 slimeSwitch(); 
             }
 
-            fadeOutStreaks(streaksContainer);
+            fadeOutUIContainer(streaksContainer);
+            fadeOutUIContainer(darkLightThemeGUIContainer);
             initializeNewMode(spaceContainer);
             resetMode(dashboardContainer);
             subMainContainerTransition("none");

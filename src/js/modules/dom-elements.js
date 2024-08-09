@@ -165,6 +165,7 @@ export const transitionNotesAutoSwitchToggle = document.getElementById('transiti
 export const propagateUnfinishedTasksToggle = document.getElementById('propagateUnfinishedTasksToggle');
 export const tutorialImgContainers = document.querySelectorAll('.tutorialImgContainer');
 export const notesBtnContainer = document.getElementById("notesBtnContainer");
+export const flowmodoroBtnContainer = document.getElementById("flowmodoroBtnContainer");
 export const notesSettingsHr1 = document.getElementById('notesSettingsHr1');
 export const notesSettingsHr2 = document.getElementById('notesSettingsHr2');
 export const addingDeletingUpdatingLabelsInfoBlock = document.getElementById('addingDeletingUpdatingLabelsInfoBlock');
@@ -196,6 +197,7 @@ export const questionIcon = document.getElementById("questionIconContainer");
 export const popupQuestionMenu = document.getElementById("popupQuestionMenu");
 
 export const settingsGUIContainer = document.getElementById("settingsGUIContainer");
+export const darkLightThemeGUIContainer = document.getElementById("darkLightThemeGUIContainer");
 
 export const streaksContainer = document.getElementById("streaksContainer");
 export const streaksLoginSuggestionPopup = document.getElementById("streaksLoginSuggestionPopup");
@@ -259,6 +261,9 @@ export const muffinToggle = document.getElementById('muffinToggle');
 
 export const cats = document.querySelectorAll('.cat');
 export const zzz = document.getElementById("zzz");
+
+export const darkContainer = document.getElementById("darkContainer");
+export const lightContainer = document.getElementById("lightContainer");
 
 export let hoverTimer;
 export var backgroundVideoSource = document.getElementById('background-video-source');

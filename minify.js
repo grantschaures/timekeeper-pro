@@ -10,6 +10,7 @@ let files = [
     'src/js/main/navigation.js',
     'src/js/main/notes.js',
     'src/js/main/end-session.js',
+    'src/js/main/populate-dashboard.js',
     'src/js/api/google-signin.js',
     'src/js/state/state.js',
     'src/js/state/update-labels.js',
@@ -25,15 +26,22 @@ let files = [
     'src/js/state/check-invaliDate.js',
     'src/js/state/update-invaliDate.js',
     'src/js/state/add-session.js',
-    'src/js/utility/initialize_gui.js',
+    'src/js/state/update-dashboard.js',
+    'src/js/utility/initialize-gui.js',
     'src/js/utility/preload.js',
-    'src/js/utility/update_streaks.js',
+    'src/js/utility/update-streaks.js',
     'src/js/utility/identification.js',
     'src/js/utility/session-summary-chart.js',
     'src/js/login_signup/login.js',
     'src/js/login_signup/signup.js',
     'src/js/login_signup/reset-password.js',
     'src/js/login_signup/set-password.js',
+
+    'src/js/dashboard/populate-dashboard.js',
+    'src/js/dashboard/daily-sessions.js',
+    'src/js/dashboard/label-distribution.js',
+    'src/js/dashboard/main-charts.js',
+    'src/js/dashboard/summary-stats.js',
 ];
 
 // Function to detect exported names

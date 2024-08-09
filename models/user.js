@@ -21,13 +21,14 @@ const User = db.model("User", {
     loginDate: { type: Date },
     userAgent: { type: String },
     userDevice: { type: String },
-    loginMethod: { type: String }
+    loginMethod: { type: String },
+    timeZone: { type: String }
   },
   lastIntervalSwitch: { type: Date }, // last time the user (value gets replaced each time user switches interval)
   lastActivity: { type: Date },
   sessionRunning: { type: Boolean },
   invaliDate: { type: Date },
-  sessionStartTimeArr: [sessionStartTimeSchema], // array elements expire after 24 hours
+  sessionStartTimeArr: [sessionStartTimeSchema],
   settings: { // could potentially be independent schema w/ own collection
     pomodoro: {
       notificationToggle: { type: Boolean, default: false },

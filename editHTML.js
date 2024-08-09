@@ -37,6 +37,12 @@ const navigationJsPath = './src/js/main/navigation.js';
 const loginJsPath = './src/js/login_signup/login.js';
 const googleSignInPath = './src/js/api/google-signin.js';
 
+const dailySessionsJsPath = './src/js/dashboard/daily-sessions.js';
+const mainChartsJsPath = './src/js/dashboard/main-charts.js';
+const labelDistributionJsPath = './src/js/dashboard/label-distribution.js';
+const summaryStatsJsPath = './src/js/dashboard/summary-stats.js';
+const populateDashboardJsPath = './src/js/dashboard/populate-dashboard.js';
+
 // Define replacements for index.html
 const indexHtmlReplacements = [
     { pattern: /\/js\/main\/index\.js/g, replacement: '/js/minified/index.min.js' },
@@ -46,7 +52,12 @@ const indexHtmlReplacements = [
     { pattern: /\/js\/state\/state\.js/g, replacement: '/js/minified/state.min.js' },
     { pattern: /\/js\/api\/google-signin\.js/g, replacement: '/js/minified/google-signin.min.js' },
     { pattern: /\/js\/utility\/preload\.js/g, replacement: '/js/minified/preload.min.js' },
-    { pattern: /\/js\/utility\/session-summary-chart\.js/g, replacement: '/js/minified/session-summary-chart.min.js' }
+    { pattern: /\/js\/utility\/session-summary-chart\.js/g, replacement: '/js/minified/session-summary-chart.min.js' },
+
+    { pattern: /\/js\/dashboard\/daily-sessions\.js/g, replacement: '/js/minified/daily-sessions.min.js' },
+    { pattern: /\/js\/dashboard\/label-distribution\.js/g, replacement: '/js/minified/label-distribution.min.js' },
+    { pattern: /\/js\/dashboard\/main-charts\.js/g, replacement: '/js/minified/main-charts.min.js' },
+    { pattern: /\/js\/dashboard\/summary-stats\.js/g, replacement: '/js/minified/summary-stats.min.js' }
 ];
 
 const loginHtmlReplacements = [
@@ -67,7 +78,6 @@ const resetPasswordHtmlReplacements = [
     { pattern: /\/js\/login_signup\/reset-password\.js/g, replacement: '/js/minified/reset-password.min.js' }
 ]
 
-// Define replacements for state.js
 const stateReplacements = [
     {
         pattern: /import { setInitialBackgroundCellSelection, deactivateDarkTheme, activateDarkTheme, replaceTargetHours, totalTimeDisplay, intervalTimeToggleGUIUpdate, totalTimeToggleGUIUpdate } from '..\/main\/index.js';/g,
@@ -78,19 +88,19 @@ const stateReplacements = [
         replacement: "import { appendEditRemoveContainer, createCheckElements, getLastNumberFromId, addLabelInputContainerTagDivider, addLabelInitialActions, removeTagSelectionDivider, adjustLabelFontSize } from '../minified/notes.min.js';"
     },
     {
-        pattern: /import { updateStreak } from '..\/utility\/update_streaks.js';/g,
-        replacement: "import { updateStreak } from '../minified/update_streaks.min.js';"
+        pattern: /import { updateStreak } from '..\/utility\/update-streaks.js';/g,
+        replacement: "import { updateStreak } from '../minified/update-streaks.min.js';"
     },
     {
-        pattern: /import { populateDashboard } from '..\/state\/populate-dashboard.js';/g,
+        pattern: /import { populateDashboard } from '..\/dashboard\/populate-dashboard.js';/g,
         replacement: "import { populateDashboard } from '../minified/populate-dashboard.min.js';"
     }
 ];
 
 const indexReplacements = [
     {
-        pattern: /import { initializeGUI } from '..\/utility\/initialize_gui.js';/g,
-        replacement: "import { initializeGUI } from '../minified/initialize_gui.min.js';"
+        pattern: /import { initializeGUI } from '..\/utility\/initialize-gui.js';/g,
+        replacement: "import { initializeGUI } from '../minified/initialize-gui.min.js';"
     },
     {
         pattern: /import { updateUserSettings } from '..\/state\/update-settings.js';/g,
@@ -109,8 +119,8 @@ const indexReplacements = [
         replacement: "import { lastIntervalSwitch } from '../minified/last-interval-switch.min.js';"
     },
     {
-        pattern: /import { userAgent, userDevice } from '..\/utility\/identification.js';/g,
-        replacement: "import { userAgent, userDevice } from '../minified/identification.min.js';"
+        pattern: /import { userAgent, userDevice, userTimeZone } from '..\/utility\/identification.js';/g,
+        replacement: "import { userAgent, userDevice, userTimeZone } from '../minified/identification.min.js';"
     },
     {
         pattern: /import { checkSession } from '..\/state\/check-session.js';/g,
@@ -121,7 +131,7 @@ const indexReplacements = [
         replacement: "import { updateInvaliDate } from '../minified/update-invaliDate.min.js';"
     },
     {
-        pattern: /import { initialVisualReset, sessionReset } from '..\/main\/end-session.js';/g,
+        pattern: /import { initialVisualReset, sessionReset } from '.\/end-session.js';/g,
         replacement: "import { initialVisualReset, sessionReset } from '../minified/end-session.min.js';"
     }
 ];
@@ -151,26 +161,26 @@ const navigationReplacements = [
         replacement: "import { deleteUserAccount } from '../minified/delete-account.min.js';"
     },
     {
-        pattern: /import { animationsFadeIn, animationsFadeOut, triggerSilentAlertAudioMobile } from '..\/main\/index.js';/g,
+        pattern: /import { animationsFadeIn, animationsFadeOut, triggerSilentAlertAudioMobile } from '.\/index.js';/g,
         replacement: "import { animationsFadeIn, animationsFadeOut, triggerSilentAlertAudioMobile } from '../minified/index.min.js';"
     }
 ]
 
 const googleSignInReplacements = [
     {
-        pattern: /import { initializeGUI } from '..\/utility\/initialize_gui.js';/g,
-        replacement: "import { initializeGUI } from '../minified/initialize_gui.min.js';"
+        pattern: /import { initializeGUI } from '..\/utility\/initialize-gui.js';/g,
+        replacement: "import { initializeGUI } from '../minified/initialize-gui.min.js';"
     },
     {
-        pattern: /import { userAgent, userDevice } from '..\/utility\/identification.js';/g,
-        replacement: "import { userAgent, userDevice } from '../minified/identification.min.js';"
+        pattern: /import { userAgent, userDevice, userTimeZone } from '..\/utility\/identification.js';/g,
+        replacement: "import { userAgent, userDevice, userTimeZone } from '../minified/identification.min.js';"
     }
 ];
 
 const loginReplacements = [
     {
-        pattern: /import { initializeGUI } from '..\/utility\/initialize_gui.js';/g,
-        replacement: "import { initializeGUI } from '../minified/initialize_gui.min.js';"
+        pattern: /import { initializeGUI } from '..\/utility\/initialize-gui.js';/g,
+        replacement: "import { initializeGUI } from '../minified/initialize-gui.min.js';"
     },
     {
         pattern: /import { userAgent, userDevice } from '..\/utility\/identification.js';/g,
@@ -180,11 +190,7 @@ const loginReplacements = [
 
 const endSessionReplacements = [
     {
-        pattern: /import { sessionCompletion } from '..\/state\/session-completion.js';/g,
-        replacement: "import { sessionCompletion } from '../minified/session-completion.min.js';"
-    },
-    {
-        pattern: /import { animationsFadeIn, animationsFadeOut, getTotalElapsed, returnTotalTimeString, updateLabelArrs, setBackground, pauseAndResetAlertSounds, resetDisplay, updateProgressBar, totalTimeDisplay, setButtonTextAndMode, hideSuggestionBreakContainer, hidePomodorosCompletedContainer, showInterruptionsSubContainer, setFavicon, observer, pomodoroWorker, suggestionWorker, flowmodoroWorker, displayWorker, totalDisplayWorker, updateDataPerHour, hideCat } from '..\/main\/index.js';/g,
+        pattern: /import { animationsFadeIn, animationsFadeOut, getTotalElapsed, returnTotalTimeString, updateLabelArrs, setBackground, pauseAndResetAlertSounds, resetDisplay, updateProgressBar, totalTimeDisplay, setButtonTextAndMode, hideSuggestionBreakContainer, hidePomodorosCompletedContainer, showInterruptionsSubContainer, setFavicon, observer, pomodoroWorker, suggestionWorker, flowmodoroWorker, displayWorker, totalDisplayWorker, updateDataPerHour, hideCat } from '.\/index.js';/g,
         replacement: "import { animationsFadeIn, animationsFadeOut, getTotalElapsed, returnTotalTimeString, updateLabelArrs, setBackground, pauseAndResetAlertSounds, resetDisplay, updateProgressBar, totalTimeDisplay, setButtonTextAndMode, hideSuggestionBreakContainer, hidePomodorosCompletedContainer, showInterruptionsSubContainer, setFavicon, observer, pomodoroWorker, suggestionWorker, flowmodoroWorker, displayWorker, totalDisplayWorker, updateDataPerHour, hideCat } from '../minified/index.min.js';"
     },
     {
@@ -196,10 +202,42 @@ const endSessionReplacements = [
         replacement: "import { addSession } from '../minified/add-session.min.js';"
     },
     {
-        pattern: /import { subMainContainerTransition } from '..\/main\/navigation.js';/g,
+        pattern: /import { subMainContainerTransition } from '.\/navigation.js';/g,
         replacement: "import { subMainContainerTransition } from '../minified/navigation.min.js';"
+    },
+    {
+        pattern: /import { populateDashboard } from '..\/dashboard\/populate-dashboard.js';/g,
+        replacement: "import { populateDashboard } from '../minified/populate-dashboard.min.js';"
     }
 ]
+
+// DASHBOARD
+
+const summaryStatsReplacements = [
+    {
+        pattern: /import { focusQualityCalculation } from '.\/populate-dashboard.js';/g,
+        replacement: "import { focusQualityCalculation } from '../minified/populate-dashboard.min.js';"
+    }
+]
+
+const populateDashboardReplacements = [
+    {
+        pattern: /import { populateDashboardSummaryStats } from '.\/summary-stats.js';/g,
+        replacement: "import { populateDashboardSummaryStats } from '../minified/summary-stats.min.js';"
+    },
+    {
+        pattern: /import { populateLabelDistContainer } from '.\/label-distribution.js';/g,
+        replacement: "import { populateLabelDistContainer } from '../minified/label-distribution.min.js';"
+    }
+]
+
+const labelDistributionReplacements = [
+    {
+        pattern: /import { userTimeZone } from '..\/utility\/identification.js';/g,
+        replacement: "import { userTimeZone } from '../minified/identification.min.js';"
+    }
+]
+
 
 // Update index.html
 readFileAndReplace(indexHtmlPath, indexHtmlReplacements);
@@ -224,3 +262,6 @@ readFileAndReplace(navigationJsPath, navigationReplacements);
 readFileAndReplace(googleSignInPath, googleSignInReplacements);
 readFileAndReplace(loginJsPath, loginReplacements);
 readFileAndReplace(endSessionJsPath, endSessionReplacements);
+readFileAndReplace(summaryStatsJsPath, summaryStatsReplacements);
+readFileAndReplace(populateDashboardJsPath, populateDashboardReplacements);
+readFileAndReplace(labelDistributionJsPath, labelDistributionReplacements);

@@ -1,5 +1,6 @@
 export const userAgent = navigator.userAgent;
 export const userDevice = getDeviceType();
+export const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 function getDeviceType() {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;

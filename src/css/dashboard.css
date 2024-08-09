@@ -1,5 +1,5 @@
 #dashboardContainer {
-    display: flex; 
+    display: none;
     position: relative;
     width: 90%;
     height: calc(100% - 105px);
@@ -10,44 +10,59 @@
     align-items: center;
     flex-direction: column; 
     box-sizing: border-box;
+    border-radius: 25px;
+    backdrop-filter: blur(100px);
+    -webkit-backdrop-filter: blur(100px);
     margin-top: 25px;
     
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }
 
-#dashboardSubContainer {
-    display: flex;
+#dashboardContainerCover {
+    display: none;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 1);
     box-sizing: border-box;
     border-radius: 25px;
     z-index: 10;
-    padding: 20px;
-    justify-content: flex-end;
-    flex-direction: column;
+    text-align: center;
+
+    align-items: center;
+    justify-content: center;
 
     color: white;
-    font-family: myFont2;
+    font-family: settingsHeaderFontBold;
+}
+
+#dashboardSubContainer {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.25);
+    justify-content: space-between;
+    box-sizing: border-box;
+    border-radius: 25px;
+    z-index: 10;
+    padding: 20px;
+    min-height: 250px;
+
+    color: white;
+    font-family: settingsHeaderFontBold;
 }
 
 .no-transition {
     transition: none !important;
 }
 
-#mainDashboardContainers {
-    display: flex;
-    margin-top: 10px;
-    height: 100%;
-    min-height: 250px;
-}
-
 #distributionsContainer {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 75%;
     margin-left: 10px;
+    margin-right: 10px;
+    max-width: 1000px;
 }
 
 #metricDistributionContainer {
@@ -55,59 +70,40 @@
     position: relative;
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.1);
+    /* background-color: rgba(255, 255, 255, 0.1); */
+    background-color: rgba(0, 0, 0, 1);
     box-sizing: border-box;
     border-radius: 25px;
     z-index: 10;
     margin-bottom: 10px;
 
     color: white;
-    font-family: myFont2;
-}
-
-#labelDistributionContainer {
-    display: flex;
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.1);
-    box-sizing: border-box;
-    border-radius: 25px;
-    z-index: 10;
-    margin-top: 10px;
-    
-    color: white;
-    font-family: myFont2;
-
 }
 
 #dashboardSummaryStatsContainer {
     display: flex;
-    position: relative;
-    width: 100%;
-    height: 80px;
-    min-height: 80px;
-    /* background-color: rgba(255, 255, 255, 0.1); */
     box-sizing: border-box;
-    border-radius: 25px;
-    z-index: 10;
-    margin-bottom: 10px;
-
-    justify-content: space-between;
-    align-items: center;
+    justify-content: space-around;
+    width: 225px;
+    margin-left: 10px;
+    flex-shrink: 0;
+    flex-grow: 0;
 }
 
 .summaryStatContainer {
     display: flex;
-    align-items: left;
+    align-items: center;
     justify-content: center;
     box-sizing: border-box;
     flex-direction: column;
-    height: 100%;
+    height: 80px;
     padding: 10px;
     border-radius: 25px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    min-height: 125px;
     
-    border: 3px solid rgb(255, 255, 255);
+    /* border: 3px solid rgb(255, 255, 255); */
 }
 
 .summaryStatHeader {
@@ -116,8 +112,8 @@
     font-family: settingsHeaderFont; 
     justify-content: left;
     box-sizing: border-box;
-
-    text-align: left;
+    margin-bottom: 10px;
+    font-size: 20px;
     
     /* border: 2px solid yellow; */
 }
@@ -130,94 +126,71 @@
     font-family: settingsHeaderFontBold;
     box-sizing: border-box;
     /* border: 2px solid green; */
+
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 25px;
+    border: 3px solid rgb(255, 255, 255);
 }
 
-#avgDeepWorkPerDayStatContainer, #avgFocusQualityPerDayStatContainer, #avgDistractionsPerHourStatContainer {
-    margin-left: 10px;
-    margin-right: 10px;
-}
-
-#totalDeepWorkSummaryStatContainer {
-    margin-right: 10px;
-}
-
-#mostFocusedHourStatContainer {
-    margin-left: 10px;
-}
-
-@media(max-width: 1114px) {
-    .summaryStatHeader {
-        font-size: 14px;
-    }
-    .summaryStat {
-        font-size: 20px;
-    }
-}
-
-@media(max-width: 978px) {
-    .summaryStatHeader {
-        font-size: 12px;
-    }
-    .summaryStat {
-        font-size: 18px;
-    }
-}
-
-@media(max-width: 915px) {
-    .summaryStatHeader {
-        font-size: 9px;
-    }
-}
-
-@media(max-width: 852px) {
-    .summaryStat {
-        font-size: 16px;
-    }
-}
-
-@media(max-width: 655px) {
-    .summaryStat {
-        font-size: 14px;
-    }
-}
-
-@media(max-width: 550px) {
-    .summaryStatHeader {
-        display: none;
-    }
-}
-
-@media(max-width: 480px) {
-    #avgDeepWorkPerDayStatContainer, #avgFocusQualityPerDayStatContainer, #avgDistractionsPerHourStatContainer {
-        margin-left: 2px;
-        margin-right: 2px;
-    }
-    #totalDeepWorkSummaryStatContainer {
-        margin-right: 2px;
-    }
-    #mostFocusedHourStatContainer {
-        margin-left: 2px;
-    }
-}
-
-#dailyContainer {
+.dashboardSummaryDivider {
     display: flex;
     position: relative;
-    width: 400px;
-    min-width: 200px;
+    height: 1px;
+    width: 100%; 
+    background-color: rgba(255, 255, 255, 0.25);
+    border: none; /* Remove the default border */
+    margin: 0; /* Optionally, remove the default margin */
+    padding: 0; /* Optionally, remove the default padding */
+}
+
+.dashboardSideContainer {
+    display: flex;
+    position: relative;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.1);
+    /* background-color: rgba(255, 255, 255, 0.1); */
+    background-color: rgba(0, 0, 0, 1);
     box-sizing: border-box;
     border-radius: 25px;
     z-index: 10;
-    margin-right: 10px;
-    padding: 10px;
+    padding: 15px;
     flex-direction: column;
-
-    /* border: 3px solid rgb(255, 255, 255); */
-
     color: white;
-    font-family: myFont2;
+    overflow-y: scroll;
+}
+
+#dailyContainer {
+    width: 400px;
+    min-width: 200px;
+}
+
+.dashboardSideContainer::-webkit-scrollbar {
+    width: 5px;
+    height: 8px;
+}
+
+.dashboardSideContainer::-webkit-scrollbar:hover {
+    cursor: pointer;
+}
+
+.dashboardSideContainer::-webkit-scrollbar-track {
+    /* background: transparent; */
+    background: rgba(0, 0, 0, 0)
+}
+
+.dashboardSideContainer::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+}
+
+.margin-bottom {
+    margin-bottom: 20px;
+}
+
+#dailyContainer {
+    margin-right: 10px;
 }
 
 #dailyHeaderContainer {
@@ -251,16 +224,25 @@
 }
 
 #leftDailyArrow {
-    margin-right: 10px;
+    padding-right: 10px;
 }
 
 #rightDailyArrow {
-    margin-left: 10px;
+    padding-left: 10px;
 }
 
 .dailyArrow {
     width: 12px;
-    height: auto;
+    height: 20px;
+    transition: transform 0.25s ease-out;
+}
+
+.dailyArrow:hover {
+    cursor:  pointer;
+}
+
+.dailyArrow:active {
+    transform: scale(0.8);
 }
 
 #weeklySummaries {
@@ -268,4 +250,260 @@
     height: 50px;
 
     /* border: 2px solid blue; */
+}
+
+.dailyContainer {
+    box-sizing: border-box;
+    /* border: 2px solid blue; */
+}
+
+/* LABEL DISTRIBUTION */
+
+#labelDistributionContainer {
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 1);
+    box-sizing: border-box;
+    flex-direction: column;
+    border-radius: 25px;
+    z-index: 10;
+    margin-top: 10px;
+    padding: 15px;
+    overflow-y: scroll;
+    
+    color: white;
+}
+
+#labelDistributionContainer::-webkit-scrollbar {
+    width: 0px;
+    height: 8px;
+}
+
+#labelDistributionContainer::-webkit-scrollbar:hover {
+    cursor: pointer;
+}
+
+#labelDistributionContainer::-webkit-scrollbar-track {
+    /* background: transparent; */
+    background: rgba(255, 255, 255, 0);
+}
+
+#labelDistributionContainer::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+}
+
+#labelDistributionElement {
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 20px;
+    font-family: settingsHeaderFontBold;
+    align-items: center;
+    justify-content: space-between;
+    
+    /* border: 2px solid yellow; */
+}
+
+#labelNamesContainer {
+    display: flex;
+    text-align: left;
+    margin-right: 10px;
+    white-space: nowrap;
+    height: 100%;
+    box-sizing: border-box;
+    align-items: left;
+    font-family: settingsHeaderFont;
+    flex-direction: column;
+
+    /* border: 2px solid white; */
+}
+
+.labelName {
+    display: flex;
+    align-items: center;
+
+    /* border: 1px solid yellowgreen; */
+}
+
+.labelName, .labelLineContainer, .labelTime {
+    height: 30px;
+}
+
+#labelLinesContainer {
+    display: flex;
+    width: 100%;
+    height: auto;
+    align-items: center;
+    flex-direction: column;
+
+    /* border: 2px solid red; */
+}
+
+.labelLineContainer {
+    display: flex;
+    width: 100%;
+
+    align-items: center;
+
+    /* border: 1px solid white; */
+}
+
+#labelTimesContainer {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+
+    /* border: 2px solid blue; */
+}
+
+.labelLine {
+    position: relative;
+    border-radius: 25px;
+    height: 10px;
+    background: linear-gradient(135deg, rgba(130, 0, 170, 0.8), rgb(162, 0, 212), rgba(190, 90, 240, 0.8));
+    background-size: 200% 200%;
+    animation: gradientShift 15s linear infinite;
+    transition: width 1s cubic-bezier(0.25, 0.1, 0.25, 1);
+    border: 2px solid white;
+}
+
+@keyframes gradientShift2 {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+#testLabelLine1 {
+    width: 100%;
+}
+
+#testLabelLine2 {
+    width: 75%;
+}
+
+#testLabelLine3 {
+    width: 55%;
+}
+
+.labelTime {
+    display: flex;
+    white-space: nowrap;
+    justify-content: left;
+    align-items: center;
+    box-sizing: border-box;
+    font-family: settingsHeaderFont;
+    font-size: 18px;
+
+    /* border: 1px solid rgba(255, 255, 255, 1); */
+}
+
+#labelDistributionHeaderContainer {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    box-sizing: border-box;
+    font-family: settingsHeaderFont;
+    font-size: 18px;
+    align-items: center;
+    margin-bottom: 10px;
+
+    /* border: 2px solid white; */
+}
+
+#labelDistributionArrowsAndSelections {
+    display: flex;
+}
+
+#labelDistributionSelections {
+    display: flex;
+}
+
+#labelDistributionArrows {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#leftLabelDistributionArrow {
+    padding-right: 10px;
+}
+
+#rightLabelDistributionArrow {
+    padding-left: 10px;
+}
+
+.labelDistributionSelection {
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 5px 15px;
+    border-radius: 25px;
+}
+
+.labelDistributionSelection:not(.labelDistributionSelected):hover {
+    cursor: pointer;
+}
+
+.labelDistributionSelected {
+    background: linear-gradient(135deg, rgba(130, 0, 170, 0.8), rgb(162, 0, 212), rgba(190, 90, 240, 0.8));
+    background-size: 200% 200%;
+    animation: gradientShift 15s linear infinite;
+}
+
+.labelDistributionSelected:hover {
+    cursor: pointer;
+}
+
+#labelDistributionTimeFrame {
+    display: flex;
+    white-space: nowrap;
+    margin-left: 10px;
+}
+
+#dailyBodyContainer, #metricDistributionContainer {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-family: settingsHeaderFontBold;
+    font-size: 24px;
+}
+
+.notLoggedInMessage {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    font-family: settingsHeaderFontBold;
+    font-size: 24px;
+    /* border: 1px solid white; */
+}
+
+/* TEMPORARY RESPONSIVE DESIGN CHANGES */
+@media (max-width: 1168px) {
+    #dailyContainer {
+        display: none;
+    }
+    #distributionsContainer {
+        margin-left: 0px;
+    }
+}
+
+@media (max-width: 908px) {
+    #dashboardSummaryStatsContainer {
+        display: none;
+    }
+    #distributionsContainer {
+        width: 100%;
+        margin-right: 0px;
+    }
 }

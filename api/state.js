@@ -18,10 +18,12 @@ router.get("/sessionValidation", async function(req, res) {
     }
 
     try {
+        console.log("Endpoint 1 reached")
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
         const user = await User.findById(decoded.userId);
 
         if (user) {
+            console.log("Endpoint 2 reached")
             const note = await Note.findOne({ userId: user._id });
             const report = await Report.findOne({ userId: user._id });
             const sessions = await Session.find({ userId: user._id });

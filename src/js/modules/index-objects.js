@@ -1,4 +1,5 @@
-export const homeBackground = 'linear-gradient(90deg, #0cc1ce, #700cce, #b004c7)';
+export const lightHtmlBackground = 'linear-gradient(90deg, #0cc1ce, #700cce, #b004c7)';
+export const darkHtmlBackground = 'linear-gradient(270deg, #202020, #202020, #202020)';
 
 export const selectedBackground = {
     "flowtime": 'linear-gradient(90deg, #00c510, #00c431, #00c59a)',
@@ -156,7 +157,7 @@ export const flags = {
     inRecoveryPom: false,
     flowTimeAnimationToggle: false,
     chillTimeAnimationToggle: false,
-    darkThemeActivated: true,
+    darkThemeActivated: false,
     modeChangeExecuted: false,
     sentFlowmodoroNotification: false,
     sentSuggestionMinutesNotification: false,
@@ -222,6 +223,10 @@ export const catIds = [
     'cat7',
     'cat8',
 ]
+
+export const tempCounters = {
+    catIdsArrIndex: 0
+}
 
 export const times = {
     start: null,

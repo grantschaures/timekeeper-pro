@@ -1,4 +1,4 @@
-import { timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, counters, flags, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, homeBackground, times, perHourData, catIds } from '../modules/index-objects.js';
+import { timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, counters, flags, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, lightHtmlBackground, darkHtmlBackground, times, perHourData, catIds, tempCounters } from '../modules/index-objects.js';
 import { start_stop_btn, end_session_btn, total_time_display, productivity_chill_mode, progressBar, progressContainer, display, interruptionsSubContainer, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, flowAnimation, chillAnimation, hyperChillLogoImage, streaksCount, breakBackground, deepWorkBackground, commentsTextArea, sessionSummaryOkBtn, subjectiveFeedbackDropdown, sessionSummaryPopup, summaryStats, HC_icon_session_summary, commentsContainer, sessionSummarySignupPromptPopup, popupOverlay, HC_icon_signup_prompt, signupPromptPopupBtn } from '../modules/dom-elements.js';
 import { soundMap } from '../modules/sound-map.js';
 import { sessionState } from '../modules/state-objects.js';
@@ -6,19 +6,15 @@ import { labelFlags, labelArrs, labelDict } from '../modules/notes-objects.js';
 import { tempStorage, flags as summaryFlags } from '../modules/summary-stats.js';
 import { flags as navFlags } from '../modules/navigation-objects.js';
 
-import { sessionCompletion } from '../state/session-completion.js'; // minified
-import { animationsFadeIn, animationsFadeOut, getTotalElapsed, returnTotalTimeString, updateLabelArrs, setBackground, pauseAndResetAlertSounds, resetDisplay, updateProgressBar, totalTimeDisplay, setButtonTextAndMode, hideSuggestionBreakContainer, hidePomodorosCompletedContainer, showInterruptionsSubContainer, setFavicon, observer, pomodoroWorker, suggestionWorker, flowmodoroWorker, displayWorker, totalDisplayWorker, updateDataPerHour, hideCat } from '../main/index.js'; // minified
+import { animationsFadeIn, animationsFadeOut, getTotalElapsed, returnTotalTimeString, updateLabelArrs, setBackground, pauseAndResetAlertSounds, resetDisplay, updateProgressBar, totalTimeDisplay, setButtonTextAndMode, hideSuggestionBreakContainer, hidePomodorosCompletedContainer, showInterruptionsSubContainer, setFavicon, observer, pomodoroWorker, suggestionWorker, flowmodoroWorker, displayWorker, totalDisplayWorker, updateDataPerHour, hideCat } from './index.js'; // minified
 import { checkInvaliDate } from '../state/check-invaliDate.js'; // minified
 import { addSession } from '../state/add-session.js'; // minified
-import { subMainContainerTransition } from '../main/navigation.js'; // minified
+import { subMainContainerTransition } from './navigation.js'; // minified
+import { populateDashboard } from '../dashboard/populate-dashboard.js'; // minified
 
 const defaultFavicon = "/images/logo/HyperChillLogo_circular_white_border.png";
 
 var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-let tempCounters = {
-    catIdsArrIndex: 0
-}
 
 document.addEventListener("stateUpdated", function() {
     end_session_btn.addEventListener("click", async function() {
@@ -99,6 +95,7 @@ document.addEventListener("stateUpdated", function() {
 // -----------------
 // MAIN FUNCTIONS
 // -----------------
+
 function isMoreThan1000Chars(inputStr) {
     if (inputStr.length > 1000) {
         return true;
@@ -168,6 +165,8 @@ async function updateSessionSummary(tempStorage, commentsTextArea, subjectiveFee
 
         const data = await response.json();
         console.log("Session summary updated successfully:", data);
+
+        populateDashboard(data.noteSessionData.sessions, data.noteSessionData.note);
         
     } catch (error) {
         console.error('Failed to update session summary:', error);
@@ -272,7 +271,7 @@ export function sessionReset(logSessionActivity) {
 
     // reset background to default
     resetBackgrounds(deepWorkBackground, breakBackground);
-    resetHtmlBackground(homeBackground);
+    resetHtmlBackground(lightHtmlBackground, darkHtmlBackground);
     document.documentElement.style.backgroundSize = '400% 400%';
 
     // reset alerts
@@ -432,8 +431,6 @@ function sumTotalLabelTime(labelArrs, labelDict) {
         let arr = labelArrs[key];
         let timeSum = 0;
 
-        // console.log(labelArrs);
-
         for (let i = 1; i < arr.length; i += 2) {
             timeSum += arr[i] - arr[i-1];
         }
@@ -442,16 +439,20 @@ function sumTotalLabelTime(labelArrs, labelDict) {
         labelTimeSum[labelTimesKey] = timeSum;
 
         // PRINTING OUT LABEL TIMES
-        // let totalLabelTimeStr = returnTotalTimeString(timeSum, timeConvert);
-        // let labelName = key;
-        // console.log(labelName + ": " + totalLabelTimeStr);
+        let totalLabelTimeStr = returnTotalTimeString(timeSum, timeConvert);
+        let labelName = key;
+        console.log(labelName + ": " + totalLabelTimeStr);
     }
 
     return labelTimeSum;
 }
 
-function resetHtmlBackground(homeBackground) {
-    document.documentElement.style.backgroundImage = homeBackground;
+function resetHtmlBackground(lightHtmlBackground, darkHtmlBackground) {
+    if (flags.darkThemeActivated) {
+        document.documentElement.style.backgroundImage = darkHtmlBackground;
+    } else {
+        document.documentElement.style.backgroundImage = lightHtmlBackground;
+    }
 }
 
 function getKeyByValue(obj, targetValue) {
@@ -563,6 +564,9 @@ export function initialVisualReset(tempCounters) {
 
     // remove cats
     hideCat(catIds, tempCounters);
+
+    // reset tempCounters
+    resetPropertiesToZero(tempCounters);
     
     // reset interruptions text to counters.interruptions, which has already been reset to 0
     interruptionsNum.textContent = 0;

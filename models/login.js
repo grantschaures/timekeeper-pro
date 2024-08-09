@@ -9,7 +9,8 @@ const Login = db.model("Login", {
   loginDate: { type: Date, required: true },
   userAgent: { type: String, required: true },
   userDevice: { type: String, required: true },
-  loginMethod: { type: String, required: true }
+  loginMethod: { type: String, required: true },
+  timeZone: { type: String, required: true }
 }, 'Logins');
 
 module.exports = Login;

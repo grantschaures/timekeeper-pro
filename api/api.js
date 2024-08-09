@@ -38,6 +38,7 @@ router.post("/validateUser", loginLimiter, async function(req, res) {
     const password = req.body.user.password;
     const userAgent = req.body.userAgent;
     const userDevice = req.body.userDevice;
+    const timeZone = req.body.userTimeZone;
     const loginMethod = "Email";
 
     let loginDate = new Date();
@@ -45,9 +46,10 @@ router.post("/validateUser", loginLimiter, async function(req, res) {
         loginDate,
         userAgent,
         userDevice,
-        loginMethod
+        loginMethod,
+        timeZone
     }
-
+    
     try {
         const user = await User.findOne({ email: email });
         if (user && await bcrypt.compare(password, user.password)) {
@@ -116,13 +118,12 @@ router.post("/verifyIdToken", async function(req, res) {
     const session = await mongoose.startSession();
     session.startTransaction();
 
-    console.log("test")
-
     try {
         console.log("/verifyIdToken endpoint has been reached");
         const token = req.body.idToken;
         const userAgent = req.body.userAgent;
         const userDevice = req.body.userDevice;
+        const timeZone = req.body.userTimeZone;
         const loginMethod = "Google";
 
         // Google OAuth2 server verification of token
@@ -140,7 +141,8 @@ router.post("/verifyIdToken", async function(req, res) {
             loginDate,
             userAgent,
             userDevice,
-            loginMethod
+            loginMethod,
+            timeZone
         }
 
         let newLogin;

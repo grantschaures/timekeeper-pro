@@ -10,10 +10,8 @@
     /* border: 3px solid rgb(255, 255, 255); */
     z-index: 30;
     border-radius: 25px;
-    max-width: 600px;
     height: 250px;
     display: block;
-    /* display: none; */
     /* border: 2px solid yellow; */
 
     width: 100%;
@@ -449,6 +447,7 @@
 
 #task-prompt {
     font-family: myFont2;
+
     font-size: 24px;
     color: rgba(255, 255, 255, 0.50);
     margin-top: 2px;
@@ -513,7 +512,8 @@
     justify-content: center;
     align-items: center;
     font-family: myFont3;
-    background-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(100px);
     border-radius: 50px;
     font-size: 20px;
     color: white;
@@ -527,7 +527,8 @@
 }
 
 .tag-text:not(#selection-done):not(.create-label):hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(100px);
 }
 
 #selection-done:hover, .create-label:hover {
@@ -971,4 +972,8 @@
     .editRemoveContainer {
         display: none;
     }
+}
+
+.noteShortcut {
+    padding-left: 25px;
 }

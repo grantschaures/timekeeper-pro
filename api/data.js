@@ -30,12 +30,13 @@ router.post("/update-session-summary", async function(req, res) {
     try {
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
         const userId = decoded.userId;
+
         const user = await User.findById(userId);
 
         if (user) {
 
+            // WRITING TO DB
             const report = await Report.findOne({ userId: user._id });
-
             if (!report) {
                 return res.status(404).json({
                     message: "Report not found"
@@ -43,7 +44,6 @@ router.post("/update-session-summary", async function(req, res) {
             }
 
             const session = await Session.findById(sessionId);
-
             if (!session) {
                 return res.status(404).json({
                     message: "Session not found"
@@ -63,14 +63,36 @@ router.post("/update-session-summary", async function(req, res) {
 
             await report.save();
             await session.save();
-            res.json({ success: true, message: 'update-session-summary endpoint reached successfully'});
+
+            // READING FROM DB
+            const note = await Note.findOne({ userId: user._id });
+            if (!note) {
+                return res.status(404).json({
+                    message: "Note not found"
+                });
+            }
+
+            const sessions = await Session.find({ userId: user._id });
+            if (sessions.length === 0) {
+                return res.status(404).json({
+                    message: "No sessions found"
+                });
+            }
+
+            let noteSessionData = {
+                note: note,
+                sessions: sessions
+            }
+            
+            res.json({ noteSessionData, success: true, message: 'update-session-summary endpoint reached successfully'});
+
         } else {
             return res.status(404).json({ 
                 message: "User not found"
             });
         }
     } catch (error) {
-        return res.status(401).json({
+        return res.status(500).json({
             message: "The server was unable to process the request: " + error.message
         });
     }
@@ -91,6 +113,7 @@ router.post("/update-report", async function(req, res) {
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
         const userId = decoded.userId;
         const user = await User.findById(userId);
+
         // console.log("update-report endpoint: " + Date.now());
 
         if (user) {
@@ -126,7 +149,7 @@ router.post("/update-report", async function(req, res) {
             });
         }
     } catch (error) {
-        return res.status(401).json({
+        return res.status(500).json({
             message: "The server was unable to process the request: " + error.message
         });
     }
@@ -158,7 +181,7 @@ router.post("/update-invaliDate", async function(req, res) {
             });
         }
     } catch (error) {
-        return res.status(401).json({
+        return res.status(500).json({
             message: "The server was unable to process the request: " + error.message
         });
     }
@@ -208,7 +231,7 @@ router.post("/check-invaliDate", async function(req, res) {
             });
         }
     } catch (error) {
-        return res.status(401).json({
+        return res.status(500).json({
             message: "The server was unable to process the request: " + error.message
         });
     }
@@ -235,7 +258,7 @@ router.post("/check-session", async function(req, res) {
             });
         }
     } catch (error) {
-        return res.status(401).json({
+        return res.status(500).json({
             message: "The server was unable to process the request: " + error.message
         });
     }
@@ -291,7 +314,7 @@ router.delete("/delete-account", async function(req, res) {
             });
         }
     } catch (error) {
-        return res.status(401).json({
+        return res.status(500).json({
             message: "The server was unable to process the request: " + error.message
         });
     }
@@ -337,7 +360,7 @@ router.post("/last-interval-switch", async function(req, res) {
             });
         }
     } catch (error) {
-        return res.status(401).json({
+        return res.status(500).json({
             message: "The server was unable to process the request: " + error.message
         });
     }
@@ -369,7 +392,7 @@ router.post("/update-showing-time-left", async function(req, res) {
             });
         }
     } catch (error) {
-        return res.status(401).json({
+        return res.status(500).json({
             message: "The server was unable to process the request: " + error.message
         });
     }
@@ -405,7 +428,7 @@ router.post("/update-target-hours", async function(req, res) {
             });
         }
     } catch (error) {
-        return res.status(401).json({
+        return res.status(500).json({
             message: "The server was unable to process the request: " + error.message
         });
     }
@@ -444,7 +467,7 @@ router.post("/update-settings", async function(req, res) {
             });
         }
     } catch (error) {
-        return res.status(401).json({
+        return res.status(500).json({
             message: "The server was unable to process the request: " + error.message
         });
     }
@@ -496,7 +519,7 @@ router.post("/update-deleted-labels", async function(req, res) {
             note: note
         });
     } catch (error) {
-        return res.status(401).json({
+        return res.status(500).json({
             message: "The server was unable to process the request: " + error.message
         });
     }
@@ -559,7 +582,7 @@ router.post("/update-labels", async function(req, res) {
             note: note
         });
     } catch (error) {
-        return res.status(401).json({
+        return res.status(500).json({
             message: "The server was unable to process the request: " + error.message
         });
     }
@@ -612,7 +635,7 @@ router.post("/update-notes", async function(req, res) {
             note: note
         });
     } catch (error) {
-        return res.status(401).json({
+        return res.status(500).json({
             message: "The server was unable to process the request: " + error.message
         });
     }
@@ -661,7 +684,7 @@ function checkAndRenewToken(req, res, next) {
         req.user = decoded;
         next();
     } catch (error) {
-        return res.status(401).json({
+        return res.status(500).json({
             message: "The server was unable to process the request: " + error.message
         });
     }

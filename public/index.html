@@ -33,6 +33,11 @@
         <script type="module" src="/js/main/end-session.js"></script>
         <script type="module" src="/js/api/google-signin.js"></script>
 
+        <script type="module" src="/js/dashboard/daily-sessions.js"></script>
+        <script type="module" src="/js/dashboard/label-distribution.js"></script>
+        <script type="module" src="/js/dashboard/main-charts.js"></script>
+        <script type="module" src="/js/dashboard/summary-stats.js"></script>
+
         
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data.min.js"></script>
@@ -64,9 +69,9 @@
         <div id="popupOverlay" data-testid="popupOverlay" class="overlay"> <!-- z-index: 1000 -->
             <div id="deleteAccountPopup">
                 <div id="deleteAccountPopupHeader">
-                    <h2 style="color: gray">💀 Delete Account 💀</h2>
+                    <h2>💀 Delete Account 💀</h2>
                 </div>
-                <hr>
+                <hr id="deleteAccountHr" class="popupHr">
                 <p id="deleteAccountPopupText">This action will delete all of your saved data and cannot be undone. Are you sure you want to delete your account?</p>
                 <div id="deleteAccountPopupBtnContainer">
                     <button id="deleteAccountPopupYesBtn">Yes</button>
@@ -78,7 +83,7 @@
                     <h2 id="welcomeText" style="color: white"></h2>
                     <div id="questionPopupUserEmail"></div>
                 </div>
-                <hr>
+                <hr id="accountPopupHr" class="popupHr">
                 <div id="accountPopupButtonsContainer">
                     <button id="goBackBtn" >Go Back</button>
                     <button id="logoutBtn2" >Log Out</button>
@@ -89,7 +94,7 @@
                     <h2 id="shortcutsHeaderText">Keyboard Shortcuts</h2>
                     <img class="exitIcon" id="shortcutsExit" data-testid="shortcutsExit" src="images/icons/exit-button-261420-white.png" draggable="false" alt="Exit">
                 </div>
-                <hr id="shortcutsHr">
+                <hr id="shortcutsHr" class="popupHr">
                 <div id="shortcutsPopupContainer">
                     <div id="generalShortcutsContainer" class="shortcutsContainer">
                         <div id="enterShortcut" class="shortcut">
@@ -113,15 +118,19 @@
                             <div class="shortcutKey">n</div>
                         </div>
                         <div id="createNoteShortcut" class="shortcut">
-                            <div class="shortcutDescription">Create Note</div>
-                            <div class="shortcutKey">n, n</div>
+                            <div class="shortcutDescription noteShortcut">Create Note</div>
+                            <div class="shortcutKey">n</div>
                         </div>
                         <div id="createTaskShortcut" class="shortcut">
-                            <div class="shortcutDescription">Create Task</div>
-                            <div class="shortcutKey">n, t</div>
+                            <div class="shortcutDescription noteShortcut">Create Task</div>
+                            <div class="shortcutKey">t</div>
+                        </div>
+                        <div id="openLabelsShortcut" class="shortcut">
+                            <div class="shortcutDescription noteShortcut">Open Label Container</div>
+                            <div class="shortcutKey">l</div>
                         </div>
                         <div id="escapeShortcut" class="shortcut">
-                            <div class="shortcutDescription">Exit Current Container (Notes)</div>
+                            <div class="shortcutDescription noteShortcut">Exit Current Container</div>
                             <div class="shortcutKey">Escape (esc)</div>
                         </div>
                     </div>
@@ -130,7 +139,7 @@
             <div id="confirmLabelDeletionPopup">
                 <div id="confirmLabelDeletionPromptContainer">
                     <div id="labelToDeleteContainer"></div> <!-- dynamically load in label -->
-                    <hr>
+                    <hr class="popupHr">
                     <p id="confirmLabelDeletionText">
                         Are you sure you want to delete the following label?
                     </p>
@@ -292,9 +301,19 @@
                 </div>
                 <div class="bottom">
                     <div class="bottomLeft">
-                        <div id="settingsGUIContainer" data-testid="settingsGUIContainer" alt="Settings Button" class="no-select">  <!-- z-index: 20 -->
+                        <div id="settingsGUIContainer" data-testid="settingsGUIContainer" alt="Settings Button" class="no-select UIContainer">  <!-- z-index: 20 -->
                             <img src="images/icons/settingsIcon1.png" id="settingsGUIconWhite">
                             <img src="images/icons/settingsIcon2.png" id="settingsGUIconBlack">
+                        </div>
+                        <div id="darkLightThemeGUIContainer" data-testid="darkLightThemeGUIContainer" alt="Dark & Light Theme Button" class="no-select UIContainer">  <!-- z-index: 20 -->
+                            <div id="darkContainer">
+                                <img src="images/icons/darkModeWhiteThick.png" id="darkModeGUIconWhite">
+                                <img src="images/icons/darkModeBlackThick.png" id="darkModeGUIconBlack">
+                            </div>
+                            <div id="lightContainer">
+                                <img src="images/icons/lightModeWhiteThick2.png" id="lightModeGUIconWhite">
+                                <img src="images/icons/lightModeBlackThick2.png" id="lightModeGUIconBlack">
+                            </div>
                         </div>
                     </div>
                     <div class="bottomRight">
@@ -306,7 +325,7 @@
                                 0
                             </div>
                         </div>
-                        <div id="questionIconContainer" data-testid="questionIcon" alt="Question Button" class="no-select">  <!-- z-index: 20 -->
+                        <div id="questionIconContainer" data-testid="questionIcon" alt="Question Button" class="no-select UIContainer">  <!-- z-index: 20 -->
                             ?
                         </div>
                     </div>
@@ -558,56 +577,81 @@
             </main>
 
             <div id="dashboardContainer" data-testid="dashboardContainer">
-                <!-- <div id="dashboardSubContainer">
-                    DASHBOARD FEATURE COMING SOON
-                </div> -->
+                <div id="dashboardContainerCover">
+                    DASHBOARD FEATURE AVAILABLE ON DESKTOP ONLY
+                </div>
                 <div id="dashboardSubContainer">
-                    <div id="dashboardSummaryStatsContainer">
+                    <div id="dailyContainer" class="dashboardSideContainer">
+                        <div id="dailyHeaderContainer" class="dailyContainer">
+                            <div id="dateAndSwitchContainer">
+                                <div id="dailyDateContainer">
+                                    <div id="dailyDay" class="dailyText"></div>
+                                    <div id="dailyDate" class="dailyText"></div>
+                                </div>
+                                <div id="switchContainer">
+                                    <img id="leftDailyArrow" src="images/icons/left_arrow.png" class="dailyArrow">
+                                    <img id="rightDailyArrow" src="images/icons/right_arrow.png" class="dailyArrow">
+                                </div>
+                            </div>
+                            <div id="weeklySummaries" class="dailyContainer">
+                                
+                            </div>
+                        </div>
+                        <div id="dailyBodyContainer">
+                            <!-- Will hold daily sessions -->
+                            Daily session container coming soon
+                        </div>
+                    </div>
+                    <div id="distributionsContainer">
+                        <div id="metricDistributionContainer">
+                            Chart container coming soon
+                        </div>
+                        <div id="labelDistributionContainer">
+                            <div id="labelDistributionHeaderContainer">
+                                <div id="labelDistributionArrowsAndSelections">
+                                    <div id="labelDistributionSelections">
+                                        <div id="labelDistributionWeek" class="labelDistributionSelection labelDistributionSelected no-select">Week</div>
+                                        <div id="labelDistributionMonth" class="labelDistributionSelection no-select">Month</div>
+                                        <div id="labelDistributionYear" class="labelDistributionSelection no-select">Year</div>
+                                    </div>
+                                    <div id="labelDistributionArrows">
+                                        <img id="leftLabelDistributionArrow" src="images/icons/left_arrow.png" class="dailyArrow no-select">
+                                        <img id="rightLabelDistributionArrow" src="images/icons/right_arrow.png" class="dailyArrow no-select">
+                                    </div>
+                                </div>
+                                <div id="labelDistributionTimeFrame" class="no-select"></div>
+                            </div>
+                            <div id="labelDistributionElement">
+                                <div id="labelNamesContainer"></div>
+                                <div id="labelLinesContainer"></div>
+                                <div id="labelTimesContainer"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="dashboardSummaryStatsContainer"  class="dashboardSideContainer">
                         <div id="totalDeepWorkSummaryStatContainer" class="summaryStatContainer">
                             <div class="summaryStatHeader">Total Deep Work</div>
                             <div id="totalDeepWorkSummaryStat" class="summaryStat"></div>
                         </div>
+                        <div class="dashboardSummaryDivider"></div>
                         <div id="avgDeepWorkPerDayStatContainer" class="summaryStatContainer">
-                            <div class="summaryStatHeader">Avg. Deep Work Per Day</div>
+                            <div class="summaryStatHeader">Avg Deep Work Per Day</div>
                             <div id="avgDeepWorkSummaryStat" class="summaryStat"></div>
                         </div>
+                        <div class="dashboardSummaryDivider"></div>
                         <div id="avgFocusQualityPerDayStatContainer" class="summaryStatContainer">
-                            <div class="summaryStatHeader">Avg. Focus Quality Per Day</div>
+                            <div class="summaryStatHeader">Avg Focus Quality</div>
                             <div id="avgFocusQualitySummaryStat" class="summaryStat"></div>
                         </div>
-                        <div id="avgDistractionsPerHourStatContainer" class="summaryStatContainer">
-                            <div class="summaryStatHeader">Avg. Distractions Per Hour</div>
-                            <div id="avgDistractionsSummaryStat" class="summaryStat"></div>
+                        <div class="dashboardSummaryDivider"></div>
+                        <div id="avgIntervalLengthStatContainer" class="summaryStatContainer">
+                            <div class="summaryStatHeader">Avg Deep Work Interval Length</div>
+                            <div id="avgIntervalLengthSummaryStat" class="summaryStat"></div>
                         </div>
+                        <div class="dashboardSummaryDivider"></div>
                         <div id="mostFocusedHourStatContainer" class="summaryStatContainer">
                             <div class="summaryStatHeader">Most Focused Hour</div>
                             <div id="mostFocusedHourSummaryStat" class="summaryStat"></div>
-                        </div>
-                    </div>
-                    <div id="mainDashboardContainers">
-                        <div id="dailyContainer">
-                            <div id="dailyHeaderContainer">
-                                <div id="dateAndSwitchContainer">
-                                    <div id="dailyDateContainer">
-                                        <div id="dailyDay" class="dailyText"></div>
-                                        <div id="dailyDate" class="dailyText"></div>
-                                    </div>
-                                    <div id="switchContainer">
-                                        <img id="leftDailyArrow" src="images/icons/left_arrow.png" class="dailyArrow">
-                                        <img id="rightDailyArrow" src="images/icons/right_arrow.png" class="dailyArrow">
-                                    </div>
-                                </div>
-                                <div id="weeklySummaries">
-                                    weekly summaries go here
-                                </div>
-                            </div>
-                            <div id="dailyBodyContainer">
-                                <!-- Will hold daily sessions -->
-                            </div>
-                        </div>
-                        <div id="distributionsContainer">
-                            <div id="metricDistributionContainer"></div>
-                            <div id="labelDistributionContainer"></div>
                         </div>
                     </div>
                 </div>
@@ -889,8 +933,8 @@
                     <div>
                         <h2 class="abouth2">1. Optional - Set a target time (in hours) that you want for a deep work session</h2>
                         <h2 class="abouth2">2. Press 'Start' to start the session</h2>
-                        <h2 class="abouth2">3. After you've been working or studying for a while and need a break, press 'Stop' to enter 'Break'</h2>
-                        <h2 class="abouth2">4. Press 'Start' once again to re-enter 'Deep Work'</h2>
+                        <h2 class="abouth2">3. After you've been working or studying for a while and need a break, press 'Switch' to enter 'Break'</h2>
+                        <h2 class="abouth2">4. Press 'Switch' once again to re-enter 'Deep Work'</h2>
                         <h2 class="abouth2">5. Repeat steps 3-4 as needed until you're done with the session entirely, at which point you can hit 'End' or 'End Session'</h2>
                     </div>
                     <div>
@@ -1035,7 +1079,7 @@
                                             </label>
                                         </div>
                                         <div id="pomodoroNotificationInfoWindow" data-testid="pomodoroNotificationInfoWindow" class="notificationInfoWindow">
-                                            This will notify you after each interval specified for Pomodoro, Short Break, and Long Break
+                                            This will notify you after the time specified for Pomodoro, Short Break, and Long Break
                                         </div>  
                                     </div>
                                     <div id="flowTimeBreakDemoImages" class="settingsMicroContainer">
@@ -1160,7 +1204,7 @@
                                             </label>
                                         </div>
                                         <div id="flowmodoroNotificationInfoWindow" class="notificationInfoWindow">
-                                            This will notify you after the specified number of minutes in Break
+                                            This will notify you (in break) after a period of time based on previous deep work interval
                                         </div>  
                                     </div>
                                     <div id="flowTimeBreakDemoImages" class="settingsMicroContainer">

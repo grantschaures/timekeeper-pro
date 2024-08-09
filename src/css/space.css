@@ -1,5 +1,4 @@
 #spaceContainer {
-    /* display: flex;  */
     display: none; 
     position: relative;
     width: 90%;
@@ -24,6 +23,7 @@
     box-sizing: border-box;
     border-radius: 25px;
     z-index: 10;
+    text-align: center;
 
     align-items: center;
     justify-content: center;

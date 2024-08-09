@@ -1,4 +1,4 @@
-import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selectedBackgroundIdTemp, selectedBackgroundId, timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, alertVolumes, alertSounds, counters, flags, tempStorage, settingsMappings, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, homeBackground, times, perHourData, catIds } from '../modules/index-objects.js';
+import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selectedBackgroundIdTemp, selectedBackgroundId, timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, alertVolumes, alertSounds, counters, flags, tempStorage, settingsMappings, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, times, perHourData, catIds, lightHtmlBackground, darkHtmlBackground, tempCounters } from '../modules/index-objects.js';
 
 import { chimePath, bellPath, clock_tick, soundMap } from '../modules/sound-map.js';
 
@@ -27,27 +27,30 @@ import {
     toggleMuffin,
     cats,
     zzz,
+    darkContainer,
+    lightContainer,
+    flowmodoroBtnContainer,
 } from '../modules/dom-elements.js';
 
 import { sessionState } from '../modules/state-objects.js';
 import { state, flags as navFlags } from '../modules/navigation-objects.js';
-import { labelFlags, labelArrs } from '../modules/notes-objects.js';
+import { labelFlags, labelArrs, labelDict, selectedLabelDict } from '../modules/notes-objects.js';
 
-import { initializeGUI } from '../utility/initialize_gui.js'; // minified
-import { userAgent, userDevice } from '../utility/identification.js'; // minified
+import { initializeGUI } from '../utility/initialize-gui.js'; // minified
+import { userAgent, userDevice, userTimeZone } from '../utility/identification.js'; // minified
 import { updateUserSettings } from '../state/update-settings.js'; // minified
 import { updateTargetHours } from '../state/update-target-hours.js'; // minified
 import { updateShowingTimeLeft } from '../state/update-showing-time-left.js'; // minified
 import { lastIntervalSwitch } from '../state/last-interval-switch.js'; // minified
 import { checkSession } from '../state/check-session.js'; // minified
 import { updateInvaliDate } from '../state/update-invaliDate.js'; // minified
-import { initialVisualReset, sessionReset } from '../main/end-session.js'; // minified
+import { initialVisualReset, sessionReset } from './end-session.js'; // minified
 
-export const pomodoroWorker = new Worker('/js/displayWorkers/pomodoroWorker.js');
-export const suggestionWorker = new Worker('/js/displayWorkers/suggestionWorker.js');
-export const flowmodoroWorker = new Worker('/js/displayWorkers/flowmodoroWorker.js');
-export const displayWorker = new Worker('/js/displayWorkers/displayWorker.js');
-export const totalDisplayWorker = new Worker('/js/displayWorkers/totalDisplayWorker.js');
+export const pomodoroWorker = new Worker('/js/web-workers/pomodoroWorker.js');
+export const suggestionWorker = new Worker('/js/web-workers/suggestionWorker.js');
+export const flowmodoroWorker = new Worker('/js/web-workers/flowmodoroWorker.js');
+export const displayWorker = new Worker('/js/web-workers/displayWorker.js');
+export const totalDisplayWorker = new Worker('/js/web-workers/totalDisplayWorker.js');
 
 // Create a new mutation observer to watch for changes to the #display div
 export const observer = new MutationObserver(setTabTitleFromDisplay);
@@ -211,10 +214,10 @@ document.addEventListener("stateUpdated", function() {
             }
 
             if (flags.pomodoroNotificationToggle) {
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Stop", setPomodoroIntervalText(counters, timeAmount));
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch", setPomodoroIntervalText(counters, timeAmount));
                 setPomodoroWorker(flags, elapsedTime, counters, recoverPomState, pomodoroWorker);
             } else {
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Stop","Deep Work");
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch","Deep Work");
             }
 
             if (counters.startStop > 1) { // runs first during first break interval
@@ -234,7 +237,6 @@ document.addEventListener("stateUpdated", function() {
             setFavicon(blueFavicon);
             chillTimeAnimationActions(flags, flowAnimation, chillAnimation);
             displayCat(catIds, counters);
-
             
             // EDIT: temporary change to see total interruptions for my own data collection
             saveResetInterruptions(interruptionsNum, counters, savedInterruptionsArr);
@@ -260,10 +262,10 @@ document.addEventListener("stateUpdated", function() {
                 showPomodorosCompletedContainer(completedPomodorosContainer, completedPomodoros_label, completedPomodoros_min, counters);
                 setCurrentPomodoroNotification(counters, timeAmount);
                 setPomodoroNotificationSeconds(flags, elapsedTime, counters, recoverBreakState, pomodoroWorker);
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Start", setBothBreakIntervalText(counters, timeAmount));
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch", setBothBreakIntervalText(counters, timeAmount));
             } else {
                 showSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, timeAmount, counters, flags);
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Start", "Break");
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch", "Break");
             }
 
             totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod);
@@ -644,9 +646,9 @@ document.addEventListener("stateUpdated", function() {
             flags.breakSuggestionToggle = true;
 
             if (flags.inHyperFocus) {
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Stop", "Deep Work");
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch", "Deep Work");
             } else {
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Start","Break");
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch","Break");
             }
 
             resetPomodoroCounters(counters);
@@ -728,7 +730,7 @@ document.addEventListener("stateUpdated", function() {
             // When toggle for break notification is turned on whilst in flow time
             if (flags.inHyperFocus) {
                 let pomodoroString = "Pomodoro #1 | " + String(timeAmount.pomodoroIntervalArr[0]) + " min";
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Stop", pomodoroString);
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch", pomodoroString);
                 elapsedTime.pomodoroNotificationSeconds = ((counters.currentPomodoroNotification * 60) - elapsedTimeInHyperfocus);
                 pomodoroWorker.postMessage(elapsedTime.pomodoroNotificationSeconds);
             }
@@ -740,9 +742,9 @@ document.addEventListener("stateUpdated", function() {
             pomodoroWorker.postMessage("clearInterval");
             start_stop_btn.classList.remove('glowing-effect');
             if (flags.inHyperFocus) {
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Stop","Deep Work");
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch","Deep Work");
             } else if (counters.startStop > 1) {
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Start","Break");
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch","Break");
                 hidePomodorosCompletedContainer(completedPomodorosContainer);
                 showSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, timeAmount, counters, flags);
             }
@@ -856,35 +858,19 @@ document.addEventListener("stateUpdated", function() {
     })
 
     defaultThemeContainer.addEventListener("click", async function() {
-        darkGrayTheme.classList.remove('selected-background');
-        defaultTheme.classList.add('selected-background');
-        flags.darkThemeActivated = false;
-
-        deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, isMobile, streaksContainer);
-
-        if (sessionState.loggedIn) {
-            await updateUserSettings({
-                backgroundsThemes: {
-                    darkThemeActivated: flags.darkThemeActivated // false
-                }
-            });
-        }
+        triggerLightMode(isMobile);
     })
 
     darkThemeContainer.addEventListener("click", async function() {
-        defaultTheme.classList.remove('selected-background');
-        darkGrayTheme.classList.add('selected-background');
-        flags.darkThemeActivated = true;
+        triggerDarkMode(isMobile);
+    })
 
-        activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, streaksContainer);
+    darkContainer.addEventListener("click", async function() {
+        triggerDarkMode(isMobile);
+    })
 
-        if (sessionState.loggedIn) {
-            await updateUserSettings({
-                backgroundsThemes: {
-                    darkThemeActivated: flags.darkThemeActivated // true
-                }
-            });
-        }
+    lightContainer.addEventListener("click", async function() {
+        triggerLightMode(isMobile);
     })
 
     window.addEventListener("resize", function() {
@@ -941,7 +927,7 @@ document.addEventListener("stateUpdated", function() {
         fetch("/api/api/validateUser", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ user: user, userAgent: userAgent, userDevice: userDevice })
+            body: JSON.stringify({ user: user, userAgent: userAgent, userDevice: userDevice, userTimeZone: userTimeZone })
         })
         .then(response => {
             if (!response.ok) {
@@ -1048,6 +1034,7 @@ document.addEventListener("stateUpdated", function() {
         }
     })
 
+    // CURRENTLY OMITTED
     previousSessionStartedOkBtn.addEventListener("click", function() {
         popupOverlay.style.display = "none";
         previousSessionStartedPopup.style.display = "none";
@@ -1058,8 +1045,8 @@ document.addEventListener("stateUpdated", function() {
             console.log("invalidate previous session and continue was selected");
             updateInvaliDate(startTimes.beginning);
         } else {
-            initialVisualReset();
-            sessionReset();
+            initialVisualReset(tempCounters);
+            sessionReset(false); // false implies no delay for resetting progress bar & total time display
 
             quitCurrentSessionInput.checked = false;
             invalidatePreviousSessionInput.checked = true;
@@ -1139,6 +1126,14 @@ document.addEventListener("stateUpdated", function() {
         });
     });
 
+    suggestionBreak_min.addEventListener("click", function() {
+        // open up break notifications in settings
+        settings_menu_container.click();
+        setTimeout(() => {
+            flowmodoroBtnContainer.click();
+        }, 0)
+    })
+
     // ---------------------
     // DISPLAY WORKERS
     // ---------------------
@@ -1164,8 +1159,8 @@ document.addEventListener("stateUpdated", function() {
     }
     
     displayWorker.onmessage = function(message) {
-        const timeDiff = Date.now() - startTimes.local;
-    
+        const timeDiff = Math.round((Date.now() - startTimes.local) / 1000) * 1000;
+        
         let hours = Math.floor(timeDiff / timeConvert.msPerHour);
         let minutes = Math.floor((timeDiff - hours * timeConvert.msPerHour) / timeConvert.msPerMin);
         let seconds = Math.floor((timeDiff - hours * timeConvert.msPerHour - minutes * timeConvert.msPerMin) / timeConvert.msPerSec);
@@ -1184,13 +1179,49 @@ document.addEventListener("stateUpdated", function() {
     totalDisplayWorker.onmessage = function(message) {
         totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod);
     }
-
-    // document.dispatchEvent(new Event('updateState'));
 });
 
 // ------------------
 // HELPER FUNCTIONS
 // ------------------
+async function triggerLightMode(isMobile) {
+    // adjust settings container selection & flag
+    darkGrayTheme.classList.remove('selected-background');
+    defaultTheme.classList.add('selected-background');
+    flags.darkThemeActivated = false;
+
+    deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, isMobile, streaksContainer, lightHtmlBackground);
+    lightContainer.style.display = "none";
+    darkContainer.style.display = "flex";
+
+    if (sessionState.loggedIn) {
+        await updateUserSettings({
+            backgroundsThemes: {
+                darkThemeActivated: flags.darkThemeActivated // false
+            }
+        });
+    }
+}
+
+async function triggerDarkMode(isMobile) {
+    // adjust settings container selection & flag
+    darkGrayTheme.classList.add('selected-background');
+    defaultTheme.classList.remove('selected-background');
+    flags.darkThemeActivated = true;
+
+    activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, streaksContainer, darkHtmlBackground);
+    darkContainer.style.display = "none";
+    lightContainer.style.display = "flex";
+
+    if (sessionState.loggedIn) {
+        await updateUserSettings({
+            backgroundsThemes: {
+                darkThemeActivated: flags.darkThemeActivated // true
+            }
+        });
+    }
+}
+
 export function hideCat(catIds, counters) {
     if (flags.muffinToggle) {
         hideMuffin(catIds, counters);
@@ -1978,7 +2009,7 @@ function handleViewportWidthChange(settingsMappings, tempStorage, end_session_bt
 }
 
 function setEndSessionBtnText(initialViewportWidth, end_session_btn) {
-    if (initialViewportWidth <= 522) {
+    if (initialViewportWidth <= 536) {
         end_session_btn.innerText = "End";
     } else {
         end_session_btn.innerText = "End Session";
@@ -2036,7 +2067,7 @@ async function setBreakTimeSuggestionsArr(event, timeAmount, validatedFinalInput
 
 function changeSuggestionBreakContainerHeader(flags, suggestionBreak_label, suggestionBreak_min, counters) {
     if (flags.flowmodoroNotificationToggle) {
-        suggestionBreak_label.textContent = "Break";
+        suggestionBreak_label.textContent = "🔔 Break";
     } else {
         suggestionBreak_label.textContent = "Suggested Break";
     }
@@ -2409,7 +2440,7 @@ export function setBackground(background_color, opacity) {
 }
 
 
-export function deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, isMobile, streaksContainer) {
+export function deactivateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, isMobile, streaksContainer, lightHtmlBackground) {
     let componentArr1 = [interruptionsContainer, targetHoursContainer, timekeepingContainer, notesContainer, aboutContainer, blogContainer, streaksContainer];
 
     let darkBackgroundTranslucent = "rgba(0, 0, 0, 0.9)"; // changed from 0.8 alpha value
@@ -2434,6 +2465,8 @@ export function deactivateDarkTheme(interruptionsContainer, targetHoursContainer
     }
     popupMenu.style.border = null;
 
+    notesContainer.style.marginTop = "0px";
+
     progressBarContainer.style.backgroundColor = progressBarBackground;
     progressBarContainer.style.border = progressBarBorder;
 
@@ -2442,13 +2475,15 @@ export function deactivateDarkTheme(interruptionsContainer, targetHoursContainer
     emojiContainer.style.backgroundColor = emojiContainerBlackBackground;
     emojiContainer.style.border = "5px solid #FFFFFF";
 
+    document.documentElement.style.backgroundImage = lightHtmlBackground; // set html background
+
     if ((selectedBackgroundId.flowtime === "black-flowtime") && (selectedBackgroundId.chilltime === "black-chilltime")) {
         document.getElementById(selectedBackgroundIdTemp.flowtime).click();
         document.getElementById(selectedBackgroundIdTemp.chilltime).click();
     }
 };
 
-export async function activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, streaksContainer) {
+export async function activateDarkTheme(interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, selectedBackgroundIdTemp, selectedBackgroundId, emojiContainer, streaksContainer, darkHtmlBackground) {
     let componentArr1 = [interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, notesContainer, aboutContainer, blogContainer, streaksContainer];
     let componentArr2 = [popupMenu, settingsContainer, emojiContainer];
 
@@ -2466,6 +2501,10 @@ export async function activateDarkTheme(interruptionsContainer, targetHoursConta
     })
 
     emojiContainer.style.border = "5px solid white";
+
+    notesContainer.style.marginTop = "-3px"; // fixed issue w/ notes container location being affected by dark mode
+
+    document.documentElement.style.backgroundImage = darkHtmlBackground; // set html background
 
     if (!sessionState.updatingState) {
         selectedBackgroundIdTemp["flowtime"] = selectedBackgroundId.flowtime;
@@ -2505,7 +2544,7 @@ export function replaceTargetHours(inputHours, timeAmount, flags) {
 };
 
 export function totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod) {
-    let timeDiff = getTotalElapsed(flags, elapsedTime.hyperFocus, startTimes);
+    let timeDiff = Math.round(getTotalElapsed(flags, elapsedTime.hyperFocus, startTimes) / 1000) * 1000;
 
     // if 24 hours reached, end session
     if (timeDiff >= 86400000) {
