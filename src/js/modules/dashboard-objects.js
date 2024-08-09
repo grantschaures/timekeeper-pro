@@ -7,7 +7,8 @@ const dailyHours = Array.from({ length: 24 }, () => ({
 export const dashboardData = {
     sessionArr: [],
     dailyArr: [],
-    hourlyArr: dailyHours
+    hourlyArr: dailyHours,
+    noteData: {}
 }
 
 export const labelDistContainer = {

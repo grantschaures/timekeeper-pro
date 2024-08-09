@@ -286,7 +286,7 @@
     /* border: 2px solid yellow; */
 }
 
-.labelNamesContainer {
+#labelNamesContainer {
     display: flex;
     text-align: left;
     margin-right: 10px;
@@ -296,6 +296,7 @@
     align-items: left;
     font-family: settingsHeaderFont;
     flex-direction: column;
+
     /* border: 2px solid white; */
 }
 
@@ -306,47 +307,69 @@
     /* border: 1px solid yellowgreen; */
 }
 
-.labelName, .lineAndTimeBundle {
+.labelName, .labelLineContainer, .labelTime {
     height: 30px;
 }
 
-#labelLinesAndTimesContainer {
+#labelLinesContainer {
     display: flex;
     width: 100%;
     height: auto;
     align-items: center;
     flex-direction: column;
+
+    /* border: 2px solid red; */
 }
 
-.lineAndTimeBundle {
+.labelLineContainer {
     display: flex;
-    align-items: center;
     width: 100%;
 
-    /* border: 1px solid yellow; */
+    align-items: center;
+
+    /* border: 1px solid white; */
+}
+
+#labelTimesContainer {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+
+    /* border: 2px solid blue; */
 }
 
 .labelLine {
     position: relative;
     border-radius: 25px;
-    background-color: rgb(0, 212, 35);
     height: 10px;
+    background: linear-gradient(135deg, rgba(130, 0, 170, 0.8), rgb(162, 0, 212), rgba(190, 90, 240, 0.8));
+    background-size: 200% 200%;
+    animation: gradientShift 15s linear infinite;
+    border: 2px solid white;
+}
+
+@keyframes gradientShift2 {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 #testLabelLine1 {
-    width: calc(100% - 75px);
+    width: 100%;
 }
 
 #testLabelLine2 {
-    width: calc(75% - 75px);
+    width: 75%;
 }
 
 #testLabelLine3 {
-    width: calc(55% - 75px);
-}
-
-#testLabelLine4 {
-    width: calc(25% - 75px);
+    width: 55%;
 }
 
 .labelTime {
@@ -355,8 +378,6 @@
     justify-content: center;
     text-align: center;
     align-items: center;
-    margin-left: 10px;
-    height: 100%;
     box-sizing: border-box;
     font-family: settingsHeaderFont;
     font-size: 18px;
@@ -405,19 +426,16 @@
     margin-right: 5px;
     padding: 5px 15px;
     border-radius: 25px;
-
-    transition: background-color 0.15s ease-in-out;
 }
 
 .labelDistributionSelection:not(.labelDistributionSelected):hover {
     cursor: pointer;
-    /* background-color: rgba(0, 212, 35, 0.5); */
-    background-color: rgba(120, 20, 125, 0.5);
 }
 
 .labelDistributionSelected {
-    /* background-color: rgba(0, 212, 35, 1); */
-    background-color: rgb(120, 20, 125);
+    background: linear-gradient(135deg, rgba(130, 0, 170, 0.8), rgb(162, 0, 212), rgba(190, 90, 240, 0.8));
+    background-size: 200% 200%;
+    animation: gradientShift 15s linear infinite;
 }
 
 .labelDistributionSelected:hover {

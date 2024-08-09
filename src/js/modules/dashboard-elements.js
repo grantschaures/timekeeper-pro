@@ -15,3 +15,6 @@ export const labelDistributionMonth = document.getElementById('labelDistribution
 export const labelDistributionYear = document.getElementById('labelDistributionYear');
 export const leftLabelDistributionArrow = document.getElementById('leftLabelDistributionArrow');
 export const rightLabelDistributionArrow = document.getElementById('rightLabelDistributionArrow');
+export const labelNamesContainer = document.getElementById('labelNamesContainer');
+export const labelLinesContainer = document.getElementById('labelLinesContainer');
+export const labelTimesContainer = document.getElementById('labelTimesContainer');

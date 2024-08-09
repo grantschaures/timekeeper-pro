@@ -14,7 +14,7 @@ router.get("/sessionValidation", async function(req, res) {
     const token = req.cookies.token;  // Extract the JWT from cookies directly
 
     if (!token) {
-        // return res.status(401).json({ isLoggedIn: false });
+        return res.status(401).json({ isLoggedIn: false });
     }
 
     try {

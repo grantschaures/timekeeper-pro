@@ -441,7 +441,6 @@ function sumTotalLabelTime(labelArrs, labelDict) {
         let labelName = key;
         console.log(labelName + ": " + totalLabelTimeStr);
     }
-    console.log(labelArrs)
 
     return labelTimeSum;
 }

@@ -10,22 +10,23 @@ export async function populateDashboard(sessionData, noteData) { // called from 
     const dailySummarizedData = await initializeDailyData(sessionData);
 
     // setDashboardData
-    await setDashboardData(sessionData, dailySummarizedData); // ensure this has executed before constructing chart.js charts
+    await setDashboardData(sessionData, dailySummarizedData, noteData); // ensure this has executed before constructing chart.js charts
 
     // update summary stats
     populateDashboardSummaryStats(timeConvert, dailySummarizedData, dashboardData);
 
     // update label distribution container
-    populateLabelDistContainer(dashboardData, noteData, labelDistContainer);
+    populateLabelDistContainer(dashboardData, labelDistContainer);
 
     // console.log(sessionData);
     // console.log(dailySummarizedData);
     // console.log(dashboardData.hourlyArr);
 }
 
-async function setDashboardData(sessionData, dailySummarizedData) {
+async function setDashboardData(sessionData, dailySummarizedData, noteData) {
     dashboardData.sessionArr = sessionData;
     dashboardData.dailyArr = dailySummarizedData;
+    dashboardData.noteData = noteData;
 }
 
 async function initializeDailyData(sessionData) {

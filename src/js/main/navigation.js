@@ -496,19 +496,6 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
                 slimeSwitch(); 
             }
 
-            const element = document.getElementById("testLabelLine1");
-            element.offsetWidth;
-            setTimeout(() => {
-                // element.style.width = 'calc(100% - 100px)';
-                // subtract what ever the max digit length is (times pixel size for the digit length - which should be the same for all digits if using font-family: myFont2 or myFont3)
-                // ...for the max hours + min for a week (3 digits + 3 digits + 2 digits), month (3 digits + 3 digits + 2 digits), and year (4 digits + 3 digits + 2 digits )
-                // That makes 8 spaces for week and month, and 9 spaces for a year
-                //  WEEK EXAMPLE: 168h 59m (max case)
-                // MONTH EXAMPLE: 728h 59m (max case)
-                // YEAR EXAMPLE: 8736h 59m (max case)
-                // You should be able to do this even with settingsHeaderFontBold because these are conservative estimates for each time frame
-            }, 0)
-
             fadeOutUIContainer(streaksContainer);
             fadeOutUIContainer(darkLightThemeGUIContainer);
             initializeNewMode(dashboardContainer);
