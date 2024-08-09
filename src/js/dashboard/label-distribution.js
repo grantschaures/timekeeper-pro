@@ -1,6 +1,6 @@
 import { userTimeZone } from "../utility/identification.js";
 import { dashboardData, labelDistContainer } from "../modules/dashboard-objects.js";
-import { labelDistributionMonth, labelDistributionWeek, labelDistributionYear, labelLinesContainer, labelNamesContainer, labelTimesContainer, leftLabelDistributionArrow, rightLabelDistributionArrow } from "../modules/dashboard-elements.js";
+import { labelDistributionMonth, labelDistributionTimeFrame, labelDistributionWeek, labelDistributionYear, labelLinesContainer, labelNamesContainer, labelTimesContainer, leftLabelDistributionArrow, rightLabelDistributionArrow } from "../modules/dashboard-elements.js";
 import { timeConvert } from "../modules/index-objects.js";
 
 // initialization of labelDistContainer (called in populate-dashboard.js)
@@ -10,6 +10,7 @@ export function populateLabelDistContainer(dashboardData, labelDistContainer) {
     // set default lower and upper bounds
     setBounds(labelDistContainer.timeFrame);
 
+    // initial visualization of data
     visualizeLabelData(dashboardData, labelDistContainer);
 }
 
@@ -30,7 +31,7 @@ document.addEventListener("stateUpdated", function() {
         setBounds(labelDistContainer.timeFrame);
 
         // visualize data
-
+        updateLabelData(dashboardData, labelDistContainer);
     })
     
     labelDistributionMonth.addEventListener("click", function() {
@@ -48,6 +49,7 @@ document.addEventListener("stateUpdated", function() {
         setBounds(labelDistContainer.timeFrame);
 
         // visualize data
+        updateLabelData(dashboardData, labelDistContainer);
 
     })
     
@@ -66,6 +68,7 @@ document.addEventListener("stateUpdated", function() {
         setBounds(labelDistContainer.timeFrame);
 
         // visualize data
+        updateLabelData(dashboardData, labelDistContainer);
 
     })
 
@@ -74,6 +77,7 @@ document.addEventListener("stateUpdated", function() {
         alterBounds(labelDistContainer.timeFrame, 'shiftdown');
 
         // visualize data
+        updateLabelData(dashboardData, labelDistContainer);
 
     })
     
@@ -82,9 +86,90 @@ document.addEventListener("stateUpdated", function() {
         alterBounds(labelDistContainer.timeFrame, 'shiftup');
 
         // visualize data
+        updateLabelData(dashboardData, labelDistContainer);
 
     })
 })
+
+function updateLabelData(dashboardData, labelDistContainer) {
+    // iterate through each daily labelTimes value
+    // if labelTime key is part of the current labels AND date is within upper and lower bound dates
+    let noteDataLabels = dashboardData.noteData.labels;
+    let labels = {};
+
+    // initialize labels to empty values
+    for (let key in noteDataLabels) {
+        if (noteDataLabels.hasOwnProperty(key)) {
+            labels[key] = 0;
+        }
+    }
+
+    // iterate through dashboardData.dailyArr adding up deep work time
+    let dashboardDataDailyArr = dashboardData.dailyArr;
+    for (let i = 0; i < dashboardDataDailyArr.length; i++) {
+        if((moment(dashboardDataDailyArr[i].date, 'YYYY-MM-DD').isSameOrAfter(moment(labelDistContainer.lowerBound, 'YYYY-MM-DD'))) && (moment(dashboardDataDailyArr[i].date, 'YYYY-MM-DD').isSameOrBefore(moment(labelDistContainer.upperBound, 'YYYY-MM-DD')))) {
+            let labelTimes = dashboardDataDailyArr[i].labelTimes;
+            for (let key in labelTimes) {
+                if (labels.hasOwnProperty(key)) {
+                    labels[key] += labelTimes[key];
+                }
+            }
+        }
+    }
+
+    // identifying which label ids aren't associated w/ any time
+    let emptyKeys = [];
+    let totalLabelTime = 0;
+    let emptyDistribution = false;
+    for (let key in labels) {
+        totalLabelTime += labels[key];
+
+        if (labels[key] === 0) {
+            emptyKeys.push(key);
+        }
+    }
+
+    if (totalLabelTime === 0) {
+        emptyDistribution = true;
+    }
+
+    let highestPercent = 0;
+    let highestPercentKey;
+
+    // calculate highest percentage of deep work time
+    Object.keys(labels).forEach(key => {
+        let currentPercent = Math.round((labels[key] / totalLabelTime) * 100);
+        if (currentPercent > highestPercent) {
+            highestPercent = currentPercent;
+            highestPercentKey = key;
+        }
+    })
+
+    Object.keys(labels).forEach(key => {
+
+        const labelTime = labels[key] / timeConvert.msPerHour;
+        const labelTimeHours = Math.floor(labelTime);
+        const labelTimeMinutes = Math.floor((labelTime - labelTimeHours) * 60);
+        const labelTimePercent = Math.round((labels[key] / totalLabelTime) * 100);
+
+        let labelTimeStr;
+        if (emptyKeys.includes(key)) {
+            labelTimeStr = '0h 0m (0%)';
+        } else {
+            labelTimeStr = `${labelTimeHours}h ${labelTimeMinutes}m (${labelTimePercent}%)`;
+        }
+        document.getElementById('labelTime-' + key).innerText = labelTimeStr;
+
+        let labelLinePercentWidth;
+        if (emptyDistribution) {
+            labelLinePercentWidth = 0;
+        } else {
+            labelLinePercentWidth = Math.round(labelTimePercent / highestPercent * 100);
+        }
+        console.log(labelLinePercentWidth)
+        document.getElementById('labelLine-' + key).style.width = labelLinePercentWidth + '%';
+    });
+}
 
 function visualizeLabelData(dashboardData, labelDistContainer) {
     // iterate through each daily labelTimes value
@@ -134,8 +219,6 @@ function visualizeLabelData(dashboardData, labelDistContainer) {
         }
     })
 
-    console.log(emptyKeys);
-
     Object.keys(labels).forEach(key => {
 
         // Create labelName element
@@ -179,13 +262,6 @@ function visualizeLabelData(dashboardData, labelDistContainer) {
         labelLineContainerDiv.appendChild(labelLineDiv);
         labelLinesContainer.appendChild(labelLineContainerDiv);
     });
-    
-    Object.keys(labels).forEach(key => {
-        let labelTimeStr = document.getElementById("labelTime-" + key).innerText;
-        let initialPercent = labelTimeStr.match(/(\d+)%/)[1]; // Access the captured group
-        let finalPercent = Math.round(initialPercent / highestPercent * 100); // Adjusted to get percentage correctly
-        document.getElementById("labelLine-" + key).style.width = finalPercent;
-    });
 }
 
 function alterBounds(timeFrame, type) {
@@ -200,8 +276,7 @@ function alterBounds(timeFrame, type) {
         labelDistContainer.upperBound = moment(labelDistContainer.upperBound, 'YYYY-MM-DD').subtract(1, timeFrame).format('YYYY-MM-DD');
     }
 
-    console.log(labelDistContainer.lowerBound)
-    console.log(labelDistContainer.upperBound)
+    displayTimeFrame(timeFrame);
 }
 
 function setBounds(timeFrame) {
@@ -217,8 +292,95 @@ function setBounds(timeFrame) {
     labelDistContainer.lowerBound = lowerBound;
     labelDistContainer.upperBound = upperBound;
 
-    console.log(labelDistContainer.lowerBound)
-    console.log(labelDistContainer.upperBound)
+    displayTimeFrame(timeFrame);
+}
+
+function displayTimeFrame(timeFrame) {
+    let timeFrameStr;
+    if (timeFrame === 'week') {
+        timeFrameStr = formatWeekSpan(labelDistContainer.lowerBound, labelDistContainer.upperBound);
+    } else if (timeFrame === 'month') {
+        timeFrameStr = formatMonthSpan(labelDistContainer.lowerBound);
+    } else { // year
+        timeFrameStr = formatYearSpan(labelDistContainer.lowerBound);
+    }
+
+    labelDistributionTimeFrame.innerText = timeFrameStr;
+}
+
+function formatYearSpan(initialDate) {
+    const date = parseUTCDate(initialDate);
+    const year = date.getFullYear();
+    return year;
+}
+
+function formatMonthSpan(initialDate) {
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+
+    const date = parseUTCDate(initialDate);
+
+    const month = monthNames[date.getMonth()];
+    const year = date.getFullYear();
+
+    // Check if the year of the input dates is the same as the current year
+    if (year === currentYear) {
+        return `${month}`;
+    } else {
+        return `${month} '${String(year).slice(-2)}`;
+    }
+}
+
+function formatWeekSpan(initialDate, finalDate) {
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+
+    const date1 = parseUTCDate(initialDate);
+    const date2 = parseUTCDate(finalDate);
+
+    const month1 = monthNames[date1.getMonth()];
+    const day1 = getDayWithSuffix(date1.getDate());
+    const year1 = date1.getFullYear();
+
+    const month2 = monthNames[date2.getMonth()];
+    const day2 = getDayWithSuffix(date2.getDate());
+    const year2 = date2.getFullYear();
+
+    if (year1 === currentYear && year2 === currentYear) {
+        if (month1 === month2) {
+            return `${month1} ${day1} - ${day2}`;
+        } else {
+            return `${month1} ${day1} - ${month2} ${day2}`;
+        }
+    } else if (year1 === year2) {
+        const abbreviatedYear = String(year1).slice(-2);
+        if (month1 === month2) {
+            return `${month1} ${day1} - ${day2} '${abbreviatedYear}`;
+        } else {
+            return `${month1} ${day1} - ${month2} ${day2} '${abbreviatedYear}`;
+        }
+    } else {
+        const abbreviatedYear1 = String(year1).slice(-2);
+        const abbreviatedYear2 = String(year2).slice(-2);
+        return `${month1} ${day1} '${abbreviatedYear1} - ${month2} ${day2} '${abbreviatedYear2}`;
+    }
+}
+
+function getDayWithSuffix(day) {
+    if (day > 3 && day < 21) return day + 'th'; // catch for 11th to 19th
+    switch (day % 10) {
+        case 1:  return day + "st";
+        case 2:  return day + "nd";
+        case 3:  return day + "rd";
+        default: return day + "th";
+    }
+}
+
+function parseUTCDate(dateStr) {
+    const [year, month, day] = dateStr.split('-').map(Number);
+    return new Date(year, month - 1, day);
 }
 
 function getCurrentDay() {

@@ -10,6 +10,7 @@ export const avgIntervalLengthSummaryStat = document.getElementById('avgInterval
 export const mostFocusedHourSummaryStat = document.getElementById('mostFocusedHourSummaryStat');
 
 // Label Distribution Container
+export const labelDistributionTimeFrame = document.getElementById('labelDistributionTimeFrame');
 export const labelDistributionWeek = document.getElementById('labelDistributionWeek');
 export const labelDistributionMonth = document.getElementById('labelDistributionMonth');
 export const labelDistributionYear = document.getElementById('labelDistributionYear');

@@ -375,8 +375,7 @@
 .labelTime {
     display: flex;
     white-space: nowrap;
-    justify-content: center;
-    text-align: center;
+    justify-content: left;
     align-items: center;
     box-sizing: border-box;
     font-family: settingsHeaderFont;
