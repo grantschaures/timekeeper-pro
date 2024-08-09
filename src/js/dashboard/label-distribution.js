@@ -1,7 +1,8 @@
-import { userTimeZone } from "../utility/identification.js";
 import { dashboardData, labelDistContainer } from "../modules/dashboard-objects.js";
 import { labelDistributionMonth, labelDistributionTimeFrame, labelDistributionWeek, labelDistributionYear, labelLinesContainer, labelNamesContainer, labelTimesContainer, leftLabelDistributionArrow, rightLabelDistributionArrow } from "../modules/dashboard-elements.js";
 import { timeConvert } from "../modules/index-objects.js";
+
+import { userTimeZone } from "../utility/identification.js";
 
 // initialization of labelDistContainer (called in populate-dashboard.js)
 export function populateLabelDistContainer(dashboardData, labelDistContainer) {
@@ -166,7 +167,6 @@ function updateLabelData(dashboardData, labelDistContainer) {
         } else {
             labelLinePercentWidth = Math.round(labelTimePercent / highestPercent * 100);
         }
-        console.log(labelLinePercentWidth)
         document.getElementById('labelLine-' + key).style.width = labelLinePercentWidth + '%';
     });
 }

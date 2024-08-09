@@ -6,11 +6,10 @@ import { labelFlags, labelArrs, labelDict } from '../modules/notes-objects.js';
 import { tempStorage, flags as summaryFlags } from '../modules/summary-stats.js';
 import { flags as navFlags } from '../modules/navigation-objects.js';
 
-import { sessionCompletion } from '../state/session-completion.js'; // minified
-import { animationsFadeIn, animationsFadeOut, getTotalElapsed, returnTotalTimeString, updateLabelArrs, setBackground, pauseAndResetAlertSounds, resetDisplay, updateProgressBar, totalTimeDisplay, setButtonTextAndMode, hideSuggestionBreakContainer, hidePomodorosCompletedContainer, showInterruptionsSubContainer, setFavicon, observer, pomodoroWorker, suggestionWorker, flowmodoroWorker, displayWorker, totalDisplayWorker, updateDataPerHour, hideCat } from '../main/index.js'; // minified
+import { animationsFadeIn, animationsFadeOut, getTotalElapsed, returnTotalTimeString, updateLabelArrs, setBackground, pauseAndResetAlertSounds, resetDisplay, updateProgressBar, totalTimeDisplay, setButtonTextAndMode, hideSuggestionBreakContainer, hidePomodorosCompletedContainer, showInterruptionsSubContainer, setFavicon, observer, pomodoroWorker, suggestionWorker, flowmodoroWorker, displayWorker, totalDisplayWorker, updateDataPerHour, hideCat } from './index.js'; // minified
 import { checkInvaliDate } from '../state/check-invaliDate.js'; // minified
 import { addSession } from '../state/add-session.js'; // minified
-import { subMainContainerTransition } from '../main/navigation.js'; // minified
+import { subMainContainerTransition } from './navigation.js'; // minified
 
 const defaultFavicon = "/images/logo/HyperChillLogo_circular_white_border.png";
 

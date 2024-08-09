@@ -6,7 +6,7 @@ import { labelArrs, labelDict, labelFlags, flags as notesFlags, selectedLabelDic
 import { chimePath, bellPath, soundMap } from '../modules/sound-map.js';
 
 import { deleteUserAccount } from '../state/delete-account.js'; // minified
-import { animationsFadeIn, animationsFadeOut, triggerSilentAlertAudioMobile } from '../main/index.js'; // minified
+import { animationsFadeIn, animationsFadeOut, triggerSilentAlertAudioMobile } from './index.js'; // minified
 
 document.addEventListener("stateUpdated", function() {
 

@@ -35,6 +35,12 @@ let files = [
     'src/js/login_signup/signup.js',
     'src/js/login_signup/reset-password.js',
     'src/js/login_signup/set-password.js',
+
+    'src/js/dashboard/populate-dashboard.js',
+    'src/js/dashboard/daily-sessions.js',
+    'src/js/dashboard/label-distribution.js',
+    'src/js/dashboard/main-charts.js',
+    'src/js/dashboard/summary-stats.js',
 ];
 
 // Function to detect exported names

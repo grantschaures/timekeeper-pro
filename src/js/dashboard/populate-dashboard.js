@@ -1,10 +1,17 @@
-import { dailyDay, dailyDate, totalDeepWorkSummaryStat, avgDeepWorkSummaryStat, avgFocusQualitySummaryStat, avgIntervalLengthSummaryStat, mostFocusedHourSummaryStat } from '../modules/dashboard-elements.js';
+import { dashboardSubContainer, dashboardContainerCover } from '../modules/dashboard-elements.js';
 import { dashboardData, labelDistContainer } from '../modules/dashboard-objects.js';
 import { timeConvert } from '../modules/index-objects.js';
+import { isMobile } from '../modules/dom-elements.js';
+
 import { populateDashboardSummaryStats } from './summary-stats.js';
 import { populateLabelDistContainer } from './label-distribution.js';
 
 export async function populateDashboard(sessionData, noteData) { // called from state.js
+
+    if (isMobile) {
+        dashboardSubContainer.style.display = 'none';
+        dashboardContainerCover.style.display = 'flex';
+    }
 
     // create sorted array of data for each day
     const dailySummarizedData = await initializeDailyData(sessionData);

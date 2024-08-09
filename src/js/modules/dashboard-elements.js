@@ -1,3 +1,7 @@
+// Main Dashboard Container
+export const dashboardSubContainer = document.getElementById('dashboardSubContainer');
+export const dashboardContainerCover = document.getElementById('dashboardContainerCover');
+
 // Daily Container
 export const dailyDay = document.getElementById('dailyDay');
 export const dailyDate = document.getElementById('dailyDate');

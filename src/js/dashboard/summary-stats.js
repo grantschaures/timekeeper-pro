@@ -1,4 +1,5 @@
 import { totalDeepWorkSummaryStat, avgDeepWorkSummaryStat, avgFocusQualitySummaryStat, avgIntervalLengthSummaryStat, mostFocusedHourSummaryStat } from '../modules/dashboard-elements.js';
+
 import { focusQualityCalculation } from './populate-dashboard.js';
 
 export function populateDashboardSummaryStats(timeConvert, dailySummarizedData, dashboardData) {

@@ -1,17 +1,11 @@
 import { pomodoroNotificationToggle, pomodoroInputs, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, pomodoroVolumeThumb, pomodoroVolumeThumb2, pomodoroRadios, flowmodoroNotificationToggle, flowmodoroInputs, flowmodoroVolumeThumb, flowmodoroVolumeThumb2, flowmodoroRadios, breakSuggestionToggle, suggestionMinutesInput, generalRadios, targetTimeReachedToggle, darkGrayTheme, defaultTheme, interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, emojiContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, transitionClockSoundToggle, labelSelectionRow, emojiImg, emojiImg2, dynamicList, propagateUnfinishedTasksToggle as propagateUnfinishedTasksToggleElement, blackFlowtimeBackground, blackChilltimeBackground, total_time_display, streaksContainer, labelInputContainer, tagIcon, promptContainer, clearIcon, addDoneContainer, tagSelectionDivider, taskPrompt, intervalTimeToggle, totalTimeToggle, muffinToggle as muffToggle, lightContainer, darkContainer } from '../modules/dom-elements.js';
-
 import { sessionState } from '../modules/state-objects.js';
-
 import { flags, timeAmount, alertVolumes, alertSounds, selectedBackgroundId, selectedBackground, flowtimeBackgrounds, chilltimeBackgrounds, selectedBackgroundIdTemp, startTimes, elapsedTime, timeConvert, progressTextMod, darkHtmlBackground, lightHtmlBackground } from '../modules/index-objects.js';
-
 import { flags as notesflags, counters as notesCounters, state as notesState, labelDict, notesArr, selectedLabelDict, notesFlags, fontSizeArr, fontNumArr, labelFlags, labelArrs } from '../modules/notes-objects.js';
 
 import { updateStreak } from '../utility/update-streaks.js';
-
 import { setInitialBackgroundCellSelection, deactivateDarkTheme, activateDarkTheme, replaceTargetHours, totalTimeDisplay, intervalTimeToggleGUIUpdate, totalTimeToggleGUIUpdate } from '../main/index.js';
-
 import { appendEditRemoveContainer, createCheckElements, getLastNumberFromId, addLabelInputContainerTagDivider, addLabelInitialActions, removeTagSelectionDivider, adjustLabelFontSize } from '../main/notes.js';
-
 import { populateDashboard } from '../dashboard/populate-dashboard.js';
 
 var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
