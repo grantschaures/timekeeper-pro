@@ -10,6 +10,7 @@ import { animationsFadeIn, animationsFadeOut, getTotalElapsed, returnTotalTimeSt
 import { checkInvaliDate } from '../state/check-invaliDate.js'; // minified
 import { addSession } from '../state/add-session.js'; // minified
 import { subMainContainerTransition } from './navigation.js'; // minified
+import { populateDashboard } from '../dashboard/populate-dashboard.js'; // minified
 
 const defaultFavicon = "/images/logo/HyperChillLogo_circular_white_border.png";
 
@@ -164,6 +165,8 @@ async function updateSessionSummary(tempStorage, commentsTextArea, subjectiveFee
 
         const data = await response.json();
         console.log("Session summary updated successfully:", data);
+
+        populateDashboard(data.noteSessionData.sessions, data.noteSessionData.note);
         
     } catch (error) {
         console.error('Failed to update session summary:', error);

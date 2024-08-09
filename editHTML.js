@@ -38,8 +38,8 @@ const loginJsPath = './src/js/login_signup/login.js';
 const googleSignInPath = './src/js/api/google-signin.js';
 
 const dailySessionsJsPath = './src/js/dashboard/daily-sessions.js';
-const labelDistributionJsPath = './src/js/dashboard/label-distribution.js';
 const mainChartsJsPath = './src/js/dashboard/main-charts.js';
+const labelDistributionJsPath = './src/js/dashboard/label-distribution.js';
 const summaryStatsJsPath = './src/js/dashboard/summary-stats.js';
 const populateDashboardJsPath = './src/js/dashboard/populate-dashboard.js';
 
@@ -204,6 +204,10 @@ const endSessionReplacements = [
     {
         pattern: /import { subMainContainerTransition } from '.\/navigation.js';/g,
         replacement: "import { subMainContainerTransition } from '../minified/navigation.min.js';"
+    },
+    {
+        pattern: /import { populateDashboard } '..\/dashboard\/populate-dashboard.js';/g,
+        replacement: "import { populateDashboard } from '../minified/populate-dashboard.min.js';"
     }
 ]
 
@@ -233,6 +237,7 @@ const labelDistributionReplacements = [
         replacement: "import { userTimeZone } from '../minified/identification.min.js';"
     }
 ]
+
 
 // Update index.html
 readFileAndReplace(indexHtmlPath, indexHtmlReplacements);

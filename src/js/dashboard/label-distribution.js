@@ -185,6 +185,12 @@ function updateLabelData(dashboardData, labelDistContainer) {
 }
 
 function visualizeLabelData(dashboardData, labelDistContainer) {
+
+    // remove any remnant elements in labelNamesContainer, labelLinesContainer, or labelTimesContainer
+    labelNamesContainer.innerHTML = '';
+    labelLinesContainer.innerHTML = '';
+    labelTimesContainer.innerHTML = '';
+
     // iterate through each daily labelTimes value
     // if labelTime key is part of the current labels AND date is within upper and lower bound dates
     let noteDataLabels = dashboardData.noteData.labels;
@@ -221,14 +227,11 @@ function visualizeLabelData(dashboardData, labelDistContainer) {
     }
 
     let highestPercent = 0;
-    let highestPercentKey;
-
     // calculate highest percent
     Object.keys(labels).forEach(key => {
         let currentPercent = Math.round((labels[key] / totalLabelTime) * 100);
         if (currentPercent > highestPercent) {
             highestPercent = currentPercent;
-            highestPercentKey = key;
         }
     })
 
