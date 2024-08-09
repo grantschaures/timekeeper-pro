@@ -119,8 +119,8 @@ const indexReplacements = [
         replacement: "import { lastIntervalSwitch } from '../minified/last-interval-switch.min.js';"
     },
     {
-        pattern: /import { userAgent, userDevice } from '..\/utility\/identification.js';/g,
-        replacement: "import { userAgent, userDevice } from '../minified/identification.min.js';"
+        pattern: /import { userAgent, userDevice, userTimeZone } from '..\/utility\/identification.js';/g,
+        replacement: "import { userAgent, userDevice, userTimeZone } from '../minified/identification.min.js';"
     },
     {
         pattern: /import { checkSession } from '..\/state\/check-session.js';/g,
