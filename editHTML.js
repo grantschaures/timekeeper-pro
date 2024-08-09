@@ -208,12 +208,6 @@ const endSessionReplacements = [
 ]
 
 // DASHBOARD
-const dailySessionsReplacements = [
-    {
-        pattern: /import { userTimeZone } from '.\/utility\/identification.js';/g,
-        replacement: "import { userTimeZone } from '../minified/identification.min.js';"
-    }
-]
 
 const summaryStatsReplacements = [
     {
@@ -263,7 +257,6 @@ readFileAndReplace(navigationJsPath, navigationReplacements);
 readFileAndReplace(googleSignInPath, googleSignInReplacements);
 readFileAndReplace(loginJsPath, loginReplacements);
 readFileAndReplace(endSessionJsPath, endSessionReplacements);
-readFileAndReplace(dailySessionsJsPath, dailySessionsReplacements);
 readFileAndReplace(summaryStatsJsPath, summaryStatsReplacements);
 readFileAndReplace(populateDashboardJsPath, populateDashboardReplacements);
 readFileAndReplace(labelDistributionJsPath, labelDistributionReplacements);
