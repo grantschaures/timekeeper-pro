@@ -15,7 +15,8 @@ export const labelDistContainer = {
     timeFrame: 'week',
     currentDay: null,
     lowerBound: null,
-    upperBound: null
+    upperBound: null,
+    height: 'auto'
 }
 
 export const flags = {

@@ -1,6 +1,6 @@
 import { labelDistributionContainer, metricDistributionBackBtn, metricDistributionContainer, metricDistributionCoverContainer, metricDistributionSubContainer } from "../modules/dashboard-elements.js"
 import { sessionState } from "../modules/state-objects.js"
-import { flags } from "../modules/dashboard-objects.js"
+import { flags, labelDistContainer } from "../modules/dashboard-objects.js"
 
 document.addEventListener("stateUpdated", function() {
     if (sessionState.loggedIn) {
@@ -41,6 +41,11 @@ function expandMetricDistributionContainer() {
         metricDistributionSubContainer.style.opacity = "1";
     }, 0)
 
+    const currentHeight = labelDistributionContainer.scrollHeight + 'px';
+    labelDistributionContainer.style.height = currentHeight;
+    labelDistributionContainer.offsetHeight;
+    labelDistContainer.height = labelDistributionContainer.scrollHeight + 'px';
+
     labelDistributionContainer.style.height = '0%';
     labelDistributionContainer.style.padding = '0px';
     labelDistributionContainer.style.marginTop = '0px';
@@ -51,7 +56,6 @@ function expandMetricDistributionContainer() {
     metricDistributionContainer.style.marginBottom = '0px';
     metricDistributionContainer.classList.add('expanded');
     flags.metricDistributionContainerExpanded = true;
-    
 }
 
 function resetMetricDistributionContainer() {
@@ -63,7 +67,12 @@ function resetMetricDistributionContainer() {
         metricDistributionCoverContainer.style.opacity = "1";
     }, 0)
 
-    labelDistributionContainer.style.height = '50%';
+    labelDistributionContainer.style.height = labelDistContainer.height;
+    
+    setTimeout(() => {
+        labelDistributionContainer.style.height = 'auto';
+    }, 500)
+
     labelDistributionContainer.style.padding = '15px';
     labelDistributionContainer.style.marginTop = '10px';
     labelDistributionContainer.style.opacity = '1';
