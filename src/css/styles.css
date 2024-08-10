@@ -912,6 +912,10 @@ button:hover {
     margin: 0px;
 }
 
+.finalized-hours:hover {
+    cursor: pointer;
+}
+
 .finalized-suggestion-minutes {
     font-family: myFont2;
     color: rgba(255, 255, 255); /* finalized text color */
