@@ -1,5 +1,5 @@
 import { dashboardData, labelDistContainer } from '../modules/dashboard-objects.js';
-import { labelDistributionElement, labelDistributionMonth, labelDistributionTimeFrame, labelDistributionWeek, labelDistributionYear, labelLinesContainer, labelNamesContainer, labelTimesContainer, leftLabelDistributionArrow, rightLabelDistributionArrow } from '../modules/dashboard-elements.js';
+import { labelDistributionElement, labelDistributionMonth, labelDistributionTimeFrame, labelDistributionWeek, labelDistributionYear, labelLinesContainer, labelNamesContainer, labelTimesContainer, leftLabelDistributionArrow, metricDistributionTimeFrame, rightLabelDistributionArrow } from '../modules/dashboard-elements.js';
 import { timeConvert } from '../modules/index-objects.js';
 import { sessionState } from '../modules/state-objects.js';
 
@@ -21,16 +21,33 @@ function checkViewportWidth() {
         labelDistributionWeek.innerText = "W";
         labelDistributionMonth.innerText = "M";
         labelDistributionYear.innerText = "Y";
+
+        // temporary additions
+        metricDistributionWeek.innerText = "W";
+        metricDistributionMonth.innerText = "M";
+        metricDistributionYear.innerText = "Y";
     } else {
         labelDistributionWeek.innerText = "Week";
         labelDistributionMonth.innerText = "Month";
         labelDistributionYear.innerText = "Year";
+
+        // temporary additions
+        metricDistributionWeek.innerText = "Week";
+        metricDistributionMonth.innerText = "Month";
+        metricDistributionYear.innerText = "Year";
+
     }
 
     if (window.innerWidth <= 610) {
         labelDistributionTimeFrame.style.display = "none";
+
+        // temporary addition
+        metricDistributionTimeFrame.style.display = "none";
     } else {
         labelDistributionTimeFrame.style.display = "flex";
+
+        // temporary addition
+        metricDistributionTimeFrame.style.display = "flex";
     }
 }
 

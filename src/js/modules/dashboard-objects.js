@@ -17,3 +17,7 @@ export const labelDistContainer = {
     lowerBound: null,
     upperBound: null
 }
+
+export const flags = {
+    metricDistributionContainerExpanded: false
+}

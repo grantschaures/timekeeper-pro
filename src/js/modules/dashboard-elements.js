@@ -27,4 +27,12 @@ export const labelTimesContainer = document.getElementById('labelTimesContainer'
 export const labelDistributionElement = document.getElementById('labelDistributionElement');
 
 // Metric Distribution Container
+export const metricDistributionCoverContainer = document.getElementById('metricDistributionCoverContainer');
+export const metricDistributionSubContainer = document.getElementById('metricDistributionSubContainer');
 export const metricDistributionContainer = document.getElementById('metricDistributionContainer');
+export const metricDistributionBackBtn = document.getElementById('metricDistributionBackBtn');
+
+export const metricDistributionWeek = document.getElementById('metricDistributionWeek');
+export const metricDistributionMonth = document.getElementById('metricDistributionMonth');
+export const metricDistributionYear = document.getElementById('metricDistributionYear');
+export const metricDistributionTimeFrame = document.getElementById('metricDistributionTimeFrame');
