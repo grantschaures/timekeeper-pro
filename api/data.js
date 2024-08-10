@@ -577,10 +577,17 @@ router.post("/update-labels", async function(req, res) {
         // save the updated user
         await user.save();
 
-        return res.json({
-            message: "Labels updated successfully",
-            note: note
-        });
+        // READING FROM DB
+        const sessions = await Session.find({ userId: user._id });
+
+        let noteSessionData = {
+            note: note,
+            sessions: sessions
+        }
+
+
+        res.json({ message: "Labels updated successfully", noteSessionData });
+
     } catch (error) {
         return res.status(500).json({
             message: "The server was unable to process the request: " + error.message

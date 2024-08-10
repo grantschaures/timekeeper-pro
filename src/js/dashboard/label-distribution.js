@@ -1,5 +1,5 @@
 import { dashboardData, labelDistContainer } from '../modules/dashboard-objects.js';
-import { labelDistributionElement, labelDistributionMonth, labelDistributionTimeFrame, labelDistributionWeek, labelDistributionYear, labelLinesContainer, labelNamesContainer, labelTimesContainer, leftLabelDistributionArrow, rightLabelDistributionArrow } from '../modules/dashboard-elements.js';
+import { labelDistributionElement, labelDistributionMonth, labelDistributionTimeFrame, labelDistributionWeek, labelDistributionYear, labelLinesContainer, labelNamesContainer, labelTimesContainer, leftLabelDistributionArrow, metricDistributionTimeFrame, rightLabelDistributionArrow } from '../modules/dashboard-elements.js';
 import { timeConvert } from '../modules/index-objects.js';
 import { sessionState } from '../modules/state-objects.js';
 
@@ -15,6 +15,45 @@ export function populateLabelDistContainer(dashboardData, labelDistContainer) {
     // initial visualization of data
     visualizeLabelData(dashboardData, labelDistContainer);
 }
+
+function checkViewportWidth() {
+    if (window.innerWidth <= 705) {
+        labelDistributionWeek.innerText = "W";
+        labelDistributionMonth.innerText = "M";
+        labelDistributionYear.innerText = "Y";
+
+        // temporary additions
+        metricDistributionWeek.innerText = "W";
+        metricDistributionMonth.innerText = "M";
+        metricDistributionYear.innerText = "Y";
+    } else {
+        labelDistributionWeek.innerText = "Week";
+        labelDistributionMonth.innerText = "Month";
+        labelDistributionYear.innerText = "Year";
+
+        // temporary additions
+        metricDistributionWeek.innerText = "Week";
+        metricDistributionMonth.innerText = "Month";
+        metricDistributionYear.innerText = "Year";
+
+    }
+
+    if (window.innerWidth <= 610) {
+        labelDistributionTimeFrame.style.display = "none";
+
+        // temporary addition
+        metricDistributionTimeFrame.style.display = "none";
+    } else {
+        labelDistributionTimeFrame.style.display = "flex";
+
+        // temporary addition
+        metricDistributionTimeFrame.style.display = "flex";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    window.addEventListener('resize', checkViewportWidth);
+})
 
 document.addEventListener("stateUpdated", function() {
     // add click event listeners for week, month, year and label dist arrow btns
@@ -94,8 +133,9 @@ document.addEventListener("stateUpdated", function() {
         })
     } else {
         const labelDistMessage = document.createElement('div');
-        labelDistMessage.innerText = "Log in to see your time label distribution";
+        labelDistMessage.innerText = "Log in to see your label time distribution";
         labelDistMessage.classList.add('notLoggedInMessage');
+        labelDistMessage.style.paddingBottom = '75px';
         labelDistributionElement.style.height = '100%';
         labelDistributionElement.style.justifyContent = 'center';
         labelNamesContainer.style.display = 'none';
@@ -238,7 +278,12 @@ function visualizeLabelData(dashboardData, labelDistContainer) {
     Object.keys(labels).forEach(key => {
 
         // Create labelName element
-        const labelName = dashboardData.noteData.labels[key];
+        let labelName = dashboardData.noteData.labels[key];
+
+        if (labelName.length > 20) {
+            labelName = labelName.slice(0, 20) + "...";
+        }
+
         const labelNameDiv = document.createElement('div');
         labelNameDiv.id = "labelName-" + key;
         labelNameDiv.classList.add('labelName');

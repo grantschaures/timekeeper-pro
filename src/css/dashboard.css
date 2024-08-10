@@ -65,21 +65,6 @@
     max-width: 1000px;
 }
 
-#metricDistributionContainer {
-    display: flex;
-    position: relative;
-    width: 100%;
-    height: 100%;
-    /* background-color: rgba(255, 255, 255, 0.1); */
-    background-color: rgba(0, 0, 0, 1);
-    box-sizing: border-box;
-    border-radius: 25px;
-    z-index: 10;
-    margin-bottom: 10px;
-
-    color: white;
-}
-
 #dashboardSummaryStatsContainer {
     display: flex;
     box-sizing: border-box;
@@ -161,6 +146,96 @@
     overflow-y: scroll;
 }
 
+
+
+
+
+
+/* METRIC DISTRIBUTION */
+
+#metricDistributionContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 1);
+    box-sizing: border-box;
+    border-radius: 25px;
+    z-index: 10;
+    padding: 15px;
+    margin-bottom: 10px;
+    color: white;
+    font-family: settingsHeaderFontBold;
+    font-size: 24px;
+}
+
+#metricDistributionCoverContainer {
+    /* display: none; */
+    display: flex;
+    height: 100%;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    transition: opacity 0.25s ease-out;
+
+    /* border: 1px solid white; */
+}
+
+#metricDistributionSubContainer {
+    /* display: flex; */
+    display: none;
+    align-items: center;
+    position: relative;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 1);
+    box-sizing: border-box;
+    border-radius: 25px;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+}
+
+#metricBodyContainer {
+    display: flex;
+    height: 100%;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    width: 75%;
+
+    /* border: 1px solid white; */
+}
+
+#metricDistributionContainer:not(.expanded):hover {
+    cursor: pointer;
+}
+
+#metricDistributionBackBtn {
+    width: 32px;
+    height: 32px;
+    z-index: 4;
+    left: 10px;
+    opacity: 1.00;
+    margin-right: 8px;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+#metricDistributionBackBtn {
+    cursor: pointer;
+}
+
+.triggerBounceLeft {
+    animation: bounceLeft 0.25s forwards;
+}
+
+.resetBounce {
+    animation: bounceBack 0.25s forwards;
+}
+
 #dailyContainer {
     width: 400px;
     min-width: 200px;
@@ -204,7 +279,7 @@
     width: 100%;
     justify-content: space-between;
     align-items: center;
-    height: 50px;
+    height: 45px;
 
     /* border: 2px solid orange; */
 }
@@ -258,12 +333,12 @@
 }
 
 /* LABEL DISTRIBUTION */
-
 #labelDistributionContainer {
     display: flex;
     position: relative;
     width: 100%;
-    height: 100%;
+    height: auto;
+    max-height: 50%;
     background-color: rgba(0, 0, 0, 1);
     box-sizing: border-box;
     flex-direction: column;
@@ -271,26 +346,28 @@
     z-index: 10;
     margin-top: 10px;
     padding: 15px;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
+    opacity: 1;
+    transition: height 0.5s cubic-bezier(0.25, 0.1, 0.25, 1), padding 0.5s cubic-bezier(0.25, 0.1, 0.25, 1), margin-top 0.5s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
     
     color: white;
 }
 
-#labelDistributionContainer::-webkit-scrollbar {
+#labelDistributionElement::-webkit-scrollbar {
     width: 0px;
     height: 8px;
 }
 
-#labelDistributionContainer::-webkit-scrollbar:hover {
+#labelDistributionElement::-webkit-scrollbar:hover {
     cursor: pointer;
 }
 
-#labelDistributionContainer::-webkit-scrollbar-track {
+#labelDistributionElement::-webkit-scrollbar-track {
     /* background: transparent; */
     background: rgba(255, 255, 255, 0);
 }
 
-#labelDistributionContainer::-webkit-scrollbar-thumb {
+#labelDistributionElement::-webkit-scrollbar-thumb {
     background-color: #888;
     border-radius: 10px;
 }
@@ -298,13 +375,15 @@
 #labelDistributionElement {
     display: flex;
     width: 100%;
+    height: 100%;
     box-sizing: border-box;
     font-size: 20px;
     font-family: settingsHeaderFontBold;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
+    overflow-y: auto;
     
-    /* border: 2px solid yellow; */
+    /* border: 2px solid white; */
 }
 
 #labelNamesContainer {
@@ -312,7 +391,7 @@
     text-align: left;
     margin-right: 10px;
     white-space: nowrap;
-    height: 100%;
+    height: auto;
     box-sizing: border-box;
     align-items: left;
     font-family: settingsHeaderFont;
@@ -328,24 +407,19 @@
     /* border: 1px solid yellowgreen; */
 }
 
-.labelName, .labelLineContainer, .labelTime {
-    height: 30px;
-}
-
 #labelLinesContainer {
     display: flex;
     width: 100%;
     height: auto;
-    align-items: center;
     flex-direction: column;
+    box-sizing: border-box;
+    align-items: center;
 
     /* border: 2px solid red; */
 }
 
 .labelLineContainer {
-    display: flex;
     width: 100%;
-
     align-items: center;
 
     /* border: 1px solid white; */
@@ -353,8 +427,11 @@
 
 #labelTimesContainer {
     display: flex;
+    height: auto;
     flex-direction: column;
+    box-sizing: border-box;
     margin-left: 10px;
+    text-align: left;
 
     /* border: 2px solid blue; */
 }
@@ -369,6 +446,15 @@
     transition: width 1s cubic-bezier(0.25, 0.1, 0.25, 1);
     border: 2px solid white;
 }
+
+.labelName, .labelLineContainer, .labelTime {
+    display: flex;
+    box-sizing: border-box;
+    height: 32px;
+
+    /* border: 1px solid white; */
+}
+
 
 @keyframes gradientShift2 {
     0% {
@@ -395,7 +481,6 @@
 }
 
 .labelTime {
-    display: flex;
     white-space: nowrap;
     justify-content: left;
     align-items: center;
@@ -406,7 +491,7 @@
     /* border: 1px solid rgba(255, 255, 255, 1); */
 }
 
-#labelDistributionHeaderContainer {
+#labelDistributionHeaderContainer, #metricDistributionHeaderContainer {
     display: flex;
     width: 100%;
     justify-content: space-between;
@@ -419,57 +504,57 @@
     /* border: 2px solid white; */
 }
 
-#labelDistributionArrowsAndSelections {
+#labelDistributionArrowsAndSelections, #metricDistributionArrowsAndSelections {
     display: flex;
 }
 
-#labelDistributionSelections {
+#labelDistributionSelections, #metricDistributionSelections {
     display: flex;
 }
 
-#labelDistributionArrows {
+#labelDistributionArrows, #metricDistributionArrows {
     display: flex;
     align-items: center;
     margin-left: 10px;
     margin-right: 10px;
 }
 
-#leftLabelDistributionArrow {
+#leftLabelDistributionArrow, #leftMetricDistributionArrow {
     padding-right: 10px;
 }
 
-#rightLabelDistributionArrow {
+#rightLabelDistributionArrow, #rightMetricDistributionArrow {
     padding-left: 10px;
 }
 
-.labelDistributionSelection {
+.labelDistributionSelection, .metricDistributionSelection {
     margin-left: 5px;
     margin-right: 5px;
     padding: 5px 15px;
     border-radius: 25px;
 }
 
-.labelDistributionSelection:not(.labelDistributionSelected):hover {
+.labelDistributionSelection:not(.labelDistributionSelected):hover, .metricDistributionSelection:not(.metricDistributionSelected):hover {
     cursor: pointer;
 }
 
-.labelDistributionSelected {
+.labelDistributionSelected, .metricDistributionSelected {
     background: linear-gradient(135deg, rgba(130, 0, 170, 0.8), rgb(162, 0, 212), rgba(190, 90, 240, 0.8));
     background-size: 200% 200%;
     animation: gradientShift 15s linear infinite;
 }
 
-.labelDistributionSelected:hover {
+.labelDistributionSelected:hover, .metricDistributionSelected:hover {
     cursor: pointer;
 }
 
-#labelDistributionTimeFrame {
+#labelDistributionTimeFrame, #metricDistributionTimeFrame {
     display: flex;
     white-space: nowrap;
     margin-left: 10px;
 }
 
-#dailyBodyContainer, #metricDistributionContainer {
+#dailyBodyContainer {
     display: flex;
     text-align: center;
     align-items: center;
@@ -485,6 +570,7 @@
     align-items: center;
     font-family: settingsHeaderFontBold;
     font-size: 24px;
+    margin-top: 50px;
     /* border: 1px solid white; */
 }
 
