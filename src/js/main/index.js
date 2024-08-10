@@ -30,6 +30,7 @@ import {
     darkContainer,
     lightContainer,
     flowmodoroBtnContainer,
+    target_hours_input,
 } from '../modules/dom-elements.js';
 
 import { sessionState } from '../modules/state-objects.js';
@@ -54,6 +55,12 @@ export const totalDisplayWorker = new Worker('/js/web-workers/totalDisplayWorker
 
 // Create a new mutation observer to watch for changes to the #display div
 export const observer = new MutationObserver(setTabTitleFromDisplay);
+
+document.addEventListener("click", function(event) {
+    if (event.target.classList.contains('finalized-hours')) {
+        submit_change_btn.click();
+    }
+})
 
 document.addEventListener("stateUpdated", function() {
     // Favicons
