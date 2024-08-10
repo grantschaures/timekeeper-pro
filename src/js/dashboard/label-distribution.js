@@ -16,6 +16,28 @@ export function populateLabelDistContainer(dashboardData, labelDistContainer) {
     visualizeLabelData(dashboardData, labelDistContainer);
 }
 
+function checkViewportWidth() {
+    if (window.innerWidth <= 705) {
+        labelDistributionWeek.innerText = "W";
+        labelDistributionMonth.innerText = "M";
+        labelDistributionYear.innerText = "Y";
+    } else {
+        labelDistributionWeek.innerText = "Week";
+        labelDistributionMonth.innerText = "Month";
+        labelDistributionYear.innerText = "Year";
+    }
+
+    if (window.innerWidth <= 610) {
+        labelDistributionTimeFrame.style.display = "none";
+    } else {
+        labelDistributionTimeFrame.style.display = "flex";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    window.addEventListener('resize', checkViewportWidth);
+})
+
 document.addEventListener("stateUpdated", function() {
     // add click event listeners for week, month, year and label dist arrow btns
     if (sessionState.loggedIn) {

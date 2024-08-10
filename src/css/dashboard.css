@@ -69,7 +69,7 @@
     display: flex;
     position: relative;
     width: 100%;
-    height: 100%;
+    height: 50%;
     /* background-color: rgba(255, 255, 255, 0.1); */
     background-color: rgba(0, 0, 0, 1);
     box-sizing: border-box;
@@ -78,6 +78,10 @@
     margin-bottom: 10px;
 
     color: white;
+}
+
+#metricDistributionContainer:not(.expanded):hover {
+    cursor: pointer;
 }
 
 #dashboardSummaryStatsContainer {
@@ -263,7 +267,7 @@
     display: flex;
     position: relative;
     width: 100%;
-    height: 100%;
+    height: 50%;
     background-color: rgba(0, 0, 0, 1);
     box-sizing: border-box;
     flex-direction: column;
@@ -271,26 +275,28 @@
     z-index: 10;
     margin-top: 10px;
     padding: 15px;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
+    opacity: 1;
+    transition: height 0.25s cubic-bezier(0.25, 0.1, 0.25, 1), padding 0.25s cubic-bezier(0.25, 0.1, 0.25, 1), margin-top 0.25s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
     
     color: white;
 }
 
-#labelDistributionContainer::-webkit-scrollbar {
+#labelDistributionElement::-webkit-scrollbar {
     width: 0px;
     height: 8px;
 }
 
-#labelDistributionContainer::-webkit-scrollbar:hover {
+#labelDistributionElement::-webkit-scrollbar:hover {
     cursor: pointer;
 }
 
-#labelDistributionContainer::-webkit-scrollbar-track {
+#labelDistributionElement::-webkit-scrollbar-track {
     /* background: transparent; */
     background: rgba(255, 255, 255, 0);
 }
 
-#labelDistributionContainer::-webkit-scrollbar-thumb {
+#labelDistributionElement::-webkit-scrollbar-thumb {
     background-color: #888;
     border-radius: 10px;
 }
@@ -298,13 +304,15 @@
 #labelDistributionElement {
     display: flex;
     width: 100%;
+    height: 100%;
     box-sizing: border-box;
     font-size: 20px;
     font-family: settingsHeaderFontBold;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
+    overflow-y: auto;
     
-    /* border: 2px solid yellow; */
+    /* border: 2px solid white; */
 }
 
 #labelNamesContainer {
@@ -312,7 +320,7 @@
     text-align: left;
     margin-right: 10px;
     white-space: nowrap;
-    height: 100%;
+    height: auto;
     box-sizing: border-box;
     align-items: left;
     font-family: settingsHeaderFont;
@@ -328,24 +336,19 @@
     /* border: 1px solid yellowgreen; */
 }
 
-.labelName, .labelLineContainer, .labelTime {
-    height: 30px;
-}
-
 #labelLinesContainer {
     display: flex;
     width: 100%;
     height: auto;
-    align-items: center;
     flex-direction: column;
+    box-sizing: border-box;
+    align-items: center;
 
     /* border: 2px solid red; */
 }
 
 .labelLineContainer {
-    display: flex;
     width: 100%;
-
     align-items: center;
 
     /* border: 1px solid white; */
@@ -353,8 +356,11 @@
 
 #labelTimesContainer {
     display: flex;
+    height: auto;
     flex-direction: column;
+    box-sizing: border-box;
     margin-left: 10px;
+    text-align: left;
 
     /* border: 2px solid blue; */
 }
@@ -369,6 +375,15 @@
     transition: width 1s cubic-bezier(0.25, 0.1, 0.25, 1);
     border: 2px solid white;
 }
+
+.labelName, .labelLineContainer, .labelTime {
+    display: flex;
+    box-sizing: border-box;
+    height: 32px;
+
+    /* border: 1px solid white; */
+}
+
 
 @keyframes gradientShift2 {
     0% {
@@ -395,7 +410,6 @@
 }
 
 .labelTime {
-    display: flex;
     white-space: nowrap;
     justify-content: left;
     align-items: center;
@@ -485,6 +499,7 @@
     align-items: center;
     font-family: settingsHeaderFontBold;
     font-size: 24px;
+    margin-top: 50px;
     /* border: 1px solid white; */
 }
 
@@ -505,5 +520,11 @@
     #distributionsContainer {
         width: 100%;
         margin-right: 0px;
+    }
+}
+
+@media (max-width: 625px) {
+    #labelDistributionWeek {
+
     }
 }

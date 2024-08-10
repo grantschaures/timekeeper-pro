@@ -579,11 +579,6 @@ router.post("/update-labels", async function(req, res) {
 
         // READING FROM DB
         const sessions = await Session.find({ userId: user._id });
-        if (sessions.length === 0) {
-            return res.status(404).json({
-                message: "No sessions found"
-            });
-        }
 
         let noteSessionData = {
             note: note,

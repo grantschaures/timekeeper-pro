@@ -14,6 +14,7 @@ export const avgIntervalLengthSummaryStat = document.getElementById('avgInterval
 export const mostFocusedHourSummaryStat = document.getElementById('mostFocusedHourSummaryStat');
 
 // Label Distribution Container
+export const labelDistributionContainer = document.getElementById('labelDistributionContainer');
 export const labelDistributionTimeFrame = document.getElementById('labelDistributionTimeFrame');
 export const labelDistributionWeek = document.getElementById('labelDistributionWeek');
 export const labelDistributionMonth = document.getElementById('labelDistributionMonth');
@@ -24,3 +25,6 @@ export const labelNamesContainer = document.getElementById('labelNamesContainer'
 export const labelLinesContainer = document.getElementById('labelLinesContainer');
 export const labelTimesContainer = document.getElementById('labelTimesContainer');
 export const labelDistributionElement = document.getElementById('labelDistributionElement');
+
+// Metric Distribution Container
+export const metricDistributionContainer = document.getElementById('metricDistributionContainer');
