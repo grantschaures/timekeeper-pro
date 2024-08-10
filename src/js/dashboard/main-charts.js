@@ -33,32 +33,35 @@ document.addEventListener("stateUpdated", function() {
 })
 
 function expandMetricDistributionContainer() {
-    metricDistributionCoverContainer.style.opacity = "0";
-    metricDistributionCoverContainer.style.display = "none";
-    metricDistributionSubContainer.style.display = "flex";
-
-    setTimeout(() => {
-        metricDistributionSubContainer.style.opacity = "1";
-    }, 0)
-
-    const currentHeight = labelDistributionContainer.scrollHeight + 'px';
-    labelDistributionContainer.style.height = currentHeight;
-    labelDistributionContainer.offsetHeight;
-    labelDistContainer.height = labelDistributionContainer.scrollHeight + 'px';
-
-    labelDistributionContainer.style.height = '0%';
-    labelDistributionContainer.style.padding = '0px';
-    labelDistributionContainer.style.marginTop = '0px';
-    labelDistributionContainer.style.opacity = '0';
-
-    metricDistributionBackBtn.style.opacity = '1';
-
-    metricDistributionContainer.style.marginBottom = '0px';
-    metricDistributionContainer.classList.add('expanded');
-    flags.metricDistributionContainerExpanded = true;
+    if (!labelDistContainer.resetInProgress) {
+        metricDistributionCoverContainer.style.opacity = "0";
+        metricDistributionCoverContainer.style.display = "none";
+        metricDistributionSubContainer.style.display = "flex";
+    
+        setTimeout(() => {
+            metricDistributionSubContainer.style.opacity = "1";
+        }, 0)
+    
+        const currentHeight = labelDistributionContainer.scrollHeight + 'px';
+        labelDistributionContainer.style.height = currentHeight;
+        labelDistributionContainer.offsetHeight;
+        labelDistContainer.height = labelDistributionContainer.scrollHeight + 'px';
+    
+        labelDistributionContainer.style.height = '0%';
+        labelDistributionContainer.style.padding = '0px';
+        labelDistributionContainer.style.marginTop = '0px';
+        labelDistributionContainer.style.opacity = '0';
+    
+        metricDistributionBackBtn.style.opacity = '1';
+    
+        metricDistributionContainer.style.marginBottom = '0px';
+        metricDistributionContainer.classList.add('expanded');
+        flags.metricDistributionContainerExpanded = true;
+    }
 }
 
 function resetMetricDistributionContainer() {
+    labelDistContainer.resetInProgress = true;
     metricDistributionSubContainer.style.opacity = "0";
     metricDistributionSubContainer.style.display = "none";
     metricDistributionCoverContainer.style.display = "flex";
@@ -71,6 +74,7 @@ function resetMetricDistributionContainer() {
     
     setTimeout(() => {
         labelDistributionContainer.style.height = 'auto';
+        labelDistContainer.resetInProgress = false;
     }, 500)
 
     labelDistributionContainer.style.padding = '15px';

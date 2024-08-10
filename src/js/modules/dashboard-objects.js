@@ -16,7 +16,8 @@ export const labelDistContainer = {
     currentDay: null,
     lowerBound: null,
     upperBound: null,
-    height: 'auto'
+    height: 'auto',
+    resetInProgress: false
 }
 
 export const flags = {
