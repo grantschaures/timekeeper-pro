@@ -43,6 +43,8 @@ const labelDistributionJsPath = './src/js/dashboard/label-distribution.js';
 const summaryStatsJsPath = './src/js/dashboard/summary-stats.js';
 const populateDashboardJsPath = './src/js/dashboard/populate-dashboard.js';
 
+const updateLabelsJsPath = './src/js/state/update-labels.js';
+
 // Define replacements for index.html
 const indexHtmlReplacements = [
     { pattern: /\/js\/main\/index\.js/g, replacement: '/js/minified/index.min.js' },
@@ -211,6 +213,13 @@ const endSessionReplacements = [
     }
 ]
 
+const updateLabelsReplacements = [
+    {
+        pattern: /import { populateDashboard } from '..\/dashboard\/populate-dashboard.js';/g,
+        replacement: "import { populateDashboard } from '../minified/populate-dashboard.min.js';"
+    }
+]
+
 // DASHBOARD
 
 const summaryStatsReplacements = [
@@ -265,3 +274,4 @@ readFileAndReplace(endSessionJsPath, endSessionReplacements);
 readFileAndReplace(summaryStatsJsPath, summaryStatsReplacements);
 readFileAndReplace(populateDashboardJsPath, populateDashboardReplacements);
 readFileAndReplace(labelDistributionJsPath, labelDistributionReplacements);
+readFileAndReplace(updateLabelsJsPath, updateLabelsReplacements);

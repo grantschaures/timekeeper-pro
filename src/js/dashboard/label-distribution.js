@@ -238,7 +238,12 @@ function visualizeLabelData(dashboardData, labelDistContainer) {
     Object.keys(labels).forEach(key => {
 
         // Create labelName element
-        const labelName = dashboardData.noteData.labels[key];
+        let labelName = dashboardData.noteData.labels[key];
+
+        if (labelName.length > 20) {
+            labelName = labelName.slice(0, 20) + "...";
+        }
+
         const labelNameDiv = document.createElement('div');
         labelNameDiv.id = "labelName-" + key;
         labelNameDiv.classList.add('labelName');
