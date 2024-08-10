@@ -209,17 +209,17 @@ router.post("/verifyIdToken", async function(req, res) {
         beginSession(user, res);
 
     } catch (error) {
-        // Abort the transaction in case of an error
-        await session.abortTransaction();
-        session.endSession();
-
+        // Abort the transaction only if it hasn't been committed
+        if (session.inTransaction()) {
+            await session.abortTransaction();
+        }
+        
         res.status(400).json({ error: 'Invalid ID token' });
         console.error('Error during ID token verification:', error);
+
     } finally {
         // Ensure session is ended
-        if (session.inTransaction()) {
-            await session.endSession();
-        }
+        session.endSession();
     }
 });
 
