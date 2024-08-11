@@ -136,7 +136,7 @@
     animation: circleInnerAnimation 6s linear infinite;
 }
 
-@keyframes circleOuterAnimation {
+/* @keyframes circleOuterAnimation {
     0% {
         opacity: 0.075;
         transform: scaleX(1.005) scaleY(1.005);
@@ -217,7 +217,150 @@
     100% {
         opacity: 0.05
     }
+} */
+
+@keyframes circleOuterAnimation {
+    0% {
+        opacity: 0.05;
+        transform: scaleX(1.025) scaleY(1.025);
+    }
+    10% {
+        opacity: 0;
+        transform: scaleX(1) scaleY(1);
+    }
+    20% {
+        opacity: 0.05;
+        transform: scaleX(1) scaleY(1);
+    }
+    30% {
+        opacity: 0.05;
+        transform: scaleX(1) scaleY(1);
+    }
+    40% {
+        opacity: 0.05;
+        transform: scaleX(1) scaleY(1);
+    }
+    50% {
+        opacity: 0.05;
+        transform: scaleX(1) scaleY(1);
+    }
+    60% {
+        opacity: 0.05;
+        transform: scaleX(1) scaleY(1);
+    }
+    70% {
+        opacity: 0.05;
+        transform: scaleX(1) scaleY(1);
+    }
+    80% {
+        opacity: 0.1;
+        transform: scaleX(1.025) scaleY(1.025);
+    }
+    90% {
+        opacity: 0.15;
+        transform: scaleX(1.05) scaleY(1.05);
+    }
+    100% {
+        opacity: 0.05;
+        transform: scaleX(1.025) scaleY(1.025);
+    }
 }
+
+@keyframes circleMiddleAnimation {
+    0% {
+        opacity: 0.1;
+        transform: scaleX(1) scaleY(1);
+    }
+    10% {
+        opacity: 0.1;
+        transform: scaleX(1) scaleY(1);
+    }
+    20% {
+        opacity: 0.1;
+        transform: scaleX(1) scaleY(1);
+    }
+    30% {
+        opacity: 0.1;
+        transform: scaleX(1) scaleY(1);
+    }
+    40% {
+        opacity: 0.1;
+        transform: scaleX(1) scaleY(1);
+    }
+    50% {
+        opacity: 0.1;
+        transform: scaleX(1) scaleY(1);
+    }
+    60% {
+        opacity: 0.15;
+        transform: scaleX(1.025) scaleY(1.025);
+    }
+    70% {
+        opacity: 0.2;
+        transform: scaleX(1.05) scaleY(1.05);
+    }
+    80% {
+        opacity: 0.1;
+        transform: scaleX(1.025) scaleY(1.025);
+    }
+    90% {
+        opacity: 0;
+        transform: scaleX(1) scaleY(1);
+    }
+    100% {
+        opacity: 0.1;
+        transform: scaleX(1) scaleY(1);
+    }
+}
+
+@keyframes circleInnerAnimation {
+    0% {
+        opacity: 0.15;
+        transform: scaleX(1) scaleY(1);
+    }
+    10% {
+        opacity: 0.15;
+        transform: scaleX(1) scaleY(1);
+    }
+    20% {
+        opacity: 0.15;
+        transform: scaleX(1) scaleY(1);
+    }
+    30% {
+        opacity: 0.15;
+        transform: scaleX(1) scaleY(1);
+    }
+    40% {
+        opacity: 0.2;
+        transform: scaleX(1.025) scaleY(1.025);
+    }
+    50% {
+        opacity: 0.25;
+        transform: scaleX(1.05) scaleY(1.05);
+    }
+    60% {
+        opacity: 0.15;
+        transform: scaleX(1.025) scaleY(1.025);
+    }
+    70% {
+        opacity: 0;
+        transform: scaleX(1) scaleY(1);
+    }
+    80% {
+        opacity: 0.15;
+        transform: scaleX(1) scaleY(1);
+    }
+    90% {
+        opacity: 0.15;
+        transform: scaleX(1) scaleY(1);
+    }
+    100% {
+        opacity: 0.15;
+        transform: scaleX(1) scaleY(1);
+    }
+}
+
+
 
 /* adjusting animation heights for changes in height (e.g. mobile) */
 @media (max-width: 504px) {

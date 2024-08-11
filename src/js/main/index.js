@@ -3,7 +3,7 @@ import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selected
 import { chimePath, bellPath, clock_tick, soundMap } from '../modules/sound-map.js';
 
 import {
-    start_stop_btn, submit_change_btn, end_session_btn, report_btn, total_time_display, productivity_chill_mode, progressBarContainer, progressBar, progressContainer, display, hyperChillTitle, subMainContainer, interruptionsContainer, interruptionsSubContainer, decBtn, incBtn, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, completedPomodoros_label, completedPomodoros_min, targetHoursContainer, timekeepingContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, targetTimeReachedToggle, breakSuggestionToggle, suggestionMinutesInput, flowmodoroNotificationToggle,flowmodoroNotifications, flowmodoroNotificationInfoWindow, flowTimeBreakNotification, flowTimeBreakNotificationInfoWindow, pomodoroNotifications, pomodoroNotificationInfoWindow, notesAutoSwitch, notesAutoSwitchInfoWindow, pomodoroNotificationToggle, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, defaultThemeContainer, defaultTheme, darkThemeContainer, darkGrayTheme, targetTimeReachedAlert, transitionClockSoundToggle, flowTimeAnimationToggle, chillTimeAnimationToggle, pomodoroVolumeContainer, pomodoroVolumeBar, pomodoroVolumeThumb, flowmodoroVolumeContainer, flowmodoroVolumeBar, flowmodoroVolumeThumb, generalVolumeContainer, generalVolumeBar, generalVolumeThumb, pomodoroVolumeContainer2, pomodoroVolumeBar2, pomodoroVolumeThumb2, flowmodoroVolumeContainer2, flowmodoroVolumeBar2, flowmodoroVolumeThumb2, generalVolumeContainer2, generalVolumeBar2, generalVolumeThumb2, flowmodoroRadios, flowmodoroInputs, generalRadios, pomodoroInputs, pomodoroRadios,flowtimeBackgroundCells, chilltimeBackgroundCells, settings_menu_container, registerHereText, backgroundVideoSource, backgroundVideo, flowAnimation, chillAnimation, hyperChillLogoImage,createLabelInput, updateLabelInput, emojiContainer, loginEmailInput, loginPasswordInput, forgotPasswordContainer, loginBtnContainer, loginBtn, logoutBtn, deleteAccountBtn, forgotPasswordSettings, propagateUnfinishedTasks, propagateUnfinishedTasksInfoWindow, flowtimeBackgroundWorldCells, chilltimeBackgroundWorldCells, deleteAccountPopupYesBtn, deleteAccountPopupNoBtn, deleteAccountPopup, popupOverlay, questionIcon, logoutBtn2,
+    start_stop_btn, submit_change_btn, end_session_btn, report_btn, total_time_display, productivity_chill_mode, progressBarContainer, progressBar, progressContainer, display, hyperChillTitle, subMainContainer, interruptionsContainer, interruptionsSubContainer, decBtn, incBtn, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, completedPomodoros_label, completedPomodoros_min, targetHoursContainer, timekeepingContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, targetTimeReachedToggle, breakSuggestionToggle, suggestionMinutesInput, flowmodoroNotificationToggle,flowmodoroNotifications, flowmodoroNotificationInfoWindow, flowTimeBreakNotification, flowTimeBreakNotificationInfoWindow, pomodoroNotifications, pomodoroNotificationInfoWindow, notesAutoSwitch, notesAutoSwitchInfoWindow, pomodoroNotificationToggle, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, defaultThemeContainer, defaultTheme, darkThemeContainer, darkGrayTheme, targetTimeReachedAlert, transitionClockSoundToggle, flowTimeAnimationToggle, chillTimeAnimationToggle, pomodoroVolumeContainer, pomodoroVolumeBar, pomodoroVolumeThumb, flowmodoroVolumeContainer, flowmodoroVolumeBar, flowmodoroVolumeThumb, generalVolumeContainer, generalVolumeBar, generalVolumeThumb, pomodoroVolumeContainer2, pomodoroVolumeBar2, pomodoroVolumeThumb2, flowmodoroVolumeContainer2, flowmodoroVolumeBar2, flowmodoroVolumeThumb2, generalVolumeContainer2, generalVolumeBar2, generalVolumeThumb2, flowmodoroRadios, flowmodoroInputs, generalRadios, pomodoroInputs, pomodoroRadios,flowtimeBackgroundCells, chilltimeBackgroundCells, settings_menu_container, registerHereText, backgroundVideoSource, backgroundVideo, flowAnimation, chillAnimation,createLabelInput, updateLabelInput, emojiContainer, loginEmailInput, loginPasswordInput, forgotPasswordContainer, loginBtnContainer, loginBtn, logoutBtn, deleteAccountBtn, forgotPasswordSettings, propagateUnfinishedTasks, propagateUnfinishedTasksInfoWindow, flowtimeBackgroundWorldCells, chilltimeBackgroundWorldCells, deleteAccountPopupYesBtn, deleteAccountPopupNoBtn, deleteAccountPopup, popupOverlay, questionIcon, logoutBtn2,
     backgroundContainer,
     deepWorkBackground,
     breakBackground,
@@ -164,7 +164,7 @@ document.addEventListener("stateUpdated", function() {
 
         
         if (counters.startStop === 1) {
-            veryStartActions(startTimes, hyperChillLogoImage, flags, times, counters, interruptionsNum);
+            veryStartActions(startTimes, flags, times, counters, interruptionsNum);
             triggerSilentAlertAudioMobile(soundMap.Chime, soundMap.Bell, chimePath, bellPath, flags);
             animationsFadeOut(chillAnimation);
             startTimes.lastPomNotification = Date.now();
@@ -2252,7 +2252,7 @@ export function resetDisplay(display) {
     display.innerText = "00:00:00"; //immediately resets display w/ no lag time
 };
 
-function veryStartActions(startTimes, hyperChillLogoImage, flags, times, counters, interruptionsNum) {
+function veryStartActions(startTimes, flags, times, counters, interruptionsNum) {
     let currentTime = Date.now();
     resetInterruptions(counters, interruptionsNum); // reset distractions
     startTimes.beginning = currentTime;
@@ -2260,7 +2260,6 @@ function veryStartActions(startTimes, hyperChillLogoImage, flags, times, counter
     flags.sessionInProgress = true;
     setBrowserTabTitle(); //sets browser tab title to the stopwatch time '00:00:00'
     document.getElementById("target-hours").classList.remove("glowing-effect");
-    hyperChillLogoImage.classList.add("hyperChillLogoRotate");
 };
 
 
