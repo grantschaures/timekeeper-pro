@@ -297,28 +297,6 @@
     font-family: settingsHeaderFont;
 }
 
-#leftDailyArrow {
-    padding-right: 10px;
-}
-
-#rightDailyArrow {
-    padding-left: 10px;
-}
-
-.dailyArrow {
-    width: 12px;
-    height: 20px;
-    transition: transform 0.25s ease-out;
-}
-
-.dailyArrow:hover {
-    cursor:  pointer;
-}
-
-.dailyArrow:active {
-    transform: scale(0.8);
-}
-
 #weeklySummaries {
     width: 100%;
     height: 50px;
@@ -518,12 +496,26 @@
     margin-right: 10px;
 }
 
-#leftLabelDistributionArrow, #leftMetricDistributionArrow {
+.leftArrow {
     padding-right: 10px;
 }
 
-#rightLabelDistributionArrow, #rightMetricDistributionArrow {
+.rightArrow {
     padding-left: 10px;
+}
+
+.dashboardArrow {
+    width: 12px;
+    height: 20px;
+    transition: transform 0.25s ease-out;
+}
+
+.dashboardArrow:hover {
+    cursor:  pointer;
+}
+
+.dashboardArrow:active {
+    transform: scale(0.8);
 }
 
 .labelDistributionSelection, .metricDistributionSelection {
