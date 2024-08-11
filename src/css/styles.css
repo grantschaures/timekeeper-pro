@@ -231,15 +231,6 @@ h4 {
     color: white;
 }
 
-#hyperChillLogoImage {
-    height: 40px;
-    width: 56.20px;
-    margin-left: -5px;
-
-    /* border: 1px solid red; */
-    opacity: 0;
-}
-
 .caption {
     font-family: myFont2;
 }

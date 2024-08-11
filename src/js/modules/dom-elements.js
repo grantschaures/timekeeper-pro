@@ -96,7 +96,6 @@ export const registerHereText = document.getElementById("registerHereText");
 export const backgroundVideo = document.getElementById('background-video');
 export const flowAnimation = document.getElementById("flowAnimation");
 export const chillAnimation = document.getElementById("chillAnimation");
-export const hyperChillLogoImage = document.getElementById("hyperChillLogoImage");
 export const createLabelInput = document.getElementById("create-label-input");
 export const updateLabelInput = document.getElementById("update-label-input");
 export const emojiContainer = document.getElementById("emoji-container");
