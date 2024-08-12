@@ -164,9 +164,9 @@
     position: fixed;
     /* background: rgb(255, 255, 255); */
     background-color: rgba(0, 0, 0, 0.9);
-    padding: 10px 10px;
+    padding: 10px 25px;
     z-index: 12;
-    border-radius: 10px;
+    border-radius: 25px;
     right: 0;
     left: 50%;
     top: 105px;

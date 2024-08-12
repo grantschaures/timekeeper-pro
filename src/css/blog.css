@@ -1,12 +1,16 @@
 li {
     font-size: 24px;
-    font-family: myFont3;
     color: white;
     font-weight: bold;
 }
 
+#blogHeader {
+    font-family: settingsHeaderFontBold;
+}
+
 .blogDescription {
     font-size: 24px;
+    font-family: settingsHeaderFont;
 }
 
 @media (max-width: 480px) {
@@ -21,7 +25,14 @@ li {
     }
 }
 
-.blog_cell{
+.blogHr {
+    height: 1px;
+    border: none;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+.blog_cell {
     width: 100%;
     height: 200px;
 
@@ -50,10 +61,10 @@ li {
     background-color: rgb(255, 255, 255);
     padding: 10px 10px;
     z-index: 2;
-    border-radius: 10px;
+    border-radius: 25px;
     right: 0;
     left: 50%;
-    top: 105px;
+    top: 125px;
     transform: translateX(-50%);
     width: 80%;
     max-width: 800px;
@@ -61,9 +72,9 @@ li {
     display: none;
     max-height: 70vh;
     overflow-y: auto;
+
     /* border: 2px solid yellow; */
 }
-
 
 .blog {
     display: flex;
@@ -73,6 +84,20 @@ li {
     flex-direction: column;
     width: 100%;
     height: 100%;
+    font-family: settingsHeaderFont;
+
+    /* border: 1px solid red; */
+}
+
+.mainBlogContent {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    max-width: 75%;
+    box-sizing: border-box;
+    line-height: 1.5;
+
+    /* border: 1px solid green; */
 }
 
 .hidden {
@@ -84,7 +109,7 @@ li {
 }
 
 .blog h1 {
-    font-family: 'Lato', sans-serif;
+    font-family: settingsHeaderFontBold;
     font-weight: 800;
     color: black;
     margin: 0 auto;
@@ -92,36 +117,38 @@ li {
 }
 
 .blog h2 {
-    font-family: 'Lato', sans-serif;
-    font-weight: 500;
+    font-family: settingsHeaderFontBold;
     color: black;
+
+    /* border: 1px solid black; */
 }
 
 .blog h3 {
-    font-family: 'Lato', sans-serif;
+    font-family: settingsHeaderFontBold;
     font-weight: 300;
     color: black;
 }
 
 .blog p {
-    font-family: 'Lato', sans-serif;
     font-weight: 300;
     color: black;
     font-size: 18px;
+    
+    /* border: 1px solid black; */
 }
 
 .blog ul {
-    font-family: 'Lato', sans-serif;
     font-weight: 300;
     color: black;
     font-size: 18px;
 }
 
 .blog li {
-    font-family: 'Lato', sans-serif;
     font-weight: 300;
     color: black;
     font-size: 18px;
+    /* margin-top: 10px;
+    margin-bottom: 10px; */
 }
 
 .blogHeaderImage > img {
