@@ -721,8 +721,7 @@
                 <!-- <hr class="blogHr"> -->
                 <div class="blog hidden" id="blogPost1">
                     <div class="iframe-container">
-                        <!-- <iframe id="player" src="https://www.youtube.com/embed/yb5zpo5WDG4?enablejsapi=1&origin=https://hyperchill.io" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> -->
-                        <iframe id="player" src="https://www.youtube.com/embed/yb5zpo5WDG4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        <iframe id="player" src="https://www.youtube.com/embed/yb5zpo5WDG4?enablejsapi=1&origin=https://hyperchill.io" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                     </div>
                     <script>
                         // 2. This code loads the IFrame Player API code asynchronously.
@@ -760,9 +759,11 @@
                                     console.log("Video paused.");
                                 } else {
                                     console.log("Player is not currently playing.");
+                                    alert("Player is not currently playing.");
                                 }
                             } else {
                                 console.error("Player is not defined or getPlayerState method is not available.");
+                                alert("Player is not defined or getPlayerState method is not available.");
                             }
                         }
                     </script>
