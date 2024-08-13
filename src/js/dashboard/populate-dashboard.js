@@ -9,6 +9,7 @@ import { populateLabelDistContainer } from './label-distribution.js';
 export async function populateDashboard(sessionData, noteData) { // called from state.js
 
     if (isMobile) { // is this not working???
+        alert(isMobile);
         dashboardSubContainer.style.display = 'none';
         dashboardContainerCover.style.display = 'flex';
     }
