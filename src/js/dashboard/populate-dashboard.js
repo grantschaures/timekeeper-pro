@@ -6,13 +6,14 @@ import { isMobile } from '../modules/dom-elements.js';
 import { populateDashboardSummaryStats } from './summary-stats.js';
 import { populateLabelDistContainer } from './label-distribution.js';
 
-export async function populateDashboard(sessionData, noteData) { // called from state.js
-
-    if (isMobile) { // is this not working???
-        alert(isMobile);
+document.addEventListener("DOMContentLoaded", function() {
+    if (isMobile) { 
         dashboardSubContainer.style.display = 'none';
         dashboardContainerCover.style.display = 'flex';
     }
+})
+
+export async function populateDashboard(sessionData, noteData) { // called from state.js
 
     // create sorted array of data for each day
     const dailySummarizedData = await initializeDailyData(sessionData);
