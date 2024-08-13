@@ -614,7 +614,6 @@ function fadeInAnimations() {
     }
 }
 
-
 function showBlog(blog_id, blogContainer, blog_post_container, blogIdList, flags) {
     //Hide the blog container
     blogContainer.style.display = "none";
