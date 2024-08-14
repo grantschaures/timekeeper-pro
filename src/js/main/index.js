@@ -2516,6 +2516,9 @@ export async function activateDarkTheme(interruptionsContainer, targetHoursConta
         selectedBackgroundIdTemp["flowtime"] = selectedBackgroundId.flowtime;
         selectedBackgroundIdTemp["chilltime"] = selectedBackgroundId.chilltime;
     
+        blackFlowtimeBackground.click();
+        blackChilltimeBackground.click();
+
         if (sessionState.loggedIn) {
             await updateUserSettings({
                 backgroundsThemes: {
@@ -2525,8 +2528,6 @@ export async function activateDarkTheme(interruptionsContainer, targetHoursConta
             });
         }
         
-        blackFlowtimeBackground.click();
-        blackChilltimeBackground.click();
     }
 }
 

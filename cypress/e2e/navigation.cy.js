@@ -316,17 +316,17 @@ describe('Navigation', () => {
     it('Blog Post Container Testing', () => {
         cy.clock();
         cy.openBlog();
-        cy.get('[data-testid="blog_1"]').click();
+        cy.get('[data-testid="blogcell1"]').click();
         cy.reportIconClick();
         cy.homeIconClick();
 
         cy.openBlog();
-        cy.get('[data-testid="blog_1"]').click();
+        cy.get('[data-testid="blogcell1"]').click();
         cy.spaceIconClick();
         cy.homeIconClick();
 
         cy.openBlog();
-        cy.get('[data-testid="blog_1"]').click();
+        cy.get('[data-testid="blogcell1"]').click();
         cy.tick(250)
         cy.leftArrowKeyPress(); // report <---
         cy.tick(250)
@@ -347,7 +347,7 @@ describe('Navigation', () => {
         cy.get('[data-testid="main"]').should('be.visible');
         
         cy.openBlog();
-        cy.get('[data-testid="blog_1"]').click();
+        cy.get('[data-testid="blogcell1"]').click();
         cy.tick(250)
         cy.rightArrowKeyPress(); // --> space
         cy.tick(250)
