@@ -26,9 +26,6 @@ document.addEventListener("stateUpdated", function() {
                 resetMetricDistributionContainer();                
             }
         })
-    } else {
-
-
     }
 })
 

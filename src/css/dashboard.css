@@ -203,11 +203,32 @@
     text-align: center;
     align-items: center;
     justify-content: center;
-    width: 75%;
+    box-sizing: border-box;
+    width: 100%;
+    align-items: flex-start;
+    overflow-y: auto;
 
     /* border: 1px solid white; */
 }
 
+#metricBodyContainer::-webkit-scrollbar {
+    width: 0px;
+    height: 8px;
+}
+
+#metricBodyContainer::-webkit-scrollbar:hover {
+    cursor: pointer;
+}
+
+#metricBodyContainer::-webkit-scrollbar-track {
+    /* background: transparent; */
+    background: rgba(255, 255, 255, 0);
+}
+
+#metricBodyContainer::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+}
 #metricDistributionContainer:not(.expanded):hover {
     cursor: pointer;
 }
