@@ -8,6 +8,50 @@ import { chimePath, bellPath, soundMap } from '../modules/sound-map.js';
 import { deleteUserAccount } from '../state/delete-account.js'; // minified
 import { animationsFadeIn, animationsFadeOut, triggerSilentAlertAudioMobile } from './index.js'; // minified
 
+window.addEventListener('popstate', (event) => {
+    const hash = window.location.hash.substring(1);
+    if (event.state && event.state.window) {
+        let window = event.state.window;
+        if (window === 'blog') {
+            // open blog
+            openBlogContainer();
+        } else if (window === 'about') {
+            // open about page
+            openAboutContainer();
+        } else if (window === 'settings') {
+            // open settings window
+            openSettingsContainer();
+        }
+    } else if (hash === "") {
+        setDinkleDoinkSetting("home");
+        subMainContainerTransition("flex");
+        resetMode(dashboardContainer);
+        resetMode(spaceContainer);
+        aboutContainer.style.display = "none";
+        blogContainer.style.display = "none";
+        hideSettingsContainer();
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const path = window.location.pathname.split('/').pop();
+    const hash = window.location.hash.substring(1);
+    if ((path === 'blog') && (hash === "")) {
+        // open blog
+        openBlogContainer();
+    } else if (path === 'about') {
+        // open about page
+        openAboutContainer();
+    } else if (path === 'settings') {
+        history.pushState({}, '', '/');
+    }
+
+    if (hash) {
+        displayBlogPost(hash); // Call your function to display the correct blog post
+    }
+
+});
+
 document.addEventListener("stateUpdated", function() {
 
     // This may actually detect all mobile + iPad devices
@@ -58,98 +102,21 @@ document.addEventListener("stateUpdated", function() {
         }
     })
 
-    blogMenuContainer.addEventListener("click", function(event) {
-
-        // HIDING ELEMENTS
-        subMainContainer.style.display = "none"; // hide main elements
-        aboutContainer.style.display = "none"; // hide main blog container
-        closeMenu(flags, popupMenu); // hide main menu
-
-        if (flags.blogShowing) { // hide blog content
-            blog_post_container.style.display = 'none';
-            hideBlog(blogs);
-        }
-    
-        // SHOWING ELEMENTS
-        blogContainer.style.display = "flex"; // show main blog container
-        fadeInUIContainer(streaksContainer, isMobile); // showing streaks container
-        fadeInUIContainer(darkLightThemeGUIContainer, isMobile); // showing darkLightThemeGUIContainer
-
-        // OTHER CHANGES
-        body.style.overflowY = 'hidden'; // no scroll
-        blog_exit.classList.add('resetRotation'); // triggers reset animation
-        setDinkleDoinkSetting("home"); //  needs to execute first
-        subMainContainerTransition("none");
-        fadeInAnimations(); // needs to execute second
-
-        resetMode(dashboardContainer);
-        resetMode(spaceContainer);
+    blogMenuContainer.addEventListener("click", function() {
+        openBlogContainer();
     });
 
     about_menu_container.addEventListener("click", function() {
-
-        // HIDING ELEMENTS
-        subMainContainer.style.display = "none"; // hide main elements
-        blogContainer.style.display = "none"; // hide main blog container
-        closeMenu(flags, popupMenu); // hide main menu
-
-        if (flags.blogShowing) { // hide blog content
-            blog_post_container.style.display = 'none';
-            hideBlog(blogs);
-        }
-
-        // SHOWING ELEMENTS
-        aboutContainer.style.display = "flex"; // show about container
-        fadeInUIContainer(streaksContainer, isMobile); // showing streaks container
-        fadeInUIContainer(darkLightThemeGUIContainer, isMobile); // showing darkLightThemeGUIContainer
-
-        // OTHER CHANGES
-        body.style.overflowY = 'hidden'; // no scroll
-        about_exit.classList.add('resetRotation'); // triggers reset animation
-        setDinkleDoinkSetting("home"); // needs to execute first
-        subMainContainerTransition("none");
-        fadeInAnimations(); // needs to execute second
-
-        resetMode(dashboardContainer);
-        resetMode(spaceContainer);
+        openAboutContainer()
     });
 
     settings_menu_container.addEventListener("click", function() {
-
-        // HIDING ELEMENTS
-        blogContainer.style.display = "none"; // hide main blog container
-        aboutContainer.style.display = "none"; // hide main blog container
-        closeMenu(flags, popupMenu); // hide main menu
-
-        // SHOWING ELEMENTS
-        settingsContainer.style.display = "block";
-
-        // if coming from blog or about (which hides subMainContainer)
-        if (state.lastSelectedMode === 'home') {
-            subMainContainer.style.display = "flex";
-            subMainContainer.offsetHeight; // forcing reflow
-            setTimeout(() => {
-                subMainContainer.style.opacity = 1;
-            }, 0)
-        }
-
-        // OTHER CHANGES
-        let viewportWidth = window.innerWidth || document.documentElement.clientWidth;
-        if ((counters.settingsBtnClicked === 0) && (viewportWidth > 650)) {
-            pomodoroBtnContainer.click();
-        }
-
-        triggerSilentAlertAudioMobile(soundMap.Chime, soundMap.Bell, chimePath, bellPath, indexFlags);
-
-        flags.settingsContainerShowing = true;
-        counters.settingsBtnClicked++;
-        body.style.overflowY = 'hidden'; // no scroll    
-        settings_exit.classList.add('resetRotation'); // reset animation
+        openSettingsContainer();
     });
 
     settingsGUIContainer.addEventListener("click", function() {
         if (!flags.settingsContainerShowing) {
-            settings_menu_container.click();
+            openSettingsContainer();
         } else {
             hideSettingsContainer();
         }
@@ -287,6 +254,9 @@ document.addEventListener("stateUpdated", function() {
 
                 //ensure that any visible blog becomes hidden when clicking out
                 hideBlog(blogs);
+
+                // remove hash
+                history.replaceState(null, null, window.location.pathname);
             }
 
             //show blog popup window
@@ -327,6 +297,132 @@ document.addEventListener("stateUpdated", function() {
     document.addEventListener('keydown', (event) => handleLeftRightArrowKeys(event));
 
 });
+
+// // // // // // //
+// HELPER FUNCTIONS
+// // // // // // //
+
+function displayBlogPost(postId) {
+    // hiding main elements
+    subMainContainer.style.display = "none";
+
+    const blogPost = document.getElementById(postId);    
+    if (blogPost) {
+        // adjust URL
+        window.location.hash = postId;
+        blog_post_container.scrollTo(0, 0);
+
+        //Hide the blog container
+        blogContainer.style.display = "none";
+
+        //Show the new actual blog post window (white, now)
+        blog_post_container.style.display = "block";
+
+        flags.blogShowing = true;
+
+        document.getElementById(postId).classList.remove("hidden");
+    } else {
+        history.pushState({}, '', '/');
+    }
+}
+
+function openSettingsContainer() {
+    // HIDING ELEMENTS
+    blogContainer.style.display = "none"; // hide main blog container
+    aboutContainer.style.display = "none"; // hide main blog container
+    closeMenu(flags, popupMenu); // hide main menu
+
+    // SHOWING ELEMENTS
+    settingsContainer.style.display = "block";
+
+    // if coming from blog or about (which hides subMainContainer)
+    if (state.lastSelectedMode === 'home') {
+        subMainContainer.style.display = "flex";
+        subMainContainer.offsetHeight; // forcing reflow
+        setTimeout(() => {
+            subMainContainer.style.opacity = 1;
+        }, 0)
+    }
+
+    history.pushState({ window: "settings" }, '', `/${"settings"}`);
+
+    // OTHER CHANGES
+    let viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+    if ((counters.settingsBtnClicked === 0) && (viewportWidth > 650)) {
+        pomodoroBtnContainer.click();
+    }
+
+    triggerSilentAlertAudioMobile(soundMap.Chime, soundMap.Bell, chimePath, bellPath, indexFlags);
+
+    flags.settingsContainerShowing = true;
+    counters.settingsBtnClicked++;
+    body.style.overflowY = 'hidden'; // no scroll    
+    settings_exit.classList.add('resetRotation'); // reset animation
+}
+
+function openAboutContainer() {
+    // HIDING ELEMENTS
+    subMainContainer.style.display = "none"; // hide main elements
+    blogContainer.style.display = "none"; // hide main blog container
+    closeMenu(flags, popupMenu); // hide main menu
+        
+    if (flags.blogShowing) { // hide blog content
+        blog_post_container.style.display = 'none';
+        hideBlog(blogs);
+    }
+
+    if (flags.settingsContainerShowing) {
+        hideSettingsContainer();
+    }
+
+    // SHOWING ELEMENTS
+    aboutContainer.style.display = "flex"; // show about container
+    fadeInUIContainer(streaksContainer, isMobile); // showing streaks container
+    fadeInUIContainer(darkLightThemeGUIContainer, isMobile); // showing darkLightThemeGUIContainer
+    history.pushState({ window: "about" }, '', `/${"about"}`);
+
+    // OTHER CHANGES
+    body.style.overflowY = 'hidden'; // no scroll
+    about_exit.classList.add('resetRotation'); // triggers reset animation
+    setDinkleDoinkSetting("home"); // needs to execute first
+    subMainContainerTransition("none");
+    fadeInAnimations(); // needs to execute second
+
+    resetMode(dashboardContainer);
+    resetMode(spaceContainer);
+}
+
+function openBlogContainer() {
+    // HIDING ELEMENTS
+    subMainContainer.style.display = "none"; // hide main elements
+    aboutContainer.style.display = "none"; // hide main blog container
+    closeMenu(flags, popupMenu); // hide main menu
+
+    if (flags.blogShowing) { // hide blog content
+        blog_post_container.style.display = 'none';
+        hideBlog(blogs);
+    }
+
+    if (flags.settingsContainerShowing) {
+        hideSettingsContainer();
+    }
+
+    // SHOWING ELEMENTS
+    blogContainer.style.display = "flex"; // show main blog container
+    fadeInUIContainer(streaksContainer, isMobile); // showing streaks container
+    fadeInUIContainer(darkLightThemeGUIContainer, isMobile); // showing darkLightThemeGUIContainer
+    history.pushState({ window: "blog" }, '', `/${"blog"}`);
+
+    // OTHER CHANGES
+    body.style.overflowY = 'hidden'; // no scroll
+    blog_exit.classList.add('resetRotation'); // triggers reset animation
+    setDinkleDoinkSetting("home"); //  needs to execute first
+    subMainContainerTransition("none");
+    fadeInAnimations(); // needs to execute second
+
+    resetMode(dashboardContainer);
+    resetMode(spaceContainer);
+}
 
 function fadeInUIContainer(container, isMobile) {
     if (!isMobile) {
@@ -385,6 +481,7 @@ function handleLeftRightArrowKeys(event) {
                 fadeInAnimations(); // needs to execute second
                 
             } else if (state.lastSelectedMode === 'home') { // --> REPORT
+                history.pushState({}, '', '/');
                 slimeSwitch();
                 fadeOutUIContainer(streaksContainer);
                 fadeOutUIContainer(darkLightThemeGUIContainer);
@@ -412,6 +509,7 @@ function handleLeftRightArrowKeys(event) {
                 fadeInAnimations(); // needs to execute second
                 
             } else if (state.lastSelectedMode === 'home') { // --> SPACE
+                history.pushState({}, '', '/');
                 slimeSwitch();
                 fadeOutUIContainer(streaksContainer);
                 fadeOutUIContainer(darkLightThemeGUIContainer);
@@ -496,6 +594,7 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
                 slimeSwitch(); 
             }
 
+            history.pushState({}, '', '/');
             fadeOutUIContainer(streaksContainer);
             fadeOutUIContainer(darkLightThemeGUIContainer);
             initializeNewMode(dashboardContainer);
@@ -522,6 +621,7 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
                 slimeSwitch(); 
             }
 
+            history.pushState({}, '', '/');
             fadeOutUIContainer(streaksContainer);
             fadeOutUIContainer(darkLightThemeGUIContainer);
             initializeNewMode(spaceContainer);
@@ -533,16 +633,18 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
         
         // when hitting a blog or about exit (or clicking outside those containers), or a settings exit if in home mode
         setTimeout(() => {
-            if (((exitTargets.includes(event.target)) || (state.lastSelectedMode === 'home')) && (!flags.sessionSummaryPopupShowing) && (!flags.sessionSummarySignupPromptPopupShowing)) {
+            // const path = window.location.pathname.split('/').pop();
+            if (((exitTargets.includes(event.target)) || (state.lastSelectedMode === 'home')) && (!flags.sessionSummaryPopupShowing) && (!flags.sessionSummarySignupPromptPopupShowing) && (!settingsGUIContainer.contains(event.target)) && (!flags.settingsContainerShowing) && (!darkLightThemeGUIContainer.contains(event.target))) {
                 setDinkleDoinkSetting("home");
                 subMainContainerTransition("flex");
                 resetMode(dashboardContainer);
                 resetMode(spaceContainer);
+                history.pushState({}, '', '/');
             }
         }, 0)
         
         // hiding blog content
-        if (flags.blogShowing == true) {
+        if ((flags.blogShowing) && (!darkLightThemeGUIContainer.contains(event.target))) {
             blog_post_container.style.display = 'none';
             hideBlog(blogs);
         }
@@ -550,7 +652,7 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
 }
 
 function isClickNotOnAboutElements(event, about_menu_container, aboutContainer, menuBtn, about_exit, reportIcon, reportPath) {
-    let aboutElementsArr = [about_menu_container, aboutContainer, menuBtn, questionIcon, popupQuestionMenu, shortcutsPopup, accountPopup, popupOverlay];
+    let aboutElementsArr = [about_menu_container, aboutContainer, menuBtn, questionIcon, popupQuestionMenu, shortcutsPopup, accountPopup, popupOverlay, darkLightThemeGUIContainer, settingsContainer];
 
     // Check if event.target is not contained within any of the aboutElementsArr
     // or if the event.target is the about_exit
@@ -560,7 +662,7 @@ function isClickNotOnAboutElements(event, about_menu_container, aboutContainer, 
 }
 
 function isClickNotOnBlogElements(event, blogMenuContainer, blog_post_container, menuBtn, blog_exit) {
-    let blogElementsArr = [blogMenuContainer, blogContainer, blog_post_container, menuBtn, questionIcon, popupQuestionMenu, shortcutsPopup, accountPopup, popupOverlay];
+    let blogElementsArr = [blogMenuContainer, blogContainer, blog_post_container, menuBtn, questionIcon, popupQuestionMenu, shortcutsPopup, accountPopup, popupOverlay, darkLightThemeGUIContainer, settingsContainer];
 
     if (!blogElementsArr.some(element => element.contains(event.target)) || event.target === blog_exit) {
         blogContainer.style.display = "none";
@@ -594,6 +696,9 @@ function hideSettingsContainer() {
     // GUI changes
     settingsContainer.style.display = "none";
     body.style.overflowY = 'scroll';
+
+    // URL changes
+    history.pushState({}, '', '/');
 }
 
 function fadeOutAnimations() {
@@ -615,6 +720,10 @@ function fadeInAnimations() {
 }
 
 function showBlog(blog_id, blogContainer, blog_post_container, blogIdList, flags) {
+    // adjust URL
+    window.location.hash = blogIdList[blog_id];
+    blog_post_container.scrollTo(0, 0);
+
     //Hide the blog container
     blogContainer.style.display = "none";
 

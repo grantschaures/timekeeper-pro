@@ -82,33 +82,33 @@ app.post("/", (req, res) => {
 });
 
 app.get("/login", (req, res) => {
-    const filePath = path.join(__dirname, 'public', 'login.html')
-    res.sendFile(filePath);
+  const filePath = path.join(__dirname, 'public', 'login.html')
+  res.sendFile(filePath);
 });
 
 app.get("/signup", (req, res) => {
-    const filePath = path.join(__dirname, 'public', 'signup.html')
-    res.sendFile(filePath);
+  const filePath = path.join(__dirname, 'public', 'signup.html')
+  res.sendFile(filePath);
 });
 
 app.get("/reset-password", (req, res) => {
-    const filePath = path.join(__dirname, 'public', 'reset-password.html')
-    res.sendFile(filePath);
+  const filePath = path.join(__dirname, 'public', 'reset-password.html')
+  res.sendFile(filePath);
 });
 
 app.get("/privacy-policy", (req, res) => {
-    const filePath = path.join(__dirname, 'public', 'privacy-policy.html')
-    res.sendFile(filePath);
+  const filePath = path.join(__dirname, 'public', 'privacy-policy.html')
+  res.sendFile(filePath);
 });
 
 app.get("/terms-and-conditions", (req, res) => {
-    const filePath = path.join(__dirname, 'public', 'terms-and-conditions.html')
-    res.sendFile(filePath);
+  const filePath = path.join(__dirname, 'public', 'terms-and-conditions.html')
+  res.sendFile(filePath);
 });
 
 app.get("/invalid-token", (req, res) => {
-    const filePath = path.join(__dirname, 'public', 'invalid-token.html')
-    res.sendFile(filePath);
+  const filePath = path.join(__dirname, 'public', 'invalid-token.html')
+  res.sendFile(filePath);
 });
 
 // Token verification endpoint
@@ -133,6 +133,23 @@ app.get("/set-password/:token", async (req, res) => {
       return res.status(500).send("An error occurred while verifying the token."); // Use return here
   }
 });
+
+// SPA Requests
+
+app.get('/blog', (req, res) => {
+  const filePath = path.join(__dirname, 'public', 'index.html')
+  res.sendFile(filePath);
+})
+
+app.get('/about', (req, res) => {
+  const filePath = path.join(__dirname, 'public', 'index.html')
+  res.sendFile(filePath);
+})
+
+app.get('/settings', (req, res) => {
+  const filePath = path.join(__dirname, 'public', 'index.html')
+  res.sendFile(filePath);
+})
 
 app.use('/api/api', require('./api/api'));
 app.use('/api/user', require('./api/user'));

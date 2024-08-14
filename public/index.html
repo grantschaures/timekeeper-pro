@@ -694,7 +694,7 @@
                 <div id="blogWindow">
                     <h1 id="blogHeader">Blog</h1>
                     <div id="blog_grid_container">
-                        <div class="blog_cell" id="blog_1" data-testid="blog_1">
+                        <div class="blog_cell" id="blogcell1" data-testid="blogcell1">
                             <div class="blogImage">
                                 <img src="images/blog/pexels-ariel-castillo-3563697.jpg" alt="">
                             </div>
@@ -719,7 +719,7 @@
                 <img class="backIcon" id="blogPostBack" src="images/icons/left-arrow-261369.png" draggable="false" alt="Back">
                 <img class="exitIcon" id="blogPostExit" src="images/icons/exit-button-261420.png" draggable="false" alt="Exit">
                 <!-- <hr class="blogHr"> -->
-                <div class="blog hidden" id="blogPost1">
+                <div class="blog hidden" id="daily-practices-and-protocols-summary">
                     <div class="iframe-container">
                         <iframe id="player" src="https://www.youtube.com/embed/yb5zpo5WDG4?enablejsapi=1&origin=https://hyperchill.io" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                     </div>
@@ -747,7 +747,7 @@
 
                         // 4. The API will call this function when the video player is ready.
                         function onPlayerReady(event) {
-                          console.log("Player Ready");
+                        //   console.log("Player Ready");
                         }
 
                         // Function to pause the video
@@ -756,9 +756,9 @@
                                 // Check if the player is in the PLAYING state
                                 if (player.getPlayerState() === YT.PlayerState.PLAYING) {
                                     player.pauseVideo();
-                                    console.log("Video paused.");
+                                    // console.log("Video paused.");
                                 } else {
-                                    console.log("Player is not currently playing.");
+                                    // console.log("Player is not currently playing.");
                                 }
                             } else {
                                 console.error("Player is not defined or getPlayerState method is not available.");

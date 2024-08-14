@@ -1,5 +1,5 @@
 export const blogIdList = {
-    'blog_1': 'blogPost1'
+    'blogcell1': 'daily-practices-and-protocols-summary'
 }
 
 export const flags = {
