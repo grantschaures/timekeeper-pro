@@ -1,6 +1,7 @@
 import { adjustedDeepWorkToggle, advChartsContainer, advChartsCoverModule, chartHeaders, deepWorkHeaderText, HC_icon_main_charts, labelDistributionContainer, leftMetricDistributionArrow, mainCharts, mainChartsContainer, mainChartsCoverModule, metricBodyContainers, metricDistributionArrows, metricDistributionBackBtn, metricDistributionContainer, metricDistributionCoverContainer, metricDistributionMonth, metricDistributionSelections, metricDistributionSubContainer, metricDistributionTimeFrame, metricDistributionWeek, metricDistributionYear, rightMetricDistributionArrow } from "../modules/dashboard-elements.js"
 import { sessionState } from "../modules/state-objects.js"
 import { flags, labelDistContainer, mainChartContainer } from "../modules/dashboard-objects.js"
+
 import { setBounds, alterBounds } from './label-distribution.js';
 
 export function populateMainChartsContainer() {
