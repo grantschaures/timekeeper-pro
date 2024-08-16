@@ -682,7 +682,7 @@
 }
 
 /* TEMPORARY RESPONSIVE DESIGN CHANGES */
-@media (max-width: 1168px) {
+@media (max-width: 1280px) {
     #dailyContainer {
         display: none;
     }
@@ -691,7 +691,7 @@
     }
 }
 
-@media (max-width: 908px) {
+@media (max-width: 935px) {
     #dashboardSummaryStatsContainer {
         display: none;
     }
