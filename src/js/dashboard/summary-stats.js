@@ -125,7 +125,7 @@ function populateTotalDeepWorkSummaryStat(timeConvert, totalDeepWork) {
 
     totalDeepWork = totalDeepWork / timeConvert.msPerHour;
     let totalDeepWorkHours = Math.floor(totalDeepWork);
-    let totalDeepWorkMinutes = Math.floor((totalDeepWork - totalDeepWorkHours) * 60);
+    let totalDeepWorkMinutes = Math.round((totalDeepWork - totalDeepWorkHours) * 60);
     let totalDeepWorkStr = totalDeepWorkHours + 'h ' + totalDeepWorkMinutes + 'm';
     totalDeepWorkSummaryStat.innerText = totalDeepWorkStr;
 
