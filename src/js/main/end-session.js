@@ -490,6 +490,7 @@ function finalPerHourDataUpdate(intervalArrs, perHourData) {
 export function focusQualityCalculation(timeConvert, totalTime, totalDistractions, constant) {
     let totalMin = totalTime / timeConvert.msPerMin;
     let focusQualityFraction = 1 - ((totalDistractions / totalMin) / (constant));
+
     if (focusQualityFraction < 0) {
         focusQualityFraction = 0;
     } else if (isNaN(focusQualityFraction)) { // edge case: if user has 0ms of deep work + no distractions (which shouldn't happen, but just in case)

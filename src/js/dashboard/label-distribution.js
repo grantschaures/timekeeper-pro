@@ -1,5 +1,5 @@
-import { dashboardData, labelDistContainer } from '../modules/dashboard-objects.js';
-import { labelDistributionElement, labelDistributionMonth, labelDistributionTimeFrame, labelDistributionWeek, labelDistributionYear, labelLinesContainer, labelNamesContainer, labelTimesContainer, leftLabelDistributionArrow, metricDistributionTimeFrame, rightLabelDistributionArrow } from '../modules/dashboard-elements.js';
+import { dashboardData, labelDistContainer, general } from '../modules/dashboard-objects.js';
+import { labelDistributionElement, labelDistributionMonth, labelDistributionTimeFrame, labelDistributionWeek, labelDistributionYear, labelLinesContainer, labelNamesContainer, labelTimesContainer, leftLabelDistributionArrow, metricDistributionMonth, metricDistributionTimeFrame, metricDistributionWeek, metricDistributionYear, rightLabelDistributionArrow } from '../modules/dashboard-elements.js';
 import { timeConvert } from '../modules/index-objects.js';
 import { sessionState } from '../modules/state-objects.js';
 
@@ -7,10 +7,10 @@ import { userTimeZone } from '../utility/identification.js';
 
 // initialization of labelDistContainer (called in populate-dashboard.js)
 export function populateLabelDistContainer(dashboardData, labelDistContainer) {
-    labelDistContainer.currentDay = getCurrentDay(); // get current day
+    general.currentDay = getCurrentDay(); // get current day (used for label dist & main charts)
 
     // set default lower and upper bounds
-    setBounds(labelDistContainer.timeFrame);
+    setBounds(labelDistContainer, labelDistributionTimeFrame);
 
     // initial visualization of data
     visualizeLabelData(dashboardData, labelDistContainer);
@@ -70,7 +70,7 @@ document.addEventListener("stateUpdated", function() {
             labelDistContainer.timeFrame = 'week';
     
             // call function which resets bounds
-            setBounds(labelDistContainer.timeFrame);
+            setBounds(labelDistContainer, labelDistributionTimeFrame);
     
             // visualize data
             updateLabelData(dashboardData, labelDistContainer);
@@ -88,7 +88,7 @@ document.addEventListener("stateUpdated", function() {
             labelDistContainer.timeFrame = 'month';
             
             // call function which resets bounds
-            setBounds(labelDistContainer.timeFrame);
+            setBounds(labelDistContainer, labelDistributionTimeFrame);
     
             // visualize data
             updateLabelData(dashboardData, labelDistContainer);
@@ -107,7 +107,7 @@ document.addEventListener("stateUpdated", function() {
             labelDistContainer.timeFrame = 'year';
             
             // call function which resets bounds
-            setBounds(labelDistContainer.timeFrame);
+            setBounds(labelDistContainer, labelDistributionTimeFrame);
     
             // visualize data
             updateLabelData(dashboardData, labelDistContainer);
@@ -116,7 +116,7 @@ document.addEventListener("stateUpdated", function() {
     
         leftLabelDistributionArrow.addEventListener("click", function() {
             // decrease current bounds
-            alterBounds(labelDistContainer.timeFrame, 'shiftdown');
+            alterBounds('shiftdown', labelDistContainer, labelDistributionTimeFrame);
     
             // visualize data
             updateLabelData(dashboardData, labelDistContainer);
@@ -125,7 +125,7 @@ document.addEventListener("stateUpdated", function() {
         
         rightLabelDistributionArrow.addEventListener("click", function() {
             // increase current bounds
-            alterBounds(labelDistContainer.timeFrame, 'shiftup');
+            alterBounds('shiftup', labelDistContainer, labelDistributionTimeFrame);
     
             // visualize data
             updateLabelData(dashboardData, labelDistContainer);
@@ -145,6 +145,7 @@ document.addEventListener("stateUpdated", function() {
     }
 })
 
+// modification of visualization
 function updateLabelData(dashboardData, labelDistContainer) {
     // iterate through each daily labelTimes value
     // if labelTime key is part of the current labels AND date is within upper and lower bound dates
@@ -224,6 +225,7 @@ function updateLabelData(dashboardData, labelDistContainer) {
     });
 }
 
+// initial visualization
 function visualizeLabelData(dashboardData, labelDistContainer) {
 
     // remove any remnant elements in labelNamesContainer, labelLinesContainer, or labelTimesContainer
@@ -325,48 +327,48 @@ function visualizeLabelData(dashboardData, labelDistContainer) {
     });
 }
 
-function alterBounds(timeFrame, type) {
-    const currentDate = moment(labelDistContainer.currentDay, 'YYYY-MM-DD');
-    const upperBoundDate = moment(labelDistContainer.upperBound, 'YYYY-MM-DD');
+export function alterBounds(type, container, timeFrameElement) {
+    const currentDate = moment(general.currentDay, 'YYYY-MM-DD');
+    const upperBoundDate = moment(container.upperBound, 'YYYY-MM-DD');
 
     if ((type === 'shiftup') && (upperBoundDate.isBefore(currentDate))) {
-        labelDistContainer.lowerBound = moment(labelDistContainer.lowerBound, 'YYYY-MM-DD').add(1, timeFrame).format('YYYY-MM-DD');
-        labelDistContainer.upperBound = moment(labelDistContainer.upperBound, 'YYYY-MM-DD').add(1, timeFrame).format('YYYY-MM-DD');
+        container.lowerBound = moment(container.lowerBound, 'YYYY-MM-DD').add(1, container.timeFrame).format('YYYY-MM-DD');
+        container.upperBound = moment(container.upperBound, 'YYYY-MM-DD').add(1, container.timeFrame).format('YYYY-MM-DD');
     } else if (type === 'shiftdown') {
-        labelDistContainer.lowerBound = moment(labelDistContainer.lowerBound, 'YYYY-MM-DD').subtract(1, timeFrame).format('YYYY-MM-DD');
-        labelDistContainer.upperBound = moment(labelDistContainer.upperBound, 'YYYY-MM-DD').subtract(1, timeFrame).format('YYYY-MM-DD');
+        container.lowerBound = moment(container.lowerBound, 'YYYY-MM-DD').subtract(1, container.timeFrame).format('YYYY-MM-DD');
+        container.upperBound = moment(container.upperBound, 'YYYY-MM-DD').subtract(1, container.timeFrame).format('YYYY-MM-DD');
     }
 
-    displayTimeFrame(timeFrame);
+    displayTimeFrame(container, timeFrameElement);
 }
 
-function setBounds(timeFrame) {
+export function setBounds(container, timeFrameElement) {
     // Parse the input date
-    const date = moment(labelDistContainer.currentDay, 'YYYY-MM-DD'); // current
+    const date = moment(general.currentDay, 'YYYY-MM-DD'); // current
 
     // Get the lower bound (Sunday)
-    const lowerBound = date.clone().startOf(timeFrame).format('YYYY-MM-DD');
+    const lowerBound = date.clone().startOf(container.timeFrame).format('YYYY-MM-DD');
 
     // Get the upper bound (Saturday)
-    const upperBound = date.clone().endOf(timeFrame).format('YYYY-MM-DD');
+    const upperBound = date.clone().endOf(container.timeFrame).format('YYYY-MM-DD');
 
-    labelDistContainer.lowerBound = lowerBound;
-    labelDistContainer.upperBound = upperBound;
+    container.lowerBound = lowerBound;
+    container.upperBound = upperBound;
 
-    displayTimeFrame(timeFrame);
+    displayTimeFrame(container, timeFrameElement);
 }
 
-function displayTimeFrame(timeFrame) {
+function displayTimeFrame(container, timeFrameElement) {
     let timeFrameStr;
-    if (timeFrame === 'week') {
-        timeFrameStr = formatWeekSpan(labelDistContainer.lowerBound, labelDistContainer.upperBound);
-    } else if (timeFrame === 'month') {
-        timeFrameStr = formatMonthSpan(labelDistContainer.lowerBound);
+    if (container.timeFrame === 'week') {
+        timeFrameStr = formatWeekSpan(container.lowerBound, container.upperBound);
+    } else if (container.timeFrame === 'month') {
+        timeFrameStr = formatMonthSpan(container.lowerBound);
     } else { // year
-        timeFrameStr = formatYearSpan(labelDistContainer.lowerBound);
+        timeFrameStr = formatYearSpan(container.lowerBound);
     }
 
-    labelDistributionTimeFrame.innerText = timeFrameStr;
+    timeFrameElement.innerText = timeFrameStr;
 }
 
 function formatYearSpan(initialDate) {

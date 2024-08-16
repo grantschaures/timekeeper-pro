@@ -1,10 +1,11 @@
 import { dashboardSubContainer, dashboardContainerCover } from '../modules/dashboard-elements.js';
-import { dashboardData, labelDistContainer } from '../modules/dashboard-objects.js';
+import { dashboardData, labelDistContainer, mainChartContainer } from '../modules/dashboard-objects.js';
 import { timeConvert } from '../modules/index-objects.js';
 import { isMobile } from '../modules/dom-elements.js';
 
 import { populateDashboardSummaryStats } from './summary-stats.js';
 import { populateLabelDistContainer } from './label-distribution.js';
+import { populateMainChartsContainer } from './main-charts.js';
 
 document.addEventListener("DOMContentLoaded", function() {
     if (isMobile) { 
@@ -27,9 +28,8 @@ export async function populateDashboard(sessionData, noteData) { // called from 
     // update label distribution container
     populateLabelDistContainer(dashboardData, labelDistContainer);
 
-    // console.log(sessionData);
-    // console.log(dailySummarizedData);
-    // console.log(dashboardData.hourlyArr);
+    // update charts
+    populateMainChartsContainer();
 }
 
 async function setDashboardData(sessionData, dailySummarizedData, noteData) {
@@ -60,6 +60,7 @@ function summarizeDailyData(dataArray, sessionData) {
                 distractions: 0,
                 inDeepWork: false,
                 deepWorkIntervals: [],
+                breakIntervals: [],
                 labelTimes: {}
             };
 
@@ -76,8 +77,19 @@ function summarizeDailyData(dataArray, sessionData) {
 
     });
     
+    let summaryArr = Object.values(dailySummary);
+    let sortedSummaryArr = sortByDateAscending(summaryArr);
+
     // Convert the summary object back to an array
-    return Object.values(dailySummary);
+    return sortedSummaryArr;
+}
+
+function sortByDateAscending(arr) {
+    return arr.sort((a, b) => {
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        return dateA - dateB; // Sort in Ascending order
+    });
 }
 
 function adjustPerHourDataKeys(sessions) {
@@ -155,6 +167,11 @@ function addIntervalsLabelTimes(day, sessionData, dailySummary) {
             // add deep work intervals
             for (let interval of session.deepWorkIntervals) {
                 dailySummary[day].deepWorkIntervals.push(interval);
+            }
+
+            // add break intervals
+            for (let interval of session.breakIntervals) {
+                dailySummary[day].breakIntervals.push(interval);
             }
             
             // add label times

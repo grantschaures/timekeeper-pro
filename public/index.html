@@ -24,6 +24,7 @@
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
         <script type="module" src="/js/utility/session-summary-chart.js"></script>
+        <script type="module" src="/js/utility/main-charts.js"></script>
 
         <script src="/js/utility/preload.js"></script>
         <script type="module" src="/js/state/state.js"></script>
@@ -37,7 +38,6 @@
         <script type="module" src="/js/dashboard/label-distribution.js"></script>
         <script type="module" src="/js/dashboard/main-charts.js"></script>
         <script type="module" src="/js/dashboard/summary-stats.js"></script>
-
         
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data.min.js"></script>
@@ -605,12 +605,19 @@
                     <div id="distributionsContainer">
                         <div id="metricDistributionContainer">
                             <div id="metricDistributionCoverContainer" class="no-select">
-                                Click Here to See Your Charts (if logged in)
+                                <div id="metricDistributionCoverModuleContainer">
+                                    <div id="mainChartsCoverModule" class="chartsCoverModule">
+                                        Main Charts
+                                    </div>
+                                    <div id="advChartsCoverModule" class="chartsCoverModule">
+                                        Adv Charts
+                                    </div>
+                                </div>
                             </div>
                             <div id="metricDistributionSubContainer">
                                 <div id="metricDistributionHeaderContainer">
                                     <div id="metricDistributionArrowsAndSelections">
-                                        <img id="metricDistributionBackBtn" src="images/icons/left-arrow-261369-white.png" draggable="false" alt="Back">
+                                        <img id="metricDistributionBackBtn" src="images/icons/left-arrow-261369-white.png" draggable="false" alt="Back" class="no-select">
                                         <div id="metricDistributionSelections">
                                             <div id="metricDistributionWeek" class="metricDistributionSelection metricDistributionSelected no-select">Week</div>
                                             <div id="metricDistributionMonth" class="metricDistributionSelection no-select">Month</div>
@@ -622,10 +629,27 @@
                                             <!-- <img id="rightMetricDistributionArrowGray" src="images/icons/gray_right_arrow.png" class="dashboardArrow rightArrow no-select"> -->
                                         </div>
                                     </div>
-                                    <div id="metricDistributionTimeFrame" class="no-select">2024</div>
+                                    <div id="metricDistributionTimeFrame" class="no-select">Aug 11th-17th</div>
                                 </div>
-                                <div id="metricBodyContainer"  class="no-select">
-                                    Charts will be available shortly
+                                <div id="mainChartsContainer"  class="metricBodyContainer no-select">
+                                    <img id="HC_icon_main_charts" src="images/logo/HyperchillSummaryLogo.png" class="hyperChillLogoRotate unselectable">
+
+                                    <div id="deepWorkChartContainer" class="mainChart">
+                                        <div id="deepWorkChartHeader" class="chartHeader">
+                                            <div id="deepWorkHeaderText" class="headerText">Deep Work</div>
+                                            <div class="chartToggle">
+                                                <div class="chartToggleHeader">Quality Adjusted</div>
+                                                <input type="checkbox" id="adjustedDeepWorkToggle" class="toggle-checkbox" aria-labelledby="adjustedDeepWorks">
+                                                <label for="adjustedDeepWorkToggle" data-testid="adjustedDeepWorkToggle" id="adjustedDeepWorkToggleLabel" class="toggle-label">
+                                                    <span id="adjustedDeepWorkToggleBall" class="toggle-ball"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <canvas id="deepWorkChart"></canvas>
+                                    </div>
+                                </div>
+                                <div id="advChartsContainer"  class="metricBodyContainer no-select">
+                                    Adv Charts Container Coming Soon!
                                 </div>
                             </div>
                         </div>

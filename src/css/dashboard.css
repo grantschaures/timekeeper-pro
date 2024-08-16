@@ -60,6 +60,7 @@
     display: flex;
     flex-direction: column;
     width: 75%;
+    min-width: 40%;
     margin-left: 10px;
     margin-right: 10px;
 }
@@ -166,6 +167,7 @@
     color: white;
     font-family: settingsHeaderFontBold;
     font-size: 24px;
+
 }
 
 #metricDistributionCoverContainer {
@@ -179,6 +181,31 @@
     transition: opacity 0.25s ease-out;
 
     /* border: 1px solid white; */
+}
+
+#metricDistributionCoverModuleContainer {
+    display: flex;
+    width: 95%;
+    height: 70%;
+    justify-content: space-around;
+
+    /* border: 1px solid yellow; */
+}
+
+.chartsCoverModule {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 25px;
+    width: 40%;
+    transition: background-color 0.15s ease-out;
+
+    border: 2px solid white;
+}
+
+.chartsCoverModule:hover {
+    cursor: pointer;
+    background-color: rgba(130, 0, 170, 1);
 }
 
 #metricDistributionSubContainer {
@@ -197,41 +224,57 @@
     transition: opacity 0.5s ease-out;
 }
 
-#metricBodyContainer {
-    display: flex;
+#HC_icon_main_charts {
+    position: absolute;
+    height: 100px;
+    width: 100px;
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust the position to be exactly centered */
+    z-index: 0; /* Ensure the image is on top */
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+}
+
+
+.metricBodyContainer {
+    display: none;
     height: 100%;
+
     text-align: center;
-    align-items: center;
     justify-content: center;
     box-sizing: border-box;
     width: 100%;
     align-items: flex-start;
     overflow-y: auto;
+    overflow-x: hidden;
 
     /* border: 1px solid white; */
 }
 
-#metricBodyContainer::-webkit-scrollbar {
+.metricBodyContainer::-webkit-scrollbar {
     width: 0px;
     height: 8px;
 }
 
-#metricBodyContainer::-webkit-scrollbar:hover {
+.metricBodyContainer::-webkit-scrollbar:hover {
     cursor: pointer;
 }
 
-#metricBodyContainer::-webkit-scrollbar-track {
+.metricBodyContainer::-webkit-scrollbar-track {
     /* background: transparent; */
     background: rgba(255, 255, 255, 0);
 }
 
-#metricBodyContainer::-webkit-scrollbar-thumb {
+.metricBodyContainer::-webkit-scrollbar-thumb {
     background-color: #888;
     border-radius: 10px;
 }
-#metricDistributionContainer:not(.expanded):hover {
-    cursor: pointer;
-}
+
+
+
+
+
 
 #metricDistributionBackBtn {
     width: 32px;
@@ -240,8 +283,6 @@
     left: 10px;
     opacity: 1.00;
     margin-right: 8px;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
 }
 
 #metricDistributionBackBtn {
@@ -258,7 +299,8 @@
 
 #dailyContainer {
     width: 400px;
-    min-width: 200px;
+    min-width: 300px;
+    margin-right: 10px;
 }
 
 .dashboardSideContainer::-webkit-scrollbar {
@@ -282,10 +324,6 @@
 
 .margin-bottom {
     margin-bottom: 20px;
-}
-
-#dailyContainer {
-    margin-right: 10px;
 }
 
 #dailyHeaderContainer {
@@ -506,7 +544,7 @@
     display: flex;
 }
 
-#labelDistributionSelections, #metricDistributionSelections {
+#labelDistributionSelections {
     display: flex;
 }
 
@@ -560,8 +598,19 @@
     cursor: pointer;
 }
 
-#labelDistributionTimeFrame, #metricDistributionTimeFrame {
+#labelDistributionTimeFrame {
     display: flex;
+    white-space: nowrap;
+    margin-left: 10px;
+}
+
+#metricDistributionSelections, #metricDistributionArrows {
+    display: none;
+    align-items: center;
+}
+
+#metricDistributionTimeFrame {
+    display: none;
     white-space: nowrap;
     margin-left: 10px;
 }
@@ -586,6 +635,52 @@
     /* border: 1px solid white; */
 }
 
+.chartHeader {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 25px;
+    align-items: center;
+
+    /* border: 1px solid white; */
+}
+
+.mainChart {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    border-radius: 25px;
+    box-sizing: border-box;
+    opacity: 0;
+    transition: opacity 0.25s ease-out;
+
+    border: 3px solid white;
+    margin-top: 5px;
+}
+
+.chartToggleHeader {
+    font-size: 18px;
+    font-family: settingsHeaderFont;
+    margin-bottom: 5px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.chartToggle {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+/* Adjusted Deep Work Toggle */
+#adjustedDeepWorkToggle:checked + #adjustedDeepWorkToggleLabel {
+    background-color: #53e658;
+}
+
+#adjustedDeepWorkToggle:checked + #adjustedDeepWorkToggleLabel #adjustedDeepWorkToggleBall {
+    left: 40px;
+}
+
 /* TEMPORARY RESPONSIVE DESIGN CHANGES */
 @media (max-width: 1168px) {
     #dailyContainer {
@@ -605,3 +700,8 @@
         margin-right: 0px;
     }
 }
+
+/* This is the change we'll make when opening up the Adv. Charts */
+/* #metricDistributionSelections, #metricDistributionArrows, #metricDistributionTimeFrame {
+    display: none;
+} */

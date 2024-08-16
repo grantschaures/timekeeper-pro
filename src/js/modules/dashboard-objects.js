@@ -11,9 +11,12 @@ export const dashboardData = {
     noteData: {}
 }
 
+export const general = {
+    currentDay: null
+}
+
 export const labelDistContainer = {
     timeFrame: 'week',
-    currentDay: null,
     lowerBound: null,
     upperBound: null,
     height: 'auto',
@@ -21,5 +24,19 @@ export const labelDistContainer = {
 }
 
 export const flags = {
-    metricDistributionContainerExpanded: false
+    metricDistributionContainerExpanded: false,
+    adjustedDeepWorkToggle: false,
+    avgBreakIntervalToggle: false
+}
+
+export const charts = {
+    deepWork: null,
+    focusQuality: null,
+    intervalLength: null
+}
+
+export const mainChartContainer = {
+    timeFrame: 'week',
+    lowerBound: null,
+    upperBound: null
 }

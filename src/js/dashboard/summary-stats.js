@@ -1,16 +1,21 @@
 import { totalDeepWorkSummaryStat, avgDeepWorkSummaryStat, avgFocusQualitySummaryStat, avgIntervalLengthSummaryStat, mostFocusedHourSummaryStat } from '../modules/dashboard-elements.js';
+import { timeConvert } from '../modules/index-objects.js';
 
 import { focusQualityCalculation } from './populate-dashboard.js';
 
+// Global Vars
+const FOCUS_QUALITY_CONSTANT = 0.5;
+
 export function populateDashboardSummaryStats(timeConvert, dailySummarizedData, dashboardData) {
     let totalDeepWork = 0;
-    let dailyFocusQualityArr = [];
+    let totalDistractions = 0;
     let totalDeepWorkIntervals = [];
 
     if (dailySummarizedData.length > 0) {
         for (let i = 0; i < dailySummarizedData.length; i++) {
             totalDeepWork += dailySummarizedData[i].deepWorkTime;
-            dailyFocusQualityArr.push(focusQualityCalculation(timeConvert, dailySummarizedData[i].deepWorkTime, dailySummarizedData[i].distractions, 0.5));
+
+            totalDistractions += dailySummarizedData[i].distractions;
 
             dailySummarizedData[i].deepWorkIntervals.forEach(interval => {
                 totalDeepWorkIntervals.push(interval);
@@ -18,13 +23,13 @@ export function populateDashboardSummaryStats(timeConvert, dailySummarizedData, 
         }
     
         // total deep work 
-        totalDeepWork = populateTotalDeepWorkSummaryStat(timeConvert, totalDeepWork);
+        let totalDeepWorkHrs = populateTotalDeepWorkSummaryStat(timeConvert, totalDeepWork);
     
         // avg. deep work per day
-        populateAvgDeepWorkSummaryStat(totalDeepWork, dailySummarizedData);
+        populateAvgDeepWorkSummaryStat(totalDeepWorkHrs, dailySummarizedData);
     
         // avg. focus quality per day
-        populateFocusQualitySummaryStat(dailyFocusQualityArr, dailySummarizedData);
+        populateFocusQualitySummaryStat(totalDeepWork, totalDistractions);
 
         // avg. interval length
         populateAvgIntervalLengthSummaryStat(timeConvert, totalDeepWorkIntervals);
@@ -39,7 +44,6 @@ export function populateDashboardSummaryStats(timeConvert, dailySummarizedData, 
 
 function populateMostFocusedHourSummaryStat(dashboardData) {
     // most focused hour - the hour which has the highest focus quality
-
     let highestAvgFocusQuality = 0;
     let highestAvgFocusQualityIndex;
     for (let i = 0; i < 24; i++) { // for each hour of the day
@@ -91,9 +95,20 @@ function setDefaultAllSummaryStats() {
     mostFocusedHourSummaryStat.innerText = "N/A";
 }
 
-function populateFocusQualitySummaryStat(dailyFocusQualityArr, dailySummarizedData) {
-    let avgFocusQuality = dailyFocusQualityArr.reduce((accumulator, currentValue) => accumulator + currentValue, 0) / dailySummarizedData.length;
-    let avgFocusQualityPercent = Math.floor(avgFocusQuality * 100);
+function populateFocusQualitySummaryStat(totalDeepWork, totalDistractions) {
+
+    let deepWorkHours = totalDeepWork / timeConvert.msPerHour; // total hour float
+    let deepWorkMinutes = deepWorkHours * 60; // total minutes float
+
+    // focus quality calculation
+    let focusQuality = 1 - ((totalDistractions / deepWorkMinutes) / FOCUS_QUALITY_CONSTANT);
+    if (focusQuality < 0) {
+        focusQuality = 0;
+    } else if (isNaN(focusQuality)) {
+        focusQuality = 1;
+    }
+
+    let avgFocusQualityPercent = Math.floor(focusQuality * 100);
     let avgFocusQualityStr = avgFocusQualityPercent + '%';
     avgFocusQualitySummaryStat.innerText = avgFocusQualityStr;
 }

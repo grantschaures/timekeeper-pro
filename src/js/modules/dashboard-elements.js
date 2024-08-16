@@ -35,4 +35,21 @@ export const metricDistributionBackBtn = document.getElementById('metricDistribu
 export const metricDistributionWeek = document.getElementById('metricDistributionWeek');
 export const metricDistributionMonth = document.getElementById('metricDistributionMonth');
 export const metricDistributionYear = document.getElementById('metricDistributionYear');
+
+export const mainChartsCoverModule = document.getElementById('mainChartsCoverModule');
+export const advChartsCoverModule = document.getElementById('advChartsCoverModule');
+export const mainChartsContainer = document.getElementById('mainChartsContainer');
+export const advChartsContainer = document.getElementById('advChartsContainer');
+export const metricBodyContainers = document.querySelectorAll('.metricBodyContainer');
+
+export const metricDistributionSelections = document.getElementById('metricDistributionSelections');
+export const metricDistributionArrows = document.getElementById('metricDistributionArrows');
 export const metricDistributionTimeFrame = document.getElementById('metricDistributionTimeFrame');
+export const chartHeaders = document.querySelectorAll('.chartHeader');
+export const adjustedDeepWorkToggle = document.getElementById('adjustedDeepWorkToggle');
+export const deepWorkHeaderText = document.getElementById('deepWorkHeaderText');
+export const mainCharts = document.querySelectorAll('.mainChart');
+export const HC_icon_main_charts = document.getElementById('HC_icon_main_charts');
+
+export const leftMetricDistributionArrow = document.getElementById('leftMetricDistributionArrow');
+export const rightMetricDistributionArrow = document.getElementById('rightMetricDistributionArrow');
