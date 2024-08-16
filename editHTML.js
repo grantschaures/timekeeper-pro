@@ -247,6 +247,13 @@ const labelDistributionReplacements = [
     }
 ]
 
+const mainChartsReplacements = [
+    {
+        pattern: /import { setBounds, alterBounds } from '.\/label-distribution.js';/g,
+        replacement: "import { setBounds, alterBounds } from '../minified/label-distribution.min.js';"
+    }
+]
+
 
 // Update index.html
 readFileAndReplace(indexHtmlPath, indexHtmlReplacements);
@@ -275,3 +282,4 @@ readFileAndReplace(summaryStatsJsPath, summaryStatsReplacements);
 readFileAndReplace(populateDashboardJsPath, populateDashboardReplacements);
 readFileAndReplace(labelDistributionJsPath, labelDistributionReplacements);
 readFileAndReplace(updateLabelsJsPath, updateLabelsReplacements);
+readFileAndReplace(mainChartsJsPath, mainChartsReplacements);
