@@ -5,7 +5,7 @@ import { isMobile } from '../modules/dom-elements.js';
 
 import { populateDashboardSummaryStats } from './summary-stats.js';
 import { populateLabelDistContainer } from './label-distribution.js';
-import { populateMainChartsContainer } from './main-charts.js';
+import { populateMainChartsContainer } from './metric-charts.js';
 
 document.addEventListener("DOMContentLoaded", function() {
     if (isMobile) { 

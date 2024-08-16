@@ -38,7 +38,7 @@ const loginJsPath = './src/js/login_signup/login.js';
 const googleSignInPath = './src/js/api/google-signin.js';
 
 const dailySessionsJsPath = './src/js/dashboard/daily-sessions.js';
-const mainChartsJsPath = './src/js/dashboard/main-charts.js';
+const metricChartsJsPath = './src/js/dashboard/metric-charts.js';
 const labelDistributionJsPath = './src/js/dashboard/label-distribution.js';
 const summaryStatsJsPath = './src/js/dashboard/summary-stats.js';
 const populateDashboardJsPath = './src/js/dashboard/populate-dashboard.js';
@@ -239,8 +239,8 @@ const populateDashboardReplacements = [
         replacement: "import { populateLabelDistContainer } from '../minified/label-distribution.min.js';"
     },
     {
-        pattern: /import { populateMainChartsContainer } from '.\/main-charts.js';/g,
-        replacement: "import { populateMainChartsContainer } from '../minified/main-charts.min.js';"
+        pattern: /import { populateMainChartsContainer } from '.\/metric-charts.js';/g,
+        replacement: "import { populateMainChartsContainer } from '../minified/metric-charts.min.js';"
     }
 ]
 
@@ -286,4 +286,4 @@ readFileAndReplace(summaryStatsJsPath, summaryStatsReplacements);
 readFileAndReplace(populateDashboardJsPath, populateDashboardReplacements);
 readFileAndReplace(labelDistributionJsPath, labelDistributionReplacements);
 readFileAndReplace(updateLabelsJsPath, updateLabelsReplacements);
-readFileAndReplace(mainChartsJsPath, mainChartsReplacements);
+readFileAndReplace(metricChartsJsPath, mainChartsReplacements);

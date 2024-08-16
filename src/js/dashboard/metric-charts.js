@@ -49,6 +49,23 @@ document.addEventListener("stateUpdated", function() {
             }
         })
 
+        breakIntervalToggle.addEventListener('click', function() {
+            if (breakIntervalToggle.checked) {
+                flags.avgBreakIntervalToggle = true;
+                avgIntervalHeaderText.innerText = "Avg Break Interval"
+
+                // make necessary changes to chart distribution
+                document.dispatchEvent(new Event('displayMainCharts'));
+
+            } else {
+                flags.avgBreakIntervalToggle = false;
+                avgIntervalHeaderText.innerText = "Avg Deep Work Interval";
+
+                // make necessary changes to chart distribution
+                document.dispatchEvent(new Event('displayMainCharts'));
+            }
+        })
+
         metricDistributionWeek.addEventListener("click", function() {
             // add class
             metricDistributionWeek.classList.add('metricDistributionSelected');

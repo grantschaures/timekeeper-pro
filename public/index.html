@@ -36,7 +36,7 @@
 
         <script type="module" src="/js/dashboard/daily-sessions.js"></script>
         <script type="module" src="/js/dashboard/label-distribution.js"></script>
-        <script type="module" src="/js/dashboard/main-charts.js"></script>
+        <script type="module" src="/js/dashboard/metric-charts.js"></script>
         <script type="module" src="/js/dashboard/summary-stats.js"></script>
         
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
@@ -653,6 +653,20 @@
                                             <div id="focusQualityHeaderText" class="headerText">Focus Quality</div>
                                         </div>
                                         <canvas id="focusQualityChart"></canvas>
+                                    </div>
+
+                                    <div id="avgIntervalChartContainer" class="mainChart">
+                                        <div id="avgIntervalChartHeader" class="chartHeader">
+                                            <div id="avgIntervalHeaderText" class="headerText">Avg Deep Work Interval</div>
+                                            <div class="chartToggle">
+                                                <div class="chartToggleHeader">Break Interval</div>
+                                                <input type="checkbox" id="breakIntervalToggle" class="toggle-checkbox" aria-labelledby="breakIntervals">
+                                                <label for="breakIntervalToggle" data-testid="breakIntervalToggle" id="breakIntervalToggleLabel" class="toggle-label">
+                                                    <span id="breakIntervalToggleBall" class="toggle-ball"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <canvas id="avgIntervalChart"></canvas>
                                     </div>
                                 </div>
                                 <div id="advChartsContainer"  class="metricBodyContainer no-select">

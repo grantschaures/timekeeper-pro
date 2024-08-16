@@ -678,6 +678,15 @@
     left: 40px;
 }
 
+/* Adjusted Deep Work Toggle */
+#breakIntervalToggle:checked + #breakIntervalToggleLabel {
+    background-color: #53e658;
+}
+
+#breakIntervalToggle:checked + #breakIntervalToggleLabel #breakIntervalToggleBall {
+    left: 40px;
+}
+
 /* TEMPORARY RESPONSIVE DESIGN CHANGES */
 @media (max-width: 1280px) {
     #dailyContainer {

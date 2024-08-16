@@ -51,5 +51,8 @@ export const deepWorkHeaderText = document.getElementById('deepWorkHeaderText');
 export const mainCharts = document.querySelectorAll('.mainChart');
 export const HC_icon_main_charts = document.getElementById('HC_icon_main_charts');
 
+export const breakIntervalToggle = document.getElementById('breakIntervalToggle');
+export const avgIntervalHeaderText = document.getElementById('avgIntervalHeaderText');
+
 export const leftMetricDistributionArrow = document.getElementById('leftMetricDistributionArrow');
 export const rightMetricDistributionArrow = document.getElementById('rightMetricDistributionArrow');
