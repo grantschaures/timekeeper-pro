@@ -240,9 +240,9 @@
 .metricBodyContainer {
     display: none;
     height: 100%;
-
+    flex-direction: column;
     text-align: center;
-    justify-content: center;
+    justify-content: flex-start;
     box-sizing: border-box;
     width: 100%;
     align-items: flex-start;
@@ -262,7 +262,6 @@
 }
 
 .metricBodyContainer::-webkit-scrollbar-track {
-    /* background: transparent; */
     background: rgba(255, 255, 255, 0);
 }
 
@@ -270,11 +269,6 @@
     background-color: #888;
     border-radius: 10px;
 }
-
-
-
-
-
 
 #metricDistributionBackBtn {
     width: 32px;
@@ -644,6 +638,10 @@
     /* border: 1px solid white; */
 }
 
+#deepWorkChartContainer {
+    margin-top: 5px;
+}
+
 .mainChart {
     display: none;
     flex-direction: column;
@@ -653,9 +651,8 @@
     box-sizing: border-box;
     opacity: 0;
     transition: opacity 0.25s ease-out;
-
+    margin-bottom: 15px;
     border: 3px solid white;
-    margin-top: 5px;
 }
 
 .chartToggleHeader {

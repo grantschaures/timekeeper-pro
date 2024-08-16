@@ -30,8 +30,8 @@ document.addEventListener("displayMainCharts", async function() {
     await initializeData(dashboardData, mainChartContainer, deepWorkArr, focusQualityArr, avgIntervalArr, yMax);
     
     displayDeepWorkChart();
+    displayFocusQualityChart();
 
-    // displayFocusQualityChart();
     // displayAvgIntervalChart();
 
 })
@@ -126,7 +126,7 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
 
             if (mainChartContainer.timeFrame !== 'year') {
                 deepWorkArr.push(deepWorkHours);
-                focusQualityArr.push(focusQuality);
+                focusQualityArr.push(Math.floor(focusQuality * 100));
                 avgIntervalArr.push(avgInterval);
             }
 
@@ -166,7 +166,7 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
                 let avgInterval = getInterval(monthlyData);
 
                 deepWorkArr.push(deepWorkHours);
-                focusQualityArr.push(focusQuality);
+                focusQualityArr.push(Math.floor(focusQuality * 100));
                 avgIntervalArr.push(avgInterval);
 
                 dataPresent = true;
@@ -419,7 +419,7 @@ async function displayDeepWorkChart() {
             datasets: [{
                 label: 'Hours Spent',
                 data: deepWorkArr,
-                backgroundColor: 'rgb(130, 0, 170)',
+                backgroundColor: 'rgba(83, 230, 88, 1)',
                 borderColor: 'rgb(255, 255, 255)',
                 // borderWidth: 3,
                 borderRadius: 25,
@@ -515,6 +515,161 @@ async function displayDeepWorkChart() {
     flags.drewWeeklyDivisionLines = false;
 }
 
+async function displayFocusQualityChart() {
+    let xAxisTickLabelArr;
+    if (mainChartContainer.timeFrame === 'week') {
+        xAxisTickLabelArr = xAxisTickLabels.week;
+    } else if (mainChartContainer.timeFrame === 'month') {
+        xAxisTickLabelArr = xAxisTickLabels.month;
+    } else { // year
+        xAxisTickLabelArr = xAxisTickLabels.year;
+    }
+
+    let chartType = 'bar';
+    if (mainChartContainer.timeFrame === 'month') {
+        chartType = 'line';
+    }
+
+    const yScaleData = {
+        beginAtZero: true,
+        suggestedMax: 100,
+        title: {
+            display: true,
+            text: 'Focus Quality %',
+            color: 'white'
+        },
+        ticks: {
+            color: 'white',
+        },
+        grid: {
+            display: true, 
+            color: 'rgba(255, 255, 255, 0.15)',
+            lineWidth: 1,
+            drawBorder: true,
+            drawOnChartArea: true,
+            drawTicks: false,
+        }
+    }
+
+    const yScaleNoData = {
+        beginAtZero: true,
+        max: 0,
+        title: {
+            display: true,
+            text: 'Focus Quality %',
+            color: 'white'
+        },
+        ticks: {
+            color: 'white',
+        },
+        grid: {
+            display: true, 
+            color: 'rgba(255, 255, 255, 0.15)',
+            lineWidth: 1,
+            drawBorder: true,
+            drawOnChartArea: true,
+            drawTicks: false,
+        }
+    }
+
+    let yScale = yScaleData;
+    if (focusQualityArr.length === 0) {
+        yScale = yScaleNoData;
+    }
+
+    const ctx = document.getElementById('focusQualityChart').getContext('2d');
+    const config = {
+        type: chartType,
+        data: {
+            labels: xAxisTickLabelArr,
+            datasets: [{
+                label: 'Focus Quality %',
+                data: focusQualityArr,
+                backgroundColor: 'rgba(59, 143, 227, 1)',
+                borderColor: 'rgb(255, 255, 255)',
+                // borderWidth: 3,
+                borderRadius: 25,
+                borderSkipped: false,
+                barPercentage: 1,
+                categoryPercentage: 0.5,
+                pointRadius: 5, // Size of the points
+                pointHoverRadius: 8 // Size of the points when hovered
+            }]
+        },
+        options: {
+            scales: {
+                y: yScale,
+                x: {
+                    title: {
+                        display: false
+                    },
+                    ticks: {
+                        color: 'white'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    enabled: true,
+                    backgroundColor: 'rgb(0, 0, 0)', // Sets the tooltip background color
+                    titleColor: 'white', // Sets the color of the title in the tooltip
+                    bodyColor: 'white', // Sets the color of the text in the tooltip body
+                    borderColor: 'white', // Sets the color of the tooltip border
+                    borderWidth: 2, // Sets the width of the tooltip border
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            // Custom title logic
+                            // tooltipItems is an array; we'll use the first item for the title
+                            let item = tooltipItems[0];
+                            let index = item.dataIndex;
+                            let date = dateStrArr[index];
+                            return `${date}`;
+                        },
+                        label: function(tooltipItem) {
+                            let item = tooltipItem;
+                            let index = item.dataIndex;
+                            let date = dateStrArr[index];
+
+                            if (date === "no data") {
+                                return null;
+                            } else {
+                                return ` ${tooltipItem.raw}%`; // Customize tooltip text
+                            }
+                        }
+                    }
+                }
+            },
+            animations: {
+                x: {
+                    duration: 0 
+                },
+                y: {
+                    duration: 1000,
+                    easing: 'easeOutQuint' 
+                }
+            }
+        },
+        plugins: [
+            noDataPlugin,    // Register the noDataPlugin
+            dottedLinePlugin // Register the dottedLinePlugin
+        ]
+    };
+
+    // Destroy the existing chart instance if it exists
+    if (charts.focusQuality) {
+        charts.focusQuality.destroy();
+        charts.focusQuality = null;
+    }
+
+    // Create a new chart instance
+    charts.focusQuality = new Chart(ctx, config);
+
+    flags.drewWeeklyDivisionLines = false;
+}
+
 const dottedLinePlugin = {
     id: 'dottedLinePlugin',
     afterDraw: function(chart) {
@@ -548,8 +703,6 @@ const dottedLinePlugin = {
         }
     }
 };
-
-
 
 const noDataPlugin = {
     id: 'noDataPlugin',
