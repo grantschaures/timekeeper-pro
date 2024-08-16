@@ -237,6 +237,10 @@ const populateDashboardReplacements = [
     {
         pattern: /import { populateLabelDistContainer } from '.\/label-distribution.js';/g,
         replacement: "import { populateLabelDistContainer } from '../minified/label-distribution.min.js';"
+    },
+    {
+        pattern: /import { populateMainChartsContainer } from '.\/main-charts.js';/g,
+        replacement: "import { populateMainChartsContainer } from '../minified/main-charts.min.js';"
     }
 ]
 
