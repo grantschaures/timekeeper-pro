@@ -134,9 +134,6 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
         }
     }
 
-    yMax.deepWork = ceilDeepWorkYMax(yMax.deepWork);
-    yMax.avgInterval = ceilAvgIntervalYMax(yMax.avgInterval);
-
     if (mainChartContainer.timeFrame === 'month') {
         // fill month tick mark labels arr
         let daysInMonth = getDaysInMonth(mainChartContainer.lowerBound);
@@ -190,6 +187,9 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
             avgIntervalArr.length = 0;
         }
     }
+
+    yMax.deepWork = ceilDeepWorkYMax(yMax.deepWork);
+    yMax.avgInterval = ceilAvgIntervalYMax(yMax.avgInterval);
 }
 
 function getSundayIndices(dateString, daysArray) {
@@ -332,7 +332,7 @@ function formatDateString(dateString) {
 function ceilDeepWorkYMax(deepWorkYMax) {
     let ceilResult = Math.ceil(deepWorkYMax);
 
-    if (isPrime(ceilResult)) {
+    if (isPrime(ceilResult) && (ceilResult > 2)) {
         ceilResult++;
     }
 
@@ -522,8 +522,6 @@ const dottedLinePlugin = {
             const ctx = chart.ctx;
             const xScale = chart.scales.x;
             const yScale = chart.scales.y;
-
-            console.log(sundayIndices);
 
             for (let i = 0; i < sundayIndices.length; i++) {
                 const currentIndex = sundayIndices[i];
