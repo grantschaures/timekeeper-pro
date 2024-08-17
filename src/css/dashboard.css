@@ -231,11 +231,10 @@
     top: 50%; /* Center vertically */
     left: 50%; /* Center horizontally */
     transform: translate(-50%, -50%); /* Adjust the position to be exactly centered */
-    z-index: 0; /* Ensure the image is on top */
+    z-index: -1;
     opacity: 1;
     transition: opacity 0.5s ease-in-out;
 }
-
 
 .metricBodyContainer {
     display: none;
