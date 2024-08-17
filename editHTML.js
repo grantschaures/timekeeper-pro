@@ -34,7 +34,7 @@ const indexJsPath = './src/js/main/index.js';
 const notesJsPath = './src/js/main/notes.js';
 const endSessionJsPath = './src/js/main/end-session.js';
 const navigationJsPath = './src/js/main/navigation.js';
-const loginJsPath = './src/js/login_signup/login.js';
+const loginJsPath = './src/js/login-signup/login.js';
 const googleSignInPath = './src/js/api/google-signin.js';
 
 const dailySessionsJsPath = './src/js/dashboard/daily-sessions.js';
@@ -64,21 +64,21 @@ const indexHtmlReplacements = [
 ];
 
 const loginHtmlReplacements = [
-    { pattern: /\/js\/login_signup\/login\.js/g, replacement: '/js/minified/login.min.js' },
+    { pattern: /\/js\/login-signup\/login\.js/g, replacement: '/js/minified/login.min.js' },
     { pattern: /\/js\/api\/google-signin\.js/g, replacement: '/js/minified/google-signin.min.js' }
 ]
 
 const signupHtmlReplacements = [
-    { pattern: /\/js\/login_signup\/signup\.js/g, replacement: '/js/minified/signup.min.js' },
+    { pattern: /\/js\/login-signup\/signup\.js/g, replacement: '/js/minified/signup.min.js' },
     { pattern: /\/js\/api\/google-signin\.js/g, replacement: '/js/minified/google-signin.min.js' }
 ]
 
 const setPasswordHtmlReplacements = [
-    { pattern: /\/js\/login_signup\/set-password\.js/g, replacement: '/js/minified/set-password.min.js' }
+    { pattern: /\/js\/login-signup\/set-password\.js/g, replacement: '/js/minified/set-password.min.js' }
 ]
 
 const resetPasswordHtmlReplacements = [
-    { pattern: /\/js\/login_signup\/reset-password\.js/g, replacement: '/js/minified/reset-password.min.js' }
+    { pattern: /\/js\/login-signup\/reset-password\.js/g, replacement: '/js/minified/reset-password.min.js' }
 ]
 
 const stateReplacements = [
@@ -186,8 +186,8 @@ const loginReplacements = [
         replacement: "import { initializeGUI } from '../minified/initialize-gui.min.js';"
     },
     {
-        pattern: /import { userAgent, userDevice } from '..\/utility\/identification.js';/g,
-        replacement: "import { userAgent, userDevice } from '../minified/identification.min.js';"
+        pattern: /import { userAgent, userDevice, userTimeZone } from '..\/utility\/identification.js';/g,
+        replacement: "import { userAgent, userDevice, userTimeZone } from '../minified/identification.min.js';"
     }
 ];
 

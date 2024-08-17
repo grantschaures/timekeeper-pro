@@ -1,5 +1,5 @@
 import { initializeGUI } from '../utility/initialize-gui.js'; // minified
-import { userAgent, userDevice } from '../utility/identification.js'; // minified
+import { userAgent, userDevice, userTimeZone } from '../utility/identification.js'; // minified
 
 document.addEventListener("DOMContentLoaded", function () {
     const loginSubmitBtn = document.getElementById("loginSubmitBtn");
