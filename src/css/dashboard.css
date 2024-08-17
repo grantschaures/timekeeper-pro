@@ -563,6 +563,16 @@
     transition: transform 0.25s ease-out;
 }
 
+.dashboardArrow.rightArrow {
+    display: none;
+}
+
+.dashboardArrowGray {
+    display: flex;
+    width: 12px;
+    height: 20px;
+}
+
 .dashboardArrow:hover {
     cursor:  pointer;
 }

@@ -20,7 +20,10 @@ export const labelDistributionWeek = document.getElementById('labelDistributionW
 export const labelDistributionMonth = document.getElementById('labelDistributionMonth');
 export const labelDistributionYear = document.getElementById('labelDistributionYear');
 export const leftLabelDistributionArrow = document.getElementById('leftLabelDistributionArrow');
+
 export const rightLabelDistributionArrow = document.getElementById('rightLabelDistributionArrow');
+export const rightLabelDistributionArrowGray = document.getElementById('rightLabelDistributionArrowGray');
+
 export const labelNamesContainer = document.getElementById('labelNamesContainer');
 export const labelLinesContainer = document.getElementById('labelLinesContainer');
 export const labelTimesContainer = document.getElementById('labelTimesContainer');
@@ -55,4 +58,6 @@ export const breakIntervalToggle = document.getElementById('breakIntervalToggle'
 export const avgIntervalHeaderText = document.getElementById('avgIntervalHeaderText');
 
 export const leftMetricDistributionArrow = document.getElementById('leftMetricDistributionArrow');
+
 export const rightMetricDistributionArrow = document.getElementById('rightMetricDistributionArrow');
+export const rightMetricDistributionArrowGray = document.getElementById('rightMetricDistributionArrowGray');

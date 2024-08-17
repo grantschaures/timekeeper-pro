@@ -1,11 +1,11 @@
-import { adjustedDeepWorkToggle, advChartsContainer, advChartsCoverModule, chartHeaders, deepWorkHeaderText, HC_icon_main_charts, labelDistributionContainer, leftMetricDistributionArrow, mainCharts, mainChartsContainer, mainChartsCoverModule, metricBodyContainers, metricDistributionArrows, metricDistributionBackBtn, metricDistributionContainer, metricDistributionCoverContainer, metricDistributionMonth, metricDistributionSelections, metricDistributionSubContainer, metricDistributionTimeFrame, metricDistributionWeek, metricDistributionYear, rightMetricDistributionArrow } from "../modules/dashboard-elements.js"
+import { adjustedDeepWorkToggle, advChartsContainer, advChartsCoverModule, chartHeaders, deepWorkHeaderText, HC_icon_main_charts, labelDistributionContainer, leftMetricDistributionArrow, mainCharts, mainChartsContainer, mainChartsCoverModule, metricBodyContainers, metricDistributionArrows, metricDistributionBackBtn, metricDistributionContainer, metricDistributionCoverContainer, metricDistributionMonth, metricDistributionSelections, metricDistributionSubContainer, metricDistributionTimeFrame, metricDistributionWeek, metricDistributionYear, rightMetricDistributionArrow, rightMetricDistributionArrowGray } from "../modules/dashboard-elements.js"
 import { sessionState } from "../modules/state-objects.js"
 import { flags, labelDistContainer, mainChartContainer } from "../modules/dashboard-objects.js"
 
 import { setBounds, alterBounds, checkViewportWidth } from './label-distribution.js';
 
 export function populateMainChartsContainer() {
-    setBounds(mainChartContainer, metricDistributionTimeFrame);
+    setBounds(mainChartContainer, metricDistributionTimeFrame, rightMetricDistributionArrow, rightMetricDistributionArrowGray);
 }
 
 document.addEventListener("stateUpdated", function() {
@@ -78,7 +78,7 @@ document.addEventListener("stateUpdated", function() {
             mainChartContainer.timeFrame = 'week';
     
             // call function which resets bounds
-            setBounds(mainChartContainer, metricDistributionTimeFrame);
+            setBounds(mainChartContainer, metricDistributionTimeFrame, rightMetricDistributionArrow, rightMetricDistributionArrowGray);
     
             // visualize data
             document.dispatchEvent(new Event('displayMainCharts'));
@@ -96,7 +96,7 @@ document.addEventListener("stateUpdated", function() {
             mainChartContainer.timeFrame = 'month';
             
             // call function which resets bounds
-            setBounds(mainChartContainer, metricDistributionTimeFrame);
+            setBounds(mainChartContainer, metricDistributionTimeFrame, rightMetricDistributionArrow, rightMetricDistributionArrowGray);
     
             // visualize data
             document.dispatchEvent(new Event('displayMainCharts'));
@@ -115,7 +115,7 @@ document.addEventListener("stateUpdated", function() {
             mainChartContainer.timeFrame = 'year';
             
             // call function which resets bounds
-            setBounds(mainChartContainer, metricDistributionTimeFrame);
+            setBounds(mainChartContainer, metricDistributionTimeFrame, rightMetricDistributionArrow, rightMetricDistributionArrowGray);
     
             // visualize data
             document.dispatchEvent(new Event('displayMainCharts'));
@@ -124,7 +124,7 @@ document.addEventListener("stateUpdated", function() {
     
         leftMetricDistributionArrow.addEventListener("click", function() {
             // decrease current bounds
-            alterBounds('shiftdown', mainChartContainer, metricDistributionTimeFrame);
+            alterBounds('shiftdown', mainChartContainer, metricDistributionTimeFrame, rightMetricDistributionArrow, rightMetricDistributionArrowGray);
     
             // visualize data
             document.dispatchEvent(new Event('displayMainCharts'));
@@ -133,7 +133,7 @@ document.addEventListener("stateUpdated", function() {
         
         rightMetricDistributionArrow.addEventListener("click", function() {
             // increase current bounds
-            alterBounds('shiftup', mainChartContainer, metricDistributionTimeFrame);
+            alterBounds('shiftup', mainChartContainer, metricDistributionTimeFrame, rightMetricDistributionArrow, rightMetricDistributionArrowGray);
     
             // visualize data
             document.dispatchEvent(new Event('displayMainCharts'));
