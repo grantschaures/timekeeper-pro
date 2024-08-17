@@ -341,7 +341,7 @@ function ceilDeepWorkYMax(deepWorkYMax) {
 }
 
 function ceilAvgIntervalYMax(avgIntervalYMax) {
-    return Math.ceil(avgIntervalYMax / 5) * 5;
+    return Math.ceil(avgIntervalYMax / 2) * 2;
 }
 
 function isPrime(num) {
@@ -419,6 +419,13 @@ async function displayDeepWorkChart() {
         barColor = 'rgba(63, 210, 68, 1)';
     }
 
+    let step;
+    if (yMax.deepWork > 1) {
+        step = 1;
+    } else {
+        step = 0.5;
+    }
+
     const ctx = document.getElementById('deepWorkChart').getContext('2d');
     const config = {
         type: 'bar',
@@ -447,7 +454,8 @@ async function displayDeepWorkChart() {
                         color: 'white'
                     },
                     ticks: {
-                        color: 'white'
+                        color: 'white',
+                        stepSize: step
                     },
                     grid: {
                         display: true, 
@@ -691,6 +699,13 @@ async function displayAvgIntervalChart() {
         barColor = 'rgba(83, 230, 88, 1)';
     }
 
+    let step;
+    if (yMax.avgInterval > 10) {
+        step = 2;
+    } else {
+        step = 1;
+    }
+
     const ctx = document.getElementById('avgIntervalChart').getContext('2d');
     const config = {
         type: 'bar',
@@ -719,7 +734,8 @@ async function displayAvgIntervalChart() {
                         color: 'white'
                     },
                     ticks: {
-                        color: 'white'
+                        color: 'white',
+                        stepSize: step
                     },
                     grid: {
                         display: true, 

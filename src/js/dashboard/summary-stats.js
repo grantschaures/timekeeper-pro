@@ -82,7 +82,7 @@ function populateAvgIntervalLengthSummaryStat(timeConvert, totalDeepWorkInterval
     let avgDeepWorkIntervalMs = totalDeepWorkIntervals.reduce((accumulator, currentValue) => accumulator + currentValue, 0) / totalDeepWorkIntervals.length;
     let avgDeepWorkInterval = avgDeepWorkIntervalMs / timeConvert.msPerHour;
     let avgDeepWorkIntervalHour = Math.floor(avgDeepWorkInterval);
-    let avgDeepWorkIntervalMinutes = Math.floor((avgDeepWorkInterval - avgDeepWorkIntervalHour) * 60);
+    let avgDeepWorkIntervalMinutes = Math.round((avgDeepWorkInterval - avgDeepWorkIntervalHour) * 60);
     let avgDeepWorkIntervalStr = avgDeepWorkIntervalHour + 'h ' + avgDeepWorkIntervalMinutes + 'm';
     avgIntervalLengthSummaryStat.innerText = avgDeepWorkIntervalStr;
 }
