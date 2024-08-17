@@ -707,6 +707,12 @@
     }
 }
 
+@media (max-width: 610px) {
+    #labelDistributionTimeFrame {
+        display: none;
+    }
+}
+
 /* This is the change we'll make when opening up the Adv. Charts */
 /* #metricDistributionSelections, #metricDistributionArrows, #metricDistributionTimeFrame {
     display: none;

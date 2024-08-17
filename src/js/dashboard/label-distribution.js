@@ -16,7 +16,7 @@ export function populateLabelDistContainer(dashboardData, labelDistContainer) {
     visualizeLabelData(dashboardData, labelDistContainer);
 }
 
-function checkViewportWidth() {
+export function checkViewportWidth() {
     if (window.innerWidth <= 1385) {
         labelDistributionWeek.innerText = "W";
         labelDistributionMonth.innerText = "M";

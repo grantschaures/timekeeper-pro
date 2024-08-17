@@ -7,13 +7,6 @@ import { populateDashboardSummaryStats } from './summary-stats.js';
 import { populateLabelDistContainer } from './label-distribution.js';
 import { populateMainChartsContainer } from './metric-charts.js';
 
-document.addEventListener("DOMContentLoaded", function() {
-    if (isMobile) { 
-        dashboardSubContainer.style.display = 'none';
-        dashboardContainerCover.style.display = 'flex';
-    }
-})
-
 export async function populateDashboard(sessionData, noteData) { // called from state.js
 
     // create sorted array of data for each day

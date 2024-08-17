@@ -2,7 +2,7 @@ import { adjustedDeepWorkToggle, advChartsContainer, advChartsCoverModule, chart
 import { sessionState } from "../modules/state-objects.js"
 import { flags, labelDistContainer, mainChartContainer } from "../modules/dashboard-objects.js"
 
-import { setBounds, alterBounds } from './label-distribution.js';
+import { setBounds, alterBounds, checkViewportWidth } from './label-distribution.js';
 
 export function populateMainChartsContainer() {
     setBounds(mainChartContainer, metricDistributionTimeFrame);
@@ -146,6 +146,8 @@ function expandMetricDistributionContainer(metricBodyContainer) {
     if (!labelDistContainer.resetInProgress) {
         // header adjustment
         adjustMetricDistributionHeaderContainer(metricBodyContainer);
+        checkViewportWidth();
+
 
         // show the metricBodyContainer
         metricBodyContainer.style.display = 'flex';
