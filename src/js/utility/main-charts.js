@@ -31,8 +31,7 @@ document.addEventListener("displayMainCharts", async function() {
     
     displayDeepWorkChart();
     displayFocusQualityChart();
-
-    // displayAvgIntervalChart();
+    displayAvgIntervalChart();
 
 })
 
@@ -149,6 +148,8 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
         // (2)... calculate average focus quality
         // (3)... calculate average interval length
         // add either 0 or converted time to deepWorkArr, avg focus quality to focusQualityArr, avg interval length to avgIntervalArr
+
+        yMax.avgInterval = 0; // resetting avgInterval for year only
 
         let dataPresent = false;
         for (let i = 0; i < 12; i++) {
@@ -366,7 +367,7 @@ function getInterval(dailyData) { // either deep work or break, depending on tog
         avgIntervalMs = dailyData.deepWorkIntervals.reduce((accumulator, currentVal) => accumulator + currentVal, 0) / dailyData.deepWorkIntervals.length;
     }
 
-    let avgIntervalMin = avgIntervalMs / timeConvert.msPerMin;
+    let avgIntervalMin = Math.round(avgIntervalMs / timeConvert.msPerMin);
 
     // assign yMax value for average interval (either break or deep work)
     if (avgIntervalMin > yMax.avgInterval) {
@@ -411,15 +412,22 @@ async function displayDeepWorkChart() {
         xAxisTickLabelArr = xAxisTickLabels.year;
     }
 
+    let barColor;
+    if (flags.adjustedDeepWorkToggle) {
+        barColor = 'rgba(13, 160, 18, 1)';
+    } else {
+        barColor = 'rgba(63, 210, 68, 1)';
+    }
+
     const ctx = document.getElementById('deepWorkChart').getContext('2d');
     const config = {
         type: 'bar',
         data: {
             labels: xAxisTickLabelArr,
             datasets: [{
-                label: 'Hours Spent',
+                label: 'Deep Work Hours',
                 data: deepWorkArr,
-                backgroundColor: 'rgba(83, 230, 88, 1)',
+                backgroundColor: barColor,
                 borderColor: 'rgb(255, 255, 255)',
                 // borderWidth: 3,
                 borderRadius: 25,
@@ -511,8 +519,6 @@ async function displayDeepWorkChart() {
 
     // Create a new chart instance
     charts.deepWork = new Chart(ctx, config);
-
-    flags.drewWeeklyDivisionLines = false;
 }
 
 async function displayFocusQualityChart() {
@@ -585,7 +591,7 @@ async function displayFocusQualityChart() {
             datasets: [{
                 label: 'Focus Quality %',
                 data: focusQualityArr,
-                backgroundColor: 'rgba(59, 143, 227, 1)',
+                backgroundColor: 'rgb(162, 0, 212)',
                 borderColor: 'rgb(255, 255, 255)',
                 // borderWidth: 3,
                 borderRadius: 25,
@@ -666,8 +672,123 @@ async function displayFocusQualityChart() {
 
     // Create a new chart instance
     charts.focusQuality = new Chart(ctx, config);
+}
 
-    flags.drewWeeklyDivisionLines = false;
+async function displayAvgIntervalChart() {
+    let xAxisTickLabelArr;
+    if (mainChartContainer.timeFrame === 'week') {
+        xAxisTickLabelArr = xAxisTickLabels.week;
+    } else if (mainChartContainer.timeFrame === 'month') {
+        xAxisTickLabelArr = xAxisTickLabels.month;
+    } else { // year
+        xAxisTickLabelArr = xAxisTickLabels.year;
+    }
+
+    let barColor;
+    if (flags.avgBreakIntervalToggle) {
+        barColor = 'rgba(59, 143, 227, 1)';
+    } else {
+        barColor = 'rgba(83, 230, 88, 1)';
+    }
+
+    const ctx = document.getElementById('avgIntervalChart').getContext('2d');
+    const config = {
+        type: 'bar',
+        data: {
+            labels: xAxisTickLabelArr,
+            datasets: [{
+                label: 'Interval Length (Min)',
+                data: avgIntervalArr,
+                backgroundColor: barColor,
+                borderColor: 'rgb(255, 255, 255)',
+                // borderWidth: 3,
+                borderRadius: 25,
+                borderSkipped: false,
+                barPercentage: 1,
+                categoryPercentage: 0.5
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: yMax.avgInterval, // this'll be whatever 
+                    title: {
+                        display: true,
+                        text: 'Interval Length (Min)',
+                        color: 'white'
+                    },
+                    ticks: {
+                        color: 'white'
+                    },
+                    grid: {
+                        display: true, 
+                        color: 'rgba(255, 255, 255, 0.15)',
+                        lineWidth: 1,
+                        drawBorder: true,
+                        drawOnChartArea: true,
+                        drawTicks: false,
+                    }
+                },
+                x: {
+                    title: {
+                        display: false
+                    },
+                    ticks: {
+                        color: 'white'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    enabled: true,
+                    backgroundColor: 'rgb(0, 0, 0)', // Sets the tooltip background color
+                    titleColor: 'white', // Sets the color of the title in the tooltip
+                    bodyColor: 'white', // Sets the color of the text in the tooltip body
+                    borderColor: 'white', // Sets the color of the tooltip border
+                    borderWidth: 2, // Sets the width of the tooltip border
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            // Custom title logic
+                            // tooltipItems is an array; we'll use the first item for the title
+                            let item = tooltipItems[0];
+                            let index = item.dataIndex;
+                            let date = dateStrArr[index];
+                            return `${date}`;
+                        },
+                        label: function(tooltipItem) {
+                            return ` ${tooltipItem.raw}m`; // Customize tooltip text
+                        }
+                    }
+                }
+            },
+            animations: {
+                x: {
+                    duration: 0 
+                },
+                y: {
+                    duration: 1000,
+                    easing: 'easeOutQuint' 
+                }
+            }
+        },
+        plugins: [
+            noDataPlugin,    // Register the noDataPlugin
+            dottedLinePlugin // Register the dottedLinePlugin
+        ]
+    };
+
+    // Destroy the existing chart instance if it exists
+    if (charts.avgInterval) {
+        charts.avgInterval.destroy();
+        charts.avgInterval = null;
+    }
+
+    // Create a new chart instance
+    charts.avgInterval = new Chart(ctx, config);
 }
 
 const dottedLinePlugin = {
