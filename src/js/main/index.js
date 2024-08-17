@@ -2513,12 +2513,9 @@ export async function activateDarkTheme(interruptionsContainer, targetHoursConta
     document.documentElement.style.backgroundImage = darkHtmlBackground; // set html background
 
     if (!sessionState.updatingState) {
-        selectedBackgroundIdTemp["flowtime"] = selectedBackgroundId.flowtime;
+        selectedBackgroundIdTemp["flowtime"] = selectedBackgroundId.flowtime; console.log(selectedBackgroundId.flowtime);
         selectedBackgroundIdTemp["chilltime"] = selectedBackgroundId.chilltime;
     
-        blackFlowtimeBackground.click();
-        blackChilltimeBackground.click();
-
         if (sessionState.loggedIn) {
             await updateUserSettings({
                 backgroundsThemes: {
@@ -2527,6 +2524,9 @@ export async function activateDarkTheme(interruptionsContainer, targetHoursConta
                 }
             });
         }
+
+        blackFlowtimeBackground.click();
+        blackChilltimeBackground.click();
         
     }
 }
