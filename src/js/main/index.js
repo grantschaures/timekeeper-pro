@@ -2527,7 +2527,6 @@ export async function activateDarkTheme(interruptionsContainer, targetHoursConta
 
         blackFlowtimeBackground.click();
         blackChilltimeBackground.click();
-        
     }
 }
 

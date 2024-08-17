@@ -133,7 +133,7 @@ document.addEventListener("stateUpdated", function() {
         })
     } else {
         const labelDistMessage = document.createElement('div');
-        labelDistMessage.innerText = "Log in to see your label time distribution";
+        labelDistMessage.innerText = "Log in to see your time distributions";
         labelDistMessage.classList.add('notLoggedInMessage');
         labelDistMessage.style.paddingBottom = '75px';
         labelDistributionElement.style.height = '100%';
