@@ -55,10 +55,11 @@ const indexHtmlReplacements = [
     { pattern: /\/js\/api\/google-signin\.js/g, replacement: '/js/minified/google-signin.min.js' },
     { pattern: /\/js\/utility\/preload\.js/g, replacement: '/js/minified/preload.min.js' },
     { pattern: /\/js\/utility\/session-summary-chart\.js/g, replacement: '/js/minified/session-summary-chart.min.js' },
+    { pattern: /\/js\/utility\/main-charts\.js/g, replacement: '/js/minified/main-charts.min.js' },
 
     { pattern: /\/js\/dashboard\/daily-sessions\.js/g, replacement: '/js/minified/daily-sessions.min.js' },
     { pattern: /\/js\/dashboard\/label-distribution\.js/g, replacement: '/js/minified/label-distribution.min.js' },
-    { pattern: /\/js\/dashboard\/main-charts\.js/g, replacement: '/js/minified/main-charts.min.js' },
+    { pattern: /\/js\/dashboard\/metric-charts\.js/g, replacement: '/js/minified/metric-charts.min.js' },
     { pattern: /\/js\/dashboard\/summary-stats\.js/g, replacement: '/js/minified/summary-stats.min.js' }
 ];
 
@@ -251,7 +252,7 @@ const labelDistributionReplacements = [
     }
 ]
 
-const mainChartsReplacements = [
+const metricChartsReplacements = [
     {
         pattern: /import { setBounds, alterBounds } from '.\/label-distribution.js';/g,
         replacement: "import { setBounds, alterBounds } from '../minified/label-distribution.min.js';"
@@ -286,4 +287,4 @@ readFileAndReplace(summaryStatsJsPath, summaryStatsReplacements);
 readFileAndReplace(populateDashboardJsPath, populateDashboardReplacements);
 readFileAndReplace(labelDistributionJsPath, labelDistributionReplacements);
 readFileAndReplace(updateLabelsJsPath, updateLabelsReplacements);
-readFileAndReplace(metricChartsJsPath, mainChartsReplacements);
+readFileAndReplace(metricChartsJsPath, metricChartsReplacements);
