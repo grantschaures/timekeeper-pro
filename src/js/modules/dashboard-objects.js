@@ -32,7 +32,8 @@ export const flags = {
 export const charts = {
     deepWork: null,
     focusQuality: null,
-    avgInterval: null
+    avgInterval: null,
+    sessionIntervals: null
 }
 
 export const mainChartContainer = {

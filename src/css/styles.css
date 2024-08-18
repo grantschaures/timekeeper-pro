@@ -2087,6 +2087,27 @@ header {
     animation: scaleXAnimation 10s ease-in-out infinite;
 }
 
+.catest {
+    display: flex;
+    z-index: 26;
+    height: auto;
+    position: absolute;
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+}
+
+#cat9 {
+    width: 80px;
+    top: 15px; /* Align the image to the top */
+    right: 216px;
+}
+
+#cat10 { /* head */
+    width: 80px;
+    top: 15px; /* Align the image to the top */
+    right: 225px;
+}
+
 .cat:hover {
     cursor: pointer;
 }

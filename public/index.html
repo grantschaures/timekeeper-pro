@@ -580,6 +580,8 @@
                     <!-- Potential Cover -->
                 </div>
                 <div id="dashboardSubContainer">
+                    <!-- <img id="cat9" src="images/sprites/image0.png" class="catest no-select"> -->
+                    <!-- <img id="cat10" src="images/sprites/image1.png" class="catest no-select"> -->
                     <div id="dailyContainer" class="dashboardSideContainer">
                         <div id="dailyHeaderContainer" class="dailyContainer">
                             <div id="dateAndSwitchContainer">
@@ -631,6 +633,7 @@
                                     </div>
                                     <div id="metricDistributionTimeFrame" class="no-select"></div>
                                 </div>
+                                <hr class="mainChartsHr">
                                 <div id="mainChartsContainer"  class="metricBodyContainer no-select">
                                     <img id="HC_icon_main_charts" src="images/logo/HyperchillSummaryLogo.png" class="hyperChillLogoRotate unselectable">
 
@@ -645,14 +648,14 @@
                                                 </label>
                                             </div>
                                         </div>
-                                        <canvas id="deepWorkChart"></canvas>
+                                        <canvas id="deepWorkChart" class="mainChartCanvas"></canvas>
                                     </div>
 
                                     <div id="focusQualityChartContainer" class="mainChart">
                                         <div id="focusQualityChartHeader" class="chartHeader">
                                             <div id="focusQualityHeaderText" class="headerText">Focus Quality</div>
                                         </div>
-                                        <canvas id="focusQualityChart"></canvas>
+                                        <canvas id="focusQualityChart" class="mainChartCanvas"></canvas>
                                     </div>
 
                                     <div id="avgIntervalChartContainer" class="mainChart">
@@ -666,8 +669,18 @@
                                                 </label>
                                             </div>
                                         </div>
-                                        <canvas id="avgIntervalChart"></canvas>
+                                        <canvas id="avgIntervalChart" class="mainChartCanvas"></canvas>
                                     </div>
+
+                                    <hr id="mainChartsDivisionHr" class="mainChartsHr">
+
+                                    <div id="sessionIntervalsChartContainer" class="mainChart">
+                                        <div id="sessionIntervalsChartHeader" class="chartHeader">
+                                            <div id="sessionIntervalsHeaderText" class="headerText">Session Intervals</div>
+                                        </div>
+                                        <canvas id="sessionIntervalsChart" class="mainChartCanvas"></canvas>
+                                    </div>
+
                                 </div>
                                 <div id="advChartsContainer"  class="metricBodyContainer no-select">
                                     Adv Charts Container Coming Soon!

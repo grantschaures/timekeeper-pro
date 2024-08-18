@@ -16,7 +16,6 @@ let yMax = {
 // y-max for focus quality will always be 100
 
 let dateStrArr = [];
-let monthStrArr = [];
 
 let xAxisTickLabels = {
     week: ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'],
@@ -28,16 +27,33 @@ document.addEventListener("displayMainCharts", async function() {
     await resetData();
 
     await initializeData(dashboardData, mainChartContainer, deepWorkArr, focusQualityArr, avgIntervalArr, yMax);
-    
     displayDeepWorkChart();
     displayFocusQualityChart();
     displayAvgIntervalChart();
+
+    await initializeSessionData();
+    displaySessionIntervalsChart();
 
 })
 
 // // // // // // //
 // HELPER FUNCTIONS
 // // // // // // //
+
+async function initializeSessionData() {
+    let dashboardDataSessionArr = dashboardData.sessionArr;
+    for (let i = 0; i < dashboardDataSessionArr.length; i++) {
+
+        let startTime = dashboardDataSessionArr[i].startTime;
+        let endTime = dashboardDataSessionArr[i].endTime;
+
+        // includes sessions that overlap at all with the lower or upper bound dates
+        if((moment(endTime, 'YYYY-MM-DD').isSameOrAfter(moment(mainChartContainer.lowerBound, 'YYYY-MM-DD'))) && (moment(startTime, 'YYYY-MM-DD').isSameOrBefore(moment(mainChartContainer.upperBound, 'YYYY-MM-DD')))) {
+           // today was a good day, overall :) 
+            
+        }
+    }
+}
 
 async function resetData() {
     deepWorkArr = []; // holds normal or quality adjusted deep work time
@@ -50,7 +66,6 @@ async function resetData() {
     });
 
     dateStrArr = [];
-    monthStrArr = [];
 
     xAxisTickLabels.month = [];
 }
@@ -402,7 +417,7 @@ function getDeepWorkHoursAndFocusQuality(dailyData) {
     return [deepWorkHours, focusQuality];
 }
 
-async function displayDeepWorkChart() {
+function displayDeepWorkChart() {
     let xAxisTickLabelArr;
     if (mainChartContainer.timeFrame === 'week') {
         xAxisTickLabelArr = xAxisTickLabels.week;
@@ -529,7 +544,7 @@ async function displayDeepWorkChart() {
     charts.deepWork = new Chart(ctx, config);
 }
 
-async function displayFocusQualityChart() {
+function displayFocusQualityChart() {
     let xAxisTickLabelArr;
     if (mainChartContainer.timeFrame === 'week') {
         xAxisTickLabelArr = xAxisTickLabels.week;
@@ -682,7 +697,7 @@ async function displayFocusQualityChart() {
     charts.focusQuality = new Chart(ctx, config);
 }
 
-async function displayAvgIntervalChart() {
+function displayAvgIntervalChart() {
     let xAxisTickLabelArr;
     if (mainChartContainer.timeFrame === 'week') {
         xAxisTickLabelArr = xAxisTickLabels.week;
@@ -806,6 +821,143 @@ async function displayAvgIntervalChart() {
     // Create a new chart instance
     charts.avgInterval = new Chart(ctx, config);
 }
+
+function displaySessionIntervalsChart() {
+    let xAxisTickLabelArr;
+    if (mainChartContainer.timeFrame === 'week') {
+        xAxisTickLabelArr = xAxisTickLabels.week;
+    } else if (mainChartContainer.timeFrame === 'month') {
+        xAxisTickLabelArr = xAxisTickLabels.month;
+    } else { // year
+        xAxisTickLabelArr = xAxisTickLabels.year;
+    }
+
+    const data = {
+        labels: xAxisTickLabelArr,
+        datasets: [
+            {
+                label: 'Deep Work',
+                data: [
+                    {x: 'Mon', y: [9, 11]},
+                    {x: 'Mon', y: [11.5, 12]},
+                    {x: 'Mon', y: [14.5, 16]},
+
+                    {x: 'Mon', y: [22, 23]},
+                    {x: 'Tue', y: [3, 4.5]},
+
+                    {x: 'Tue', y: [10, 12]},
+                    {x: 'Wed', y: [13, 15]},
+                    {x: 'Thur', y: [9, 10]},
+                    {x: 'Fri', y: [14, 16]},
+                ],
+                backgroundColor: 'rgba(63, 210, 68, 1)',
+                borderColor: 'rgb(255, 255, 255)',
+                borderRadius: 0,
+                borderSkipped: false
+            },
+            {
+                label: 'Break',
+                data: [
+                    {x: 'Mon', y: [11, 11.5]},
+                    {x: 'Mon', y: [12, 14.5]},
+
+                    {x: 'Mon', y: [23, 24]},
+                    {x: 'Tue', y: [0, 3]},
+
+                    {x: 'Tue', y: [12, 12.5]},
+                    {x: 'Wed', y: [15, 15.5]},
+                    {x: 'Thur', y: [10, 10.5]},
+                    {x: 'Fri', y: [16, 16.5]},
+                ],
+                backgroundColor: 'rgba(59, 143, 227, 1)',
+                borderColor: 'rgb(255, 255, 255)',
+                borderRadius: 0,
+                borderSkipped: false
+            }
+        ]
+    };
+
+    const ctx = document.getElementById('sessionIntervalsChart').getContext('2d');
+    const config = {
+        type: 'bar',
+        data: data,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    min: 0,
+                    max: 24, // Representing 24 hours in a day
+                    reverse: true,
+                    title: {
+                        display: true,
+                        text: 'Day (Hours)',
+                        color: 'white'
+                    },
+                    ticks: {
+                        stepSize: 1, // Optional: Control the interval between ticks (e.g., every hour)
+                        color: 'white',
+                    },
+                    grid: {
+                        display: true, 
+                        color: 'rgba(255, 255, 255, 0.15)',
+                        lineWidth: 1,
+                        drawBorder: true,
+                        drawOnChartArea: true,
+                        drawTicks: false,
+                    }
+                },
+                x: {
+                    stacked: true,
+                    title: {
+                        display: false
+                    },
+                    ticks: {
+                        color: 'white'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true // Show the legend to differentiate between datasets
+                },
+                tooltip: {
+                    enabled: true,
+                    backgroundColor: 'rgb(0, 0, 0)', // Sets the tooltip background color
+                    titleColor: 'white', // Sets the color of the title in the tooltip
+                    bodyColor: 'white', // Sets the color of the text in the tooltip body
+                    borderColor: 'white', // Sets the color of the tooltip border
+                    borderWidth: 2, // Sets the width of the tooltip border
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            let start = tooltipItem.raw.y[0];
+                            let end = tooltipItem.raw.y[1];
+                            return ` ${start}h - ${end}h`; // Customize tooltip text
+                        }
+                    }
+                }
+            },
+            animations: {
+                x: {
+                    duration: 0 
+                },
+                y: {
+                    duration: 1000,
+                    easing: 'easeOutQuint' 
+                }
+            }
+        }
+    };
+
+    // Destroy the existing chart instance if it exists
+    if (charts.sessionIntervals) {
+        charts.sessionIntervals.destroy();
+        charts.sessionIntervals = null;
+    }
+
+    // Create a new chart instance
+    charts.sessionIntervals = new Chart(ctx, config);
+}
+
 
 const dottedLinePlugin = {
     id: 'dottedLinePlugin',

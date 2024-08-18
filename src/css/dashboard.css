@@ -236,6 +236,16 @@
     transition: opacity 0.5s ease-in-out;
 }
 
+.mainChartsHr {
+    width: 100%;
+    /* margin-bottom: 25px; */
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    /* border: 1px solid rgba(255, 255, 255, 1); */
+    box-sizing: border-box;
+    margin-bottom: 0;
+    margin-top: 10px;
+}
+
 .metricBodyContainer {
     display: none;
     height: 100%;
@@ -648,7 +658,15 @@
 }
 
 #deepWorkChartContainer {
-    margin-top: 5px;
+    margin-top: 20px;
+}
+
+#sessionIntervalsChartContainer {
+    margin-top: 20px;
+}
+
+#mainChartsDivisionHr {
+    display: none;
 }
 
 .mainChart {
@@ -660,7 +678,8 @@
     box-sizing: border-box;
     opacity: 0;
     transition: opacity 0.25s ease-out;
-    margin-bottom: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     border: 3px solid white;
 }
 

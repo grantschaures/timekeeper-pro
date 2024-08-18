@@ -148,7 +148,6 @@ function expandMetricDistributionContainer(metricBodyContainer) {
         adjustMetricDistributionHeaderContainer(metricBodyContainer);
         checkViewportWidth();
 
-
         // show the metricBodyContainer
         metricBodyContainer.style.display = 'flex';
 
@@ -191,6 +190,8 @@ function expandMetricDistributionContainer(metricBodyContainer) {
                     chart.style.opacity = '1';
                 }, 0)
             })
+
+            mainChartsDivisionHr.style.display = 'flex';
 
             // send dispatch event
             document.dispatchEvent(new Event('displayMainCharts'));
@@ -245,6 +246,9 @@ function resetMetricDistributionContainer() {
         }, 0)
         HC_icon_main_charts.style.opacity = '1';
     })
+
+    // rehide the division Hr
+    mainChartsDivisionHr.style.display = 'none';
 }
 
 function adjustMetricDistributionHeaderContainer(metricBodyContainer) {

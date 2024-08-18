@@ -61,3 +61,5 @@ export const leftMetricDistributionArrow = document.getElementById('leftMetricDi
 
 export const rightMetricDistributionArrow = document.getElementById('rightMetricDistributionArrow');
 export const rightMetricDistributionArrowGray = document.getElementById('rightMetricDistributionArrowGray');
+
+export const mainChartsDivisionHr = document.getElementById('mainChartsDivisionHr');

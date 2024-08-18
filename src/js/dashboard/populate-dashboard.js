@@ -19,9 +19,9 @@ export async function populateDashboard(sessionData, noteData) { // called from 
     populateDashboardSummaryStats(timeConvert, dailySummarizedData, dashboardData);
 
     // update label distribution container
-    populateLabelDistContainer(dashboardData, labelDistContainer);
+    populateLabelDistContainer();
 
-    // update charts
+    // update main charts
     populateMainChartsContainer();
 }
 
@@ -29,6 +29,7 @@ async function setDashboardData(sessionData, dailySummarizedData, noteData) {
     dashboardData.sessionArr = sessionData;
     dashboardData.dailyArr = dailySummarizedData;
     dashboardData.noteData = noteData;
+    // console.log(dashboardData.sessionArr);
 }
 
 async function initializeDailyData(sessionData) {

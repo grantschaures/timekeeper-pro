@@ -6,7 +6,7 @@ import { sessionState } from '../modules/state-objects.js';
 import { userTimeZone } from '../utility/identification.js';
 
 // initialization of labelDistContainer (called in populate-dashboard.js)
-export function populateLabelDistContainer(dashboardData, labelDistContainer) {
+export function populateLabelDistContainer() {
     general.currentDay = getCurrentDay(); // get current day (used for label dist & main charts)
 
     // set default lower and upper bounds
@@ -189,14 +189,12 @@ function updateLabelData(dashboardData, labelDistContainer) {
     }
 
     let highestPercent = 0;
-    let highestPercentKey;
 
     // calculate highest percentage of deep work time
     Object.keys(labels).forEach(key => {
         let currentPercent = Math.round((labels[key] / totalLabelTime) * 100);
         if (currentPercent > highestPercent) {
             highestPercent = currentPercent;
-            highestPercentKey = key;
         }
     })
 
@@ -222,6 +220,7 @@ function updateLabelData(dashboardData, labelDistContainer) {
             labelLinePercentWidth = Math.round(labelTimePercent / highestPercent * 100);
         }
         document.getElementById('labelLine-' + key).style.width = labelLinePercentWidth + '%';
+        console.log(labelLinePercentWidth)
     });
 }
 
@@ -260,12 +259,17 @@ function visualizeLabelData(dashboardData, labelDistContainer) {
 
     let emptyKeys = [];
     let totalLabelTime = 0;
+    let emptyDistribution = false;
     for (let key in labels) {
         totalLabelTime += labels[key];
 
         if (labels[key] === 0) {
             emptyKeys.push(key);
         }
+    }
+
+    if (totalLabelTime === 0) {
+        emptyDistribution = true;
     }
 
     let highestPercent = 0;
@@ -319,7 +323,13 @@ function visualizeLabelData(dashboardData, labelDistContainer) {
         labelLineContainerDiv.classList.add('labelLineContainer');
         labelLineContainerDiv.id = "labelLineContainer-" + key;
         
-        let labelLinePercentWidth = Math.round(labelTimePercent / highestPercent * 100);
+        let labelLinePercentWidth;
+        if (emptyDistribution) {
+            labelLinePercentWidth = 0;
+        } else {
+            labelLinePercentWidth = Math.round(labelTimePercent / highestPercent * 100);
+        }
+        console.log(labelLinePercentWidth)
         labelLineDiv.style.width = labelLinePercentWidth + '%';
 
         labelLineContainerDiv.appendChild(labelLineDiv);
