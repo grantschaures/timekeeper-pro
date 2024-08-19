@@ -31,18 +31,13 @@ let xAxisTickLabels = {
 }
 
 document.addEventListener("displayMainCharts", async function() {
-    console.log("main charts opened")
     await resetData();
 
     await initializeData(dashboardData, mainChartContainer, deepWorkArr, focusQualityArr, avgIntervalArr, yMax);
     displayDeepWorkChart();
     displayFocusQualityChart();
     displayAvgIntervalChart();
-
-    console.log(Date.now());
-    if (flags.metricDistributionContainerExpanded) {
-        flags.disableChartAnimations = true;
-    }
+    flags.disableChartAnimations = true;
 
     await initializeSessionData();
     displaySessionIntervalsChart();

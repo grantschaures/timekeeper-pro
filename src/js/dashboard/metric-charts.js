@@ -232,7 +232,7 @@ function resetMetricDistributionContainer() {
     // resetting metric distribution container
     metricDistributionContainer.style.marginBottom = '10px';
     metricDistributionContainer.classList.remove('expanded');
-    flags.metricDistributionContainerExpanded = false; console.log(Date.now());
+    flags.metricDistributionContainerExpanded = false;
 
     // resetting metric body containers
     metricBodyContainers.forEach(container => {
