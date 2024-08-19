@@ -31,6 +31,7 @@ let xAxisTickLabels = {
 }
 
 document.addEventListener("displayMainCharts", async function() {
+    console.log("main charts opened")
     await resetData();
 
     await initializeData(dashboardData, mainChartContainer, deepWorkArr, focusQualityArr, avgIntervalArr, yMax);
@@ -38,9 +39,13 @@ document.addEventListener("displayMainCharts", async function() {
     displayFocusQualityChart();
     displayAvgIntervalChart();
 
+    console.log(Date.now());
+    if (flags.metricDistributionContainerExpanded) {
+        flags.disableChartAnimations = true;
+    }
+
     await initializeSessionData();
     displaySessionIntervalsChart();
-
 })
 
 // // // // // // //
@@ -686,8 +691,8 @@ function displayDeepWorkChart() {
                     duration: 0 
                 },
                 y: {
-                    duration: 1000,
-                    easing: 'easeOutQuint' 
+                    duration: flags.disableChartAnimations ? 0 : 1000,
+                    easing: 'easeOutQuint'
                 }
             }
         },
@@ -849,7 +854,7 @@ function displayFocusQualityChart() {
                     duration: 0 
                 },
                 y: {
-                    duration: 1000,
+                    duration: flags.disableChartAnimations ? 0 : 1000,
                     easing: 'easeOutQuint' 
                 }
             }
@@ -1026,7 +1031,7 @@ function displayAvgIntervalChart() {
                     duration: 0 
                 },
                 y: {
-                    duration: 1000,
+                    duration: flags.disableChartAnimations ? 0 : 1000,
                     easing: 'easeOutQuint' 
                 }
             }
@@ -1175,15 +1180,7 @@ function displaySessionIntervalsChart() {
                     }
                 }
             },
-            animations: {
-                x: {
-                    duration: 0 
-                },
-                y: {
-                    duration: 1000,
-                    easing: 'easeOutQuint' 
-                }
-            }
+            animations: false
         },
         plugins: [
             noDataPlugin,    // Register the noDataPlugin

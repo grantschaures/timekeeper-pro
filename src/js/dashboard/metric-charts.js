@@ -1,4 +1,4 @@
-import { adjustedDeepWorkToggle, advChartsContainer, advChartsCoverModule, chartHeaders, deepWorkHeaderText, HC_icon_main_charts, labelDistributionContainer, leftMetricDistributionArrow, mainCharts, mainChartsContainer, mainChartsCoverModule, metricBodyContainers, metricDistributionArrows, metricDistributionBackBtn, metricDistributionContainer, metricDistributionCoverContainer, metricDistributionMonth, metricDistributionSelections, metricDistributionSubContainer, metricDistributionTimeFrame, metricDistributionWeek, metricDistributionYear, rightMetricDistributionArrow, rightMetricDistributionArrowGray } from "../modules/dashboard-elements.js"
+import { adjustedDeepWorkToggle, advChartsContainer, advChartsCoverModule, chartHeaders, deepWorkHeaderText, HC_icon_metric_charts, labelDistributionContainer, leftMetricDistributionArrow, mainCharts, mainChartsContainer, mainChartsCoverModule, metricBodyContainers, metricChartsHr, metricDistributionArrows, metricDistributionBackBtn, metricDistributionContainer, metricDistributionCoverContainer, metricDistributionMonth, metricDistributionSelections, metricDistributionSubContainer, metricDistributionTimeFrame, metricDistributionWeek, metricDistributionYear, rightMetricDistributionArrow, rightMetricDistributionArrowGray } from "../modules/dashboard-elements.js"
 import { sessionState } from "../modules/state-objects.js"
 import { flags, labelDistContainer, mainChartContainer } from "../modules/dashboard-objects.js"
 
@@ -180,8 +180,9 @@ function expandMetricDistributionContainer(metricBodyContainer) {
         metricDistributionBackBtn.classList.add('resetBounce');
         
         setTimeout(() => {
-            HC_icon_main_charts.style.opacity = '0';
+            HC_icon_metric_charts.style.opacity = '0';
         }, 250)
+
 
         setTimeout(() => {
             mainCharts.forEach(chart => {
@@ -189,6 +190,11 @@ function expandMetricDistributionContainer(metricBodyContainer) {
                 setTimeout(() => {
                     chart.style.opacity = '1';
                 }, 0)
+            })
+
+            metricChartsHr.forEach(Hr => {
+                Hr.style.width = '100%';
+                Hr.style.opacity = '1';
             })
 
             mainChartsDivisionHr.style.display = 'flex';
@@ -226,7 +232,7 @@ function resetMetricDistributionContainer() {
     // resetting metric distribution container
     metricDistributionContainer.style.marginBottom = '10px';
     metricDistributionContainer.classList.remove('expanded');
-    flags.metricDistributionContainerExpanded = false;
+    flags.metricDistributionContainerExpanded = false; console.log(Date.now());
 
     // resetting metric body containers
     metricBodyContainers.forEach(container => {
@@ -238,13 +244,22 @@ function resetMetricDistributionContainer() {
     metricDistributionArrows.style.display = 'none';
     metricDistributionTimeFrame.style.display = 'none';
 
+    // reset animation flag
+    flags.disableChartAnimations = false;
+
     // resetting main charts
     mainCharts.forEach(chart => {
         chart.style.display = 'none';
         setTimeout(() => {
             chart.style.opacity = '0';
         }, 0)
-        HC_icon_main_charts.style.opacity = '1';
+        HC_icon_metric_charts.style.opacity = '1';
+    })
+
+    // resetting Hr widths
+    metricChartsHr.forEach(Hr => {
+        Hr.style.width = '0%';
+        Hr.style.opacity = '0';
     })
 
     // rehide the division Hr

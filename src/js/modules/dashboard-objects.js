@@ -26,7 +26,8 @@ export const labelDistContainer = {
 export const flags = {
     metricDistributionContainerExpanded: false,
     adjustedDeepWorkToggle: false,
-    avgBreakIntervalToggle: false
+    avgBreakIntervalToggle: false,
+    disableChartAnimations: false
 }
 
 export const charts = {
