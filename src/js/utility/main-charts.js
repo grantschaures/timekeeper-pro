@@ -185,58 +185,20 @@ function createHourlyTransitionArr(startTime, deepWorkIntervalArr, breakInterval
     return hourlyTransitionArr;
 }
 
-// TESTING SITE !!!
-
-// WORKS FOR US IN Oregon
 function getStartTimeHour(startTime) {
-    // Parse the date string into a Date object
-    console.log(startTime);
-    const date = new Date(startTime);
-    console.log(date)
+    // Parse the ISO 8601 date-time string with moment
+    const momentTime = moment.parseZone(startTime);
 
-    // Extract the hours and minutes from the Date object
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const seconds = date.getSeconds();
+    // Get the hour, minute, and second parts
+    const hours = momentTime.hours();
+    const minutes = momentTime.minutes();
+    const seconds = momentTime.seconds();
 
     // Calculate the fractional hour value
     const hourValue = hours + (minutes / 60) + (seconds / 3600);
 
     return hourValue;
 }
-
-// WORKS FOR JOKER IN GERMANY
-// function getStartTimeHour(startTime) {
-//     // Split the date string into its date, time, and timezone parts
-//     const [datePart, timePart] = startTime.split('T');
-//     const [time, offset] = timePart.split(/([+-]\d{2}:\d{2})$/);
-
-//     const [year, month, day] = datePart.split('-').map(Number);
-//     const [hour, minute, second] = time.split(':').map(Number);
-
-//     // Parse the timezone offset
-//     const offsetSign = offset[0]; // "+" or "-"
-//     const [offsetHours, offsetMinutes] = offset.slice(1).split(':').map(Number);
-//     const offsetInMinutes = (offsetHours * 60) + offsetMinutes;
-//     const totalOffset = offsetSign === '+' ? offsetInMinutes : -offsetInMinutes;
-
-//     // Adjust the hour and minute based on the timezone offset
-//     const adjustedHour = hour - Math.floor(totalOffset / 60);
-//     const adjustedMinute = minute - (totalOffset % 60);
-
-//     // Create a Date object using the adjusted local time
-//     const date = new Date(year, month - 1, day, adjustedHour, adjustedMinute, second);
-
-//     // Extract the hours, minutes, and seconds from the Date object
-//     const hours = date.getHours();
-//     const minutes = date.getMinutes();
-//     const seconds = date.getSeconds();
-
-//     // Calculate the fractional hour value
-//     const hourValue = hours + (minutes / 60) + (seconds / 3600);
-
-//     return hourValue;
-// }
 
 function combineDeepWorkBreakArrs(deepWorkIntervalArr, breakIntervalArr) {
 
@@ -635,7 +597,6 @@ function displayDeepWorkChart() {
         barColor = 'rgba(63, 210, 68, 1)';
     }
 
-    console.log(yMax.deepWork)
     if (yMax.deepWork < 6) {
         yMax.deepWork = 6;
     }
@@ -643,8 +604,6 @@ function displayDeepWorkChart() {
     if (deepWorkArr.length === 0) {
         yMax.deepWork = 0;
     }
-
-    console.log(yMax.deepWork)
 
     const ctx = document.getElementById('deepWorkChart').getContext('2d');
     const config = {

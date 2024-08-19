@@ -355,7 +355,6 @@ function resetPerHourData(perHourData) {
             delete perHourData[key];
         }
     }
-    console.log(perHourData);
 }
 
 function resetArrays(input) {
@@ -440,7 +439,6 @@ function sumTotalLabelTime(labelArrs, labelDict) {
         // PRINTING OUT LABEL TIMES
         let totalLabelTimeStr = returnTotalTimeString(timeSum, timeConvert);
         let labelName = key;
-        console.log(labelName + ": " + totalLabelTimeStr);
     }
 
     return labelTimeSum;
