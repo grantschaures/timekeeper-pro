@@ -14,14 +14,14 @@ import { populateDashboard } from '../dashboard/populate-dashboard.js'; // minif
 
 const defaultFavicon = "/images/logo/HyperChillLogo_circular_white_border.png";
 
-var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
 function isIpadCheck() {
     const userAgent = navigator.userAgent || window.opera;
     return /iPad/.test(userAgent) || (navigator.maxTouchPoints > 1);
 }
 
-isIpad = isIpadCheck();
+const isIpad = isIpadCheck();
 
 document.addEventListener("stateUpdated", function() {
     end_session_btn.addEventListener("click", async function() {
