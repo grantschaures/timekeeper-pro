@@ -37,7 +37,7 @@ document.addEventListener("displayMainCharts", async function() {
     displayDeepWorkChart();
     displayFocusQualityChart();
     displayAvgIntervalChart();
-    flags.disableChartAnimations = true;
+    flags.quickerChartAnimations = true;
 
     await initializeSessionData();
     displaySessionIntervalsChart();
@@ -686,7 +686,7 @@ function displayDeepWorkChart() {
                     duration: 0 
                 },
                 y: {
-                    duration: flags.disableChartAnimations ? 0 : 1000,
+                    duration: flags.quickerChartAnimations ? 500 : 1000,
                     easing: 'easeOutQuint'
                 }
             }
@@ -849,7 +849,7 @@ function displayFocusQualityChart() {
                     duration: 0 
                 },
                 y: {
-                    duration: flags.disableChartAnimations ? 0 : 1000,
+                    duration: flags.quickerChartAnimations ? 500 : 1000,
                     easing: 'easeOutQuint' 
                 }
             }
@@ -1026,7 +1026,7 @@ function displayAvgIntervalChart() {
                     duration: 0 
                 },
                 y: {
-                    duration: flags.disableChartAnimations ? 0 : 1000,
+                    duration: flags.quickerChartAnimations ? 500 : 1000,
                     easing: 'easeOutQuint' 
                 }
             }

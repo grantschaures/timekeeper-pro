@@ -245,7 +245,7 @@ function resetMetricDistributionContainer() {
     metricDistributionTimeFrame.style.display = 'none';
 
     // reset animation flag
-    flags.disableChartAnimations = false;
+    flags.quickerChartAnimations = false;
 
     // resetting main charts
     mainCharts.forEach(chart => {

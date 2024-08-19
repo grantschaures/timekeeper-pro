@@ -27,7 +27,7 @@ export const flags = {
     metricDistributionContainerExpanded: false,
     adjustedDeepWorkToggle: false,
     avgBreakIntervalToggle: false,
-    disableChartAnimations: false
+    quickerChartAnimations: false
 }
 
 export const charts = {
