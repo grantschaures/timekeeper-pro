@@ -1,7 +1,5 @@
-import { dashboardSubContainer, dashboardContainerCover } from '../modules/dashboard-elements.js';
-import { dashboardData, labelDistContainer, mainChartContainer } from '../modules/dashboard-objects.js';
+import { dashboardData } from '../modules/dashboard-objects.js';
 import { timeConvert } from '../modules/index-objects.js';
-import { isMobile } from '../modules/dom-elements.js';
 
 import { populateDashboardSummaryStats } from './summary-stats.js';
 import { populateLabelDistContainer } from './label-distribution.js';

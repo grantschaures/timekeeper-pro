@@ -1,8 +1,6 @@
 import { totalDeepWorkSummaryStat, avgDeepWorkSummaryStat, avgFocusQualitySummaryStat, avgIntervalLengthSummaryStat, mostFocusedHourSummaryStat } from '../modules/dashboard-elements.js';
 import { timeConvert } from '../modules/index-objects.js';
 
-import { focusQualityCalculation } from './populate-dashboard.js';
-
 // Global Vars
 const FOCUS_QUALITY_CONSTANT = 0.5;
 

@@ -1,6 +1,5 @@
 import { charts, mainChartContainer, dashboardData, flags } from "../modules/dashboard-objects.js";
 import { timeConvert } from "../modules/index-objects.js";
-import { userTimeZone } from "./identification.js";
 
 // Global Variables
 let deepWorkArr = []; // holds normal or quality adjusted deep work time

@@ -38,9 +38,10 @@ const loginJsPath = './src/js/login-signup/login.js';
 const googleSignInPath = './src/js/api/google-signin.js';
 
 const dailySessionsJsPath = './src/js/dashboard/daily-sessions.js';
+const summaryStatsJsPath = './src/js/dashboard/summary-stats.js';
+
 const metricChartsJsPath = './src/js/dashboard/metric-charts.js';
 const labelDistributionJsPath = './src/js/dashboard/label-distribution.js';
-const summaryStatsJsPath = './src/js/dashboard/summary-stats.js';
 const populateDashboardJsPath = './src/js/dashboard/populate-dashboard.js';
 
 const updateLabelsJsPath = './src/js/state/update-labels.js';
@@ -223,13 +224,6 @@ const updateLabelsReplacements = [
 
 // DASHBOARD
 
-const summaryStatsReplacements = [
-    {
-        pattern: /import { focusQualityCalculation } from '.\/populate-dashboard.js';/g,
-        replacement: "import { focusQualityCalculation } from '../minified/populate-dashboard.min.js';"
-    }
-]
-
 const populateDashboardReplacements = [
     {
         pattern: /import { populateDashboardSummaryStats } from '.\/summary-stats.js';/g,
@@ -283,7 +277,6 @@ readFileAndReplace(navigationJsPath, navigationReplacements);
 readFileAndReplace(googleSignInPath, googleSignInReplacements);
 readFileAndReplace(loginJsPath, loginReplacements);
 readFileAndReplace(endSessionJsPath, endSessionReplacements);
-readFileAndReplace(summaryStatsJsPath, summaryStatsReplacements);
 readFileAndReplace(populateDashboardJsPath, populateDashboardReplacements);
 readFileAndReplace(labelDistributionJsPath, labelDistributionReplacements);
 readFileAndReplace(updateLabelsJsPath, updateLabelsReplacements);
