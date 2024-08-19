@@ -220,7 +220,6 @@ function updateLabelData(dashboardData, labelDistContainer) {
             labelLinePercentWidth = Math.round(labelTimePercent / highestPercent * 100);
         }
         document.getElementById('labelLine-' + key).style.width = labelLinePercentWidth + '%';
-        console.log(labelLinePercentWidth)
     });
 }
 
@@ -329,7 +328,6 @@ function visualizeLabelData(dashboardData, labelDistContainer) {
         } else {
             labelLinePercentWidth = Math.round(labelTimePercent / highestPercent * 100);
         }
-        console.log(labelLinePercentWidth)
         labelLineDiv.style.width = labelLinePercentWidth + '%';
 
         labelLineContainerDiv.appendChild(labelLineDiv);

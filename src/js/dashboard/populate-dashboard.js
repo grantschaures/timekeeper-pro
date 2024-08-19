@@ -29,7 +29,6 @@ async function setDashboardData(sessionData, dailySummarizedData, noteData) {
     dashboardData.sessionArr = sessionData;
     dashboardData.dailyArr = dailySummarizedData;
     dashboardData.noteData = noteData;
-    // console.log(dashboardData.sessionArr);
 }
 
 async function initializeDailyData(sessionData) {

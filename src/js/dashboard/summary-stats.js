@@ -46,12 +46,15 @@ function populateMostFocusedHourSummaryStat(dashboardData) {
     // most focused hour - the hour which has the highest focus quality
     let highestAvgFocusQuality = 0;
     let highestAvgFocusQualityIndex;
+    // console.log(dashboardData.hourlyArr);
     for (let i = 0; i < 24; i++) { // for each hour of the day
         let currentHour = dashboardData.hourlyArr[i];
         let currentAvgFocusQuality = currentHour.focusQualities.reduce((accumulator, currentValue) => accumulator + currentValue, 0) / currentHour.focusQualities.length;
         if (currentAvgFocusQuality > highestAvgFocusQuality) {
             highestAvgFocusQuality = currentAvgFocusQuality;
             highestAvgFocusQualityIndex = i;
+
+            // console.log(highestAvgFocusQualityIndex);
         } else if (currentAvgFocusQuality == highestAvgFocusQuality) {
             let initialHour = dashboardData.hourlyArr[highestAvgFocusQualityIndex];
             // if the current hour has a higher average deep work time, then it becomes the highest quality
@@ -64,6 +67,7 @@ function populateMostFocusedHourSummaryStat(dashboardData) {
             }
         }
     }
+    // console.log(highestAvgFocusQualityIndex);
 
     let hourStrArr = [
         '12am-1am', '1am-2am', '2am-3am', '3am-4am',

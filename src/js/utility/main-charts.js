@@ -1,11 +1,16 @@
 import { charts, mainChartContainer, dashboardData, flags } from "../modules/dashboard-objects.js";
 import { timeConvert } from "../modules/index-objects.js";
+import { userTimeZone } from "./identification.js";
 
 // Global Variables
 let deepWorkArr = []; // holds normal or quality adjusted deep work time
 let focusQualityArr = [];
 let avgIntervalArr = [];
 let sundayIndices = [];
+
+let deepWorkIntervalDataArr = [];
+let breakIntervalDataArr = [];
+
 let FOCUS_QUALITY_CONSTANT = 0.5;
 
 // holds yMax value for non-adjusted value (for deep work)
@@ -17,10 +22,13 @@ let yMax = {
 
 let dateStrArr = [];
 
+const daysOfTheWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
+const monthsOfTheYear = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
 let xAxisTickLabels = {
-    week: ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'],
+    week: daysOfTheWeek,
     month: [], // dynamically loaded
-    year: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    year: monthsOfTheYear
 }
 
 document.addEventListener("displayMainCharts", async function() {
@@ -40,19 +48,209 @@ document.addEventListener("displayMainCharts", async function() {
 // HELPER FUNCTIONS
 // // // // // // //
 
+function convertHourFloatToStr(hour) {
+    // Get the integer part for the hour
+    const hours = Math.floor(hour);
+
+    // Get the fractional part and convert it to minutes
+    const minutes = Math.round((hour - hours) * 60);
+
+    // Determine whether it is AM or PM
+    const period = hours < 12 || hours === 24 ? 'AM' : 'PM';
+
+    // Convert hours to 12-hour format
+    const adjustedHours = hours % 12 === 0 ? 12 : hours % 12;
+
+    // Ensure minutes are always two digits
+    const minutesStr = minutes < 10 ? '0' + minutes : minutes;
+
+    // Return the formatted time string
+    return `${adjustedHours}:${minutesStr} ${period}`;
+}
+
 async function initializeSessionData() {
     let dashboardDataSessionArr = dashboardData.sessionArr;
     for (let i = 0; i < dashboardDataSessionArr.length; i++) {
 
-        let startTime = dashboardDataSessionArr[i].startTime;
-        let endTime = dashboardDataSessionArr[i].endTime;
+        let startTime = moment.tz(dashboardDataSessionArr[i].startTime, dashboardDataSessionArr[i].timeZone).format(); // correctly two hours ahead here
+        let endTime = moment.tz(dashboardDataSessionArr[i].endTime, dashboardDataSessionArr[i].timeZone).format(); // correctly two hours ahead here
 
         // includes sessions that overlap at all with the lower or upper bound dates
         if((moment(endTime, 'YYYY-MM-DD').isSameOrAfter(moment(mainChartContainer.lowerBound, 'YYYY-MM-DD'))) && (moment(startTime, 'YYYY-MM-DD').isSameOrBefore(moment(mainChartContainer.upperBound, 'YYYY-MM-DD')))) {
-           // today was a good day, overall :) 
+           
+            let hourlyTransitionArr = createHourlyTransitionArr(startTime, dashboardDataSessionArr[i].deepWorkIntervals, dashboardDataSessionArr[i].breakIntervals);
             
+            populateIntervalDataArrs(startTime, endTime, hourlyTransitionArr);
+            
+            // console.log(dashboardDataSessionArr[i])
         }
     }
+}
+
+function populateIntervalDataArrs(startTime, endTime, hourlyTransitionArr) {
+    for (let i = 0; i < hourlyTransitionArr.length - 1; i++) {
+
+        let startTimeDay = extractDateInfo(startTime, mainChartContainer.timeFrame);
+        let endTimeDay = extractDateInfo(endTime, mainChartContainer.timeFrame);
+
+        const isEven = i % 2 === 0;
+        const dataArr = isEven ? deepWorkIntervalDataArr : breakIntervalDataArr;
+
+        const startTimeBeforeLowerBound = moment(startTime, 'YYYY-MM-DD').isBefore(moment(mainChartContainer.lowerBound, 'YYYY-MM-DD'));
+        const endTimeAfterUpperBound = moment(endTime, 'YYYY-MM-DD').isAfter(moment(mainChartContainer.upperBound, 'YYYY-MM-DD'));
+
+        const initialTime = hourlyTransitionArr[i];
+        const finalTime = hourlyTransitionArr[i + 1];
+
+        if (startTimeBeforeLowerBound) {
+            if (finalTime > 24) {
+                if (initialTime < 24) {
+                    // push { x: endTimeDay, y: [0, (finalTime - 24)]} to dataArr
+                    dataArr.push({ x: endTimeDay, y: [0, (finalTime - 24)]});
+                } else {
+                    // push { x: endTimeDay, y: [(initialTime - 24), (finalTime - 24)]} to dataArr
+                    dataArr.push({ x: endTimeDay, y: [(initialTime - 24), (finalTime - 24)]});
+                }
+            }
+        } else if (endTimeAfterUpperBound) {
+            if (initialTime < 24) {
+                if (finalTime > 24) {
+                    // push { x: startTimeDay, y: [initialTime, 24]} to dataArr
+                    dataArr.push({ x: startTimeDay, y: [initialTime, 24]});
+                } else {
+                    // push { x: startTimeDay, y: [initialTime, finalTime]} to dataArr
+                    dataArr.push({ x: startTimeDay, y: [initialTime, finalTime]});
+                }
+            }
+        } else {
+            if (initialTime > 24 && finalTime > 24) {
+                // push { x: endTimeDay, y: [(initialTime - 24), (finalTime - 24)]} to dataArr
+                dataArr.push({ x: endTimeDay, y: [(initialTime - 24), (finalTime - 24)]});
+            } else if (finalTime > 24) {
+                // push { x: startTimeDay, y: [initialTime, 24]} to dataArr
+                dataArr.push({ x: startTimeDay, y: [initialTime, 24]});
+
+                // push { x: endTimeDay, y: [0, (finalTime - 24)]} to dataArr
+                dataArr.push({ x: endTimeDay, y: [0, (finalTime - 24)]});
+
+            } else {
+                // push { x: startTimeDay, y: [initialTime, finalTime]} to dataArr
+                dataArr.push({ x: startTimeDay, y: [initialTime, finalTime]});
+
+            }
+        }
+    }
+}
+
+function extractDateInfo(dateString, timeFrame) {
+    // Parse the date string into a Date object
+    const date = new Date(dateString);
+
+    // Arrays to help with returning day and month names
+    const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
+    const monthsOfYear = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    // Determine what to return based on the timeFrame
+    if (timeFrame === 'week') {
+        const dayOfWeek = date.getDay();
+        return daysOfWeek[dayOfWeek];
+
+    } else if (timeFrame === 'month') {
+        const dayOfMonth = date.getDate();
+        return dayOfMonth.toString();
+
+    } else if (timeFrame === 'year') {
+        const month = date.getMonth();
+        return monthsOfYear[month];
+
+    } else {
+        return null;
+    }
+}
+
+function createHourlyTransitionArr(startTime, deepWorkIntervalArr, breakIntervalArr) {
+    let combinedArr = combineDeepWorkBreakArrs(deepWorkIntervalArr, breakIntervalArr);
+    // now, we need to convert the start time to a value 0-24, representing the time since beginning of day
+    let startTimeHour = getStartTimeHour(startTime);
+    let hourlyTransitionArr = [];
+
+    let hourSum = startTimeHour;
+    hourlyTransitionArr.push(hourSum);
+
+    for (let i = 0; i < combinedArr.length; i++) {
+        hourSum = hourSum + (combinedArr[i] / timeConvert.msPerHour);
+        hourlyTransitionArr.push(hourSum);
+    }
+
+    return hourlyTransitionArr;
+}
+
+// TESTING SITE !!!
+
+// WORKS FOR US IN Oregon
+function getStartTimeHour(startTime) {
+    // Parse the date string into a Date object
+    console.log(startTime);
+    const date = new Date(startTime);
+    console.log(date)
+
+    // Extract the hours and minutes from the Date object
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+
+    // Calculate the fractional hour value
+    const hourValue = hours + (minutes / 60) + (seconds / 3600);
+
+    return hourValue;
+}
+
+// WORKS FOR JOKER IN GERMANY
+// function getStartTimeHour(startTime) {
+//     // Split the date string into its date, time, and timezone parts
+//     const [datePart, timePart] = startTime.split('T');
+//     const [time, offset] = timePart.split(/([+-]\d{2}:\d{2})$/);
+
+//     const [year, month, day] = datePart.split('-').map(Number);
+//     const [hour, minute, second] = time.split(':').map(Number);
+
+//     // Parse the timezone offset
+//     const offsetSign = offset[0]; // "+" or "-"
+//     const [offsetHours, offsetMinutes] = offset.slice(1).split(':').map(Number);
+//     const offsetInMinutes = (offsetHours * 60) + offsetMinutes;
+//     const totalOffset = offsetSign === '+' ? offsetInMinutes : -offsetInMinutes;
+
+//     // Adjust the hour and minute based on the timezone offset
+//     const adjustedHour = hour - Math.floor(totalOffset / 60);
+//     const adjustedMinute = minute - (totalOffset % 60);
+
+//     // Create a Date object using the adjusted local time
+//     const date = new Date(year, month - 1, day, adjustedHour, adjustedMinute, second);
+
+//     // Extract the hours, minutes, and seconds from the Date object
+//     const hours = date.getHours();
+//     const minutes = date.getMinutes();
+//     const seconds = date.getSeconds();
+
+//     // Calculate the fractional hour value
+//     const hourValue = hours + (minutes / 60) + (seconds / 3600);
+
+//     return hourValue;
+// }
+
+function combineDeepWorkBreakArrs(deepWorkIntervalArr, breakIntervalArr) {
+
+    let combinedArr = [];
+    for (let i = 0; i < deepWorkIntervalArr.length; i++) {
+        combinedArr.push(deepWorkIntervalArr[i]);
+
+        // if current index exists as valid location in breakIntervalArr, push to combinedArr
+        if (breakIntervalArr[i]) {
+            combinedArr.push(breakIntervalArr[i]);
+        }
+    }
+
+    return combinedArr;
 }
 
 async function resetData() {
@@ -60,6 +258,9 @@ async function resetData() {
     focusQualityArr = [];
     avgIntervalArr = [];
     sundayIndices = [];
+
+    deepWorkIntervalDataArr = [];
+    breakIntervalDataArr = [];  
 
     Object.keys(yMax).forEach(key => {
         yMax[key] = 0;
@@ -434,12 +635,16 @@ function displayDeepWorkChart() {
         barColor = 'rgba(63, 210, 68, 1)';
     }
 
-    let step;
-    if (yMax.deepWork > 1) {
-        step = 1;
-    } else {
-        step = 0.5;
+    console.log(yMax.deepWork)
+    if (yMax.deepWork < 6) {
+        yMax.deepWork = 6;
     }
+
+    if (deepWorkArr.length === 0) {
+        yMax.deepWork = 0;
+    }
+
+    console.log(yMax.deepWork)
 
     const ctx = document.getElementById('deepWorkChart').getContext('2d');
     const config = {
@@ -470,7 +675,7 @@ function displayDeepWorkChart() {
                     },
                     ticks: {
                         color: 'white',
-                        stepSize: step
+                        stepSize: 1
                     },
                     grid: {
                         display: true, 
@@ -714,11 +919,83 @@ function displayAvgIntervalChart() {
         barColor = 'rgba(83, 230, 88, 1)';
     }
 
-    let step;
-    if (yMax.avgInterval > 10) {
-        step = 2;
-    } else {
-        step = 1;
+    const yScaleUnder60 = {
+        beginAtZero: true,
+        max: yMax.avgInterval,
+        title: {
+            display: true,
+            text: 'Interval Length (Min)',
+            color: 'white'
+        },
+        ticks: {
+            color: 'white',
+            stepSize: 10
+        },
+        grid: {
+            display: true, 
+            color: 'rgba(255, 255, 255, 0.15)',
+            lineWidth: 1,
+            drawBorder: true,
+            drawOnChartArea: true,
+            drawTicks: false,
+        }
+    }
+
+    const yScaleOver60 = {
+        beginAtZero: true,
+        suggestedMax: yMax.avgInterval,
+        title: {
+            display: true,
+            text: 'Interval Length (Min)',
+            color: 'white'
+        },
+        ticks: {
+            color: 'white',
+            stepSize: 10
+        },
+        grid: {
+            display: true, 
+            color: 'rgba(255, 255, 255, 0.15)',
+            lineWidth: 1,
+            drawBorder: true,
+            drawOnChartArea: true,
+            drawTicks: false,
+        }
+    }
+
+    const yScaleNoData = {
+        beginAtZero: true,
+        max: 0,
+        title: {
+            display: true,
+            text: 'Interval Length (Min)',
+            color: 'white'
+        },
+        ticks: {
+            color: 'white',
+            stepSize: 10
+        },
+        grid: {
+            display: true, 
+            color: 'rgba(255, 255, 255, 0.15)',
+            lineWidth: 1,
+            drawBorder: true,
+            drawOnChartArea: true,
+            drawTicks: false,
+        }
+    }
+
+    let yScale = yScaleOver60;
+    if (yMax.avgInterval < 60) {
+        yMax.avgInterval = 60;
+
+        yScaleUnder60.max = yMax.avgInterval;
+
+        yScale = yScaleUnder60;
+    }
+
+    if (avgIntervalArr.length === 0) {
+        yScale = yScaleNoData;
     }
 
     const ctx = document.getElementById('avgIntervalChart').getContext('2d');
@@ -740,27 +1017,7 @@ function displayAvgIntervalChart() {
         },
         options: {
             scales: {
-                y: {
-                    beginAtZero: true,
-                    max: yMax.avgInterval, // this'll be whatever 
-                    title: {
-                        display: true,
-                        text: 'Interval Length (Min)',
-                        color: 'white'
-                    },
-                    ticks: {
-                        color: 'white',
-                        stepSize: step
-                    },
-                    grid: {
-                        display: true, 
-                        color: 'rgba(255, 255, 255, 0.15)',
-                        lineWidth: 1,
-                        drawBorder: true,
-                        drawOnChartArea: true,
-                        drawTicks: false,
-                    }
-                },
+                y: yScale,
                 x: {
                     title: {
                         display: false
@@ -832,24 +1089,12 @@ function displaySessionIntervalsChart() {
         xAxisTickLabelArr = xAxisTickLabels.year;
     }
 
-    const data = {
+    let data = {
         labels: xAxisTickLabelArr,
         datasets: [
             {
                 label: 'Deep Work',
-                data: [
-                    {x: 'Mon', y: [9, 11]},
-                    {x: 'Mon', y: [11.5, 12]},
-                    {x: 'Mon', y: [14.5, 16]},
-
-                    {x: 'Mon', y: [22, 23]},
-                    {x: 'Tue', y: [3, 4.5]},
-
-                    {x: 'Tue', y: [10, 12]},
-                    {x: 'Wed', y: [13, 15]},
-                    {x: 'Thur', y: [9, 10]},
-                    {x: 'Fri', y: [14, 16]},
-                ],
+                data: deepWorkIntervalDataArr,
                 backgroundColor: 'rgba(63, 210, 68, 1)',
                 borderColor: 'rgb(255, 255, 255)',
                 borderRadius: 0,
@@ -857,18 +1102,7 @@ function displaySessionIntervalsChart() {
             },
             {
                 label: 'Break',
-                data: [
-                    {x: 'Mon', y: [11, 11.5]},
-                    {x: 'Mon', y: [12, 14.5]},
-
-                    {x: 'Mon', y: [23, 24]},
-                    {x: 'Tue', y: [0, 3]},
-
-                    {x: 'Tue', y: [12, 12.5]},
-                    {x: 'Wed', y: [15, 15.5]},
-                    {x: 'Thur', y: [10, 10.5]},
-                    {x: 'Fri', y: [16, 16.5]},
-                ],
+                data: breakIntervalDataArr,
                 backgroundColor: 'rgba(59, 143, 227, 1)',
                 borderColor: 'rgb(255, 255, 255)',
                 borderRadius: 0,
@@ -876,6 +1110,20 @@ function displaySessionIntervalsChart() {
             }
         ]
     };
+
+    let xAxisLabelsTempArr = [];
+    if (mainChartContainer.timeFrame === 'week') {
+        xAxisLabelsTempArr = daysOfTheWeek;
+    } else if (mainChartContainer.timeFrame === 'month') {
+        xAxisLabelsTempArr = xAxisTickLabels.month;
+    } else {
+        xAxisLabelsTempArr = monthsOfTheYear;
+    }
+
+    let yMax = 24;
+    if (deepWorkIntervalDataArr.length === 0) {
+        yMax = 0;
+    }
 
     const ctx = document.getElementById('sessionIntervalsChart').getContext('2d');
     const config = {
@@ -886,16 +1134,27 @@ function displaySessionIntervalsChart() {
                 y: {
                     beginAtZero: true,
                     min: 0,
-                    max: 24, // Representing 24 hours in a day
+                    max: yMax, // Representing 24 hours in a day
                     reverse: true,
                     title: {
                         display: true,
-                        text: 'Day (Hours)',
+                        text: 'Day',
                         color: 'white'
                     },
                     ticks: {
-                        stepSize: 1, // Optional: Control the interval between ticks (e.g., every hour)
+                        stepSize: 3, // Set step size to 6 hours to match the intervals
                         color: 'white',
+                        callback: function(value) {
+                            if (value === 0 || value === 24) return '12 AM';
+                            if (value === 3) return '3 AM';
+                            if (value === 6) return '6 AM';
+                            if (value === 9) return '9 AM';
+                            if (value === 12) return '12 PM';
+                            if (value === 15) return '3 PM';
+                            if (value === 18) return '6 PM';
+                            if (value === 21) return '9 PM';
+                            return ''; // Hide other labels
+                        }
                     },
                     grid: {
                         display: true, 
@@ -928,10 +1187,22 @@ function displaySessionIntervalsChart() {
                     borderColor: 'white', // Sets the color of the tooltip border
                     borderWidth: 2, // Sets the width of the tooltip border
                     callbacks: {
+                        title: function(tooltipItems) {
+                            // Custom title logic
+                            // tooltipItems is an array; we'll use the first item for the title
+                            const defaultTitle = tooltipItems.map(item => item.label || item.xLabel).join(', ');
+                            let index = xAxisLabelsTempArr.indexOf(defaultTitle);
+                            let date = dateStrArr[index];
+                            return `${date}`;
+                        },
                         label: function(tooltipItem) {
                             let start = tooltipItem.raw.y[0];
+                            let initialTime = convertHourFloatToStr(start);
+
                             let end = tooltipItem.raw.y[1];
-                            return ` ${start}h - ${end}h`; // Customize tooltip text
+                            let finalTime = convertHourFloatToStr(end);
+
+                            return ` ${initialTime} - ${finalTime}`; // Customize tooltip text
                         }
                     }
                 }
@@ -945,7 +1216,11 @@ function displaySessionIntervalsChart() {
                     easing: 'easeOutQuint' 
                 }
             }
-        }
+        },
+        plugins: [
+            noDataPlugin,    // Register the noDataPlugin
+            dottedLinePlugin // Register the dottedLinePlugin
+        ]
     };
 
     // Destroy the existing chart instance if it exists

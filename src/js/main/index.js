@@ -2513,7 +2513,7 @@ export async function activateDarkTheme(interruptionsContainer, targetHoursConta
     document.documentElement.style.backgroundImage = darkHtmlBackground; // set html background
 
     if (!sessionState.updatingState) {
-        selectedBackgroundIdTemp["flowtime"] = selectedBackgroundId.flowtime; console.log(selectedBackgroundId.flowtime);
+        selectedBackgroundIdTemp["flowtime"] = selectedBackgroundId.flowtime;
         selectedBackgroundIdTemp["chilltime"] = selectedBackgroundId.chilltime;
     
         if (sessionState.loggedIn) {
