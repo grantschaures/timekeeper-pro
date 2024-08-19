@@ -16,6 +16,13 @@ const defaultFavicon = "/images/logo/HyperChillLogo_circular_white_border.png";
 
 var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
+function isIpadCheck() {
+    const userAgent = navigator.userAgent || window.opera;
+    return /iPad/.test(userAgent) || (navigator.maxTouchPoints > 1);
+}
+
+isIpad = isIpadCheck();
+
 document.addEventListener("stateUpdated", function() {
     end_session_btn.addEventListener("click", async function() {
         if ((flags.sessionInProgress) && (flags.canEndSession)) {
@@ -248,7 +255,7 @@ function displaySessionSummaryPopup() {
     }, 0)
     sessionSummaryPopup.style.display = 'flex';
     navFlags.sessionSummaryPopupShowing = true;
-    if (!isMobile) {
+    if ((!isMobile) && (!isIpad)) {
         commentsTextArea.focus();
     }
 
