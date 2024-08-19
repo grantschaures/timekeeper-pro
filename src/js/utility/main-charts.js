@@ -713,6 +713,15 @@ function displayFocusQualityChart() {
         xAxisTickLabelArr = xAxisTickLabels.week;
     } else if (mainChartContainer.timeFrame === 'month') {
         xAxisTickLabelArr = xAxisTickLabels.month;
+        // console.log(focusQualityArr);
+        // console.log(dateStrArr);
+
+        for (let i = 0; i < focusQualityArr.length; i++) {
+            if (dateStrArr[i] === 'no data') {
+                focusQualityArr[i] = null;
+            }
+        }
+
     } else { // year
         xAxisTickLabelArr = xAxisTickLabels.year;
     }
@@ -785,7 +794,8 @@ function displayFocusQualityChart() {
                 barPercentage: 1,
                 categoryPercentage: 0.5,
                 pointRadius: 5, // Size of the points
-                pointHoverRadius: 8 // Size of the points when hovered
+                pointHoverRadius: 8, // Size of the points when hovered
+                spanGaps: true // Ensure the line spans across null values
             }]
         },
         options: {
