@@ -40,7 +40,7 @@ const googleSignInPath = './src/js/api/google-signin.js';
 const dailySessionsJsPath = './src/js/dashboard/daily-sessions.js';
 const summaryStatsJsPath = './src/js/dashboard/summary-stats.js';
 
-const advChartsJsPath = './src/js/dashboard/adv-charts.js';
+const advChartsJsPath = './src/js/utility/adv-charts.js';
 const metricChartsJsPath = './src/js/dashboard/metric-charts.js';
 const labelDistributionJsPath = './src/js/dashboard/label-distribution.js';
 const populateDashboardJsPath = './src/js/dashboard/populate-dashboard.js';

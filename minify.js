@@ -25,7 +25,6 @@ let files = [
     'src/js/state/check-invaliDate.js',
     'src/js/state/update-invaliDate.js',
     'src/js/state/add-session.js',
-    'src/js/state/update-dashboard.js',
     'src/js/utility/initialize-gui.js',
     'src/js/utility/preload.js',
     'src/js/utility/update-streaks.js',
