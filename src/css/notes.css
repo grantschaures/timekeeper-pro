@@ -377,10 +377,28 @@
 }
 
 #notes-console::-webkit-scrollbar-track {
-    background: transparent;
+    background: rgba(255, 255, 255, 0);
 }
 
 #notes-console::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+}
+
+#label-selection-window::-webkit-scrollbar {
+    width: 10px;
+    height: 6px;
+}
+
+#label-selection-window::-webkit-scrollbar:hover {
+    cursor: pointer;
+}
+
+#label-selection-window::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0);
+}
+
+#label-selection-window::-webkit-scrollbar-thumb {
     background-color: #888;
     border-radius: 10px;
 }
