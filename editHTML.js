@@ -38,8 +38,8 @@ const loginJsPath = './src/js/login-signup/login.js';
 const googleSignInPath = './src/js/api/google-signin.js';
 
 const dailySessionsJsPath = './src/js/dashboard/daily-sessions.js';
-const summaryStatsJsPath = './src/js/dashboard/summary-stats.js';
 
+const summaryStatsJsPath = './src/js/dashboard/summary-stats.js';
 const advChartsJsPath = './src/js/utility/adv-charts.js';
 const metricChartsJsPath = './src/js/dashboard/metric-charts.js';
 const labelDistributionJsPath = './src/js/dashboard/label-distribution.js';
@@ -262,6 +262,13 @@ const advChartsReplacements = [
     }
 ]
 
+const summaryStatsReplacements = [
+    {
+        pattern: /import { initializeHourlyData } from '..\/utility\/adv-charts.js';/g,
+        replacement: "import { initializeHourlyData } from '../minified/adv-charts.min.js';"
+    }
+]
+
 // Update index.html
 readFileAndReplace(indexHtmlPath, indexHtmlReplacements);
 
@@ -290,3 +297,4 @@ readFileAndReplace(labelDistributionJsPath, labelDistributionReplacements);
 readFileAndReplace(updateLabelsJsPath, updateLabelsReplacements);
 readFileAndReplace(metricChartsJsPath, metricChartsReplacements);
 readFileAndReplace(advChartsJsPath, advChartsReplacements);
+readFileAndReplace(summaryStatsJsPath, summaryStatsReplacements);

@@ -2,7 +2,7 @@ import { totalDeepWorkSummaryStat, avgDeepWorkSummaryStat, avgFocusQualitySummar
 import { timeConvert } from '../modules/index-objects.js';
 import { constants } from '../modules/dashboard-objects.js';
 
-import { initializeHourlyData } from '../utility/adv-charts.js';
+import { initializeHourlyData } from '../utility/adv-charts.js'; // minified
 
 // Global Vars
 const FOCUS_QUALITY_CONSTANT = constants.FOCUS_QUALITY_CONSTANT;
