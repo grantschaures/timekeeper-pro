@@ -1,7 +1,7 @@
 import { charts, dashboardData, flags } from "../modules/dashboard-objects.js";
 import { timeConvert } from "../modules/index-objects.js";
 
-import { calculateDistractionsPerHour, focusQualityCalculation } from "../dashboard/populate-dashboard.js";
+import { calculateDistractionsPerHour, focusQualityCalculation } from '../dashboard/populate-dashboard.js';
 
 // Global Variables
 let hourlyFocusQualityArr = [];
