@@ -40,6 +40,7 @@ const googleSignInPath = './src/js/api/google-signin.js';
 const dailySessionsJsPath = './src/js/dashboard/daily-sessions.js';
 const summaryStatsJsPath = './src/js/dashboard/summary-stats.js';
 
+const advChartsJsPath = './src/js/dashboard/adv-charts.js';
 const metricChartsJsPath = './src/js/dashboard/metric-charts.js';
 const labelDistributionJsPath = './src/js/dashboard/label-distribution.js';
 const populateDashboardJsPath = './src/js/dashboard/populate-dashboard.js';
@@ -254,6 +255,12 @@ const metricChartsReplacements = [
     }
 ]
 
+const advChartsReplacements = [
+    {
+        pattern: /import { calculateDistractionsPerHour, focusQualityCalculation } from '..\/dashboard\/populate-dashboard.js';/g,
+        replacement: "import { calculateDistractionsPerHour, focusQualityCalculation } from '../minified/populate-dashboard.min.js';"
+    }
+]
 
 // Update index.html
 readFileAndReplace(indexHtmlPath, indexHtmlReplacements);
@@ -282,3 +289,4 @@ readFileAndReplace(populateDashboardJsPath, populateDashboardReplacements);
 readFileAndReplace(labelDistributionJsPath, labelDistributionReplacements);
 readFileAndReplace(updateLabelsJsPath, updateLabelsReplacements);
 readFileAndReplace(metricChartsJsPath, metricChartsReplacements);
+readFileAndReplace(advChartsJsPath, advChartsReplacements);
