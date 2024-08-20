@@ -1,8 +1,11 @@
 import { totalDeepWorkSummaryStat, avgDeepWorkSummaryStat, avgFocusQualitySummaryStat, avgIntervalLengthSummaryStat, mostFocusedHourSummaryStat } from '../modules/dashboard-elements.js';
 import { timeConvert } from '../modules/index-objects.js';
+import { constants } from '../modules/dashboard-objects.js';
+
+import { initializeHourlyData } from '../utility/adv-charts.js';
 
 // Global Vars
-const FOCUS_QUALITY_CONSTANT = 0.5;
+const FOCUS_QUALITY_CONSTANT = constants.FOCUS_QUALITY_CONSTANT;
 
 export function populateDashboardSummaryStats(timeConvert, dailySummarizedData, dashboardData) {
     let totalDeepWork = 0;
@@ -40,32 +43,18 @@ export function populateDashboardSummaryStats(timeConvert, dailySummarizedData, 
     }
 }
 
-function populateMostFocusedHourSummaryStat(dashboardData) {
-    // most focused hour - the hour which has the highest focus quality
-    let highestAvgFocusQuality = 0;
-    let highestAvgFocusQualityIndex;
-    // console.log(dashboardData.hourlyArr);
-    for (let i = 0; i < 24; i++) { // for each hour of the day
-        let currentHour = dashboardData.hourlyArr[i];
-        let currentAvgFocusQuality = currentHour.focusQualities.reduce((accumulator, currentValue) => accumulator + currentValue, 0) / currentHour.focusQualities.length;
-        if (currentAvgFocusQuality > highestAvgFocusQuality) {
-            highestAvgFocusQuality = currentAvgFocusQuality;
-            highestAvgFocusQualityIndex = i;
+async function populateMostFocusedHourSummaryStat(dashboardData) {
 
-            // console.log(highestAvgFocusQualityIndex);
-        } else if (currentAvgFocusQuality == highestAvgFocusQuality) {
-            let initialHour = dashboardData.hourlyArr[highestAvgFocusQualityIndex];
-            // if the current hour has a higher average deep work time, then it becomes the highest quality
-            let highestAvgFocusQuality_AvgDeepWork = initialHour.deepWorkTimes.reduce((accumulator, currentValue) => accumulator + currentValue, 0) / initialHour.deepWorkTimes.length;
-            let currentAvgFocusQuality_AvgDeepWork = currentHour.deepWorkTimes.reduce((accumulator, currentValue) => accumulator + currentValue, 0) / currentHour.deepWorkTimes.length;
+    let hourlyAdjustedDeepWorkArr = await initializeHourlyData(dashboardData);
+    let highestAdjustedDeepWork = 0;
+    let highestAdjustedDeepWorkIndex = 0;
 
-            if (currentAvgFocusQuality_AvgDeepWork > highestAvgFocusQuality_AvgDeepWork) {
-                highestAvgFocusQuality = currentAvgFocusQuality;
-                highestAvgFocusQualityIndex = i;
-            }
+    for (let i = 0; i < hourlyAdjustedDeepWorkArr.length; i++) {
+        if (hourlyAdjustedDeepWorkArr[i] > highestAdjustedDeepWork) {
+            highestAdjustedDeepWork = hourlyAdjustedDeepWorkArr[i];
+            highestAdjustedDeepWorkIndex = i;
         }
     }
-    // console.log(highestAvgFocusQualityIndex);
 
     let hourStrArr = [
         '12am-1am', '1am-2am', '2am-3am', '3am-4am',
@@ -76,7 +65,7 @@ function populateMostFocusedHourSummaryStat(dashboardData) {
         '8pm-9pm', '9pm-10pm', '10pm-11pm', '11pm-12am'
     ]
 
-    let highestAvgFocusQualityStr = hourStrArr[highestAvgFocusQualityIndex];
+    let highestAvgFocusQualityStr = hourStrArr[highestAdjustedDeepWorkIndex];
     mostFocusedHourSummaryStat.innerText = highestAvgFocusQualityStr;
 }
 

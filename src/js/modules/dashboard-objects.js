@@ -14,7 +14,8 @@ export const dashboardData = {
 }
 
 export const general = {
-    currentDay: null
+    currentDay: null,
+    chartTransition: 'all' // values: 'all', 'main-adjusted', 'main-break', 'adv-adjusted', 'adv-distractions'
 }
 
 export const labelDistContainer = {
@@ -30,6 +31,7 @@ export const flags = {
     adjustedDeepWorkToggle: false,
     avgBreakIntervalToggle: false,
     distractionsToggle: false,
+    hourlyQualityAdjustedToggle: false,
     quickerChartAnimations: false
 }
 
@@ -37,11 +39,17 @@ export const charts = {
     deepWork: null,
     focusQuality: null,
     avgInterval: null,
-    sessionIntervals: null
+    sessionIntervals: null,
+    hourlyFocus: null,
+    avgDeepWork: null
 }
 
 export const mainChartContainer = {
     timeFrame: 'week',
     lowerBound: null,
     upperBound: null
+}
+
+export const constants = {
+    FOCUS_QUALITY_CONSTANT: 0.2
 }

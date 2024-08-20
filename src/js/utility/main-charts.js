@@ -1,4 +1,4 @@
-import { charts, mainChartContainer, dashboardData, flags } from "../modules/dashboard-objects.js";
+import { charts, mainChartContainer, dashboardData, flags, constants, general } from "../modules/dashboard-objects.js";
 import { timeConvert } from "../modules/index-objects.js";
 
 // Global Variables
@@ -10,7 +10,7 @@ let sundayIndices = [];
 let deepWorkIntervalDataArr = [];
 let breakIntervalDataArr = [];
 
-let FOCUS_QUALITY_CONSTANT = 0.5;
+const FOCUS_QUALITY_CONSTANT = constants.FOCUS_QUALITY_CONSTANT;
 
 // holds yMax value for non-adjusted value (for deep work)
 let yMax = {
@@ -34,13 +34,27 @@ document.addEventListener("displayMainCharts", async function() {
     await resetData();
 
     await initializeData(dashboardData, mainChartContainer, deepWorkArr, focusQualityArr, avgIntervalArr, yMax);
-    displayDeepWorkChart();
-    displayFocusQualityChart();
-    displayAvgIntervalChart();
+    let chartTransition = general.chartTransition;
+
+    if ((chartTransition === 'all') || (chartTransition === 'main-adjusted')) {
+        displayDeepWorkChart();
+    }
+
+    if (chartTransition === 'all') {
+        displayFocusQualityChart();
+    }
+
+    if ((chartTransition === 'all') || (chartTransition === 'main-break')) {
+        displayAvgIntervalChart();
+    }
+
     flags.quickerChartAnimations = true;
 
     await initializeSessionData();
-    displaySessionIntervalsChart();
+
+    if (chartTransition === 'all') {
+        displaySessionIntervalsChart();
+    }
 })
 
 // // // // // // //

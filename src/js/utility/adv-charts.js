@@ -1,4 +1,4 @@
-import { charts, dashboardData, flags } from "../modules/dashboard-objects.js";
+import { charts, dashboardData, flags, constants, general } from "../modules/dashboard-objects.js";
 import { timeConvert } from "../modules/index-objects.js";
 
 import { calculateDistractionsPerHour, focusQualityCalculation } from '../dashboard/populate-dashboard.js';
@@ -7,22 +7,148 @@ import { calculateDistractionsPerHour, focusQualityCalculation } from '../dashbo
 let hourlyFocusQualityArr = [];
 let hourlyDistractionsArr = []; // avg per hour
 let hourlyDeepWorkArr = []; // avg per hour
+let hourlyAdjustedDeepWorkArr = [];
 
 const finalHourArr = ['1am', '2am', '3am', '4am', '5am', '6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm', '9pm', '10pm', '11pm', '12am'];
 
-const FOCUS_QUALITY_CONSTANT = 0.5;
+const FOCUS_QUALITY_CONSTANT = constants.FOCUS_QUALITY_CONSTANT;
 
 document.addEventListener("displayAdvCharts", async function() {
-    // await resetHourlyData();
+    await resetHourlyData();
 
     await initializeHourlyData(dashboardData, hourlyFocusQualityArr, hourlyDistractionsArr, hourlyDeepWorkArr);
+    let chartTransition = general.chartTransition;
 
-    displayHourlyFocusChart();
+    if ((chartTransition === 'all') || (chartTransition === 'adv-adjusted')) {
+        displayHourlyAvgDeepWorkChart();
+    }
+
+    if ((chartTransition === 'all') || (chartTransition === 'adv-distractions')) {
+        displayHourlyFocusChart();
+    }
 })
 
 // // // // // // //
 // HELPER FUNCTIONS
 // // // // // // //
+
+async function resetHourlyData() {
+    hourlyFocusQualityArr = [];
+    hourlyDistractionsArr = []; // avg per hour
+    hourlyDeepWorkArr = []; // avg per hour
+}
+
+function displayHourlyAvgDeepWorkChart() {
+
+    let background = 'rgba(63, 210, 68, 1)';
+    if (flags.hourlyQualityAdjustedToggle) {
+        background = '#0cce63';
+    }
+
+    let dataArr = hourlyDeepWorkArr;
+    if (flags.hourlyQualityAdjustedToggle) {
+        dataArr = hourlyAdjustedDeepWorkArr;
+    }
+
+    const ctx = document.getElementById('avgDeepWorkChart').getContext('2d');
+    const config = {
+        type: 'bar',
+        data: {
+            labels: ['12am', '1am', '2am', '3am', '4am', '5am', '6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm', '9pm', '10pm', '11pm'],
+            datasets: [{
+                label: 'Avg Deep Work (Min)',
+                data: dataArr,
+                backgroundColor: background,
+                borderColor: 'rgb(255, 255, 255)',
+                borderWidth: 2,
+                borderRadius: 5,
+                barPercentage: 1.0, // Full width bar
+                categoryPercentage: 1.0, // Full width category
+                offset: true // Offset the bars between the ticks
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 60,
+                    title: {
+                        display: true,
+                        text: 'Avg Deep Work (Min)',
+                        color: 'white'
+                    },
+                    ticks: {
+                        color: 'white'
+                    },
+                    grid: {
+                        display: true, 
+                        color: 'rgba(255, 255, 255, 0.15)',
+                        lineWidth: 1,
+                        drawBorder: true,
+                        drawOnChartArea: true,
+                        drawTicks: false,
+                    }
+                },
+                x: {
+                    offset: true,
+                    ticks: {
+                        align: 'end', // Align tick labels to the start (left) of the bar
+                        color: 'white'
+                    },
+                    title: {
+                        display: false
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    enabled: true,
+                    backgroundColor: 'rgb(0, 0, 0)', // Sets the tooltip background color
+                    titleColor: 'white', // Sets the color of the title in the tooltip
+                    bodyColor: 'white', // Sets the color of the text in the tooltip body
+                    borderColor: 'white', // Sets the color of the tooltip border
+                    borderWidth: 3, // Sets the width of the tooltip border
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            let item = tooltipItems[0];
+                            let index = item.dataIndex;
+                            let finalHour = finalHourArr[index];
+                            return item.label + " - " + finalHour; // Return the x-axis label directly
+                        },
+                        label: function(tooltipItem) {
+                            let label = ' ' + tooltipItem.raw + ' min avg deep work'; // Return the raw data value
+                            return label;
+                        }
+                    }
+                }
+            },
+            animations: {
+                x: {
+                    duration: 0 
+                },
+                y: {
+                    duration: flags.quickerChartAnimations ? 500 : 1000,
+                    easing: 'easeOutQuint'
+                }
+            }
+        },
+        plugins: [
+            dottedLinePlugin // Register the dottedLinePlugin
+        ]
+    };
+
+    // Destroy the existing chart instance if it exists
+    if (charts.avgDeepWork) {
+        charts.avgDeepWork.destroy();
+        charts.avgDeepWork = null;
+    }
+
+    // Create a new chart instance
+    charts.avgDeepWork = new Chart(ctx, config);
+}
 
 function displayHourlyFocusChart() {
 
@@ -151,45 +277,53 @@ function displayHourlyFocusChart() {
             }
         },
         plugins: [
-            noDataPlugin,    // Register the noDataPlugin
+            dottedLinePlugin // Register the dottedLinePlugin
         ]
     };
 
     // Destroy the existing chart instance if it exists
-    if (charts.deepWork) {
-        charts.deepWork.destroy();
-        charts.deepWork = null;
+    if (charts.hourlyFocus) {
+        charts.hourlyFocus.destroy();
+        charts.hourlyFocus = null;
     }
 
     // Create a new chart instance
-    charts.deepWork = new Chart(ctx, config);
+    charts.hourlyFocus = new Chart(ctx, config);
 }
 
-const noDataPlugin = {
-    id: 'noDataPlugin',
+const dottedLinePlugin = {
+    id: 'dottedLinePlugin',
     afterDraw: function(chart) {
-        // Check if the data array is empty
-        if (chart.data.datasets[0].data.length === 0 || chart.data.datasets[0].data.every(item => item === null)) {
-            // Get the chart context
-            const ctx = chart.ctx;
-            const width = chart.width;
-            const height = chart.height;
+        const ctx = chart.ctx;
+        const xScale = chart.scales.x;
+        const yScale = chart.scales.y;
 
-            const paddingBottom = 20;
+        // Index for '11am' and '12pm'
+        const index11am = 11;
+        const index12pm = 12;
 
-            // Clear the chart area
-            ctx.save();
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.font = '48px settingsHeaderFont';
-            ctx.fillStyle = 'gray';
-            ctx.fillText('No Data 😩', width / 2, (height / 2) - paddingBottom);
-            ctx.restore();
-        }
+        // Get the pixel positions for the '11am' and '12pm'
+        const x11am = xScale.getPixelForValue(index11am);
+        const x12pm = xScale.getPixelForValue(index12pm);
+
+        // Calculate the midpoint between '11am' and '12pm'
+        const xMid = (x11am + x12pm) / 2;
+    
+        // Draw the dotted line
+        ctx.save();
+        ctx.setLineDash([5, 5]); // Set the line to be dotted
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)'; // Set the line color and transparency
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(xMid, yScale.top); // Start at the top of the chart
+        ctx.lineTo(xMid, yScale.bottom); // Draw to the bottom of the chart
+        ctx.stroke();
+        ctx.restore();
     }
 };
 
-async function initializeHourlyData(dashboardData, hourlyFocusQualityArr, hourlyDistractionsArr, hourlyDeepWorkArr) {
+// modified version of this in summary-stats.js for calculating most focused hour
+export async function initializeHourlyData(dashboardData) {
     let hourlyData = dashboardData.hourlyArr;
     for (let i = 0; i < hourlyData.length; i++) {
         let focusQuality = focusQualityCalculation(timeConvert, hourlyData[i].deepWork, hourlyData[i].distractions, FOCUS_QUALITY_CONSTANT);
@@ -200,16 +334,24 @@ async function initializeHourlyData(dashboardData, hourlyFocusQualityArr, hourly
 
         let avgDeepWorkPerHour = calculateAvgDeepWorkPerHour(hourlyData[i].deepWorkTimes);
         hourlyDeepWorkArr.push(avgDeepWorkPerHour);
+
+        let adjustedAvgDeepWorkPerHour = Math.round(avgDeepWorkPerHour * focusQuality);
+        hourlyAdjustedDeepWorkArr.push(adjustedAvgDeepWorkPerHour);
     }
 
-    // console.log(hourlyFocusQualityArr)
+    return hourlyAdjustedDeepWorkArr; // to populate the Most Productive Hour Summary Stat
 }
 
 
 function calculateAvgDeepWorkPerHour(deepWorkTimesArr) {
     let arrSum = deepWorkTimesArr.reduce((acc, curr) => acc + curr, 0);
+
     let deepWorkAvgMs = arrSum / deepWorkTimesArr.length;
     let deepWorkAvgMin = Math.round(deepWorkAvgMs / 60000);
+
+    if (isNaN(deepWorkAvgMin)) {
+        deepWorkAvgMin = 0;
+    }
 
     return deepWorkAvgMin;
 }

@@ -687,13 +687,27 @@
                                 </div>
 
                                 <div id="advChartsContainer"  class="metricBodyContainer no-select">
+                                    
+                                    <div id="avgDeepWorkChartContainer" class="metricChart">
+                                        <div id="avgDeepWorkChartHeader" class="chartHeader">
+                                            <div id="avgDeepWorkHeaderText" class="headerText">Avg Deep Work</div>
+                                            <div class="chartToggle">
+                                                <div class="chartToggleHeader">Quality Adjusted</div>
+                                                <input type="checkbox" id="hourlyQualityAdjustedToggle" class="toggle-checkbox" aria-labelledby="hourlyQualityAdjusted">
+                                                <label for="hourlyQualityAdjustedToggle" data-testid="hourlyQualityAdjustedToggle" id="hourlyQualityAdjustedToggleLabel" class="toggle-label">
+                                                    <span id="hourlyQualityAdjustedToggleBall" class="toggle-ball"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <canvas id="avgDeepWorkChart" class="metricChartCanvas"></canvas>
+                                    </div>
 
                                     <div id="hourlyFocusChartContainer" class="metricChart">
                                         <div id="hourlyFocusChartHeader" class="chartHeader">
                                             <div id="hourlyFocusHeaderText" class="headerText">Focus Quality</div>
                                             <div class="chartToggle">
                                                 <div class="chartToggleHeader">Distractions</div>
-                                                <input type="checkbox" id="distractionsToggle" class="toggle-checkbox" aria-labelledby="distractionss">
+                                                <input type="checkbox" id="distractionsToggle" class="toggle-checkbox" aria-labelledby="distractions">
                                                 <label for="distractionsToggle" data-testid="distractionsToggle" id="distractionsToggleLabel" class="toggle-label">
                                                     <span id="distractionsToggleBall" class="toggle-ball"></span>
                                                 </label>
@@ -701,13 +715,6 @@
                                         </div>
                                         <canvas id="hourlyFocusChart" class="metricChartCanvas"></canvas>
                                     </div>
-<!-- 
-                                    <div id="avgDeepWorkChartContainer" class="metricChart">
-                                        <div id="avgDeepWorkChartHeader" class="chartHeader">
-                                            <div id="avgDeepWorkHeaderText" class="headerText">Avg Deep Work</div>
-                                        </div>
-                                        <canvas id="avgDeepWorkChart" class="metricChartCanvas"></canvas>
-                                    </div> -->
 
                                 </div>
                             </div>
@@ -758,7 +765,7 @@
                         </div>
                         <div class="dashboardSummaryDivider"></div>
                         <div id="mostFocusedHourStatContainer" class="summaryStatContainer">
-                            <div class="summaryStatHeader">Most Focused Hour</div>
+                            <div class="summaryStatHeader">Most Productive Hour</div>
                             <div id="mostFocusedHourSummaryStat" class="summaryStat"></div>
                         </div>
                     </div>

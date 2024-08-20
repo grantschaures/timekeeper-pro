@@ -1,9 +1,12 @@
-import { dashboardData } from '../modules/dashboard-objects.js';
+import { dashboardData, constants } from '../modules/dashboard-objects.js';
 import { timeConvert } from '../modules/index-objects.js';
 
 import { populateDashboardSummaryStats } from './summary-stats.js';
 import { populateLabelDistContainer } from './label-distribution.js';
 import { setMainChartsContainer } from './metric-charts.js';
+
+// GLOBAL VARIABLES
+const FOCUS_QUALITY_CONSTANT = constants.FOCUS_QUALITY_CONSTANT;
 
 export async function populateDashboard(sessionData, noteData) { // called from state.js
 
@@ -102,7 +105,7 @@ function adjustPerHourDataKeys(sessions) {
 
             let hourlyArrIndex = getHourlyArrIndex(adjustedDateKey);
             if (dataValue.inDeepWork) {
-                dashboardData.hourlyArr[hourlyArrIndex].focusQualities.push(focusQualityCalculation(timeConvert, dataValue.deepWorkTime, dataValue.distractions, 0.5));
+                dashboardData.hourlyArr[hourlyArrIndex].focusQualities.push(focusQualityCalculation(timeConvert, dataValue.deepWorkTime, dataValue.distractions, FOCUS_QUALITY_CONSTANT));
                 dashboardData.hourlyArr[hourlyArrIndex].distractionsPerHour.push(calculateDistractionsPerHour(timeConvert, dataValue.deepWorkTime, dataValue.distractions));
                 dashboardData.hourlyArr[hourlyArrIndex].deepWorkTimes.push(dataValue.deepWorkTime);
                 dashboardData.hourlyArr[hourlyArrIndex].deepWork += dataValue.deepWorkTime;

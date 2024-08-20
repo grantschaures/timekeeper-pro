@@ -1,6 +1,6 @@
-import { adjustedDeepWorkToggle, advChartsContainer, advChartsCoverModule, chartHeaders, deepWorkHeaderText, HC_icon_metric_charts, labelDistributionContainer, leftMetricDistributionArrow, metricCharts, mainChartsContainer, mainChartsCoverModule, metricBodyContainers, metricChartsHr, metricDistributionArrows, metricDistributionBackBtn, metricDistributionContainer, metricDistributionCoverContainer, metricDistributionMonth, metricDistributionSelections, metricDistributionSubContainer, metricDistributionTimeFrame, metricDistributionWeek, metricDistributionYear, rightMetricDistributionArrow, rightMetricDistributionArrowGray, breakIntervalToggle, distractionsToggle } from "../modules/dashboard-elements.js"
+import { adjustedDeepWorkToggle, advChartsContainer, advChartsCoverModule, chartHeaders, deepWorkHeaderText, HC_icon_metric_charts, labelDistributionContainer, leftMetricDistributionArrow, metricCharts, mainChartsContainer, mainChartsCoverModule, metricBodyContainers, metricChartsHr, metricDistributionArrows, metricDistributionBackBtn, metricDistributionContainer, metricDistributionCoverContainer, metricDistributionMonth, metricDistributionSelections, metricDistributionSubContainer, metricDistributionTimeFrame, metricDistributionWeek, metricDistributionYear, rightMetricDistributionArrow, rightMetricDistributionArrowGray, breakIntervalToggle, distractionsToggle, avgDeepWorkHeaderText, hourlyQualityAdjustedToggle } from "../modules/dashboard-elements.js"
 import { sessionState } from "../modules/state-objects.js"
-import { flags, labelDistContainer, mainChartContainer } from "../modules/dashboard-objects.js"
+import { flags, general, labelDistContainer, mainChartContainer } from "../modules/dashboard-objects.js"
 
 import { setBounds, alterBounds, checkViewportWidth, displayTimeFrame } from './label-distribution.js';
 
@@ -33,10 +33,13 @@ document.addEventListener("stateUpdated", function() {
             resetMetricDistributionContainer();   
         })
 
-        adjustedDeepWorkToggle.addEventListener('click', function() {
+        // TOGGLES
+
+        adjustedDeepWorkToggle.addEventListener('click', function() { // main chart
             if (adjustedDeepWorkToggle.checked) {
                 flags.adjustedDeepWorkToggle = true;
                 deepWorkHeaderText.innerText = "Adjusted Deep Work"
+                general.chartTransition = 'main-adjusted';
 
                 // make necessary changes to chart distribution
                 document.dispatchEvent(new Event('displayMainCharts'));
@@ -44,6 +47,7 @@ document.addEventListener("stateUpdated", function() {
             } else {
                 flags.adjustedDeepWorkToggle = false;
                 deepWorkHeaderText.innerText = "Deep Work"
+                general.chartTransition = 'main-adjusted';
 
                 // make necessary changes to chart distribution
                 document.dispatchEvent(new Event('displayMainCharts'));
@@ -51,40 +55,66 @@ document.addEventListener("stateUpdated", function() {
             }
         })
 
-        breakIntervalToggle.addEventListener('click', function() {
+        breakIntervalToggle.addEventListener('click', function() { // main chart
             if (breakIntervalToggle.checked) {
                 flags.avgBreakIntervalToggle = true;
                 avgIntervalHeaderText.innerText = "Avg Break Interval"
-
+                general.chartTransition = 'main-break';
+                
                 // make necessary changes to chart distribution
                 document.dispatchEvent(new Event('displayMainCharts'));
-
+                
             } else {
                 flags.avgBreakIntervalToggle = false;
                 avgIntervalHeaderText.innerText = "Avg Deep Work Interval";
+                general.chartTransition = 'main-break';
 
                 // make necessary changes to chart distribution
                 document.dispatchEvent(new Event('displayMainCharts'));
             }
         })
         
-        distractionsToggle.addEventListener('click', function() {
+        distractionsToggle.addEventListener('click', function() { // adv chart
             if (distractionsToggle.checked) {
                 flags.distractionsToggle = true;
                 hourlyFocusHeaderText.innerText = "Avg Distractions"
-    
+                general.chartTransition = 'adv-distractions';
+                
                 // make necessary changes to chart distribution
                 document.dispatchEvent(new Event('displayAdvCharts'));
-    
+                
             } else {
                 flags.distractionsToggle = false;
                 hourlyFocusHeaderText.innerText = "Focus Quality";
+                general.chartTransition = 'adv-distractions';
     
                 // make necessary changes to chart distribution
                 document.dispatchEvent(new Event('displayAdvCharts'));
             }
 
         })
+        
+        hourlyQualityAdjustedToggle.addEventListener('click', function() { // adv chart
+            if (hourlyQualityAdjustedToggle.checked) {
+                flags.hourlyQualityAdjustedToggle = true;
+                avgDeepWorkHeaderText.innerText = "Adjusted Avg Deep Work"
+                general.chartTransition = 'adv-adjusted';
+    
+                // make necessary changes to chart distribution
+                document.dispatchEvent(new Event('displayAdvCharts'));
+    
+            } else {
+                flags.hourlyQualityAdjustedToggle = false;
+                avgDeepWorkHeaderText.innerText = "Avg Deep Work";
+                general.chartTransition = 'adv-adjusted';
+    
+                // make necessary changes to chart distribution
+                document.dispatchEvent(new Event('displayAdvCharts'));
+            }
+
+        })
+
+        // WEEK, MONTH, YEAR buttons
 
         metricDistributionWeek.addEventListener("click", function() {
             // add class
@@ -99,6 +129,9 @@ document.addEventListener("stateUpdated", function() {
     
             // call function which resets bounds
             setBounds(mainChartContainer, metricDistributionTimeFrame, rightMetricDistributionArrow, rightMetricDistributionArrowGray);
+
+            // chart transition
+            general.chartTransition = 'all';
     
             // visualize data
             document.dispatchEvent(new Event('displayMainCharts'));
@@ -117,6 +150,9 @@ document.addEventListener("stateUpdated", function() {
             
             // call function which resets bounds
             setBounds(mainChartContainer, metricDistributionTimeFrame, rightMetricDistributionArrow, rightMetricDistributionArrowGray);
+
+            // chart transition
+            general.chartTransition = 'all';
     
             // visualize data
             document.dispatchEvent(new Event('displayMainCharts'));
@@ -136,15 +172,23 @@ document.addEventListener("stateUpdated", function() {
             
             // call function which resets bounds
             setBounds(mainChartContainer, metricDistributionTimeFrame, rightMetricDistributionArrow, rightMetricDistributionArrowGray);
+
+            // chart transition
+            general.chartTransition = 'all';
     
             // visualize data
             document.dispatchEvent(new Event('displayMainCharts'));
     
         })
     
+        // ARROW BUTTONS
+
         leftMetricDistributionArrow.addEventListener("click", function() {
             // decrease current bounds
             alterBounds('shiftdown', mainChartContainer, metricDistributionTimeFrame, rightMetricDistributionArrow, rightMetricDistributionArrowGray);
+
+            // chart transition
+            general.chartTransition = 'all';
     
             // visualize data
             document.dispatchEvent(new Event('displayMainCharts'));
@@ -154,6 +198,9 @@ document.addEventListener("stateUpdated", function() {
         rightMetricDistributionArrow.addEventListener("click", function() {
             // increase current bounds
             alterBounds('shiftup', mainChartContainer, metricDistributionTimeFrame, rightMetricDistributionArrow, rightMetricDistributionArrowGray);
+
+            // chart transition
+            general.chartTransition = 'all';
     
             // visualize data
             document.dispatchEvent(new Event('displayMainCharts'));
@@ -219,9 +266,17 @@ function expandMetricDistributionContainer(metricBodyContainer) {
 
             if (metricBodyContainer === mainChartsContainer) {
                 mainChartsDivisionHr.style.display = 'flex';
+
+                // chart transition
+                general.chartTransition = 'all';
+
                 document.dispatchEvent(new Event('displayMainCharts'));
                 
             } else {
+                
+                // chart transition
+                general.chartTransition = 'all';
+
                 document.dispatchEvent(new Event('displayAdvCharts'));
             }
         }, 500)

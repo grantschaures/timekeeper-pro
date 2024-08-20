@@ -68,3 +68,5 @@ export const metricChartsHr = document.querySelectorAll('.metricChartsHr');
 
 export const distractionsToggle = document.getElementById('distractionsToggle');
 export const hourlyFocusHeaderText = document.getElementById('hourlyFocusHeaderText');
+export const hourlyQualityAdjustedToggle = document.getElementById('hourlyQualityAdjustedToggle');
+export const avgDeepWorkHeaderText = document.getElementById('avgDeepWorkHeaderText');

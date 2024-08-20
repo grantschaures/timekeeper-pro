@@ -661,7 +661,7 @@
     /* border: 1px solid white; */
 }
 
-#deepWorkChartContainer, #hourlyFocusChartContainer {
+#deepWorkChartContainer, #avgDeepWorkChartContainer {
     margin-top: 20px;
 }
 
@@ -725,6 +725,15 @@
 }
 
 #distractionsToggle:checked + #distractionsToggleLabel #distractionsToggleBall {
+    left: 40px;
+}
+
+/* Hourly Quality Adjusted Toggle */
+#hourlyQualityAdjustedToggle:checked + #hourlyQualityAdjustedToggleLabel {
+    background-color: #0cce63;
+}
+
+#hourlyQualityAdjustedToggle:checked + #hourlyQualityAdjustedToggleLabel #hourlyQualityAdjustedToggleBall {
     left: 40px;
 }
 
