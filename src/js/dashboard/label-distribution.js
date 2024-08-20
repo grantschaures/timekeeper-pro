@@ -381,7 +381,7 @@ function setRightArrowType(container, currentDate, rightArrow, rightArrowGray) {
     }
 }
 
-function displayTimeFrame(container, timeFrameElement) {
+export function displayTimeFrame(container, timeFrameElement) {
     let timeFrameStr;
     if (container.timeFrame === 'week') {
         timeFrameStr = formatWeekSpan(container.lowerBound, container.upperBound);

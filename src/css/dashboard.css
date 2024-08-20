@@ -482,7 +482,8 @@
     position: relative;
     border-radius: 25px;
     height: 10px;
-    background: linear-gradient(135deg, rgba(130, 0, 170, 0.8), rgb(162, 0, 212), rgba(190, 90, 240, 0.8));
+    /* background: linear-gradient(135deg, rgba(130, 0, 170, 0.8), rgb(162, 0, 212), rgba(190, 90, 240, 0.8)); */
+    background: rgba(63, 210, 68, 1);
     background-size: 200% 200%;
     animation: gradientShift 15s linear infinite;
     transition: width 1s cubic-bezier(0.25, 0.1, 0.25, 1);
@@ -660,7 +661,7 @@
     /* border: 1px solid white; */
 }
 
-#deepWorkChartContainer {
+#deepWorkChartContainer, #hourlyFocusChartContainer {
     margin-top: 20px;
 }
 
@@ -672,7 +673,7 @@
     display: none;
 }
 
-.mainChart {
+.metricChart {
     display: none;
     flex-direction: column;
     width: 100%;
@@ -702,19 +703,28 @@
 
 /* Adjusted Deep Work Toggle */
 #adjustedDeepWorkToggle:checked + #adjustedDeepWorkToggleLabel {
-    background-color: #53e658;
+    background-color: #0cce63;
 }
 
 #adjustedDeepWorkToggle:checked + #adjustedDeepWorkToggleLabel #adjustedDeepWorkToggleBall {
     left: 40px;
 }
 
-/* Adjusted Deep Work Toggle */
+/* Break Toggle */
 #breakIntervalToggle:checked + #breakIntervalToggleLabel {
-    background-color: #53e658;
+    background-color: rgba(59, 143, 227, 1);
 }
 
 #breakIntervalToggle:checked + #breakIntervalToggleLabel #breakIntervalToggleBall {
+    left: 40px;
+}
+
+/* Distractions Toggle */
+#distractionsToggle:checked + #distractionsToggleLabel {
+    background-color: rgb(255, 69, 0);
+}
+
+#distractionsToggle:checked + #distractionsToggleLabel #distractionsToggleBall {
     left: 40px;
 }
 

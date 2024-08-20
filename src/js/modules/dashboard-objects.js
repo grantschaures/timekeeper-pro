@@ -1,7 +1,9 @@
 const dailyHours = Array.from({ length: 24 }, () => ({
     focusQualities: [],
     distractionsPerHour: [],
-    deepWorkTimes: []
+    deepWorkTimes: [],
+    deepWork: 0,
+    distractions: 0
 }));
 
 export const dashboardData = {
@@ -27,6 +29,7 @@ export const flags = {
     metricDistributionContainerExpanded: false,
     adjustedDeepWorkToggle: false,
     avgBreakIntervalToggle: false,
+    distractionsToggle: false,
     quickerChartAnimations: false
 }
 

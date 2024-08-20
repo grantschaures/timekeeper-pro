@@ -25,6 +25,7 @@
         <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
         <script type="module" src="/js/utility/session-summary-chart.js"></script>
         <script type="module" src="/js/utility/main-charts.js"></script>
+        <script type="module" src="/js/utility/adv-charts.js"></script>
 
         <script src="/js/utility/preload.js"></script>
         <script type="module" src="/js/state/state.js"></script>
@@ -636,10 +637,10 @@
                                 </div>
 
                                 <hr id="metricChartsHr" class="metricChartsHr">
-                                
+
                                 <div id="mainChartsContainer"  class="metricBodyContainer no-select">
 
-                                    <div id="deepWorkChartContainer" class="mainChart">
+                                    <div id="deepWorkChartContainer" class="metricChart">
                                         <div id="deepWorkChartHeader" class="chartHeader">
                                             <div id="deepWorkHeaderText" class="headerText">Deep Work</div>
                                             <div class="chartToggle">
@@ -650,17 +651,17 @@
                                                 </label>
                                             </div>
                                         </div>
-                                        <canvas id="deepWorkChart" class="mainChartCanvas"></canvas>
+                                        <canvas id="deepWorkChart" class="metricChartCanvas"></canvas>
                                     </div>
 
-                                    <div id="focusQualityChartContainer" class="mainChart">
+                                    <div id="focusQualityChartContainer" class="metricChart">
                                         <div id="focusQualityChartHeader" class="chartHeader">
                                             <div id="focusQualityHeaderText" class="headerText">Focus Quality</div>
                                         </div>
-                                        <canvas id="focusQualityChart" class="mainChartCanvas"></canvas>
+                                        <canvas id="focusQualityChart" class="metricChartCanvas"></canvas>
                                     </div>
 
-                                    <div id="avgIntervalChartContainer" class="mainChart">
+                                    <div id="avgIntervalChartContainer" class="metricChart">
                                         <div id="avgIntervalChartHeader" class="chartHeader">
                                             <div id="avgIntervalHeaderText" class="headerText">Avg Deep Work Interval</div>
                                             <div class="chartToggle">
@@ -671,21 +672,43 @@
                                                 </label>
                                             </div>
                                         </div>
-                                        <canvas id="avgIntervalChart" class="mainChartCanvas"></canvas>
+                                        <canvas id="avgIntervalChart" class="metricChartCanvas"></canvas>
                                     </div>
 
                                     <hr id="mainChartsDivisionHr" class="metricChartsHr">
 
-                                    <div id="sessionIntervalsChartContainer" class="mainChart">
+                                    <div id="sessionIntervalsChartContainer" class="metricChart">
                                         <div id="sessionIntervalsChartHeader" class="chartHeader">
                                             <div id="sessionIntervalsHeaderText" class="headerText">Session Intervals</div>
                                         </div>
-                                        <canvas id="sessionIntervalsChart" class="mainChartCanvas"></canvas>
+                                        <canvas id="sessionIntervalsChart" class="metricChartCanvas"></canvas>
                                     </div>
 
                                 </div>
+
                                 <div id="advChartsContainer"  class="metricBodyContainer no-select">
-                                    Adv Charts Container Coming Soon!
+
+                                    <div id="hourlyFocusChartContainer" class="metricChart">
+                                        <div id="hourlyFocusChartHeader" class="chartHeader">
+                                            <div id="hourlyFocusHeaderText" class="headerText">Focus Quality</div>
+                                            <div class="chartToggle">
+                                                <div class="chartToggleHeader">Distractions</div>
+                                                <input type="checkbox" id="distractionsToggle" class="toggle-checkbox" aria-labelledby="distractionss">
+                                                <label for="distractionsToggle" data-testid="distractionsToggle" id="distractionsToggleLabel" class="toggle-label">
+                                                    <span id="distractionsToggleBall" class="toggle-ball"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <canvas id="hourlyFocusChart" class="metricChartCanvas"></canvas>
+                                    </div>
+<!-- 
+                                    <div id="avgDeepWorkChartContainer" class="metricChart">
+                                        <div id="avgDeepWorkChartHeader" class="chartHeader">
+                                            <div id="avgDeepWorkHeaderText" class="headerText">Avg Deep Work</div>
+                                        </div>
+                                        <canvas id="avgDeepWorkChart" class="metricChartCanvas"></canvas>
+                                    </div> -->
+
                                 </div>
                             </div>
                         </div>

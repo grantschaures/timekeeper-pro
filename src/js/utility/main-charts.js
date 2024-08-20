@@ -591,7 +591,7 @@ function displayDeepWorkChart() {
 
     let barColor;
     if (flags.adjustedDeepWorkToggle) {
-        barColor = 'rgba(13, 160, 18, 1)';
+        barColor = '#0cce63';
     } else {
         barColor = 'rgba(63, 210, 68, 1)';
     }

@@ -3,7 +3,7 @@ import { timeConvert } from '../modules/index-objects.js';
 
 import { populateDashboardSummaryStats } from './summary-stats.js';
 import { populateLabelDistContainer } from './label-distribution.js';
-import { populateMainChartsContainer } from './metric-charts.js';
+import { setMainChartsContainer } from './metric-charts.js';
 
 export async function populateDashboard(sessionData, noteData) { // called from state.js
 
@@ -20,7 +20,7 @@ export async function populateDashboard(sessionData, noteData) { // called from 
     populateLabelDistContainer();
 
     // update main charts
-    populateMainChartsContainer();
+    setMainChartsContainer();
 }
 
 async function setDashboardData(sessionData, dailySummarizedData, noteData) {
@@ -105,6 +105,8 @@ function adjustPerHourDataKeys(sessions) {
                 dashboardData.hourlyArr[hourlyArrIndex].focusQualities.push(focusQualityCalculation(timeConvert, dataValue.deepWorkTime, dataValue.distractions, 0.5));
                 dashboardData.hourlyArr[hourlyArrIndex].distractionsPerHour.push(calculateDistractionsPerHour(timeConvert, dataValue.deepWorkTime, dataValue.distractions));
                 dashboardData.hourlyArr[hourlyArrIndex].deepWorkTimes.push(dataValue.deepWorkTime);
+                dashboardData.hourlyArr[hourlyArrIndex].deepWork += dataValue.deepWorkTime;
+                dashboardData.hourlyArr[hourlyArrIndex].distractions += dataValue.distractions;
             }
         });
     });
@@ -121,7 +123,7 @@ function getHourlyArrIndex(dateTimeString) {
     return null;
 }
 
-function calculateDistractionsPerHour(timeConvert, deepWorkTime, distractions) {
+export function calculateDistractionsPerHour(timeConvert, deepWorkTime, distractions) {
     let distractionsPerHour = (distractions * timeConvert.msPerHour) / deepWorkTime;
 
     distractionsPerHour = Math.round(distractionsPerHour * 10) / 10;
@@ -131,7 +133,14 @@ function calculateDistractionsPerHour(timeConvert, deepWorkTime, distractions) {
 
 export function focusQualityCalculation(timeConvert, totalTime, totalDistractions, constant) {
     let totalMin = totalTime / timeConvert.msPerMin;
-    let focusQualityFraction = 1 - ((totalDistractions / totalMin) / (constant));
+    
+    let focusQualityFraction;
+    if (totalMin > 0) {
+        focusQualityFraction = 1 - ((totalDistractions / totalMin) / (constant)); 
+    } else {
+        focusQualityFraction = 0;
+    }
+
     if (focusQualityFraction < 0) {
         focusQualityFraction = 0;
     } else if (isNaN(focusQualityFraction)) { // edge case: if user has 0ms of deep work + no distractions (which shouldn't happen, but just in case)

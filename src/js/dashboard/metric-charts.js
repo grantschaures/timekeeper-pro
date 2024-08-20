@@ -1,20 +1,22 @@
-import { adjustedDeepWorkToggle, advChartsContainer, advChartsCoverModule, chartHeaders, deepWorkHeaderText, HC_icon_metric_charts, labelDistributionContainer, leftMetricDistributionArrow, mainCharts, mainChartsContainer, mainChartsCoverModule, metricBodyContainers, metricChartsHr, metricDistributionArrows, metricDistributionBackBtn, metricDistributionContainer, metricDistributionCoverContainer, metricDistributionMonth, metricDistributionSelections, metricDistributionSubContainer, metricDistributionTimeFrame, metricDistributionWeek, metricDistributionYear, rightMetricDistributionArrow, rightMetricDistributionArrowGray } from "../modules/dashboard-elements.js"
+import { adjustedDeepWorkToggle, advChartsContainer, advChartsCoverModule, chartHeaders, deepWorkHeaderText, HC_icon_metric_charts, labelDistributionContainer, leftMetricDistributionArrow, metricCharts, mainChartsContainer, mainChartsCoverModule, metricBodyContainers, metricChartsHr, metricDistributionArrows, metricDistributionBackBtn, metricDistributionContainer, metricDistributionCoverContainer, metricDistributionMonth, metricDistributionSelections, metricDistributionSubContainer, metricDistributionTimeFrame, metricDistributionWeek, metricDistributionYear, rightMetricDistributionArrow, rightMetricDistributionArrowGray, breakIntervalToggle, distractionsToggle } from "../modules/dashboard-elements.js"
 import { sessionState } from "../modules/state-objects.js"
 import { flags, labelDistContainer, mainChartContainer } from "../modules/dashboard-objects.js"
 
-import { setBounds, alterBounds, checkViewportWidth } from './label-distribution.js';
+import { setBounds, alterBounds, checkViewportWidth, displayTimeFrame } from './label-distribution.js';
 
-export function populateMainChartsContainer() {
+export function setMainChartsContainer() {
     setBounds(mainChartContainer, metricDistributionTimeFrame, rightMetricDistributionArrow, rightMetricDistributionArrowGray);
 }
 
 document.addEventListener("stateUpdated", function() {
     if (sessionState.loggedIn) {
         mainChartsCoverModule.addEventListener("click", function() {
+            displayTimeFrame(mainChartContainer, metricDistributionTimeFrame);
             expandMetricDistributionContainer(mainChartsContainer);
         })
 
         advChartsCoverModule.addEventListener("click", function() {
+            metricDistributionTimeFrame.innerText = "All Time";
             expandMetricDistributionContainer(advChartsContainer);
         })
         
@@ -64,6 +66,24 @@ document.addEventListener("stateUpdated", function() {
                 // make necessary changes to chart distribution
                 document.dispatchEvent(new Event('displayMainCharts'));
             }
+        })
+        
+        distractionsToggle.addEventListener('click', function() {
+            if (distractionsToggle.checked) {
+                flags.distractionsToggle = true;
+                hourlyFocusHeaderText.innerText = "Avg Distractions"
+    
+                // make necessary changes to chart distribution
+                document.dispatchEvent(new Event('displayAdvCharts'));
+    
+            } else {
+                flags.distractionsToggle = false;
+                hourlyFocusHeaderText.innerText = "Focus Quality";
+    
+                // make necessary changes to chart distribution
+                document.dispatchEvent(new Event('displayAdvCharts'));
+            }
+
         })
 
         metricDistributionWeek.addEventListener("click", function() {
@@ -185,7 +205,7 @@ function expandMetricDistributionContainer(metricBodyContainer) {
 
 
         setTimeout(() => {
-            mainCharts.forEach(chart => {
+            metricCharts.forEach(chart => {
                 chart.style.display = 'flex';
                 setTimeout(() => {
                     chart.style.opacity = '1';
@@ -197,10 +217,13 @@ function expandMetricDistributionContainer(metricBodyContainer) {
                 Hr.style.opacity = '1';
             })
 
-            mainChartsDivisionHr.style.display = 'flex';
-
-            // send dispatch event
-            document.dispatchEvent(new Event('displayMainCharts'));
+            if (metricBodyContainer === mainChartsContainer) {
+                mainChartsDivisionHr.style.display = 'flex';
+                document.dispatchEvent(new Event('displayMainCharts'));
+                
+            } else {
+                document.dispatchEvent(new Event('displayAdvCharts'));
+            }
         }, 500)
 
     }
@@ -248,7 +271,7 @@ function resetMetricDistributionContainer() {
     flags.quickerChartAnimations = false;
 
     // resetting main charts
-    mainCharts.forEach(chart => {
+    metricCharts.forEach(chart => {
         chart.style.display = 'none';
         setTimeout(() => {
             chart.style.opacity = '0';
