@@ -333,7 +333,7 @@ export async function initializeHourlyData(dashboardData) {
         hourlyDistractionsArr.push(distractionsPerHour);
 
         let avgDeepWorkPerHour = calculateAvgDeepWorkPerHour(hourlyData[i].deepWorkTimes);
-        hourlyDeepWorkArr.push(avgDeepWorkPerHour);
+        hourlyDeepWorkArr.push(Math.round(avgDeepWorkPerHour));
 
         let adjustedAvgDeepWorkPerHour = Math.round(avgDeepWorkPerHour * focusQuality);
         hourlyAdjustedDeepWorkArr.push(adjustedAvgDeepWorkPerHour);
@@ -347,7 +347,7 @@ function calculateAvgDeepWorkPerHour(deepWorkTimesArr) {
     let arrSum = deepWorkTimesArr.reduce((acc, curr) => acc + curr, 0);
 
     let deepWorkAvgMs = arrSum / deepWorkTimesArr.length;
-    let deepWorkAvgMin = Math.round(deepWorkAvgMs / 60000);
+    let deepWorkAvgMin = deepWorkAvgMs / timeConvert.msPerMin;
 
     if (isNaN(deepWorkAvgMin)) {
         deepWorkAvgMin = 0;

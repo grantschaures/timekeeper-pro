@@ -232,7 +232,7 @@ async function logSession() {
     let labelTimeSum = sumTotalLabelTime(labelArrs, labelDict);
 
     // FILL TEMP STORAGE FOR SESSION SUMMARY POPUP
-    fillTempStorage(totalTime, focusQualityFractionV5, timeAmount.targetTime, tempStorage);
+    fillTempStorage(totalTime, focusQualityFractionV2, timeAmount.targetTime, tempStorage);
 
     if (sessionState.loggedIn) {
         // SENDING DATA TO BE PROCESSED BY BACKEND

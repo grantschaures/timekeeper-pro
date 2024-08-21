@@ -30,6 +30,9 @@ async function setDashboardData(sessionData, dailySummarizedData, noteData) {
     dashboardData.sessionArr = sessionData;
     dashboardData.dailyArr = dailySummarizedData;
     dashboardData.noteData = noteData;
+
+    // console.log(sessionData);
+    // console.log(dashboardData.dailyArr);
 }
 
 async function initializeDailyData(sessionData) {
@@ -42,10 +45,14 @@ async function initializeDailyData(sessionData) {
 
 function summarizeDailyData(dataArray, sessionData) {
     const dailySummary = {};
+    // console.log(dataArray)
     
     dataArray.forEach(entry => {
+        // console.log(entry.date)
         const day = moment(entry.date).format('YYYY-MM-DD'); // Extract the day part of the date
-        const { deepWorkTime, distractions, inDeepWork } = entry.data;
+        // console.log(day)
+        // console.log('')
+        const { deepWorkTime = 0, distractions = 0, inDeepWork = false } = entry.data;
         
         if (!dailySummary[day]) {
             dailySummary[day] = {
@@ -96,6 +103,10 @@ function adjustPerHourDataKeys(sessions) {
         Object.entries(perHourData).forEach(([dateKey, dataValue]) => {
             // Convert the dateKey to the session's time zone
             const adjustedDateKey = moment.tz(dateKey, timeZone).format();
+            // console.log(dateKey)
+            // console.log(timeZone)
+            // console.log(adjustedDateKey)
+            // console.log('')
 
             // Push the adjusted key-value pair to the new array
             adjustedPerHourDataArray.push({

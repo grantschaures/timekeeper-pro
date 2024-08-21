@@ -66,7 +66,12 @@ async function populateMostFocusedHourSummaryStat(dashboardData) {
     ]
 
     let highestAvgFocusQualityStr = hourStrArr[highestAdjustedDeepWorkIndex];
-    mostFocusedHourSummaryStat.innerText = highestAvgFocusQualityStr;
+
+    if (highestAdjustedDeepWork === 0) {
+        mostFocusedHourSummaryStat.innerText = 'N/A'; // not enough info to determine
+    } else {
+        mostFocusedHourSummaryStat.innerText = highestAvgFocusQualityStr;
+    }
 }
 
 function populateAvgIntervalLengthSummaryStat(timeConvert, totalDeepWorkIntervals) {

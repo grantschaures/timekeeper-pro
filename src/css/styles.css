@@ -185,7 +185,6 @@ html::-webkit-scrollbar:hover {
 }
 
 html::-webkit-scrollbar-track {
-    /* background: transparent; */
     background: rgba(255, 255, 255, 0);
 }
 

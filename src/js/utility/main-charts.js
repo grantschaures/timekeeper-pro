@@ -85,8 +85,8 @@ async function initializeSessionData() {
     let dashboardDataSessionArr = dashboardData.sessionArr;
     for (let i = 0; i < dashboardDataSessionArr.length; i++) {
 
-        let startTime = moment.tz(dashboardDataSessionArr[i].startTime, dashboardDataSessionArr[i].timeZone).format(); // correctly two hours ahead here
-        let endTime = moment.tz(dashboardDataSessionArr[i].endTime, dashboardDataSessionArr[i].timeZone).format(); // correctly two hours ahead here
+        let startTime = moment.tz(dashboardDataSessionArr[i].startTime, dashboardDataSessionArr[i].timeZone).format();
+        let endTime = moment.tz(dashboardDataSessionArr[i].endTime, dashboardDataSessionArr[i].timeZone).format();
 
         // includes sessions that overlap at all with the lower or upper bound dates
         if((moment(endTime, 'YYYY-MM-DD').isSameOrAfter(moment(mainChartContainer.lowerBound, 'YYYY-MM-DD'))) && (moment(startTime, 'YYYY-MM-DD').isSameOrBefore(moment(mainChartContainer.upperBound, 'YYYY-MM-DD')))) {
@@ -94,8 +94,6 @@ async function initializeSessionData() {
             let hourlyTransitionArr = createHourlyTransitionArr(startTime, dashboardDataSessionArr[i].deepWorkIntervals, dashboardDataSessionArr[i].breakIntervals);
             
             populateIntervalDataArrs(startTime, endTime, hourlyTransitionArr);
-            
-            // console.log(dashboardDataSessionArr[i])
         }
     }
 }
@@ -157,7 +155,9 @@ function populateIntervalDataArrs(startTime, endTime, hourlyTransitionArr) {
 
 function extractDateInfo(dateString, timeFrame) {
     // Parse the date string into a Date object
-    const date = new Date(dateString);
+    dateString = dateString.split('T')[0];
+    const parts = dateString.split("-");
+    const date = new Date(parts[0], parts[1] - 1, parts[2]);
 
     // Arrays to help with returning day and month names
     const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
@@ -270,6 +270,7 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
     let intervalsPerMonthArr = [[], [], [], [], [], [], [], [], [], [], [], []];
 
     let dashboardDataDailyArr = dashboardData.dailyArr;
+    // console.log(dashboardDataDailyArr);
     for (let i = 0; i < dashboardDataDailyArr.length; i++) {
         let date = dashboardDataDailyArr[i].date;
         if((moment(date, 'YYYY-MM-DD').isSameOrAfter(moment(mainChartContainer.lowerBound, 'YYYY-MM-DD'))) && (moment(date, 'YYYY-MM-DD').isSameOrBefore(moment(mainChartContainer.upperBound, 'YYYY-MM-DD')))) {
@@ -319,8 +320,6 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
                 focusQualityArr.push(Math.floor(focusQuality * 100));
                 avgIntervalArr.push(avgInterval);
             }
-
-            // console.log(dashboardDataDailyArr[i]);
         }
     }
 
@@ -350,7 +349,6 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
                 deepWorkIntervals: intervalsPerMonthArr[i],
                 breakIntervals: intervalsPerMonthArr[i],
             }
-            // console.log(monthlyData)
 
             if (deepWorkMsPerMonthArr[i] !== 0) {
                 let deepWorkHours = getDeepWorkHoursAndFocusQuality(monthlyData)[0];
@@ -727,8 +725,6 @@ function displayFocusQualityChart() {
         xAxisTickLabelArr = xAxisTickLabels.week;
     } else if (mainChartContainer.timeFrame === 'month') {
         xAxisTickLabelArr = xAxisTickLabels.month;
-        // console.log(focusQualityArr);
-        // console.log(dateStrArr);
 
         for (let i = 0; i < focusQualityArr.length; i++) {
             if (dateStrArr[i] === 'no data') {
@@ -809,7 +805,8 @@ function displayFocusQualityChart() {
                 categoryPercentage: 0.5,
                 pointRadius: 5, // Size of the points
                 pointHoverRadius: 8, // Size of the points when hovered
-                spanGaps: true // Ensure the line spans across null values
+                spanGaps: true, // Ensure the line spans across null values
+                tension: 0.4 // Set tension to make the line curvy
             }]
         },
         options: {
