@@ -275,7 +275,7 @@ document.addEventListener("stateUpdated", function() {
     document.addEventListener('keydown', function(event) {
         let target = state.generalTarget;
 
-        if ((event.key === 'Shift') && (!flags.shiftPressed)) {
+        if ((event.key === 'Shift') && (!flags.shiftPressed) && (target)) {
             flags.shiftPressed = true;
 
             if ((target.classList.contains('tag-text')) && (!target.classList.contains('create-label')) && (!(target.parentElement.classList.contains('selected-tag'))) && (flags.shiftPressed) && (target !== selectionDoneDiv) && (target !== selectionDone) && (target !== addTagIcon)) {
