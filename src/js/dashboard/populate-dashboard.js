@@ -49,7 +49,9 @@ function summarizeDailyData(dataArray, sessionData) {
     
     dataArray.forEach(entry => {
         // console.log(entry.date)
-        const day = moment(entry.date).format('YYYY-MM-DD'); // Extract the day part of the date
+        const dateStr = entry.date;
+        const date = dateStr.split('T')[0];
+        const day = moment(date).format('YYYY-MM-DD'); // Extract the day part of the date
         // console.log(day)
         // console.log('')
         const { deepWorkTime = 0, distractions = 0, inDeepWork = false } = entry.data;

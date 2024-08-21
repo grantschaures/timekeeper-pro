@@ -270,7 +270,6 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
     let intervalsPerMonthArr = [[], [], [], [], [], [], [], [], [], [], [], []];
 
     let dashboardDataDailyArr = dashboardData.dailyArr;
-    // console.log(dashboardDataDailyArr);
     for (let i = 0; i < dashboardDataDailyArr.length; i++) {
         let date = dashboardDataDailyArr[i].date;
         if((moment(date, 'YYYY-MM-DD').isSameOrAfter(moment(mainChartContainer.lowerBound, 'YYYY-MM-DD'))) && (moment(date, 'YYYY-MM-DD').isSameOrBefore(moment(mainChartContainer.upperBound, 'YYYY-MM-DD')))) {

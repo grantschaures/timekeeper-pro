@@ -2136,3 +2136,30 @@ header {
         transform: scaleX(1); /* Return to original scaleX */
     }
 }
+
+
+/* TESTING */
+
+#pipGUIconBlack {
+    width: 30px;
+    height: auto;
+    display: none;
+}
+
+#pipGUIconWhite {
+    width: 35px;
+    height: auto;
+    display: flex;
+}
+
+#pipGUIContainer {
+    margin-left: 10px;
+}
+
+#pipGUIContainer:hover #pipGUIconWhite {
+    display: none;
+}
+
+#pipGUIContainer:hover #pipGUIconBlack {
+    display: flex;
+}
