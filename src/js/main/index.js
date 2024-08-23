@@ -570,7 +570,7 @@ document.addEventListener("stateUpdated", function() {
             selectedBackgroundId.flowtime = newId;
             document.getElementById(event.target.id).classList.add('selected-background');
 
-            if (flags.inHyperFocus) {
+            if ((flags.inHyperFocus) && (!flags.darkThemeActivated)) {
                 setBackground(selectedBackground.flowtime, 1);
             }
 
@@ -596,7 +596,7 @@ document.addEventListener("stateUpdated", function() {
             document.getElementById(event.target.id).classList.add('selected-background');
 
             // if we're in chilltime (and not pre-session)
-            if ((!flags.inHyperFocus) && (counters.startStop >= 1)) {
+            if ((!flags.inHyperFocus) && (counters.startStop >= 1) && (!flags.darkThemeActivated)) {
                 setBackground(selectedBackground.chilltime, 1);
             }
 
@@ -2502,6 +2502,15 @@ export async function activateDarkTheme(interruptionsContainer, targetHoursConta
         selectedBackgroundIdTemp["flowtime"] = selectedBackgroundId.flowtime;
         selectedBackgroundIdTemp["chilltime"] = selectedBackgroundId.chilltime;
     
+        // want to trigger visual change (immediately) - no delay
+        let darkBackgroundStr = 'linear-gradient(90deg, #202020, #202020, #202020)';
+        if (flags.inHyperFocus) {
+            setBackground(darkBackgroundStr, 1);
+        } else if ((!flags.inHyperFocus) && (counters.startStop >= 1)) {
+            setBackground(darkBackgroundStr, 1);
+        }
+
+        // update database
         if (sessionState.loggedIn) {
             await updateUserSettings({
                 backgroundsThemes: {
@@ -2511,6 +2520,7 @@ export async function activateDarkTheme(interruptionsContainer, targetHoursConta
             });
         }
 
+        // update program state after updating database
         blackFlowtimeBackground.click();
         blackChilltimeBackground.click();
     }

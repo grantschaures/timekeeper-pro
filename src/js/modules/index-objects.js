@@ -171,7 +171,6 @@ export const flags = {
     totalTimeToggle: true,
     muffinToggle: true,
     canTriggerZZZ: true
-
 }
 
 export const tempStorage = {
