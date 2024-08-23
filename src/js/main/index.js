@@ -1373,6 +1373,7 @@ export function updateDataPerHour(intervalArrs, finalDate, initialDate, perHourD
     updateDataPerHour(intervalArrs, previousFinalDate, previousInitialDate, perHourData);
 }
 
+// needs more testing
 function calculateDeepWorkPerHour(transitionTimes, finalDate, initialDate) {
     
     let breakInterval = false;
@@ -1382,28 +1383,30 @@ function calculateDeepWorkPerHour(transitionTimes, finalDate, initialDate) {
     let initialTime = initialDate.getTime();
 
     let i = 0;
+    let lastIndex = 0;
     while ((transitionTimes[i] < finalTime) && (i < transitionTimes.length)) {
         if (transitionTimes[i] >= initialTime) {
-            if (i % 2 === 1) { // if i is odd
+            if (i % 2 === 1) { // if i is odd (--> Break)
                 if (breakInterval) {
                     deepWorkSumArr.push(transitionTimes[i] - transitionTimes[i-1])
                     breakInterval = false;
                 } else {
                     deepWorkSumArr.push(transitionTimes[i] - initialTime)
                 }
-            } else { // if i is even
+            } else { // if i is even (--> DW)
                 breakInterval = true;
             }
         }
+        lastIndex = i;
         i++;
     }
 
-    let lastIndex = transitionTimes.length - 1;
+    // essentially this deals w/ ending session in middle of hour
     if ((transitionTimes[lastIndex] < finalTime) && (lastIndex % 2 === 0)) {
         if (transitionTimes[lastIndex] < initialTime) {
             deepWorkSumArr.push(finalTime - initialTime);
         } else {
-            deepWorkSumArr.push(finalTime - transitionTimes[transitionTimes.length - 1]);
+            deepWorkSumArr.push(finalTime - transitionTimes[lastIndex]);
         }
     }
 

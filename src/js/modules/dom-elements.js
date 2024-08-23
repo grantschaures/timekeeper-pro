@@ -268,9 +268,3 @@ export let hoverTimer;
 export var backgroundVideoSource = document.getElementById('background-video-source');
 export var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 export const initialViewportWidth = window.innerWidth || document.documentElement.clientWidth;
-
-
-
-
-// testing
-export const pipGUIContainer = document.getElementById('pipGUIContainer');

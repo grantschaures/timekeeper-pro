@@ -2027,8 +2027,8 @@ header {
 }
 
 #cat1 {
-    width: 60px;
-    top: -47px; /* Align the image to the top */
+    width: 70px;
+    top: -54px; /* Align the image to the top */
     right: 85px;;
 }
 
@@ -2087,7 +2087,8 @@ header {
 }
 
 .catest {
-    display: flex;
+    /* display: flex; */
+    display: none;
     z-index: 26;
     height: auto;
     position: absolute;
@@ -2095,16 +2096,23 @@ header {
     transition: opacity 0.5s ease-out;
 }
 
-#cat9 {
-    width: 80px;
-    top: 15px; /* Align the image to the top */
-    right: 216px;
+#cat10 {
+    width: 50px;
+    top: 30px;
+    right: -40px;
 }
 
-#cat10 { /* head */
-    width: 80px;
-    top: 15px; /* Align the image to the top */
-    right: 225px;
+#cat11 {
+    width: 115px;
+    transform: scaleX(1.25);
+    bottom: -14px;
+    left: -19px;
+}
+
+#cat12 {
+    width: 75px;
+    left: 100px;
+    top: -50px;
 }
 
 .cat:hover {
@@ -2135,31 +2143,4 @@ header {
     100% {
         transform: scaleX(1); /* Return to original scaleX */
     }
-}
-
-
-/* TESTING */
-
-#pipGUIconBlack {
-    width: 30px;
-    height: auto;
-    display: none;
-}
-
-#pipGUIconWhite {
-    width: 35px;
-    height: auto;
-    display: flex;
-}
-
-#pipGUIContainer {
-    margin-left: 10px;
-}
-
-#pipGUIContainer:hover #pipGUIconWhite {
-    display: none;
-}
-
-#pipGUIContainer:hover #pipGUIconBlack {
-    display: flex;
 }
