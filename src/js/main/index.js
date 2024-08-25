@@ -143,7 +143,6 @@ document.addEventListener("stateUpdated", function() {
         resetDisplay(display);
         updateLabelArrs(transitionTime, labelFlags, labelArrs);
 
-        
         if (counters.startStop === 1) {
             veryStartActions(startTimes, flags, times, counters, interruptionsNum);
             triggerSilentAlertAudioMobile(soundMap.Chime, soundMap.Bell, chimePath, bellPath, flags);

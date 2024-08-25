@@ -211,11 +211,12 @@ document.addEventListener("stateUpdated", function() {
 
     })
 
-    pipWindow.document.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter') {
-        start_stop_btn.click();
-      }
-    })
+    // pipWindow.document.addEventListener('keydown', (event) => {
+    //   if (event.key === 'Enter') {
+    //     console.log('test')
+    //     start_stop_btn.click();
+    //   }
+    // })
   })
 
   window.addEventListener('resize', function() {
