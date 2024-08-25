@@ -1,7 +1,7 @@
 import { catsContainer, completedPomodoros_label, completedPomodoros_min, completedPomodorosContainer, display, interruptionsChangeContainer, interruptionsContainer, interruptionsLabel, interruptionsNum, interruptionsSubContainer, lowerButtons, notesBtn, notesContainer, pipIconContainer, productivity_chill_mode, progress, start_stop_btn, stopwatch, suggestionBreak_label, suggestionBreak_min, targetHoursContainer, targetHoursInterruptionsContainer, timekeepingContainer } from "../modules/dom-elements.js";
 import { catIds, counters, flags, pip, selectedBackground } from "../modules/index-objects.js";
 
-import { displayCat, setBackground } from "../main/index.js";
+import { displayCat, setBackground } from '../main/index.js';
 
 document.addEventListener("stateUpdated", function() {
   if ("documentPictureInPicture" in window) {
