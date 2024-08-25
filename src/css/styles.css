@@ -2256,7 +2256,7 @@ header {
     content: "";
     position: absolute;
     bottom: -10px;      /* Position the point at the bottom of the bubble */
-    left: 130px;         /* Adjust to position it towards the left side */
+    left: 132px;         /* Adjust to position it towards the left side */
     width: 0;
     height: 0;
     border-left: 10px solid transparent;

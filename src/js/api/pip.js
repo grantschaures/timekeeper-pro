@@ -64,7 +64,7 @@ document.addEventListener("stateUpdated", function() {
     suggestionBreak_min.style.marginBottom = "0px";
     suggestionBreak_min.style.marginTop = "0px";
     completedPomodoros_label.style.display = "none";
-    completedPomodorosContainer.style.paddingTop = '20px';
+    completedPomodorosContainer.style.paddingTop = '22px';
 
     interruptionsLabel.style.display = 'none';
     targetHoursContainer.style.visibility = 'hidden';
@@ -73,6 +73,7 @@ document.addEventListener("stateUpdated", function() {
     interruptionsContainer.style.height = '75px';
     interruptionsContainer.style.minHeight = '75px';
     interruptionsContainer.classList.add('pipMode');
+    interruptionsNum.style.marginTop = '3px';
     interruptionsSubContainer.style.marginTop = '0px';
     interruptionsChangeContainer.style.marginBottom = '0px';
     interruptionsChangeContainer.style.marginTop = '0px';
@@ -197,7 +198,6 @@ document.addEventListener("stateUpdated", function() {
         interruptionsContainer.style.minHeight = '60px';
       } else {
         interruptionsNum.style.fontSize = '50px';
-        interruptionsNum.style.marginTop = '3px';
         completedPomodoros_min.style.fontSize = '50px';
         interruptionsContainer.style.height = '75px';
         interruptionsContainer.style.minHeight = '75px';     
