@@ -1097,6 +1097,7 @@ button:hover {
     font-family: myFont3;
     text-align: center;
     font-size: 24px;
+    padding-top: 10px;
 
     /* border: 1px solid yellow; */
 }

@@ -52,7 +52,7 @@ document.addEventListener("stateUpdated", function() {
     timekeepingContainer.style.marginTop = '10px';
     timekeepingContainer.style.marginBottom = '5px';
     if (counters.startStop === 0) {
-      productivity_chill_mode.innerText = "Press 'Start'"
+      productivity_chill_mode.innerHTML = "<b>Press 'Start'</b>";
     }
 
     lowerButtons.classList.add('pipMode');
@@ -146,7 +146,7 @@ document.addEventListener("stateUpdated", function() {
 
 
       if (counters.startStop === 0) {
-        productivity_chill_mode.innerText = "Press 'Start' to begin session"
+        productivity_chill_mode.innerHTML = "<b>Press 'Start' to begin session</b>";
       }
 
       lowerButtons.classList.remove('pipMode');
