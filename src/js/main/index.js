@@ -2179,7 +2179,7 @@ function targetHoursValidate(inputHours, timeConvert, startTimes, elapsedTime, f
 // Latest edit: removed flags.inHyperFocus = stop_start === "Stop";
 export function setButtonTextAndMode(start_stop_btn, productivity_chill_mode, stop_start, hf_ct) {
     start_stop_btn.innerText = stop_start;
-    productivity_chill_mode.innerText = hf_ct;
+    productivity_chill_mode.innerHTML = `<b>${hf_ct}</b>`;
 };
 
 export function updateProgressBar(timeAmount, startTimes, elapsedTime, flags, progressBar, progressContainer) {
