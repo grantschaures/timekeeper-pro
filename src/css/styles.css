@@ -1268,7 +1268,7 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: myFont3;
+    font-family: myFont3, 'Consolas', 'Menlo', 'Courier New', 'monospace';
     font-size: 100px;
     transform: scaleY(1.1);
     text-align: center;
