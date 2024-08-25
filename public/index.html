@@ -34,6 +34,7 @@
         <script type="module" src="/js/main/notes.js"></script>
         <script type="module" src="/js/main/end-session.js"></script>
         <script type="module" src="/js/api/google-signin.js"></script>
+        <script type="module" src="/js/api/pip.js"></script>
 
         <script type="module" src="/js/dashboard/daily-sessions.js"></script>
         <script type="module" src="/js/dashboard/label-distribution.js"></script>
@@ -300,6 +301,7 @@
                     </div>
                 </div>
                 <div class="bottom">
+                    <img id="pip-cat-shadow" src="images/sprites/lil-shadow.png">
                     <div class="bottomLeft">
                         <div id="settingsGUIContainer" data-testid="settingsGUIContainer" alt="Settings Button" class="no-select UIContainer">  <!-- z-index: 20 -->
                             <img src="images/icons/settingsIcon1.png" id="settingsGUIconWhite">
@@ -393,7 +395,7 @@
                             </div>
                             <div id="suggestionBreakContainer" class="no-select">
                                 <h4 id="suggestionBreak-label" data-testid="suggestionBreak-label" class="no-select"></h4>
-                                <h4 id="suggestionBreak-min" data-testid="suggestionBreak-min" class="no-select"></h4>
+                                <div id="suggestionBreak-min" data-testid="suggestionBreak-min" class="no-select"></div>
                             </div>
                             <div id="completedPomodorosContainer" class="no-select">
                                 <h4 id="completedPomodoros-label" class="no-select"></h4>
@@ -403,6 +405,14 @@
                     </div>
                         
                     <div id="progress">
+                        <div id="progressCatContainer">
+                            <div id="pip-info-text">
+                                Welcome to mini-mode! Feel free to drag the mini window to wherever you're working.
+                                I'll be patiently waiting for your return. Meowww!
+                            </div>
+                            <img id="cat13" src="images/sprites/Kitty5-1.png" class="catest">
+                            <img id="cat14" src="images/sprites/Kitty5-2.png" class="catest">
+                        </div>
                         <div id="progress-bar-container" class="small" data-testid="progress-bar-container"> <!-- z-index: 25 -->
                             <div id="progress-container" data-testid="progress-container">
                                 <div id="progress-bar"></div>
@@ -413,12 +423,12 @@
 
                     <div id="timekeeping-container">
                         <div class="mode-text">
-                            <h3 id="productivity-chill-mode" data-testid="productivity-chill-mode" class="no-select">Press 'Start' to begin session</h3>
+                            <div id="productivity-chill-mode" data-testid="productivity-chill-mode" class="no-select">Press 'Start' to begin session</div>
                         </div>
                         <div class="stopwatch" id="stopwatch">
                             <div id="display" data-testid="display" class="no-select">00:00:00</div>
                         </div>
-                        <div class="lower-buttons">
+                        <div id="lowerButtons" class="lower-buttons">
                             <div>
                                 <button id="notes" class="no-select">Notes</button>
                             </div>
@@ -426,7 +436,10 @@
                                 <button id="start-stop" data-testid="start-stop" class="no-select">Start</button>
                             </div>
                             <div>
-                                <button id="end_session_btn" aria-label="End Session Button" class="no-select">End Session</button>
+                                <button id="end_session_btn" aria-label="End Session Button" class="no-select">End</button>
+                            </div>
+                            <div id="pip-icon-container">
+                                <div id="pip-icon"></div>
                             </div>
                         </div>
                     </div>
@@ -1050,7 +1063,7 @@
                         <h2 class="abouth2">2. Press 'Start' to start the session</h2>
                         <h2 class="abouth2">3. After you've been working or studying for a while and need a break, press 'Switch' to enter 'Break'</h2>
                         <h2 class="abouth2">4. Press 'Switch' once again to re-enter 'Deep Work'</h2>
-                        <h2 class="abouth2">5. Repeat steps 3-4 as needed until you're done with the session entirely, at which point you can hit 'End' or 'End Session'</h2>
+                        <h2 class="abouth2">5. Repeat steps 3-4 as needed until you're done with the session entirely, at which point you can hit 'End' to end the session</h2>
                     </div>
                     <div>
                         <h1 style="font-size: 26px">Benefits & Features</h1>

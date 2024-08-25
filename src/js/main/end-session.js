@@ -1,4 +1,4 @@
-import { timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, counters, flags, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, lightHtmlBackground, darkHtmlBackground, times, perHourData, catIds, tempCounters } from '../modules/index-objects.js';
+import { timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, counters, flags, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, lightHtmlBackground, darkHtmlBackground, times, perHourData, catIds, tempCounters, pip } from '../modules/index-objects.js';
 import { start_stop_btn, end_session_btn, total_time_display, productivity_chill_mode, progressBar, progressContainer, display, interruptionsSubContainer, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, flowAnimation, chillAnimation, streaksCount, breakBackground, deepWorkBackground, commentsTextArea, sessionSummaryOkBtn, subjectiveFeedbackDropdown, sessionSummaryPopup, summaryStats, HC_icon_session_summary, commentsContainer, sessionSummarySignupPromptPopup, popupOverlay, HC_icon_signup_prompt, signupPromptPopupBtn } from '../modules/dom-elements.js';
 import { soundMap } from '../modules/sound-map.js';
 import { sessionState } from '../modules/state-objects.js';
@@ -337,6 +337,11 @@ function fillTempStorage(deepWork, focusQuality, targetHours, tempStorage) {
 function resetBackgrounds(deepWorkBackground, breakBackground) {
     deepWorkBackground.style.opacity = 0;
     breakBackground.style.opacity = 0;
+
+    if (flags.pipWindowOpen) {
+        pip.window.document.body.style.backgroundImage = '';
+        pip.window.document.body.style.backgroundColor = 'rgba(0, 0, 0, 0)';
+    }
 }
 
 function resetActions(flags, intervals, recoverBreakState, recoverPomState, startTimes, elapsedTime, counters, savedInterruptionsArr, intervalArrs, times) {
@@ -565,7 +570,11 @@ export function initialVisualReset(tempCounters) {
     resetDisplay(display);
 
     // reset header text
-    setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Start", "Press 'Start' to begin session");
+    if (flags.pipWindowOpen) {
+        setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Start", "Press 'Start'");
+    } else {
+        setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Start", "Press 'Start' to begin session");
+    }
 
     // remove cats
     hideCat(catIds, tempCounters);

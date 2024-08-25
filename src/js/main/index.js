@@ -1,4 +1,4 @@
-import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selectedBackgroundIdTemp, selectedBackgroundId, timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, alertVolumes, alertSounds, counters, flags, tempStorage, settingsMappings, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, times, perHourData, catIds, lightHtmlBackground, darkHtmlBackground, tempCounters } from '../modules/index-objects.js';
+import { flowtimeBackgrounds, chilltimeBackgrounds, selectedBackground, selectedBackgroundIdTemp, selectedBackgroundId, timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, alertVolumes, alertSounds, counters, flags, tempStorage, settingsMappings, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, times, perHourData, catIds, lightHtmlBackground, darkHtmlBackground, tempCounters, pip } from '../modules/index-objects.js';
 
 import { chimePath, bellPath, clock_tick, soundMap } from '../modules/sound-map.js';
 
@@ -74,8 +74,6 @@ document.addEventListener("stateUpdated", function() {
     // ----------------
 
     //Safari on iPad Pro acts like mobile (no push notifications) but identifies as desktop
-
-    setEndSessionBtnText(initialViewportWidth, end_session_btn);
 
     window.scrollTo({ top: 0, behavior: 'smooth' }); // scroll to top
 
@@ -1070,11 +1068,7 @@ document.addEventListener("stateUpdated", function() {
     muffinToggle.addEventListener("click", async function() {
         if (muffinToggle.checked) {
             flags.muffinToggle = true;
-            
-            // show muffin if in break mode
-            if (!flags.inHyperFocus) {
-                displayCat(catIds, counters);
-            }
+            displayCat(catIds, counters);
             
         } else {
             flags.muffinToggle = false;
@@ -1122,6 +1116,10 @@ document.addEventListener("stateUpdated", function() {
         setTimeout(() => {
             flowmodoroBtnContainer.click();
         }, 0)
+
+        if (flags.pipWindowOpen) {
+            window.focus(); // get back to the tab
+        }
     })
 
     // ---------------------
@@ -1232,8 +1230,8 @@ function updateCatIdsArrIndex(counters) {
     }
 }
 
-function displayCat(catIds, counters) {
-    if (flags.muffinToggle) {
+export function displayCat(catIds, counters) {
+    if ((flags.muffinToggle) && (!flags.pipWindowOpen) && (!flags.inHyperFocus) && (counters.startStop > 0)) {
         document.getElementById([catIds[counters.catIdsArrIndex]]).style.display = "block";
         setTimeout(() => {
             document.getElementById([catIds[counters.catIdsArrIndex]]).style.opacity = '1';
@@ -1980,7 +1978,6 @@ function showAllSettingsContainers(settingsMappings) {
 
 function handleViewportWidthChange(settingsMappings, tempStorage, end_session_btn) {
     let viewportWidth = window.innerWidth || document.documentElement.clientWidth;
-    setEndSessionBtnText(viewportWidth, end_session_btn);
 
     if (viewportWidth <= 650) {
         showAllSettingsContainers(settingsMappings);
@@ -1998,14 +1995,6 @@ function handleViewportWidthChange(settingsMappings, tempStorage, end_session_bt
         if (document.getElementById("settingsContainer").style.display === 'block') {
             document.getElementById(tempStorage.lastSettingsSelectionId).click();
         }
-    }
-}
-
-function setEndSessionBtnText(initialViewportWidth, end_session_btn) {
-    if (initialViewportWidth <= 536) {
-        end_session_btn.innerText = "End";
-    } else {
-        end_session_btn.innerText = "End Session";
     }
 }
 
@@ -2076,7 +2065,7 @@ function hideInterruptionsSubContainer(interruptionsSubContainer) {
 }
 
 export function showInterruptionsSubContainer(interruptionsSubContainer) {
-    interruptionsSubContainer.style.display = 'block';
+    interruptionsSubContainer.style.display = 'flex';
 }
 
 function saveResetInterruptions(interruptionsNum, counters, savedInterruptionsArr) {
@@ -2317,21 +2306,35 @@ export function getTotalElapsed(flags, elapsedTime, startTimes) { //return curre
 };
 
 function setTabTitleFromDisplay() {
-    document.title = document.getElementById("display").innerText;
+    if (flags.pipWindowOpen) {
+        document.title = pip.window.document.getElementById('display').innerText;
+    } else {
+        document.title = document.getElementById("display").innerText;
+    }
 };
 
 function setBrowserTabTitle() {
     // Function to set the browser tab title based on the content of the #display div
 
     // Initially set the browser tab title
-    document.title = document.getElementById("display").innerText;
+    if (flags.pipWindowOpen) {
+        document.title = pip.window.document.getElementById('display').innerText;
+        // Start observing the #display div for changes to its child nodes or subtree
+        observer.observe(pip.window.document.getElementById("display"), {
+            childList: true,
+            subtree: true,
+            characterData: true
+        });
+    } else {
+        document.title = document.getElementById("display").innerText;
+        // Start observing the #display div for changes to its child nodes or subtree
+        observer.observe(document.getElementById("display"), {
+            childList: true,
+            subtree: true,
+            characterData: true
+        });
+    }
 
-    // Start observing the #display div for changes to its child nodes or subtree
-    observer.observe(document.getElementById("display"), {
-        childList: true,
-        subtree: true,
-        characterData: true
-    });
 };
 
 export function setFavicon(faviconPath) {
@@ -2415,19 +2418,23 @@ export function setInitialBackgroundCellSelection() {
 }
 
 export function setBackground(background_color, opacity) {
-    if (background_color === "") { // when ending a session
-        deepWorkBackground.style.opacity = 0;
-        breakBackground.style.opacity = 0;
-        
-    } else if (flags.inHyperFocus) {
+    if (flags.inHyperFocus) {
         breakBackground.style.opacity = 0; // alt fades out, revealing dw background
 
         deepWorkBackground.style.backgroundImage = background_color;
-        deepWorkBackground.style.opacity = opacity; // 1 (permenant for rest of session)
+        deepWorkBackground.style.opacity = opacity; // 1 (permenant for rest of session
+
+        if (flags.pipWindowOpen) {
+            pip.window.document.body.style.backgroundImage = background_color;
+        }
 
     } else {
         breakBackground.style.backgroundImage = background_color;
         breakBackground.style.opacity = 1; // alt fades in (on top of dw background)
+
+        if (flags.pipWindowOpen) {
+            pip.window.document.body.style.backgroundImage = background_color;
+        }
     }
 }
 
@@ -2469,6 +2476,10 @@ export function deactivateDarkTheme(interruptionsContainer, targetHoursContainer
 
     document.documentElement.style.backgroundImage = lightHtmlBackground; // set html background
 
+    if (flags.pipWindowOpen) {
+        pip.window.document.body.style.backgroundImage = ''; // removing body image
+    }
+
     if ((selectedBackgroundId.flowtime === "black-flowtime") && (selectedBackgroundId.chilltime === "black-chilltime")) {
         document.getElementById(selectedBackgroundIdTemp.flowtime).click();
         document.getElementById(selectedBackgroundIdTemp.chilltime).click();
@@ -2508,6 +2519,10 @@ export async function activateDarkTheme(interruptionsContainer, targetHoursConta
             setBackground(darkBackgroundStr, 1);
         } else if ((!flags.inHyperFocus) && (counters.startStop >= 1)) {
             setBackground(darkBackgroundStr, 1);
+        }
+
+        if (flags.pipWindowOpen) {
+            pip.window.document.body.style.backgroundImage = 'linear-gradient(90deg, #202020, #202020, #202020)';
         }
 
         // update database

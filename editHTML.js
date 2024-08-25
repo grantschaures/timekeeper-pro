@@ -36,6 +36,7 @@ const endSessionJsPath = './src/js/main/end-session.js';
 const navigationJsPath = './src/js/main/navigation.js';
 const loginJsPath = './src/js/login-signup/login.js';
 const googleSignInPath = './src/js/api/google-signin.js';
+const pipJsPath = './src/js/api/pip.js';
 
 const dailySessionsJsPath = './src/js/dashboard/daily-sessions.js';
 
@@ -55,6 +56,7 @@ const indexHtmlReplacements = [
     { pattern: /\/js\/main\/end-session\.js/g, replacement: '/js/minified/end-session.min.js' },
     { pattern: /\/js\/state\/state\.js/g, replacement: '/js/minified/state.min.js' },
     { pattern: /\/js\/api\/google-signin\.js/g, replacement: '/js/minified/google-signin.min.js' },
+    { pattern: /\/js\/api\/pip\.js/g, replacement: '/js/minified/pip.min.js' },
     { pattern: /\/js\/utility\/preload\.js/g, replacement: '/js/minified/preload.min.js' },
     { pattern: /\/js\/utility\/session-summary-chart\.js/g, replacement: '/js/minified/session-summary-chart.min.js' },
     { pattern: /\/js\/utility\/main-charts\.js/g, replacement: '/js/minified/main-charts.min.js' },
@@ -183,6 +185,13 @@ const googleSignInReplacements = [
     }
 ];
 
+const pipReplacements = [
+    {
+        pattern: /import { displayCat, setBackground } from '..\/main\/index.js';/g,
+        replacement: "import { displayCat, setBackground } from '../minified/index.min.js';"
+    }
+];
+
 const loginReplacements = [
     {
         pattern: /import { initializeGUI } from '..\/utility\/initialize-gui.js';/g,
@@ -298,3 +307,4 @@ readFileAndReplace(updateLabelsJsPath, updateLabelsReplacements);
 readFileAndReplace(metricChartsJsPath, metricChartsReplacements);
 readFileAndReplace(advChartsJsPath, advChartsReplacements);
 readFileAndReplace(summaryStatsJsPath, summaryStatsReplacements);
+readFileAndReplace(pipJsPath, pipReplacements);

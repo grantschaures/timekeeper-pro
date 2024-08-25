@@ -649,6 +649,7 @@ button:hover {
     /* border: 1px solid orange; */
 }
 
+
 @media (max-width: 635px) {
     #targetHoursInterruptionsContainer {
         width: 100%;
@@ -684,7 +685,8 @@ button:hover {
     box-sizing: border-box;
     
     border-radius: 25px; /* Created corner curves */
-    /* border: 1px solid yellow; */
+
+    /* border: 1px solid rgb(255, 0, 242); */
 
     z-index: 25;
 }
@@ -717,13 +719,17 @@ button:hover {
 }
 
 @media (min-width: 505px) {
-    #interruptions-container {
+    #interruptions-container:not(.pipMode) {
         max-width: 275px;
     }
     #targetHoursContainer {
         max-width: 275px;
         margin-right: 15px;
     }
+}
+
+#interruptions-container.pipMode {
+    max-width: 575px;
 }
 
 /* Combined styles for both elements */
@@ -734,38 +740,36 @@ button:hover {
     justify-content: center;
     flex-direction: column;
     max-width: 225px;
-}
 
-/* #quoteContainer {
-    display: none;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    max-width: 225px;
+    /* border: 1px solid blue; */
 }
-
-#quoteText {
-    font-size: 14px;
-} */
 
 /* Unique style for #completedPomodorosContainer */
 #completedPomodorosContainer {
-    margin-bottom: 30px;
-    margin-top: 6px;
+    margin-bottom: 25px;
 }
 
 #interruptions-sub-container {
+    display: flex;
+    flex-direction: column;
     margin-top: 6px;
-    /* border: 1px solid yellow; */
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    width: 100%;
+    height: auto;
+
+    /* border: 1px solid rgb(0, 238, 255); */
 }
 
 #interruptions-change-container {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    margin-top: -8px;
+    margin-top: -10px;
     margin-bottom: 30px;
+    width: 75%;
+    
     /* border: 1px solid brown; */
 }
 
@@ -816,7 +820,7 @@ button:hover {
 }
 
 #completedPomodoros-min {
-    margin-top: 7px;
+    margin-top: 6px;
 }
 
 #interruptions-label {
@@ -829,6 +833,7 @@ button:hover {
 #suggestionBreak-label, #completedPomodoros-label {
     /* border: 1px solid yellow; */
     display: flex;
+    /* display: none; */
     justify-content: center;
     font-family: myFont3;
     font-size: 20px;
@@ -838,15 +843,17 @@ button:hover {
 #suggestionBreak-min {
     /* border: 1px solid yellow; */
     display: flex;
+    /* display: none; */
     justify-content: center;
     font-family: myFont3;
-    /* border: 2px solid white; */
     width: 100px;
     border-radius: 50px;
-    margin-bottom: 42px;
+    margin-bottom: 45px;
+    margin-top: 27px;
     font-size: 20px;
     color: white;
     background-color: rgba(255, 255, 255, 0);
+    /* border: 2px solid white; */
 
     transition: background-color 0.15s ease-in-out;
 }
@@ -918,11 +925,10 @@ button:hover {
 
 #timekeeping-container {
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
+    justify-content: space-evenly;
 
-    padding-block: 50px;
-    margin-block: 10px;
-    margin-top: 25px;
+    /* margin-block: 10px; */
     margin-bottom: 25px;
 
     background-color: rgba(0, 0, 0, 0.9);
@@ -952,11 +958,27 @@ button:hover {
     
 }
 
+#pipContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    padding: 25px;
+    box-sizing: border-box;
+
+    /* border: 2px solid gold; */
+}
+
 .lower-buttons {
     display: flex;
+    /* display: none; */
     justify-content: center;
     gap: 10px;
-    margin: 10px;
+    align-items: center;
+    /* height: 100%; */
+
     /* border: 1px solid yellow; */
 }
 
@@ -967,7 +989,7 @@ button:hover {
 }
 
 @media (max-width: 320px) {
-    .lower-buttons {
+    .lower-buttons:not(.pipMode) {
         scale: 0.75;
         flex-direction: column;
         align-items: center;
@@ -1055,26 +1077,28 @@ button:hover {
     animation: threeWayToggleAnimation 1s;
 }
 
-.stopwatch {
-    display: block;
-    padding-block: 25px;
-    font-size: 48px;
-    /* border: 1px solid yellow; */
-    color: white;
-    text-align: center;
-    width: 100%;
-}
-
 #start-stop {
     width: 128px;
 }
 
+.mode-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    height: auto;
+
+    /* border: 1px solid green; */
+}
+
 #productivity-chill-mode {
-    /* border: 1px solid yellow; */
+    display: flex;
     color: white;
     font-family: myFont3;
     text-align: center;
     font-size: 24px;
+
+    /* border: 1px solid yellow; */
 }
 
 #session-log {
@@ -1125,14 +1149,21 @@ button:hover {
     
     border-radius: 50px; /* Created corner curves */
     margin-top: 25px;
+    margin-bottom: 25px;
     z-index: 25;
 }
 
 #progress {
     display: flex;
+    position: relative;
     align-items: center;
+    flex-direction: column;
     width: 100%;
-    height: 80px;
+    height: 100%;
+    /* border-radius: 25px;
+    background-color: rgba(0, 0, 0, 0.9); */
+
+    /* border: 2px solid white; */
 }
 
 /*  This style causes progress container to "bounce" a little on
@@ -1219,13 +1250,28 @@ button:hover {
     }
 }
 
+.stopwatch {
+    display: flex;
+    font-size: 48px;
+    color: white;
+    text-align: center;
+    justify-content: center;
+    width: 100%;
+    height: auto;
+
+    /* border: 1px solid yellow; */
+}
+
 #display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-family: myFont3;
     font-size: 100px;
-    /* padding-bottom: 25px; */
-    margin-top: -30px;
-    margin-bottom: -10px;
     transform: scaleY(1.1);
+    text-align: center;
+
+    /* border: 1px solid purple; */
 }
 
 @media (max-width: 599px) {
@@ -1275,18 +1321,8 @@ button:hover {
 
 @media (max-width: 260px) {
     #display {
-        font-size: 25px;
+        font-size: 35px;
     }
-}
-
-.mode-text {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-
-    /* border: 1px solid green; */
 }
 
 @keyframes pulsate {
@@ -2119,6 +2155,121 @@ header {
     cursor: pointer;
 }
 
+#cat13 {
+    display: none;
+    opacity: 0;
+    transition: opacity 1s ease-out;
+    width: 60px;
+    top: -10px;
+    left: 50%;          /* Move to the middle of the parent horizontally */
+    transform: translateX(-50%);
+    z-index: 26;
+}
+
+#cat14 {
+    display: none;
+    opacity: 0;
+    transition: opacity 1s ease-out;
+    width: 60px;
+    top: 25px;
+    left: 50%;          /* Move to the middle of the parent horizontally */
+    z-index: 24;
+    transform-origin: top center; /* Rotate around the top center of the element */
+
+    animation: wobble 5s ease-in-out infinite;
+}
+
+@keyframes wobble {
+    0% {
+        transform: translateX(-50%) rotate(5deg);
+    }
+    25% {
+        transform: translateX(-50%) rotate(-5deg);
+    }
+    50% {
+        transform: translateX(-50%) rotate(5deg);
+    }
+    75% {
+        transform: translateX(-50%) rotate(-5deg);
+    }
+    100% {
+        transform: translateX(-50%) rotate(5deg);
+    }
+}
+
+@keyframes translateShadow {
+    0% {
+        transform: translateX(calc(-50% - 5px));
+    }
+    25% {
+        transform: translateX(calc(-50% + 5px));
+    }
+    50% {
+        transform: translateX(calc(-50% - 5px));
+    }
+    75% {
+        transform: translateX(calc(-50% + 5px));
+    }
+    100% {
+        transform: translateX(calc(-50% - 5px));
+    }
+}
+
+#pip-cat-shadow {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+    width: 80px;
+    top: 40px;
+    left: 50%;          /* Move to the middle of the parent horizontally */
+    z-index: 0;
+    height: auto;
+    position: absolute;
+
+    animation: translateShadow 5s ease-in-out infinite;
+}
+
+#pip-info-text {
+    display: none;
+    opacity: 0;
+    transition: opacity 1s ease-out;
+    position: absolute;
+    width: 250px;
+    height: 112px;
+    padding: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-radius: 25px;
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    font-family: settingsHeaderFont;
+    font-size: 18px;
+
+    transform: translateX(-50%);
+    top: -150px;
+    left: 50%;          /* Move to the middle of the parent horizontally */
+}
+
+#pip-info-text:after {
+    content: "";
+    position: absolute;
+    bottom: -10px;      /* Position the point at the bottom of the bubble */
+    left: 130px;         /* Adjust to position it towards the left side */
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid rgba(0, 0, 0, 0.9); /* Match the background color */
+}
+
+#progressCatContainer {
+    display: flex;
+    position: relative;
+    width: 100%;
+
+    /* border: 1px solid yellow; */
+}
+
 #zzz {
     position: absolute;
     /* display: block; */
@@ -2131,6 +2282,30 @@ header {
     right: 120px;
     transform: rotateZ(-15deg);
     transition: opacity 0.25s ease-out;
+}
+
+#pip-icon-container {
+    display: none;
+    position: relative;
+    width: 40px;
+    height: 30px;
+    border: 2px solid white;
+    border-radius: 8px;
+}
+
+#pip-icon-container:hover {
+    cursor: pointer;
+}
+
+#pip-icon {
+    display: flex;
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    background-color: white;
+    width: 15px;
+    height: 12px;
+    border-radius: 3px;
 }
 
 @keyframes scaleXAnimation {

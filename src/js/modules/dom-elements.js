@@ -9,6 +9,7 @@ export const submit_change_btn = document.getElementById("target-hours-submit");
 export const target_hours_input = document.getElementById("target-hours");
 export const end_session_btn = document.getElementById("end_session_btn");
 export const report_btn = document.getElementById("reportBtn");
+export const progress = document.getElementById("progress");
 export const total_time_display = document.getElementById("progress-text");
 export const productivity_chill_mode = document.getElementById("productivity-chill-mode");
 export const progressBarContainer = document.getElementById("progress-bar-container");
@@ -20,6 +21,8 @@ export const hyperChillTitle = document.getElementById("hyperChillTitle");
 export const subMainContainer = document.getElementById("subMainContainer");
 export const interruptionsContainer = document.getElementById("interruptions-container");
 export const interruptionsSubContainer = document.getElementById("interruptions-sub-container");
+export const interruptionsChangeContainer = document.getElementById('interruptions-change-container');
+export const interruptionsLabel = document.getElementById("interruptions-label");
 export const decBtn = document.getElementById("decBtn");
 export const incBtn = document.getElementById("incBtn");
 export const interruptionsNum = document.getElementById("interruptions_num");
@@ -30,7 +33,9 @@ export const completedPomodorosContainer = document.getElementById("completedPom
 export const completedPomodoros_label = document.getElementById("completedPomodoros-label");
 export const completedPomodoros_min = document.getElementById("completedPomodoros-min");
 export const targetHoursContainer = document.getElementById("targetHoursContainer");
+export const targetHoursInterruptionsContainer = document.getElementById("targetHoursInterruptionsContainer");
 export const timekeepingContainer = document.getElementById("timekeeping-container");
+export const lowerButtons = document.getElementById('lowerButtons');
 export const popupMenu = document.getElementById("popupMenu");
 export const settingsContainer = document.getElementById("settingsContainer");
 export const notesContainer = document.getElementById("notes-container");
@@ -259,10 +264,13 @@ export const toggleMuffin = document.getElementById('toggleMuffin');
 export const muffinToggle = document.getElementById('muffinToggle');
 
 export const cats = document.querySelectorAll('.cat');
+export const catsContainer = document.getElementById('catsContainer');
 export const zzz = document.getElementById("zzz");
 
 export const darkContainer = document.getElementById("darkContainer");
 export const lightContainer = document.getElementById("lightContainer");
+
+export const pipIconContainer = document.getElementById("pip-icon-container");
 
 export let hoverTimer;
 export var backgroundVideoSource = document.getElementById('background-video-source');

@@ -553,6 +553,10 @@ export function subMainContainerTransition(display) {
                 subMainContainer.style.display = display; // none
             }
         }, 150)
+
+        if (indexFlags.pipWindowOpen) {
+            document.getElementById('pip-cat-shadow').style.opacity = '0';
+        }
         
     } else if (display === "flex") {
         subMainContainer.style.display = display; // flex
@@ -560,6 +564,10 @@ export function subMainContainerTransition(display) {
         setTimeout(() => {
             subMainContainer.style.opacity = 1;
         }, 0)
+
+        if (indexFlags.pipWindowOpen) {
+            document.getElementById('pip-cat-shadow').style.opacity = '1';
+        }
     }
 }
 

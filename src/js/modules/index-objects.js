@@ -170,7 +170,12 @@ export const flags = {
     intervalTimeToggle: true,
     totalTimeToggle: true,
     muffinToggle: true,
-    canTriggerZZZ: true
+    canTriggerZZZ: true,
+    pipWindowOpen: false
+}
+
+export const pip = {
+    window: null
 }
 
 export const tempStorage = {
