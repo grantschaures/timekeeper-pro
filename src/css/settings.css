@@ -397,6 +397,22 @@
     opacity: 1;
 }
 
+.displayInfoWindow {
+    height: 50px;
+}
+
+@media(max-width: 620px) {
+    .displayInfoWindow {
+        height: 70px;
+    }
+}
+
+@media(max-width: 490px) {
+    .displayInfoWindow {
+        display: none;
+    }
+}
+
 #flowTimeBreakNotificationInfoWindow {
     width: 350px;
 }

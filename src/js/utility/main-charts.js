@@ -166,7 +166,7 @@ function displayDirectionIndicators() {
 
 function compareAndSetIndicatorDirection(statType, upIndicator, downIndicator) {
 
-    if ((prevStats[statType]) && (currStats[statType])) {
+    if ((prevStats[statType] !== null) && (currStats[statType] !== null)) {
         if (currStats[statType] > prevStats[statType]) {
             upIndicator.style.display = 'flex';
             setTimeout(() => {
