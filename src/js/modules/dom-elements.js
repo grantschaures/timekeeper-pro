@@ -32,6 +32,7 @@ export const suggestionBreak_min = document.getElementById("suggestionBreak-min"
 export const completedPomodorosContainer = document.getElementById("completedPomodorosContainer");
 export const completedPomodoros_label = document.getElementById("completedPomodoros-label");
 export const completedPomodoros_min = document.getElementById("completedPomodoros-min");
+export const pomodoroInfoTooltip = document.getElementById("pomodoro-info-tooltip");
 export const targetHoursContainer = document.getElementById("targetHoursContainer");
 export const targetHoursInterruptionsContainer = document.getElementById("targetHoursInterruptionsContainer");
 export const timekeepingContainer = document.getElementById("timekeeping-container");

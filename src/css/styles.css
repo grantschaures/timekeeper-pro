@@ -747,6 +747,44 @@ button:hover {
 /* Unique style for #completedPomodorosContainer */
 #completedPomodorosContainer {
     margin-bottom: 25px;
+    position: relative;
+}
+
+#pomodoro-info-tooltip {
+    display: none;
+    opacity: 0;
+    /* display: flex; */
+    position: absolute;
+    width: auto;
+    height: auto;
+    padding: 10px;
+    font-family: settingsHeaderFont;
+    color: white;
+
+    bottom: -75px;
+    left: 50%; /* Center the tip horizontally */
+    transform: translateX(-50%);
+
+    transition: opacity 0.25s ease-out;
+
+    background-color: rgba(0, 0, 0, 1);
+    border: 3px solid white;
+    border-radius: 25px;
+
+    z-index: 500;
+}
+
+#pomodoro-info-tooltip:after {
+    content: "";
+    position: absolute;
+    top: -10px; /* Position the point at the top of the bubble */
+    left: 50%; /* Center the point horizontally */
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid rgba(0, 0, 0, 1); /* Match the background color */
 }
 
 #interruptions-sub-container {

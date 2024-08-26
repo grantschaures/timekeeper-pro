@@ -1,4 +1,4 @@
-import { catsContainer, completedPomodoros_label, completedPomodoros_min, completedPomodorosContainer, display, interruptionsChangeContainer, interruptionsContainer, interruptionsLabel, interruptionsNum, interruptionsSubContainer, lowerButtons, notesBtn, notesContainer, pipIconContainer, productivity_chill_mode, progress, start_stop_btn, stopwatch, suggestionBreak_label, suggestionBreak_min, targetHoursContainer, targetHoursInterruptionsContainer, timekeepingContainer } from "../modules/dom-elements.js";
+import { catsContainer, completedPomodoros_label, completedPomodoros_min, completedPomodorosContainer, display, interruptionsChangeContainer, interruptionsContainer, interruptionsLabel, interruptionsNum, interruptionsSubContainer, lowerButtons, notesBtn, notesContainer, pipIconContainer, pomodoroInfoTooltip, productivity_chill_mode, progress, start_stop_btn, stopwatch, suggestionBreak_label, suggestionBreak_min, targetHoursContainer, targetHoursInterruptionsContainer, timekeepingContainer } from "../modules/dom-elements.js";
 import { catIds, counters, flags, pip, selectedBackground } from "../modules/index-objects.js";
 
 import { displayCat, setBackground } from '../main/index.js';
@@ -73,6 +73,7 @@ document.addEventListener("stateUpdated", function() {
     interruptionsContainer.style.height = '75px';
     interruptionsContainer.style.minHeight = '75px';
     interruptionsContainer.classList.add('pipMode');
+    interruptionsContainer.style.zIndex = '26';
     interruptionsNum.style.marginTop = '3px';
     interruptionsSubContainer.style.marginTop = '0px';
     interruptionsChangeContainer.style.marginBottom = '0px';
@@ -171,6 +172,7 @@ document.addEventListener("stateUpdated", function() {
       interruptionsContainer.style.minHeight = '';
       interruptionsContainer.style.marginTop = '0px';
       interruptionsContainer.classList.remove('pipMode');
+      interruptionsContainer.style.zIndex = '25';
       interruptionsSubContainer.style.marginTop = '6px';
       interruptionsChangeContainer.style.marginBottom = '30px';
       interruptionsChangeContainer.style.marginTop = '-10px';
@@ -219,6 +221,20 @@ document.addEventListener("stateUpdated", function() {
     //   }
     // })
   })
+
+  completedPomodoros_min.addEventListener('mouseenter', function() {
+    if (flags.pipWindowOpen) {
+      pomodoroInfoTooltip.style.display = 'flex';
+      setTimeout(() => {
+        pomodoroInfoTooltip.style.opacity = '1';
+      }, 0);
+    }
+  });
+
+  completedPomodoros_min.addEventListener('mouseleave', function() {
+    pomodoroInfoTooltip.style.display = 'none';
+    pomodoroInfoTooltip.style.opacity = '0';
+  });
 
   window.addEventListener('resize', function() {
     mainWindowResize();
