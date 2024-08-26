@@ -4,7 +4,7 @@ describe('Pomodoro | Auto and non-auto start', () => {
         cy.get('#subMainContainer').invoke('css', 'opacity', '1');
         cy.get('[data-testid="menuBtn"]').click();
         cy.contains("Settings").click();
-        cy.contains("Pomodoro").click();        
+        cy.get('[data-testid="pomodoroBtnContainer"]').click();      
     })
     
     it('Pomodoro Info Window Shows Up', () => {
@@ -162,7 +162,7 @@ describe('Addition and removal of glowing-effect on start-stop btn', () => {
         cy.get('#subMainContainer').invoke('css', 'opacity', '1');
         cy.get('[data-testid="menuBtn"]').click();
         cy.contains("Settings").click();
-        cy.contains("Pomodoro").click();
+        cy.get('[data-testid="pomodoroBtnContainer"]').click();
     })
     
     it("Changing pomodoro notification time during pomodoro interval correctly adds or removes glowing-effect", () => {

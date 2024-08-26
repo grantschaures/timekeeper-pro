@@ -107,3 +107,5 @@ export const summaryAvgDeepWorkTimeTitle = document.getElementById('summaryAvgDe
 export const summaryAvgAdjustedDeepWorkTimeTitle = document.getElementById('summaryAvgAdjustedDeepWorkTimeTitle');
 export const summaryAvgDeepWorkIntervalTitle = document.getElementById('summaryAvgDeepWorkIntervalTitle');
 export const summaryAvgBreakIntervalTitle = document.getElementById('summaryAvgBreakIntervalTitle');
+
+export const summaryStatHeaders = document.querySelectorAll('.summaryStatHeader');

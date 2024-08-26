@@ -7,6 +7,17 @@ import { initializeHourlyData } from '../utility/adv-charts.js'; // minified
 // Global Vars
 const FOCUS_QUALITY_CONSTANT = constants.FOCUS_QUALITY_CONSTANT;
 
+// document.addEventListener("stateUpdated", function() {
+//     window.addEventListener('resize', checkViewportWidth);
+// })
+
+// function checkViewportWidth() {
+//     if (window.innerWidth <= 1195) {
+        
+//     }
+//     // 1195px
+// }
+
 export function populateDashboardSummaryStats(timeConvert, dailySummarizedData, dashboardData) {
     let totalDeepWork = 0;
     let totalDistractions = 0;

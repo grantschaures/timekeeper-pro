@@ -28,14 +28,6 @@ export function checkViewportWidth() {
         labelDistributionYear.innerText = "Year";
 
     }
-
-    if (window.innerWidth <= 610) {
-        labelDistributionTimeFrame.style.display = "none";
-
-    } else {
-        labelDistributionTimeFrame.style.display = "flex";
-
-    }
 }
 
 document.addEventListener("DOMContentLoaded", function() {

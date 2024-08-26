@@ -61,7 +61,7 @@
     flex-direction: column;
     position: relative;
     width: 75%;
-    min-width: 40%;
+    min-width: 250px;
     margin-left: 10px;
     margin-right: 10px;
 }
@@ -72,8 +72,6 @@
     justify-content: space-around;
     width: 225px;
     margin-left: 10px;
-    flex-shrink: 0;
-    flex-grow: 0;
 }
 
 .summaryStatContainer {
@@ -112,6 +110,7 @@
     font-family: settingsHeaderFontBold;
     box-sizing: border-box;
     /* border: 2px solid green; */
+    white-space: nowrap;
 
     padding-left: 10px;
     padding-right: 10px;
@@ -310,7 +309,7 @@
 
 #dailyContainer {
     width: 400px;
-    min-width: 300px;
+    min-width: 250px;
     margin-right: 10px;
 }
 
@@ -831,9 +830,24 @@
     }
 }
 
-@media (max-width: 450px) {
+@media (max-width: 915px) {
     .summarySubContainer {
         font-size: 14px;
+    }
+    .directionIndicator {
+        padding-bottom: 6px;
+    }
+    .summaryTitle {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 710px) {
+    .summarySubContainer {
+        font-size: 12px;
+    }
+    .directionIndicator {
+        padding-bottom: 8px;
     }
 }
 
@@ -855,35 +869,67 @@
     margin-left: 20px;
 }
 
-/* TEMPORARY RESPONSIVE DESIGN CHANGES */
-@media (max-width: 1280px) {
-    #dailyContainer {
-        display: none;
+@media (max-width: 1400px) {
+    .summaryStatHeader {
+        font-size: 18px;
     }
-    #distributionsContainer {
-        margin-left: 0px;
+    .summaryStat {
+        font-size: 20px;
     }
 }
 
-@media (max-width: 935px) {
+@media (max-width: 1195px) {
+    .summaryStatHeader {
+        font-size: 16px;
+    }
+    .summaryStat {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 920px) {
+
+}
+
+@media (max-width: 870px) {
+    .summaryStatHeader {
+        font-size: 14px;
+    }
+    .summaryStat {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 865px) {
     #dashboardSummaryStatsContainer {
         display: none;
     }
     #distributionsContainer {
-        width: 100%;
         margin-right: 0px;
     }
 }
 
-@media (max-width: 610px) {
+@media (max-width: 1135px) {
     #labelDistributionTimeFrame {
         display: none;
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 955px) {
+    .metricDistributionSelection {
+        padding: 5px 9px;
+    }
+}
+
+@media (max-width: 895px) {
     .metricDistributionSelection {
         padding: 3px 6px;
+    }
+}
+
+@media (max-width: 715px) {
+    .metricDistributionSelection {
+        padding: 2px 4px;
     }
 }
 

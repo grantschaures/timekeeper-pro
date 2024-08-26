@@ -288,7 +288,7 @@ function checkViewportWidth() {
 
     }
 
-    if (window.innerWidth <= 695) {
+    if (window.innerWidth <= 1265) {
         // temporary addition
         metricDistributionTimeFrame.style.display = "none";
     } else {
@@ -296,7 +296,7 @@ function checkViewportWidth() {
         metricDistributionTimeFrame.style.display = "flex";
     }
 
-    if (window.innerWidth <= 560) {
+    if (window.innerWidth <= 1065) {
         summaryAvgAdjustedDeepWorkTimeTitle.innerText = "Avg Per Day (QA):";
         
     } else {
@@ -304,7 +304,7 @@ function checkViewportWidth() {
         
     }
 
-    if (window.innerWidth <= 550) {
+    if (window.innerWidth <= 1480) {
         mainChartsSummary.innerText = "S";
     } else {
         mainChartsSummary.innerText = "Summary";
