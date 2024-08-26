@@ -1,4 +1,4 @@
-import { directionIndicators, summaryAvgAdjustedDeepWorkDown, summaryAvgAdjustedDeepWorkTime, summaryAvgAdjustedDeepWorkUp, summaryAvgBreakInterval, summaryAvgBreakIntervalDown, summaryAvgBreakIntervalUp, summaryAvgDeepWorkDown, summaryAvgDeepWorkInterval, summaryAvgDeepWorkIntervalDown, summaryAvgDeepWorkIntervalUp, summaryAvgDeepWorkTime, summaryAvgDeepWorkUp, summaryDeepWorkTime, summaryFocusQuality, summaryFocusQualityDown, summaryFocusQualityUp } from "../modules/dashboard-elements.js";
+import { directionIndicators, summaryAvgAdjustedDeepWorkDown, summaryAvgAdjustedDeepWorkTime, summaryAvgAdjustedDeepWorkUp, summaryAvgBreakInterval, summaryAvgBreakIntervalDown, summaryAvgBreakIntervalUp, summaryAvgDeepWorkDown, summaryAvgDeepWorkInterval, summaryAvgDeepWorkIntervalDown, summaryAvgDeepWorkIntervalUp, summaryAvgDeepWorkTime, summaryAvgDeepWorkUp, summaryDeepWorkTime, summaryDeepWorkTimeUp, summaryFocusQuality, summaryFocusQualityDown, summaryFocusQualityUp } from "../modules/dashboard-elements.js";
 import { charts, mainChartContainer, dashboardData, flags, constants, general } from "../modules/dashboard-objects.js";
 import { timeConvert } from "../modules/index-objects.js";
 
@@ -157,11 +157,21 @@ async function setDirectionIndicators() {
 }
 
 function displayDirectionIndicators() {
+    compareAndSetDeepWorkIndicatorDirection('deepWorkTime');
     compareAndSetIndicatorDirection('avgDeepWorkTime', summaryAvgDeepWorkUp, summaryAvgDeepWorkDown);
     compareAndSetIndicatorDirection('adjustedDeepWorkTime', summaryAvgAdjustedDeepWorkUp, summaryAvgAdjustedDeepWorkDown);
     compareAndSetIndicatorDirection('focusQuality', summaryFocusQualityUp, summaryFocusQualityDown);
     compareAndSetIndicatorDirection('deepWorkInterval', summaryAvgDeepWorkIntervalUp, summaryAvgDeepWorkIntervalDown);
     compareAndSetIndicatorDirection('breakInterval', summaryAvgBreakIntervalUp, summaryAvgBreakIntervalDown);
+}
+
+function compareAndSetDeepWorkIndicatorDirection(statType) {
+    if (currStats[statType] > prevStats[statType]) {
+        summaryDeepWorkTimeUp.style.display = 'flex';
+        setTimeout(() => {
+            summaryDeepWorkTimeUp.style.opacity = '1';
+        }, 0)
+    }
 }
 
 function compareAndSetIndicatorDirection(statType, upIndicator, downIndicator) {

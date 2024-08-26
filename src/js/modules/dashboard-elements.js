@@ -100,6 +100,8 @@ export const summaryAvgDeepWorkIntervalDown = document.getElementById('summaryAv
 export const summaryAvgBreakIntervalUp = document.getElementById('summaryAvgBreakIntervalUp');
 export const summaryAvgBreakIntervalDown = document.getElementById('summaryAvgBreakIntervalDown');
 
+export const summaryDeepWorkTimeUp = document.getElementById('summaryDeepWorkTimeUp');
+
 export const summaryDeepWorkTimeTitle = document.getElementById('summaryDeepWorkTimeTitle');
 export const summaryAvgDeepWorkTimeTitle = document.getElementById('summaryAvgDeepWorkTimeTitle');
 export const summaryAvgAdjustedDeepWorkTimeTitle = document.getElementById('summaryAvgAdjustedDeepWorkTimeTitle');
