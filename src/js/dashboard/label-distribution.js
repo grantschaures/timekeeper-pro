@@ -22,32 +22,19 @@ export function checkViewportWidth() {
         labelDistributionMonth.innerText = "M";
         labelDistributionYear.innerText = "Y";
 
-        // temporary additions
-        metricDistributionWeek.innerText = "W";
-        metricDistributionMonth.innerText = "M";
-        metricDistributionYear.innerText = "Y";
     } else {
         labelDistributionWeek.innerText = "Week";
         labelDistributionMonth.innerText = "Month";
         labelDistributionYear.innerText = "Year";
-
-        // temporary additions
-        metricDistributionWeek.innerText = "Week";
-        metricDistributionMonth.innerText = "Month";
-        metricDistributionYear.innerText = "Year";
 
     }
 
     if (window.innerWidth <= 610) {
         labelDistributionTimeFrame.style.display = "none";
 
-        // temporary addition
-        metricDistributionTimeFrame.style.display = "none";
     } else {
         labelDistributionTimeFrame.style.display = "flex";
 
-        // temporary addition
-        metricDistributionTimeFrame.style.display = "flex";
     }
 }
 
@@ -392,6 +379,13 @@ export function displayTimeFrame(container, timeFrameElement) {
     }
 
     timeFrameElement.innerText = timeFrameStr;
+
+    /**
+     * Will update the main charts summary stat header even w/ label dist bounds change,
+     * but doesn't matter since opening metric dist container will call this function again
+     * anyway w/ correct bounds
+     */
+    mainChartsSummaryHeader.innerText = timeFrameStr;
 }
 
 function formatYearSpan(initialDate) {

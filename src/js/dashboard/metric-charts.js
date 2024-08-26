@@ -1,8 +1,8 @@
-import { adjustedDeepWorkToggle, advChartsContainer, advChartsCoverModule, chartHeaders, deepWorkHeaderText, HC_icon_metric_charts, labelDistributionContainer, leftMetricDistributionArrow, metricCharts, mainChartsContainer, mainChartsCoverModule, metricBodyContainers, metricChartsHr, metricDistributionArrows, metricDistributionBackBtn, metricDistributionContainer, metricDistributionCoverContainer, metricDistributionMonth, metricDistributionSelections, metricDistributionSubContainer, metricDistributionTimeFrame, metricDistributionWeek, metricDistributionYear, rightMetricDistributionArrow, rightMetricDistributionArrowGray, breakIntervalToggle, distractionsToggle, avgDeepWorkHeaderText, hourlyQualityAdjustedToggle } from "../modules/dashboard-elements.js"
+import { adjustedDeepWorkToggle, advChartsContainer, advChartsCoverModule, chartHeaders, deepWorkHeaderText, HC_icon_metric_charts, labelDistributionContainer, leftMetricDistributionArrow, metricCharts, mainChartsContainer, mainChartsCoverModule, metricBodyContainers, metricChartsHr, metricDistributionArrows, metricDistributionBackBtn, metricDistributionContainer, metricDistributionCoverContainer, metricDistributionMonth, metricDistributionSelections, metricDistributionSubContainer, metricDistributionTimeFrame, metricDistributionWeek, metricDistributionYear, rightMetricDistributionArrow, rightMetricDistributionArrowGray, breakIntervalToggle, distractionsToggle, avgDeepWorkHeaderText, hourlyQualityAdjustedToggle, mainChartsSummary, mainChartsSummaryContainer, mainChartsSummarySubContainer, summaryDeepWorkTimeTitle, summaryAvgDeepWorkTimeTitle, summaryAvgAdjustedDeepWorkTimeTitle, summaryAvgDeepWorkIntervalTitle } from "../modules/dashboard-elements.js"
 import { sessionState } from "../modules/state-objects.js"
 import { flags, general, labelDistContainer, mainChartContainer } from "../modules/dashboard-objects.js"
 
-import { setBounds, alterBounds, checkViewportWidth, displayTimeFrame } from './label-distribution.js';
+import { setBounds, alterBounds, displayTimeFrame } from './label-distribution.js'; // need to edit editHTML
 
 export function setMainChartsContainer() {
     setBounds(mainChartContainer, metricDistributionTimeFrame, rightMetricDistributionArrow, rightMetricDistributionArrowGray);
@@ -131,7 +131,11 @@ document.addEventListener("stateUpdated", function() {
             setBounds(mainChartContainer, metricDistributionTimeFrame, rightMetricDistributionArrow, rightMetricDistributionArrowGray);
 
             // chart transition
-            general.chartTransition = 'all';
+            if (flags.summarySelected) {
+                general.chartTransition = 'summary';
+            } else {
+                general.chartTransition = 'all';
+            }
     
             // visualize data
             document.dispatchEvent(new Event('displayMainCharts'));
@@ -152,7 +156,11 @@ document.addEventListener("stateUpdated", function() {
             setBounds(mainChartContainer, metricDistributionTimeFrame, rightMetricDistributionArrow, rightMetricDistributionArrowGray);
 
             // chart transition
-            general.chartTransition = 'all';
+            if (flags.summarySelected) {
+                general.chartTransition = 'summary';
+            } else {
+                general.chartTransition = 'all';
+            }
     
             // visualize data
             document.dispatchEvent(new Event('displayMainCharts'));
@@ -174,11 +182,55 @@ document.addEventListener("stateUpdated", function() {
             setBounds(mainChartContainer, metricDistributionTimeFrame, rightMetricDistributionArrow, rightMetricDistributionArrowGray);
 
             // chart transition
-            general.chartTransition = 'all';
+            if (flags.summarySelected) {
+                general.chartTransition = 'summary';
+            } else {
+                general.chartTransition = 'all';
+            }
     
             // visualize data
             document.dispatchEvent(new Event('displayMainCharts'));
     
+        })
+
+        mainChartsSummary.addEventListener('click', function() {
+            if (flags.summarySelected) {
+                flags.summarySelected = false;
+
+                // remove class
+                mainChartsSummary.classList.remove('summarySelected');
+
+                // show mainChartsContainer
+                mainChartsContainer.style.display = 'flex';
+
+                // hide mainChartsSummaryContainer
+                mainChartsSummaryContainer.style.display = 'none';
+                mainChartsSummarySubContainer.style.opacity = '0';
+                
+                // chart transition
+                general.chartTransition = 'all';
+
+            } else {
+                flags.summarySelected = true;
+                
+                // add class
+                mainChartsSummary.classList.add('summarySelected');
+                
+                // hide mainChartsContainer
+                mainChartsContainer.style.display = 'none';
+                
+                // show mainChartsSummaryContainer
+                mainChartsSummaryContainer.style.display = 'flex';
+                setTimeout(() => {
+                    mainChartsSummarySubContainer.style.opacity = '1';
+                }, 0)
+
+                // chart transition
+                general.chartTransition = 'summary';
+            }
+    
+            // visualize data
+            document.dispatchEvent(new Event('displayMainCharts'));
         })
     
         // ARROW BUTTONS
@@ -188,7 +240,11 @@ document.addEventListener("stateUpdated", function() {
             alterBounds('shiftdown', mainChartContainer, metricDistributionTimeFrame, rightMetricDistributionArrow, rightMetricDistributionArrowGray);
 
             // chart transition
-            general.chartTransition = 'all';
+            if (flags.summarySelected) {
+                general.chartTransition = 'summary';
+            } else {
+                general.chartTransition = 'all';
+            }
     
             // visualize data
             document.dispatchEvent(new Event('displayMainCharts'));
@@ -200,14 +256,60 @@ document.addEventListener("stateUpdated", function() {
             alterBounds('shiftup', mainChartContainer, metricDistributionTimeFrame, rightMetricDistributionArrow, rightMetricDistributionArrowGray);
 
             // chart transition
-            general.chartTransition = 'all';
+            if (flags.summarySelected) {
+                general.chartTransition = 'summary';
+            } else {
+                general.chartTransition = 'all';
+            }
     
             // visualize data
             document.dispatchEvent(new Event('displayMainCharts'));
     
         })
     }
+
+    window.addEventListener('resize', checkViewportWidth);
 })
+
+function checkViewportWidth() {
+    if (window.innerWidth <= 1385) {
+
+        // temporary additions
+        metricDistributionWeek.innerText = "W";
+        metricDistributionMonth.innerText = "M";
+        metricDistributionYear.innerText = "Y";
+    } else {
+
+
+        // temporary additions
+        metricDistributionWeek.innerText = "Week";
+        metricDistributionMonth.innerText = "Month";
+        metricDistributionYear.innerText = "Year";
+
+    }
+
+    if (window.innerWidth <= 695) {
+        // temporary addition
+        metricDistributionTimeFrame.style.display = "none";
+    } else {
+        // temporary addition
+        metricDistributionTimeFrame.style.display = "flex";
+    }
+
+    if (window.innerWidth <= 560) {
+        summaryAvgAdjustedDeepWorkTimeTitle.innerText = "Avg Per Day (QA):";
+        
+    } else {
+        summaryAvgAdjustedDeepWorkTimeTitle.innerText = "Avg Per Day (Quality Adjusted):";
+        
+    }
+
+    if (window.innerWidth <= 550) {
+        mainChartsSummary.innerText = "S";
+    } else {
+        mainChartsSummary.innerText = "Summary";
+    }
+}
 
 function expandMetricDistributionContainer(metricBodyContainer) {
     if (!labelDistContainer.resetInProgress) {
@@ -216,7 +318,7 @@ function expandMetricDistributionContainer(metricBodyContainer) {
         checkViewportWidth();
 
         // show the metricBodyContainer
-        metricBodyContainer.style.display = 'flex';
+        // metricBodyContainer.style.display = 'flex';
 
         // remove metric distribution container cover
         metricDistributionCoverContainer.style.opacity = "0";
@@ -265,6 +367,14 @@ function expandMetricDistributionContainer(metricBodyContainer) {
             })
 
             if (metricBodyContainer === mainChartsContainer) {
+
+                if (flags.summarySelected) {
+                    mainChartsSummaryContainer.style.display = 'flex';
+                    mainChartsSummarySubContainer.style.opacity = '1';
+                } else {
+                    metricBodyContainer.style.display = 'flex';
+                }
+
                 mainChartsDivisionHr.style.display = 'flex';
 
                 // chart transition
@@ -273,6 +383,7 @@ function expandMetricDistributionContainer(metricBodyContainer) {
                 document.dispatchEvent(new Event('displayMainCharts'));
                 
             } else {
+                metricBodyContainer.style.display = 'flex';
                 
                 // chart transition
                 general.chartTransition = 'all';
@@ -320,6 +431,7 @@ function resetMetricDistributionContainer() {
     // resetting metric distributionHeaderContainer
     metricDistributionSelections.style.display = 'none';
     metricDistributionArrows.style.display = 'none';
+    mainChartsSummary.style.display = 'none';
     metricDistributionTimeFrame.style.display = 'none';
 
     // reset animation flag
@@ -348,6 +460,7 @@ function adjustMetricDistributionHeaderContainer(metricBodyContainer) {
     if (metricBodyContainer.id === 'mainChartsContainer') {
         metricDistributionSelections.style.display = 'flex';
         metricDistributionArrows.style.display = 'flex';
+        mainChartsSummary.style.display = 'flex';
         metricDistributionTimeFrame.style.display = 'flex';
     }
 }

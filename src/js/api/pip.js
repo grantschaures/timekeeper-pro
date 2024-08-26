@@ -138,6 +138,7 @@ document.addEventListener("stateUpdated", function() {
       timekeepingContainer.style.paddingBottom = '';
       timekeepingContainer.style.maxHeight = '';
       timekeepingContainer.style.marginTop = '0px';
+      timekeepingContainer.style.marginBottom = '25px';
 
       if (flags.intervalTimeToggle) {
         timekeepingContainer.style.height = '350px';

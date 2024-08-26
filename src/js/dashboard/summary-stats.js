@@ -112,7 +112,7 @@ function populateFocusQualitySummaryStat(totalDeepWork, totalDistractions) {
 function populateAvgDeepWorkSummaryStat(totalDeepWork, dailySummarizedData) {
     let avgDeepWork = totalDeepWork / dailySummarizedData.length;
     let avgDeepWorkHours = Math.floor(avgDeepWork);
-    let avgDeepWorkMinutes = Math.floor((avgDeepWork - avgDeepWorkHours) * 60);
+    let avgDeepWorkMinutes = Math.round((avgDeepWork - avgDeepWorkHours) * 60);
     let avgDeepWorkStr = avgDeepWorkHours + 'h ' + avgDeepWorkMinutes + 'm';
     avgDeepWorkSummaryStat.innerText = avgDeepWorkStr;
 }

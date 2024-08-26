@@ -47,6 +47,10 @@ export const metricBodyContainers = document.querySelectorAll('.metricBodyContai
 
 export const metricDistributionSelections = document.getElementById('metricDistributionSelections');
 export const metricDistributionArrows = document.getElementById('metricDistributionArrows');
+export const mainChartsSummary = document.getElementById('mainChartsSummary');
+export const mainChartsSummaryContainer = document.getElementById('mainChartsSummaryContainer');
+export const mainChartsSummarySubContainer = document.getElementById('mainChartsSummarySubContainer');
+export const mainChartsSummaryHeader = document.getElementById('mainChartsSummaryHeader');
 export const metricDistributionTimeFrame = document.getElementById('metricDistributionTimeFrame');
 export const chartHeaders = document.querySelectorAll('.chartHeader');
 export const adjustedDeepWorkToggle = document.getElementById('adjustedDeepWorkToggle');
@@ -70,3 +74,34 @@ export const distractionsToggle = document.getElementById('distractionsToggle');
 export const hourlyFocusHeaderText = document.getElementById('hourlyFocusHeaderText');
 export const hourlyQualityAdjustedToggle = document.getElementById('hourlyQualityAdjustedToggle');
 export const avgDeepWorkHeaderText = document.getElementById('avgDeepWorkHeaderText');
+
+
+export const summaryDeepWorkTime = document.getElementById('summaryDeepWorkTime');
+export const summaryAvgDeepWorkTime = document.getElementById('summaryAvgDeepWorkTime');
+export const summaryAvgAdjustedDeepWorkTime = document.getElementById('summaryAvgAdjustedDeepWorkTime');
+export const summaryFocusQuality = document.getElementById('summaryFocusQuality');
+export const summaryAvgDeepWorkInterval = document.getElementById('summaryAvgDeepWorkInterval');
+export const summaryAvgBreakInterval = document.getElementById('summaryAvgBreakInterval');
+
+export const directionIndicators = document.querySelectorAll('.directionIndicator');
+
+export const summaryAvgDeepWorkUp = document.getElementById('summaryAvgDeepWorkUp');
+export const summaryAvgDeepWorkDown = document.getElementById('summaryAvgDeepWorkDown');
+
+export const summaryAvgAdjustedDeepWorkUp = document.getElementById('summaryAvgAdjustedDeepWorkUp');
+export const summaryAvgAdjustedDeepWorkDown = document.getElementById('summaryAvgAdjustedDeepWorkDown');
+
+export const summaryFocusQualityUp = document.getElementById('summaryFocusQualityUp');
+export const summaryFocusQualityDown = document.getElementById('summaryFocusQualityDown');
+
+export const summaryAvgDeepWorkIntervalUp = document.getElementById('summaryAvgDeepWorkIntervalUp');
+export const summaryAvgDeepWorkIntervalDown = document.getElementById('summaryAvgDeepWorkIntervalDown');
+
+export const summaryAvgBreakIntervalUp = document.getElementById('summaryAvgBreakIntervalUp');
+export const summaryAvgBreakIntervalDown = document.getElementById('summaryAvgBreakIntervalDown');
+
+export const summaryDeepWorkTimeTitle = document.getElementById('summaryDeepWorkTimeTitle');
+export const summaryAvgDeepWorkTimeTitle = document.getElementById('summaryAvgDeepWorkTimeTitle');
+export const summaryAvgAdjustedDeepWorkTimeTitle = document.getElementById('summaryAvgAdjustedDeepWorkTimeTitle');
+export const summaryAvgDeepWorkIntervalTitle = document.getElementById('summaryAvgDeepWorkIntervalTitle');
+export const summaryAvgBreakIntervalTitle = document.getElementById('summaryAvgBreakIntervalTitle');

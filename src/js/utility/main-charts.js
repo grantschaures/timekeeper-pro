@@ -1,8 +1,15 @@
+import { directionIndicators, summaryAvgAdjustedDeepWorkDown, summaryAvgAdjustedDeepWorkTime, summaryAvgAdjustedDeepWorkUp, summaryAvgBreakInterval, summaryAvgBreakIntervalDown, summaryAvgBreakIntervalUp, summaryAvgDeepWorkDown, summaryAvgDeepWorkInterval, summaryAvgDeepWorkIntervalDown, summaryAvgDeepWorkIntervalUp, summaryAvgDeepWorkTime, summaryAvgDeepWorkUp, summaryDeepWorkTime, summaryFocusQuality, summaryFocusQualityDown, summaryFocusQualityUp } from "../modules/dashboard-elements.js";
 import { charts, mainChartContainer, dashboardData, flags, constants, general } from "../modules/dashboard-objects.js";
 import { timeConvert } from "../modules/index-objects.js";
 
 // Global Variables
 let deepWorkArr = []; // holds normal or quality adjusted deep work time
+
+let deepWork365Arr = []; // holds data for each day in year
+let distractions365Arr = []; // holds distractions for each day, going up to a year (365 days)
+let deepWorkInterval365Arr = [];
+let breakInterval365Arr = [];
+
 let focusQualityArr = [];
 let avgIntervalArr = [];
 let sundayIndices = [];
@@ -11,6 +18,24 @@ let deepWorkIntervalDataArr = [];
 let breakIntervalDataArr = [];
 
 const FOCUS_QUALITY_CONSTANT = constants.FOCUS_QUALITY_CONSTANT;
+
+let currStats = {
+    deepWorkTime: null, // hrs
+    avgDeepWorkTime: null, // hrs
+    focusQuality: null, // float
+    adjustedDeepWorkTime: null, // hrs
+    deepWorkInterval: null, // min
+    breakInterval: null // min
+}
+
+let prevStats = {
+    deepWorkTime: null, // hrs
+    avgDeepWorkTime: null, // hrs
+    focusQuality: null, // float
+    adjustedDeepWorkTime: null, // hrs
+    deepWorkInterval: null, // min
+    breakInterval: null // min
+}
 
 // holds yMax value for non-adjusted value (for deep work)
 let yMax = {
@@ -31,10 +56,18 @@ let xAxisTickLabels = {
 }
 
 document.addEventListener("displayMainCharts", async function() {
+
+    // reset everything
+    resetStats(currStats);
+    resetStats(prevStats);
     await resetData();
 
     await initializeData(dashboardData, mainChartContainer, deepWorkArr, focusQualityArr, avgIntervalArr, yMax);
     let chartTransition = general.chartTransition;
+
+    if (chartTransition === 'summary') {
+        displayMainChartsSummaryStats();
+    }
 
     if ((chartTransition === 'all') || (chartTransition === 'main-adjusted')) {
         displayDeepWorkChart();
@@ -60,6 +93,252 @@ document.addEventListener("displayMainCharts", async function() {
 // // // // // // //
 // HELPER FUNCTIONS
 // // // // // // //
+
+function resetStats(stats) {
+    for (let key in stats) {
+        if (stats.hasOwnProperty(key)) {
+            stats[key] = null;
+        }
+    }
+}
+
+async function displayMainChartsSummaryStats() {
+
+    // display deep work time
+    let deepWorkTime = calculateSummaryDeepWorkTime();
+
+    // display avg deep work (per day)
+    let avgDeepWorkTime = calculateAvgDeepWork();
+
+    // display avg quality adjusted deep work (per day)
+    let combinedArr1 = calculateFocusQualityAndAdjustedAvgDeepWork();
+
+    // display intervals
+    let combinedArr2 = calculateAvgIntervals();
+
+    await setStatsObj(currStats, deepWorkTime, avgDeepWorkTime, combinedArr1[0], combinedArr1[1], combinedArr2[0], combinedArr2[1]);
+
+    displayCurrStats();
+
+    setDirectionIndicators();
+}
+
+
+async function setDirectionIndicators() {
+    // temporarily set lower and upper bounds back by one timeFrame length
+    tempBoundShift('shiftdown');
+
+    // reset main arrays
+    await resetData();
+
+    //re-initialize data
+    await initializeData(dashboardData, mainChartContainer, deepWorkArr, focusQualityArr, avgIntervalArr, yMax);
+
+    // calculate same summary stats as above and store result in object called prevStats
+    // display deep work time
+    let deepWorkTime = calculateSummaryDeepWorkTime();
+
+    // display avg deep work (per day)
+    let avgDeepWorkTime = calculateAvgDeepWork();
+
+    // display avg quality adjusted deep work (per day)
+    let combinedArr1 = calculateFocusQualityAndAdjustedAvgDeepWork();
+
+    // display intervals
+    let combinedArr2 = calculateAvgIntervals();
+
+    await setStatsObj(prevStats, deepWorkTime, avgDeepWorkTime, combinedArr1[0], combinedArr1[1], combinedArr2[0], combinedArr2[1]);
+
+    // compare to current stats and make corresponding changes to direction indicators
+    displayDirectionIndicators();
+
+    // reset lower and upper bounds to what they were previously
+    tempBoundShift('shiftup');
+}
+
+function displayDirectionIndicators() {
+    compareAndSetIndicatorDirection('avgDeepWorkTime', summaryAvgDeepWorkUp, summaryAvgDeepWorkDown);
+    compareAndSetIndicatorDirection('adjustedDeepWorkTime', summaryAvgAdjustedDeepWorkUp, summaryAvgAdjustedDeepWorkDown);
+    compareAndSetIndicatorDirection('focusQuality', summaryFocusQualityUp, summaryFocusQualityDown);
+    compareAndSetIndicatorDirection('deepWorkInterval', summaryAvgDeepWorkIntervalUp, summaryAvgDeepWorkIntervalDown);
+    compareAndSetIndicatorDirection('breakInterval', summaryAvgBreakIntervalUp, summaryAvgBreakIntervalDown);
+}
+
+function compareAndSetIndicatorDirection(statType, upIndicator, downIndicator) {
+
+    if ((prevStats[statType]) && (currStats[statType])) {
+        if (currStats[statType] > prevStats[statType]) {
+            upIndicator.style.display = 'flex';
+            setTimeout(() => {
+                upIndicator.style.opacity = '1';
+            }, 0)
+        } else if (currStats[statType] < prevStats[statType]) {
+            downIndicator.style.display = 'flex';
+            setTimeout(() => {
+                downIndicator.style.opacity = '1';
+            }, 0)
+        }
+    } else {
+        upIndicator.style.display = 'none';
+        downIndicator.style.display = 'none';
+        setTimeout(() => {
+            upIndicator.style.opacity = '0';
+            downIndicator.style.opacity = '0';
+        }, 0)
+    }
+}
+
+function displayCurrStats() {
+    displayDeepWorkTime(currStats.deepWorkTime);
+    displayAvgDeepWorkTime(currStats.avgDeepWorkTime);
+    displayFocusQuality(currStats.focusQuality);
+    displayAdjustedAvgDeepWorkTime(currStats.focusQuality, currStats.adjustedDeepWorkTime);
+    displayAvgIntervals(currStats.deepWorkInterval, currStats.breakInterval);
+}
+
+function displayAvgIntervals(deepWorkInterval, breakInterval) {
+
+    let deepWorkIntervalAvgStr;
+    if (deepWorkInterval !== null) {
+        deepWorkIntervalAvgStr = deepWorkInterval + 'm';
+    } else {
+        deepWorkIntervalAvgStr = 'N/A';
+    }
+
+    let breakIntervalAvgStr;
+    if (breakInterval !== null) {
+        breakIntervalAvgStr = breakInterval + 'm';
+    } else {
+        breakIntervalAvgStr = 'N/A';
+    }
+
+    summaryAvgDeepWorkInterval.innerHTML = `<b>${deepWorkIntervalAvgStr}</b>`;
+    summaryAvgBreakInterval.innerHTML = `<b>${breakIntervalAvgStr}</b>`;
+}
+
+function displayAdjustedAvgDeepWorkTime(focusQuality, adjustedDeepWorkTime) {
+
+    let adjustedAvgDeepWorkStr;
+    if ((focusQuality !== null) && (adjustedDeepWorkTime !== null)) {
+        let hours = Math.floor(adjustedDeepWorkTime);
+        let mins = Math.round((adjustedDeepWorkTime - hours) * 60);
+        adjustedAvgDeepWorkStr = `${hours}h ${mins}m`;
+    } else {
+        adjustedAvgDeepWorkStr = 'N/A';
+    }
+
+    summaryAvgAdjustedDeepWorkTime.innerHTML = `<b>${adjustedAvgDeepWorkStr}</b>`;
+}
+
+function displayFocusQuality(focusQuality) {
+    let focusQualityStr;
+    if (focusQuality !== null) {
+        focusQualityStr = Math.floor(focusQuality * 100) + '%';
+    } else {
+        focusQualityStr = 'N/A';
+    }
+
+    summaryFocusQuality.innerHTML = `<b>${focusQualityStr}</b>`;
+}
+
+function displayAvgDeepWorkTime(avgDeepWorkTime) {
+    
+    let avgDeepWorkTimeStr;
+    if (avgDeepWorkTime !== null) {
+        let hours = Math.floor(avgDeepWorkTime);
+        let mins = Math.round((avgDeepWorkTime - hours) * 60);
+        avgDeepWorkTimeStr = `${hours}h ${mins}m`;
+    } else {
+        avgDeepWorkTimeStr = 'N/A';
+    }
+
+    summaryAvgDeepWorkTime.innerHTML = `<b>${avgDeepWorkTimeStr}</b>`;
+}
+
+function displayDeepWorkTime(deepWorkTime) {
+    let hours = Math.floor(deepWorkTime);
+    let mins = Math.round((deepWorkTime - hours) * 60);
+    let deepWorkTimeStr = ` ${hours}h ${mins}m`;
+    
+    summaryDeepWorkTime.innerHTML = `<b>${deepWorkTimeStr}</b>`;
+}
+
+function tempBoundShift(type) { // type can be 'shiftup' or 'shiftdown'
+    if (type === 'shiftup') {
+        mainChartContainer.lowerBound = moment(mainChartContainer.lowerBound, 'YYYY-MM-DD').add(1, mainChartContainer.timeFrame).format('YYYY-MM-DD');
+        mainChartContainer.upperBound = moment(mainChartContainer.upperBound, 'YYYY-MM-DD').add(1, mainChartContainer.timeFrame).format('YYYY-MM-DD');
+    } else if (type === 'shiftdown') {
+        mainChartContainer.lowerBound = moment(mainChartContainer.lowerBound, 'YYYY-MM-DD').subtract(1, mainChartContainer.timeFrame).format('YYYY-MM-DD');
+        mainChartContainer.upperBound = moment(mainChartContainer.upperBound, 'YYYY-MM-DD').subtract(1, mainChartContainer.timeFrame).format('YYYY-MM-DD');
+    }
+}
+
+async function setStatsObj(statsObj, deepWorkTime, avgDeepWorkTime, focusQuality, adjustedAvgDeepWork, deepWorkIntervalLength, breakIntervalLength) {
+    statsObj.deepWorkTime = deepWorkTime;
+    statsObj.avgDeepWorkTime = avgDeepWorkTime;
+    statsObj.focusQuality = focusQuality;
+    statsObj.adjustedDeepWorkTime = adjustedAvgDeepWork;
+    statsObj.deepWorkInterval = deepWorkIntervalLength;
+    statsObj.breakInterval = breakIntervalLength;
+}
+
+function calculateAvgIntervals() {
+    
+    let deepWorkIntervalAvgMin = null;
+    if (deepWorkInterval365Arr.length > 0) {
+        let deepWorkIntervalAvgMs = deepWorkInterval365Arr.reduce((total, num) => total + num, 0) / deepWorkInterval365Arr.length;
+        deepWorkIntervalAvgMin = Math.round(deepWorkIntervalAvgMs / timeConvert.msPerMin);
+        
+    }
+    
+    let breakIntervalAvgMin = null;
+    if (breakInterval365Arr.length > 0) {
+        let breakIntervalAvgMs = breakInterval365Arr.reduce((total, num) => total + num, 0) / breakInterval365Arr.length;
+        breakIntervalAvgMin = Math.round(breakIntervalAvgMs / timeConvert.msPerMin);
+    }
+
+    return [deepWorkIntervalAvgMin, breakIntervalAvgMin]
+}
+
+function calculateFocusQualityAndAdjustedAvgDeepWork() {
+    // sun up 360 arrs and divide by length
+    // derive focus quality
+
+    let adjustedAvgDeepWorkHrs = null;
+    let focusQuality = null;
+
+    if (deepWork365Arr.length > 0) {
+        let deepWork365Sum = deepWork365Arr.reduce((total, num) => total + num, 0) / deepWork365Arr.length;
+        let distractions365Sum = distractions365Arr.reduce((total, num) => total + num, 0) / distractions365Arr.length;
+
+        let deepWorkMinutes = deepWork365Sum * 60;
+
+        // focus quality calculation
+        focusQuality = 1 - ((distractions365Sum / deepWorkMinutes) / FOCUS_QUALITY_CONSTANT);
+        if (focusQuality < 0) {
+            focusQuality = 0;
+        } else if (isNaN(focusQuality)) {
+            focusQuality = 1;
+        }
+
+        adjustedAvgDeepWorkHrs = deepWork365Sum * focusQuality;
+    }
+
+    return [focusQuality, adjustedAvgDeepWorkHrs];
+}
+
+function calculateAvgDeepWork() {
+    let avgDeepWorkTime = null;
+    if (deepWork365Arr.length > 0) {
+        avgDeepWorkTime = deepWork365Arr.reduce((total, num) => total + num, 0) / deepWork365Arr.length; // in hours
+    }
+    return avgDeepWorkTime;
+}
+
+function calculateSummaryDeepWorkTime() {
+    let deepWorkTime = deepWork365Arr.reduce((total, num) => total + num, 0); // in hours
+    return deepWorkTime;
+}
 
 function convertHourFloatToStr(hour) {
     // Get the integer part for the hour
@@ -242,8 +521,19 @@ async function resetData() {
     });
 
     dateStrArr = [];
-
     xAxisTickLabels.month = [];
+
+    deepWork365Arr = [];
+    distractions365Arr = [];
+    deepWorkInterval365Arr = [];
+    breakInterval365Arr = [];
+
+    directionIndicators.forEach(indicator => {
+        indicator.style.display = 'none';
+        indicator.style.opacity = '0';
+    })
+
+    flags.populated365Arrs = false;
 }
 
 async function initializeData(dashboardData, mainChartContainer, deepWorkArr, focusQualityArr, avgIntervalArr, yMax) {
@@ -277,6 +567,9 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
             let focusQuality = getDeepWorkHoursAndFocusQuality(dashboardDataDailyArr[i])[1];
             let avgInterval = getInterval(dashboardDataDailyArr[i]);
             let dateStr = formatDateString(date);
+
+            deepWork365Arr.push(deepWorkHours);
+            distractions365Arr.push(dashboardDataDailyArr[i].distractions);
             
             if (mainChartContainer.timeFrame === 'week') {
                 let dayOfWeekIndex = getDayOfWeekIndex(date); // 0-6
@@ -328,6 +621,8 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
         xAxisTickLabels.month = setMonthTickLabels(daysInMonth);
         sundayIndices = getSundayIndices(mainChartContainer.lowerBound, xAxisTickLabels.month);
     }
+
+    flags.populated365Arrs = true;
 
     if (mainChartContainer.timeFrame === 'year') {
         
@@ -548,6 +843,14 @@ function isPrime(num) {
 }
 
 function getInterval(dailyData) { // either deep work or break, depending on toggle
+
+    if (!flags.populated365Arrs)  {
+        // pushing all intervals individually onto the arrays
+        deepWorkInterval365Arr.push(...dailyData.deepWorkIntervals);
+        breakInterval365Arr.push(...dailyData.breakIntervals);
+    }
+
+    // calculation of average interval per day
     let avgIntervalMs;
     if (flags.avgBreakIntervalToggle) {
         avgIntervalMs = dailyData.breakIntervals.reduce((accumulator, currentVal) => accumulator + currentVal, 0) / dailyData.breakIntervals.length;

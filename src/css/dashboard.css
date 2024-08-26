@@ -516,18 +516,6 @@
     }
 }
 
-#testLabelLine1 {
-    width: 100%;
-}
-
-#testLabelLine2 {
-    width: 75%;
-}
-
-#testLabelLine3 {
-    width: 55%;
-}
-
 .labelTime {
     white-space: nowrap;
     justify-content: left;
@@ -554,6 +542,8 @@
 
 #labelDistributionArrowsAndSelections, #metricDistributionArrowsAndSelections {
     display: flex;
+
+    /* border: 1px solid yellow; */
 }
 
 #labelDistributionSelections {
@@ -616,6 +606,10 @@
     animation: gradientShift 15s linear infinite;
 }
 
+.summarySelected {
+    background-color: rgba(63, 210, 68, 1);
+}
+
 .labelDistributionSelected:hover, .metricDistributionSelected:hover {
     cursor: pointer;
 }
@@ -626,7 +620,7 @@
     margin-left: 10px;
 }
 
-#metricDistributionSelections, #metricDistributionArrows {
+#metricDistributionSelections, #metricDistributionArrows, #mainChartsSummary {
     display: none;
     align-items: center;
 }
@@ -686,10 +680,10 @@
     border-radius: 25px;
     box-sizing: border-box;
     opacity: 0;
-    transition: opacity 0.25s ease-out;
     margin-top: 10px;
     margin-bottom: 10px;
     border: 3px solid white;
+    transition: opacity 0.25s ease-out;
 }
 
 .chartToggleHeader {
@@ -742,6 +736,125 @@
     left: 40px;
 }
 
+
+
+
+
+
+
+
+
+#mainChartsSummaryContainer {
+    display: none;
+}
+
+#mainChartsSummarySubContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    padding: 25px;
+    border-radius: 25px;
+    box-sizing: border-box;
+    opacity: 0;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    border: 3px solid white;
+    transition: opacity 0.25s ease-out;
+
+    color: white;
+}
+
+#mainChartsSummaryHeader {
+    display: block;
+}
+
+.summaryBlock {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    margin-top: 25px;
+
+    /* border: 1px solid cyan; */
+}
+
+.summaryHeaderContainer {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.summaryTitle {
+    display: flex;
+    white-space: nowrap;
+    width: auto;
+}
+
+.summaryDivider {
+    display: flex;
+    width: 100%;
+    height: 2px;
+    margin-left: 25px;
+
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+.summarySubContainer {
+    display: flex;
+    margin-top: 15px;
+
+    /* flex-direction: column; */
+
+    /* border: 2px solid white; */
+
+    font-size: 22px;
+
+    font-family: settingsHeaderFont;
+}
+
+.directionIndicatorContainer {
+    display: flex;
+    width: 35px; /* or any appropriate size */
+    height: 28px; /* or any appropriate size */
+
+    /* border: 1px solid white; */
+}
+
+@media (max-width: 1380px) {
+    .summarySubContainer {
+        font-size: 18px;
+    }
+    .directionIndicatorContainer {
+        width: 30px;
+        height: 24px;
+    }
+}
+
+@media (max-width: 450px) {
+    .summarySubContainer {
+        font-size: 14px;
+    }
+}
+
+.directionIndicator {
+    display: none;
+    opacity: 0;
+
+    transition: opacity 0.5s ease-out;
+}
+
+.summarySubContainerTitle {
+    display: flex;
+    white-space: nowrap;
+}
+
+.summaryStatistic {
+    display: flex;
+    white-space: nowrap;
+    margin-left: 20px;
+}
+
 /* TEMPORARY RESPONSIVE DESIGN CHANGES */
 @media (max-width: 1280px) {
     #dailyContainer {
@@ -765,6 +878,12 @@
 @media (max-width: 610px) {
     #labelDistributionTimeFrame {
         display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .metricDistributionSelection {
+        padding: 3px 6px;
     }
 }
 

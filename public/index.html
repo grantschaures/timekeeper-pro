@@ -653,13 +653,124 @@
                                             <img id="rightMetricDistributionArrow" src="images/icons/right_arrow.png" class="dashboardArrow rightArrow no-select">
                                             <img id="rightMetricDistributionArrowGray" src="images/icons/gray_right_arrow.png" class="dashboardArrowGray rightArrow no-select">
                                         </div>
+                                        <div id="mainChartsSummary" class="metricDistributionSelection no-select">Summary</div>
                                     </div>
                                     <div id="metricDistributionTimeFrame" class="no-select"></div>
                                 </div>
 
                                 <hr id="metricChartsHr" class="metricChartsHr">
 
-                                <div id="mainChartsContainer"  class="metricBodyContainer no-select">
+                                <div id="mainChartsSummaryContainer" class="metricBodyContainer no-select">
+                                    <div id="mainChartsSummarySubContainer">
+
+                                        <div id="mainChartsSummaryHeader"></div>
+
+                                        <div id="mainChartsDeepWorkSummaryBlock" class="summaryBlock">
+                                            <div id="deepWorkSummaryHeaderContainer" class="summaryHeaderContainer">
+                                                <div id="deepWorkSummaryTitle" class="summaryTitle">
+                                                    Deep Work
+                                                </div>
+                                                <div id="deepWorkSummaryDivider" class="summaryDivider"></div>
+                                            </div>
+                                            <div id="summaryDeepWorkTimeContainer" class="summarySubContainer">
+                                                <div id="summaryDeepWorkTimeTitle" class="summarySubContainerTitle">
+                                                    Total:
+                                                </div>
+                                                <div id="summaryDeepWorkTime" class="summaryStatistic"></div>
+                                            </div>
+                                            <div id="summaryAvgDeepWorkTimeContainer" class="summarySubContainer">
+                                                <div id="summaryAvgDeepWorkTimeTitle" class="summarySubContainerTitle">
+                                                    Avg Per Day:
+                                                </div>
+                                                <div id="summaryAvgDeepWorkTime" class="summaryStatistic"></div>
+                                                <div id="summaryAvgDeepWorkDirectionIndicator" class="directionIndicatorContainer">
+                                                    <svg id="summaryAvgDeepWorkUp" class="directionIndicator up" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248 224">
+                                                        <polygon points="51.5 148.5 123.5 76.5 196.65 148.5 51.5 148.5" style="fill: lime; stroke-width: 0px;"/>
+                                                    </svg>
+                                                    <svg id="summaryAvgDeepWorkDown" class="directionIndicator down" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248 224">
+                                                        <polygon points="51.5 76.5 123.5 148.5 196.65 76.5 51.5 76.5" style="fill: red; stroke-width: 0px;"/>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div id="summaryAvgAdjustedDeepWorkTimeContainer" class="summarySubContainer">
+                                                <div id="summaryAvgAdjustedDeepWorkTimeTitle" class="summarySubContainerTitle">
+                                                    Avg Per Day (Quality Adjusted):
+                                                </div>
+                                                <div id="summaryAvgAdjustedDeepWorkTime" class="summaryStatistic"></div>
+                                                <div id="summaryAvgAdjustedDeepWorkDirectionIndicator" class="directionIndicatorContainer">
+                                                    <svg id="summaryAvgAdjustedDeepWorkUp" class="directionIndicator up" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248 224">
+                                                        <polygon points="51.5 148.5 123.5 76.5 196.65 148.5 51.5 148.5" style="fill: lime; stroke-width: 0px;"/>
+                                                    </svg>
+                                                    <svg id="summaryAvgAdjustedDeepWorkDown" class="directionIndicator down" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248 224">
+                                                        <polygon points="51.5 76.5 123.5 148.5 196.65 76.5 51.5 76.5" style="fill: red; stroke-width: 0px;"/>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div id="mainChartsFocusQualitySummaryBlock" class="summaryBlock">
+                                            <div id="focusQualitySummaryHeaderContainer" class="summaryHeaderContainer">
+                                                <div id="focusQualitySummaryTitle" class="summaryTitle">
+                                                    Focus Quality
+                                                </div>
+                                                <div id="focusQualitySummaryDivider" class="summaryDivider"></div>
+                                            </div>
+                                            <div id="summaryFocusQualityContainer" class="summarySubContainer">
+                                                <div id="summaryFocusQualityTitle" class="summarySubContainerTitle">
+                                                    Focus Quality:
+                                                </div>
+                                                <div id="summaryFocusQuality" class="summaryStatistic"></div>
+                                                <div id="summaryFocusQualityDirectionIndicator" class="directionIndicatorContainer">
+                                                    <svg id="summaryFocusQualityUp" class="directionIndicator up" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248 224">
+                                                        <polygon points="51.5 148.5 123.5 76.5 196.65 148.5 51.5 148.5" style="fill: lime; stroke-width: 0px;"/>
+                                                    </svg>
+                                                    <svg id="summaryFocusQualityDown" class="directionIndicator down" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248 224">
+                                                        <polygon points="51.5 76.5 123.5 148.5 196.65 76.5 51.5 76.5" style="fill: red; stroke-width: 0px;"/>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div id="mainChartsAvgIntervalsSummaryBlock" class="summaryBlock">
+                                            <div id="avgIntervalsSummaryHeaderContainer" class="summaryHeaderContainer">
+                                                <div id="AvgIntervalsSummaryTitle" class="summaryTitle">
+                                                    Avg Interval Time
+                                                </div>
+                                                <div id="AvgIntervalsSummaryDivider" class="summaryDivider"></div>
+                                            </div>
+                                            <div id="summaryAvgDeepWorkIntervalContainer" class="summarySubContainer">
+                                                <div id="summaryAvgDeepWorkIntervalTitle" class="summarySubContainerTitle">
+                                                    Deep Work:
+                                                </div>
+                                                <div id="summaryAvgDeepWorkInterval" class="summaryStatistic"></div>
+                                                <div id="summaryAvgDeepWorkIntervalDirectionIndicator" class="directionIndicatorContainer">
+                                                    <svg id="summaryAvgDeepWorkIntervalUp" class="directionIndicator up" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248 224">
+                                                        <polygon points="51.5 148.5 123.5 76.5 196.65 148.5 51.5 148.5" style="fill: lime; stroke-width: 0px;"/>
+                                                    </svg>
+                                                    <svg id="summaryAvgDeepWorkIntervalDown" class="directionIndicator down" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248 224">
+                                                        <polygon points="51.5 76.5 123.5 148.5 196.65 76.5 51.5 76.5" style="fill: red; stroke-width: 0px;"/>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div id="summaryAvgBreakIntervalContainer" class="summarySubContainer">
+                                                <div id="summaryAvgBreakIntervalTitle" class="summarySubContainerTitle">
+                                                    Break:
+                                                </div>
+                                                <div id="summaryAvgBreakInterval" class="summaryStatistic"></div>
+                                                <div id="summaryAvgBreakIntervalDirectionIndicator" class="directionIndicatorContainer">
+                                                    <svg id="summaryAvgBreakIntervalUp" class="directionIndicator up" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248 224">
+                                                        <polygon points="51.5 148.5 123.5 76.5 196.65 148.5 51.5 148.5" style="fill: #b3b3b3; stroke-width: 0px;"/>
+                                                    </svg>
+                                                    <svg id="summaryAvgBreakIntervalDown" class="directionIndicator down" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248 224">
+                                                        <polygon points="51.5 76.5 123.5 148.5 196.65 76.5 51.5 76.5" style="fill: #b3b3b3; stroke-width: 0px;"/>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="mainChartsContainer" class="metricBodyContainer no-select">
 
                                     <div id="deepWorkChartContainer" class="metricChart">
                                         <div id="deepWorkChartHeader" class="chartHeader">
