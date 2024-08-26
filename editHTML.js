@@ -259,8 +259,8 @@ const labelDistributionReplacements = [
 
 const metricChartsReplacements = [
     {
-        pattern: /import { setBounds, alterBounds, checkViewportWidth, displayTimeFrame } from '.\/label-distribution.js';/g,
-        replacement: "import { setBounds, alterBounds, checkViewportWidth, displayTimeFrame } from '../minified/label-distribution.min.js';"
+        pattern: /import { setBounds, alterBounds, displayTimeFrame } from '.\/label-distribution.js';/g,
+        replacement: "import { setBounds, alterBounds, displayTimeFrame } from '../minified/label-distribution.min.js';"
     }
 ]
 
