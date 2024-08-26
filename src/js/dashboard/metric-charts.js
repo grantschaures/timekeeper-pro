@@ -317,9 +317,6 @@ function expandMetricDistributionContainer(metricBodyContainer) {
         adjustMetricDistributionHeaderContainer(metricBodyContainer);
         checkViewportWidth();
 
-        // show the metricBodyContainer
-        // metricBodyContainer.style.display = 'flex';
-
         // remove metric distribution container cover
         metricDistributionCoverContainer.style.opacity = "0";
         metricDistributionCoverContainer.style.display = "none";
