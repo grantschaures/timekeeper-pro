@@ -890,7 +890,17 @@
     opacity: 1;
 }
 
-.completed-task {
+.spanTimestamp {
+    /* display: none; */
+    /* NOTE: To disable timestamps, simply set this class to display: none; */
+    white-space: nowrap;
+    width: auto;
+    padding-left: 10px;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.25);
+}
+
+.completed-task span.spanText {
     text-decoration: line-through;
 }
 

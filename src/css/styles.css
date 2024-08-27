@@ -2274,8 +2274,8 @@ header {
     opacity: 0;
     transition: opacity 1s ease-out;
     position: absolute;
-    width: 250px;
-    height: 105px;
+    width: 290px;
+    height: 110px;
     padding-top: 5px;
     padding-bottom: 10px;
     padding-left: 15px;
@@ -2298,7 +2298,7 @@ header {
     content: "";
     position: absolute;
     bottom: -10px;      /* Position the point at the bottom of the bubble */
-    left: 132px;         /* Adjust to position it towards the left side */
+    left: 151px;         /* Adjust to position it towards the left side */
     width: 0;
     height: 0;
     border-left: 10px solid transparent;

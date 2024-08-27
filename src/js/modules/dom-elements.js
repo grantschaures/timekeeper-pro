@@ -273,6 +273,8 @@ export const lightContainer = document.getElementById("lightContainer");
 
 export const pipIconContainer = document.getElementById("pip-icon-container");
 
+export const supportEmail = document.getElementById("supportEmail");
+
 export let hoverTimer;
 export var backgroundVideoSource = document.getElementById('background-video-source');
 export var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);

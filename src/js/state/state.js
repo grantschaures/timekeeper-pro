@@ -638,12 +638,24 @@ function updateUserNotes(noteData) {
         }
 
         // add content
+        let spanContainer = document.createElement('span');
+        spanContainer.classList.add('spanContainer');
+
         let taskText = document.createElement('span');
         taskText.textContent = noteTaskArr[i].content;
-
+        taskText.classList.add('spanText');
         let taskTextId = "spanText" + idNum;
+        taskText.id = taskTextId;
         taskText.setAttribute('data-testid', taskTextId);
-        noteTaskDiv.appendChild(taskText);
+
+        let spanTimestamp = document.createElement('span');
+        spanTimestamp.classList.add('spanTimestamp');
+        let spanTimestampId = "spanTimestamp" + idNum;
+        spanTimestamp.id = spanTimestampId;
+
+        spanContainer.appendChild(taskText);
+        spanContainer.appendChild(spanTimestamp);
+        noteTaskDiv.appendChild(spanContainer);
 
         let container = appendEditRemoveContainer("Task", idNum);
         noteTaskDiv.appendChild(container);

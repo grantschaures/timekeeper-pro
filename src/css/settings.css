@@ -1189,3 +1189,16 @@
     color: black;
     border-color: black;
 }
+
+#supportMessageText {
+    max-width: 500px;
+}
+
+#supportEmail {
+    transition: color 0.25s ease-out;
+}
+
+#supportEmail:hover {
+    color: rgb(0, 225, 255);
+    cursor: pointer;
+}

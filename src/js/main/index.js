@@ -4,7 +4,8 @@ import { chimePath, bellPath, clock_tick, soundMap } from '../modules/sound-map.
 
 import {
     start_stop_btn, submit_change_btn, end_session_btn, total_time_display, productivity_chill_mode, progressBarContainer, progressBar, progressContainer, display, hyperChillTitle, subMainContainer, interruptionsContainer, interruptionsSubContainer, decBtn, incBtn, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, completedPomodoros_label, completedPomodoros_min, targetHoursContainer, timekeepingContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, targetTimeReachedToggle, breakSuggestionToggle, suggestionMinutesInput, flowmodoroNotificationToggle,flowmodoroNotifications, flowmodoroNotificationInfoWindow, flowTimeBreakNotification, flowTimeBreakNotificationInfoWindow, pomodoroNotifications, pomodoroNotificationInfoWindow, notesAutoSwitch, notesAutoSwitchInfoWindow, pomodoroNotificationToggle, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, defaultThemeContainer, defaultTheme, darkThemeContainer, darkGrayTheme, transitionClockSoundToggle, flowTimeAnimationToggle, chillTimeAnimationToggle, pomodoroVolumeContainer, pomodoroVolumeBar, pomodoroVolumeThumb, flowmodoroVolumeContainer, flowmodoroVolumeBar, flowmodoroVolumeThumb, generalVolumeContainer, generalVolumeBar, generalVolumeThumb, pomodoroVolumeContainer2, pomodoroVolumeBar2, pomodoroVolumeThumb2, flowmodoroVolumeContainer2, flowmodoroVolumeBar2, flowmodoroVolumeThumb2, generalVolumeContainer2, generalVolumeBar2, generalVolumeThumb2, flowmodoroRadios, flowmodoroInputs, generalRadios, pomodoroInputs, pomodoroRadios,flowtimeBackgroundCells, chilltimeBackgroundCells, settings_menu_container, registerHereText, flowAnimation, chillAnimation,createLabelInput, updateLabelInput, emojiContainer, loginEmailInput, loginPasswordInput, loginBtn, logoutBtn, forgotPasswordSettings, propagateUnfinishedTasks, propagateUnfinishedTasksInfoWindow, flowtimeBackgroundWorldCells, chilltimeBackgroundWorldCells, popupOverlay, logoutBtn2, deepWorkBackground, breakBackground, streaksContainer, streaksLoginSuggestionPopup, previousSessionStartedOkBtn, previousSessionStartedPopup, invalidatePreviousSessionInput, quitCurrentSessionInput, toggleIntervalTime, intervalTimeInfoWindow, toggleTotalTime, totalTimeInfoWindow, intervalTimeToggle, totalTimeToggle, stopwatch, muffinInfoWindow, toggleMuffin, cats, zzz, darkContainer, lightContainer, flowmodoroBtnContainer,
-    popupQuestionMenu
+    popupQuestionMenu,
+    supportEmail
 } from '../modules/dom-elements.js';
 
 import { sessionState } from '../modules/state-objects.js';
@@ -1119,6 +1120,19 @@ document.addEventListener("stateUpdated", function() {
         if (flags.pipWindowOpen) {
             window.focus(); // get back to the tab
         }
+    })
+
+    supportEmail.addEventListener('click', function() {
+        const email = "support@hyperchill.io";
+
+        // Clipboard API
+        navigator.clipboard.writeText(email).then(function() {
+            alert("'support@hyperchill.io' has been copied to clipboard");
+
+        }).catch(function(error) {
+            console.error("Could not copy text: ", error);
+
+        });
     })
 
     // ---------------------

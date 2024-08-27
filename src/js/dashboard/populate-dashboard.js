@@ -30,10 +30,27 @@ async function setDashboardData(sessionData, dailySummarizedData, noteData) {
     dashboardData.sessionArr = sessionData;
     dashboardData.dailyArr = dailySummarizedData;
     dashboardData.noteData = noteData;
-
-    // console.log(sessionData);
-    // console.log(dashboardData.dailyArr);
 }
+
+// DOWNLOAD FUNCTION
+// function downloadAsJson(exportObj, exportName) {
+//     // Step 1: Convert object to JSON string
+//     const dataStr = JSON.stringify(exportObj);
+
+//     // Step 2: Create a Blob from the JSON string
+//     const blob = new Blob([dataStr], { type: "application/json" });
+
+//     // Step 3: Create a URL for the Blob
+//     const url = URL.createObjectURL(blob);
+
+//     // Step 4: Create a download link and trigger the download
+//     const link = document.createElement('a');
+//     link.href = url;
+//     link.download = `${exportName}.json`;
+//     document.body.appendChild(link); // Append link to the body
+//     link.click(); // Trigger the download
+//     document.body.removeChild(link); // Remove the link after download
+// }
 
 async function initializeDailyData(sessionData) {
     const adjustedDataArray = adjustPerHourDataKeys(sessionData);

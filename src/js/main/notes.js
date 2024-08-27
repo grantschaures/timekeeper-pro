@@ -927,17 +927,25 @@ function noteInputSave(noteTaskInputContainer, addNoteTaskContainer, flags, note
     let noteTaskDiv = document.createElement('div');
     noteTaskDiv.classList.add('noteTask');
 
+    let spanTimestamp = document.createElement('span');
+    spanTimestamp.classList.add('spanTimestamp');
+    let spanTimestampId = "spanTimestamp" + counters.lastTaskInputIdNum;
+    spanTimestamp.id = spanTimestampId;
+
     if (taskCheckbox.checked) { // TASK
         // Create check element and attach to div
         let taskCircularCheckDiv = createCheckElements(counters);
         noteTaskDiv.appendChild(taskCircularCheckDiv);
         noteTaskDiv.classList.add('task');
         
-        container = createNote(inputStr, noteTaskDiv, counters, container);
+        container = createNote(inputStr, noteTaskDiv, counters, container, spanTimestamp);
     } else { // NOTE
         // make a new note div
         noteTaskDiv.classList.add('note');
-        container = createNote(inputStr, noteTaskDiv, counters, container);
+        container = createNote(inputStr, noteTaskDiv, counters, container, spanTimestamp);
+
+        // add timestamp
+        spanTimestamp.textContent = getTimestamp();
     }
 
     // save note or task to database
@@ -964,6 +972,24 @@ function noteInputSave(noteTaskInputContainer, addNoteTaskContainer, flags, note
         }
         updateNotes(notesObj);
     }
+}
+
+function getTimestamp() {
+    const now = new Date();
+
+    let hours = now.getHours();
+    let minutes = now.getMinutes();
+    const ampm = hours >= 12 ? 'pm' : 'am';
+
+    // Convert 24-hour format to 12-hour format
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    
+    // Add leading zero to minutes if necessary
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+
+    const timestamp = hours + ':' + minutes + ' ' + ampm;
+    return timestamp;
 }
 
 function isMoreThan1000Chars(inputStr) {
@@ -1102,13 +1128,26 @@ export function removeTagSelectionDivider(addDoneContainer, tagSelectionDivider,
     }
 }
 
-function createNote(inputStr, noteTaskDiv, counters, container) {
+function createNote(inputStr, noteTaskDiv, counters, container, spanTimestamp) {
 
-    var taskText = document.createElement('span');
+    let spanContainer = document.createElement('span');
+    spanContainer.classList.add('spanContainer');
+
+    let taskText = document.createElement('span');
     taskText.textContent = inputStr;
+    taskText.classList.add('spanText');
     let taskTextId = "spanText" + counters.lastTaskInputIdNum;
-    taskText.setAttribute('data-testid', taskTextId)
-    noteTaskDiv.appendChild(taskText);
+    taskText.id = taskTextId;
+    taskText.setAttribute('data-testid', taskTextId);
+
+    // let spanTimestamp = document.createElement('span');
+    // spanTimestamp.classList.add('spanTimestamp');
+    // let spanTimestampId = "spanTimestamp" + counters.lastTaskInputIdNum;
+    // spanTimestamp.id = spanTimestampId;
+
+    spanContainer.appendChild(taskText);
+    spanContainer.appendChild(spanTimestamp);
+    noteTaskDiv.appendChild(spanContainer);
 
     let noteTaskDivIdStr = "taskDiv" + counters.lastTaskInputIdNum;
     noteTaskDiv.id = noteTaskDivIdStr;
@@ -1170,7 +1209,8 @@ function noteInputCancelBtnClick_editMode(state, flags) {
 function noteInputSaveBtnClick_editMode(state, flags) {
     let inputEditStr = document.getElementById('note-task-input-container-edit').querySelector('textarea').value;
 
-    document.getElementById(state.currentNoteTaskEditId).querySelector('span').textContent = inputEditStr;
+    document.getElementById(state.currentNoteTaskEditId).querySelector('.spanText').textContent = inputEditStr;
+
     document.getElementById(state.currentNoteTaskEditId).style.display = "flex";
     document.getElementById('note-task-input-container-edit').remove();
 
@@ -1230,7 +1270,7 @@ function handleEditBtnClick(targetId, flags, noteTaskInputContainer, addNoteTask
     }
 
     if (getTypeFromId(targetId) === "Task") {
-        editNoteTask("task", taskInputId, state, flags);
+        editNoteTask(taskInputId, state, flags, idNum);
     }
 }
 
@@ -1247,12 +1287,16 @@ function checkOrUncheckTask(targetId) {
         check.setAttribute('stroke-width', '2');
         check.parentElement.parentElement.style.opacity = '';
         taskDiv.classList.remove('completed-task');
+        document.getElementById("spanTimestamp" + idNum).innerText = ""; // remove the timestamp
 
     } else if (!(taskDiv.classList.contains('completed-task'))) {
         taskCircularCheckElement.style.backgroundColor = "#3ba43e";
         check.setAttribute('stroke-width', '3');
         check.parentElement.parentElement.style.opacity = '1';
         taskDiv.classList.add('completed-task');
+
+        // add the timestamp
+        document.getElementById("spanTimestamp" + idNum).innerText = getTimestamp(); // add the timestamp
     }
 
     const indexToUpdate = notesArr.findIndex(obj => obj.id === taskDivId);
@@ -1374,14 +1418,13 @@ function buildNoteTaskInputContainerEdit(noteTaskDivContent) {
      */
 }
 
-/** 
- * @param {string} inputType === "note" or "task"
- */
-function editNoteTask(inputType, noteTaskId, state, flags) {
+function editNoteTask(noteTaskId, state, flags, idNum) {
     // Hide noteDiv or taskDiv
     state.currentNoteTaskEditId = noteTaskId;
     const noteTaskDiv = document.getElementById(noteTaskId);
-    let noteTaskDivContent = (document.getElementById(noteTaskId)).querySelector('span').innerText;
+
+    let spanTextId = "spanText" + idNum;
+    let noteTaskDivContent = document.getElementById(spanTextId).innerText;
 
     noteTaskDiv.style.display = "none";
 
