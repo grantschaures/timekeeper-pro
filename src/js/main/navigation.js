@@ -86,6 +86,21 @@ document.addEventListener("stateUpdated", function() {
     }, 1000)
     
     // event listeners
+
+    window.addEventListener('beforeunload', function (event) {
+
+        if (indexFlags.sessionInProgress) {
+            // Prevent the default action of closing the tab
+            event.preventDefault();
+        
+            // Chrome requires returnValue to be set
+            event.returnValue = ''; // Some browsers will show a default dialog
+        
+            // Returning undefined or nothing also works in many cases
+            return undefined;
+        }
+    });
+
     menuBtn.addEventListener("click", function() {
         if (flags.popupWindowShowing) {
             closeMenu(flags, popupMenu);
