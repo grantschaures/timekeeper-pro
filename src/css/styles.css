@@ -21,6 +21,11 @@
     user-select: none;         /* Non-prefixed version, currently supported by Chrome, Opera, and Edge */
 }
 
+.no-drag {
+    -webkit-user-drag: none; /* Disable dragging in WebKit-based browsers (like Chrome, Safari) */
+    pointer-events: none; /* Disable all pointer events, including drag */
+}
+
 body {
     font-family: myFont;
     overflow-y: scroll;
