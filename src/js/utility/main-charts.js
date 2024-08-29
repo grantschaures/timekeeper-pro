@@ -163,6 +163,9 @@ function displayDirectionIndicators() {
     compareAndSetIndicatorDirection('focusQuality', summaryFocusQualityUp, summaryFocusQualityDown);
     compareAndSetIndicatorDirection('deepWorkInterval', summaryAvgDeepWorkIntervalUp, summaryAvgDeepWorkIntervalDown);
     compareAndSetIndicatorDirection('breakInterval', summaryAvgBreakIntervalUp, summaryAvgBreakIntervalDown);
+
+    console.log(currStats)
+    console.log(prevStats)
 }
 
 function compareAndSetDeepWorkIndicatorDirection(statType) {
@@ -210,14 +213,14 @@ function displayAvgIntervals(deepWorkInterval, breakInterval) {
 
     let deepWorkIntervalAvgStr;
     if (deepWorkInterval !== null) {
-        deepWorkIntervalAvgStr = deepWorkInterval + 'm';
+        deepWorkIntervalAvgStr = Math.round(deepWorkInterval) + 'm';
     } else {
         deepWorkIntervalAvgStr = 'N/A';
     }
 
     let breakIntervalAvgStr;
     if (breakInterval !== null) {
-        breakIntervalAvgStr = breakInterval + 'm';
+        breakIntervalAvgStr = Math.round(breakInterval) + 'm';
     } else {
         breakIntervalAvgStr = 'N/A';
     }
@@ -297,14 +300,14 @@ function calculateAvgIntervals() {
     let deepWorkIntervalAvgMin = null;
     if (deepWorkInterval365Arr.length > 0) {
         let deepWorkIntervalAvgMs = deepWorkInterval365Arr.reduce((total, num) => total + num, 0) / deepWorkInterval365Arr.length;
-        deepWorkIntervalAvgMin = Math.round(deepWorkIntervalAvgMs / timeConvert.msPerMin);
+        deepWorkIntervalAvgMin = deepWorkIntervalAvgMs / timeConvert.msPerMin;
         
     }
     
     let breakIntervalAvgMin = null;
     if (breakInterval365Arr.length > 0) {
         let breakIntervalAvgMs = breakInterval365Arr.reduce((total, num) => total + num, 0) / breakInterval365Arr.length;
-        breakIntervalAvgMin = Math.round(breakIntervalAvgMs / timeConvert.msPerMin);
+        breakIntervalAvgMin = breakIntervalAvgMs / timeConvert.msPerMin;
     }
 
     return [deepWorkIntervalAvgMin, breakIntervalAvgMin]
