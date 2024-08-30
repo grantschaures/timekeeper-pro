@@ -2167,7 +2167,7 @@ header {
     animation: scaleXAnimation 10s ease-in-out infinite;
 }
 
-.catest {
+.cat2 {
     /* display: flex; */
     display: none;
     z-index: 26;
@@ -2355,6 +2355,12 @@ header {
     width: 15px;
     height: 12px;
     border-radius: 3px;
+}
+
+#muffinArtCreditsContainer {
+    display: flex;
+    color: white;
+    font-family: settingsHeaderFont;
 }
 
 @keyframes scaleXAnimation {

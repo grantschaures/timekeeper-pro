@@ -13,7 +13,7 @@ document.addEventListener("triggerSessionSummaryChartAnimation", function() {
         deepWorkRemainder = 0;
     }
     let deepWorkHours = Math.floor(deepWork);
-    let deepWorkMinutes = Math.floor((deepWork - deepWorkHours) * 60);
+    let deepWorkMinutes = Math.round((deepWork - deepWorkHours) * 60);
 
     let lessThanOneMin = false;
     let deepWorkSeconds;
