@@ -1761,17 +1761,17 @@ function canOpenNotes(blogContainer, aboutContainer, settingsContainer, main_ele
 }
 
 function canInputTask() {
-    if ((notesFlags.notesShowing) && (notesFlags.notesConsoleShowing) && (!flags.noteTaskInputContainerShowing) && (!flags.noteTaskInputContainerEditShowing) && (!navFlags.sessionSummaryPopupShowing) && (settingsContainer.style.display === "")) {
+    if ((notesFlags.notesShowing) && (notesFlags.notesConsoleShowing) && (!flags.noteTaskInputContainerShowing) && (!flags.noteTaskInputContainerEditShowing) && (!navFlags.sessionSummaryPopupShowing) && (settingsContainer.style.display !== 'block')) {
         return true;
-    } else {
-        return ((settingsContainer.style.display === "none" || settingsContainer.style.display === "") && (main_elements.style.display !== "none") && (!navFlags.sessionSummaryPopupShowing));
     }
+
+    return false;
 }
 
 function canOpenLabels() {
-    if ((notesFlags.notesShowing) && (notesFlags.notesConsoleShowing) && (!flags.noteTaskInputContainerShowing) && (!flags.noteTaskInputContainerEditShowing) && (!navFlags.sessionSummaryPopupShowing) && (settingsContainer.style.display === "")) {
+    if ((notesFlags.notesShowing) && (notesFlags.notesConsoleShowing) && (!flags.noteTaskInputContainerShowing) && (!flags.noteTaskInputContainerEditShowing) && (!navFlags.sessionSummaryPopupShowing) && (settingsContainer.style.display !== 'block')) {
         return true;
-    } else {
-        return ((settingsContainer.style.display === "none" || settingsContainer.style.display === "") && (main_elements.style.display !== "none") && (!navFlags.sessionSummaryPopupShowing));
     }
+
+    return false;
 }
