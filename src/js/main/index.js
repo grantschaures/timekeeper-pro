@@ -42,8 +42,9 @@ document.addEventListener("stateUpdated", function() {
     const greenFavicon = "/images/logo/HyperChillLogoGreen.png";
     const blueFavicon = "/images/logo/HyperChillLogoBlue.png";
 
-    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    var isIpad = isIpadCheck();
+    let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    let isIpad = isIpadCheck();
+    let usingSafari = usingSafari();
     const initialViewportWidth = window.innerWidth || document.documentElement.clientWidth;
 
     // not used; initialized for reference
@@ -61,13 +62,19 @@ document.addEventListener("stateUpdated", function() {
         return /iPad/.test(userAgent) || (navigator.maxTouchPoints > 1);
     }
 
+    function usingSafari() {
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    
+        // Check for Safari on Mac (excluding Chrome and Firefox) 
+        return /^((?!chrome|android).)*safari/i.test(userAgent);
+    }
+
     // if using iPad or mobile devices
-    if (isIpad) {
+    if ((isIpad) || (usingSafari)) {
         popupQuestionMenu.style.background = 'rgb(50, 50, 50)';
         accountPopup.style.background = 'rgb(50, 50, 50)';
         deleteAccountPopup.style.background = 'rgb(50, 50, 50)';
         shortcutsPopup.style.background = 'rgb(50, 50, 50)';
-        console.log('is ipad')
     }
 
     // ----------------

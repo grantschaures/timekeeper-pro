@@ -23,3 +23,10 @@ function getDeviceType() {
     }
     return "Desktop";
 }
+
+function usingSafari() {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+    // Check for Safari on Mac (excluding Chrome and Firefox) 
+    return /^((?!chrome|android).)*safari/i.test(userAgent);
+}
