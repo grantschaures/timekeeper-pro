@@ -203,6 +203,10 @@ export const popupQuestionMenu = document.getElementById("popupQuestionMenu");
 
 export const settingsGUIContainer = document.getElementById("settingsGUIContainer");
 export const darkLightThemeGUIContainer = document.getElementById("darkLightThemeGUIContainer");
+export const displayGUIContainer = document.getElementById("displayGUIContainer");
+
+export const openEyeContainer = document.getElementById("openEyeContainer");
+export const closedEyeContainer = document.getElementById("closedEyeContainer");
 
 export const streaksContainer = document.getElementById("streaksContainer");
 export const streaksLoginSuggestionPopup = document.getElementById("streaksLoginSuggestionPopup");

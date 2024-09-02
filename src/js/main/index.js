@@ -5,7 +5,9 @@ import { chimePath, bellPath, clock_tick, soundMap } from '../modules/sound-map.
 import {
     start_stop_btn, submit_change_btn, end_session_btn, total_time_display, productivity_chill_mode, progressBarContainer, progressBar, progressContainer, display, hyperChillTitle, subMainContainer, interruptionsContainer, interruptionsSubContainer, decBtn, incBtn, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, completedPomodoros_label, completedPomodoros_min, targetHoursContainer, timekeepingContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, blackFlowtimeBackground, blackChilltimeBackground, targetTimeReachedToggle, breakSuggestionToggle, suggestionMinutesInput, flowmodoroNotificationToggle,flowmodoroNotifications, flowmodoroNotificationInfoWindow, flowTimeBreakNotification, flowTimeBreakNotificationInfoWindow, pomodoroNotifications, pomodoroNotificationInfoWindow, notesAutoSwitch, notesAutoSwitchInfoWindow, pomodoroNotificationToggle, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, defaultThemeContainer, defaultTheme, darkThemeContainer, darkGrayTheme, transitionClockSoundToggle, flowTimeAnimationToggle, chillTimeAnimationToggle, pomodoroVolumeContainer, pomodoroVolumeBar, pomodoroVolumeThumb, flowmodoroVolumeContainer, flowmodoroVolumeBar, flowmodoroVolumeThumb, generalVolumeContainer, generalVolumeBar, generalVolumeThumb, pomodoroVolumeContainer2, pomodoroVolumeBar2, pomodoroVolumeThumb2, flowmodoroVolumeContainer2, flowmodoroVolumeBar2, flowmodoroVolumeThumb2, generalVolumeContainer2, generalVolumeBar2, generalVolumeThumb2, flowmodoroRadios, flowmodoroInputs, generalRadios, pomodoroInputs, pomodoroRadios,flowtimeBackgroundCells, chilltimeBackgroundCells, settings_menu_container, registerHereText, flowAnimation, chillAnimation,createLabelInput, updateLabelInput, emojiContainer, loginEmailInput, loginPasswordInput, loginBtn, logoutBtn, forgotPasswordSettings, propagateUnfinishedTasks, propagateUnfinishedTasksInfoWindow, flowtimeBackgroundWorldCells, chilltimeBackgroundWorldCells, popupOverlay, logoutBtn2, deepWorkBackground, breakBackground, streaksContainer, streaksLoginSuggestionPopup, previousSessionStartedOkBtn, previousSessionStartedPopup, invalidatePreviousSessionInput, quitCurrentSessionInput, toggleIntervalTime, intervalTimeInfoWindow, toggleTotalTime, totalTimeInfoWindow, intervalTimeToggle, totalTimeToggle, stopwatch, muffinInfoWindow, toggleMuffin, cats, zzz, darkContainer, lightContainer, flowmodoroBtnContainer,
     popupQuestionMenu,
-    supportEmail
+    supportEmail,
+    openEyeContainer,
+    closedEyeContainer
 } from '../modules/dom-elements.js';
 
 import { sessionState } from '../modules/state-objects.js';
@@ -864,6 +866,14 @@ document.addEventListener("stateUpdated", function() {
         triggerDarkMode(isMobile);
     })
 
+    openEyeContainer.addEventListener("click", function() {
+        hideDisplays();
+    })
+
+    closedEyeContainer.addEventListener("click", function() {
+        showDisplays();
+    })
+
     lightContainer.addEventListener("click", async function() {
         triggerLightMode(isMobile);
     })
@@ -1192,6 +1202,40 @@ document.addEventListener("stateUpdated", function() {
 // ------------------
 // HELPER FUNCTIONS
 // ------------------
+async function hideDisplays() {
+    totalTimeToggle.checked = false;
+    intervalTimeToggle.checked = false;
+
+    totalTimeToggleGUIUpdate();
+    intervalTimeToggleGUIUpdate();
+
+    if (sessionState.loggedIn) {
+        await updateUserSettings({
+            display: {
+                intervalTime: flags.intervalTimeToggle,
+                totalTime: flags.totalTimeToggle
+            }
+        });
+    }
+}
+
+async function showDisplays() {
+    totalTimeToggle.checked = true;
+    intervalTimeToggle.checked = true;
+
+    totalTimeToggleGUIUpdate();
+    intervalTimeToggleGUIUpdate();
+
+    if (sessionState.loggedIn) {
+        await updateUserSettings({
+            display: {
+                intervalTime: flags.intervalTimeToggle,
+                totalTime: flags.totalTimeToggle
+            }
+        });
+    }
+}
+
 async function triggerLightMode(isMobile) {
     // adjust settings container selection & flag
     darkGrayTheme.classList.remove('selected-background');
@@ -1280,6 +1324,8 @@ export function totalTimeToggleGUIUpdate() {
         // hide total time text
         total_time_display.style.display = 'none';
     }
+
+    editDisplayGUIContainer();
 }
 
 export function intervalTimeToggleGUIUpdate() {
@@ -1296,6 +1342,18 @@ export function intervalTimeToggleGUIUpdate() {
         // hide interval time display
         timekeepingContainer.style.height = '150px';
         stopwatch.style.display = 'none';
+    }
+
+    editDisplayGUIContainer();
+}
+
+function editDisplayGUIContainer() {
+    if ((!flags.totalTimeToggle) && (!flags.intervalTimeToggle)) {
+        openEyeContainer.style.display = "none";
+        closedEyeContainer.style.display = "flex";
+    } else {
+        openEyeContainer.style.display = "flex";
+        closedEyeContainer.style.display = "none";
     }
 }
 

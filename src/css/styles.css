@@ -383,7 +383,7 @@ body[dinkle-doink-setting=space] .dinkle-doink-mode .caption [dinkle-doink=space
     /* border: 2px solid black; */
 }
 
-#darkLightThemeGUIContainer {
+#darkLightThemeGUIContainer, #displayGUIContainer {
     margin-left: 10px;
 }
 
@@ -583,6 +583,53 @@ button:hover {
     width: 35px;
     height: auto;
     display: none;
+}
+
+#openEyeGUIconWhite, #closedEyeGUIconWhite {
+    width: 35px;
+    height: auto;
+    display: flex;
+}
+
+#openEyeGUIconBlack, #closedEyeGUIconBlack {
+    width: 35px;
+    height: auto;
+    display: none;
+}
+
+#openEyeContainer {
+    display: flex;
+    border-radius: 15px;
+    padding: 7px;
+    border: 1px solid rgba(0, 0, 0, 0);
+}
+
+#closedEyeContainer {
+    display: none;
+    border-radius: 15px;
+    padding: 5px;
+
+    border: 1px solid rgba(0, 0, 0, 0);
+}
+
+#openEyeContainer:hover #closedEyeGUIconWhite {
+    display: none;
+}
+
+#openEyeContainer:hover #closedEyeGUIconBlack {
+    display: flex;
+}
+
+#closedEyeContainer:hover #openEyeGUIconWhite {
+    display: none;
+}
+
+#closedEyeContainer:hover #openEyeGUIconBlack {
+    display: flex;
+}
+
+#displayGUIContainer {
+    display: flex;
 }
 
 #darkContainer {
