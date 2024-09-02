@@ -398,8 +398,9 @@ function openAboutContainer() {
 
     // SHOWING ELEMENTS
     aboutContainer.style.display = "flex"; // show about container
-    fadeInUIContainer(streaksContainer, isMobile); // showing streaks container
-    fadeInUIContainer(darkLightThemeGUIContainer, isMobile); // showing darkLightThemeGUIContainer
+    fadeInUIContainer(streaksContainer, isMobile);
+    fadeInUIContainer(darkLightThemeGUIContainer, isMobile);
+    fadeInUIContainer(displayGUIContainer, isMobile);
     history.pushState({ window: "about" }, '', `/${"about"}`);
 
     // OTHER CHANGES
@@ -432,6 +433,7 @@ function openBlogContainer() {
     blogContainer.style.display = "flex"; // show main blog container
     fadeInUIContainer(streaksContainer, isMobile); // showing streaks container
     fadeInUIContainer(darkLightThemeGUIContainer, isMobile); // showing darkLightThemeGUIContainer
+    fadeInUIContainer(displayGUIContainer, isMobile);
     history.pushState({ window: "blog" }, '', `/${"blog"}`);
 
     // OTHER CHANGES
@@ -496,6 +498,7 @@ function handleLeftRightArrowKeys(event) {
                 hideDashboardCat();
                 fadeInUIContainer(streaksContainer, isMobile);
                 fadeInUIContainer(darkLightThemeGUIContainer, isMobile); // showing darkLightThemeGUIContainer
+                fadeInUIContainer(displayGUIContainer, isMobile);
                 setDinkleDoinkSetting("home"); // needs to execute first
                 resetMode(dashboardContainer);
                 resetMode(spaceContainer);
@@ -508,6 +511,7 @@ function handleLeftRightArrowKeys(event) {
                 displayDashboardCat();
                 fadeOutUIContainer(streaksContainer);
                 fadeOutUIContainer(darkLightThemeGUIContainer);
+                fadeOutUIContainer(displayGUIContainer);
                 initializeNewMode(dashboardContainer);
                 isClickNotOnAboutElements(event, about_menu_container, aboutContainer, menuBtn, about_exit, reportIcon, reportPath);
                 isClickNotOnBlogElements(event, blogMenuContainer, blog_post_container, menuBtn, blog_exit);
@@ -526,6 +530,7 @@ function handleLeftRightArrowKeys(event) {
                 hideDashboardCat();
                 fadeInUIContainer(streaksContainer, isMobile);
                 fadeInUIContainer(darkLightThemeGUIContainer, isMobile); // showing darkLightThemeGUIContainer
+                fadeInUIContainer(displayGUIContainer, isMobile);
                 setDinkleDoinkSetting("home"); // needs to execute first
                 resetMode(dashboardContainer);
                 resetMode(spaceContainer);
@@ -538,6 +543,7 @@ function handleLeftRightArrowKeys(event) {
                 hideDashboardCat();
                 fadeOutUIContainer(streaksContainer);
                 fadeOutUIContainer(darkLightThemeGUIContainer);
+                fadeOutUIContainer(displayGUIContainer);
                 initializeNewMode(spaceContainer);
                 isClickNotOnAboutElements(event, about_menu_container, aboutContainer, menuBtn, about_exit, reportIcon, reportPath);
                 isClickNotOnBlogElements(event, blogMenuContainer, blog_post_container, menuBtn, blog_exit);
@@ -631,6 +637,7 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
             displayDashboardCat();
             fadeOutUIContainer(streaksContainer);
             fadeOutUIContainer(darkLightThemeGUIContainer);
+            fadeOutUIContainer(displayGUIContainer);
             initializeNewMode(dashboardContainer);
             resetMode(spaceContainer);
             subMainContainerTransition("none");
@@ -645,6 +652,7 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
             hideDashboardCat();
             fadeInUIContainer(streaksContainer, isMobile);
             fadeInUIContainer(darkLightThemeGUIContainer, isMobile); // showing darkLightThemeGUIContainer
+            fadeInUIContainer(displayGUIContainer, isMobile);
             setDinkleDoinkSetting("home"); // needs to execute first
             resetMode(dashboardContainer);
             resetMode(spaceContainer);
@@ -653,13 +661,14 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
             
         } else if (spaceIcon.contains(event.target)) { // --> SPACE
             if (state.lastSelectedMode !== 'space') {
-                slimeSwitch(); 
+                slimeSwitch();
             }
 
             history.pushState({}, '', '/');
             hideDashboardCat();
             fadeOutUIContainer(streaksContainer);
             fadeOutUIContainer(darkLightThemeGUIContainer);
+            fadeOutUIContainer(displayGUIContainer);
             initializeNewMode(spaceContainer);
             resetMode(dashboardContainer);
             subMainContainerTransition("none");
