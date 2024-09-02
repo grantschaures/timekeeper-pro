@@ -212,7 +212,10 @@ document.addEventListener("stateUpdated", function() {
         } else if ((flags.sessionSummarySignupPromptPopupShowing) && (!sessionSummarySignupPromptPopup.contains(event.target) && (event.target !== sessionSummaryOkBtn))) {
             hideSessionSummarySignupPromptPopup();
             popupOverlay.style.display = 'none';
-            subMainContainerTransition("flex");
+
+            if (state.lastSelectedMode === 'home') {
+                subMainContainerTransition("flex");
+            }
         }
     })
 
@@ -682,7 +685,7 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
 }
 
 function displayDashboardCat() {
-    if ((indexFlags.muffinToggle) && ((!indexFlags.sessionInProgress) || (indexFlags.inHyperFocus)) && (!indexFlags.pipWindowOpen)) {
+    if ((indexFlags.muffinToggle) && ((!indexFlags.sessionInProgress) || (indexFlags.inHyperFocus)) && (!indexFlags.pipWindowOpen) && (!isMobile)) {
         let randNum = Math.floor(Math.random() * 9);
         tempCounters.dashboardCatIdsArrIndex = randNum;
         let dashboardCatId = dashboardCatIds[randNum];
