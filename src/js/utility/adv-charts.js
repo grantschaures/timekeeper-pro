@@ -119,7 +119,13 @@ function displayHourlyAvgDeepWorkChart() {
                             return item.label + " - " + finalHour; // Return the x-axis label directly
                         },
                         label: function(tooltipItem) {
-                            let label = ' ' + tooltipItem.raw + ' min avg deep work'; // Return the raw data value
+                            let label;
+                            if (flags.hourlyQualityAdjustedToggle) {
+                                label = ' ' + tooltipItem.raw + ' min adjusted avg deep work'; // Return the raw data value
+                            } else {
+                                label = ' ' + tooltipItem.raw + ' min avg deep work'; // Return the raw data value
+                            }
+                            
                             return label;
                         }
                     }
