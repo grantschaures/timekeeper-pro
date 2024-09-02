@@ -634,7 +634,10 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
             }
 
             history.pushState({}, '', '/');
-            displayDashboardCat();
+            if (state.lastSelectedMode !== 'report') {
+                displayDashboardCat();
+            }
+            
             fadeOutUIContainer(streaksContainer);
             fadeOutUIContainer(darkLightThemeGUIContainer);
             fadeOutUIContainer(displayGUIContainer);
