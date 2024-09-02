@@ -274,7 +274,7 @@ function visualizeLabelData(dashboardData, labelDistContainer) {
         labelNameDiv.innerText = labelName;
         labelNamesContainer.appendChild(labelNameDiv);
 
-        // Create labelTime elements
+        // Create labelTime elements //
         const labelTime = labels[key] / timeConvert.msPerHour;
         const labelTimeHours = Math.floor(labelTime);
         const labelTimeMinutes = Math.round((labelTime - labelTimeHours) * 60);
