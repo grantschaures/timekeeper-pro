@@ -264,7 +264,7 @@ export const muffinInfoWindow = document.getElementById('muffinInfoWindow');
 export const toggleMuffin = document.getElementById('toggleMuffin');
 export const muffinToggle = document.getElementById('muffinToggle');
 
-export const cats = document.querySelectorAll('.cat');
+export const cats = document.querySelectorAll('.sleepyCat');
 export const catsContainer = document.getElementById('catsContainer');
 export const zzz = document.getElementById("zzz");
 
