@@ -1719,11 +1719,11 @@ function handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInpu
                 taskCheckbox.checked = false;
                 event.preventDefault();
             }
-        }  else if ((event.key === 't') && (notesFlags.notesShowing) && (notesFlags.notesConsoleShowing) && (!flags.noteTaskInputContainerShowing) && (!flags.noteTaskInputContainerEditShowing) && (!navFlags.sessionSummaryPopupShowing)) {
+        }  else if ((event.key === 't') && canInputTask()) {
             addNoteTaskContainer.click();
             taskCheckbox.checked = true;
             event.preventDefault();
-        } else if ((event.key === 'l') && (notesFlags.notesShowing) && (notesFlags.notesConsoleShowing) && (!flags.noteTaskInputContainerShowing) && (!flags.noteTaskInputContainerEditShowing) && (!navFlags.sessionSummaryPopupShowing)) {
+        } else if ((event.key === 'l') && canOpenLabels()) {
             taskPrompt.click();
             event.preventDefault();
         } else if ((event.key === 'Escape') && (notesFlags.notesShowing) && (!navFlags.sessionSummaryPopupShowing)) {
@@ -1758,4 +1758,20 @@ function canOpenNotes(blogContainer, aboutContainer, settingsContainer, main_ele
         return ((settingsContainer.style.display === "none" || settingsContainer.style.display === "") && (main_elements.style.display !== "none") && (!navFlags.sessionSummaryPopupShowing));
     }
 
+}
+
+function canInputTask() {
+    if ((notesFlags.notesShowing) && (notesFlags.notesConsoleShowing) && (!flags.noteTaskInputContainerShowing) && (!flags.noteTaskInputContainerEditShowing) && (!navFlags.sessionSummaryPopupShowing) && (settingsContainer.style.display === "")) {
+        return true;
+    } else {
+        return ((settingsContainer.style.display === "none" || settingsContainer.style.display === "") && (main_elements.style.display !== "none") && (!navFlags.sessionSummaryPopupShowing));
+    }
+}
+
+function canOpenLabels() {
+    if ((notesFlags.notesShowing) && (notesFlags.notesConsoleShowing) && (!flags.noteTaskInputContainerShowing) && (!flags.noteTaskInputContainerEditShowing) && (!navFlags.sessionSummaryPopupShowing) && (settingsContainer.style.display === "")) {
+        return true;
+    } else {
+        return ((settingsContainer.style.display === "none" || settingsContainer.style.display === "") && (main_elements.style.display !== "none") && (!navFlags.sessionSummaryPopupShowing));
+    }
 }
