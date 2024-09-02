@@ -44,7 +44,7 @@ document.addEventListener("stateUpdated", function() {
 
     let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     let isIpad = isIpadCheck();
-    let usingSafari = usingSafari();
+    let usingSafari = usingSafariCheck();
     const initialViewportWidth = window.innerWidth || document.documentElement.clientWidth;
 
     // not used; initialized for reference
@@ -62,7 +62,7 @@ document.addEventListener("stateUpdated", function() {
         return /iPad/.test(userAgent) || (navigator.maxTouchPoints > 1);
     }
 
-    function usingSafari() {
+    function usingSafariCheck() {
         const userAgent = navigator.userAgent || navigator.vendor || window.opera;
     
         // Check for Safari on Mac (excluding Chrome and Firefox) 
