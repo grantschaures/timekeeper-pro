@@ -164,8 +164,8 @@ function displayDirectionIndicators() {
     compareAndSetIndicatorDirection('deepWorkInterval', summaryAvgDeepWorkIntervalUp, summaryAvgDeepWorkIntervalDown);
     compareAndSetIndicatorDirection('breakInterval', summaryAvgBreakIntervalUp, summaryAvgBreakIntervalDown);
 
-    console.log(currStats)
-    console.log(prevStats)
+    // console.log(currStats)
+    // console.log(prevStats)
 }
 
 function compareAndSetDeepWorkIndicatorDirection(statType) {

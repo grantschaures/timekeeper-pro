@@ -6,6 +6,11 @@ import { setBounds, alterBounds, displayTimeFrame } from './label-distribution.j
 
 export function setMainChartsContainer() {
     setBounds(mainChartContainer, metricDistributionTimeFrame, rightMetricDistributionArrow, rightMetricDistributionArrowGray);
+
+    if (flags.metricDistributionContainerExpanded) {
+        document.dispatchEvent(new Event('displayMainCharts'));
+        document.dispatchEvent(new Event('displayAdvCharts'));
+    }
 }
 
 document.addEventListener("stateUpdated", function() {
@@ -368,22 +373,18 @@ function expandMetricDistributionContainer(metricBodyContainer) {
                 if (flags.summarySelected) {
                     mainChartsSummaryContainer.style.display = 'flex';
                     mainChartsSummarySubContainer.style.opacity = '1';
+                    // show indicators
+
                 } else {
                     metricBodyContainer.style.display = 'flex';
                 }
 
                 mainChartsDivisionHr.style.display = 'flex';
 
-                // chart transition
-                general.chartTransition = 'all';
-
                 document.dispatchEvent(new Event('displayMainCharts'));
                 
             } else {
                 metricBodyContainer.style.display = 'flex';
-                
-                // chart transition
-                general.chartTransition = 'all';
 
                 document.dispatchEvent(new Event('displayAdvCharts'));
             }
