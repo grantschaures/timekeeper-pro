@@ -176,6 +176,10 @@
                 </div>
             </div>
             <div id="sessionSummaryPopup">
+                <img id="sessionSummaryKitty1" src="images/sprites/thicker-lines/kitty5-1-mod3.png" class="sessionSummaryKitty">
+                <img id="sessionSummaryKitty2" src="images/sprites/thicker-lines/kitty9-1-mod.png" class="sessionSummaryKitty">
+                <img id="sessionSummaryKitty3" src="images/sprites/thicker-lines/kitty9-1-mod.png" class="sessionSummaryKitty">
+
                 <div id="sessionSummaryTextContainer">
                     <h1 id="sessionSummaryText">Session Summary</h1>
                 </div>
@@ -220,6 +224,7 @@
                     </button>
                 </div>
             </div>
+
             <div id="sessionSummarySignupPromptPopup">
                 <div id="signupPromptHeaderTextContainer">
                     <h1 id="signupPromptHeaderText">Would you like to save your sessions?</h1>
@@ -366,15 +371,16 @@
             <main class="main" data-testid="main">
                 <div id="subMainContainer" data-testid="subMainContainer" class="introTransition">
                     <div id="targetHoursInterruptionsContainer">
-                        <div id="catsContainer"> <!-- Credit to Gamedev Kitty on itch.io -->
-                            <img id="cat1" src="images/sprites/white-kitten1.png" class="cat no-select">
-                            <img id="cat2" src="images/sprites/white-kitten2.png" class="cat no-select">
-                            <img id="cat3" src="images/sprites/white-kitten3.png" class="cat no-select">
-                            <img id="cat4" src="images/sprites/white-kitten4.png" class="cat no-select">
-                            <img id="cat5" src="images/sprites/white-kitten5.png" class="cat no-select">
-                            <img id="cat6" src="images/sprites/white-kitten6.png" class="cat no-select">
-                            <img id="cat7" src="images/sprites/white-kitten7.png" class="cat no-select">
-                            <img id="cat8" src="images/sprites/white-kitten8.png" class="cat no-select">
+                        <div id="catsContainer">
+                            <img id="sleepyCat1" src="images/sprites/white-kitten1.png" class="sleepyCat no-select">
+                            <img id="sleepyCat2" src="images/sprites/white-kitten2.png" class="sleepyCat no-select">
+                            <img id="sleepyCat3" src="images/sprites/white-kitten3.png" class="sleepyCat no-select">
+                            <img id="sleepyCat4" src="images/sprites/white-kitten4.png" class="sleepyCat no-select">
+                            <img id="sleepyCat5" src="images/sprites/white-kitten5.png" class="sleepyCat no-select">
+                            <img id="sleepyCat6" src="images/sprites/white-kitten6.png" class="sleepyCat no-select">
+                            <img id="sleepyCat7" src="images/sprites/white-kitten7.png" class="sleepyCat no-select">
+                            <img id="sleepyCat8" src="images/sprites/white-kitten8.png" class="sleepyCat no-select">
+                            <img id="sleepyCat9" src="images/sprites/thicker-lines/kitty2.png" class="sleepyCat no-select">
                             <img id="zzz" src="images/icons/zzz_white.png" class="no-select">
                         </div>
                         <div id="targetHoursContainer">
@@ -419,8 +425,8 @@
                                 Welcome to mini-mode! You can drag the mini window to wherever you're working.
                                 Also don't forget that you can press 'n' to bring up notes in this tab. - Muffin
                             </div>
-                            <img id="cat13" src="images/sprites/thicker-lines/kitty5-1-mod3.png" class="cat2 no-select no-drag">
-                            <img id="cat14" src="images/sprites/thicker-lines/kitty5-2.png" class="cat2 no-select no-drag">
+                            <img id="progressCatHead" src="images/sprites/thicker-lines/kitty5-1-mod2.png" class="cat2 no-select no-drag">
+                            <img id="progressCatBody" src="images/sprites/thicker-lines/kitty5-2.png" class="cat2 no-select no-drag">
                         </div>
                         <div id="progress-bar-container" class="small" data-testid="progress-bar-container"> <!-- z-index: 25 -->
                             <div id="progress-container" data-testid="progress-container">
@@ -603,7 +609,10 @@
                     <!-- Potential Cover -->
                 </div>
                 <div id="dashboardSubContainer">
-                    <!-- <img id="cat12" src="images/sprites/Kitty3-mod.png" class="catest no-select"> -->
+                    <img id="dashboardCat2" src="images/sprites/thicker-lines/Kitty3.png" class="cat2 no-select">
+                    <!-- <img id="dashboardCat2-shadow" src="images/sprites/lil-shadow.png" class="cat2 no-select"> -->
+                    <img id="dashboardCat3" src="images/sprites/thicker-lines/kitty8.png" class="cat2"> 
+                    <img id="dashboardCat4" src="images/sprites/thicker-lines/kitty1.png" class="cat2">
                     <div id="dailyContainer" class="dashboardSideContainer">
 
                         <div id="dailyHeaderContainer" class="dailyContainer">
@@ -628,16 +637,20 @@
                         </div>
                     </div>
                     <div id="distributionsContainer">
-                        <!-- <img id="cat10" src="images/sprites/kitty7-2-mod2.png" class="catest no-select"> -->
+                        <img id="dashboardCat1" src="images/sprites/thicker-lines/kitty7-1.png" class="cat2 no-select">
                         <div id="metricDistributionContainer">
                             <div id="metricDistributionCoverContainer" class="no-select">
+                                <img id="dashboardCat5" src="images/sprites/thicker-lines/kitty6.png" class="cat2 no-select">
+                                <img id="dashboardCat6" src="images/sprites/thicker-lines/kitty5-1-mod2.png" class="cat2 no-select">
+                                <img id="dashboardCat7" src="images/sprites/thicker-lines/kitty4.png" class="cat2 no-select">
                                 <div id="metricDistributionCoverModuleContainer">
                                     <div id="mainChartsCoverModule" class="chartsCoverModule">
-                                        <!-- <img id="cat11" src="images/sprites/kitty4-mod.png" class="catest no-select"> -->
                                         Main Charts
                                     </div>
                                     <div id="advChartsCoverModule" class="chartsCoverModule">
+                                        <img id="dashboardCat8" src="images/sprites/thicker-lines/kitty9-2-mod.png" class="cat2 no-select">
                                         Adv Charts
+                                        <img id="dashboardCat9" src="images/sprites/thicker-lines/kitty9-1-mod2.png" class="cat2 no-select">
                                     </div>
                                 </div>
                             </div>
@@ -1809,7 +1822,7 @@
                                     </label>
                                 </div>
                                 <div id="muffinInfoWindow" class="notificationInfoWindow displayInfoWindow">
-                                    Show Muffin (Lil' Muff) during breaks
+                                    Let Muffin (Lil' Muff) in the dashboard and main view
                                 </div>
                             </div>
                             <div id="muffinArtCreditsContainer">

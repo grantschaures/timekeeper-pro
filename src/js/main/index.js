@@ -1236,7 +1236,7 @@ function hideMuffin(catIds, counters) {
 }
 
 function updateCatIdsArrIndex(counters) {
-    if (counters.catIdsArrIndex === 7) {
+    if (counters.catIdsArrIndex === 8) {
         counters.catIdsArrIndex = 0;
     } else {
         counters.catIdsArrIndex++;

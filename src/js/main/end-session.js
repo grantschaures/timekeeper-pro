@@ -1,5 +1,5 @@
 import { timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, counters, flags, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, lightHtmlBackground, darkHtmlBackground, times, perHourData, catIds, tempCounters, pip } from '../modules/index-objects.js';
-import { start_stop_btn, end_session_btn, total_time_display, productivity_chill_mode, progressBar, progressContainer, display, interruptionsSubContainer, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, flowAnimation, chillAnimation, streaksCount, breakBackground, deepWorkBackground, commentsTextArea, sessionSummaryOkBtn, subjectiveFeedbackDropdown, sessionSummaryPopup, summaryStats, HC_icon_session_summary, commentsContainer, sessionSummarySignupPromptPopup, popupOverlay, HC_icon_signup_prompt, signupPromptPopupBtn } from '../modules/dom-elements.js';
+import { start_stop_btn, end_session_btn, total_time_display, productivity_chill_mode, progressBar, progressContainer, display, interruptionsSubContainer, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, flowAnimation, chillAnimation, streaksCount, breakBackground, deepWorkBackground, commentsTextArea, sessionSummaryOkBtn, subjectiveFeedbackDropdown, sessionSummaryPopup, summaryStats, HC_icon_session_summary, commentsContainer, sessionSummarySignupPromptPopup, popupOverlay, HC_icon_signup_prompt, signupPromptPopupBtn, sessionSummaryKitty2, sessionSummaryKitty1, sessionSummaryKitty3 } from '../modules/dom-elements.js';
 import { soundMap } from '../modules/sound-map.js';
 import { sessionState } from '../modules/state-objects.js';
 import { labelFlags, labelArrs, labelDict } from '../modules/notes-objects.js';
@@ -70,6 +70,8 @@ document.addEventListener("stateUpdated", function() {
         }
 
         if (summaryFlags.canSubmitSessionSummary) {
+            // hide sessionSummaryCats
+            hideSessionSummaryCats();
 
             // hide summary popup
             hideSessionSummaryPopup();
@@ -245,6 +247,8 @@ async function logSession() {
 
 // ?? commentsContainer expansion is slightly different on subsequent popup display (not sure why)
 function displaySessionSummaryPopup() {
+    displaySessionSummaryCat();
+
     popupOverlay.style.opacity = 0;
     popupOverlay.style.display = 'flex';
     setTimeout(() => {
@@ -255,6 +259,7 @@ function displaySessionSummaryPopup() {
     }, 0)
     sessionSummaryPopup.style.display = 'flex';
     navFlags.sessionSummaryPopupShowing = true;
+
     if ((!isMobile) && (!isIpad)) {
         commentsTextArea.focus();
     }
@@ -270,6 +275,25 @@ function displaySessionSummaryPopup() {
 
         document.dispatchEvent(new Event('triggerSessionSummaryChartAnimation'));
     }, 100);
+}
+
+function displaySessionSummaryCat() {
+    let sessionSummaryKittyArr = [sessionSummaryKitty1, sessionSummaryKitty2, sessionSummaryKitty3];
+
+    // if random number from 1 - 10 is 1, then show a random kitty
+    let num = Math.floor(Math.random() * 10) + 1;
+
+    if ((num === 1) && (flags.muffinToggle)) {
+        let index = Math.floor(Math.random() * 3);
+        sessionSummaryKittyArr[index].style.display = 'flex';
+    }
+}
+
+function hideSessionSummaryCats() {
+    let sessionSummaryKittyArr = [sessionSummaryKitty1, sessionSummaryKitty2, sessionSummaryKitty3];
+    sessionSummaryKittyArr.forEach(cat => {
+        cat.style.display = 'none';
+    });
 }
 
 export function sessionReset(logSessionActivity) {

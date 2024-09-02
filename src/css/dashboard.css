@@ -75,6 +75,7 @@
 
 #dashboardSummaryStatsContainer {
     display: flex;
+    position: relative;
     box-sizing: border-box;
     justify-content: space-around;
     width: 225px;
@@ -141,7 +142,6 @@
 .dashboardSideContainer {
     display: flex;
     height: 100%;
-    position: relative;
     /* background-color: rgba(255, 255, 255, 0.1); */
     background-color: rgba(0, 0, 0, 1);
     box-sizing: border-box;
@@ -152,7 +152,6 @@
     color: white;
     overflow-y: scroll;
 }
-
 
 /* METRIC DISTRIBUTION */
 
@@ -178,6 +177,7 @@
 #metricDistributionCoverContainer {
     /* display: none; */
     display: flex;
+    position: relative;
     height: 100%;
     text-align: center;
     justify-content: center;
@@ -187,6 +187,8 @@
 
     /* border: 1px solid white; */
 }
+
+
 
 #metricDistributionCoverModuleContainer {
     display: flex;
@@ -199,6 +201,7 @@
 
 .chartsCoverModule {
     display: flex;
+    position: relative;
     align-items: center;
     justify-content: center;
     border-radius: 25px;
@@ -206,10 +209,6 @@
     transition: background-color 0.15s ease-out;
 
     border: 2px solid white;
-}
-
-#mainChartsCoverModule {
-    position: relative;
 }
 
 .chartsCoverModule:hover {

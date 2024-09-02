@@ -1,7 +1,7 @@
 import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn, spaceContainer, shortcutsContainer, shortcutsPopup, shortcutsExit, dashboardContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, flowAnimation, chillAnimation, target_hours_input, streaksContainer, threeWayToggle, labelToDeleteContainer, confirmLabelDeletionPopup, labelSelectionRow, confirmLabelDeletionNoBtn, sessionSummaryOkBtn, sessionSummarySignupPromptPopup, HC_icon_signup_prompt, settingsGUIContainer, darkLightThemeGUIContainer } from '../modules/dom-elements.js';
 import { blogIdList, flags, counters, state } from '../modules/navigation-objects.js';
 import { sessionState } from '../modules/state-objects.js';
-import { flags as indexFlags} from '../modules/index-objects.js';
+import { dashboardCatIds, flags as indexFlags, tempCounters} from '../modules/index-objects.js';
 import { labelArrs, labelDict, labelFlags, flags as notesFlags, selectedLabelDict } from '../modules/notes-objects.js';
 import { chimePath, bellPath, soundMap } from '../modules/sound-map.js';
 
@@ -487,6 +487,7 @@ function handleLeftRightArrowKeys(event) {
         if (event.key === 'ArrowLeft') {
             if (state.lastSelectedMode === 'space') { // --> HOME
                 slimeSwitch();
+                hideDashboardCat();
                 fadeInUIContainer(streaksContainer, isMobile);
                 fadeInUIContainer(darkLightThemeGUIContainer, isMobile); // showing darkLightThemeGUIContainer
                 setDinkleDoinkSetting("home"); // needs to execute first
@@ -498,6 +499,7 @@ function handleLeftRightArrowKeys(event) {
             } else if (state.lastSelectedMode === 'home') { // --> REPORT
                 history.pushState({}, '', '/');
                 slimeSwitch();
+                displayDashboardCat();
                 fadeOutUIContainer(streaksContainer);
                 fadeOutUIContainer(darkLightThemeGUIContainer);
                 initializeNewMode(dashboardContainer);
@@ -515,6 +517,7 @@ function handleLeftRightArrowKeys(event) {
         } else if (event.key === 'ArrowRight') {
             if (state.lastSelectedMode === 'report') { // --> HOME
                 slimeSwitch();
+                hideDashboardCat();
                 fadeInUIContainer(streaksContainer, isMobile);
                 fadeInUIContainer(darkLightThemeGUIContainer, isMobile); // showing darkLightThemeGUIContainer
                 setDinkleDoinkSetting("home"); // needs to execute first
@@ -526,6 +529,7 @@ function handleLeftRightArrowKeys(event) {
             } else if (state.lastSelectedMode === 'home') { // --> SPACE
                 history.pushState({}, '', '/');
                 slimeSwitch();
+                hideDashboardCat();
                 fadeOutUIContainer(streaksContainer);
                 fadeOutUIContainer(darkLightThemeGUIContainer);
                 initializeNewMode(spaceContainer);
@@ -618,6 +622,7 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
             }
 
             history.pushState({}, '', '/');
+            displayDashboardCat();
             fadeOutUIContainer(streaksContainer);
             fadeOutUIContainer(darkLightThemeGUIContainer);
             initializeNewMode(dashboardContainer);
@@ -631,6 +636,7 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
                 slimeSwitch(); 
             }
 
+            hideDashboardCat();
             fadeInUIContainer(streaksContainer, isMobile);
             fadeInUIContainer(darkLightThemeGUIContainer, isMobile); // showing darkLightThemeGUIContainer
             setDinkleDoinkSetting("home"); // needs to execute first
@@ -645,6 +651,7 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
             }
 
             history.pushState({}, '', '/');
+            hideDashboardCat();
             fadeOutUIContainer(streaksContainer);
             fadeOutUIContainer(darkLightThemeGUIContainer);
             initializeNewMode(spaceContainer);
@@ -672,6 +679,20 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
             hideBlog(blogs);
         }
     }
+}
+
+function displayDashboardCat() {
+    if ((indexFlags.muffinToggle) && ((!indexFlags.sessionInProgress) || (indexFlags.inHyperFocus)) && (!indexFlags.pipWindowOpen)) {
+        let randNum = Math.floor(Math.random() * 9);
+        tempCounters.dashboardCatIdsArrIndex = randNum;
+        let dashboardCatId = dashboardCatIds[randNum];
+        document.getElementById(dashboardCatId).style.display = 'flex';
+    }
+}
+
+function hideDashboardCat() {
+    let dashboardCatId = dashboardCatIds[tempCounters.dashboardCatIdsArrIndex];
+        document.getElementById(dashboardCatId).style.display = 'none';
 }
 
 function isClickNotOnAboutElements(event, about_menu_container, aboutContainer, menuBtn, about_exit, reportIcon, reportPath) {

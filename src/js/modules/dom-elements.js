@@ -275,6 +275,15 @@ export const pipIconContainer = document.getElementById("pip-icon-container");
 
 export const supportEmail = document.getElementById("supportEmail");
 
+export const sessionSummaryKitty1 = document.getElementById("sessionSummaryKitty1");
+export const sessionSummaryKitty2 = document.getElementById("sessionSummaryKitty2");
+export const sessionSummaryKitty3 = document.getElementById("sessionSummaryKitty3");
+
+export const progressCatHead = document.getElementById('progressCatHead');
+export const progressCatBody = document.getElementById('progressCatBody');
+export const pipCatShadow = document.getElementById('pip-cat-shadow');
+export const pipInfoText = document.getElementById('pip-info-text');
+
 export let hoverTimer;
 export var backgroundVideoSource = document.getElementById('background-video-source');
 export var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);

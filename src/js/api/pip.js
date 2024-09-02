@@ -1,4 +1,4 @@
-import { catsContainer, completedPomodoros_label, completedPomodoros_min, completedPomodorosContainer, display, interruptionsChangeContainer, interruptionsContainer, interruptionsLabel, interruptionsNum, interruptionsSubContainer, lowerButtons, notesBtn, notesContainer, pipIconContainer, pomodoroInfoTooltip, productivity_chill_mode, progress, start_stop_btn, stopwatch, suggestionBreak_label, suggestionBreak_min, targetHoursContainer, targetHoursInterruptionsContainer, timekeepingContainer } from "../modules/dom-elements.js";
+import { catsContainer, completedPomodoros_label, completedPomodoros_min, completedPomodorosContainer, display, interruptionsChangeContainer, interruptionsContainer, interruptionsLabel, interruptionsNum, interruptionsSubContainer, lowerButtons, notesBtn, notesContainer, pipCatShadow, pipIconContainer, pipInfoText, pomodoroInfoTooltip, productivity_chill_mode, progress, progressCatBody, progressCatHead, start_stop_btn, stopwatch, suggestionBreak_label, suggestionBreak_min, targetHoursContainer, targetHoursInterruptionsContainer, timekeepingContainer } from "../modules/dom-elements.js";
 import { catIds, counters, flags, pip, selectedBackground } from "../modules/index-objects.js";
 
 import { displayCat, setBackground } from '../main/index.js';
@@ -29,15 +29,15 @@ document.addEventListener("stateUpdated", function() {
     pip.window = pipWindow;
 
     // cat
-    document.getElementById('cat13').style.display = 'flex';
-    document.getElementById('cat14').style.display = 'flex';
-    document.getElementById('pip-cat-shadow').style.display = 'flex';
-    document.getElementById('pip-info-text').style.display = 'flex';
+    progressCatHead.style.display = 'flex';
+    progressCatBody.style.display = 'flex';
+    pipCatShadow.style.display = 'flex';
+    pipInfoText.style.display = 'flex';
     setTimeout(() => {
-      document.getElementById('cat13').style.opacity = '1';
-      document.getElementById('cat14').style.opacity = '1';
-      document.getElementById('pip-cat-shadow').style.opacity = '1';
-      document.getElementById('pip-info-text').style.opacity = '1';
+      progressCatHead.style.opacity = '1';
+      progressCatBody.style.opacity = '1';
+      pipCatShadow.style.opacity = '1';
+      pipInfoText.style.opacity = '1';
       mainWindowResize();
     }, 0)
 
@@ -121,14 +121,14 @@ document.addEventListener("stateUpdated", function() {
       flags.pipWindowOpen = false;
 
       // cat
-      document.getElementById('cat13').style.display = 'none';
-      document.getElementById('cat13').style.opacity = '0';
-      document.getElementById('cat14').style.display = 'none';
-      document.getElementById('cat14').style.opacity = '0';
-      document.getElementById('pip-cat-shadow').style.display = 'none';
-      document.getElementById('pip-cat-shadow').style.opacity = '0';
-      document.getElementById('pip-info-text').style.display = 'none';
-      document.getElementById('pip-info-text').style.opacity = '0';
+      progressCatHead.style.display = 'none';
+      progressCatHead.style.opacity = '0';
+      progressCatBody.style.display = 'none';
+      progressCatBody.style.opacity = '0';
+      pipCatShadow.style.display = 'none';
+      pipCatShadow.style.opacity = '0';
+      pipInfoText.style.display = 'none';
+      pipInfoText.style.opacity = '0';
 
       pipIconContainer.style.display = 'flex';
       notesBtn.style.display = 'flex';
@@ -245,15 +245,15 @@ document.addEventListener("stateUpdated", function() {
     let mainWindowWidth = window.innerWidth;
 
     if (mainWindowHeight <= 430) {
-      document.getElementById('pip-cat-shadow').style.opacity = '0';
+      pipCatShadow.style.opacity = '0';
     } else {
-      document.getElementById('pip-cat-shadow').style.opacity = '1';
+      pipCatShadow.style.opacity = '1';
     }
 
     if (mainWindowWidth <= 320) {
-      document.getElementById('pip-info-text').style.opacity = '0';
+      pipInfoText.style.opacity = '0';
     } else {
-      document.getElementById('pip-info-text').style.opacity = '1';
+      pipInfoText.style.opacity = '1';
     }
   }
 });

@@ -218,18 +218,32 @@ export const intervalArrs = {
 }
 
 export const catIds = [
-    'cat1',
-    'cat2',
-    'cat3',
-    'cat4',
-    'cat5',
-    'cat6',
-    'cat7',
-    'cat8',
+    'sleepyCat1',
+    'sleepyCat2',
+    'sleepyCat3',
+    'sleepyCat4',
+    'sleepyCat5',
+    'sleepyCat6',
+    'sleepyCat7',
+    'sleepyCat8',
+    'sleepyCat9'
+]
+
+export const dashboardCatIds = [
+    'dashboardCat1',
+    'dashboardCat2',
+    'dashboardCat3',
+    'dashboardCat4',
+    'dashboardCat5',
+    'dashboardCat6',
+    'dashboardCat7',
+    'dashboardCat8',
+    'dashboardCat9'
 ]
 
 export const tempCounters = {
-    catIdsArrIndex: 0
+    catIdsArrIndex: 0,
+    dashboardCatIdsArrIndex: 0
 }
 
 export const times = {

@@ -1777,6 +1777,7 @@ header {
 #sessionSummaryPopup, #sessionSummarySignupPromptPopup {
     display: none;
     /* display: flex; */
+    position: relative;
     flex-direction: column;
     background: white;
     padding-left: 20px;
@@ -1795,6 +1796,7 @@ header {
     min-width: 225px;
     margin-left: 10px;
     margin-right: 10px;
+
 }
 
 #sessionSummaryText, #signupPromptHeaderText {
@@ -2107,56 +2109,62 @@ header {
     /* border: 3px solid black; */
 }
 
-#cat1 {
+#sleepyCat1 {
     width: 70px;
     top: -54px; /* Align the image to the top */
     right: 85px;;
 }
 
-#cat2 {
+#sleepyCat2 {
     width: 90px;
     top: -51px; /* Align the image to the top */
     right: 75px;
 }
 
-#cat3 {
+#sleepyCat3 {
     width: 85px;
     top: -50px; /* Align the image to the top */
     right: 70px;
 
 }
 
-#cat4 {
+#sleepyCat4 {
     width: 110px;
     top: -40px; /* Align the image to the top */
     right: 50px;
 }
 
-#cat5 {
+#sleepyCat5 {
     width: 100px;
     top: -46px; /* Align the image to the top */
     right: 50px;
 }
 
-#cat6 {
+#sleepyCat6 {
     width: 80px;
     top: -42px; /* Align the image to the top */
     right: 75px;
 }
 
-#cat7 {
+#sleepyCat7 {
     width: 80px;
     top: -45px; /* Align the image to the top */
     right: 75px;
 }
 
-#cat8 {
+#sleepyCat8 {
     width: 80px;
     top: -45px; /* Align the image to the top */
     right: 75px;
 }
 
-.cat {
+#sleepyCat9 {
+    width: 75px;
+    top: -47px;
+    right: 85px;
+}
+
+.sleepyCat {
     display: none;
     z-index: 26;
     height: auto;
@@ -2167,7 +2175,131 @@ header {
     animation: scaleXAnimation 10s ease-in-out infinite;
 }
 
+.sleepyCat:hover {
+    cursor: pointer;
+}
+
+
+
+
+#progressCatHead {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+    width: 60px;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 26;
+}
+
+#progressCatBody {
+    display: none;
+    opacity: 0;
+    transition: opacity 1s ease-out;
+    width: 60px;
+    top: 20px;
+    left: 50%;          /* Move to the middle of the parent horizontally */
+    z-index: 24;
+    transform-origin: top center; /* Rotate around the top center of the element */
+
+    animation: wobble 5s ease-in-out infinite;
+}
+
 .cat2 {
+    /* display: flex; */
+    display: none;
+    z-index: 26;
+    height: auto;
+    position: absolute;
+}
+
+#dashboardCat1 {
+    width: 50px;
+    top: 30px;
+    right: -40px;
+}
+
+#dashboardCat2 {
+    width: 85px;
+    left: 150px;
+    top: -48px;
+    z-index: 2;
+}
+
+#dashboardCat2-shadow {
+    width: 85px;
+    left: 200px;
+    top: 8px;
+    z-index: 1;
+}
+
+#dashboardCat3 {
+    width: 90px;
+    top: -17px;
+    right: 60px;
+}
+
+#dashboardCat4 {
+    width: 65px;
+    top: -48px;
+    left: 100px;
+}
+
+#dashboardCat5 {
+    width: 60px;
+    top: -34px;
+    left: calc(50% - 5px);          /* Move to the middle of the parent horizontally */
+    transform: translateX(-50%);
+}
+
+#dashboardCat6 {
+    width: 60px;
+    top: -50px;
+    left: 50%;          /* Move to the middle of the parent horizontally */
+    transform: translateX(-50%); 
+}
+
+#dashboardCat7 {
+    width: 90px;
+    bottom: -17px;
+    left: -16px;
+}
+
+#dashboardCat8 {
+    width: 90px;
+    top: -28px;
+    right: -1px;
+}
+
+#dashboardCat9 {
+    width: 90px;
+    bottom: -37px;
+    left: 10px;
+}
+
+#sessionSummaryKitty1 {
+    width: 70px;
+    top: -42px;
+    left: 50%;          /* Move to the middle of the parent horizontally */
+    transform: translateX(-50%);
+}
+
+#sessionSummaryKitty2 {
+    width: 100px;
+    bottom: -38px;
+    left: 25px;
+    /* transform: scaleX(-1); */
+}
+
+#sessionSummaryKitty3 {
+    width: 100px;
+    bottom: -38px;
+    right: 25px;
+    transform: scaleX(-1);
+}
+
+.sessionSummaryKitty {
     /* display: flex; */
     display: none;
     z-index: 26;
@@ -2175,53 +2307,6 @@ header {
     position: absolute;
     opacity: 1;
     transition: opacity 0.5s ease-out;
-}
-
-#cat10 {
-    width: 50px;
-    top: 30px;
-    right: -40px;
-}
-
-#cat11 {
-    width: 115px;
-    transform: scaleX(1.25);
-    bottom: -14px;
-    left: -19px;
-}
-
-#cat12 {
-    width: 75px;
-    left: 100px;
-    top: -50px;
-}
-
-.cat:hover {
-    cursor: pointer;
-}
-
-#cat13 {
-    display: none;
-    opacity: 0;
-    transition: opacity 0.5s ease-out;
-    width: 60px;
-    top: -10px;
-    left: 50%;          /* Move to the middle of the parent horizontally */
-    transform: translateX(-50%);
-    z-index: 26;
-}
-
-#cat14 {
-    display: none;
-    opacity: 0;
-    transition: opacity 1s ease-out;
-    width: 60px;
-    top: 25px;
-    left: 50%;          /* Move to the middle of the parent horizontally */
-    z-index: 24;
-    transform-origin: top center; /* Rotate around the top center of the element */
-
-    animation: wobble 5s ease-in-out infinite;
 }
 
 @keyframes wobble {
