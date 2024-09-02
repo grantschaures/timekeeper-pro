@@ -2249,13 +2249,13 @@ header {
 #dashboardCat5 {
     width: 60px;
     top: -34px;
-    left: calc(50% - 5px);          /* Move to the middle of the parent horizontally */
+    left: 50%;          /* Move to the middle of the parent horizontally */
     transform: translateX(-50%);
 }
 
 #dashboardCat6 {
     width: 60px;
-    top: -50px;
+    top: -35px;
     left: 50%;          /* Move to the middle of the parent horizontally */
     transform: translateX(-50%); 
 }
