@@ -22,6 +22,15 @@ document.addEventListener("stateUpdated", function() {
     // ---------------------
     // HELPER FUNCTIONS 1
     // ---------------------
+    let usingSafari = usingSafariCheck();
+
+    function usingSafariCheck() {
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    
+        // Check for Safari on Mac (excluding Chrome and Firefox) 
+        return /^((?!chrome|android).)*safari/i.test(userAgent);
+    }
+
     function done() {
         notesConsole.style.display = "block";
         labelSelectionWindow.style.display = "none";
@@ -220,7 +229,7 @@ document.addEventListener("stateUpdated", function() {
         }
     })
     
-    document.addEventListener('keydown', (event) => handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInput, createLabelDone, updateLabelInput, updateLabelDone, noteInputSaveBtn, noteTaskInputText, noteInputCancelBtn, addNoteTaskContainer, flags, isMobile, settingsContainer, aboutContainer, blogContainer, main_elements));
+    document.addEventListener('keydown', (event) => handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInput, createLabelDone, updateLabelInput, updateLabelDone, noteInputSaveBtn, noteTaskInputText, noteInputCancelBtn, addNoteTaskContainer, flags, isMobile, settingsContainer, aboutContainer, blogContainer, main_elements, usingSafari));
     
     clearIcon.addEventListener("click", async function() {
 
@@ -1697,7 +1706,7 @@ function deselectTags(tag, flags, tagIcon, clearIcon, labelSelectionRow, counter
     }
 }
 
-function handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInput, createLabelDone, updateLabelInput, updateLabelDone, noteInputSaveBtn, noteTaskInputText, noteInputCancelBtn, addNoteTaskContainer, flags, isMobile, settingsContainer, aboutContainer, blogContainer, main_elements) {
+function handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInput, createLabelDone, updateLabelInput, updateLabelDone, noteInputSaveBtn, noteTaskInputText, noteInputCancelBtn, addNoteTaskContainer, flags, isMobile, settingsContainer, aboutContainer, blogContainer, main_elements, usingSafari) {
     if (navigationState.lastSelectedMode === 'home') {
         if (event.key === 'Enter') {
             event.preventDefault();
@@ -1711,7 +1720,7 @@ function handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInpu
             } else if (document.activeElement.id === 'note-task-input-text-edit') {
                 document.getElementById('note-input-save-btn-edit').click();
             }
-        } else if ((event.key === 'n') && (canOpenNotes(blogContainer, aboutContainer, settingsContainer, main_elements))) {
+        } else if ((event.key === 'n') && (canOpenNotes(blogContainer, aboutContainer, settingsContainer, main_elements)) && !usingSafari) {
             if (!notesFlags.notesShowing) {
                 openNotesContainer(notesContainer, notesFlags);
             } else if ((!flags.noteTaskInputContainerShowing) && (!flags.noteTaskInputContainerEditShowing) && (notesFlags.notesConsoleShowing) && (!navFlags.sessionSummaryPopupShowing)) {
@@ -1719,11 +1728,11 @@ function handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInpu
                 taskCheckbox.checked = false;
                 event.preventDefault();
             }
-        }  else if ((event.key === 't') && canInputTask()) {
+        }  else if ((event.key === 't') && canInputTask() && !usingSafari) {
             addNoteTaskContainer.click();
             taskCheckbox.checked = true;
             event.preventDefault();
-        } else if ((event.key === 'l') && canOpenLabels()) {
+        } else if ((event.key === 'l') && canOpenLabels() && !usingSafari) {
             taskPrompt.click();
             event.preventDefault();
         } else if ((event.key === 'Escape') && (notesFlags.notesShowing) && (!navFlags.sessionSummaryPopupShowing)) {
