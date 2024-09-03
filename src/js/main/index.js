@@ -921,19 +921,7 @@ document.addEventListener("stateUpdated", function() {
     })
 
     window.addEventListener("resize", function() {
-        handleViewportWidthChange(settingsMappings, tempStorage, end_session_btn);
-    });
-
-    /**
-     * setTimeout delay of 0 allows the event listener callback function in menu.js
-     * dealing with opening the settings menu to execute first before
-     * handleViewportWidthChange() is called so that handleViewportWidthChange()
-     * recognizes that the display style of settingsContainer is === "block"
-     */
-    settings_menu_container.addEventListener("click", function() {
-        setTimeout(() => {
-            handleViewportWidthChange(settingsMappings, tempStorage, end_session_btn);
-        }, 0);
+        handleViewportWidthChange(settingsMappings, tempStorage);
     });
 
     registerHereText.addEventListener('click', function() {
@@ -2096,7 +2084,7 @@ function showAllSettingsContainers(settingsMappings) {
     }
 }
 
-function handleViewportWidthChange(settingsMappings, tempStorage, end_session_btn) {
+export function handleViewportWidthChange(settingsMappings, tempStorage) {
     let viewportWidth = window.innerWidth || document.documentElement.clientWidth;
 
     if (viewportWidth <= 650) {

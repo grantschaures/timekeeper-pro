@@ -1,12 +1,12 @@
 import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn, spaceContainer, shortcutsContainer, shortcutsPopup, shortcutsExit, dashboardContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, flowAnimation, chillAnimation, target_hours_input, streaksContainer, threeWayToggle, labelToDeleteContainer, confirmLabelDeletionPopup, labelSelectionRow, confirmLabelDeletionNoBtn, sessionSummaryOkBtn, sessionSummarySignupPromptPopup, HC_icon_signup_prompt, settingsGUIContainer, darkLightThemeGUIContainer, displayGUIContainer } from '../modules/dom-elements.js';
 import { blogIdList, flags, counters, state } from '../modules/navigation-objects.js';
 import { sessionState } from '../modules/state-objects.js';
-import { dashboardCatIds, flags as indexFlags, tempCounters} from '../modules/index-objects.js';
+import { dashboardCatIds, flags as indexFlags, settingsMappings, tempCounters, tempStorage} from '../modules/index-objects.js';
 import { labelArrs, labelDict, labelFlags, flags as notesFlags, selectedLabelDict } from '../modules/notes-objects.js';
 import { chimePath, bellPath, soundMap } from '../modules/sound-map.js';
 
 import { deleteUserAccount } from '../state/delete-account.js'; // minified
-import { animationsFadeIn, animationsFadeOut, triggerSilentAlertAudioMobile } from './index.js'; // minified
+import { animationsFadeIn, animationsFadeOut, handleViewportWidthChange, triggerSilentAlertAudioMobile } from './index.js'; // minified
 
 window.addEventListener('popstate', (event) => {
     const hash = window.location.hash.substring(1);
@@ -130,11 +130,13 @@ document.addEventListener("stateUpdated", function() {
 
     settings_menu_container.addEventListener("click", function() {
         openSettingsContainer();
+        handleViewportWidthChange(settingsMappings, tempStorage);
     });
-
+    
     settingsGUIContainer.addEventListener("click", function() {
         if (!flags.settingsContainerShowing) {
             openSettingsContainer();
+            handleViewportWidthChange(settingsMappings, tempStorage);
         } else {
             hideSettingsContainer();
         }
@@ -352,9 +354,12 @@ function openSettingsContainer() {
     blogContainer.style.display = "none"; // hide main blog container
     aboutContainer.style.display = "none"; // hide main blog container
     closeMenu(flags, popupMenu); // hide main menu
-
+    
     // SHOWING ELEMENTS
     settingsContainer.style.display = "block";
+    setTimeout(() => {
+        settingsContainer.style.opacity = '1';
+    }, 0)
 
     // if coming from blog or about (which hides subMainContainer)
     if (state.lastSelectedMode === 'home') {
@@ -398,6 +403,9 @@ function openAboutContainer() {
 
     // SHOWING ELEMENTS
     aboutContainer.style.display = "flex"; // show about container
+    setTimeout(() => {
+        aboutContainer.style.opacity = '1';
+    }, 0)
     fadeInUIContainer(streaksContainer, isMobile);
     fadeInUIContainer(darkLightThemeGUIContainer, isMobile);
     fadeInUIContainer(displayGUIContainer, isMobile);
@@ -431,6 +439,9 @@ function openBlogContainer() {
 
     // SHOWING ELEMENTS
     blogContainer.style.display = "flex"; // show main blog container
+    setTimeout(() => {
+        blogContainer.style.opacity = '1';
+    }, 0)
     fadeInUIContainer(streaksContainer, isMobile); // showing streaks container
     fadeInUIContainer(darkLightThemeGUIContainer, isMobile); // showing darkLightThemeGUIContainer
     fadeInUIContainer(displayGUIContainer, isMobile);
@@ -725,6 +736,7 @@ function isClickNotOnAboutElements(event, about_menu_container, aboutContainer, 
     // or if the event.target is the about_exit
     if (!aboutElementsArr.some(element => element.contains(event.target)) || event.target === about_exit) {
         aboutContainer.style.display = "none";
+        aboutContainer.style.opacity = '0';
     }
 }
 
@@ -733,6 +745,7 @@ function isClickNotOnBlogElements(event, blogMenuContainer, blog_post_container,
 
     if (!blogElementsArr.some(element => element.contains(event.target)) || event.target === blog_exit) {
         blogContainer.style.display = "none";
+        blogContainer.style.opacity = '0';
     }
 }
 
@@ -762,6 +775,7 @@ function hideSettingsContainer() {
     
     // GUI changes
     settingsContainer.style.display = "none";
+    settingsContainer.style.opacity = '0';
     body.style.overflowY = 'scroll';
 
     // URL changes

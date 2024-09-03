@@ -26,12 +26,15 @@
     right: 0;     /* Stretch to the right */
     bottom: 0;    /* Stretch to the bottom */
     
-    width: 1000px;
+    width: 900px;
     height: 100%; /* Cover the full height */
     
     display: none;
 
     transition: background-color 0.6s ease-in-out;
+
+    opacity: 0;
+    transition: opacity 0.15s ease-in-out;
 
     /* overflow-y: scroll; */
 }
@@ -55,7 +58,7 @@
     border-radius: 10px;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 900px) {
     #settingsContainer {
         border-radius: 0px;
         width: 100%;
@@ -122,54 +125,6 @@
     align-items: left;
     margin-right: 20px;
     /* border: 1px solid white; */
-}
-
-@media (max-width: 810px) {
-    .imageBucketHeader {
-        display: none;
-    }
-    #endOfBreakIntervals {
-        display: flex;
-        flex-direction: column;
-    }    
-}
-
-@media (max-width: 775px) {
-    #pomodoroAlertSoundContainer2, #flowmodoroAlertSoundContainer2, #generalAlertSoundContainer2 {
-        display: flex;
-        flex-direction: left;
-        /* border: 1px solid yellow; */
-        width: 300px;
-    }
-    #toggleTargetTimeAlertContainer, #togglePomodoroNotificationContainer, #toggleFlowmodoroNotificationContainer {
-        display: flex;
-        flex-direction: column;
-    }
-    #togglePomodoroNotificationContainer, #toggleFlowmodoroNotificationContainer {
-        margin-bottom: -80px;
-    }
-    #toggleFlowmodoroNotificationContainer {
-        margin-bottom: -50px;
-    }
-}
-
-@media (min-width: 980px) {
-    #toggleTargetTimeAlertContainer, #togglePomodoroNotificationContainer, #toggleFlowmodoroNotificationContainer, #toggleNotesAutoSwitchContainer, #togglePropagateUnfinishedTasksContainer {
-        align-items: center;
-    }
-}
-
-@media (max-width: 560px) {
-    #pomodoroAlertSoundContainer2, #flowmodoroAlertSoundContainer2, #generalAlertSoundContainer2 {
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 20px;
-        /* border: 1px solid yellow; */
-    }
-    #autoStartPomodoroIntervalContainer, #autoStartBreakIntervalContainer {
-        display: flex;
-        flex-direction: column;
-    }
 }
 
 #pomodoroAlertSoundContainer2, #flowmodoroAlertSoundContainer2, #generalAlertSoundContainer2 {
@@ -288,23 +243,11 @@
         width: 80%;
         margin-left: 25px;
     }
-    #generalContainer {
-        margin-bottom: -90px;
-    }
-    #breakSuggestionText {
-        margin-bottom: -70px;
-    }
     #alertsNotificationsContainer {
         margin-top: 0px;
     }
     .vertical {
         display: none;
-    }
-    #toggleNotesAutoSwitchContainer {
-        display: block;
-    }
-    #togglePropagateUnfinishedTasksContainer {
-        display: block;
     }
 }
 
@@ -409,18 +352,6 @@
 
 .displayInfoWindow {
     height: 50px;
-}
-
-@media(max-width: 620px) {
-    .displayInfoWindow {
-        height: 70px;
-    }
-}
-
-@media(max-width: 490px) {
-    .displayInfoWindow {
-        display: none;
-    }
 }
 
 #flowTimeBreakNotificationInfoWindow {
@@ -914,22 +845,6 @@
     }
 }
 
-/* @media (max-width: 690px) {
-    #flowTimeBackgroundsContainer, #chillTimeBackgroundsContainer {
-        grid-template-columns: repeat(1, 1fr);
-        grid-template-rows: auto auto auto auto auto auto;
-    }
-    #themesContainer {
-        display: grid;
-        grid-template-columns: repeat(1, 1fr);
-        grid-template-rows: auto auto;
-    }
-    .themeContainer {
-        width: 180px;
-    }
-} */
-
-
 .selected-background {
     border: 3px solid white;
 }
@@ -998,7 +913,6 @@
 @media (max-width: 420px) {
     #pomodoroAlertSoundContainer, #flowmodoroAlertSoundContainer, #generalAlertSoundContainer {
         display: flex;
-        flex-direction: column;
         margin-bottom: 20px;
     }
     #chillTimeBackgroundsContainer > div, #flowTimeBackgroundsContainer > div, #flowtimeWorldsBackgroundsContainer > div, #chilltimeWorldsBackgroundsContainer > div {
@@ -1226,4 +1140,50 @@
 #supportEmail:hover {
     color: rgb(0, 225, 255);
     cursor: pointer;
+}
+
+@media (max-width: 810px) {
+    .imageBucketHeader {
+        display: none;
+    }
+    #endOfBreakIntervals {
+        display: flex;
+        flex-direction: column;
+    }
+    #flowTimeBreakDemoImages {
+        margin-bottom: 25px;
+    }
+    #pomodoroAlertSoundText, #flowmodoroAlertSoundText, #generalAlertSoundText, #pomodoroAlertSoundText2, #flowmodoroAlertSoundText2, #generalAlertSoundText2 {
+        display: flex;
+    }
+}
+
+@media (max-width: 775px) {
+    #pomodoroAlertSoundContainer2, #flowmodoroAlertSoundContainer2, #generalAlertSoundContainer2 {
+        display: flex;
+        flex-direction: left;
+        /* border: 1px solid yellow; */
+        width: 300px;
+    }
+    #toggleTargetTimeAlertContainer, #togglePomodoroNotificationContainer, #toggleFlowmodoroNotificationContainer {
+        display: flex;
+        /* flex-direction: column; */
+    }
+}
+
+@media (min-width: 980px) {
+    #toggleTargetTimeAlertContainer, #togglePomodoroNotificationContainer, #toggleFlowmodoroNotificationContainer, #toggleNotesAutoSwitchContainer, #togglePropagateUnfinishedTasksContainer {
+        align-items: center;
+    }
+}
+
+@media (max-width: 560px) {
+    #pomodoroNotificationInfoWindow, #flowmodoroNotificationInfoWindow, #flowTimeBreakNotificationInfoWindow, #intervalTimeInfoWindow, #totalTimeInfoWindow, #muffinInfoWindow, #notesAutoSwitchInfoWindow, #propagateUnfinishedTasksInfoWindow, #timestampsInfoWindow {
+        display: none;
+    }
+    #pomodoroAlertSoundContainer2, #flowmodoroAlertSoundContainer2, #generalAlertSoundContainer2 {
+        display: flex;
+        margin-bottom: 20px;
+        /* border: 1px solid yellow; */
+    }
 }
