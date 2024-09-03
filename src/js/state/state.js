@@ -616,6 +616,14 @@ function updateUserNotes(noteData) {
             noteTaskDiv.classList.add(noteTaskClasslist[j]);
         }
 
+        // initialize DOM elements
+        let spanContainer = document.createElement('span');
+        let taskText = document.createElement('span');
+        let spanTimestamp = document.createElement('span');
+        let spanArrow = document.createElement('span');
+        let spanCompletion = document.createElement('span');
+        let spanArrowTextContent = "";
+
         // add circular check if note (check if checked)
         if (noteTaskClasslist.includes("task")) {
             let dummyCounters = {
@@ -634,27 +642,40 @@ function updateUserNotes(noteData) {
                 check.setAttribute('stroke-width', '3');
                 check.parentElement.parentElement.style.opacity = '1';
                 noteTaskDiv.classList.add('completed-task');
+                spanArrowTextContent = "--->";
+                spanArrow.style.opacity = '1';
+                spanCompletion.style.opacity = '1';
             }
         }
 
         // add content
-        let spanContainer = document.createElement('span');
         spanContainer.classList.add('spanContainer');
 
-        let taskText = document.createElement('span');
         taskText.textContent = noteTaskArr[i].content;
         taskText.classList.add('spanText');
         let taskTextId = "spanText" + idNum;
         taskText.id = taskTextId;
         taskText.setAttribute('data-testid', taskTextId);
 
-        let spanTimestamp = document.createElement('span');
+        spanTimestamp.textContent = formatTimestamp(noteTaskArr[i].date);
         spanTimestamp.classList.add('spanTimestamp');
         let spanTimestampId = "spanTimestamp" + idNum;
         spanTimestamp.id = spanTimestampId;
 
+        spanArrow.textContent = spanArrowTextContent; // either empty string or arrow ('--->')
+        spanArrow.classList.add('spanArrow');
+        let spanArrowId = "spanArrow" + idNum;
+        spanArrow.id = spanArrowId;
+
+        spanCompletion.textContent = formatTimestamp(noteTaskArr[i].completionDate);
+        spanCompletion.classList.add('spanCompletion');
+        let spanCompletionId = "spanCompletion" + idNum;
+        spanCompletion.id = spanCompletionId;
+
         spanContainer.appendChild(taskText);
         spanContainer.appendChild(spanTimestamp);
+        spanContainer.appendChild(spanArrow);
+        spanContainer.appendChild(spanCompletion);
         noteTaskDiv.appendChild(spanContainer);
 
         let container = appendEditRemoveContainer("Task", idNum);
@@ -666,7 +687,8 @@ function updateUserNotes(noteData) {
             id: noteTaskDiv.id,
             classList: [...noteTaskDiv.classList], // convert to string arr
             content: taskText.textContent,
-            date: noteTaskArr[i].date
+            date: noteTaskArr[i].date,
+            completionDate: noteTaskArr[i].completionDate
         }
         notesArr.push(notesArrObj);
     }
@@ -675,6 +697,42 @@ function updateUserNotes(noteData) {
 
     // update lastTaskInputIdNum
     notesCounters.lastTaskInputIdNum = noteData.lastTaskInputIdNum;
+}
+
+function formatTimestamp(timestamp) {
+
+    if (timestamp === null) {
+        return "";
+    }
+
+    // console.log(timestamp)
+
+    // Get the current date and time
+    let currentDate = new Date();
+    
+    // Get the timestamp date
+    let timestampDate = new Date(timestamp);
+
+    // Calculate the difference in milliseconds
+    let timeDifference = currentDate.getTime() - timestampDate.getTime();
+
+    // If the date is within the past day (24 hours)
+    if (timeDifference < 24 * 60 * 60 * 1000 && currentDate.getDate() === timestampDate.getDate()) {
+        // Format as a time (e.g., "9:04 am")
+        let hours = timestampDate.getHours();
+        let minutes = timestampDate.getMinutes();
+        let ampm = hours >= 12 ? 'pm' : 'am';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        return hours + ':' + minutes + ' ' + ampm;
+    } else {
+        // Format as a date (e.g., "9/24/24")
+        let day = timestampDate.getDate();
+        let month = timestampDate.getMonth() + 1; // Months are zero-indexed
+        let year = timestampDate.getFullYear().toString().slice(-2); // Get last two digits of year
+        return month + '/' + day + '/' + year;
+    }
 }
 
 function reverseDict(tagDict) {
