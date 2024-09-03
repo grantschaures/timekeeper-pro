@@ -288,6 +288,8 @@ export const progressCatBody = document.getElementById('progressCatBody');
 export const pipCatShadow = document.getElementById('pip-cat-shadow');
 export const pipInfoText = document.getElementById('pip-info-text');
 
+export const notesShortcutsContainer = document.getElementById('notesShortcutsContainer');
+
 export let hoverTimer;
 export var backgroundVideoSource = document.getElementById('background-video-source');
 export var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);

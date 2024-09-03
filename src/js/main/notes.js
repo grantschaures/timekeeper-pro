@@ -5,7 +5,8 @@ import {
     confirmLabelDeletionNoBtn,
     confirmLabelDeletionYesBtn,
     labelToDeleteContainer,
-    confirmLabelDeletionText
+    confirmLabelDeletionText,
+    notesShortcutsContainer
 } from '../modules/dom-elements.js';
 import { flags as indexflags } from '../modules/index-objects.js';
 import { state as navigationState, flags as navFlags } from '../modules/navigation-objects.js';
@@ -23,6 +24,10 @@ document.addEventListener("stateUpdated", function() {
     // HELPER FUNCTIONS 1
     // ---------------------
     let usingSafari = usingSafariCheck();
+
+    if (usingSafari) {
+        notesShortcutsContainer.style.display = 'none';
+    }
 
     function usingSafariCheck() {
         const userAgent = navigator.userAgent || navigator.vendor || window.opera;
