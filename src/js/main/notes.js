@@ -25,9 +25,9 @@ document.addEventListener("stateUpdated", function() {
     // ---------------------
     let usingSafari = usingSafariCheck();
 
-    if (usingSafari) {
-        notesShortcutsContainer.style.display = 'none';
-    }
+    // if (usingSafari) {
+    //     notesShortcutsContainer.style.display = 'none';
+    // }
 
     function usingSafariCheck() {
         const userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -1725,19 +1725,21 @@ function handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInpu
             } else if (document.activeElement.id === 'note-task-input-text-edit') {
                 document.getElementById('note-input-save-btn-edit').click();
             }
-        } else if ((event.key === 'n') && (canOpenNotes(blogContainer, aboutContainer, settingsContainer, main_elements)) && !usingSafari) {
+        } else if ((event.key === 'n') && (canOpenNotes(blogContainer, aboutContainer, settingsContainer, main_elements))) {
             if (!notesFlags.notesShowing) {
                 openNotesContainer(notesContainer, notesFlags);
             } else if ((!flags.noteTaskInputContainerShowing) && (!flags.noteTaskInputContainerEditShowing) && (notesFlags.notesConsoleShowing) && (!navFlags.sessionSummaryPopupShowing)) {
                 addNoteTaskContainer.click();
+                noteTaskInputText.value = "";
                 taskCheckbox.checked = false;
                 event.preventDefault();
             }
-        }  else if ((event.key === 't') && canInputTask() && !usingSafari) {
+        }  else if ((event.key === 't') && canInputTask()) {
             addNoteTaskContainer.click();
+            noteTaskInputText.value = "";
             taskCheckbox.checked = true;
             event.preventDefault();
-        } else if ((event.key === 'l') && canOpenLabels() && !usingSafari) {
+        } else if ((event.key === 'l') && canOpenLabels()) {
             taskPrompt.click();
             event.preventDefault();
         } else if ((event.key === 'Escape') && (notesFlags.notesShowing) && (!navFlags.sessionSummaryPopupShowing)) {
