@@ -1730,15 +1730,15 @@ function handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInpu
                 openNotesContainer(notesContainer, notesFlags);
             } else if ((!flags.noteTaskInputContainerShowing) && (!flags.noteTaskInputContainerEditShowing) && (notesFlags.notesConsoleShowing) && (!navFlags.sessionSummaryPopupShowing)) {
                 addNoteTaskContainer.click();
-                noteTaskInputText.value = "";
                 taskCheckbox.checked = false;
                 event.preventDefault();
+                noteTaskInputText.value = "";
             }
         }  else if ((event.key === 't') && canInputTask()) {
             addNoteTaskContainer.click();
-            noteTaskInputText.value = "";
             taskCheckbox.checked = true;
             event.preventDefault();
+            noteTaskInputText.value = "";
         } else if ((event.key === 'l') && canOpenLabels()) {
             taskPrompt.click();
             event.preventDefault();
