@@ -5,8 +5,7 @@ import {
     confirmLabelDeletionNoBtn,
     confirmLabelDeletionYesBtn,
     labelToDeleteContainer,
-    confirmLabelDeletionText,
-    notesShortcutsContainer
+    confirmLabelDeletionText
 } from '../modules/dom-elements.js';
 import { flags as indexflags } from '../modules/index-objects.js';
 import { state as navigationState, flags as navFlags } from '../modules/navigation-objects.js';
@@ -23,12 +22,8 @@ document.addEventListener("stateUpdated", function() {
     // ---------------------
     // HELPER FUNCTIONS 1
     // ---------------------
+
     let usingSafari = usingSafariCheck();
-
-    // if (usingSafari) {
-    //     notesShortcutsContainer.style.display = 'none';
-    // }
-
     function usingSafariCheck() {
         const userAgent = navigator.userAgent || navigator.vendor || window.opera;
     
@@ -234,7 +229,7 @@ document.addEventListener("stateUpdated", function() {
         }
     })
     
-    document.addEventListener('keydown', (event) => handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInput, createLabelDone, updateLabelInput, updateLabelDone, noteInputSaveBtn, noteTaskInputText, noteInputCancelBtn, addNoteTaskContainer, flags, isMobile, settingsContainer, aboutContainer, blogContainer, main_elements, usingSafari));
+    document.addEventListener('keydown', (event) => handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInput, createLabelDone, updateLabelInput, updateLabelDone, noteInputSaveBtn, noteTaskInputText, noteInputCancelBtn, addNoteTaskContainer, flags, isMobile, settingsContainer, aboutContainer, blogContainer, main_elements));
     
     clearIcon.addEventListener("click", async function() {
 
@@ -951,16 +946,17 @@ function noteInputSave(noteTaskInputContainer, addNoteTaskContainer, flags, note
         let taskCircularCheckDiv = createCheckElements(counters);
         noteTaskDiv.appendChild(taskCircularCheckDiv);
         noteTaskDiv.classList.add('task');
-        
         container = createNote(inputStr, noteTaskDiv, counters, container, spanTimestamp);
+
     } else { // NOTE
         // make a new note div
         noteTaskDiv.classList.add('note');
         container = createNote(inputStr, noteTaskDiv, counters, container, spanTimestamp);
 
-        // add timestamp
-        spanTimestamp.textContent = getTimestamp();
     }
+
+    // add timestamp of note/ task creation
+    spanTimestamp.textContent = getTimestamp();
 
     // save note or task to database
 
@@ -974,7 +970,8 @@ function noteInputSave(noteTaskInputContainer, addNoteTaskContainer, flags, note
         id: noteTaskDiv.id,
         classList: [...noteTaskDiv.classList], // convert to string arr
         content: inputStr,
-        date: Date.now()
+        date: Date.now(),
+        completionDate: null
     }
     notesArr.push(notesArrObj);
 
@@ -1154,13 +1151,22 @@ function createNote(inputStr, noteTaskDiv, counters, container, spanTimestamp) {
     taskText.id = taskTextId;
     taskText.setAttribute('data-testid', taskTextId);
 
-    // let spanTimestamp = document.createElement('span');
-    // spanTimestamp.classList.add('spanTimestamp');
-    // let spanTimestampId = "spanTimestamp" + counters.lastTaskInputIdNum;
-    // spanTimestamp.id = spanTimestampId;
+    let spanArrow = document.createElement('span');
+    spanArrow.classList.add('spanArrow');
+    let spanArrowId = "spanArrow" + counters.lastTaskInputIdNum;
+    spanArrow.id = spanArrowId;
+    // spanArrow.textContent = "--->";
+
+    let spanCompletion = document.createElement('span');
+    spanCompletion.classList.add('spanCompletion');
+    let spanCompletionId = "spanCompletion" + counters.lastTaskInputIdNum;
+    spanCompletion.id = spanCompletionId;
+    // spanCompletion.textContent = "11:50 am";
 
     spanContainer.appendChild(taskText);
     spanContainer.appendChild(spanTimestamp);
+    spanContainer.appendChild(spanArrow);
+    spanContainer.appendChild(spanCompletion);
     noteTaskDiv.appendChild(spanContainer);
 
     let noteTaskDivIdStr = "taskDiv" + counters.lastTaskInputIdNum;
@@ -1292,16 +1298,25 @@ function checkOrUncheckTask(targetId) {
     let idNum = getLastNumberFromId(targetId);
     let taskDivId = "taskDiv" + idNum;
     let taskDiv = document.getElementById(taskDivId);
-    // console.log(taskDivId);
     let check = document.getElementById("check" + idNum);
     let taskCircularCheckElement = taskDiv.firstElementChild;
+
+    const indexToUpdate = notesArr.findIndex(obj => obj.id === taskDivId);
 
     if (taskDiv.classList.contains('completed-task')) {
         taskCircularCheckElement.style.backgroundColor = "";
         check.setAttribute('stroke-width', '2');
         check.parentElement.parentElement.style.opacity = '';
         taskDiv.classList.remove('completed-task');
-        document.getElementById("spanTimestamp" + idNum).innerText = ""; // remove the timestamp
+
+        // reset completionDate
+        notesArr[indexToUpdate].completionDate = null;
+
+        // remove spanCompletion text + arrow
+        document.getElementById("spanArrow" + idNum).innerText = "";
+        document.getElementById("spanCompletion" + idNum).innerText = "";
+        document.getElementById("spanArrow" + idNum).style.opacity = "0";
+        document.getElementById("spanCompletion" + idNum).style.opacity = "0";
 
     } else if (!(taskDiv.classList.contains('completed-task'))) {
         taskCircularCheckElement.style.backgroundColor = "#3ba43e";
@@ -1309,11 +1324,17 @@ function checkOrUncheckTask(targetId) {
         check.parentElement.parentElement.style.opacity = '1';
         taskDiv.classList.add('completed-task');
 
-        // add the timestamp
-        document.getElementById("spanTimestamp" + idNum).innerText = getTimestamp(); // add the timestamp
+        // update completionDate
+        let completionDate = Date.now();
+        notesArr[indexToUpdate].completionDate = completionDate;
+
+        // add the timestamp + arrow
+        document.getElementById("spanArrow" + idNum).innerText = "--->";
+        document.getElementById("spanCompletion" + idNum).innerText = getTimestamp(); // add the timestamp
+        document.getElementById("spanArrow" + idNum).style.opacity = "1";
+        document.getElementById("spanCompletion" + idNum).style.opacity = "1"; // add the timestamp
     }
 
-    const indexToUpdate = notesArr.findIndex(obj => obj.id === taskDivId);
     notesArr[indexToUpdate].classList = [...taskDiv.classList];
 
     let lastTaskInputIdNum = counters.lastTaskInputIdNum;
@@ -1711,7 +1732,7 @@ function deselectTags(tag, flags, tagIcon, clearIcon, labelSelectionRow, counter
     }
 }
 
-function handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInput, createLabelDone, updateLabelInput, updateLabelDone, noteInputSaveBtn, noteTaskInputText, noteInputCancelBtn, addNoteTaskContainer, flags, isMobile, settingsContainer, aboutContainer, blogContainer, main_elements, usingSafari) {
+function handleTaskEnter_or_n(event, notesFlags, notesContainer, createLabelInput, createLabelDone, updateLabelInput, updateLabelDone, noteInputSaveBtn, noteTaskInputText, noteInputCancelBtn, addNoteTaskContainer, flags, isMobile, settingsContainer, aboutContainer, blogContainer, main_elements) {
     if (navigationState.lastSelectedMode === 'home') {
         if (event.key === 'Enter') {
             event.preventDefault();

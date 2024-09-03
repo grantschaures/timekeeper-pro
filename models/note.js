@@ -28,7 +28,8 @@ const Note = db.model("Note", {
       id: { type: String },
       classList: { type: [String] },
       content: { type: String },
-      date: { type: Date, default: Date.now }
+      date: { type: Date, default: Date.now },
+      completionDate: { type: Date }
     }
   ],
   lastTaskInputIdNum: { type: Number, default: 0 }

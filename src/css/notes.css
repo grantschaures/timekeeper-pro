@@ -890,9 +890,7 @@
     opacity: 1;
 }
 
-.spanTimestamp {
-    /* display: none; */
-    /* NOTE: To disable timestamps, simply set this class to display: none; */
+.spanTimestamp, .spanCompletion {
     white-space: nowrap;
     width: auto;
     padding-left: 10px;
@@ -900,7 +898,23 @@
     color: rgba(255, 255, 255, 0.25);
 }
 
+.spanArrow {
+    white-space: nowrap;
+    width: auto;
+    padding-left: 10px;
+    color: rgba(255, 255, 255, 0.25);
+}
+
+.spanCompletion, .spanArrow {
+    opacity: 0;
+    transition: opacity 0.15s ease-in-out;
+}
+
 .completed-task span.spanText {
+    text-decoration: line-through;
+}
+
+.completed-task span.spanCompletion {
     text-decoration: line-through;
 }
 
