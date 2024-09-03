@@ -7,7 +7,9 @@ import {
     popupQuestionMenu,
     supportEmail,
     openEyeContainer,
-    closedEyeContainer
+    closedEyeContainer,
+    timestampsHeader,
+    timestampsInfoWindow
 } from '../modules/dom-elements.js';
 
 import { sessionState } from '../modules/state-objects.js';
@@ -406,37 +408,77 @@ document.addEventListener("stateUpdated", function() {
         });
     }
 
-    pomodoroNotifications.addEventListener('click', function() {
+    pomodoroNotifications.addEventListener('mouseover', function() {
         toggleInfoWindow(pomodoroNotificationInfoWindow, 'showingPomodoroNotificationInfoWindow', flags);
     });
 
-    flowmodoroNotifications.addEventListener('click', function() {
+    flowmodoroNotifications.addEventListener('mouseover', function() {
         toggleInfoWindow(flowmodoroNotificationInfoWindow, 'showingFlowmodoroNotificationInfoWindow', flags);
     });
     
-    flowTimeBreakNotification.addEventListener('click', function() {
+    flowTimeBreakNotification.addEventListener('mouseover', function() {
         toggleInfoWindow(flowTimeBreakNotificationInfoWindow, 'showingFlowTimeBreakNotificationInfoWindow', flags);
     });
 
-    toggleIntervalTime.addEventListener('click', function() {
+    toggleIntervalTime.addEventListener('mouseover', function() {
         toggleInfoWindow(intervalTimeInfoWindow, 'showingIntervalTimeInfoWindow', flags);
     });
 
-    toggleTotalTime.addEventListener('click', function() {
+    toggleTotalTime.addEventListener('mouseover', function() {
         toggleInfoWindow(totalTimeInfoWindow, 'showingTotalTimeInfoWindow', flags);
     });
 
-    toggleMuffin.addEventListener('click', function() {
+    toggleMuffin.addEventListener('mouseover', function() {
         toggleInfoWindow(muffinInfoWindow, 'showingMuffinInfoWindow', flags)
     })
 
-    notesAutoSwitch.addEventListener('click', function() {
+    notesAutoSwitch.addEventListener('mouseover', function() {
         toggleInfoWindow(notesAutoSwitchInfoWindow, 'showingNotesAutoSwitchInfoWindow', flags);
     });
 
-    propagateUnfinishedTasks.addEventListener('click', function() {
+    propagateUnfinishedTasks.addEventListener('mouseover', function() {
         toggleInfoWindow(propagateUnfinishedTasksInfoWindow, 'showingPropagateUnfinishedTasksInfoWindow', flags);
     });
+
+    timestampsHeader.addEventListener('mouseover', function() {
+        toggleInfoWindow(timestampsInfoWindow, 'showingTimestampsInfoWindow', flags)
+    })
+
+    pomodoroNotifications.addEventListener('mouseout', function() {
+        toggleInfoWindow(pomodoroNotificationInfoWindow, 'showingPomodoroNotificationInfoWindow', flags);
+    });
+
+    flowmodoroNotifications.addEventListener('mouseout', function() {
+        toggleInfoWindow(flowmodoroNotificationInfoWindow, 'showingFlowmodoroNotificationInfoWindow', flags);
+    });
+    
+    flowTimeBreakNotification.addEventListener('mouseout', function() {
+        toggleInfoWindow(flowTimeBreakNotificationInfoWindow, 'showingFlowTimeBreakNotificationInfoWindow', flags);
+    });
+
+    toggleIntervalTime.addEventListener('mouseout', function() {
+        toggleInfoWindow(intervalTimeInfoWindow, 'showingIntervalTimeInfoWindow', flags);
+    });
+
+    toggleTotalTime.addEventListener('mouseout', function() {
+        toggleInfoWindow(totalTimeInfoWindow, 'showingTotalTimeInfoWindow', flags);
+    });
+
+    toggleMuffin.addEventListener('mouseout', function() {
+        toggleInfoWindow(muffinInfoWindow, 'showingMuffinInfoWindow', flags)
+    })
+
+    notesAutoSwitch.addEventListener('mouseout', function() {
+        toggleInfoWindow(notesAutoSwitchInfoWindow, 'showingNotesAutoSwitchInfoWindow', flags);
+    });
+
+    propagateUnfinishedTasks.addEventListener('mouseout', function() {
+        toggleInfoWindow(propagateUnfinishedTasksInfoWindow, 'showingPropagateUnfinishedTasksInfoWindow', flags);
+    });
+
+    timestampsHeader.addEventListener('mouseout', function() {
+        toggleInfoWindow(timestampsInfoWindow, 'showingTimestampsInfoWindow', flags)
+    })
 
     // ALERT VOLUME TOGGLING FUNCTIONALITY
     flowmodoroVolumeThumb.addEventListener('mousedown', (event) => handleMouseDown(event, 'flowmodoroThumbIsDragging'));

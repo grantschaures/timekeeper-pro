@@ -176,8 +176,6 @@
     display: flex;
     max-width: 500px;
     width: 100%;
-    justify-content: space-between;
-    /* border: 1px solid white; */
 }
 
 .semiBlock {
@@ -268,6 +266,16 @@
     /* border: 2px solid yellow; */
 }
 
+#addingDeletingUpdatingLabelsInfoBlock {
+    margin-bottom: 40px;
+
+    /* border: 2px solid white; */
+}
+
+#timestampsBlock {
+    margin-bottom: 100px; /* temporary until more content added beneath */
+}
+
 
 @media (max-width: 650px) {
     #settingsHeaderColumn {
@@ -349,9 +357,11 @@
     background-color: rgba(255, 255, 255, 0.25); /* or any desired color */
 }
 
-.settingsText {
-    margin-right: 20px;
-
+.settingsText:not(#addingDeletingUpdatingLabelsText) {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+    
     /* border: 1px solid white; */
 }
 
@@ -393,7 +403,7 @@
     opacity: 0;
 }
 
-#flowmodoroNotificationInfoWindow.infoWindowOpacity, #flowTimeBreakNotificationInfoWindow.infoWindowOpacity, #pomodoroNotificationInfoWindow.infoWindowOpacity, #intervalTimeInfoWindow.infoWindowOpacity, #totalTimeInfoWindow.infoWindowOpacity, #muffinInfoWindow.infoWindowOpacity, #notesAutoSwitchInfoWindow.infoWindowOpacity, #propagateUnfinishedTasksInfoWindow.infoWindowOpacity {
+#flowmodoroNotificationInfoWindow.infoWindowOpacity, #flowTimeBreakNotificationInfoWindow.infoWindowOpacity, #pomodoroNotificationInfoWindow.infoWindowOpacity, #intervalTimeInfoWindow.infoWindowOpacity, #totalTimeInfoWindow.infoWindowOpacity, #muffinInfoWindow.infoWindowOpacity, #notesAutoSwitchInfoWindow.infoWindowOpacity, #propagateUnfinishedTasksInfoWindow.infoWindowOpacity, #timestampsInfoWindow.infoWindowOpacity {
     opacity: 1;
 }
 
@@ -477,12 +487,6 @@
     transition: all 0.3s ease;
 }
 
-#chillTimeBreakSuggestionText {
-    /* border: 1px solid brown; */
-    display: flex;
-    align-items: center;
-}
-
 /* For Target Time Reached Alert Toggle */
 #targetTimeReachedToggle:checked + #targetTimeReachedToggleLabel {
     background-color: #53e658;
@@ -562,6 +566,15 @@
     left: 40px;
 }
 
+/* Propagate unfinished tasks */
+#timestampsToggle:checked + #timestampsToggleLabel {
+    background-color: #53e658;
+}
+
+#timestampsToggle:checked + #timestampsToggleLabel #timestampsToggleBall {
+    left: 40px;
+}
+
 /* Auto Start Flow Time Interval */
 #autoStartFlowTimeIntervalToggle:checked + #autoStartFlowTimeIntervalToggleLabel {
     background-color: #53e658;
@@ -629,17 +642,6 @@
     margin-top: 20px;
 }
 
-#breakSuggestionText {
-    display: flex;
-    /* border: 2px solid yellow; */
-    align-items: center;
-}
-
-#breakSuggestionText p {
-    display: flex;
-    /* border: 2px solid black; */
-}
-
 #autoStartFlowTimeIntervalBlock {
     margin-top: 20px;
 }
@@ -674,7 +676,30 @@
 .settingsCategoryHeading {
     font-size: 24px;
     cursor: pointer;
+    position: relative;
 }
+
+.labelTutorialSettingsHeader {
+    font-size: 24px;
+}
+
+.settingsCategoryHeading::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 0;
+    height: 2px; /* The thickness of the underline */
+    background-color: currentColor; /* Matches the text color */
+    transition: width 0.25s ease, left 0.25s ease; /* Animate both width and left position */
+    transform: translateX(-50%);
+}
+
+.settingsCategoryHeading:hover::after {
+    width: 100%; /* Expands the underline to full width on hover */
+}
+
+
 
 .infoIcon {
     position: relative;

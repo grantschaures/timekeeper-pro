@@ -36,6 +36,7 @@ export const flags = {
     updateLabelWindowOpen: false,
     transitionNotesAutoSwitchToggle: false,
     propagateUnfinishedTasksToggle: false,
+    timestampsToggle: true,
     noteTaskInputContainerShowing: false,
     noteTaskInputContainerEditShowing: false,
     resetTasks: false,

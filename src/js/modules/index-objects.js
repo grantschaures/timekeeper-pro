@@ -144,6 +144,7 @@ export const flags = {
     showingMuffinInfoWindow: false,
     showingNotesAutoSwitchInfoWindow: false,
     showingPropagateUnfinishedTasksInfoWindow: false,
+    showingTimestampsInfoWindow: false,
     generalThumbIsDragging: false,
     pomodoroThumbIsDragging: false,
     flowmodoroThumbIsDragging2: false,

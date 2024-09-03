@@ -1,4 +1,4 @@
-import { pomodoroNotificationToggle, pomodoroInputs, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, pomodoroVolumeThumb, pomodoroVolumeThumb2, pomodoroRadios, flowmodoroNotificationToggle, flowmodoroInputs, flowmodoroVolumeThumb, flowmodoroVolumeThumb2, flowmodoroRadios, breakSuggestionToggle, suggestionMinutesInput, generalRadios, targetTimeReachedToggle, darkGrayTheme, defaultTheme, interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, emojiContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, transitionClockSoundToggle, labelSelectionRow, emojiImg, emojiImg2, dynamicList, propagateUnfinishedTasksToggle as propagateUnfinishedTasksToggleElement, blackFlowtimeBackground, blackChilltimeBackground, total_time_display, streaksContainer, labelInputContainer, tagIcon, promptContainer, clearIcon, addDoneContainer, tagSelectionDivider, taskPrompt, intervalTimeToggle, totalTimeToggle, muffinToggle as muffToggle, lightContainer, darkContainer } from '../modules/dom-elements.js';
+import { pomodoroNotificationToggle, pomodoroInputs, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, pomodoroVolumeThumb, pomodoroVolumeThumb2, pomodoroRadios, flowmodoroNotificationToggle, flowmodoroInputs, flowmodoroVolumeThumb, flowmodoroVolumeThumb2, flowmodoroRadios, breakSuggestionToggle, suggestionMinutesInput, generalRadios, targetTimeReachedToggle, darkGrayTheme, defaultTheme, interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, emojiContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, transitionClockSoundToggle, labelSelectionRow, emojiImg, emojiImg2, dynamicList, propagateUnfinishedTasksToggle as propagateUnfinishedTasksToggleElement, timestampsToggle as timestampsToggleElement, blackFlowtimeBackground, blackChilltimeBackground, total_time_display, streaksContainer, labelInputContainer, tagIcon, promptContainer, clearIcon, addDoneContainer, tagSelectionDivider, taskPrompt, intervalTimeToggle, totalTimeToggle, muffinToggle as muffToggle, lightContainer, darkContainer, transitionNotesAutoSwitchToggle } from '../modules/dom-elements.js';
 import { sessionState } from '../modules/state-objects.js';
 import { flags, timeAmount, alertVolumes, alertSounds, selectedBackgroundId, selectedBackground, flowtimeBackgrounds, chilltimeBackgrounds, selectedBackgroundIdTemp, startTimes, elapsedTime, timeConvert, progressTextMod, darkHtmlBackground, lightHtmlBackground } from '../modules/index-objects.js';
 import { flags as notesflags, counters as notesCounters, state as notesState, labelDict, notesArr, selectedLabelDict, notesFlags, fontSizeArr, fontNumArr, labelFlags, labelArrs } from '../modules/notes-objects.js';
@@ -466,6 +466,15 @@ function updateMuffinToggle(userData) {
 function updateNotes(userData) {
     updateAutoSwitchToggle(userData);
     updatePropagateTasksToggle(userData);
+    updateTimestampsToggle(userData);
+}
+
+function updateTimestampsToggle(userData) {
+    const { timestampsToggle } = userData.settings.notes;
+
+    notesflags.timestampsToggle = timestampsToggle;
+
+    timestampsToggleElement.checked = timestampsToggle;
 }
 
 function updateAutoSwitchToggle(userData) {
@@ -696,7 +705,18 @@ function updateUserNotes(noteData) {
         notesArr.push(notesArrObj);
     }
 
-    // console.log(notesArr)
+    const spanTimestamps = document.querySelectorAll('.spanTimestamp');
+    const spanArrows = document.querySelectorAll('.spanArrow');
+    const spanCompletions = document.querySelectorAll('.spanCompletion');
+    let timestampElements = [spanTimestamps, spanArrows, spanCompletions];
+    
+    if (!notesflags.timestampsToggle) {
+        timestampElements.forEach(elements => {
+            elements.forEach(element => {
+                element.style.display = 'none';
+            })
+        })
+    }
 
     // update lastTaskInputIdNum
     notesCounters.lastTaskInputIdNum = noteData.lastTaskInputIdNum;

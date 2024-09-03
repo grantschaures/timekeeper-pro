@@ -5,7 +5,8 @@ import {
     confirmLabelDeletionNoBtn,
     confirmLabelDeletionYesBtn,
     labelToDeleteContainer,
-    confirmLabelDeletionText
+    confirmLabelDeletionText,
+    timestampsToggle
 } from '../modules/dom-elements.js';
 import { flags as indexflags } from '../modules/index-objects.js';
 import { state as navigationState, flags as navFlags } from '../modules/navigation-objects.js';
@@ -23,13 +24,12 @@ document.addEventListener("stateUpdated", function() {
     // HELPER FUNCTIONS 1
     // ---------------------
 
-    let usingSafari = usingSafariCheck();
-    function usingSafariCheck() {
-        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-    
-        // Check for Safari on Mac (excluding Chrome and Firefox) 
-        return /^((?!chrome|android).)*safari/i.test(userAgent);
-    }
+
+    // spanTimestamps.forEach(timestamp => {
+    //     timestamp.style.display = 'none';
+    //     timestamp.style.border = '2px solid white';
+    //     console.log(timestamp)
+    // })
 
     function done() {
         notesConsole.style.display = "block";
@@ -638,6 +638,7 @@ document.addEventListener("stateUpdated", function() {
     })
 
     propagateUnfinishedTasksToggle.addEventListener('click', async function() {
+
         if (propagateUnfinishedTasksToggle.checked) {
             flags.propagateUnfinishedTasksToggle = true;
         } else {
@@ -648,6 +649,29 @@ document.addEventListener("stateUpdated", function() {
             await updateUserSettings({
                 notes: {
                     propagateUnfinishedTasksToggle: flags.propagateUnfinishedTasksToggle
+                }
+            });
+        }
+    })
+
+    timestampsToggle.addEventListener('click', async function() {
+        const spanTimestamps = document.querySelectorAll('.spanTimestamp');
+        const spanArrows = document.querySelectorAll('.spanArrow');
+        const spanCompletions = document.querySelectorAll('.spanCompletion');
+
+        if (timestampsToggle.checked) {
+            flags.timestampsToggle = true;
+            showTimestamps(spanTimestamps, spanArrows, spanCompletions);
+
+        } else {
+            flags.timestampsToggle = false;
+            hideTimestamps(spanTimestamps, spanArrows, spanCompletions);
+        }
+
+        if (sessionState.loggedIn) {
+            await updateUserSettings({
+                notes: {
+                    timestampsToggle: flags.timestampsToggle
                 }
             });
         }
@@ -723,6 +747,26 @@ document.addEventListener("stateUpdated", function() {
 // -------------------
 // HELPER FUNCTIONS 2
 // -------------------
+function hideTimestamps(spanTimestamps, spanArrows, spanCompletions) {
+
+    let timestampElements = [spanTimestamps, spanArrows, spanCompletions];
+    timestampElements.forEach(elements => {
+        elements.forEach(element => {
+            element.style.display = 'none';
+        })
+    })
+}
+
+function showTimestamps(spanTimestamps, spanArrows, spanCompletions) {
+
+    let timestampElements = [spanTimestamps, spanArrows, spanCompletions];
+    timestampElements.forEach(elements => {
+        elements.forEach(element => {
+            element.style.display = 'block';
+        })
+    })
+}
+
 function modifyConfirmLabelDeletionText(confirmLabelDeletionText) {
     confirmLabelDeletionText.innerText = "Are you sure you want to delete the following label and its associated data?";
 }
@@ -1155,13 +1199,11 @@ function createNote(inputStr, noteTaskDiv, counters, container, spanTimestamp) {
     spanArrow.classList.add('spanArrow');
     let spanArrowId = "spanArrow" + counters.lastTaskInputIdNum;
     spanArrow.id = spanArrowId;
-    // spanArrow.textContent = "--->";
 
     let spanCompletion = document.createElement('span');
     spanCompletion.classList.add('spanCompletion');
     let spanCompletionId = "spanCompletion" + counters.lastTaskInputIdNum;
     spanCompletion.id = spanCompletionId;
-    // spanCompletion.textContent = "11:50 am";
 
     spanContainer.appendChild(taskText);
     spanContainer.appendChild(spanTimestamp);

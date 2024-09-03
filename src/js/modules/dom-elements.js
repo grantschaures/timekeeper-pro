@@ -58,6 +58,10 @@ export const notesAutoSwitch = document.getElementById("notesAutoSwitch");
 export const notesAutoSwitchInfoWindow = document.getElementById("notesAutoSwitchInfoWindow");
 export const propagateUnfinishedTasksInfoWindow = document.getElementById('propagateUnfinishedTasksInfoWindow');
 export const propagateUnfinishedTasks = document.getElementById('propagateUnfinishedTasks');
+export const timestampsInfoWindow = document.getElementById('timestampsInfoWindow');
+export const timestampsHeader = document.getElementById('timestampsHeader');
+export const timestampsToggle = document.getElementById('timestampsToggle');
+
 export const pomodoroNotificationToggle = document.getElementById("pomodoroNotificationToggle");
 export const pomodoroNotificationToggleBall = document.getElementById("pomodoroNotificationToggleBall");
 export const autoStartPomodoroIntervalToggle = document.getElementById("autoStartPomodoroIntervalToggle");

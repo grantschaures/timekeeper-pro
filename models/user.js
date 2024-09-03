@@ -73,7 +73,8 @@ const User = db.model("User", {
     },
     notes: {
       autoSwitchToggle: { type: Boolean, default: false },
-      propagateUnfinishedTasksToggle: { type: Boolean, default: false }
+      propagateUnfinishedTasksToggle: { type: Boolean, default: false },
+      timestampsToggle:  { type: Boolean, default: true }
     },
     sounds: {
       transitionClockSound:  { type: Boolean, default: false }
