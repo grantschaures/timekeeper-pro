@@ -637,7 +637,7 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
             if (state.lastSelectedMode !== 'report') {
                 displayDashboardCat();
             }
-            
+
             fadeOutUIContainer(streaksContainer);
             fadeOutUIContainer(darkLightThemeGUIContainer);
             fadeOutUIContainer(displayGUIContainer);
@@ -701,7 +701,12 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
 
 function displayDashboardCat() {
     if ((indexFlags.muffinToggle) && ((!indexFlags.sessionInProgress) || (indexFlags.inHyperFocus)) && (!indexFlags.pipWindowOpen) && (!isMobile)) {
+        
         let randNum = Math.floor(Math.random() * 9);
+        while (randNum === tempCounters.dashboardCatIdsArrIndex) {
+            randNum = Math.floor(Math.random() * 9);
+        }
+
         tempCounters.dashboardCatIdsArrIndex = randNum;
         let dashboardCatId = dashboardCatIds[randNum];
         document.getElementById(dashboardCatId).style.display = 'flex';
