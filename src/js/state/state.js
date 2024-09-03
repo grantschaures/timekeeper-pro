@@ -642,9 +642,12 @@ function updateUserNotes(noteData) {
                 check.setAttribute('stroke-width', '3');
                 check.parentElement.parentElement.style.opacity = '1';
                 noteTaskDiv.classList.add('completed-task');
-                spanArrowTextContent = "--->";
-                spanArrow.style.opacity = '1';
-                spanCompletion.style.opacity = '1';
+
+                if (noteTaskArr[i].completionDate) {
+                    spanArrowTextContent = "--->";
+                    spanArrow.style.opacity = '1';
+                    spanCompletion.style.opacity = '1';
+                }
             }
         }
 
@@ -701,7 +704,7 @@ function updateUserNotes(noteData) {
 
 function formatTimestamp(timestamp) {
 
-    if (timestamp === null) {
+    if (!timestamp) {
         return "";
     }
 
