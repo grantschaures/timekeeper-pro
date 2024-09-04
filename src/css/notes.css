@@ -891,7 +891,7 @@
 }
 
 .spanContainer {
-    display: flex;
+    display: block;
 }
 
 .spanTimestamp, .spanCompletion {
