@@ -709,7 +709,7 @@ function updateUserNotes(noteData) {
     const spanArrows = document.querySelectorAll('.spanArrow');
     const spanCompletions = document.querySelectorAll('.spanCompletion');
     let timestampElements = [spanTimestamps, spanArrows, spanCompletions];
-    
+
     if (!notesflags.timestampsToggle) {
         timestampElements.forEach(elements => {
             elements.forEach(element => {

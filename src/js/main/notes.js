@@ -762,7 +762,7 @@ function showTimestamps(spanTimestamps, spanArrows, spanCompletions) {
     let timestampElements = [spanTimestamps, spanArrows, spanCompletions];
     timestampElements.forEach(elements => {
         elements.forEach(element => {
-            element.style.display = 'block';
+            element.style.display = '';
         })
     })
 }
