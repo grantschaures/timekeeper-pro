@@ -41,14 +41,18 @@ router.post("/update-notes-entry", async function(req, res) {
                 'entry.id': notesObj.id   // Ensure the note has the correct entry ID
             });
             
-            if (!notesEntry) {
-                return res.status(404).json({
-                    message: "Notes Entry not found"
+            if (notesEntry) {
+                notesEntry.entry = notesObj;
+                await notesEntry.save();
+
+            } else {
+                const newNotesEntry = new NotesEntry({
+                    userId: user._id,
+                    userEmail: user.email,
+                    entry: notesObj
                 });
+                await newNotesEntry.save();
             }
-            
-            notesEntry.entry = notesObj;
-            await notesEntry.save();
 
             res.json({ success: true, message: 'update-notes-entry endpoint reached successfully'});
         } else {
