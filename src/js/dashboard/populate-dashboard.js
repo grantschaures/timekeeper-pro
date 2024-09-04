@@ -1,10 +1,10 @@
 import { dashboardData, constants } from '../modules/dashboard-objects.js';
 import { timeConvert } from '../modules/index-objects.js';
 
-import { populateDashboardSummaryStats } from './summary-stats.js';
-import { populateLabelDistContainer } from './label-distribution.js';
-import { setMetricCharts } from './metric-charts.js';
-import { setDailyContainer } from './daily-sessions.js';
+import { populateDashboardSummaryStats } from './summary-stats.js'; // minified
+import { populateLabelDistContainer } from './label-distribution.js'; // minified
+import { setMetricCharts } from './metric-charts.js'; // minified
+import { setDailyContainer } from './daily-sessions.js'; // minified
 
 // GLOBAL VARIABLES
 const FOCUS_QUALITY_CONSTANT = constants.FOCUS_QUALITY_CONSTANT;
