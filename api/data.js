@@ -45,7 +45,7 @@ router.post("/update-notes-entry", async function(req, res) {
                 notesEntry.entry = notesObj;
                 await notesEntry.save();
 
-            } else {
+            } else { // this shouldn't happen normally, but if for some reason the note entry isn't already present in Notes-Entries
                 const newNotesEntry = new NotesEntry({
                     userId: user._id,
                     userEmail: user.email,

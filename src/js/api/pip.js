@@ -184,15 +184,6 @@ document.addEventListener("stateUpdated", function() {
 
     pipWindow.addEventListener('resize', function() {
       let pipWindowWidth = pipWindow.innerWidth;
-      let pipWindowHeight = pipWindow.innerHeight;
-      // console.log(pipWindowWidth)
-      // console.log(pipWindowHeight)
-
-      if (pipWindowWidth <= 400) {
-        start_stop_btn.style.marginRight = '0px';
-      } else {
-        start_stop_btn.style.marginRight = '10px';
-      }
       
       if (pipWindowWidth <= 300) {
         interruptionsNum.style.fontSize = '35px';
