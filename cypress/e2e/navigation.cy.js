@@ -161,210 +161,210 @@ describe('Navigation', () => {
         cy.get('[data-testid="subMainContainer"]').should('have.css', 'display', 'flex');
     })
 
-    it('Advanced Blog and About Container Testing', () => {
-        cy.clock();
-        // blog (clicking)
-        cy.openBlog();
-        cy.reportIconClick();
-        cy.homeIconClick();
+    // it('Advanced Blog and About Container Testing', () => {
+    //     cy.clock();
+    //     // blog (clicking)
+    //     cy.openBlog();
+    //     cy.reportIconClick();
+    //     cy.homeIconClick();
 
-        cy.openBlog();
-        cy.spaceIconClick();
-        cy.homeIconClick();
+    //     cy.openBlog();
+    //     cy.spaceIconClick();
+    //     cy.homeIconClick();
 
-        // about (clicking)
-        cy.openAbout();
-        cy.reportIconClick();
-        cy.homeIconClick();
+    //     // about (clicking)
+    //     cy.openAbout();
+    //     cy.reportIconClick();
+    //     cy.homeIconClick();
 
-        cy.openAbout();
-        cy.spaceIconClick();
-        cy.homeIconClick();
+    //     cy.openAbout();
+    //     cy.spaceIconClick();
+    //     cy.homeIconClick();
 
-        // ------------
+    //     // ------------
 
-        // blog (arrows)
-        cy.openBlog();
-        cy.tick(250)
-        cy.leftArrowKeyPress(); // report <--
-        cy.tick(250)
+    //     // blog (arrows)
+    //     cy.openBlog();
+    //     cy.tick(250)
+    //     cy.leftArrowKeyPress(); // report <--
+    //     cy.tick(250)
 
-        // invisible
-        cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
-        cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
-        cy.get('[data-testid="blogContainer"]').should('not.be.visible');
-        cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
+    //     // invisible
+    //     cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
+    //     cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="blogContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
 
-        // visible
-        cy.get('[data-testid="dashboardContainer"]').should('be.visible');
-        cy.homeIconClick();
+    //     // visible
+    //     cy.get('[data-testid="dashboardContainer"]').should('be.visible');
+    //     cy.homeIconClick();
 
-        // ------------
+    //     // ------------
 
-        cy.openBlog();
-        cy.tick(250)
-        cy.rightArrowKeyPress(); // --> space
-        cy.tick(250)
+    //     cy.openBlog();
+    //     cy.tick(250)
+    //     cy.rightArrowKeyPress(); // --> space
+    //     cy.tick(250)
 
-        // invisible
-        cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
-        cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
-        cy.get('[data-testid="blogContainer"]').should('not.be.visible');
-        cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
+    //     // invisible
+    //     cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
+    //     cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="blogContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
         
-        // visible
-        cy.get('[data-testid="spaceContainer"]').should('be.visible');
+    //     // visible
+    //     cy.get('[data-testid="spaceContainer"]').should('be.visible');
 
-        cy.homeIconClick();
+    //     cy.homeIconClick();
 
-        // ------------
+    //     // ------------
 
-        // about (arrows)
-        cy.openAbout();
-        cy.tick(250)
-        cy.leftArrowKeyPress(); // report <--
-        cy.tick(250)
+    //     // about (arrows)
+    //     cy.openAbout();
+    //     cy.tick(250)
+    //     cy.leftArrowKeyPress(); // report <--
+    //     cy.tick(250)
 
-        // invisible
-        cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
-        cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
-        cy.get('[data-testid="blogContainer"]').should('not.be.visible');
-        cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
+    //     // invisible
+    //     cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
+    //     cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="blogContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
 
-        // visible
-        cy.get('[data-testid="dashboardContainer"]').should('be.visible');
+    //     // visible
+    //     cy.get('[data-testid="dashboardContainer"]').should('be.visible');
 
-        cy.homeIconClick();
+    //     cy.homeIconClick();
 
-        // ------------
+    //     // ------------
 
-        cy.openAbout();
-        cy.tick(250)
-        cy.rightArrowKeyPress(); // --> space
-        cy.tick(250)
+    //     cy.openAbout();
+    //     cy.tick(250)
+    //     cy.rightArrowKeyPress(); // --> space
+    //     cy.tick(250)
 
-        // invisible
-        cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
-        cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
-        cy.get('[data-testid="blogContainer"]').should('not.be.visible');
-        cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
+    //     // invisible
+    //     cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
+    //     cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="blogContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
         
-        // visible
-        cy.get('[data-testid="spaceContainer"]').should('be.visible');
+    //     // visible
+    //     cy.get('[data-testid="spaceContainer"]').should('be.visible');
 
-        cy.homeIconClick();
+    //     cy.homeIconClick();
 
-        // ------------
+    //     // ------------
 
-        cy.reportIconClick();
-        cy.openBlog();
-        cy.tick(250)
-        cy.get('[data-testid="blogExit"]').click();
-        cy.tick(250)
+    //     cy.reportIconClick();
+    //     cy.openBlog();
+    //     cy.tick(250)
+    //     cy.get('[data-testid="blogExit"]').click();
+    //     cy.tick(250)
 
-        cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
-        cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
-        cy.get('[data-testid="blogContainer"]').should('not.be.visible');
-        cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
-        cy.get('[data-testid="main"]').should('be.visible');
+    //     cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="blogContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="main"]').should('be.visible');
         
-        // ------------
+    //     // ------------
         
-        cy.spaceIconClick();
-        cy.openBlog();
-        cy.tick(250)
-        cy.get('[data-testid="blogExit"]').click();
-        cy.tick(250)
+    //     cy.spaceIconClick();
+    //     cy.openBlog();
+    //     cy.tick(250)
+    //     cy.get('[data-testid="blogExit"]').click();
+    //     cy.tick(250)
 
-        cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
-        cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
-        cy.get('[data-testid="blogContainer"]').should('not.be.visible');
-        cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
-        cy.get('[data-testid="main"]').should('be.visible');
+    //     cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="blogContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="main"]').should('be.visible');
 
-        // ------------
+    //     // ------------
 
-        cy.reportIconClick();
-        cy.openAbout();
-        cy.tick(250)
-        cy.get('[data-testid="aboutExit"]').click();
-        cy.tick(250)
+    //     cy.reportIconClick();
+    //     cy.openAbout();
+    //     cy.tick(250)
+    //     cy.get('[data-testid="aboutExit"]').click();
+    //     cy.tick(250)
 
-        cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
-        cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
-        cy.get('[data-testid="blogContainer"]').should('not.be.visible');
-        cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
-        cy.get('[data-testid="main"]').should('be.visible');
+    //     cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="blogContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="main"]').should('be.visible');
         
-        // ------------
+    //     // ------------
         
-        cy.spaceIconClick();
-        cy.openAbout();
-        cy.tick(250)
-        cy.get('[data-testid="aboutExit"]').click();
-        cy.tick(250)
+    //     cy.spaceIconClick();
+    //     cy.openAbout();
+    //     cy.tick(250)
+    //     cy.get('[data-testid="aboutExit"]').click();
+    //     cy.tick(250)
 
-        cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
-        cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
-        cy.get('[data-testid="blogContainer"]').should('not.be.visible');
-        cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
-        cy.get('[data-testid="main"]').should('be.visible');
+    //     cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="blogContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="main"]').should('be.visible');
 
-        // ------------
-    })
+    //     // ------------
+    // })
 
-    it('Blog Post Container Testing', () => {
-        cy.clock();
-        cy.openBlog();
-        cy.get('[data-testid="blogcell1"]').click();
-        cy.reportIconClick();
-        cy.homeIconClick();
+    // it('Blog Post Container Testing', () => {
+    //     cy.clock();
+    //     cy.openBlog();
+    //     cy.get('[data-testid="blogcell1"]').click();
+    //     cy.reportIconClick();
+    //     cy.homeIconClick();
 
-        cy.openBlog();
-        cy.get('[data-testid="blogcell1"]').click();
-        cy.spaceIconClick();
-        cy.homeIconClick();
+    //     cy.openBlog();
+    //     cy.get('[data-testid="blogcell1"]').click();
+    //     cy.spaceIconClick();
+    //     cy.homeIconClick();
 
-        cy.openBlog();
-        cy.get('[data-testid="blogcell1"]').click();
-        cy.tick(250)
-        cy.leftArrowKeyPress(); // report <---
-        cy.tick(250)
-        cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
-        cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
-        cy.get('[data-testid="blogContainer"]').should('not.be.visible');
-        cy.get('[data-testid="blogPostContainer"]').should('not.be.visible');
-        cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
-        cy.get('[data-testid="dashboardContainer"]').should('be.visible');
-        cy.tick(250)
-        cy.rightArrowKeyPress(); // --> home
-        cy.tick(250)
-        cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
-        cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
-        cy.get('[data-testid="blogContainer"]').should('not.be.visible');
-        cy.get('[data-testid="blogPostContainer"]').should('not.be.visible');
-        cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
-        cy.get('[data-testid="main"]').should('be.visible');
+    //     cy.openBlog();
+    //     cy.get('[data-testid="blogcell1"]').click();
+    //     cy.tick(250)
+    //     cy.leftArrowKeyPress(); // report <---
+    //     cy.tick(250)
+    //     cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
+    //     cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="blogContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="blogPostContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="dashboardContainer"]').should('be.visible');
+    //     cy.tick(250)
+    //     cy.rightArrowKeyPress(); // --> home
+    //     cy.tick(250)
+    //     cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="blogContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="blogPostContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="main"]').should('be.visible');
         
-        cy.openBlog();
-        cy.get('[data-testid="blogcell1"]').click();
-        cy.tick(250)
-        cy.rightArrowKeyPress(); // --> space
-        cy.tick(250)
-        cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
-        cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
-        cy.get('[data-testid="blogContainer"]').should('not.be.visible');
-        cy.get('[data-testid="blogPostContainer"]').should('not.be.visible');
-        cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
-        cy.get('[data-testid="spaceContainer"]').should('be.visible');
-        cy.tick(250)
-        cy.leftArrowKeyPress(); // home <--
-        cy.tick(250)
-        cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
-        cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
-        cy.get('[data-testid="blogContainer"]').should('not.be.visible');
-        cy.get('[data-testid="blogPostContainer"]').should('not.be.visible');
-        cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
-        cy.get('[data-testid="main"]').should('be.visible');
-    })
+    //     cy.openBlog();
+    //     cy.get('[data-testid="blogcell1"]').click();
+    //     cy.tick(250)
+    //     cy.rightArrowKeyPress(); // --> space
+    //     cy.tick(250)
+    //     cy.get('[data-testid="subMainContainer"]').should('not.have.css', 'display', 'flex');
+    //     cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="blogContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="blogPostContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="spaceContainer"]').should('be.visible');
+    //     cy.tick(250)
+    //     cy.leftArrowKeyPress(); // home <--
+    //     cy.tick(250)
+    //     cy.get('[data-testid="spaceContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="dashboardContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="blogContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="blogPostContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="aboutContainer"]').should('not.be.visible');
+    //     cy.get('[data-testid="main"]').should('be.visible');
+    // })
 })

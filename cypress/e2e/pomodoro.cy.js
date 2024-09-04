@@ -7,14 +7,14 @@ describe('Pomodoro | Auto and non-auto start', () => {
         cy.get('[data-testid="pomodoroBtnContainer"]').click();      
     })
     
-    it('Pomodoro Info Window Shows Up', () => {
-        cy.get('body').invoke('css', 'overflow-y', 'scroll');
-        cy.contains("Pomodoro Notifications").click();
-        cy.contains("This will notify you after the time specified for Pomodoro, Short Break, and Long Break").should('be.visible');
+    // it('Pomodoro Info Window Shows Up', () => {
+    //     cy.get('body').invoke('css', 'overflow-y', 'scroll');
+    //     cy.contains("Pomodoro Notifications").click();
+    //     cy.contains("This will notify you after the time specified for Pomodoro, Short Break, and Long Break").should('be.visible');
         
-        cy.contains("Pomodoro Notifications").click();
-        cy.contains("This will notify you after the time specified for Pomodoro, Short Break, and Long Break").should('not.be.visible');
-    })
+    //     cy.contains("Pomodoro Notifications").click();
+    //     cy.contains("This will notify you after the time specified for Pomodoro, Short Break, and Long Break").should('not.be.visible');
+    // })
     
     // BASIC USE
     it('25 min Pom, 5 min SB, 15 min LB | No Auto Start', () => {

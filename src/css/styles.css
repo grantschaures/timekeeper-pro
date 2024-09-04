@@ -701,6 +701,13 @@ button:hover {
     /* border: 1px solid orange; */
 }
 
+#start-stop {
+    width: 128px;
+}
+
+#target-hours-submit {
+    width: 125px;
+}
 
 @media (max-width: 635px) {
     #targetHoursInterruptionsContainer {
@@ -708,9 +715,16 @@ button:hover {
     }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 450px) {
     button {
-        transform: scale(0.9);
+        /* transform: scale(0.9); */
+        font-size: 16px;
+    }
+    #start-stop {
+        width: 100px;
+    }
+    #target-hours-submit {
+        width: 100px;
     }
 }
 
@@ -994,10 +1008,6 @@ button:hover {
     border: 1px solid white;
 }
 
-#target-hours-submit {
-    width: 125px;
-}
-
 .finalized-hours {
     font-family: myFont2;
     color: rgba(255, 255, 255); /* finalized text color */
@@ -1165,10 +1175,6 @@ button:hover {
 
 .threeWayToggleAnimation {
     animation: threeWayToggleAnimation 1s;
-}
-
-#start-stop {
-    width: 128px;
 }
 
 .mode-text {
