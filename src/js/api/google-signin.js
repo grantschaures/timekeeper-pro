@@ -15,6 +15,8 @@ window.handleCredentialResponse = function(response) {
     .then(data => {
         if (data.loginSuccess === true) {
             initializeGUI();
+        } else {
+            alert("An error occured on the server. We apologize for the inconvenience. Please try again later.")
         }
     })
     .catch(error => {

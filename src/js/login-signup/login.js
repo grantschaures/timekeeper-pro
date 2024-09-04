@@ -69,6 +69,8 @@ window.addUser = function(email, password) {
         if (data.loginSuccess === true) {
             console.log("Login was successful!");
             initializeGUI();
+        } else {
+            alert("An error occured on the server. We apologize for the inconvenience. Please try again later.")
         }
     })
     .catch(error => {
