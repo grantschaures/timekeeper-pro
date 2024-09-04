@@ -13,6 +13,6 @@ const NotesEntry = db.model("NotesEntry", {
         date: { type: Date, default: Date.now },
         completionDate: { type: Date }
     }
-}, 'Notes');
+}, 'Notes-Entries');
 
 module.exports = NotesEntry;

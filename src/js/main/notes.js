@@ -17,6 +17,8 @@ import { updateUserSettings } from '../state/update-settings.js'; // minified
 import { updateLabels } from '../state/update-labels.js'; // minified
 import { updateDeletedLabels } from '../state/update-deleted-labels.js'; // minified
 import { updateNotes } from '../state/update-notes.js'; // minified
+import { addNotesEntry } from '../state/add-notes-entry.js';
+import { updateNotesEntry } from '../state/update-notes-entry.js';
 
 // main event listener
 document.addEventListener("stateUpdated", function() {
@@ -1028,6 +1030,7 @@ function noteInputSave(noteTaskInputContainer, addNoteTaskContainer, flags, note
         updateNotes(notesObj);
 
         // also send back notesArrObj itself to endpoint that adds it to Notes-Entries Collection
+        addNotesEntry(notesArrObj);
     }
 }
 
@@ -1290,6 +1293,8 @@ function noteInputSaveBtnClick_editMode(state, flags) {
             lastTaskInputIdNum
         }
         updateNotes(notesObj);
+
+        updateNotesEntry(notesArr[indexToEdit]);
     }
 }
 
@@ -1388,6 +1393,8 @@ function checkOrUncheckTask(targetId) {
             lastTaskInputIdNum
         }
         updateNotes(notesObj);
+
+        updateNotesEntry(notesArr[indexToUpdate]);
     }
 }
 

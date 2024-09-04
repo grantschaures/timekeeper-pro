@@ -3,6 +3,7 @@ const User = require("../models/user");
 const Note = require("../models/note");
 const Report = require("../models/report");
 const Login = require("../models/login");
+const NotesEntry = require("../models/notes-entries");
 const DeletedAccount = require("../models/deleted-account");
 const { Session } = require("../models/session");
 const router = express.Router();  // This is a slight refactor for clarity
@@ -17,6 +18,88 @@ router.use(checkAndRenewToken);
 
 // CONSTANTS
 MAX_ITEMS_SESSION_START_TIME_ARR = 5; // can reduce if necessary
+
+router.post("/update-notes-entry", async function(req, res) {
+    // Assuming the JWT is sent automatically in cookie headers
+    const token = req.cookies.token;  // Extract the JWT from cookies directly
+    const { notesObj } = req.body;
+    // console.log(notesObj);
+
+    if (!token) {
+        return res.status(401).json({ message: "Token was not found" });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        const userId = decoded.userId;
+        const user = await User.findById(userId);
+
+        if (user) {
+            
+            const notesEntry = await NotesEntry.findOne({ 
+                userId: user._id,         // Ensure the note belongs to the specific user
+                'entry.id': notesObj.id   // Ensure the note has the correct entry ID
+            });
+            
+            if (!notesEntry) {
+                return res.status(404).json({
+                    message: "Notes Entry not found"
+                });
+            }
+            
+            notesEntry.entry = notesObj;
+            await notesEntry.save();
+
+            res.json({ success: true, message: 'update-notes-entry endpoint reached successfully'});
+        } else {
+            return res.status(404).json({ 
+                message: "User not found"
+            });
+        }
+    } catch (error) {
+        return res.status(500).json({
+            message: "The server was unable to process the request: " + error.message
+        });
+    }
+});
+
+router.post("/add-notes-entry", async function(req, res) {
+    // Assuming the JWT is sent automatically in cookie headers
+    const token = req.cookies.token;  // Extract the JWT from cookies directly
+    const { notesObj } = req.body;
+    // console.log(notesObj);
+
+    if (!token) {
+        return res.status(401).json({ message: "Token was not found" });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        const userId = decoded.userId;
+        const user = await User.findById(userId);
+
+        if (user) {
+            
+            const newNotesEntry = new NotesEntry({
+                userId: user._id,
+                userEmail: user.email,
+                entry: notesObj
+            });
+            
+            await newNotesEntry.save();
+
+            res.json({ success: true, message: 'add-notes-entry endpoint reached successfully'});
+        } else {
+            return res.status(404).json({ 
+                message: "User not found"
+            });
+        }
+    } catch (error) {
+        return res.status(500).json({
+            message: "The server was unable to process the request: " + error.message
+        });
+    }
+});
 
 router.post("/update-session-summary", async function(req, res) {
     // Assuming the JWT is sent automatically in cookie headers
