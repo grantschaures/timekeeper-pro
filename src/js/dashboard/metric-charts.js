@@ -4,7 +4,7 @@ import { flags, general, labelDistContainer, mainChartContainer } from "../modul
 
 import { setBounds, alterBounds, displayTimeFrame } from './label-distribution.js'; // need to edit editHTML
 
-export function setMainChartsContainer() {
+export function setMetricCharts() {
     setBounds(mainChartContainer, metricDistributionTimeFrame, rightMetricDistributionArrow, rightMetricDistributionArrowGray);
 
     if (flags.metricDistributionContainerExpanded) {

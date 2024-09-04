@@ -161,6 +161,14 @@ const notesReplacements = [
         pattern: /import { updateNotes } from '..\/state\/update-notes.js';/g,
         replacement: "import { updateNotes } from '../minified/update-notes.min.js';"
     },
+    {
+        pattern: /import { addNotesEntry } from '..\/state\/add-notes-entry.js';/g,
+        replacement: "import { addNotesEntry } from '../minified/add-notes-entry.min.js';"
+    },
+    {
+        pattern: /import { updateNotesEntry } from '..\/state\/update-notes-entry.js';/g,
+        replacement: "import { updateNotesEntry } from '../minified/update-notes-entry.min.js';"
+    }
 ];
 
 const navigationReplacements = [
@@ -245,8 +253,8 @@ const populateDashboardReplacements = [
         replacement: "import { populateLabelDistContainer } from '../minified/label-distribution.min.js';"
     },
     {
-        pattern: /import { setMainChartsContainer } from '.\/metric-charts.js';/g,
-        replacement: "import { setMainChartsContainer } from '../minified/metric-charts.min.js';"
+        pattern: /import { setMetricCharts } from '.\/metric-charts.js';/g,
+        replacement: "import { setMetricCharts } from '../minified/metric-charts.min.js';"
     }
 ]
 

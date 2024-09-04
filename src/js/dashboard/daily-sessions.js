@@ -4,6 +4,10 @@ document.addEventListener("stateUpdated", function() {
     setInitialDate();
 })
 
+export function setDailyContainer() {
+    console.log('hi');
+}
+
 function setInitialDate() {
     const now = new Date();
     

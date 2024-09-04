@@ -3,7 +3,8 @@ import { timeConvert } from '../modules/index-objects.js';
 
 import { populateDashboardSummaryStats } from './summary-stats.js';
 import { populateLabelDistContainer } from './label-distribution.js';
-import { setMainChartsContainer } from './metric-charts.js';
+import { setMetricCharts } from './metric-charts.js';
+import { setDailyContainer } from './daily-sessions.js';
 
 // GLOBAL VARIABLES
 const FOCUS_QUALITY_CONSTANT = constants.FOCUS_QUALITY_CONSTANT;
@@ -22,8 +23,11 @@ export async function populateDashboard(sessionData, noteData) { // called from 
     // update label distribution container
     populateLabelDistContainer();
 
-    // update main charts
-    setMainChartsContainer();
+    // setup metric charts
+    setMetricCharts();
+
+    // setDailyContainer();
+    setDailyContainer();
 }
 
 async function setDashboardData(sessionData, dailySummarizedData, noteData) {

@@ -17,8 +17,8 @@ import { updateUserSettings } from '../state/update-settings.js'; // minified
 import { updateLabels } from '../state/update-labels.js'; // minified
 import { updateDeletedLabels } from '../state/update-deleted-labels.js'; // minified
 import { updateNotes } from '../state/update-notes.js'; // minified
-import { addNotesEntry } from '../state/add-notes-entry.js';
-import { updateNotesEntry } from '../state/update-notes-entry.js';
+import { addNotesEntry } from '../state/add-notes-entry.js'; // minified
+import { updateNotesEntry } from '../state/update-notes-entry.js'; // minified
 
 // main event listener
 document.addEventListener("stateUpdated", function() {
