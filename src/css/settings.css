@@ -354,6 +354,18 @@
     height: 50px;
 }
 
+@media(max-width: 853px) {
+    #muffinInfoWindow {
+        height: 65px;
+    }
+}
+
+@media(max-width: 748px) {
+    #muffinInfoWindow {
+        height: 100px;
+    }
+}
+
 #flowTimeBreakNotificationInfoWindow {
     width: 350px;
 }
@@ -1005,6 +1017,8 @@
 
 #toggleNotesAutoSwitchContainer, #togglePropagateUnfinishedTasksContainer {
     align-items: center;
+
+    /* border: 1px solid white; */
 }
 
 @media (max-width: 785px) {
