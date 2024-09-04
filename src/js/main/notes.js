@@ -26,13 +26,6 @@ document.addEventListener("stateUpdated", function() {
     // HELPER FUNCTIONS 1
     // ---------------------
 
-
-    // spanTimestamps.forEach(timestamp => {
-    //     timestamp.style.display = 'none';
-    //     timestamp.style.border = '2px solid white';
-    //     console.log(timestamp)
-    // })
-
     function done() {
         notesConsole.style.display = "block";
         labelSelectionWindow.style.display = "none";
