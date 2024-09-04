@@ -15,7 +15,8 @@ export const dashboardData = {
 
 export const general = {
     currentDay: null,
-    chartTransition: 'all' // values: 'all', 'main-adjusted', 'main-break', 'adv-adjusted', 'adv-distractions', 'summary'
+    chartTransition: 'all', // values: 'all', 'main-adjusted', 'main-break', 'adv-adjusted', 'adv-distractions', 'summary'
+    lastMainChartTransition: 'all'
 }
 
 export const labelDistContainer = {
@@ -34,7 +35,9 @@ export const flags = {
     hourlyQualityAdjustedToggle: false,
     quickerChartAnimations: false,
     summarySelected: false,
-    populated365Arrs: false
+    populated365Arrs: false,
+    mainChartsOpen: false,
+    advChartsOpen: false
 }
 
 export const charts = {

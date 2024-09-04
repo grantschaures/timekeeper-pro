@@ -296,9 +296,11 @@ function checkViewportWidth() {
     if (window.innerWidth <= 1265) {
         // temporary addition
         metricDistributionTimeFrame.style.display = "none";
+        mainChartsSummary.innerText = "S";
     } else {
         // temporary addition
         metricDistributionTimeFrame.style.display = "flex";
+        mainChartsSummary.innerText = "Summary";
     }
 
     if (window.innerWidth <= 1065) {
@@ -307,12 +309,6 @@ function checkViewportWidth() {
     } else {
         summaryAvgAdjustedDeepWorkTimeTitle.innerText = "Avg Per Day (Quality Adjusted):";
         
-    }
-
-    if (window.innerWidth <= 1480) {
-        mainChartsSummary.innerText = "S";
-    } else {
-        mainChartsSummary.innerText = "Summary";
     }
 }
 
@@ -380,12 +376,15 @@ function expandMetricDistributionContainer(metricBodyContainer) {
                 }
 
                 mainChartsDivisionHr.style.display = 'flex';
+                flags.mainChartsOpen = true;
 
                 document.dispatchEvent(new Event('displayMainCharts'));
                 
             } else {
+                general.lastMainChartTransition = general.chartTransition;
+                general.chartTransition = 'all';
                 metricBodyContainer.style.display = 'flex';
-
+                flags.advChartsOpen = true;
                 document.dispatchEvent(new Event('displayAdvCharts'));
             }
         }, 500)
@@ -395,6 +394,13 @@ function expandMetricDistributionContainer(metricBodyContainer) {
 
 function resetMetricDistributionContainer() {
     labelDistContainer.resetInProgress = true;
+
+    if (flags.advChartsOpen) {
+        general.chartTransition = general.lastMainChartTransition;
+    }
+
+    flags.advChartsOpen = false;
+    flags.mainChartsOpen = false;
 
     // hiding metric distribution sub-container
     metricDistributionSubContainer.style.opacity = "0";
