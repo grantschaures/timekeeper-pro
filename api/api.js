@@ -116,7 +116,7 @@ const client = new OAuth2Client(CLIENT_ID);
 // Google Sign-In Endpoint
 router.post("/verifyIdToken", async function(req, res) {
     const session = await mongoose.startSession();
-    // session.startTransaction();
+    session.startTransaction();
 
     try {
         console.log("/verifyIdToken endpoint has been reached");
