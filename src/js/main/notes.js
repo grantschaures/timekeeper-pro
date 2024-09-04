@@ -668,13 +668,13 @@ document.addEventListener("stateUpdated", function() {
             hideTimestamps(spanTimestamps, spanArrows, spanCompletions);
         }
 
-        if (sessionState.loggedIn) {
-            await updateUserSettings({
-                notes: {
-                    timestampsToggle: flags.timestampsToggle
-                }
-            });
-        }
+        // if (sessionState.loggedIn) {
+        //     await updateUserSettings({
+        //         notes: {
+        //             timestampsToggle: flags.timestampsToggle
+        //         }
+        //     });
+        // }
     })
 
     tutorialImgContainers.forEach(container => {
