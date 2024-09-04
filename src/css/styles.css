@@ -1110,6 +1110,9 @@ button:hover {
     #flowAnimation {
         margin-top: -130px;
     }
+    #timekeeping-container {
+        min-height: 250px;
+    }
 }
 
 #hyperChillTitle {
