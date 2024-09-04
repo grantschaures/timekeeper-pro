@@ -916,7 +916,8 @@
         margin-bottom: 20px;
     }
     #chillTimeBackgroundsContainer > div, #flowTimeBackgroundsContainer > div, #flowtimeWorldsBackgroundsContainer > div, #chilltimeWorldsBackgroundsContainer > div {
-        width: 80px;
+        width: 120px;
+        height: 75px;
     }
     #themesContainer {
         display: flex;
@@ -935,10 +936,7 @@
         margin-left: 35px;
     }
     #flowTimeBackgroundsContainer, #chillTimeBackgroundsContainer, #flowtimeWorldsBackgroundsContainer, #chilltimeWorldsBackgroundsContainer {
-        /* border: 1px solid white; */
-        grid-template-columns: 130px 130px;
-        grid-template-rows: auto auto auto;
-        /* width: 200px; */
+        grid-template-columns: 150px 130px;
     }
 }
 
