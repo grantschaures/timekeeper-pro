@@ -1026,6 +1026,8 @@ function noteInputSave(noteTaskInputContainer, addNoteTaskContainer, flags, note
             lastTaskInputIdNum
         }
         updateNotes(notesObj);
+
+        // also send back notesArrObj itself to endpoint that adds it to Notes-Entries Collection
     }
 }
 
