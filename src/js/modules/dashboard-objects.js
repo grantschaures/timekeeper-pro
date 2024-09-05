@@ -55,6 +55,14 @@ export const mainChartContainer = {
     upperBound: null
 }
 
+export const dailyContainer = {
+    timeFrame: 'week', // this will not change
+    lowerBound: null,
+    upperBound: null,
+    selectedDate: null,
+    weeklyDatesArr: null
+}
+
 export const constants = {
     FOCUS_QUALITY_CONSTANT: 0.2
 }

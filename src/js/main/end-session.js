@@ -1,15 +1,15 @@
 import { timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, counters, flags, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, lightHtmlBackground, darkHtmlBackground, times, perHourData, catIds, tempCounters, pip } from '../modules/index-objects.js';
-import { start_stop_btn, end_session_btn, total_time_display, productivity_chill_mode, progressBar, progressContainer, display, interruptionsSubContainer, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, flowAnimation, chillAnimation, streaksCount, breakBackground, deepWorkBackground, commentsTextArea, sessionSummaryOkBtn, subjectiveFeedbackDropdown, sessionSummaryPopup, summaryStats, HC_icon_session_summary, commentsContainer, sessionSummarySignupPromptPopup, popupOverlay, HC_icon_signup_prompt, signupPromptPopupBtn, sessionSummaryKitty2, sessionSummaryKitty1, sessionSummaryKitty3 } from '../modules/dom-elements.js';
+import { start_stop_btn, end_session_btn, total_time_display, productivity_chill_mode, progressBar, progressContainer, display, interruptionsSubContainer, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, flowAnimation, chillAnimation, streaksCount, breakBackground, deepWorkBackground, commentsTextArea, sessionSummaryOkBtn, subjectiveFeedbackDropdown, sessionSummaryPopup, summaryStats, HC_icon_session_summary, commentsContainer, sessionSummarySignupPromptPopup, popupOverlay, HC_icon_signup_prompt, signupPromptPopupBtn, sessionSummaryKitty2, sessionSummaryKitty1, sessionSummaryKitty3, blogs, blog_exit } from '../modules/dom-elements.js';
 import { soundMap } from '../modules/sound-map.js';
 import { sessionState } from '../modules/state-objects.js';
-import { labelFlags, labelArrs, labelDict } from '../modules/notes-objects.js';
+import { labelFlags, labelArrs, labelDict, notesFlags, flags as notesflags } from '../modules/notes-objects.js';
 import { tempStorage, flags as summaryFlags } from '../modules/summary-stats.js';
-import { flags as navFlags } from '../modules/navigation-objects.js';
+import { flags as navFlags, state } from '../modules/navigation-objects.js';
 
 import { animationsFadeIn, animationsFadeOut, getTotalElapsed, returnTotalTimeString, updateLabelArrs, setBackground, pauseAndResetAlertSounds, resetDisplay, updateProgressBar, totalTimeDisplay, setButtonTextAndMode, hideSuggestionBreakContainer, hidePomodorosCompletedContainer, showInterruptionsSubContainer, setFavicon, observer, pomodoroWorker, suggestionWorker, flowmodoroWorker, displayWorker, totalDisplayWorker, updateDataPerHour, hideCat } from './index.js'; // minified
 import { checkInvaliDate } from '../state/check-invaliDate.js'; // minified
 import { addSession } from '../state/add-session.js'; // minified
-import { subMainContainerTransition } from './navigation.js'; // minified
+import { closeAboutContainer, closeBlogContainer, subMainContainerTransition } from './navigation.js'; // minified
 import { populateDashboard } from '../dashboard/populate-dashboard.js'; // minified
 
 const defaultFavicon = "/images/logo/HyperChillLogo_circular_white_border.png";
@@ -29,6 +29,12 @@ document.addEventListener("stateUpdated", function() {
             flags.canEndSession = false; // immediately block another end_session_btn click before rest of flags are reset
             times.end = Date.now();
             tempCounters.catIdsArrIndex = counters.catIdsArrIndex;
+
+            // if any overlay popups are showing, close those first before session summary popup shows (MAKE SURE TO UPDATE THIS IF MORE OVERLAY POPUP WINDOWS ARE ADDED)
+            // (necessary due to pip end btn click)
+            if ((navFlags.deleteAccountWindowShowing) || (navFlags.accountWindowShowing) || (navFlags.shortcutsWindowShowing) || (notesflags.confirmLabelDeletionWindowShowing)) {
+                popupOverlay.click();
+            }
 
             let logSessionActivity;
             if (sessionState.loggedIn) {
@@ -75,6 +81,17 @@ document.addEventListener("stateUpdated", function() {
 
             // hide summary popup
             hideSessionSummaryPopup();
+
+            // show main elements if in home view + settings, blog, or about windows open (necessary due to pip end btn click)
+            if (state.lastSelectedMode === 'home') {
+                if (navFlags.settingsContainerShowing) {
+                    subMainContainerTransition('flex');
+                } else if (navFlags.blogContainerShowing) {
+                    closeBlogContainer();
+                } else if (navFlags.aboutContainerShowing) {
+                    closeAboutContainer();
+                }
+            }
             
             if (sessionState.loggedIn) {
                 hidePopupOverlay();

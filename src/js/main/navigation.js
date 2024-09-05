@@ -27,8 +27,8 @@ window.addEventListener('popstate', (event) => {
         subMainContainerTransition("flex");
         resetMode(dashboardContainer);
         resetMode(spaceContainer);
-        aboutContainer.style.display = "none";
-        blogContainer.style.display = "none";
+        closeAboutContainer();
+        closeBlogContainer();
         hideSettingsContainer();
     }
 });
@@ -284,6 +284,9 @@ document.addEventListener("stateUpdated", function() {
 
             //show blog popup window
             blogContainer.style.display = "flex";
+            setTimeout(() => {
+                blogContainer.style.opacity = '1';
+            }, 0)
 
             flags.blogShowing = false;
         })
@@ -336,7 +339,7 @@ function displayBlogPost(postId) {
         blog_post_container.scrollTo(0, 0);
 
         //Hide the blog container
-        blogContainer.style.display = "none";
+        closeBlogContainer();
 
         //Show the new actual blog post window (white, now)
         blog_post_container.style.display = "block";
@@ -351,8 +354,8 @@ function displayBlogPost(postId) {
 
 function openSettingsContainer() {
     // HIDING ELEMENTS
-    blogContainer.style.display = "none"; // hide main blog container
-    aboutContainer.style.display = "none"; // hide main blog container
+    closeBlogContainer(); // hide main blog container
+    closeAboutContainer(); // hide main blog container
     closeMenu(flags, popupMenu); // hide main menu
     
     // SHOWING ELEMENTS
@@ -389,7 +392,7 @@ function openSettingsContainer() {
 function openAboutContainer() {
     // HIDING ELEMENTS
     subMainContainer.style.display = "none"; // hide main elements
-    blogContainer.style.display = "none"; // hide main blog container
+    closeBlogContainer(); // hide main blog container
     closeMenu(flags, popupMenu); // hide main menu
         
     if (flags.blogShowing) { // hide blog content
@@ -402,10 +405,12 @@ function openAboutContainer() {
     }
 
     // SHOWING ELEMENTS
+    flags.aboutContainerShowing = true;
     aboutContainer.style.display = "flex"; // show about container
     setTimeout(() => {
         aboutContainer.style.opacity = '1';
     }, 0)
+
     fadeInUIContainer(streaksContainer, isMobile);
     fadeInUIContainer(darkLightThemeGUIContainer, isMobile);
     fadeInUIContainer(displayGUIContainer, isMobile);
@@ -424,8 +429,9 @@ function openAboutContainer() {
 
 function openBlogContainer() {
     // HIDING ELEMENTS
+    flags.blogContainerShowing = true;
     subMainContainer.style.display = "none"; // hide main elements
-    aboutContainer.style.display = "none"; // hide main blog container
+    closeAboutContainer(); // hide main blog container
     closeMenu(flags, popupMenu); // hide main menu
 
     if (flags.blogShowing) { // hide blog content
@@ -442,6 +448,7 @@ function openBlogContainer() {
     setTimeout(() => {
         blogContainer.style.opacity = '1';
     }, 0)
+
     fadeInUIContainer(streaksContainer, isMobile); // showing streaks container
     fadeInUIContainer(darkLightThemeGUIContainer, isMobile); // showing darkLightThemeGUIContainer
     fadeInUIContainer(displayGUIContainer, isMobile);
@@ -603,6 +610,8 @@ export function subMainContainerTransition(display) {
     } else if (display === "flex") {
         subMainContainer.style.display = display; // flex
         subMainContainer.offsetHeight; // forcing reflow
+        history.pushState({}, '', '/');
+
         setTimeout(() => {
             subMainContainer.style.opacity = 1;
         }, 0)
@@ -726,7 +735,7 @@ function displayDashboardCat() {
 
 function hideDashboardCat() {
     let dashboardCatId = dashboardCatIds[tempCounters.dashboardCatIdsArrIndex];
-        document.getElementById(dashboardCatId).style.display = 'none';
+    document.getElementById(dashboardCatId).style.display = 'none';
 }
 
 function isClickNotOnAboutElements(event, about_menu_container, aboutContainer, menuBtn, about_exit, reportIcon, reportPath) {
@@ -735,18 +744,28 @@ function isClickNotOnAboutElements(event, about_menu_container, aboutContainer, 
     // Check if event.target is not contained within any of the aboutElementsArr
     // or if the event.target is the about_exit
     if (!aboutElementsArr.some(element => element.contains(event.target)) || event.target === about_exit) {
-        aboutContainer.style.display = "none";
-        aboutContainer.style.opacity = '0';
+        closeAboutContainer();
     }
+}
+
+export function closeAboutContainer() {
+    flags.aboutContainerShowing = false;
+    aboutContainer.style.display = "none";
+    aboutContainer.style.opacity = '0';
 }
 
 function isClickNotOnBlogElements(event, blogMenuContainer, blog_post_container, menuBtn, blog_exit) {
     let blogElementsArr = [blogMenuContainer, blogContainer, blog_post_container, menuBtn, questionIcon, popupQuestionMenu, shortcutsPopup, accountPopup, popupOverlay, darkLightThemeGUIContainer, settingsContainer];
 
     if (!blogElementsArr.some(element => element.contains(event.target)) || event.target === blog_exit) {
-        blogContainer.style.display = "none";
-        blogContainer.style.opacity = '0';
+        closeBlogContainer();
     }
+}
+
+export function closeBlogContainer() {
+    flags.blogContainerShowing = false;
+    blogContainer.style.display = "none";
+    blogContainer.style.opacity = '0';
 }
 
 function isClickNotOnMenuElements(event, menuBtn, flags, popupMenu) {
@@ -806,7 +825,7 @@ function showBlog(blog_id, blogContainer, blog_post_container, blogIdList, flags
     blog_post_container.scrollTo(0, 0);
 
     //Hide the blog container
-    blogContainer.style.display = "none";
+    closeBlogContainer();
 
     //Show the new actual blog post window (white, now)
     blog_post_container.style.display = "block";
@@ -816,7 +835,7 @@ function showBlog(blog_id, blogContainer, blog_post_container, blogIdList, flags
     document.getElementById(blogIdList[blog_id]).classList.remove("hidden");
 };
 
-function hideBlog(blogs) {
+export function hideBlog(blogs) {
     blogs.forEach(function(blog) {
         if (!document.getElementById(blog.id).classList.contains("hidden")) {
             document.getElementById(blog.id).classList.add("hidden");

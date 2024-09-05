@@ -625,27 +625,82 @@
                     <img id="dashboardCat4" src="images/sprites/thicker-lines/kitty1.png" class="cat2">
                     <div id="dailyContainer" class="dashboardSideContainer">
 
-                        <div id="dailyHeaderContainer" class="dailyContainer">
+                        <div id="dailyHeaderContainer">
                             <div id="dateAndSwitchContainer">
                                 <div id="dailyDateContainer">
-                                    <div id="dailyDay" class="dailyText"></div>
-                                    <div id="dailyDate" class="dailyText"></div>
+                                    <div id="dailyDay" class="selectedDate"></div>
+                                    <div id="dailyDate" class="selectedDate"></div>
                                 </div>
-                                <div id="switchContainer">
-                                    <img id="leftDailyArrow" src="images/icons/left_arrow.png" class="dashboardArrow leftArrow no-select">
-                                    <img id="rightDailyArrow" src="images/icons/right_arrow.png" class="dashboardArrow rightArrow no-select">
-                                    <img id="rightDailyArrowGray" src="images/icons/gray_right_arrow.png" class="dashboardArrowGray rightArrow no-select">
+                                <div id="switchCalendarBundle">
+                                    <div id="switchContainer">
+                                        <img id="leftDailyArrow" src="images/icons/left_arrow.png" class="dashboardArrow leftArrow no-select">
+                                        <img id="rightDailyArrow" src="images/icons/right_arrow.png" class="dashboardArrow rightArrow no-select">
+                                        <img id="rightDailyArrowGray" src="images/icons/gray_right_arrow.png" class="dashboardArrowGray rightArrow no-select">
+                                    </div>
+                                    <div id="calendarContainer">
+                                        <img id="calendarIcon" src="images/icons/calendar-icon.png" class="no-select">
+                                    </div>
+                                    <!-- <input type="date" id="hiddenDateInput" style="position: fixed"> -->
                                 </div>
                             </div>
-                            <div id="weeklySummaries" class="dailyContainer">
-                                <!-- <div id="sunContainer">
-                                    <div id="sunDoughnutChartContainer">
-                                        <canvas></canvas>
+                            <div id="weeklySummaries">
+                                <div id="sunContainer" class="dailyBlock">
+                                    <div id="sunMiniChartContainer" class="miniChartContainer">
+                                        <canvas id="sunMiniChart" class="miniChart"></canvas>
                                     </div>
-                                    <div id="sunDoughnutChartDescriptionContainer">
-                                        Sun
+                                    <div id="sunMiniChartLabel" class="miniChartLabel no-select">
+                                        Sun <!-- These hardcoded labels can be removed from this html -->
                                     </div>
-                                </div> -->
+                                </div>
+                                <div id="monContainer" class="dailyBlock">
+                                    <div id="monMiniChartContainer" class="miniChartContainer">
+                                        <canvas id="monMiniChart" class="miniChart"></canvas>
+                                    </div>
+                                    <div id="monMiniChartLabel" class="miniChartLabel no-select">
+                                        Mon
+                                    </div>
+                                </div>
+                                <div id="tueContainer" class="dailyBlock">
+                                    <div id="tueMiniChartContainer" class="miniChartContainer">
+                                        <canvas id="tueMiniChart" class="miniChart"></canvas>
+                                    </div>
+                                    <div id="tueMiniChartLabel" class="miniChartLabel no-select">
+                                        Tue
+                                    </div>
+                                </div>
+                                <div id="wedContainer" class="dailyBlock">
+                                    <div id="wedMiniChartContainer" class="miniChartContainer">
+                                        <canvas id="wedMiniChart" class="miniChart"></canvas>
+                                    </div>
+                                    <div id="wedMiniChartLabel" class="miniChartLabel no-select">
+                                        Wed
+                                    </div>
+                                </div>
+                                <div id="thuContainer" class="dailyBlock">
+                                    <div id="thuMiniChartContainer" class="miniChartContainer">
+                                        <canvas id="thuMiniChart" class="miniChart"></canvas>
+                                    </div>
+                                    <div id="thuMiniChartLabel" class="miniChartLabel no-select">
+                                        Thu
+                                    </div>
+                                </div>
+                                <div id="friContainer" class="dailyBlock">
+                                    <div id="friMiniChartContainer" class="miniChartContainer">
+                                        <canvas id="friMiniChart" class="miniChart"></canvas>
+                                    </div>
+                                    <div id="friMiniChartLabel" class="miniChartLabel no-select">
+                                        Fri
+                                    </div>
+                                </div>
+                                <div id="satContainer" class="dailyBlock">
+                                    <div id="satMiniChartContainer" class="miniChartContainer">
+                                        <canvas id="satMiniChart" class="miniChart"></canvas>
+                                    </div>
+                                    <div id="satMiniChartLabel" class="miniChartLabel no-select">
+                                        Sat
+                                    </div>
+                                </div>
+                                
                             </div>
                         </div>
                         <div id="dailyBodyContainer">

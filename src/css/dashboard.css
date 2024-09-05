@@ -312,12 +312,6 @@
     animation: bounceBack 0.25s forwards;
 }
 
-#dailyContainer {
-    width: 400px;
-    min-width: 250px;
-    margin-right: 10px;
-}
-
 .dashboardSideContainer::-webkit-scrollbar {
     width: 5px;
     height: 8px;
@@ -339,48 +333,6 @@
 
 .margin-bottom {
     margin-bottom: 20px;
-}
-
-#dailyHeaderContainer {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-}
-
-#dateAndSwitchContainer {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    height: 45px;
-
-    /* border: 2px solid orange; */
-}
-
-#switchContainer {
-    display: flex;
-    /* border: 2px solid cyan; */
-}
-
-#dailyDay {
-    font-family: settingsHeaderFontBold;
-    font-size: 24px;
-}
-
-#dailyDate {
-    font-family: settingsHeaderFont;
-}
-
-#weeklySummaries {
-    width: 100%;
-    height: 50px;
-
-    /* border: 2px solid blue; */
-}
-
-.dailyContainer {
-    box-sizing: border-box;
-    /* border: 2px solid blue; */
 }
 
 /* LABEL DISTRIBUTION */
@@ -740,14 +692,6 @@
     left: 40px;
 }
 
-
-
-
-
-
-
-
-
 #mainChartsSummaryContainer {
     display: none;
 }
@@ -873,6 +817,141 @@
     white-space: nowrap;
     margin-left: 20px;
 }
+
+
+
+
+
+
+
+
+
+#dailyContainer {
+    width: 400px;
+    min-width: 250px;
+    margin-right: 10px;
+}
+
+#dailyHeaderContainer {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+#dateAndSwitchContainer {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    height: 45px;
+
+    /* border: 2px solid orange; */
+}
+
+#switchContainer {
+    display: flex;
+    margin-right: 15px;
+
+    /* border: 2px solid cyan; */
+}
+
+#switchCalendarBundle {
+    display: flex;
+}
+
+#dailyDay {
+    font-family: settingsHeaderFontBold;
+    font-size: 24px;
+}
+
+#dailyDate {
+    font-family: settingsHeaderFont;
+    font-size: 16px;
+}
+
+#calendarContainer {
+    transition: transform 0.15s ease-in-out;
+}
+
+#calendarContainer:hover {
+    cursor: pointer;
+}
+
+#calendarContainer:active {
+    transform: scale(0.90);
+}
+
+#weeklySummaries {
+    display: flex;
+    width: 100%;
+    height: auto;
+    margin-top: 10px;
+
+    justify-content: space-between;
+
+    border: 2px solid blue;
+}
+
+.dailyBlock {
+    display: flex;
+    flex-direction: column;
+
+    border: 1px solid white;
+}
+
+.miniChartContainer {
+    display: flex;
+    height: 100%;
+    width: auto;
+
+    border: 1px solid olive;
+}
+
+.miniChartContainer:hover {
+    cursor: pointer;
+}
+
+.miniChart {
+    height: 25px;
+    width: 25px;
+
+    /* border: 1px solid orange; */
+}
+
+.miniChartLabel {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    font-family: settingsHeaderFont;
+    font-size: 9px;
+    height: 100%;
+
+    border: 1px solid red;
+}
+
+#calendarContainer {
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+    /* border: 1px solid white; */
+}
+
+#calendarIcon {
+    width: 25px;
+    height: auto;
+}
+
+
+
+
+
+
+
+
+
+
 
 @media (max-width: 1400px) {
     .summaryStatHeader {

@@ -328,10 +328,12 @@ export function alterBounds(type, container, timeFrameElement, rightArrow, right
     
     setRightArrowType(container, currentDate, rightArrow, rightArrowGray); // white or gray
 
-    displayTimeFrame(container, timeFrameElement);
+    if (timeFrameElement) {
+        displayTimeFrame(container, timeFrameElement);
+    }
 }
 
-export function setBounds(container, timeFrameElement, rightArrow, rightArrowGray) {
+export async function setBounds(container, timeFrameElement, rightArrow, rightArrowGray) {
     // Parse the input date
     const currentDate = moment(general.currentDay, 'YYYY-MM-DD'); // current
 
@@ -346,11 +348,14 @@ export function setBounds(container, timeFrameElement, rightArrow, rightArrowGra
 
     setRightArrowType(container, currentDate, rightArrow, rightArrowGray); // white or gray
 
-    displayTimeFrame(container, timeFrameElement);
+    if (timeFrameElement) {
+        displayTimeFrame(container, timeFrameElement);
+    }
 }
 
 function setRightArrowType(container, currentDate, rightArrow, rightArrowGray) {
     let newUpperBoundDate = moment(container.upperBound, 'YYYY-MM-DD');
+
     if (newUpperBoundDate.isBefore(currentDate)) {
         rightArrow.style.display = 'flex'; // show white right arrow
         rightArrowGray.style.display = 'none'; // hide gray white arrow

@@ -26,7 +26,7 @@ export async function populateDashboard(sessionData, noteData) { // called from 
     // setup metric charts
     setMetricCharts();
 
-    // setDailyContainer();
+    // setup daily container;
     setDailyContainer();
 }
 
