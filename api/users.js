@@ -99,7 +99,7 @@ router.post('/emailsignup', async (req, res) => {
                         </a>
                         <div style="margin-top: 70px;">
                             <div style="font-family: Verdana, Geneva, Tahoma, sans-serif; color: rgb(150, 150, 150)">
-                                This email was sent by <a href="https://hyperchill.io">HyperChill.io</a>
+                                This email was sent by <a href="https://hyperchill.io">Hyperchill.io</a>
                             </div>
                         </div>
                    </div>`
@@ -150,7 +150,7 @@ router.post('/resetPassword', async (req, res) => {
             to: email,
             from: {
                 email: 'noreply@hyperchill.io',
-                name: 'HyperChill.io',
+                name: 'Hyperchill.io',
             },
             subject: 'Reset your password',
             text: 'Visit hyperchill.io/login',
@@ -165,7 +165,7 @@ router.post('/resetPassword', async (req, res) => {
                         </a>
                         <div style="margin-top: 70px;">
                             <div style="font-family: Verdana, Geneva, Tahoma, sans-serif; color: rgb(150, 150, 150)">
-                                This email was sent by <a href="https://hyperchill.io">HyperChill.io</a>
+                                This email was sent by <a href="https://hyperchill.io">Hyperchill.io</a>
                             </div>
                         </div>
                    </div>`

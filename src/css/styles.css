@@ -217,7 +217,7 @@ h3 {
     color: white;
 }
 
-/* Adjust these to only apply to the HyperChill.io Header */
+/* Adjust these to only apply to the Hyperchill.io Header */
 @media (max-width: 400px) {
     .container h1 {
         font-size: 26px;
