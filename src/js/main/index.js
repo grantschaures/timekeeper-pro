@@ -2111,7 +2111,7 @@ export function handleViewportWidthChange(settingsMappings, tempStorage) {
     }
 
     if (tempCounters.dashboardCatIdsArrIndex === 5) {
-        if ((viewportWidth <= 670) && (dashboardFlags.calendarContainerShowing)) {
+        if ((viewportWidth <= 670) && (dashboardFlags.calendarPopupShowing)) {
             document.getElementById('dashboardCat6').style.display = 'none';
         } else {
             document.getElementById('dashboardCat6').style.display = 'flex';

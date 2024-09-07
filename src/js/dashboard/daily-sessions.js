@@ -99,6 +99,11 @@ document.addEventListener("stateUpdated", function() {
             if (!flags.calendarPopupShowing) {
                 flags.calendarPopupShowing = true;
                 calendarPopup.style.display = 'flex';
+                setTimeout(() => {
+                    calendarPopup.style.opacity = '1';
+                    calendarPopup.style.transform = 'scale(1)';
+                }, 0)
+
                 if (viewportWidth <= 670) {
                     document.getElementById('dashboardCat6').style.display = 'none';
                 }
@@ -106,6 +111,8 @@ document.addEventListener("stateUpdated", function() {
             } else {
                 flags.calendarPopupShowing = false;
                 calendarPopup.style.display = 'none';
+                calendarPopup.style.opacity = '0';
+                    calendarPopup.style.transform = 'scale(0.95)';
                 if (tempCounters.dashboardCatIdsArrIndex === 5) {
                     document.getElementById('dashboardCat6').style.display = 'flex';
                 }
@@ -249,10 +256,6 @@ function updateCalendarBody(current) {
             j++;
         }
     }
-}
-
-function hasTextContent(element) {
-    return element.textContent.trim().length > 0;
 }
 
 function getWeekdayIndex(month, year) {
