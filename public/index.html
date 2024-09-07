@@ -623,8 +623,8 @@
                     <!-- <img id="dashboardCat2-shadow" src="images/sprites/lil-shadow.png" class="cat2 no-select"> -->
                     <img id="dashboardCat3" src="images/sprites/thicker-lines/kitty8.png" class="cat2"> 
                     <img id="dashboardCat4" src="images/sprites/thicker-lines/kitty1.png" class="cat2">
-                    <div id="dailyContainer" class="dashboardSideContainer">
 
+                    <div id="dailyContainer" class="dashboardSideContainer">
                         <div id="dailyHeaderContainer">
                             <div id="dateAndSwitchContainer">
                                 <div id="dailyDateContainer">
@@ -637,10 +637,114 @@
                                         <img id="rightDailyArrow" src="images/icons/right_arrow.png" class="dashboardArrow rightArrow no-select">
                                         <img id="rightDailyArrowGray" src="images/icons/gray_right_arrow.png" class="dashboardArrowGray rightArrow no-select">
                                     </div>
-                                    <div id="calendarContainer">
+                                    <div id="calendarIconContainer">
                                         <img id="calendarIcon" src="images/icons/calendar-icon.png" class="no-select">
                                     </div>
                                     <!-- <input type="date" id="hiddenDateInput" style="position: fixed"> -->
+                                </div>
+                                <div id="calendarPopup">
+                                    <div id="calendarHeader">
+                                        <div id="leftCalendarArrowContainer" class="calendarArrowContainer">
+                                            <img id="leftCalendarArrow" src="images/icons/left_arrow.png" class="dashboardArrow leftArrow no-select">
+                                        </div>
+                                        <div id="monthYearSelectionContainer">
+                                            <div id="monthSelectionContainer" class="calendarSelectionContainer">
+                                                <label for="monthSelection"></label>
+                                                <select id="monthSelection" name="monthSelection">
+                                                    <option value="1">January</option>
+                                                    <option value="2">February</option>
+                                                    <option value="3">March</option>
+                                                    <option value="4">April</option>
+                                                    <option value="5">May</option>
+                                                    <option value="6">June</option>
+                                                    <option value="7">July</option>
+                                                    <option value="8">August</option>
+                                                    <option value="9">September</option>
+                                                    <option value="10">October</option>
+                                                    <option value="11">November</option>
+                                                    <option value="12">December</option>
+                                                </select>
+                                            </div>
+                                            <div id="yearSelectionContainer" class="calendarSelectionContainer">
+                                                <input type="number" id="yearSelection" data-testid="yearSelection" name="year" min="0" aria-labelledby="yearSelection">
+                                            </div>
+                                        </div>
+                                        <div id="rightCalendarArrowContainer" class="calendarArrowContainer">
+                                            <img id="rightCalendarArrow" src="images/icons/right_arrow.png" class="dashboardArrow rightArrow no-select">
+                                            <img id="rightCalendarArrowGray" src="images/icons/gray_right_arrow.png" class="dashboardArrowGray rightArrow no-select">
+                                        </div>
+                                    </div>
+                                    <div id="calendarBody">
+                                        <!-- Dynamically adding rows based on month -->
+                                        <div id="calendarBodyHeader" class="calendarRow">
+                                            <div id="r1-c1" class="no-select calendarHeaderCell">Sun</div>
+                                            <div id="r1-c2" class="no-select calendarHeaderCell">Mon</div>
+                                            <div id="r1-c3" class="no-select calendarHeaderCell">Tue</div>
+                                            <div id="r1-c4" class="no-select calendarHeaderCell">Wed</div>
+                                            <div id="r1-c5" class="no-select calendarHeaderCell">Thu</div>
+                                            <div id="r1-c6" class="no-select calendarHeaderCell">Fri</div>
+                                            <div id="r1-c7" class="no-select calendarHeaderCell">Sat</div>
+                                        </div>
+                                         <div id="calendarRow1" class="calendarRow">
+                                            <div id="r1-c1" class="no-select calendarCell"></div>
+                                            <div id="r1-c2" class="no-select calendarCell"></div>
+                                            <div id="r1-c3" class="no-select calendarCell"></div>
+                                            <div id="r1-c4" class="no-select calendarCell"></div>
+                                            <div id="r1-c5" class="no-select calendarCell"></div>
+                                            <div id="r1-c6" class="no-select calendarCell"></div>
+                                            <div id="r1-c7" class="no-select calendarCell"></div>
+                                        </div>
+                                        <div id="calendarRow2" class="calendarRow">
+                                            <div id="r2-c1" class="no-select calendarCell"></div>
+                                            <div id="r2-c2" class="no-select calendarCell"></div>
+                                            <div id="r2-c3" class="no-select calendarCell"></div>
+                                            <div id="r2-c4" class="no-select calendarCell"></div>
+                                            <div id="r2-c5" class="no-select calendarCell"></div>
+                                            <div id="r2-c6" class="no-select calendarCell"></div>
+                                            <div id="r2-c7" class="no-select calendarCell"></div>
+                                        </div>
+                                        <div id="calendarRow3" class="calendarRow">
+                                            <div id="r3-c1" class="no-select calendarCell"></div>
+                                            <div id="r3-c2" class="no-select calendarCell"></div>
+                                            <div id="r3-c3" class="no-select calendarCell"></div>
+                                            <div id="r3-c4" class="no-select calendarCell"></div>
+                                            <div id="r3-c5" class="no-select calendarCell"></div>
+                                            <div id="r3-c6" class="no-select calendarCell"></div>
+                                            <div id="r3-c7" class="no-select calendarCell"></div>
+                                        </div>
+                                        <div id="calendarRow4" class="calendarRow">
+                                            <div id="r4-c1" class="no-select calendarCell"></div>
+                                            <div id="r4-c2" class="no-select calendarCell"></div>
+                                            <div id="r4-c3" class="no-select calendarCell"></div>
+                                            <div id="r4-c4" class="no-select calendarCell"></div>
+                                            <div id="r4-c5" class="no-select calendarCell"></div>
+                                            <div id="r4-c6" class="no-select calendarCell"></div>
+                                            <div id="r4-c7" class="no-select calendarCell"></div>
+                                        </div>
+                                        <div id="calendarRow5" class="calendarRow">
+                                            <div id="r5-c1" class="no-select calendarCell"></div>
+                                            <div id="r5-c2" class="no-select calendarCell"></div>
+                                            <div id="r5-c3" class="no-select calendarCell"></div>
+                                            <div id="r5-c4" class="no-select calendarCell"></div>
+                                            <div id="r5-c5" class="no-select calendarCell"></div>
+                                            <div id="r5-c6" class="no-select calendarCell"></div>
+                                            <div id="r5-c7" class="no-select calendarCell"></div>
+                                        </div>
+                                        <div id="calendarRow6" class="calendarRow">
+                                            <div id="r6-c1" class="no-select calendarCell"></div>
+                                            <div id="r6-c2" class="no-select calendarCell"></div>
+                                            <div id="r6-c3" class="no-select calendarCell"></div>
+                                            <div id="r6-c4" class="no-select calendarCell"></div>
+                                            <div id="r6-c5" class="no-select calendarCell"></div>
+                                            <div id="r6-c6" class="no-select calendarCell"></div>
+                                            <div id="r6-c7" class="no-select calendarCell"></div>
+                                         </div>
+                                    </div>
+                                    <div id="calendarFooter">
+                                        <div id="todayBtn" class="no-select">
+                                            Today
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div id="weeklySummaries">
@@ -700,7 +804,6 @@
                                         Sat
                                     </div>
                                 </div>
-                                
                             </div>
                         </div>
                         <div id="dailyBodyContainer">

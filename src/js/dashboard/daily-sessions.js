@@ -1,5 +1,6 @@
-import { dailyDay, dailyDate, rightDailyArrow, rightDailyArrowGray, leftDailyArrow, miniChartLabels, miniChartContainers, dailyBlocks, calendarContainer } from '../modules/dashboard-elements.js';
-import { dailyContainer, general } from '../modules/dashboard-objects.js';
+import { dailyDay, dailyDate, rightDailyArrow, rightDailyArrowGray, leftDailyArrow, miniChartLabels, miniChartContainers, dailyBlocks, calendarIconContainer, calendarPopup, monthSelection, yearSelection, calendarHeaderCells, leftCalendarArrow, rightCalendarArrow, rightCalendarArrowGray, calendarBody } from '../modules/dashboard-elements.js';
+import { dailyContainer, general, flags, calendarContainer } from '../modules/dashboard-objects.js';
+import { tempCounters } from '../modules/index-objects.js';
 import { sessionState } from '../modules/state-objects.js';
 
 import { setBounds, alterBounds } from './label-distribution.js'; // need to add to editHTML
@@ -8,9 +9,24 @@ export function checkViewportWidth() {
     if ((window.innerWidth >= 865) && (window.innerWidth <= 1050)) {
         dailyDay.style.fontSize = '22px';
         dailyDate.style.fontSize = '14px';
+        monthSelection.style.fontSize = '12px'
+        yearSelection.style.fontSize = '12px'
+        monthSelection.style.width = '90px';
+        yearSelection.style.width = '65px';
+
+        calendarHeaderCells.forEach(cell => {
+            cell.style.fontSize = '14px';
+        })
     } else {
         dailyDay.style.fontSize = '24px';
         dailyDate.style.fontSize = '16px';
+        monthSelection.style.fontSize = '14px'
+        yearSelection.style.fontSize = '14px'
+        monthSelection.style.width = '100px';
+        yearSelection.style.width = '70px';
+        calendarHeaderCells.forEach(cell => {
+            cell.style.fontSize = '16px';
+        })
     }
 }
 
@@ -77,11 +93,200 @@ document.addEventListener("stateUpdated", function() {
         });
 
         // CALENDAR
-        calendarContainer.addEventListener('click', function() {
-            console.log("I'm gonna have to build this thing myself")
+        calendarIconContainer.addEventListener('click', function() {
+            let viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+            
+            if (!flags.calendarPopupShowing) {
+                flags.calendarPopupShowing = true;
+                calendarPopup.style.display = 'flex';
+                if (viewportWidth <= 670) {
+                    document.getElementById('dashboardCat6').style.display = 'none';
+                }
+                
+            } else {
+                flags.calendarPopupShowing = false;
+                calendarPopup.style.display = 'none';
+                if (tempCounters.dashboardCatIdsArrIndex === 5) {
+                    document.getElementById('dashboardCat6').style.display = 'flex';
+                }
+            }
+        })
+
+        monthSelection.addEventListener('change', function() {
+            alterMonthYear('monthChange');
+        })
+        
+        yearSelection.addEventListener('change', function() {
+            alterMonthYear('yearChange');
+        })
+        
+        // ADD: event listener for left calendar arrow
+        leftCalendarArrow.addEventListener('click', function() {
+            alterMonthYear('shiftDown');
+        })
+        
+        // ADD: event listener for right calendar arrow
+        rightCalendarArrow.addEventListener('click', function() {
+            alterMonthYear('shiftUp');
+        })
+
+        // These callback functions will alter a month-year value (e.g. 09-2024)
+        // Alternatively, we could have a month: 09, and year: 2024 value
+        // (1) Left Arrow: Decrement value
+        // (2) Right Arrow: Increment value
+        // (3) Month Dropdown: alter month
+        // (4) Year Input: alter year
+        // After change, update calendar UI to reflect change
+
+        calendarBody.addEventListener('click', function(event) {
+            let eventTargetClassListStr = event.target.classList.value;
+            if ((eventTargetClassListStr === 'no-select calendarCell') || (eventTargetClassListStr === 'no-select calendarCell currentDay')) {
+                // we have the month, year, and day
+                // now we need to figure out (1) the new lower and upper bound (for the week) based on the selected day and (2) the index of the week
+                // left off here
+            }
         })
     }
 })
+
+/**
+ * (1) update month and year fields in calendarContainer
+ * (2) set the right arrow type (white or gray)
+ * (3) Once again, we need to update calendar UI to reflect change
+ * 
+ * Parameters:
+ * (1) type: value is either 'shiftup', 'shiftdown', 'monthChange', or 'yearChange'
+ */
+function alterMonthYear(type) {
+    // initialize the month or year to their respective fields in the calendarContainer object
+    let current = getCurrentMonthYearDay();
+    let currentYear = current.year;
+
+    if (type === 'monthChange') {
+        calendarContainer.month = parseInt(monthSelection.value); // 1 - 12
+        // NOTE: for month + year combos that are ahead in time form current date,
+        // allow that month to be selected, but simply gray out all of the dates to inhibit selection
+
+        hideGrayCalendarArrow(currentYear);
+        showGrayCalendarArrow(currentYear);
+
+    } else if (type === 'yearChange') {
+        if (parseInt(yearSelection.value) > currentYear) {
+            yearSelection.value = currentYear;
+        }
+        calendarContainer.year = parseInt(yearSelection.value);
+
+        hideGrayCalendarArrow(currentYear);
+        showGrayCalendarArrow(currentYear);
+
+    } else if (type === 'shiftDown') {
+        // decrease the month value by 1
+        // ...unless month is already 1, then switch back to 12 and decrement year by 1
+        if (calendarContainer.month === 1) {
+            calendarContainer.month = 12;
+            calendarContainer.year--;
+        } else {
+            calendarContainer.month--;
+        }
+
+        monthSelection.value = calendarContainer.month;
+        yearSelection.value = calendarContainer.year;
+
+        hideGrayCalendarArrow(currentYear);
+
+    } else if (type === 'shiftUp') {
+        if ((calendarContainer.month === 12) && (calendarContainer.year < currentYear)) {
+            calendarContainer.month = 1;
+            calendarContainer.year++;
+            
+        } else {
+            calendarContainer.month++;
+        }
+
+        monthSelection.value = calendarContainer.month;
+        yearSelection.value = calendarContainer.year;
+        
+        showGrayCalendarArrow(currentYear);
+    }
+
+    updateCalendarBody(current);
+}
+
+function updateCalendarBody(current) {
+    let month = calendarContainer.month;
+    let year = calendarContainer.year;
+
+    // based on the month and year + current day, fill in the rows and apply appropriate classes
+    let monthDaysArr = getDaysInMonth(month, year);
+    let weekdayIndex = getWeekdayIndex(month, year);
+    const calendarCells = document.querySelectorAll('.calendarCell');
+
+    let j = 0;
+    for (let i = 0; i < calendarCells.length; i++) {
+
+        calendarCells[i].classList = 'no-select calendarCell'; // resetting classlist
+        calendarCells[i].textContent = ''; // resetting content
+
+        if ((i < weekdayIndex) || (j >= monthDaysArr.length)) {
+            calendarCells[i].classList.add('invisible');
+            
+        } else {
+            if (year === current.year) {
+                if (month === current.month) {
+                    if (j + 1 === current.day) {
+                        calendarCells[i].classList.add('currentDay');
+
+                    } else if (j + 1 > current.day) { // future date
+                        calendarCells[i].classList.add('unselectable');
+
+                    }
+                } else if (month > current.month) { // future date
+                    calendarCells[i].classList.add('unselectable');
+
+                }
+            }
+            calendarCells[i].textContent = monthDaysArr[j];
+            j++;
+        }
+    }
+}
+
+function hasTextContent(element) {
+    return element.textContent.trim().length > 0;
+}
+
+function getWeekdayIndex(month, year) {
+    const firstDay = new Date(year, month - 1, 1);
+
+    const dayOfWeek = firstDay.getDay();
+
+    return dayOfWeek;
+}
+
+function getDaysInMonth(month, year) {
+    const lastDay = new Date(year, month, 0).getDate(); // Month is 1-based, so no need to subtract 1
+
+    const daysArray = [];
+    for (let day = 1; day <= lastDay; day++) {
+        daysArray.push(day);
+    }
+
+    return daysArray;
+}
+
+function hideGrayCalendarArrow(currentYear) {
+    if ((calendarContainer.month < 12) || (calendarContainer.year < currentYear)) {
+        rightCalendarArrow.style.display = 'flex'; // hide white right arrow
+        rightCalendarArrowGray.style.display = 'none'; // show gray white arrow
+    }
+}
+
+function showGrayCalendarArrow(currentYear) {
+    if ((calendarContainer.month === 12) && (calendarContainer.year === currentYear)) {
+        rightCalendarArrow.style.display = 'none'; // hide white right arrow
+        rightCalendarArrowGray.style.display = 'flex'; // show gray white arrow
+    }
+}
 
 function setAndDisplaySelectedDate(weekIndex) {
 
@@ -158,11 +363,35 @@ export async function setDailyContainer() { // called from populate-dashboard.js
     updateMiniChartLabels();
 }
 
+/**
+ * This function achieves the following:
+ * (1) Sets dailyDay & dailyDate text
+ * (2) Sets the selectedDate field for the dailyContainer object
+ * (3) Sets the month & year fields for the calendarContainer object
+ * (4) Sets the value and max for the yearSelection input element
+ * (5) Sets the value for the monthSelection input element
+ * (6) Initializes the calendarBody UI
+ */
 function setInitialDate() {
     const now = new Date();
 
     // set initial selectedDate to be current date
     dailyContainer.selectedDate = general.currentDay;
+
+    // set month and year fields of calendarContainer
+    let current = getCurrentMonthYearDay();
+    calendarContainer.month = current.month;
+    calendarContainer.year = current.year;
+
+    // set the value and the max of the yearSelection input
+    yearSelection.value = calendarContainer.year; // UI
+    yearSelection.max = calendarContainer.year;
+
+    // set the value of the monthSelection element
+    monthSelection.value = calendarContainer.month; // UI
+
+    // Initialize the calendarBody
+    updateCalendarBody(current);
     
     // Array of weekdays
     const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -184,4 +413,21 @@ function setInitialDate() {
 
     dailyDay.innerText = dayOfWeek;
     dailyDate.innerText = formattedDate;
+}
+
+function getCurrentMonthYearDay() {
+    let currentDay = general.currentDay;
+    let [year, month, day] = currentDay.split('-');
+
+    month = parseInt(month);
+    year = parseInt(year);
+    day = parseInt(day);
+
+    let monthYearDay = {
+        month: month,
+        year: year,
+        day: day
+    }
+
+    return monthYearDay;
 }

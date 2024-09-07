@@ -733,7 +733,7 @@ function displayDashboardCat() {
     }
 }
 
-function hideDashboardCat() {
+export function hideDashboardCat() {
     let dashboardCatId = dashboardCatIds[tempCounters.dashboardCatIdsArrIndex];
     document.getElementById(dashboardCatId).style.display = 'none';
 }

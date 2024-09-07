@@ -12,6 +12,8 @@ import {
     timestampsInfoWindow
 } from '../modules/dom-elements.js';
 
+import { flags as dashboardFlags } from '../modules/dashboard-objects.js';
+
 import { sessionState } from '../modules/state-objects.js';
 import { state, flags as navFlags } from '../modules/navigation-objects.js';
 import { labelFlags, labelArrs } from '../modules/notes-objects.js';
@@ -25,6 +27,7 @@ import { lastIntervalSwitch } from '../state/last-interval-switch.js'; // minifi
 import { checkSession } from '../state/check-session.js'; // minified
 import { updateInvaliDate } from '../state/update-invaliDate.js'; // minified
 import { initialVisualReset, sessionReset } from './end-session.js'; // minified
+import { hideDashboardCat } from './navigation.js';
 
 export const pomodoroWorker = new Worker('/js/web-workers/pomodoroWorker.js');
 export const suggestionWorker = new Worker('/js/web-workers/suggestionWorker.js');
@@ -2104,6 +2107,14 @@ export function handleViewportWidthChange(settingsMappings, tempStorage) {
         // console.log(document.getElementById("settingsContainer").style.display);
         if (document.getElementById("settingsContainer").style.display === 'block') {
             document.getElementById(tempStorage.lastSettingsSelectionId).click();
+        }
+    }
+
+    if (tempCounters.dashboardCatIdsArrIndex === 5) {
+        if ((viewportWidth <= 670) && (dashboardFlags.calendarContainerShowing)) {
+            document.getElementById('dashboardCat6').style.display = 'none';
+        } else {
+            document.getElementById('dashboardCat6').style.display = 'flex';
         }
     }
 }

@@ -7,17 +7,6 @@ import { initializeHourlyData } from '../utility/adv-charts.js'; // minified
 // Global Vars
 const FOCUS_QUALITY_CONSTANT = constants.FOCUS_QUALITY_CONSTANT;
 
-// document.addEventListener("stateUpdated", function() {
-//     window.addEventListener('resize', checkViewportWidth);
-// })
-
-// function checkViewportWidth() {
-//     if (window.innerWidth <= 1195) {
-        
-//     }
-//     // 1195px
-// }
-
 export function populateDashboardSummaryStats(timeConvert, dailySummarizedData, dashboardData) {
     let totalDeepWork = 0;
     let totalDistractions = 0;
@@ -78,8 +67,8 @@ async function populateMostFocusedHourSummaryStat(dashboardData) {
 
     let highestAvgFocusQualityStr = hourStrArr[highestAdjustedDeepWorkIndex];
 
-    if (highestAdjustedDeepWork === 0) {
-        mostFocusedHourSummaryStat.innerText = 'N/A'; // not enough info to determine
+    if ((highestAdjustedDeepWork === 0) || (!highestAvgFocusQualityStr)) {
+        mostFocusedHourSummaryStat.innerText = 'N/A'; // not enough info to determine (or error)
     } else {
         mostFocusedHourSummaryStat.innerText = highestAvgFocusQualityStr;
     }

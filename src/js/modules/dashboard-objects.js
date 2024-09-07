@@ -37,7 +37,8 @@ export const flags = {
     summarySelected: false,
     populated365Arrs: false,
     mainChartsOpen: false,
-    advChartsOpen: false
+    advChartsOpen: false,
+    calendarPopupShowing: false
 }
 
 export const charts = {
@@ -60,7 +61,13 @@ export const dailyContainer = {
     lowerBound: null,
     upperBound: null,
     selectedDate: null,
-    weeklyDatesArr: null
+    weeklyDatesArr: null,
+    selectableCells: null
+}
+
+export const calendarContainer = {
+    month: null, // e.g. 3 --> march, 12 --> december
+    year: null // e.g. 2024
 }
 
 export const constants = {

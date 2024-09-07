@@ -96,4 +96,13 @@ export const leftDailyArrow = document.getElementById('leftDailyArrow');
 export const miniChartLabels = document.querySelectorAll('.miniChartLabel');
 export const miniChartContainers = document.querySelectorAll('.miniChartContainer');
 export const dailyBlocks = document.querySelectorAll('.dailyBlock');
-export const calendarContainer = document.getElementById('calendarContainer');
+export const calendarIconContainer = document.getElementById('calendarIconContainer');
+export const calendarPopup = document.getElementById('calendarPopup');
+
+export const calendarBody = document.getElementById('calendarBody');
+export const rightCalendarArrow = document.getElementById('rightCalendarArrow');
+export const rightCalendarArrowGray = document.getElementById('rightCalendarArrowGray');
+export const leftCalendarArrow = document.getElementById('leftCalendarArrow');
+export const monthSelection = document.getElementById('monthSelection');
+export const yearSelection = document.getElementById('yearSelection');
+export const calendarHeaderCells = document.querySelectorAll('.calendarHeaderCell');
