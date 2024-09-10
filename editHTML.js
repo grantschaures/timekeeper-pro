@@ -227,8 +227,8 @@ const endSessionReplacements = [
         replacement: "import { addSession } from '../minified/add-session.min.js';"
     },
     {
-        pattern: /import { subMainContainerTransition } from '.\/navigation.js';/g,
-        replacement: "import { subMainContainerTransition } from '../minified/navigation.min.js';"
+        pattern: /import { closeAboutContainer, closeBlogContainer, subMainContainerTransition } from '.\/navigation.js';/g,
+        replacement: "import { closeAboutContainer, closeBlogContainer, subMainContainerTransition } from '../minified/navigation.min.js';"
     },
     {
         pattern: /import { populateDashboard } from '..\/dashboard\/populate-dashboard.js';/g,
