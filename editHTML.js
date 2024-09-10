@@ -39,6 +39,7 @@ const googleSignInPath = './src/js/api/google-signin.js';
 const pipJsPath = './src/js/api/pip.js';
 
 const dailySessionsJsPath = './src/js/dashboard/daily-sessions.js';
+const miniChartsJsPath = './src/js/utility/mini-charts.js';
 
 const summaryStatsJsPath = './src/js/dashboard/summary-stats.js';
 const advChartsJsPath = './src/js/utility/adv-charts.js';
@@ -241,7 +242,21 @@ const updateLabelsReplacements = [
     }
 ]
 
+const miniChartsReplacements = [
+    {
+        pattern: /import { getDeepWork, getFocusQuality, getTargetHours } from '.\/session-summary-chart.js';/g,
+        replacement: "import { getDeepWork, getFocusQuality, getTargetHours } from '../minified/session-summary-chart.min.js';"
+    }
+]
+
 // DASHBOARD
+
+const dailySessionsReplacements = [
+    {
+        pattern: /import { setBounds, alterBounds, setRightArrowType } from '.\/label-distribution.js';/g,
+        replacement: "import { setBounds, alterBounds, setRightArrowType } from '../minified/label-distribution.min.js';"
+    }
+]
 
 const populateDashboardReplacements = [
     {
@@ -316,3 +331,5 @@ readFileAndReplace(metricChartsJsPath, metricChartsReplacements);
 readFileAndReplace(advChartsJsPath, advChartsReplacements);
 readFileAndReplace(summaryStatsJsPath, summaryStatsReplacements);
 readFileAndReplace(pipJsPath, pipReplacements);
+readFileAndReplace(dailySessionsJsPath, dailySessionsReplacements);
+readFileAndReplace(miniChartsJsPath, miniChartsReplacements);

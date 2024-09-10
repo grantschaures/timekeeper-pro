@@ -2,7 +2,8 @@ import { dailyDay, dailyDate, rightDailyArrow, rightDailyArrowGray, leftDailyArr
 import { dailyContainer, general, flags, calendarContainer } from '../modules/dashboard-objects.js';
 import { tempCounters } from '../modules/index-objects.js';
 import { sessionState } from '../modules/state-objects.js';
-import { setBounds, alterBounds, setRightArrowType } from './label-distribution.js'; // need to add to editHTML
+
+import { setBounds, alterBounds, setRightArrowType } from './label-distribution.js';
 
 export function checkViewportWidth() {
     if ((window.innerWidth >= 865) && (window.innerWidth <= 1050)) {

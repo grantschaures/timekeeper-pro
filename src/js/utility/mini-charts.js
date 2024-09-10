@@ -2,7 +2,7 @@ import { miniCharts } from "../modules/dashboard-elements.js";
 import { dashboardData, dailyContainer, miniChartsArr, constants } from "../modules/dashboard-objects.js";
 import { sessionState } from "../modules/state-objects.js";
 
-import { getDeepWork, getFocusQuality, getTargetHours } from "./session-summary-chart.js"; // add to editHTML
+import { getDeepWork, getFocusQuality, getTargetHours } from "./session-summary-chart.js";
 
 let miniChartDataArr = [];
 
