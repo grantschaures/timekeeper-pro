@@ -26,6 +26,7 @@
         <script type="module" src="/js/utility/session-summary-chart.js"></script>
         <script type="module" src="/js/utility/main-charts.js"></script>
         <script type="module" src="/js/utility/adv-charts.js"></script>
+        <script type="module" src="/js/utility/mini-charts.js"></script>
 
         <link rel="preload" href="fonts/CPMono_v07_Light.woff" as="font" type="font/woff" crossorigin="anonymous">
         <link rel="preload" href="fonts/CPMono_v07_Bold.woff" as="font" type="font/woff" crossorigin="anonymous">
@@ -666,7 +667,7 @@
                                                 </select>
                                             </div>
                                             <div id="yearSelectionContainer" class="calendarSelectionContainer">
-                                                <input type="number" id="yearSelection" data-testid="yearSelection" name="year" min="0" aria-labelledby="yearSelection">
+                                                <input type="number" id="yearSelection" data-testid="yearSelection" name="year" min="1000" aria-labelledby="yearSelection">
                                             </div>
                                         </div>
                                         <div id="rightCalendarArrowContainer" class="calendarArrowContainer">
@@ -677,13 +678,13 @@
                                     <div id="calendarBody">
                                         <!-- Dynamically adding rows based on month -->
                                         <div id="calendarBodyHeader" class="calendarRow">
-                                            <div id="r1-c1" class="no-select calendarHeaderCell">Sun</div>
-                                            <div id="r1-c2" class="no-select calendarHeaderCell">Mon</div>
-                                            <div id="r1-c3" class="no-select calendarHeaderCell">Tue</div>
-                                            <div id="r1-c4" class="no-select calendarHeaderCell">Wed</div>
-                                            <div id="r1-c5" class="no-select calendarHeaderCell">Thu</div>
-                                            <div id="r1-c6" class="no-select calendarHeaderCell">Fri</div>
-                                            <div id="r1-c7" class="no-select calendarHeaderCell">Sat</div>
+                                            <div id="r0-c1" class="no-select calendarHeaderCell">Sun</div>
+                                            <div id="r0-c2" class="no-select calendarHeaderCell">Mon</div>
+                                            <div id="r0-c3" class="no-select calendarHeaderCell">Tue</div>
+                                            <div id="r0-c4" class="no-select calendarHeaderCell">Wed</div>
+                                            <div id="r0-c5" class="no-select calendarHeaderCell">Thu</div>
+                                            <div id="r0-c6" class="no-select calendarHeaderCell">Fri</div>
+                                            <div id="r0-c7" class="no-select calendarHeaderCell">Sat</div>
                                         </div>
                                          <div id="calendarRow1" class="calendarRow">
                                             <div id="r1-c1" class="no-select calendarCell"></div>

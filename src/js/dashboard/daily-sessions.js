@@ -1,9 +1,8 @@
-import { dailyDay, dailyDate, rightDailyArrow, rightDailyArrowGray, leftDailyArrow, miniChartLabels, miniChartContainers, dailyBlocks, calendarIconContainer, calendarPopup, monthSelection, yearSelection, calendarHeaderCells, leftCalendarArrow, rightCalendarArrow, rightCalendarArrowGray, calendarBody } from '../modules/dashboard-elements.js';
+import { dailyDay, dailyDate, rightDailyArrow, rightDailyArrowGray, leftDailyArrow, miniChartLabels, miniChartContainers, dailyBlocks, calendarIconContainer, calendarPopup, monthSelection, yearSelection, calendarHeaderCells, leftCalendarArrow, rightCalendarArrow, rightCalendarArrowGray, calendarBody, todayBtn } from '../modules/dashboard-elements.js';
 import { dailyContainer, general, flags, calendarContainer } from '../modules/dashboard-objects.js';
 import { tempCounters } from '../modules/index-objects.js';
 import { sessionState } from '../modules/state-objects.js';
-
-import { setBounds, alterBounds } from './label-distribution.js'; // need to add to editHTML
+import { setBounds, alterBounds, setRightArrowType } from './label-distribution.js'; // need to add to editHTML
 
 export function checkViewportWidth() {
     if ((window.innerWidth >= 865) && (window.innerWidth <= 1050)) {
@@ -34,10 +33,21 @@ document.addEventListener("DOMContentLoaded", function() {
     window.addEventListener('resize', checkViewportWidth);
 })
 
+export function setDailyContainer() {
+    console.log(Date.now());
+}
+
 document.addEventListener("stateUpdated", function() {
     setInitialDate(); // set regardless of whether or not user is logged in
 
     if (sessionState.loggedIn) {
+        // call initializeWeeklyDataArr() here
+        // that will, only once at the start, create an array of objects containing a lowerbound key, with a weekly array value
+        // - first obj starts with lowerbound key representing first day of the first week the user submitted a session
+        // - objs get pushed onto the array up until the week of the current day (regardless of when the user submitted their most recent session)
+        // the weekly array contians 7 objects with two key-value pairs
+        // (1) dailyObj: {} --> We'll need to ensure that it contains a targetTimeSum (the sum of target times out of all the sessions)
+        // (2) sessionsObj: {} or [{}, {}] or null, which represents a single session, multiple sessions, or no sessions, respectively
 
         // ARROWS EVENT LISTENERS
         leftDailyArrow.addEventListener("click", function() {
@@ -48,6 +58,7 @@ document.addEventListener("stateUpdated", function() {
             updateMiniChartLabels();
     
             // visualize data (call function to display mini charts)
+            document.dispatchEvent(new Event('displayMiniCharts'));
     
         })
         
@@ -58,8 +69,8 @@ document.addEventListener("stateUpdated", function() {
             // update miniChartLabels
             updateMiniChartLabels();
 
-
             // visualize data (call function to display mini charts)
+            document.dispatchEvent(new Event('displayMiniCharts'));
     
         })
 
@@ -110,9 +121,11 @@ document.addEventListener("stateUpdated", function() {
                 
             } else {
                 flags.calendarPopupShowing = false;
-                calendarPopup.style.display = 'none';
                 calendarPopup.style.opacity = '0';
-                    calendarPopup.style.transform = 'scale(0.95)';
+                calendarPopup.style.transform = 'scale(0.90)';
+                setTimeout(() => {
+                    calendarPopup.style.display = 'none';
+                }, 150)
                 if (tempCounters.dashboardCatIdsArrIndex === 5) {
                     document.getElementById('dashboardCat6').style.display = 'flex';
                 }
@@ -137,8 +150,7 @@ document.addEventListener("stateUpdated", function() {
             alterMonthYear('shiftUp');
         })
 
-        // These callback functions will alter a month-year value (e.g. 09-2024)
-        // Alternatively, we could have a month: 09, and year: 2024 value
+        // These callback functions will alter a month-year value (e.g. month: 9, year: 2024)
         // (1) Left Arrow: Decrement value
         // (2) Right Arrow: Increment value
         // (3) Month Dropdown: alter month
@@ -147,14 +159,91 @@ document.addEventListener("stateUpdated", function() {
 
         calendarBody.addEventListener('click', function(event) {
             let eventTargetClassListStr = event.target.classList.value;
+            let eventTargetId = event.target.id;
+            let selectedCellId = calendarContainer.selectedCellId;
+
+            
             if ((eventTargetClassListStr === 'no-select calendarCell') || (eventTargetClassListStr === 'no-select calendarCell currentDay')) {
-                // we have the month, year, and day
-                // now we need to figure out (1) the new lower and upper bound (for the week) based on the selected day and (2) the index of the week
-                // left off here
+                
+                // removing previous selection class (if it exists and isn't the target)
+                if ((selectedCellId) && (selectedCellId !== eventTargetId)) {
+                    document.getElementById(selectedCellId).classList.remove('selectedDay');
+                }
+
+                // UI Changes
+                document.getElementById(eventTargetId).classList.add('selectedDay');
+                calendarContainer.selectedCellId = eventTargetId;
+                
+                // set the selectedDate field of the calendarContainer
+                // based on the month, year, and number associated with the cell
+                let day = document.getElementById(eventTargetId).innerText;
+                dailyContainer.selectedDate = constructSelectedDateString(calendarContainer.year, calendarContainer.month, day);
+
+                // (1) the new lower and upper bound (for the week) based on dailyContainer.selectedDate
+                updateDailyBounds();
+
+                // (2) the index of the week
+                let weekIndex = getWeekIndex();
+
+                updateMiniChartLabels();
+                setAndDisplaySelectedDate(weekIndex);
+                document.dispatchEvent(new Event('displayMiniCharts'));
+
+                calendarIconContainer.click();
             }
+        })
+
+        todayBtn.addEventListener('click', function() {
+            setInitialDate();
+            calendarIconContainer.click();
         })
     }
 })
+
+function getWeekIndex() {
+    let selectedDate = dailyContainer.selectedDate;
+    let [year, month, day] = selectedDate.split('-').map(Number);
+    let date = new Date(year, month - 1, day);
+
+    return date.getDay();
+}
+
+function updateDailyBounds() {
+    let selectedDate = moment(dailyContainer.selectedDate, 'YYYY-MM-DD');
+    let currentDate = moment(general.currentDay, 'YYYY-MM-DD'); // current
+
+    // Get the lower bound (Sunday)
+    const lowerBound = selectedDate.clone().startOf(dailyContainer.timeFrame).format('YYYY-MM-DD');
+
+    // Get the upper bound (Saturday)
+    const upperBound = selectedDate.clone().endOf(dailyContainer.timeFrame).format('YYYY-MM-DD');
+
+    dailyContainer.lowerBound = lowerBound;
+    dailyContainer.upperBound = upperBound;
+
+    setRightArrowType(dailyContainer, currentDate, rightDailyArrow, rightDailyArrowGray); // white or gray
+}
+
+function constructSelectedDateString(year, month, day) {
+    if (isSingleDigit(month)) {
+        month = prependNumber(month, 0);
+    }
+
+    if (isSingleDigit(day)) {
+        day = prependNumber(day, 0);
+    }
+
+    let selectedDateString = `${year}-${month}-${day}`;
+    return selectedDateString;
+}
+
+function prependNumber(originalNum, numToPrepend) {
+    return numToPrepend.toString() + originalNum.toString();
+}
+
+function isSingleDigit(num) {
+    return num >= -9 && num <= 9;
+}
 
 /**
  * (1) update month and year fields in calendarContainer
@@ -166,7 +255,7 @@ document.addEventListener("stateUpdated", function() {
  */
 function alterMonthYear(type) {
     // initialize the month or year to their respective fields in the calendarContainer object
-    let current = getCurrentMonthYearDay();
+    let current = getMonthYearDay(general.currentDay);
     let currentYear = current.year;
 
     if (type === 'monthChange') {
@@ -180,6 +269,8 @@ function alterMonthYear(type) {
     } else if (type === 'yearChange') {
         if (parseInt(yearSelection.value) > currentYear) {
             yearSelection.value = currentYear;
+        } else if (parseInt(yearSelection.value) < 1000) {
+            yearSelection.value = 1000; // minumum value
         }
         calendarContainer.year = parseInt(yearSelection.value);
 
@@ -228,11 +319,23 @@ function updateCalendarBody(current) {
     let weekdayIndex = getWeekdayIndex(month, year);
     const calendarCells = document.querySelectorAll('.calendarCell');
 
+    let selectedDate = getMonthYearDay(dailyContainer.selectedDate);
+    let selectedMonth = selectedDate.month;
+    let selectedYear = selectedDate.year;
+    let selectedDay = selectedDate.day;
+
+    calendarContainer.selectedCellId = null; // resetting selectedCellId
+
     let j = 0;
     for (let i = 0; i < calendarCells.length; i++) {
-
+        
         calendarCells[i].classList = 'no-select calendarCell'; // resetting classlist
         calendarCells[i].textContent = ''; // resetting content
+
+        if ((month === selectedMonth) && (year === selectedYear) && (j + 1 === selectedDay)) {
+            calendarCells[i].classList.add('selectedDay');
+            calendarContainer.selectedCellId = calendarCells[i].id;
+        }
 
         if ((i < weekdayIndex) || (j >= monthDaysArr.length)) {
             calendarCells[i].classList.add('invisible');
@@ -361,11 +464,6 @@ function formatDateString(dateStr) {
     return `${parseInt(month)}\/${parseInt(day)}`;
 }
 
-export async function setDailyContainer() { // called from populate-dashboard.js
-    await setBounds(dailyContainer, null, rightDailyArrow, rightDailyArrowGray);
-    updateMiniChartLabels();
-}
-
 /**
  * This function achieves the following:
  * (1) Sets dailyDay & dailyDate text
@@ -374,15 +472,16 @@ export async function setDailyContainer() { // called from populate-dashboard.js
  * (4) Sets the value and max for the yearSelection input element
  * (5) Sets the value for the monthSelection input element
  * (6) Initializes the calendarBody UI
+ * (7) Displays mini-charts
  */
-function setInitialDate() {
+async function setInitialDate() {
     const now = new Date();
 
     // set initial selectedDate to be current date
     dailyContainer.selectedDate = general.currentDay;
 
     // set month and year fields of calendarContainer
-    let current = getCurrentMonthYearDay();
+    let current = getMonthYearDay(general.currentDay);
     calendarContainer.month = current.month;
     calendarContainer.year = current.year;
 
@@ -416,11 +515,18 @@ function setInitialDate() {
 
     dailyDay.innerText = dayOfWeek;
     dailyDate.innerText = formattedDate;
+
+    await setBounds(dailyContainer, null, rightDailyArrow, rightDailyArrowGray);
+    updateMiniChartLabels();
+
+    // visualize data (call function to display mini charts)
+    // if not logged in, display empty mini-charts; set calendarContainer.miniChartsDisplayType to 'empty'
+    // else, set it to 'filled'
+    document.dispatchEvent(new Event('displayMiniCharts'));
 }
 
-function getCurrentMonthYearDay() {
-    let currentDay = general.currentDay;
-    let [year, month, day] = currentDay.split('-');
+function getMonthYearDay(dateStr) {
+    let [year, month, day] = dateStr.split('-');
 
     month = parseInt(month);
     year = parseInt(year);

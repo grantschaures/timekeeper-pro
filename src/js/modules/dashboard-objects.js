@@ -9,6 +9,8 @@ const dailyHours = Array.from({ length: 24 }, () => ({
 export const dashboardData = {
     sessionArr: [],
     dailyArr: [],
+    dailySummary: {}, // NEW ADDITION
+    weeklyArr: [],
     hourlyArr: dailyHours,
     noteData: {}
 }
@@ -50,6 +52,8 @@ export const charts = {
     avgDeepWork: null
 }
 
+export const miniChartsArr = [null, null, null, null, null, null, null];
+
 export const mainChartContainer = {
     timeFrame: 'week',
     lowerBound: null,
@@ -62,12 +66,14 @@ export const dailyContainer = {
     upperBound: null,
     selectedDate: null,
     weeklyDatesArr: null,
-    selectableCells: null
+    selectableCells: null,
+    miniChartsSeen: false
 }
 
 export const calendarContainer = {
     month: null, // e.g. 3 --> march, 12 --> december
-    year: null // e.g. 2024
+    year: null, // e.g. 2024
+    selectedCellId: null
 }
 
 export const constants = {

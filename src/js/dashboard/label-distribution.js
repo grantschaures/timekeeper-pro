@@ -3,12 +3,9 @@ import { labelDistributionElement, labelDistributionMonth, labelDistributionTime
 import { timeConvert } from '../modules/index-objects.js';
 import { sessionState } from '../modules/state-objects.js';
 
-import { userTimeZone } from '../utility/identification.js';
-
 // initialization of labelDistContainer (called in populate-dashboard.js)
 export function populateLabelDistContainer() {
-    general.currentDay = getCurrentDay(); // get current day (used for label dist & main charts)
-
+    
     // set default lower and upper bounds
     setBounds(labelDistContainer, labelDistributionTimeFrame, rightLabelDistributionArrow, rightLabelDistributionArrowGray);
 
@@ -353,7 +350,7 @@ export async function setBounds(container, timeFrameElement, rightArrow, rightAr
     }
 }
 
-function setRightArrowType(container, currentDate, rightArrow, rightArrowGray) {
+export function setRightArrowType(container, currentDate, rightArrow, rightArrowGray) {
     let newUpperBoundDate = moment(container.upperBound, 'YYYY-MM-DD');
 
     if (newUpperBoundDate.isBefore(currentDate)) {
@@ -458,13 +455,4 @@ function getDayWithSuffix(day) {
 function parseUTCDate(dateStr) {
     const [year, month, day] = dateStr.split('-').map(Number);
     return new Date(year, month - 1, day);
-}
-
-function getCurrentDay() {
-    const date = moment.tz(Date.now(), userTimeZone);
-    const year = date.format('YYYY');
-    const month = date.format('MM');
-    const day = date.format('DD');
-
-    return `${year}-${month}-${day}`;
 }

@@ -144,13 +144,13 @@ export function getFocusQuality(focusQuality) {
     return newFocusQuality;
 }
 
-function getDeepWork(deepWork) {
+export function getDeepWork(deepWork) {
     let newDeepWork = deepWork / 3600000;
 
     return newDeepWork;
 }
 
-function getTargetHours(targetHours) {
+export function getTargetHours(targetHours) {
     let newTargetHours;
     if (targetHours !== null) {
         newTargetHours = targetHours / 3600000;

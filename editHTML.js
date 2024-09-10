@@ -255,10 +255,6 @@ const populateDashboardReplacements = [
     {
         pattern: /import { setMetricCharts } from '.\/metric-charts.js';/g,
         replacement: "import { setMetricCharts } from '../minified/metric-charts.min.js';"
-    },
-    {
-        pattern: /import { setDailyContainer } from '.\/daily-sessions.js';/g,
-        replacement: "import { setDailyContainer } from '../minified/daily-sessions.min.js';"
     }
 ]
 

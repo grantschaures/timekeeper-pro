@@ -2,8 +2,10 @@ import { pomodoroNotificationToggle, pomodoroInputs, autoStartPomodoroIntervalTo
 import { sessionState } from '../modules/state-objects.js';
 import { flags, timeAmount, alertVolumes, alertSounds, selectedBackgroundId, selectedBackground, flowtimeBackgrounds, chilltimeBackgrounds, selectedBackgroundIdTemp, startTimes, elapsedTime, timeConvert, progressTextMod, darkHtmlBackground, lightHtmlBackground } from '../modules/index-objects.js';
 import { flags as notesflags, counters as notesCounters, state as notesState, labelDict, notesArr, selectedLabelDict, notesFlags, fontSizeArr, fontNumArr, labelFlags, labelArrs } from '../modules/notes-objects.js';
+import { general } from '../modules/dashboard-objects.js';
 
 import { updateStreak } from '../utility/update-streaks.js';
+import { userTimeZone } from '../utility/identification.js';
 import { setInitialBackgroundCellSelection, deactivateDarkTheme, activateDarkTheme, replaceTargetHours, totalTimeDisplay, intervalTimeToggleGUIUpdate, totalTimeToggleGUIUpdate } from '../main/index.js';
 import { appendEditRemoveContainer, createCheckElements, getLastNumberFromId, addLabelInputContainerTagDivider, addLabelInitialActions, removeTagSelectionDivider, adjustLabelFontSize } from '../main/notes.js';
 import { populateDashboard } from '../dashboard/populate-dashboard.js';
@@ -31,6 +33,9 @@ const settingsHeaderFont = {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    loadFonts([myFontBlog, myFont2, myFont3, settingsHeaderFont]);
+    setCurrentDay();
+    
     checkUserSession()
         .catch(error => {
             // Handle the error here if needed
@@ -52,7 +57,6 @@ async function checkUserSession() {
         }
 
         const data = await response.json();
-        loadFonts([myFontBlog, myFont2, myFont3, settingsHeaderFont]);
         updateUserSession(data);
         return data;
 
@@ -60,6 +64,15 @@ async function checkUserSession() {
         console.error('Error validating user session:', error);
         throw error;
     }
+}
+
+function setCurrentDay() {
+    const date = moment.tz(Date.now(), userTimeZone);
+    const year = date.format('YYYY');
+    const month = date.format('MM');
+    const day = date.format('DD');
+
+    general.currentDay = `${year}-${month}-${day}`;
 }
 
 async function updateUserSession(data) {
