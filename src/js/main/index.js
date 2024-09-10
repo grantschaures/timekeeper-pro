@@ -27,7 +27,6 @@ import { lastIntervalSwitch } from '../state/last-interval-switch.js'; // minifi
 import { checkSession } from '../state/check-session.js'; // minified
 import { updateInvaliDate } from '../state/update-invaliDate.js'; // minified
 import { initialVisualReset, sessionReset } from './end-session.js'; // minified
-import { hideDashboardCat } from './navigation.js';
 
 export const pomodoroWorker = new Worker('/js/web-workers/pomodoroWorker.js');
 export const suggestionWorker = new Worker('/js/web-workers/suggestionWorker.js');
