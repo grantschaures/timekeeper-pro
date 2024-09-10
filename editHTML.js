@@ -62,6 +62,7 @@ const indexHtmlReplacements = [
     { pattern: /\/js\/utility\/session-summary-chart\.js/g, replacement: '/js/minified/session-summary-chart.min.js' },
     { pattern: /\/js\/utility\/main-charts\.js/g, replacement: '/js/minified/main-charts.min.js' },
     { pattern: /\/js\/utility\/adv-charts\.js/g, replacement: '/js/minified/adv-charts.min.js' },
+    { pattern: /\/js\/utility\/mini-charts\.js/g, replacement: '/js/minified/mini-charts.min.js' },
 
     { pattern: /\/js\/dashboard\/daily-sessions\.js/g, replacement: '/js/minified/daily-sessions.min.js' },
     { pattern: /\/js\/dashboard\/label-distribution\.js/g, replacement: '/js/minified/label-distribution.min.js' },
