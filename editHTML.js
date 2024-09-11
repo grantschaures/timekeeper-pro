@@ -102,6 +102,10 @@ const stateReplacements = [
         replacement: "import { updateStreak } from '../minified/update-streaks.min.js';"
     },
     {
+        pattern: /import { userTimeZone } from '..\/utility\/identification.js';/g,
+        replacement: "import { userTimeZone } from '../minified/identification.min.js';"
+    },
+    {
         pattern: /import { populateDashboard } from '..\/dashboard\/populate-dashboard.js';/g,
         replacement: "import { populateDashboard } from '../minified/populate-dashboard.min.js';"
     }
