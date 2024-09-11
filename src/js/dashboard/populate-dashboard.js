@@ -8,7 +8,7 @@ import { setMetricCharts } from './metric-charts.js'; // minified
 // GLOBAL VARIABLES
 const FOCUS_QUALITY_CONSTANT = constants.FOCUS_QUALITY_CONSTANT;
 
-export async function populateDashboard(sessionData, noteData) { // called from state.js
+export async function populateDashboard(sessionData, noteData) { // called from state.js & end-session.js (only for logged-in user)
 
     // create sorted array of data for each day
     await initializeDailyData(sessionData);
@@ -206,6 +206,9 @@ async function initializeDailyData(sessions) {
     let summaryArr = Object.values(dashboardData.dailySummary);
     let sortedSummaryArr = sortByDateAscending(summaryArr);
     dashboardData.dailyArr = sortedSummaryArr;
+    
+    // Reset dailySummary
+    dashboardData.dailySummary = {};
 }
 
 function summarizeDailyData(dataArray, sessionData) {
