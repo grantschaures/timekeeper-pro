@@ -5,14 +5,14 @@ import { sessionState } from '../modules/state-objects.js';
 import { labelFlags, labelArrs, labelDict, notesFlags, flags as notesflags } from '../modules/notes-objects.js';
 import { tempStorage, flags as summaryFlags } from '../modules/summary-stats.js';
 import { flags as navFlags, state } from '../modules/navigation-objects.js';
+import { dailyContainer } from '../modules/dashboard-objects.js';
 
 import { animationsFadeIn, animationsFadeOut, getTotalElapsed, returnTotalTimeString, updateLabelArrs, setBackground, pauseAndResetAlertSounds, resetDisplay, updateProgressBar, totalTimeDisplay, setButtonTextAndMode, hideSuggestionBreakContainer, hidePomodorosCompletedContainer, showInterruptionsSubContainer, setFavicon, observer, pomodoroWorker, suggestionWorker, flowmodoroWorker, displayWorker, totalDisplayWorker, updateDataPerHour, hideCat } from './index.js'; // minified
 import { checkInvaliDate } from '../state/check-invaliDate.js'; // minified
 import { addSession } from '../state/add-session.js'; // minified
 import { closeAboutContainer, closeBlogContainer, subMainContainerTransition } from './navigation.js'; // minified
 import { populateDashboard } from '../dashboard/populate-dashboard.js'; // minified
-import { setInitialDate } from '../dashboard/daily-sessions.js';
-import { dailyContainer } from '../modules/dashboard-objects.js';
+import { setInitialDate } from '../dashboard/daily-sessions.js'; // minified
 
 const defaultFavicon = "/images/logo/HyperChillLogo_circular_white_border.png";
 

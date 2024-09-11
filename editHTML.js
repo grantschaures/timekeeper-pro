@@ -233,6 +233,10 @@ const endSessionReplacements = [
     {
         pattern: /import { populateDashboard } from '..\/dashboard\/populate-dashboard.js';/g,
         replacement: "import { populateDashboard } from '../minified/populate-dashboard.min.js';"
+    },
+    {
+        pattern: /import { setInitalDate } from '..\/dashboard\/daily-sessions.js';/g,
+        replacement: "import { setInitalDate } from '../minified/daily-sessions.min.js';"
     }
 ]
 
