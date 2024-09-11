@@ -7,10 +7,6 @@ import { getDeepWork, getFocusQuality, getTargetHours } from './session-summary-
 let miniChartDataArr = [];
 
 document.addEventListener("displayMiniCharts", async function() {
-    // console.log(dashboardData.weeklyArr);
-    // console.log(dailyContainer.lowerBound);
-    // console.log(dailyContainer.upperBound);
-
     await resetData();
     await initializeData();
 
@@ -19,7 +15,7 @@ document.addEventListener("displayMiniCharts", async function() {
 
 function displayMiniCharts() {
     // iterate through miniChartDataArr and at each iteration, initialize a new chart instance w/ the appropriate data
-    // Arrays that map on to eachother:
+    // Arrays that map on to each other:
     // (1) miniCharts, (2) miniChartDataArr, (3) miniChartsArr
 
     let animationLength = 0;

@@ -114,6 +114,10 @@ document.addEventListener("stateUpdated", function() {
                 if (viewportWidth <= 670) {
                     document.getElementById('dashboardCat6').style.display = 'none';
                 }
+
+                // ensure calendar body is updated if mini-chart is clicked on
+                let current = getMonthYearDay(general.currentDay);
+                updateCalendarBody(current);
                 
             } else {
                 flags.calendarPopupShowing = false;
