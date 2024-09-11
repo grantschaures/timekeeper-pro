@@ -33,7 +33,12 @@ function createWeeklyArr() {
     let dayObj = {};
     let weekObj = {};
 
-    let initialWeekDate = getInitialWeekDate(dailyArr[0].date); // key for the weekObjs
+    let initialWeekDate;
+    if (dailyArr[0]) {
+        initialWeekDate = getInitialWeekDate(dailyArr[0].date); // key for the weekObjs
+    } else {
+        initialWeekDate = getInitialWeekDate(general.currentDay);
+    }
     let latestFinalWeekDate = getFinalWeekDate(general.currentDay);
     
     let currentDate = initialWeekDate;

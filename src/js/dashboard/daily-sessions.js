@@ -34,13 +34,8 @@ document.addEventListener("DOMContentLoaded", function() {
     window.addEventListener('resize', checkViewportWidth);
 })
 
-export function setDailyContainer() {
-    console.log(Date.now());
-}
-
 document.addEventListener("stateUpdated", function() {
     setInitialDate(); // set regardless of whether or not user is logged in
-
     if (sessionState.loggedIn) {
         // call initializeWeeklyDataArr() here
         // that will, only once at the start, create an array of objects containing a lowerbound key, with a weekly array value
@@ -475,7 +470,7 @@ function formatDateString(dateStr) {
  * (6) Initializes the calendarBody UI
  * (7) Displays mini-charts
  */
-async function setInitialDate() {
+export async function setInitialDate() {
     const now = new Date();
 
     // set initial selectedDate to be current date

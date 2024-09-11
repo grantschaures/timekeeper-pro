@@ -11,6 +11,8 @@ import { checkInvaliDate } from '../state/check-invaliDate.js'; // minified
 import { addSession } from '../state/add-session.js'; // minified
 import { closeAboutContainer, closeBlogContainer, subMainContainerTransition } from './navigation.js'; // minified
 import { populateDashboard } from '../dashboard/populate-dashboard.js'; // minified
+import { setInitialDate } from '../dashboard/daily-sessions.js';
+import { dailyContainer } from '../modules/dashboard-objects.js';
 
 const defaultFavicon = "/images/logo/HyperChillLogo_circular_white_border.png";
 
@@ -193,6 +195,9 @@ async function updateSessionSummary(tempStorage, commentsTextArea, subjectiveFee
         console.log("Session summary updated successfully:", data);
 
         populateDashboard(data.noteSessionData.sessions, data.noteSessionData.note);
+
+        dailyContainer.miniChartsSeen = false;
+        setInitialDate();
         
     } catch (error) {
         console.error('Failed to update session summary:', error);
