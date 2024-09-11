@@ -1957,12 +1957,10 @@ header {
 
 #deepWorkTimeContainer {
     background-color: rgba(83, 230, 88, 1);
-    border-radius: 15px;
 }
 
 #focusPercentageContainer {
     background-color: rgba(59, 143, 227, 1);
-    border-radius: 15px;
 }
 
 #deepWorkText, #focusPercentageText {
@@ -1985,6 +1983,8 @@ header {
     color: white;
     font-size: 18px;
     position: relative;
+    border-radius: 15px;
+
     opacity: 0;
     transition: opacity 0.25s ease-out;
     animation: moveDown 0.5s ease-out;

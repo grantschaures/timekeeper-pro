@@ -27,6 +27,7 @@
         <script type="module" src="/js/utility/main-charts.js"></script>
         <script type="module" src="/js/utility/adv-charts.js"></script>
         <script type="module" src="/js/utility/mini-charts.js"></script>
+        <script type="module" src="/js/utility/day-view.js"></script>
 
         <link rel="preload" href="fonts/CPMono_v07_Light.woff" as="font" type="font/woff" crossorigin="anonymous">
         <link rel="preload" href="fonts/CPMono_v07_Bold.woff" as="font" type="font/woff" crossorigin="anonymous">
@@ -809,7 +810,261 @@
                         </div>
                         <div id="dailyBodyContainer">
                             <!-- Will hold daily sessions -->
-                            Daily session container coming soon
+                            <!-- Daily session container coming soon -->
+
+                            <div id="dayViewSummaryChartContainer">
+                                <canvas id="dayViewSummaryChart"></canvas>
+                            </div>
+                            <div id="dayViewSummaryStatsContainer">
+                                <div id="dayViewDeepWorkSummaryStatContainer" class="dayViewSummaryStatContainer">
+                                    <div id="dayViewDeepWorkSummaryStatText" class="dayViewSummaryStatText">
+                                        Deep Work
+                                    </div>
+                                    <div id="dayViewDeepWorkSummaryStat" class="dayViewSummaryStat">
+                                        3h 22m
+                                    </div>
+                                </div>
+                                <div id="dayViewFocusQualitySummaryStatContainer" class="dayViewSummaryStatContainer">
+                                    <div id="dayViewFocusQualitySummaryStatText" class="dayViewSummaryStatText">
+                                        Focus Quality
+                                    </div>
+                                    <div id="dayViewFocusQualitySummaryStat" class="dayViewSummaryStat">
+                                        65%
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="dayViewSessionsContainer">
+                                <div class="dayViewSessionContainer">
+                                    <div class="dayViewSessionStatOverviewContainer">
+                                        <div class="dayViewSessionDeepWork">
+                                            1h 3m
+                                        </div>
+                                        <div class="dayViewSessionFocusQuality">
+                                            33%
+                                        </div>
+                                    </div>
+                                    <div class="dayViewSessionStartEndTimeContainer">
+                                        <div class="dayViewSessionStartEndTime">
+                                            <div class="startTimeArrowContainer">
+                                                <img src="images/icons/startTimeArrow.png" class="startTimeArrow">
+                                            </div>
+                                            <div class="dayViewSessionStartTime">
+                                                7:02 AM
+                                            </div>
+                                        </div>
+                                        <div class="dayViewSessionStartEndTime">
+                                            <div class="endTimeArrowContainer">
+                                                <img src="images/icons/endTimeArrow.png" class="endTimeArrow">
+                                            </div>
+                                            <div class="dayViewSessionEndTime">
+                                                8:05 AM
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="dayViewSessionIntervalsContainer">
+                                        <div id="interval1" class="dayViewSessionInterval">
+                                            <div class="dayViewSessionDeepWorkInterval"></div>
+                                            <div class="dayViewSessionBlankInterval"></div>
+                                        </div>
+                                        <div id="interval2" class="dayViewSessionInterval">
+                                            <div class="dayViewSessionBlankInterval"></div>
+                                            <div class="dayViewSessionBreakInterval"></div>
+                                        </div>
+                                        <div id="interval3" class="dayViewSessionInterval">
+                                            <div class="dayViewSessionDeepWorkInterval"></div>
+                                            <div class="dayViewSessionBlankInterval"></div>
+                                        </div>
+                                        <div id="interval4" class="dayViewSessionInterval">
+                                            <div class="dayViewSessionBlankInterval"></div>
+                                            <div class="dayViewSessionBreakInterval"></div>
+                                        </div>
+                                        <div id="interval5" class="dayViewSessionInterval">
+                                            <div class="dayViewSessionDeepWorkInterval"></div>
+                                            <div class="dayViewSessionBlankInterval"></div>
+                                        </div>
+                                        <div id="interval6" class="dayViewSessionInterval">
+                                            <div class="dayViewSessionBlankInterval"></div>
+                                            <div class="dayViewSessionBreakInterval"></div>
+                                        </div>
+                                        <div id="interval7" class="dayViewSessionInterval">
+                                            <div class="dayViewSessionDeepWorkInterval"></div>
+                                            <div class="dayViewSessionBlankInterval"></div>
+                                        </div>
+                                        <div id="interval8" class="dayViewSessionInterval">
+                                            <div class="dayViewSessionBlankInterval"></div>
+                                            <div class="dayViewSessionBreakInterval"></div>
+                                        </div>
+                                        <div id="interval9" class="dayViewSessionInterval">
+                                            <div class="dayViewSessionDeepWorkInterval"></div>
+                                            <div class="dayViewSessionBlankInterval"></div>
+                                        </div>
+                                        <div id="interval10" class="dayViewSessionInterval">
+                                            <div class="dayViewSessionBlankInterval"></div>
+                                            <div class="dayViewSessionBreakInterval"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dayViewSessionContainer">
+                                    <div class="dayViewSessionStatOverviewContainer">
+                                        <div class="dayViewSessionDeepWork">
+                                            0h 45m
+                                        </div>
+                                        <div class="dayViewSessionFocusQuality">
+                                            80%
+                                        </div>
+                                    </div>
+                                    <div class="dayViewSessionStartEndTimeContainer">
+                                        <div class="dayViewSessionStartEndTime">
+                                            <div class="startTimeArrowContainer">
+                                                <img src="images/icons/startTimeArrow.png" class="startTimeArrow">
+                                            </div>
+                                            <div class="dayViewSessionStartTime">
+                                                9:10 AM
+                                            </div>
+                                        </div>
+                                        <div class="dayViewSessionStartEndTime">
+                                            <div class="endTimeArrowContainer">
+                                                <img src="images/icons/endTimeArrow.png" class="endTimeArrow">
+                                            </div>
+                                            <div class="dayViewSessionEndTime">
+                                                9:55 AM
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="dayViewSessionIntervalsContainer">
+                                        <div id="interval1" class="dayViewSessionInterval">
+                                            <div class="dayViewSessionDeepWorkInterval"></div>
+                                            <div class="dayViewSessionBlankInterval"></div>
+                                        </div>
+                                        <div id="interval2" class="dayViewSessionInterval">
+                                            <div class="dayViewSessionBlankInterval"></div>
+                                            <div class="dayViewSessionBreakInterval"></div>
+                                        </div>
+                                        <div id="interval3" class="dayViewSessionInterval">
+                                            <div class="dayViewSessionDeepWorkInterval"></div>
+                                            <div class="dayViewSessionBlankInterval"></div>
+                                        </div>
+                                        <div id="interval4" class="dayViewSessionInterval">
+                                            <div class="dayViewSessionBlankInterval"></div>
+                                            <div class="dayViewSessionBreakInterval"></div>
+                                        </div>
+                                        <div id="interval5" class="dayViewSessionInterval">
+                                            <div class="dayViewSessionDeepWorkInterval"></div>
+                                            <div class="dayViewSessionBlankInterval"></div>
+                                        </div>
+                                        <div id="interval6" class="dayViewSessionInterval">
+                                            <div class="dayViewSessionBlankInterval"></div>
+                                            <div class="dayViewSessionBreakInterval"></div>
+                                        </div>
+                                        <div id="interval7" class="dayViewSessionInterval">
+                                            <div class="dayViewSessionDeepWorkInterval"></div>
+                                            <div class="dayViewSessionBlankInterval"></div>
+                                        </div>
+                                        <div id="interval8" class="dayViewSessionInterval">
+                                            <div class="dayViewSessionBlankInterval"></div>
+                                            <div class="dayViewSessionBreakInterval"></div>
+                                        </div>
+                                        <div id="interval9" class="dayViewSessionInterval">
+                                            <div class="dayViewSessionDeepWorkInterval"></div>
+                                            <div class="dayViewSessionBlankInterval"></div>
+                                        </div>
+                                        <div id="interval10" class="dayViewSessionInterval">
+                                            <div class="dayViewSessionBlankInterval"></div>
+                                            <div class="dayViewSessionBreakInterval"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dayViewSessionContainer">
+                                    <div class="dayViewSessionStatOverviewContainer">
+                                        <div class="dayViewSessionDeepWork">
+                                            1h 34m
+                                        </div>
+                                        <div class="dayViewSessionFocusQuality">
+                                            82%
+                                        </div>
+                                    </div>
+                                    <div class="dayViewSessionStartEndTimeContainer">
+                                        <div class="dayViewSessionStartEndTime">
+                                            <div class="startTimeArrowContainer">
+                                                <img src="images/icons/startTimeArrow.png" class="startTimeArrow">
+                                            </div>
+                                            <div class="dayViewSessionStartTime">
+                                                1:02 PM
+                                            </div>
+                                        </div>
+                                        <div class="dayViewSessionStartEndTime">
+                                            <div class="endTimeArrowContainer">
+                                                <img src="images/icons/endTimeArrow.png" class="endTimeArrow">
+                                            </div>
+                                            <div class="dayViewSessionEndTime">
+                                                2:36 PM
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="dayViewSessionIntervalsContainer">
+                                        <div id="interval1" class="dayViewSessionInterval">
+                                            <div class="dayViewSessionDeepWorkInterval"></div>
+                                            <div class="dayViewSessionBlankInterval"></div>
+                                        </div>
+                                        <div id="interval2" class="dayViewSessionInterval">
+                                            <div class="dayViewSessionBlankInterval"></div>
+                                            <div class="dayViewSessionBreakInterval"></div>
+                                        </div>
+                                        <div id="interval3" class="dayViewSessionInterval">
+                                            <div class="dayViewSessionDeepWorkInterval"></div>
+                                            <div class="dayViewSessionBlankInterval"></div>
+                                        </div>
+                                        <div id="interval4" class="dayViewSessionInterval">
+                                            <div class="dayViewSessionBlankInterval"></div>
+                                            <div class="dayViewSessionBreakInterval"></div>
+                                        </div>
+                                        <div id="interval5" class="dayViewSessionInterval">
+                                            <div class="dayViewSessionDeepWorkInterval"></div>
+                                            <div class="dayViewSessionBlankInterval"></div>
+                                        </div>
+                                        <div id="interval6" class="dayViewSessionInterval">
+                                            <div class="dayViewSessionBlankInterval"></div>
+                                            <div class="dayViewSessionBreakInterval"></div>
+                                        </div>
+                                        <div id="interval7" class="dayViewSessionInterval">
+                                            <div class="dayViewSessionDeepWorkInterval"></div>
+                                            <div class="dayViewSessionBlankInterval"></div>
+                                        </div>
+                                        <div id="interval8" class="dayViewSessionInterval">
+                                            <div class="dayViewSessionBlankInterval"></div>
+                                            <div class="dayViewSessionBreakInterval"></div>
+                                        </div>
+                                        <div id="interval9" class="dayViewSessionInterval">
+                                            <div class="dayViewSessionDeepWorkInterval"></div>
+                                            <div class="dayViewSessionBlankInterval"></div>
+                                        </div>
+                                        <div id="interval10" class="dayViewSessionInterval">
+                                            <div class="dayViewSessionBlankInterval"></div>
+                                            <div class="dayViewSessionBreakInterval"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="dayViewNotesEntriesContainer">
+                                <div id="dayViewCompletedTasksContainer" class="dayViewNotesEntryContainer">
+                                    <div id="dayViewCompletedTasksHeader">
+                                        Completed Tasks (2)
+                                    </div>
+                                    <ul id="dayViewCompletedTasks" class="dayViewNotesEntriesList">
+                                        <li class="dayViewCompletedTask">HW #1</li>
+                                        <li class="dayViewCompletedTask">HW #2</li>
+                                    </ul>
+                                </div>
+                                <div id="dayViewNotesContainer" class="dayViewNotesEntryContainer">
+                                    <div id="dayViewNotesHeader">
+                                        Notes (1)
+                                    </div>
+                                    <ul id="dayViewNotes" class="dayViewNotesEntriesList">
+                                        <li class="dayViewNote">Got off on a strong start today!</li>
+                                        <li class="dayViewNote">Finished my coffee at 8:25 AM</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div id="distributionsContainer">

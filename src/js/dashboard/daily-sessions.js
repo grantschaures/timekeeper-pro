@@ -396,11 +396,14 @@ function showGrayCalendarArrow(currentYear) {
 
 function setAndDisplaySelectedDate(weekIndex) {
 
+    // UI updates
     dailyContainer.selectedDate = dailyContainer.weeklyDatesArr[weekIndex];
     let selectedDateText = getSelectedDateText();
     dailyDay.innerText = selectedDateText.dayOfWeek;
     dailyDate.innerText = selectedDateText.monthDayYear;
 
+    // Display the daily container day view
+    document.dispatchEvent(new Event('displayDayView'));
 }
 
 function getSelectedDateText() {
@@ -523,6 +526,7 @@ export async function setInitialDate() {
     // if not logged in, display empty mini-charts; set calendarContainer.miniChartsDisplayType to 'empty'
     // else, set it to 'filled'
     document.dispatchEvent(new Event('displayMiniCharts'));
+    document.dispatchEvent(new Event('displayDayView'));
 }
 
 function getMonthYearDay(dateStr) {
