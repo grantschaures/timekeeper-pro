@@ -351,3 +351,4 @@ readFileAndReplace(summaryStatsJsPath, summaryStatsReplacements);
 readFileAndReplace(pipJsPath, pipReplacements);
 readFileAndReplace(dailySessionsJsPath, dailySessionsReplacements);
 readFileAndReplace(miniChartsJsPath, miniChartsReplacements);
+readFileAndReplace(dayViewJsPath, dayViewReplacements);
