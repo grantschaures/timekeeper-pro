@@ -108,3 +108,8 @@ export const monthSelection = document.getElementById('monthSelection');
 export const yearSelection = document.getElementById('yearSelection');
 export const todayBtn = document.getElementById('todayBtn');
 export const calendarHeaderCells = document.querySelectorAll('.calendarHeaderCell');
+export const dayViewSummaryChart = document.getElementById('dayViewSummaryChart');
+
+export const dayViewDeepWorkSummaryStat = document.getElementById('dayViewDeepWorkSummaryStat');
+export const dayViewFocusQualitySummaryStat = document.getElementById('dayViewFocusQualitySummaryStat');
+export const dayViewSessionsContainer = document.getElementById('dayViewSessionsContainer');

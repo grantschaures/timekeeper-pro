@@ -52,6 +52,8 @@ document.addEventListener("stateUpdated", function() {
 
             // update miniChartLabels
             updateMiniChartLabels();
+
+            flags.dailyArrowClicked = true;
     
             // visualize data (call function to display mini charts)
             document.dispatchEvent(new Event('displayMiniCharts'));
@@ -65,6 +67,8 @@ document.addEventListener("stateUpdated", function() {
             // update miniChartLabels
             updateMiniChartLabels();
 
+            flags.dailyArrowClicked = true;
+
             // visualize data (call function to display mini charts)
             document.dispatchEvent(new Event('displayMiniCharts'));
     
@@ -73,30 +77,37 @@ document.addEventListener("stateUpdated", function() {
         // MINI CHART CANVAS SELECTION EVENT LISTENERS
         dailyBlocks[0].addEventListener("click", function() { // Sunday
             setAndDisplaySelectedDate(0);
+            document.dispatchEvent(new Event('displayDayView'));
         });
-
+        
         dailyBlocks[1].addEventListener("click", function() { // Monday
             setAndDisplaySelectedDate(1);
+            document.dispatchEvent(new Event('displayDayView'));
         });
         
         dailyBlocks[2].addEventListener("click", function() { // Tuesday
             setAndDisplaySelectedDate(2);
+            document.dispatchEvent(new Event('displayDayView'));
         });
         
         dailyBlocks[3].addEventListener("click", function() { // Wednesday
             setAndDisplaySelectedDate(3);
+            document.dispatchEvent(new Event('displayDayView'));
         });
         
         dailyBlocks[4].addEventListener("click", function() { // Thursday
             setAndDisplaySelectedDate(4);
+            document.dispatchEvent(new Event('displayDayView'));
         });
         
         dailyBlocks[5].addEventListener("click", function() { // Friday
             setAndDisplaySelectedDate(5);
+            document.dispatchEvent(new Event('displayDayView'));
         });
         
         dailyBlocks[6].addEventListener("click", function() { // Saturday
             setAndDisplaySelectedDate(6);
+            document.dispatchEvent(new Event('displayDayView'));
         });
 
         // CALENDAR
@@ -162,7 +173,6 @@ document.addEventListener("stateUpdated", function() {
             let eventTargetId = event.target.id;
             let selectedCellId = calendarContainer.selectedCellId;
 
-            
             if ((eventTargetClassListStr === 'no-select calendarCell') || (eventTargetClassListStr === 'no-select calendarCell currentDay')) {
                 
                 // removing previous selection class (if it exists and isn't the target)
@@ -403,7 +413,7 @@ function setAndDisplaySelectedDate(weekIndex) {
     dailyDate.innerText = selectedDateText.monthDayYear;
 
     // Display the daily container day view
-    document.dispatchEvent(new Event('displayDayView'));
+    dailyContainer.weekIndex = weekIndex;
 }
 
 function getSelectedDateText() {
@@ -522,11 +532,12 @@ export async function setInitialDate() {
     await setBounds(dailyContainer, null, rightDailyArrow, rightDailyArrowGray);
     updateMiniChartLabels();
 
+    dailyContainer.weekIndex = getWeekIndex();
+
     // visualize data (call function to display mini charts)
     // if not logged in, display empty mini-charts; set calendarContainer.miniChartsDisplayType to 'empty'
     // else, set it to 'filled'
     document.dispatchEvent(new Event('displayMiniCharts'));
-    document.dispatchEvent(new Event('displayDayView'));
 }
 
 function getMonthYearDay(dateStr) {

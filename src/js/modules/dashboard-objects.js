@@ -10,7 +10,8 @@ export const dashboardData = {
     sessionArr: [],
     dailyArr: [],
     dailySummary: {}, // NEW ADDITION
-    weeklyArr: [],
+    weeklyArr: [], // weekly organized version of dailyArr
+    currentWeekArr: [], // data for current week only
     hourlyArr: dailyHours,
     noteData: {}
 }
@@ -40,7 +41,8 @@ export const flags = {
     populated365Arrs: false,
     mainChartsOpen: false,
     advChartsOpen: false,
-    calendarPopupShowing: false
+    calendarPopupShowing: false,
+    dailyArrowClicked: false
 }
 
 export const charts = {
@@ -49,7 +51,8 @@ export const charts = {
     avgInterval: null,
     sessionIntervals: null,
     hourlyFocus: null,
-    avgDeepWork: null
+    avgDeepWork: null,
+    dayViewSummary: null
 }
 
 export const miniChartsArr = [null, null, null, null, null, null, null];
@@ -67,7 +70,9 @@ export const dailyContainer = {
     selectedDate: null,
     weeklyDatesArr: null,
     selectableCells: null,
-    miniChartsSeen: false
+    miniChartsSeen: false,
+    dayViewSummaryChartSeen: false,
+    weekIndex: 0,
 }
 
 export const calendarContainer = {

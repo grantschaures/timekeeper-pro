@@ -1,5 +1,5 @@
 import { miniCharts } from "../modules/dashboard-elements.js";
-import { dashboardData, dailyContainer, miniChartsArr, constants } from "../modules/dashboard-objects.js";
+import { dashboardData, dailyContainer, miniChartsArr, constants, flags } from "../modules/dashboard-objects.js";
 import { sessionState } from "../modules/state-objects.js";
 
 import { getDeepWork, getFocusQuality, getTargetHours } from './session-summary-chart.js';
@@ -50,6 +50,10 @@ function displayMiniChart(weekIndex, animationLength) {
 
     if (miniChartDataObj) {
         miniChartDataFocusQuality = 1 - ((miniChartDataObj.distractions / (miniChartDataObj.deepWorkTime / 60000)) / constants.FOCUS_QUALITY_CONSTANT);
+        if (miniChartDataFocusQuality < 0) {
+            miniChartDataFocusQuality = 0;
+        }
+
         miniChartDataDeepWorkTime = miniChartDataObj.deepWorkTime;
         miniChartDataTargetHourSum = miniChartDataObj.targetHourSum;
     }
@@ -150,6 +154,14 @@ async function initializeData() {
         currentWeekArr = currentWeekArrObj[dailyContainer.lowerBound];
     } else {
         currentWeekArr = [null, null, null, null, null, null, null];
+    }
+
+    dashboardData.currentWeekArr = currentWeekArr; // SETTING dashboardData.currentWeekArr
+
+    if (!flags.dailyArrowClicked) {
+        document.dispatchEvent(new Event('displayDayView'));
+    } else {
+        flags.dailyArrowClicked = false;
     }
 
     let newCurrentWeekArr = [];

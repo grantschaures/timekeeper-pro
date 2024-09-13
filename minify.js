@@ -33,6 +33,7 @@ let files = [
     'src/js/utility/update-streaks.js',
     'src/js/utility/identification.js',
     'src/js/utility/mini-charts.js',
+    'src/js/utility/day-view.js',
     'src/js/utility/session-summary-chart.js',
     'src/js/utility/adv-charts.js',
     'src/js/utility/main-charts.js',
