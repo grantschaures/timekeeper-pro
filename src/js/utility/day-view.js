@@ -1,7 +1,7 @@
 import { dayViewDeepWorkSummaryStat, dayViewFocusQualitySummaryStat, dayViewSessionsContainer, dayViewSummaryChart } from "../modules/dashboard-elements.js";
 import { charts, constants, dailyContainer, dashboardData } from "../modules/dashboard-objects.js";
 
-import { getDeepWork, getFocusQuality, getTargetHours } from "./session-summary-chart.js"; // add to editHTML
+import { getDeepWork, getFocusQuality, getTargetHours } from './session-summary-chart.js'; // add to editHTML
 
 let currentWeekData;
 
