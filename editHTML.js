@@ -177,7 +177,11 @@ const notesReplacements = [
     {
         pattern: /import { updateNotesEntry } from '..\/state\/update-notes-entry.js';/g,
         replacement: "import { updateNotesEntry } from '../minified/update-notes-entry.min.js';"
-    }
+    },
+    {
+        pattern: /import { userTimeZone } from '..\/utility\/identification.js';/g,
+        replacement: "import { userTimeZone } from '../minified/identification.min.js';"
+    },
 ];
 
 const navigationReplacements = [

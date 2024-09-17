@@ -19,7 +19,7 @@ import { updateDeletedLabels } from '../state/update-deleted-labels.js'; // mini
 import { updateNotes } from '../state/update-notes.js'; // minified
 import { addNotesEntry } from '../state/add-notes-entry.js'; // minified
 import { updateNotesEntry } from '../state/update-notes-entry.js'; // minified
-import { userTimeZone } from '../utility/identification.js';
+import { userTimeZone } from '../utility/identification.js'; //minified
 
 // main event listener
 document.addEventListener("stateUpdated", function() {
