@@ -2,7 +2,7 @@ import { dayViewCompletedTasks, dayViewCompletedTasksHeader, dayViewDeepWorkSumm
 import { charts, constants, dailyContainer, dashboardData } from "../modules/dashboard-objects.js";
 
 import { getDeepWork, getFocusQuality, getTargetHours } from './session-summary-chart.js'; // minified
-import { userTimeZone } from "./identification.js"; // minified
+import { userTimeZone } from './identification.js'; // minified
 
 let currentWeekData;
 
