@@ -332,6 +332,10 @@ const dayViewReplacements = [
     {
         pattern: /import { getDeepWork, getFocusQuality, getTargetHours } from '.\/session-summary-chart.js';/g,
         replacement: "import { getDeepWork, getFocusQuality, getTargetHours } from '../minified/session-summary-chart.min.js';"
+    },
+    {
+        pattern: /import { userTimeZone } from '..\/utility\/identification.js';/g,
+        replacement: "import { userTimeZone } from '../minified/identification.min.js';"
     }
 ]
 

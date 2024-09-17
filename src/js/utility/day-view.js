@@ -1,8 +1,8 @@
 import { dayViewCompletedTasks, dayViewCompletedTasksHeader, dayViewDeepWorkSummaryStat, dayViewFocusQualitySummaryStat, dayViewNoEntriesContainer, dayViewNotes, dayViewNotesEntriesContainer, dayViewNotesHeader, dayViewSessionsContainer, dayViewSummaryChart } from "../modules/dashboard-elements.js";
 import { charts, constants, dailyContainer, dashboardData } from "../modules/dashboard-objects.js";
-import { userTimeZone } from "./identification.js";
 
-import { getDeepWork, getFocusQuality, getTargetHours } from './session-summary-chart.js'; // add to editHTML
+import { getDeepWork, getFocusQuality, getTargetHours } from './session-summary-chart.js'; // minified
+import { userTimeZone } from "./identification.js"; // minified
 
 let currentWeekData;
 
