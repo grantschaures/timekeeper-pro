@@ -2,7 +2,7 @@ import { adjustedDeepWorkToggle, advChartsContainer, advChartsCoverModule, chart
 import { sessionState } from "../modules/state-objects.js"
 import { flags, general, labelDistContainer, mainChartContainer } from "../modules/dashboard-objects.js"
 
-import { setBounds, alterBounds, displayTimeFrame } from './label-distribution.js'; // need to edit editHTML
+import { setBounds, alterBounds, displayTimeFrame } from './label-distribution.js'; // minified
 
 export function setMetricCharts() {
     setBounds(mainChartContainer, metricDistributionTimeFrame, rightMetricDistributionArrow, rightMetricDistributionArrowGray);
@@ -352,6 +352,8 @@ function expandMetricDistributionContainer(metricBodyContainer) {
 
 
         setTimeout(() => {
+            metricDistributionContainer.style.overflowY = 'hidden';
+
             metricCharts.forEach(chart => {
                 chart.style.display = 'flex';
                 setTimeout(() => {
@@ -394,6 +396,8 @@ function expandMetricDistributionContainer(metricBodyContainer) {
 
 function resetMetricDistributionContainer() {
     labelDistContainer.resetInProgress = true;
+
+    metricDistributionContainer.style.overflowY = 'visible';
 
     if (flags.advChartsOpen) {
         general.chartTransition = general.lastMainChartTransition;

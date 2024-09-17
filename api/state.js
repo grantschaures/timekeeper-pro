@@ -2,6 +2,7 @@ const express = require("express");
 const User = require("../models/user");
 const Note = require("../models/note");
 const Report = require("../models/report");
+const NotesEntry = require("../models/notes-entries");
 const { Session } = require("../models/session");
 const router = express.Router();  // This is a slight refactor for clarity
 const jwt = require('jsonwebtoken');
@@ -20,19 +21,22 @@ router.get("/sessionValidation", async function(req, res) {
     try {
         console.log("Endpoint 1 reached")
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
-        const user = await User.findById(decoded.userId);
+        // const user = await User.findById(decoded.userId);
+        const user = await User.findById('66aebd43e9e0ce6eb2786d0e');
 
         if (user) {
             console.log("Endpoint 2 reached")
             const note = await Note.findOne({ userId: user._id });
             const report = await Report.findOne({ userId: user._id });
             const sessions = await Session.find({ userId: user._id });
+            const notesEntries = await NotesEntry.find({ userId: user._id});
             
             return res.json({ // the only place where isLoggedIn = true matters
                 user: user,
                 note: note,
                 report: report,
                 sessions: sessions,
+                notesEntries: notesEntries,
                 isLoggedIn: true
             });
         } else {

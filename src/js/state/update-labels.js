@@ -26,7 +26,7 @@ export async function updateLabels(labelArr) {
         const data = await response.json();
         console.log("notes updated successfully:", data);
 
-        populateDashboard(data.noteSessionData.sessions, data.noteSessionData.note);
+        populateDashboard(data.noteSessionData.sessions, data.noteSessionData.note, data.noteSessionData.notesEntries);
     } catch (error) {
         console.error('Failed to update labels:', error);
     }

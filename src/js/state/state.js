@@ -79,12 +79,12 @@ async function updateUserSession(data) {
     if (data.isLoggedIn) {
         sessionState.loggedIn = true;
         sessionState.updatingState = true;
-        await updateGUIForLoggedInUser(data.user, data.note, data.sessions);
+        await updateGUIForLoggedInUser(data.user, data.note, data.sessions, data.notesEntries);
         sessionState.updatingState = false;
     }
 }
 
-async function updateGUIForLoggedInUser(userData, noteData, sessionData) {
+async function updateGUIForLoggedInUser(userData, noteData, sessionData, notesEntries) {
 
     // menu container (--> logged in version)
     updateMenuContainer();
@@ -114,7 +114,7 @@ async function updateGUIForLoggedInUser(userData, noteData, sessionData) {
     updateUserNotes(noteData);
 
     // dashboard (--> logged in version)
-    populateDashboard(sessionData, noteData);
+    populateDashboard(sessionData, noteData, notesEntries);
 }
 
 function updateShowingTimeLeft(userData) {

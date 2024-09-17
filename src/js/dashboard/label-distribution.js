@@ -178,7 +178,7 @@ function updateLabelData(dashboardData, labelDistContainer) {
 
         const labelTime = labels[key] / timeConvert.msPerHour;
         const labelTimeHours = Math.floor(labelTime);
-        const labelTimeMinutes = Math.floor((labelTime - labelTimeHours) * 60);
+        const labelTimeMinutes = Math.round((labelTime - labelTimeHours) * 60);
         const labelTimePercent = Math.round((labels[key] / totalLabelTime) * 100);
 
         let labelTimeStr;

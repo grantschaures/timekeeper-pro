@@ -150,10 +150,15 @@ async function initializeData() {
     let currentWeekArrObj = findObjectByDate(weeklyArr, dailyContainer.lowerBound);
     let currentWeekArr;
 
+    let nullObj = {
+        dailyData: null,
+        noteEntryData: null
+    }
+
     if (currentWeekArrObj) {
         currentWeekArr = currentWeekArrObj[dailyContainer.lowerBound];
     } else {
-        currentWeekArr = [null, null, null, null, null, null, null];
+        currentWeekArr = [nullObj, nullObj, nullObj, nullObj, nullObj, nullObj, nullObj];
     }
 
     dashboardData.currentWeekArr = currentWeekArr; // SETTING dashboardData.currentWeekArr
@@ -171,14 +176,14 @@ async function initializeData() {
         newCurrentWeekObj = {};
 
         // create new array where the element either remains null or consists of a pruned down version of the original object
-        if (!currentWeekArr[i]) {
-            newCurrentWeekArr[i] = currentWeekArr[i]; // value should be null
+        if (!currentWeekArr[i].dailyData) {
+            newCurrentWeekArr[i] = null;
 
         } else {
             // push pruned down version of currentWeekArr[i] object to newCurrentWeekArr[i]
-            newCurrentWeekObj['deepWorkTime'] = currentWeekArr[i].deepWorkTime;
-            newCurrentWeekObj['distractions'] = currentWeekArr[i].distractions;
-            newCurrentWeekObj['targetHourSum'] = currentWeekArr[i].targetHourSum;
+            newCurrentWeekObj['deepWorkTime'] = currentWeekArr[i].dailyData.deepWorkTime;
+            newCurrentWeekObj['distractions'] = currentWeekArr[i].dailyData.distractions;
+            newCurrentWeekObj['targetHourSum'] = currentWeekArr[i].dailyData.targetHourSum;
 
             newCurrentWeekArr.push(newCurrentWeekObj);
         }

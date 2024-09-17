@@ -808,6 +808,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div id="dailyBodyContainer">
                             <!-- add a new container here w/ id=dayViewContainer which encapsulates everything dayView related -->
                             <!-- below that will be a new container called sessionView which will be specific to the selectedSession -->
@@ -830,6 +831,7 @@
                                         <div id="dayViewFocusQualitySummaryStat" class="dayViewSummaryStat"></div>
                                     </div>
                                 </div>
+
                                 <div id="dayViewSessionsContainer">
                                     <!-- <div class="dayViewSessionContainer">
                                         <div class="dayViewSessionStatOverviewContainer">
@@ -1041,30 +1043,28 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="dayViewSessionContainer">
-                                        <div class="noSessionsContainer">
+                                    <div class="noSessionsContainer">
+                                        <div class="noSessions no-select">
                                             No Sessions
                                         </div>
                                     </div> -->
                                 </div>
+
+                                <hr id="dayViewHr" class="dailyContainerHr">
+
                                 <div id="dayViewNotesEntriesContainer">
-                                    <div id="dayViewCompletedTasksContainer" class="dayViewNotesEntryContainer">
-                                        <div id="dayViewCompletedTasksHeader">
-                                            Completed Tasks (2)
-                                        </div>
-                                        <ul id="dayViewCompletedTasks" class="dayViewNotesEntriesList">
-                                            <li class="dayViewCompletedTask">HW #1</li>
-                                            <li class="dayViewCompletedTask">HW #2</li>
-                                        </ul>
-                                    </div>
+                                    <div id="dayViewNoEntriesContainer">No Notes or Completed Tasks</div>
                                     <div id="dayViewNotesContainer" class="dayViewNotesEntryContainer">
                                         <div id="dayViewNotesHeader">
                                             Notes (1)
                                         </div>
-                                        <ul id="dayViewNotes" class="dayViewNotesEntriesList">
-                                            <li class="dayViewNote">Got off on a strong start today!</li>
-                                            <li class="dayViewNote">Finished my coffee at 8:25 AM</li>
-                                        </ul>
+                                        <ul id="dayViewNotes" class="dayViewNotesEntriesList"></ul>
+                                    </div>
+                                    <div id="dayViewCompletedTasksContainer" class="dayViewNotesEntryContainer">
+                                        <div id="dayViewCompletedTasksHeader">
+                                            Completed Tasks (2)
+                                        </div>
+                                        <ul id="dayViewCompletedTasks" class="dayViewNotesEntriesList"></ul>
                                     </div>
                                 </div>
                             </div>

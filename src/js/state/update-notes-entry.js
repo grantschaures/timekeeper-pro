@@ -1,3 +1,5 @@
+import { populateDashboard } from '../dashboard/populate-dashboard.js'; // minified
+
 export async function updateNotesEntry(notesObj) {
     try {
         const response = await fetch('/api/data/update-notes-entry', {
@@ -23,6 +25,8 @@ export async function updateNotesEntry(notesObj) {
 
         const data = await response.json();
         console.log("notes updated successfully:", data);
+
+        populateDashboard(data.noteSessionData.sessions, data.noteSessionData.note, data.noteSessionData.notesEntries);
     } catch (error) {
         console.error('Failed to update notes entries:', error);
     }

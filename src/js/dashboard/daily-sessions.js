@@ -210,6 +210,20 @@ document.addEventListener("stateUpdated", function() {
     }
 })
 
+// function isValidDateSelection(weekIndex) {
+//     let currentDate = general.currentDay;
+//     let selectedDate = dailyContainer.weeklyDatesArr[weekIndex];
+
+//     let currentDateObj = moment(currentDate, 'YYYY-MM-DD');
+//     let selectedDateObj = moment(selectedDate, 'YYYY-MM-DD');
+
+//     if (selectedDateObj.isSameOrBefore(currentDateObj)) {
+//         return true;
+//     }
+
+//     return false;
+// }
+
 function getWeekIndex() {
     let selectedDate = dailyContainer.selectedDate;
     let [year, month, day] = selectedDate.split('-').map(Number);
@@ -406,11 +420,19 @@ function showGrayCalendarArrow(currentYear) {
 
 function setAndDisplaySelectedDate(weekIndex) {
 
-    // UI updates
+    // Programmatic updates
     dailyContainer.selectedDate = dailyContainer.weeklyDatesArr[weekIndex];
+
+    // UI updates
     let selectedDateText = getSelectedDateText();
     dailyDay.innerText = selectedDateText.dayOfWeek;
     dailyDate.innerText = selectedDateText.monthDayYear;
+
+    miniChartLabels[dailyContainer.weekIndex].style.textDecoration = '';
+    miniChartLabels[dailyContainer.weekIndex].style.fontSize = '9px';
+
+    miniChartLabels[weekIndex].style.textDecoration = 'underline';
+    miniChartLabels[weekIndex].style.fontSize = '10px';
 
     // Display the daily container day view
     dailyContainer.weekIndex = weekIndex;
@@ -440,6 +462,23 @@ function updateMiniChartLabels() {
     // apply labels to miniLabels
     for (let i = 0; i < 7; i++) {
         miniChartLabels[i].textContent = miniChartLabelArr[i];
+    }
+
+    // check if selectedDate is within the current week
+    // if not, remove underline
+    // if so, apply underline
+
+    let weeklyDateArr = dailyContainer.weeklyDatesArr;
+    let selectedDate = dailyContainer.selectedDate;
+
+    if (weeklyDateArr.includes(selectedDate)) {
+        miniChartLabels[dailyContainer.weekIndex].style.textDecoration = 'underline'; // add new underline
+        miniChartLabels[dailyContainer.weekIndex].style.fontSize = '10px'; // add new underline
+
+    } else {
+        miniChartLabels[dailyContainer.weekIndex].style.textDecoration = ''; // remove previous underline
+        miniChartLabels[dailyContainer.weekIndex].style.fontSize = '9px'; // add new underline
+
     }
 }
 
@@ -529,10 +568,15 @@ export async function setInitialDate() {
     dailyDay.innerText = dayOfWeek;
     dailyDate.innerText = formattedDate;
 
+    // when this is called after initial call
+    if (dailyContainer.dayViewSummaryChartSeen) {
+        miniChartLabels[dailyContainer.weekIndex].style.textDecoration = '';
+        miniChartLabels[dailyContainer.weekIndex].style.fontSize = '9px';
+    }
+    dailyContainer.weekIndex = getWeekIndex();
+
     await setBounds(dailyContainer, null, rightDailyArrow, rightDailyArrowGray);
     updateMiniChartLabels();
-
-    dailyContainer.weekIndex = getWeekIndex();
 
     // visualize data (call function to display mini charts)
     // if not logged in, display empty mini-charts; set calendarContainer.miniChartsDisplayType to 'empty'

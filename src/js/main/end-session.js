@@ -194,10 +194,8 @@ async function updateSessionSummary(tempStorage, commentsTextArea, subjectiveFee
         const data = await response.json();
         console.log("Session summary updated successfully:", data);
 
-        populateDashboard(data.noteSessionData.sessions, data.noteSessionData.note);
-
+        populateDashboard(data.noteSessionData.sessions, data.noteSessionData.note, data.noteSessionData.notesEntries);
         dailyContainer.miniChartsSeen = false;
-        setInitialDate();
         
     } catch (error) {
         console.error('Failed to update session summary:', error);

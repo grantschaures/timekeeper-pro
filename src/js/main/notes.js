@@ -19,6 +19,7 @@ import { updateDeletedLabels } from '../state/update-deleted-labels.js'; // mini
 import { updateNotes } from '../state/update-notes.js'; // minified
 import { addNotesEntry } from '../state/add-notes-entry.js'; // minified
 import { updateNotesEntry } from '../state/update-notes-entry.js'; // minified
+import { userTimeZone } from '../utility/identification.js';
 
 // main event listener
 document.addEventListener("stateUpdated", function() {
@@ -1023,6 +1024,7 @@ function noteInputSave(noteTaskInputContainer, addNoteTaskContainer, flags, note
         updateNotes(notesObj);
 
         // also send back notesArrObj itself to endpoint that adds it to Notes-Entries Collection
+        notesArrObj.timeZone = userTimeZone;
         addNotesEntry(notesArrObj);
     }
 }
@@ -1287,7 +1289,11 @@ function noteInputSaveBtnClick_editMode(state, flags) {
         }
         updateNotes(notesObj);
 
-        updateNotesEntry(notesArr[indexToEdit]);
+        // console.log(notesArr[indexToEdit]);
+
+        let notesArrObj = notesArr[indexToEdit];
+        notesArrObj.timeZone = userTimeZone;
+        updateNotesEntry(notesArrObj);
     }
 }
 
@@ -1387,7 +1393,9 @@ function checkOrUncheckTask(targetId) {
         }
         updateNotes(notesObj);
 
-        updateNotesEntry(notesArr[indexToUpdate]);
+        let notesArrObj = notesArr[indexToUpdate];
+        notesArrObj.timeZone = userTimeZone;
+        updateNotesEntry(notesArrObj);
     }
 }
 

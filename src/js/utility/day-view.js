@@ -1,5 +1,6 @@
-import { dayViewDeepWorkSummaryStat, dayViewFocusQualitySummaryStat, dayViewSessionsContainer, dayViewSummaryChart } from "../modules/dashboard-elements.js";
+import { dayViewCompletedTasks, dayViewCompletedTasksHeader, dayViewDeepWorkSummaryStat, dayViewFocusQualitySummaryStat, dayViewNoEntriesContainer, dayViewNotes, dayViewNotesEntriesContainer, dayViewNotesHeader, dayViewSessionsContainer, dayViewSummaryChart } from "../modules/dashboard-elements.js";
 import { charts, constants, dailyContainer, dashboardData } from "../modules/dashboard-objects.js";
+import { userTimeZone } from "./identification.js";
 
 import { getDeepWork, getFocusQuality, getTargetHours } from './session-summary-chart.js'; // add to editHTML
 
@@ -15,12 +16,12 @@ let dayViewSummaryStats = {
 document.addEventListener("displayDayView", async function() {
     await resetData();
     await initializeData();
+    displayDayView();
 })
 
 async function initializeData() {
     currentWeekData = dashboardData.currentWeekArr[dailyContainer.weekIndex];
     // console.log(dashboardData.currentWeekArr);
-    displayDayView();
 }
 
 async function resetData() {
@@ -32,6 +33,19 @@ async function resetData() {
 
     // reset the dayViewSessionsContainer UI
     dayViewSessionsContainer.innerHTML = "";
+
+    // we'll also need to clear the innerHTML of:
+    // (1) #dayViewCompletedTasks
+    // (2) #dayViewNotes
+    dayViewNotes.innerHTML = "";
+    dayViewCompletedTasks.innerHTML = "";
+
+    // hide the 'No notes or completed tasks' message (if it was showing)
+    dayViewNoEntriesContainer.style.display = 'none';
+
+    // hide #dayViewNotesHeader AND #dayViewCompletedTasksHeader
+    dayViewNotesHeader.innerText = "";
+    dayViewCompletedTasksHeader.innerText = "";
 }
 
 function displayDayView() {
@@ -52,23 +66,93 @@ function displayDayView() {
     initializeDayViewSessions();
 
     // (4) Initialize the completed tasks and notes entries
+    initializeNotesEntries();
+}
 
+// includes completed tasks and notes
+function initializeNotesEntries() {
+    // in populate-dashboard, we'll probably have to read in user data from the Notes-Entries collection
+    // I will end up probably adding a notesEntries field to the dailyData
+    // ^^ I did not do that
+    // Instead, I simply made each element in the weeklyArr contains a dailyData and noteEntryData object
+
+    if (currentWeekData.noteEntryData) {
+        let noteEntryData = currentWeekData.noteEntryData;
+        let notesArr = noteEntryData.notes;
+        let completedTasksArr = noteEntryData.completedTasks;
     
+        let noteCount = notesArr.length;
+        let completedTaskCount = completedTasksArr.length;
+
+        // Set notes and completed tasks headers
+        dayViewNotesHeader.innerText = `Notes (${noteCount})`;
+        dayViewCompletedTasksHeader.innerText = `Completed Tasks (${completedTaskCount})`;
+
+        // add li dom elements under #dayViewNotes and #dayViewCompletedTasks
+        addNotesEntriesToList(noteCount, 'dayViewNote', notesArr, dayViewNotes);
+        addNotesEntriesToList(completedTaskCount, 'dayViewCompletedTask', completedTasksArr, dayViewCompletedTasks);
+        
+    } else {
+        dayViewNoEntriesContainer.style.display = 'flex';
+    }
+}
+
+function addNotesEntriesToList(noteEntryCount, listClass, noteEntryArr, unorderedList) {
+
+    for (let i = 0; i < noteEntryCount; i++) {
+        let li = document.createElement('li');
+        li.classList.add(listClass);
+        li.innerText = noteEntryArr[i].content;
+
+        let dayViewNoteEntryTimestamp = document.createElement('span');
+        dayViewNoteEntryTimestamp.classList.add('dayViewNoteEntryTimestamp');
+
+        dayViewNoteEntryTimestamp.innerText = getDayViewNoteEntryTimestamp(noteEntryArr[i], listClass, dayViewNoteEntryTimestamp);
+
+        li.appendChild(dayViewNoteEntryTimestamp);
+
+        unorderedList.appendChild(li);
+    }
+}
+
+function getDayViewNoteEntryTimestamp(arrElement, listClass, timestampElement) {
+    // based on the list element class
+    // either adjust the date or completionDate to the timeZone (if it exists, if not use userTimeZone from identification.js)
+
+    let dateStr;
+    if (listClass === "dayViewNote") {
+        dateStr = arrElement.date;
+    } else { // listClass === "dayViewCompletedTask"
+        timestampElement.classList.add('dayViewCompletedTaskTimestamp');
+        dateStr = arrElement.completionDate;
+    }
+
+    // convert the UTC date to the adjusted date based on either the timeZone associated with the arrElement if it exists or userTimeZone otherwise
+    let timeZone;
+    if (arrElement.timeZone) {
+        timeZone = arrElement.timeZone;
+    } else {
+        timeZone = userTimeZone;
+    }
+
+    dateStr = moment.tz(dateStr, timeZone).format('h:mm a');
+
+    return dateStr;
 }
 
 function initializeDayViewSessions() {
     // Figure out if there are any sessions
     // if so, loop through all the sessions and call function to append a new sessionContainer to the dayViewSessionsContainer
     // if not, output a similar looking container with a white border, but with inner text reading "No Sessions"
-
     
     let sessionDataArr;
-    if (currentWeekData) {
-        sessionDataArr = currentWeekData.sessions;
+    if (currentWeekData.dailyData) {
+        sessionDataArr = currentWeekData.dailyData.sessions;
 
         // call function to append new sessionContainer to the DOM for each session
         for (let i = 0; i < sessionDataArr.length; i++) {
             createAndAppendSessionContainer(sessionDataArr[i]);
+
         }
 
     } else {
@@ -78,7 +162,7 @@ function initializeDayViewSessions() {
 }
 
 function createAndAppendSessionContainer(session) {
-    console.log(session);
+    // console.log(session);
 
     // INITIALIZE VARS
 
@@ -219,7 +303,6 @@ function createAndAppendSessionContainer(session) {
         }
     }
 
-
     let dayViewSessionIntervalsContainer = document.createElement('div');
     dayViewSessionIntervalsContainer.classList.add('dayViewSessionIntervalsContainer');
 
@@ -238,7 +321,7 @@ function createAndAppendSessionContainer(session) {
 
             dayViewSessionInterval.appendChild(dayViewSessionDeepWorkInterval);
             dayViewSessionInterval.appendChild(dayViewSessionBlankInterval);
-        } else {
+        } else { // if odd, create a break interval
             let dayViewSessionBreakInterval = document.createElement('div');
             dayViewSessionBreakInterval.classList.add('dayViewSessionBreakInterval');
 
@@ -269,10 +352,10 @@ function getAdjustedTime(dateString, timeZone) {
 
 function createAndAppendNoSessionsContainer() {
     let dayViewSessionContainer = document.createElement('div');
-    dayViewSessionContainer.classList.add('dayViewSessionContainer');
+    dayViewSessionContainer.classList.add('noSessionsContainer');
 
     let noSessionsContainer = document.createElement('div');
-    noSessionsContainer.classList.add('noSessionsContainer');
+    noSessionsContainer.classList = 'noSessions no-select';
     noSessionsContainer.innerText = "No Sessions";
 
     dayViewSessionContainer.appendChild(noSessionsContainer);
@@ -298,14 +381,14 @@ function displayDayViewSummaryChart(animationLength) {
     let dayViewDeepWorkTime = 0;
     let dayViewTargetHourSum = 0.0000000000000001;
 
-    if (currentWeekData) {
-        dayViewFocusQuality = 1 - ((currentWeekData.distractions / (currentWeekData.deepWorkTime / 60000)) / constants.FOCUS_QUALITY_CONSTANT);
+    if (currentWeekData.dailyData) {
+        dayViewFocusQuality = 1 - ((currentWeekData.dailyData.distractions / (currentWeekData.dailyData.deepWorkTime / 60000)) / constants.FOCUS_QUALITY_CONSTANT);
         if (dayViewFocusQuality < 0) {
             dayViewFocusQuality = 0;
         }
 
-        dayViewDeepWorkTime = currentWeekData.deepWorkTime;
-        dayViewTargetHourSum = currentWeekData.targetHourSum;
+        dayViewDeepWorkTime = currentWeekData.dailyData.deepWorkTime;
+        dayViewTargetHourSum = currentWeekData.dailyData.targetHourSum;
     }
 
     let focusQuality = getFocusQuality(dayViewFocusQuality);

@@ -42,7 +42,8 @@ export const flags = {
     mainChartsOpen: false,
     advChartsOpen: false,
     calendarPopupShowing: false,
-    dailyArrowClicked: false
+    dailyArrowClicked: false,
+    dashboardPopulated: false
 }
 
 export const charts = {

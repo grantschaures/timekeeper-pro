@@ -88,7 +88,7 @@ document.addEventListener("displayMainCharts", async function() {
     if (chartTransition === 'all') {
         displaySessionIntervalsChart();
     }
-})
+}) 
 
 // // // // // // //
 // HELPER FUNCTIONS
@@ -358,10 +358,10 @@ function convertHourFloatToStr(hour) {
     const hours = Math.floor(hour);
 
     // Get the fractional part and convert it to minutes
-    const minutes = Math.round((hour - hours) * 60);
+    const minutes = Math.floor((hour - hours) * 60);
 
     // Determine whether it is AM or PM
-    const period = hours < 12 || hours === 24 ? 'AM' : 'PM';
+    const period = hours < 12 || hours === 24 ? 'am' : 'pm';
 
     // Convert hours to 12-hour format
     const adjustedHours = hours % 12 === 0 ? 12 : hours % 12;
@@ -409,10 +409,11 @@ function populateIntervalDataArrs(startTime, endTime, hourlyTransitionArr) {
             if (finalTime > 24) {
                 if (initialTime < 24) {
                     // push { x: endTimeDay, y: [0, (finalTime - 24)]} to dataArr
-                    dataArr.push({ x: endTimeDay, y: [0, (finalTime - 24)]});
+                    dataArr.push({ x: endTimeDay, y: [0, (finalTime - 24)]}); // from previous week
+
                 } else {
                     // push { x: endTimeDay, y: [(initialTime - 24), (finalTime - 24)]} to dataArr
-                    dataArr.push({ x: endTimeDay, y: [(initialTime - 24), (finalTime - 24)]});
+                    dataArr.push({ x: endTimeDay, y: [(initialTime - 24), (finalTime - 24)]}); // from previous week
                 }
             }
         } else if (endTimeAfterUpperBound) {
@@ -428,13 +429,14 @@ function populateIntervalDataArrs(startTime, endTime, hourlyTransitionArr) {
         } else {
             if (initialTime > 24 && finalTime > 24) {
                 // push { x: endTimeDay, y: [(initialTime - 24), (finalTime - 24)]} to dataArr
-                dataArr.push({ x: endTimeDay, y: [(initialTime - 24), (finalTime - 24)]});
+                dataArr.push({ x: endTimeDay, y: [(initialTime - 24), (finalTime - 24)]}); // from previous day
+
             } else if (finalTime > 24) {
                 // push { x: startTimeDay, y: [initialTime, 24]} to dataArr
                 dataArr.push({ x: startTimeDay, y: [initialTime, 24]});
-
+                
                 // push { x: endTimeDay, y: [0, (finalTime - 24)]} to dataArr
-                dataArr.push({ x: endTimeDay, y: [0, (finalTime - 24)]});
+                dataArr.push({ x: endTimeDay, y: [0, (finalTime - 24)]}); // from previous day
 
             } else {
                 // push { x: startTimeDay, y: [initialTime, finalTime]} to dataArr
@@ -573,6 +575,7 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
     let intervalsPerMonthArr = [[], [], [], [], [], [], [], [], [], [], [], []];
 
     let dashboardDataDailyArr = dashboardData.dailyArr;
+    console.log(dashboardDataDailyArr);
     for (let i = 0; i < dashboardDataDailyArr.length; i++) {
         let date = dashboardDataDailyArr[i].date;
         if((moment(date, 'YYYY-MM-DD').isSameOrAfter(moment(mainChartContainer.lowerBound, 'YYYY-MM-DD'))) && (moment(date, 'YYYY-MM-DD').isSameOrBefore(moment(mainChartContainer.upperBound, 'YYYY-MM-DD')))) {
@@ -1431,7 +1434,7 @@ function displaySessionIntervalsChart() {
                     max: yMax, // Representing 24 hours in a day
                     reverse: true,
                     title: {
-                        display: true,
+                        display: false,
                         text: 'Day',
                         color: 'white'
                     },
@@ -1487,6 +1490,10 @@ function displaySessionIntervalsChart() {
                             const defaultTitle = tooltipItems.map(item => item.label || item.xLabel).join(', ');
                             let index = xAxisLabelsTempArr.indexOf(defaultTitle);
                             let date = dateStrArr[index];
+
+                            if (date === "no data") {
+                                date = "data from session started previous day"; // This will be fine for now but could be optimized if time allows
+                            }
                             return `${date}`;
                         },
                         label: function(tooltipItem) {

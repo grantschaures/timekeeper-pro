@@ -23,7 +23,6 @@ router.post("/update-notes-entry", async function(req, res) {
     // Assuming the JWT is sent automatically in cookie headers
     const token = req.cookies.token;  // Extract the JWT from cookies directly
     const { notesObj } = req.body;
-    // console.log(notesObj);
 
     if (!token) {
         return res.status(401).json({ message: "Token was not found" });
@@ -35,14 +34,17 @@ router.post("/update-notes-entry", async function(req, res) {
         const user = await User.findById(userId);
 
         if (user) {
+
             
             const notesEntry = await NotesEntry.findOne({ 
                 userId: user._id,         // Ensure the note belongs to the specific user
                 'entry.id': notesObj.id   // Ensure the note has the correct entry ID
             });
+            console.log(notesEntry);
             
             if (notesEntry) {
                 notesEntry.entry = notesObj;
+                console.log(notesObj)
                 await notesEntry.save();
 
             } else { // this shouldn't happen normally, but if for some reason the note entry isn't already present in Notes-Entries
@@ -54,7 +56,18 @@ router.post("/update-notes-entry", async function(req, res) {
                 await newNotesEntry.save();
             }
 
-            res.json({ success: true, message: 'update-notes-entry endpoint reached successfully'});
+             // READING FROM DB
+             const note = await Note.findOne({ userId: user._id });
+             const sessions = await Session.find({ userId: user._id });
+             const notesEntries = await NotesEntry.find({ userId: user._id});
+ 
+            let noteSessionData = {
+                note: note,
+                sessions: sessions,
+                notesEntries: notesEntries
+            }
+
+            res.json({ noteSessionData, success: true, message: 'update-notes-entry endpoint reached successfully'});
         } else {
             return res.status(404).json({ 
                 message: "User not found"
@@ -92,7 +105,18 @@ router.post("/add-notes-entry", async function(req, res) {
             
             await newNotesEntry.save();
 
-            res.json({ success: true, message: 'add-notes-entry endpoint reached successfully'});
+            // READING FROM DB
+            const note = await Note.findOne({ userId: user._id });
+            const sessions = await Session.find({ userId: user._id });
+            const notesEntries = await NotesEntry.find({ userId: user._id});
+
+            let noteSessionData = {
+                note: note,
+                sessions: sessions,
+                notesEntries: notesEntries
+            }
+
+            res.json({ noteSessionData, success: true, message: 'add-notes-entry endpoint reached successfully'});
         } else {
             return res.status(404).json({ 
                 message: "User not found"
@@ -166,9 +190,12 @@ router.post("/update-session-summary", async function(req, res) {
                 });
             }
 
+            const notesEntries = await NotesEntry.find({ userId: user._id});
+
             let noteSessionData = {
                 note: note,
-                sessions: sessions
+                sessions: sessions,
+                notesEntries: notesEntries
             }
             
             res.json({ noteSessionData, success: true, message: 'update-session-summary endpoint reached successfully'});
@@ -667,9 +694,12 @@ router.post("/update-labels", async function(req, res) {
         // READING FROM DB
         const sessions = await Session.find({ userId: user._id });
 
+        const notesEntries = await NotesEntry.find({ userId: user._id});
+
         let noteSessionData = {
             note: note,
-            sessions: sessions
+            sessions: sessions,
+            notesEntries: notesEntries
         }
 
 

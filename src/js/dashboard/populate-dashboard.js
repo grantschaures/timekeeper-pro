@@ -1,20 +1,23 @@
-import { dashboardData, constants, general } from '../modules/dashboard-objects.js';
+import { dashboardData, constants, general, flags} from '../modules/dashboard-objects.js';
 import { timeConvert } from '../modules/index-objects.js';
 
 import { populateDashboardSummaryStats } from './summary-stats.js'; // minified
 import { populateLabelDistContainer } from './label-distribution.js'; // minified
 import { setMetricCharts } from './metric-charts.js'; // minified
 
+import { userTimeZone } from '../utility/identification.js'; // minified
+import { setInitialDate } from './daily-sessions.js'; // minified
+
 // GLOBAL VARIABLES
 const FOCUS_QUALITY_CONSTANT = constants.FOCUS_QUALITY_CONSTANT;
 
-export async function populateDashboard(sessionData, noteData) { // called from state.js & end-session.js (only for logged-in user)
+export async function populateDashboard(sessionData, noteData, notesEntries) { // called from state.js & end-session.js (only for logged-in user)
 
     // create sorted array of data for each day
     await initializeDailyData(sessionData);
 
     // setDashboardData
-    await setDashboardData(sessionData, noteData); // ensure this has executed before constructing chart.js charts
+    await setDashboardData(sessionData, noteData, notesEntries); // ensure this has executed before constructing chart.js charts
 
     // update summary stats
     populateDashboardSummaryStats(timeConvert, dashboardData.dailyArr, dashboardData);
@@ -24,42 +27,83 @@ export async function populateDashboard(sessionData, noteData) { // called from 
 
     // setup metric charts
     setMetricCharts();
+
+    // update daily container (for now, updating daily container will pullup current day)
+    if (flags.dashboardPopulated) { // if dashboard has been opened before
+        setInitialDate();
+    }
+
+    flags.dashboardPopulated = true;
 }
 
-function createWeeklyArr() {
+function createWeeklyArr(notesEntries) {
+
+    // console.log(notesEntries)
     let dailyArr = dashboardData.dailyArr;
     
     let weeklyArr = [];
     let dayObj = {};
     let weekObj = {};
 
-    let initialWeekDate;
-    if (dailyArr[0]) {
-        initialWeekDate = getInitialWeekDate(dailyArr[0].date); // key for the weekObjs
-    } else {
-        initialWeekDate = getInitialWeekDate(general.currentDay);
+    // FINDING THE EARLIEST DATE BETWEEN NOTES ENTRIES AND SESSIONS FOR
+    // INITIAL WEEK START DATE
+    let validNotesEntryExists = checkIfNoteOrCompletedTaskExists(notesEntries);
+    let initialWeekDate = getInitialWeekDate(general.currentDay);
+
+    let earliestNoteEntryDateObj = getEarliestNoteEntryDate(notesEntries);
+    let earliestNoteEntryDate = earliestNoteEntryDateObj.date;
+    var earliestNoteEntryDateStr = earliestNoteEntryDateObj.string;
+
+    if ((dailyArr[0]) && (validNotesEntryExists)) {
+        // find the earliest date between the two
+        let earliestDailyArrDate = moment(dailyArr[0].date, 'YYYY-MM-DD');
+
+        if (earliestNoteEntryDate.isBefore(earliestDailyArrDate)) {
+            initialWeekDate = getInitialWeekDate(earliestNoteEntryDateStr);
+        } else {
+            initialWeekDate = getInitialWeekDate(dailyArr[0].date);
+        }
+
+    } else if (dailyArr[0]) {
+        // set initialWeekDate to dailyArr[0].date
+        initialWeekDate = getInitialWeekDate(dailyArr[0].date);
+        
+    } else if (validNotesEntryExists) {
+        // set initialWeekDate to the earliest notesEntry date
+        initialWeekDate = getInitialWeekDate(earliestNoteEntryDateStr);
     }
+
+    // console.log(initialWeekDate);
+
     let latestFinalWeekDate = getFinalWeekDate(general.currentDay);
     
     let currentDate = initialWeekDate;
     let currentDateObj = moment(currentDate, 'YYYY-MM-DD');
     let latestFinalWeekDateObj = moment(latestFinalWeekDate, 'YYYY-MM-DD');
     
+    let tempArr = [];
     while (currentDateObj.isSameOrBefore(latestFinalWeekDateObj)) {
         weekObj = {};
         weekObj[initialWeekDate] = [];
         // console.log(initialWeekDate);
 
         for (let i = 0; i < 7; i++) {
-            dayObj = {};
-            dayObj[currentDate] = null;
+            dayObj = {
+                dailyData: null,
+                noteEntryData: null
+            };
 
             let dailyObj = findObjectByDate(dailyArr, currentDate);
             if (dailyObj) {
-                dayObj[currentDate] = dailyObj;
+                dayObj.dailyData = dailyObj;
             }
 
-            weekObj[initialWeekDate].push(dayObj[currentDate]);
+            let noteEntryObj = getNoteEntriesObj(notesEntries, currentDate);
+            if ((noteEntryObj.notes.length > 0) || (noteEntryObj.completedTasks.length > 0)) {
+                dayObj.noteEntryData = noteEntryObj;
+            }
+
+            weekObj[initialWeekDate].push(dayObj);
             currentDate = incrementDate(currentDate);
         }
 
@@ -67,8 +111,105 @@ function createWeeklyArr() {
         initialWeekDate = incrementByWeek(initialWeekDate);
         currentDateObj = moment(currentDate, 'YYYY-MM-DD');
     }
+    
+    // console.log(weeklyArr)
 
     return weeklyArr;
+}
+
+function getEarliestNoteEntryDate(notesEntries) {
+    let earliestDate = moment(general.currentDay, 'YYYY-MM-DD');
+    let earliestDateStr = earliestDate.format('YYYY-MM-DD');
+
+    for (let i = 0; i < notesEntries.length; i++) {
+
+        // if notesEntries[i] doesn't contain a timeZone, set timeZone to userTimeZone
+        let timeZone;
+        if (notesEntries[i].entry.timeZone) {
+            timeZone = notesEntries[i].entry.timeZone;
+        } else {
+            timeZone = userTimeZone;
+        }
+
+        let notesEntryDateStr;
+        if (notesEntries[i].entry.classList.includes('note')) {
+            notesEntryDateStr = notesEntries[i].entry.date;
+        } else if (notesEntries[i].entry.classList.includes('completed-task')) {
+            notesEntryDateStr = notesEntries[i].entry.completionDate;
+        }
+        
+        let notesEntryDate = moment.tz(notesEntryDateStr, timeZone);
+        notesEntryDateStr = notesEntryDate.format('YYYY-MM-DD');
+        notesEntryDate = moment(notesEntryDateStr, 'YYYY-MM-DD');
+
+        if (notesEntryDate.isBefore(earliestDate)) {
+            earliestDate = notesEntryDate;
+            earliestDateStr = notesEntryDateStr;
+        }
+    }
+    
+    let earliestDateObj = {
+        date: earliestDate,
+        string: earliestDateStr
+    }
+
+    return earliestDateObj;
+}
+
+function checkIfNoteOrCompletedTaskExists(notesEntries) {
+    // console.log(notesEntries)
+
+    for (let i = 0; i < notesEntries.length; i++) {
+        if ((notesEntries[i].entry.classList.includes('note')) || (notesEntries[i].entry.classList.includes('completed-task'))) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function findObjectByDate(array, targetDate) {
+    return array.find(obj => obj.date === targetDate);
+}
+
+function getNoteEntriesObj(notesEntries, targetDate) {
+
+    let noteEntriesObj = {
+        notes: [],
+        completedTasks: []
+    };
+
+    for (let i = 0; i < notesEntries.length; i++) {
+
+        let timeZone;
+        if (notesEntries[i].entry.timeZone) {
+            timeZone = notesEntries[i].entry.timeZone;
+        } else {
+            timeZone = userTimeZone;
+        }
+
+        let noteEntryDateStr;
+        if (notesEntries[i].entry.classList.includes('note')) {
+            noteEntryDateStr = notesEntries[i].entry.date;
+            let noteEntryDate = moment.tz(noteEntryDateStr, timeZone);
+            noteEntryDateStr = noteEntryDate.format('YYYY-MM-DD');
+
+            if (noteEntryDateStr === targetDate) {
+                noteEntriesObj.notes.push(notesEntries[i].entry);
+            }
+
+        } else if (notesEntries[i].entry.classList.includes('completed-task')) {
+            noteEntryDateStr = notesEntries[i].entry.completionDate;
+            let taskEntryDate = moment.tz(noteEntryDateStr, timeZone);
+            noteEntryDateStr = taskEntryDate.format('YYYY-MM-DD');
+
+            if (noteEntryDateStr === targetDate) {
+                noteEntriesObj.completedTasks.push(notesEntries[i].entry);
+            }
+        }
+    }
+
+    return noteEntriesObj;
 }
 
 function incrementByWeek(firstInitialWeekDate) {
@@ -79,10 +220,6 @@ function incrementByWeek(firstInitialWeekDate) {
     let day = String(date.getDate()).padStart(2, '0');
     
     return `${year}-${month}-${day}`;
-}
-
-function findObjectByDate(array, targetDate) {
-    return array.find(obj => obj.date === targetDate);
 }
 
 function incrementDate(currentDate) {
@@ -96,33 +233,45 @@ function incrementDate(currentDate) {
 }
 
 function getInitialWeekDate(dateString) {
-    let date = new Date(dateString);
+    // Manually parse the date string
+    let [year, month, day] = dateString.split('-').map(Number);
+    
+    // Create a new date without time zone adjustments
+    let date = new Date(year, month - 1, day);  // Month is 0-indexed
+
     let dayOfWeek = date.getDay();
     let diffToSunday = dayOfWeek;
     date.setDate(date.getDate() - diffToSunday);
-    let year = date.getFullYear();
-    let month = String(date.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed, so add 1
-    let day = String(date.getDate()).padStart(2, '0');
+    let finalYear = date.getFullYear();
+    let finalMonth = String(date.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed, so add 1
+    let finalDay = String(date.getDate()).padStart(2, '0');
 
-    return `${year}-${month}-${day}`;
+    return `${finalYear}-${finalMonth}-${finalDay}`;
 }
 
 function getFinalWeekDate(dateString) {
-    let date = new Date(dateString);
+    // Manually parse the date string
+    let [year, month, day] = dateString.split('-').map(Number);
+    
+    // Create a new date without time zone adjustments
+    let date = new Date(year, month - 1, day);  // Month is 0-indexed
+
     let dayOfWeek = date.getDay();
     let diffToSaturday = 6 - dayOfWeek;
     date.setDate(date.getDate() + diffToSaturday);
-    let year = date.getFullYear();
-    let month = String(date.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed, so add 1
-    let day = String(date.getDate()).padStart(2, '0');
+
+    // Format the final week date in 'YYYY-MM-DD'
+    let finalYear = date.getFullYear();
+    let finalMonth = String(date.getMonth() + 1).padStart(2, '0'); // Add 1 because JS months are 0-indexed
+    let finalDay = String(date.getDate()).padStart(2, '0');
     
-    return `${year}-${month}-${day}`;
+    return `${finalYear}-${finalMonth}-${finalDay}`;
 }
 
-async function setDashboardData(sessionData, noteData) {
+async function setDashboardData(sessionData, noteData, notesEntries) {
     dashboardData.sessionArr = sessionData;
     dashboardData.noteData = noteData;
-    dashboardData.weeklyArr = createWeeklyArr();
+    dashboardData.weeklyArr = createWeeklyArr(notesEntries);
 }
 
 async function initializeDailyData(sessions) {
@@ -211,46 +360,6 @@ async function initializeDailyData(sessions) {
     dashboardData.dailySummary = {};
 }
 
-function summarizeDailyData(dataArray, sessionData) {
-    // const dailySummary = {};
-    
-    dataArray.forEach(entry => {
-        const dateStr = entry.date;
-        const date = dateStr.split('T')[0];
-        const day = moment(date).format('YYYY-MM-DD'); // Extract the day part of the date
-        const { deepWorkTime = 0, distractions = 0, inDeepWork = false } = entry.data;
-        
-        // if (!dailySummary[day]) {
-        //     dailySummary[day] = {
-        //         date: day,
-        //         deepWorkTime: 0,
-        //         distractions: 0,
-        //         inDeepWork: false,
-        //         deepWorkIntervals: [],
-        //         breakIntervals: [],
-        //         labelTimes: {}
-        //     };
-
-        //     // if sessionData contains an arr element (obj) w/ startTime value starting w same YYYY-MM-DD value, add it!
-        //     addIntervalsLabelTimes(day, sessionData, dailySummary);
-        // }
-        
-        // dashboardData.dailySummary[day].deepWorkTime += deepWorkTime;
-        // dashboardData.dailySummary[day].distractions += distractions;
-        
-        // if (inDeepWork) {
-        //     dashboardData.dailySummary[day].inDeepWork = true;
-        // }
-
-    });
-    
-    let summaryArr = Object.values(dailySummary);
-    let sortedSummaryArr = sortByDateAscending(summaryArr);
-
-    // Convert the summary object back to an array
-    return sortedSummaryArr;
-}
-
 function sortByDateAscending(arr) {
     return arr.sort((a, b) => {
         const dateA = new Date(a.date);
@@ -296,44 +405,4 @@ export function focusQualityCalculation(timeConvert, totalTime, totalDistraction
     focusQualityFraction = parseFloat(focusQualityFraction.toFixed(2));
 
     return focusQualityFraction;
-}
-
-function addIntervalsLabelTimes(day, sessionData, dailySummary) {
-
-    // Iterate through the array of objects
-    for (let session of sessionData) {
-        // Extract the date part from the startTime field of each object
-        const adjustedSessionStartTime = moment.tz(session.startTime, session.timeZone).format();
-        const sessionDate = adjustedSessionStartTime.split('T')[0];
-
-        // Compare the date parts
-        if (sessionDate == day) {
-
-            // add deep work intervals
-            for (let interval of session.deepWorkIntervals) {
-                dailySummary[day].deepWorkIntervals.push(interval);
-            }
-
-            // add break intervals
-            for (let interval of session.breakIntervals) {
-                dailySummary[day].breakIntervals.push(interval);
-            }
-            
-            // add label times
-            if (Object.keys(dailySummary[day].labelTimes).length === 0) {
-                dailySummary[day].labelTimes = { ...session.labelTimes };
-            } else {
-                for (let key in session.labelTimes) {
-                    if (dailySummary[day].labelTimes.hasOwnProperty(key)) {
-                        dailySummary[day].labelTimes[key] += session.labelTimes[key];
-                    } else {
-                        dailySummary[day].labelTimes[key] = session.labelTimes[key];
-                    }
-                }
-            }
-        }
-    }
-
-    // Return false if no matching date is found
-    return false;
 }

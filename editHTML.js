@@ -49,6 +49,8 @@ const labelDistributionJsPath = './src/js/dashboard/label-distribution.js';
 const populateDashboardJsPath = './src/js/dashboard/populate-dashboard.js';
 
 const updateLabelsJsPath = './src/js/state/update-labels.js';
+const updateNotesEntryJsPath = './src/js/state/update-notes-entry.js';
+const addNotesEntryJsPath = './src/js/state/add-notes-entry.js';
 
 // Define replacements for index.html
 const indexHtmlReplacements = [
@@ -253,6 +255,20 @@ const updateLabelsReplacements = [
     }
 ]
 
+const updateNotesEntryReplacements = [
+    {
+        pattern: /import { populateDashboard } from '..\/dashboard\/populate-dashboard.js';/g,
+        replacement: "import { populateDashboard } from '../minified/populate-dashboard.min.js';"
+    }
+]
+
+const addNotesEntryReplacements = [
+    {
+        pattern: /import { populateDashboard } from '..\/dashboard\/populate-dashboard.js';/g,
+        replacement: "import { populateDashboard } from '../minified/populate-dashboard.min.js';"
+    }
+]
+
 const miniChartsReplacements = [
     {
         pattern: /import { getDeepWork, getFocusQuality, getTargetHours } from '.\/session-summary-chart.js';/g,
@@ -281,7 +297,15 @@ const populateDashboardReplacements = [
     {
         pattern: /import { setMetricCharts } from '.\/metric-charts.js';/g,
         replacement: "import { setMetricCharts } from '../minified/metric-charts.min.js';"
-    }
+    },
+    {
+        pattern: /import { userTimeZone } from '..\/utility\/identification.js';/g,
+        replacement: "import { userTimeZone } from '../minified/identification.min.js';"
+    },
+    {
+        pattern: /import { setInitialDate } from '.\/daily-sessions.js';/g,
+        replacement: "import { setInitialDate } from '../minified/daily-sessions.min.js';"
+    },
 ]
 
 const labelDistributionReplacements = [
@@ -352,3 +376,5 @@ readFileAndReplace(pipJsPath, pipReplacements);
 readFileAndReplace(dailySessionsJsPath, dailySessionsReplacements);
 readFileAndReplace(miniChartsJsPath, miniChartsReplacements);
 readFileAndReplace(dayViewJsPath, dayViewReplacements);
+readFileAndReplace(updateNotesEntryJsPath, updateNotesEntryReplacements);
+readFileAndReplace(addNotesEntryJsPath, addNotesEntryReplacements);

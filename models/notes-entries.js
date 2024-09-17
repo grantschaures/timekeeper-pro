@@ -11,7 +11,8 @@ const NotesEntry = db.model("NotesEntry", {
         classList: { type: [String] },
         content: { type: String },
         date: { type: Date, default: Date.now },
-        completionDate: { type: Date }
+        completionDate: { type: Date, default: Date.now },
+        timeZone: { type: String }
     }
 }, 'Notes-Entries');
 
