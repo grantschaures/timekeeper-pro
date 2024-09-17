@@ -317,18 +317,32 @@ export function alterBounds(type, container, timeFrameElement, rightArrow, right
 
     if ((type === 'shiftup') && (upperBoundDate.isBefore(currentDate))) {
         container.lowerBound = moment(container.lowerBound, 'YYYY-MM-DD').add(1, container.timeFrame).format('YYYY-MM-DD');
-        container.upperBound = moment(container.upperBound, 'YYYY-MM-DD').add(1, container.timeFrame).format('YYYY-MM-DD');
+
+        // Adjust upperBound if the timeFrame is month
+        if (container.timeFrame === 'month') {
+            container.upperBound = moment(container.lowerBound, 'YYYY-MM-DD').endOf('month').format('YYYY-MM-DD');
+        } else {
+            container.upperBound = moment(container.upperBound, 'YYYY-MM-DD').add(1, container.timeFrame).format('YYYY-MM-DD');
+        }
+
     } else if (type === 'shiftdown') {
         container.lowerBound = moment(container.lowerBound, 'YYYY-MM-DD').subtract(1, container.timeFrame).format('YYYY-MM-DD');
-        container.upperBound = moment(container.upperBound, 'YYYY-MM-DD').subtract(1, container.timeFrame).format('YYYY-MM-DD');
+
+        // Adjust upperBound if the timeFrame is month
+        if (container.timeFrame === 'month') {
+            container.upperBound = moment(container.lowerBound, 'YYYY-MM-DD').endOf('month').format('YYYY-MM-DD');
+        } else {
+            container.upperBound = moment(container.upperBound, 'YYYY-MM-DD').subtract(1, container.timeFrame).format('YYYY-MM-DD');
+        }
     }
-    
+
     setRightArrowType(container, currentDate, rightArrow, rightArrowGray); // white or gray
 
     if (timeFrameElement) {
         displayTimeFrame(container, timeFrameElement);
     }
 }
+
 
 export async function setBounds(container, timeFrameElement, rightArrow, rightArrowGray) {
     // Parse the input date

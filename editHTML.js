@@ -46,6 +46,7 @@ const summaryStatsJsPath = './src/js/dashboard/summary-stats.js';
 const advChartsJsPath = './src/js/utility/adv-charts.js';
 const metricChartsJsPath = './src/js/dashboard/metric-charts.js';
 const populateDashboardJsPath = './src/js/dashboard/populate-dashboard.js';
+const mainChartsJsPath = './src/js/utility/main-charts.js';
 
 const updateLabelsJsPath = './src/js/state/update-labels.js';
 const updateNotesEntryJsPath = './src/js/state/update-notes-entry.js';
@@ -325,6 +326,13 @@ const advChartsReplacements = [
     }
 ]
 
+const mainChartsReplacements = [
+    {
+        pattern: /import { updateDailyContainer } from '..\/dashboard\/daily-sessions.js';/g,
+        replacement: "import { updateDailyContainer } from '../minified/daily-sessions.min.js';"
+    }
+]
+
 const summaryStatsReplacements = [
     {
         pattern: /import { initializeHourlyData } from '..\/utility\/adv-charts.js';/g,
@@ -377,3 +385,4 @@ readFileAndReplace(miniChartsJsPath, miniChartsReplacements);
 readFileAndReplace(dayViewJsPath, dayViewReplacements);
 readFileAndReplace(updateNotesEntryJsPath, updateNotesEntryReplacements);
 readFileAndReplace(addNotesEntryJsPath, addNotesEntryReplacements);
+readFileAndReplace(mainChartsJsPath, mainChartsReplacements);

@@ -2,6 +2,8 @@ import { directionIndicators, summaryAvgAdjustedDeepWorkDown, summaryAvgAdjusted
 import { charts, mainChartContainer, dashboardData, flags, constants, general } from "../modules/dashboard-objects.js";
 import { timeConvert } from "../modules/index-objects.js";
 
+import { updateDailyContainer } from "../dashboard/daily-sessions.js"; // add to editHTML
+
 // Global Variables
 let deepWorkArr = []; // holds normal or quality adjusted deep work time
 
@@ -122,7 +124,6 @@ async function displayMainChartsSummaryStats() {
 
     setDirectionIndicators();
 }
-
 
 async function setDirectionIndicators() {
     // temporarily set lower and upper bounds back by one timeFrame length
@@ -277,12 +278,25 @@ function displayDeepWorkTime(deepWorkTime) {
 }
 
 function tempBoundShift(type) { // type can be 'shiftup' or 'shiftdown'
-    if (type === 'shiftup') {
+    if ((type === 'shiftup')) {
         mainChartContainer.lowerBound = moment(mainChartContainer.lowerBound, 'YYYY-MM-DD').add(1, mainChartContainer.timeFrame).format('YYYY-MM-DD');
-        mainChartContainer.upperBound = moment(mainChartContainer.upperBound, 'YYYY-MM-DD').add(1, mainChartContainer.timeFrame).format('YYYY-MM-DD');
+
+        // Adjust upperBound if the timeFrame is month
+        if (mainChartContainer.timeFrame === 'month') {
+            mainChartContainer.upperBound = moment(mainChartContainer.lowerBound, 'YYYY-MM-DD').endOf('month').format('YYYY-MM-DD');
+        } else {
+            mainChartContainer.upperBound = moment(mainChartContainer.upperBound, 'YYYY-MM-DD').add(1, mainChartContainer.timeFrame).format('YYYY-MM-DD');
+        }
+
     } else if (type === 'shiftdown') {
         mainChartContainer.lowerBound = moment(mainChartContainer.lowerBound, 'YYYY-MM-DD').subtract(1, mainChartContainer.timeFrame).format('YYYY-MM-DD');
-        mainChartContainer.upperBound = moment(mainChartContainer.upperBound, 'YYYY-MM-DD').subtract(1, mainChartContainer.timeFrame).format('YYYY-MM-DD');
+
+        // Adjust upperBound if the timeFrame is month
+        if (mainChartContainer.timeFrame === 'month') {
+            mainChartContainer.upperBound = moment(mainChartContainer.lowerBound, 'YYYY-MM-DD').endOf('month').format('YYYY-MM-DD');
+        } else {
+            mainChartContainer.upperBound = moment(mainChartContainer.upperBound, 'YYYY-MM-DD').subtract(1, mainChartContainer.timeFrame).format('YYYY-MM-DD');
+        }
     }
 }
 
@@ -909,7 +923,39 @@ function getDeepWorkHoursAndFocusQuality(dailyData) {
     return [deepWorkHours, focusQuality];
 }
 
+function handleBarClick(elementIndex) {
+    // console.log(`Bar clicked! Element Index: ${elementIndex}`);
+
+    let lowerBound = mainChartContainer.lowerBound;
+    let upperBound = mainChartContainer.upperBound;
+    let boundArr = constructDateArray(lowerBound, upperBound);
+    let selectedDate = boundArr[elementIndex];
+
+    updateDailyContainer(selectedDate);
+}
+
+function constructDateArray(lowerBound, upperBound) {
+    // Create a Date object for lowerBound and upperBound
+    let startDate = new Date(lowerBound);
+    let endDate = new Date(upperBound);
+
+    // Initialize an array to hold the dates
+    let dateArray = [];
+
+    // Loop through the dates, incrementing by one day each time
+    while (startDate <= endDate) {
+        // Push the current date to the array, formatted as 'YYYY-MM-DD'
+        dateArray.push(startDate.toISOString().split('T')[0]);
+
+        // Move to the next day
+        startDate.setDate(startDate.getDate() + 1);
+    }
+
+    return dateArray;
+}
+
 function displayDeepWorkChart() {
+
     let xAxisTickLabelArr;
     if (mainChartContainer.timeFrame === 'week') {
         xAxisTickLabelArr = xAxisTickLabels.week;
@@ -952,6 +998,30 @@ function displayDeepWorkChart() {
             }]
         },
         options: {
+            onClick: function(event, elements) {
+                if (mainChartContainer.timeFrame !== 'year') {
+                    // Check if a bar (or element) was clicked
+                    if (elements.length > 0) {
+                        // Get the clicked element's data index and dataset index
+                        const elementIndex = elements[0].index; // Index of the clicked bar
+                        const datasetIndex = elements[0].datasetIndex;
+        
+                        // Trigger your custom callback function
+                        handleBarClick(elementIndex);
+                    }
+                }
+            },
+            onHover: function(event, elements) {
+                const chart = this;
+                const canvas = chart.canvas;
+    
+                // Check if we're hovering over a bar (elements array is not empty)
+                if ((elements.length) && (mainChartContainer.timeFrame !== 'year')) {
+                    canvas.style.cursor = 'pointer'; // Change cursor to pointer
+                } else {
+                    canvas.style.cursor = 'default'; // Reset cursor to default when not hovering
+                }
+            },
             scales: {
                 y: {
                     beginAtZero: true,
@@ -1128,6 +1198,30 @@ function displayFocusQualityChart() {
             }]
         },
         options: {
+            onClick: function(event, elements) {
+                if (mainChartContainer.timeFrame !== 'year') {
+                    // Check if a bar (or element) was clicked
+                    if (elements.length > 0) {
+                        // Get the clicked element's data index and dataset index
+                        const elementIndex = elements[0].index; // Index of the clicked bar
+                        const datasetIndex = elements[0].datasetIndex;
+        
+                        // Trigger your custom callback function
+                        handleBarClick(elementIndex);
+                    }
+                }
+            },
+            onHover: function(event, elements) {
+                const chart = this;
+                const canvas = chart.canvas;
+    
+                // Check if we're hovering over a bar (elements array is not empty)
+                if ((elements.length) && (mainChartContainer.timeFrame !== 'year')) {
+                    canvas.style.cursor = 'pointer'; // Change cursor to pointer
+                } else {
+                    canvas.style.cursor = 'default'; // Reset cursor to default when not hovering
+                }
+            },
             scales: {
                 y: yScale,
                 x: {
@@ -1313,6 +1407,30 @@ function displayAvgIntervalChart() {
             }]
         },
         options: {
+            onClick: function(event, elements) {
+                if (mainChartContainer.timeFrame !== 'year') {
+                    // Check if a bar (or element) was clicked
+                    if (elements.length > 0) {
+                        // Get the clicked element's data index and dataset index
+                        const elementIndex = elements[0].index; // Index of the clicked bar
+                        const datasetIndex = elements[0].datasetIndex;
+        
+                        // Trigger your custom callback function
+                        handleBarClick(elementIndex);
+                    }
+                }
+            },
+            onHover: function(event, elements) {
+                const chart = this;
+                const canvas = chart.canvas;
+    
+                // Check if we're hovering over a bar (elements array is not empty)
+                if ((elements.length) && (mainChartContainer.timeFrame !== 'year')) {
+                    canvas.style.cursor = 'pointer'; // Change cursor to pointer
+                } else {
+                    canvas.style.cursor = 'default'; // Reset cursor to default when not hovering
+                }
+            },
             scales: {
                 y: yScale,
                 x: {

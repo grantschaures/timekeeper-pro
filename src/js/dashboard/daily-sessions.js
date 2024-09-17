@@ -210,19 +210,24 @@ document.addEventListener("stateUpdated", function() {
     }
 })
 
-// function isValidDateSelection(weekIndex) {
-//     let currentDate = general.currentDay;
-//     let selectedDate = dailyContainer.weeklyDatesArr[weekIndex];
+export function updateDailyContainer(selectedDate) { // from main chart click
+    dailyContainer.selectedDate = selectedDate;
 
-//     let currentDateObj = moment(currentDate, 'YYYY-MM-DD');
-//     let selectedDateObj = moment(selectedDate, 'YYYY-MM-DD');
+    // (1) the new lower and upper bound (for the week) based on dailyContainer.selectedDate
+    updateDailyBounds();
 
-//     if (selectedDateObj.isSameOrBefore(currentDateObj)) {
-//         return true;
-//     }
+    // (2) the index of the week
+    let weekIndex = getWeekIndex();
 
-//     return false;
-// }
+    updateMiniChartLabels();
+    setAndDisplaySelectedDate(weekIndex);
+    document.dispatchEvent(new Event('displayMiniCharts'));
+
+    // if calendar popup is open, close it
+    if (flags.calendarPopupShowing) {
+        calendarIconContainer.click();
+    }
+}
 
 function getWeekIndex() {
     let selectedDate = dailyContainer.selectedDate;
@@ -432,7 +437,7 @@ function setAndDisplaySelectedDate(weekIndex) {
     miniChartLabels[dailyContainer.weekIndex].style.fontSize = '9px';
 
     miniChartLabels[weekIndex].style.textDecoration = 'underline';
-    miniChartLabels[weekIndex].style.fontSize = '10px';
+    miniChartLabels[weekIndex].style.fontSize = '11px';
 
     // Display the daily container day view
     dailyContainer.weekIndex = weekIndex;
@@ -473,7 +478,7 @@ function updateMiniChartLabels() {
 
     if (weeklyDateArr.includes(selectedDate)) {
         miniChartLabels[dailyContainer.weekIndex].style.textDecoration = 'underline'; // add new underline
-        miniChartLabels[dailyContainer.weekIndex].style.fontSize = '10px'; // add new underline
+        miniChartLabels[dailyContainer.weekIndex].style.fontSize = '11px'; // add new underline
 
     } else {
         miniChartLabels[dailyContainer.weekIndex].style.textDecoration = ''; // remove previous underline
