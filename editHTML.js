@@ -45,7 +45,6 @@ const dayViewJsPath = './src/js/utility/day-view.js';
 const summaryStatsJsPath = './src/js/dashboard/summary-stats.js';
 const advChartsJsPath = './src/js/utility/adv-charts.js';
 const metricChartsJsPath = './src/js/dashboard/metric-charts.js';
-const labelDistributionJsPath = './src/js/dashboard/label-distribution.js';
 const populateDashboardJsPath = './src/js/dashboard/populate-dashboard.js';
 
 const updateLabelsJsPath = './src/js/state/update-labels.js';
@@ -308,13 +307,6 @@ const populateDashboardReplacements = [
     },
 ]
 
-const labelDistributionReplacements = [
-    {
-        pattern: /import { userTimeZone } from '..\/utility\/identification.js';/g,
-        replacement: "import { userTimeZone } from '../minified/identification.min.js';"
-    }
-]
-
 const metricChartsReplacements = [
     {
         pattern: /import { setBounds, alterBounds, displayTimeFrame } from '.\/label-distribution.js';/g,
@@ -367,7 +359,6 @@ readFileAndReplace(googleSignInPath, googleSignInReplacements);
 readFileAndReplace(loginJsPath, loginReplacements);
 readFileAndReplace(endSessionJsPath, endSessionReplacements);
 readFileAndReplace(populateDashboardJsPath, populateDashboardReplacements);
-readFileAndReplace(labelDistributionJsPath, labelDistributionReplacements);
 readFileAndReplace(updateLabelsJsPath, updateLabelsReplacements);
 readFileAndReplace(metricChartsJsPath, metricChartsReplacements);
 readFileAndReplace(advChartsJsPath, advChartsReplacements);
