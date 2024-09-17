@@ -2,7 +2,7 @@ import { directionIndicators, summaryAvgAdjustedDeepWorkDown, summaryAvgAdjusted
 import { charts, mainChartContainer, dashboardData, flags, constants, general } from "../modules/dashboard-objects.js";
 import { timeConvert } from "../modules/index-objects.js";
 
-import { updateDailyContainer } from "../dashboard/daily-sessions.js"; // add to editHTML
+import { updateDailyContainer } from '../dashboard/daily-sessions.js'; // minified
 
 // Global Variables
 let deepWorkArr = []; // holds normal or quality adjusted deep work time
