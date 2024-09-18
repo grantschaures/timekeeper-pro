@@ -308,9 +308,6 @@
     left: 10px;
     opacity: 1.00;
     margin-right: 8px;
-}
-
-#metricDistributionBackBtn {
     cursor: pointer;
 }
 
@@ -358,9 +355,7 @@
     border-radius: 25px;
     z-index: 10;
     margin-top: 10px;
-    padding-top: 15px;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding: 15px;
     opacity: 1;
     transition: height 0.5s cubic-bezier(0.25, 0.1, 0.25, 1), padding 0.5s cubic-bezier(0.25, 0.1, 0.25, 1), margin-top 0.5s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
     color: white;
@@ -1236,14 +1231,215 @@
     /* border: 2px solid white; */
 }
 
+/* SESSION VIEW */
+#sessionViewContainer {
+    /* display: flex; */
+    display: none;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    margin-top: 15px;
+
+    opacity: 0;
+    transition: opacity 0.25s ease-in-out; 
+
+    /* border: 2px solid cyan; */
+}
+
+#sessionViewSessionContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    padding-bottom: 15px;
+    
+    /* border: 2px solid white; */
+}
+
+#sessionViewHeaderContainer {
+    display: flex;
+    width: 100%;
+    justify-content: space-between; /* Ensures the left element is aligned to the left */
+    align-items: center; /* Vertically centers the items */
+    position: relative; /* For positioning the center element absolutely */
+
+    /* border: 1px solid orange; */
+}
+
+#sessionViewBackBtn {
+    width: 32px;
+    height: 32px;
+    margin-left: 3px;
+    z-index: 4;
+    left: 10px;
+    opacity: 1.00;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+#sessionTitle {
+    padding-right: 20px;
+
+    /* border: 1px solid white; */
+}
+
+#sessionViewTrashIcon {
+    border-radius: 25px;
+    margin-right: 3px;
+    cursor: pointer;
+}
+
+#sessionViewCommentsContainer {
+    border-radius: 25px;
+    height: auto;
+    padding: 5px;
+    width: 100%; /* Ensure the container takes the full width of the parent element */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    background-color: rgba(0, 0, 0, 0.15);
+
+    border: 2px solid white;
+}
+
+#sessionViewCommentsTextArea {
+    width: 100%;
+    min-height: 35px;
+    border: none;
+    resize: none; /* Prevent manual resizing */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    color: white;
+    background-color: rgba(0, 0, 0, 0);
+    font-size: 18px;
+    font-family: settingsHeaderFont;
+    overflow: hidden; /* Hide scrollbars */
+}
+
+#sessionViewCommentsTextArea:focus, #sessionViewSubjectiveFeedbackDropdown:focus {
+    outline: none;
+}
+
+#sessionViewSubjectiveFeedbackContainer {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+#sessionViewSubjectiveFeedbackDropdown {
+    min-height: 35px;
+    border: 2px solid white;
+    background-color: rgba(0, 0, 0, 1);
+    color: white;
+    border-radius: 25px;
+    width: 100%;
+    height: 50px;
+    font-family: settingsHeaderFont;
+    font-size: 18px;
+    box-sizing: border-box;
+    text-align-last: center; /* Center the selected option in some browsers */
+    cursor: pointer;
+
+    transition: background-color 0.15s ease-in-out;
+}
+
+#sessionViewSubjectiveFeedbackDropdown:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 1);
+}
+
+#sessionViewHr1 {
+    margin: 15px 0px;
+}
+
+#sessionViewLabelsContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.sessionViewLabelContainer {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    margin-bottom: 15px;
+
+    /* border: 1px solid white; */
+}
+
+.sessionViewLabel {
+    display: flex;
+    background-color:rgba(255, 255, 255, 0.15);
+    padding: 3px 8px;
+    border-radius: 25px;
+    white-space: nowrap;
+}
+
+.sessionViewLabelTime {
+    display: flex;
+    white-space: nowrap;
+    margin-left: 5px;
+}
+
+#sessionViewAdvStatsContainer {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+
+.sessionViewAdvStatContainer {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.sessionViewAdvStatText {
+    font-family: settingsHeaderFont;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.sessionViewAdvStat {
+    display: flex;
+    margin-left: 5px;
+    font-weight: 700;
+    /* text-decoration: underline; */
+}
+
+.sessionViewNoLabelsContainer {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+    border-radius: 25px;
+    box-sizing: border-box;
+
+    /* border: 2px solid white; */
+}
+
+
+
+
+
+
+
+
+/* DAY VIEW */
 #dayViewContainer {
     display: flex;
+    /* display: none; */
     align-items: center;
     flex-direction: column;
     width: 100%;
     height: auto;
 
-    /* border: 3px solid red; */
+    opacity: 1;
+    transition: opacity 0.25s ease-in-out; 
+
+    /* border: 2px solid red; */
 }
 
 #dayViewSummaryChartContainer {
@@ -1337,9 +1533,12 @@
     border-radius: 25px;
     box-sizing: border-box;
     margin-top: 15px;
-    cursor: pointer;
     
     border: 2px solid white;
+}
+
+.dayViewSessionContainer:not(.no-select) {
+    cursor: pointer;
 }
 
 .noSessionsContainer {
@@ -1433,50 +1632,6 @@
     background-color: rgba(59, 143, 227, 1);
 }
 
-/* #interval1 {
-    width: 12.22%;
-}
-
-#interval2 {
-    width: 4.90%;
-}
-
-#interval3 {
-    width: 9.91%;
-}
-
-#interval4 {
-    width: 3.60%;
-}
-
-#interval5 {
-    width: 3.60%;
-}
-
-#interval6 {
-    width: 16.22%;
-}
-
-#interval7 {
-    width: 12.61%;
-}
-
-#interval8 {
-    width: 17.12%;
-}
-
-#interval9 {
-    width: 4.50%;
-}
-
-#interval10 {
-    width: 15.32%;
-} */
-
-
-
-
-
 #dayViewNoEntriesContainer {
     display: none;
     justify-content: center;
@@ -1502,7 +1657,8 @@
 }
 
 .dayViewCompletedTask, .dayViewNote {
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: 400;
     font-family: settingsHeaderFont;
     margin-bottom: 10px;
 }
@@ -1526,6 +1682,11 @@
     margin-top: -2px;
 }
 
+@media (max-width: 1215px) {
+    .sessionViewAdvStatText, .sessionViewAdvStat {
+        font-size: 16px;
+    }
+}
 
 @media (max-width: 1015px) {
     .dayViewSummaryStatText {

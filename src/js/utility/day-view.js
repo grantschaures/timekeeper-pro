@@ -3,6 +3,7 @@ import { charts, constants, dailyContainer, dashboardData } from "../modules/das
 
 import { getDeepWork, getFocusQuality, getTargetHours } from './session-summary-chart.js'; // minified
 import { userTimeZone } from './identification.js'; // minified
+import { initializeSessionView } from "./session-view.js"; // add to editHTML
 
 let currentWeekData;
 
@@ -12,6 +13,29 @@ let dayViewSummaryStats = {
     minutes: null,
     seconds: null
 }
+
+let sessionDataArr = [];
+let dayViewSessionIds = [];
+
+document.addEventListener("stateUpdated", async function() {
+
+    dayViewSessionsContainer.addEventListener('click', function(event) {
+        let target = event.target;
+
+        for (let i = 0; i < dayViewSessionIds.length; i++) {
+            let selector = '#' + dayViewSessionIds[i];
+            if (target.closest(selector)) {
+                let dayViewSessionContainer = document.getElementById(`${dayViewSessionIds[i]}`);
+                console.log(dayViewSessionContainer)
+                let dayViewSessionContainerCopy = dayViewSessionContainer.cloneNode(true);
+                let sessionNumber = i + 1;
+                initializeSessionView(sessionDataArr[i], dayViewSessionContainerCopy, sessionNumber);
+            }
+        }
+
+    })
+
+})
 
 document.addEventListener("displayDayView", async function() {
     await resetData();
@@ -46,6 +70,11 @@ async function resetData() {
     // hide #dayViewNotesHeader AND #dayViewCompletedTasksHeader
     dayViewNotesHeader.innerText = "";
     dayViewCompletedTasksHeader.innerText = "";
+
+    // reset dayViewSessionId array
+    dayViewSessionIds = [];
+
+    sessionDataArr = [];
 }
 
 function displayDayView() {
@@ -145,13 +174,12 @@ function initializeDayViewSessions() {
     // if so, loop through all the sessions and call function to append a new sessionContainer to the dayViewSessionsContainer
     // if not, output a similar looking container with a white border, but with inner text reading "No Sessions"
     
-    let sessionDataArr;
     if (currentWeekData.dailyData) {
         sessionDataArr = currentWeekData.dailyData.sessions;
 
         // call function to append new sessionContainer to the DOM for each session
         for (let i = 0; i < sessionDataArr.length; i++) {
-            createAndAppendSessionContainer(sessionDataArr[i]);
+            createAndAppendSessionContainer(sessionDataArr[i], i);
 
         }
 
@@ -161,7 +189,7 @@ function initializeDayViewSessions() {
     }
 }
 
-function createAndAppendSessionContainer(session) {
+function createAndAppendSessionContainer(session, i) {
     // console.log(session);
 
     // INITIALIZE VARS
@@ -196,10 +224,14 @@ function createAndAppendSessionContainer(session) {
     
     // END TIME
     let endTime = getAdjustedTime(session.endTime, session.timeZone);
-
+    
     // create dayViewSessionContainer
     let dayViewSessionContainer = document.createElement('div');
-    dayViewSessionContainer.classList.add('dayViewSessionContainer')
+    dayViewSessionContainer.classList.add('dayViewSessionContainer');
+    
+    let dayViewSessionId = 'dayViewSession' + i;
+    dayViewSessionContainer.id = dayViewSessionId;
+    dayViewSessionIds.push(dayViewSessionId);
 
     // (1) dayViewSessionStatOverview
     let dayViewSessionStatOverviewContainer = document.createElement('div');

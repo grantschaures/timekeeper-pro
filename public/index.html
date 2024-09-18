@@ -28,6 +28,7 @@
         <script type="module" src="/js/utility/adv-charts.js"></script>
         <script type="module" src="/js/utility/mini-charts.js"></script>
         <script type="module" src="/js/utility/day-view.js"></script>
+        <script type="module" src="/js/utility/session-view.js"></script>
 
         <link rel="preload" href="fonts/CPMono_v07_Light.woff" as="font" type="font/woff" crossorigin="anonymous">
         <link rel="preload" href="fonts/CPMono_v07_Bold.woff" as="font" type="font/woff" crossorigin="anonymous">
@@ -1055,18 +1056,67 @@
                                 <div id="dayViewNotesEntriesContainer">
                                     <div id="dayViewNoEntriesContainer">No Notes or Completed Tasks</div>
                                     <div id="dayViewNotesContainer" class="dayViewNotesEntryContainer">
-                                        <div id="dayViewNotesHeader">
-                                            Notes (1)
-                                        </div>
+                                        <div id="dayViewNotesHeader"></div>
                                         <ul id="dayViewNotes" class="dayViewNotesEntriesList"></ul>
                                     </div>
                                     <div id="dayViewCompletedTasksContainer" class="dayViewNotesEntryContainer">
-                                        <div id="dayViewCompletedTasksHeader">
-                                            Completed Tasks (2)
-                                        </div>
+                                        <div id="dayViewCompletedTasksHeader"></div>
                                         <ul id="dayViewCompletedTasks" class="dayViewNotesEntriesList"></ul>
                                     </div>
                                 </div>
+                            </div>
+                            
+                            <div id="sessionViewContainer">
+
+                                <div id="sessionViewHeaderContainer">
+                                    <img id="sessionViewBackBtn" src="images/icons/left-arrow-261369-white.png" draggable="false" alt="Back" class="no-select">
+                                    <div id="sessionTitle" class="no-select"></div>
+                                    <svg id="sessionViewTrashIcon" class="editRemoveSvg removeSvg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline class="removePath" points="3 6 5 6 21 6"></polyline>
+                                        <path class="removePath" d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                        <line class="removePath" x1="10" y1="11" x2="10" y2="17"></line>
+                                        <line class="removePath" x1="14" y1="11" x2="14" y2="17"></line>
+                                    </svg>
+                                </div>
+
+                                <div id="sessionViewSessionContainer"></div>
+
+                                <div id="sessionViewCommentsContainer">
+                                    <textarea id="sessionViewCommentsTextArea" placeholder="Comments"></textarea>
+                                </div>
+
+                                <div id="sessionViewSubjectiveFeedbackContainer">
+                                    <label for="sessionViewSubjectiveFeedbackDropdown"></label>
+                                    <select id="sessionViewSubjectiveFeedbackDropdown" name="sessionViewSubjectiveFeedbackDropdown">
+                                        <option value="" selected>Rate Session</option>
+                                        <option value="good">😊 Good</option>
+                                        <option value="ok">😐 Mid</option>
+                                        <option value="bad">😒 Bad</option>
+                                        <option value="unsure">🤔 Not Sure</option>
+                                    </select>
+                                </div>
+
+                                <hr id="sessionViewHr1" class="dailyContainerHr">
+                                
+                                <div id="sessionViewLabelsContainer"></div>
+                                
+                                <hr id="sessionViewHr2" class="dailyContainerHr">
+
+                                <div id="sessionViewAdvStatsContainer">
+                                    <div id="sessionDurationStatContainer" class="sessionViewAdvStatContainer">
+                                        <li id="sessionDurationText" class="sessionViewAdvStatText">Session Duration: </li>
+                                        <div id="sessionDurationStat" class="sessionViewAdvStat"></div>
+                                    </div>
+                                    <div id="percentTimeInDeepWorkStatContainer" class="sessionViewAdvStatContainer">
+                                        <li id="percentTimeInDeepWorkText" class="sessionViewAdvStatText">% Time in Deep Work: </li>
+                                        <div id="percentTimeInDeepWorkStat" class="sessionViewAdvStat"></div>
+                                    </div>
+                                    <div id="pomodoroCountStatContainer" class="sessionViewAdvStatContainer">
+                                        <li id="pomodoroCountText" class="sessionViewAdvStatText">Pomodoros Completed: </li>
+                                        <div id="pomodoroCountStat" class="sessionViewAdvStat"></div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>

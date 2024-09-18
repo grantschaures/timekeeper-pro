@@ -30,7 +30,7 @@ document.addEventListener("stateUpdated", function() {
             metricDistributionBackBtn.classList.add('triggerBounceLeft');
         })
         metricDistributionBackBtn.addEventListener('mouseout', function() {
-            metricDistributionBackBtn.classList.remove('TriggerBounceLeft');
+            metricDistributionBackBtn.classList.remove('triggerBounceLeft');
             metricDistributionBackBtn.classList.add('resetBounce');
         })
         metricDistributionBackBtn.addEventListener("click", function(event) {

@@ -43,7 +43,8 @@ export const flags = {
     advChartsOpen: false,
     calendarPopupShowing: false,
     dailyArrowClicked: false,
-    dashboardPopulated: false
+    dashboardPopulated: false,
+    sessionViewContainerShowing: false
 }
 
 export const charts = {

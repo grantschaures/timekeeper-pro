@@ -110,6 +110,7 @@ export const todayBtn = document.getElementById('todayBtn');
 export const calendarHeaderCells = document.querySelectorAll('.calendarHeaderCell');
 export const dayViewSummaryChart = document.getElementById('dayViewSummaryChart');
 
+export const dayViewContainer = document.getElementById('dayViewContainer');
 export const dayViewDeepWorkSummaryStat = document.getElementById('dayViewDeepWorkSummaryStat');
 export const dayViewFocusQualitySummaryStat = document.getElementById('dayViewFocusQualitySummaryStat');
 export const dayViewSessionsContainer = document.getElementById('dayViewSessionsContainer');
@@ -120,3 +121,16 @@ export const dayViewNotes = document.getElementById('dayViewNotes');
 export const dayViewCompletedTasks = document.getElementById('dayViewCompletedTasks');
 export const dayViewNotesEntriesContainer = document.getElementById('dayViewNotesEntriesContainer');
 export const dayViewNoEntriesContainer = document.getElementById('dayViewNoEntriesContainer');
+
+export const sessionViewSessionContainer = document.getElementById('sessionViewSessionContainer');
+export const sessionViewContainer = document.getElementById('sessionViewContainer');
+export const sessionViewBackBtn = document.getElementById('sessionViewBackBtn');
+export const sessionViewCommentsTextArea = document.getElementById('sessionViewCommentsTextArea');
+export const sessionTitle = document.getElementById('sessionTitle');
+export const sessionViewHeaderContainer = document.getElementById('sessionViewHeaderContainer');
+export const sessionViewSubjectiveFeedbackDropdown = document.getElementById('sessionViewSubjectiveFeedbackDropdown');
+export const sessionViewLabelsContainer = document.getElementById('sessionViewLabelsContainer');
+export const sessionViewNoLabelsContainer = document.getElementById('sessionViewNoLabelsContainer');
+export const sessionDurationStat = document.getElementById('sessionDurationStat');
+export const percentTimeInDeepWorkStat = document.getElementById('percentTimeInDeepWorkStat');
+export const pomodoroCountStat = document.getElementById('pomodoroCountStat');

@@ -1,4 +1,4 @@
-import { dailyDay, dailyDate, rightDailyArrow, rightDailyArrowGray, leftDailyArrow, miniChartLabels, miniChartContainers, dailyBlocks, calendarIconContainer, calendarPopup, monthSelection, yearSelection, calendarHeaderCells, leftCalendarArrow, rightCalendarArrow, rightCalendarArrowGray, calendarBody, todayBtn } from '../modules/dashboard-elements.js';
+import { dailyDay, dailyDate, rightDailyArrow, rightDailyArrowGray, leftDailyArrow, miniChartLabels, miniChartContainers, dailyBlocks, calendarIconContainer, calendarPopup, monthSelection, yearSelection, calendarHeaderCells, leftCalendarArrow, rightCalendarArrow, rightCalendarArrowGray, calendarBody, todayBtn, sessionViewBackBtn } from '../modules/dashboard-elements.js';
 import { dailyContainer, general, flags, calendarContainer } from '../modules/dashboard-objects.js';
 import { tempCounters } from '../modules/index-objects.js';
 import { sessionState } from '../modules/state-objects.js';
@@ -76,38 +76,31 @@ document.addEventListener("stateUpdated", function() {
 
         // MINI CHART CANVAS SELECTION EVENT LISTENERS
         dailyBlocks[0].addEventListener("click", function() { // Sunday
-            setAndDisplaySelectedDate(0);
-            document.dispatchEvent(new Event('displayDayView'));
+            miniChartSelectionActions(0);
         });
         
         dailyBlocks[1].addEventListener("click", function() { // Monday
-            setAndDisplaySelectedDate(1);
-            document.dispatchEvent(new Event('displayDayView'));
+            miniChartSelectionActions(1);
         });
         
         dailyBlocks[2].addEventListener("click", function() { // Tuesday
-            setAndDisplaySelectedDate(2);
-            document.dispatchEvent(new Event('displayDayView'));
+            miniChartSelectionActions(2);
         });
         
         dailyBlocks[3].addEventListener("click", function() { // Wednesday
-            setAndDisplaySelectedDate(3);
-            document.dispatchEvent(new Event('displayDayView'));
+            miniChartSelectionActions(3);
         });
         
         dailyBlocks[4].addEventListener("click", function() { // Thursday
-            setAndDisplaySelectedDate(4);
-            document.dispatchEvent(new Event('displayDayView'));
+            miniChartSelectionActions(4);
         });
         
         dailyBlocks[5].addEventListener("click", function() { // Friday
-            setAndDisplaySelectedDate(5);
-            document.dispatchEvent(new Event('displayDayView'));
+            miniChartSelectionActions(5);
         });
         
         dailyBlocks[6].addEventListener("click", function() { // Saturday
-            setAndDisplaySelectedDate(6);
-            document.dispatchEvent(new Event('displayDayView'));
+            miniChartSelectionActions(6);
         });
 
         // CALENDAR
@@ -174,6 +167,11 @@ document.addEventListener("stateUpdated", function() {
             let selectedCellId = calendarContainer.selectedCellId;
 
             if ((eventTargetClassListStr === 'no-select calendarCell') || (eventTargetClassListStr === 'no-select calendarCell currentDay')) {
+
+                // close the session view container if open
+                if (flags.sessionViewContainerShowing) {
+                    sessionViewBackBtn.click();
+                }
                 
                 // removing previous selection class (if it exists and isn't the target)
                 if ((selectedCellId) && (selectedCellId !== eventTargetId)) {
@@ -204,14 +202,34 @@ document.addEventListener("stateUpdated", function() {
         })
 
         todayBtn.addEventListener('click', function() {
+
             setInitialDate();
             calendarIconContainer.click();
+
+            // close the session view container if open
+            if (flags.sessionViewContainerShowing) {
+                sessionViewBackBtn.click();
+            }
         })
     }
 })
 
+function miniChartSelectionActions(chartIndex) {
+    setAndDisplaySelectedDate(chartIndex);
+    document.dispatchEvent(new Event('displayDayView'));
+
+    // close the session view container if open
+    if (flags.sessionViewContainerShowing) {
+        sessionViewBackBtn.click();
+    }
+}
+
 export function updateDailyContainer(selectedDate) { // from main chart click
     dailyContainer.selectedDate = selectedDate;
+
+    if (flags.sessionViewContainerShowing) {
+        sessionViewBackBtn.click();
+    }
 
     // (1) the new lower and upper bound (for the week) based on dailyContainer.selectedDate
     updateDailyBounds();
