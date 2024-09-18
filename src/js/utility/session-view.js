@@ -2,9 +2,9 @@ import { confirmSessionDeletionNoBtn, confirmSessionDeletionPopup, confirmSessio
 import { dashboardData, flags } from "../modules/dashboard-objects.js";
 import { body, confirmLabelDeletionYesBtn, popupOverlay, subjectiveFeedbackDropdown } from "../modules/dom-elements.js";
 
-import { updateSessionSummaryData } from "../state/update-session-summary-data.js"; // add to editHTML
-import { deleteSession } from "../state/delete-session.js"; // add to editHTML
-import { getDeepWork } from "./session-summary-chart.js"; // add to editHTML
+import { updateSessionSummaryData } from '../state/update-session-summary-data.js'; // minified
+import { deleteSession } from '../state/delete-session.js'; // minified
+import { getDeepWork } from './session-summary-chart.js'; // minified
 
 let userSession;
 let sessionViewSessionContainerCopy;
