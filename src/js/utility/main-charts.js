@@ -1609,8 +1609,8 @@ function displaySessionIntervalsChart() {
                             let index = xAxisLabelsTempArr.indexOf(defaultTitle);
                             let date = dateStrArr[index];
 
-                            if (date === "no data") {
-                                date = "data from session started previous day"; // This will be fine for now but could be optimized if time allows
+                            if ((date === "no data") || (!date)) {
+                                date = "data from last session of previous day"; // This will be fine for now but could be optimized if time allows
                             }
                             return `${date}`;
                         },
