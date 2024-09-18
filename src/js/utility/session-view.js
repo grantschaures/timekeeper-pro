@@ -152,12 +152,13 @@ function displaySessionView(session, dayViewSessionContainerCopy, sessionNumber)
     // Initialize the comments container w/ user's comments if they were added in session summary
     let sessionComments = session.sessionSummary.comments;
     sessionViewCommentsTextArea.value = sessionComments; // resets value on initialization
+    sessionViewCommentsTextArea.style.height = 'auto';
+    sessionViewCommentsTextArea.style.height = sessionViewCommentsTextArea.scrollHeight + 'px';
     
     // Initialize the subjective feedback
     let subjectiveFeedback = session.sessionSummary.subjectiveFeedback;
     sessionViewSubjectiveFeedbackDropdown.value = subjectiveFeedback; // resets value on initialization
     
-    console.log(session)
     // Initialize the label times
     // now, we'll need to do just a bit of calculations before proceeding the label and adv stats sections
     // iterate through all of the labels

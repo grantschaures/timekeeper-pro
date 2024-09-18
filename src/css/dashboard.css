@@ -1305,6 +1305,7 @@
 #sessionViewCommentsTextArea {
     width: 100%;
     min-height: 35px;
+    height: auto;
     border: none;
     resize: none; /* Prevent manual resizing */
     box-sizing: border-box; /* Include padding and border in the element's total width and height */
@@ -1313,6 +1314,8 @@
     font-size: 18px;
     font-family: settingsHeaderFont;
     overflow: hidden; /* Hide scrollbars */
+
+    /* border: 1px solid red; */
 }
 
 #sessionViewCommentsTextArea:focus, #sessionViewSubjectiveFeedbackDropdown:focus {
