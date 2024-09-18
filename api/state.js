@@ -21,7 +21,8 @@ router.get("/sessionValidation", async function(req, res) {
     try {
         console.log("Endpoint 1 reached")
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
-        const user = await User.findById(decoded.userId);
+        // const user = await User.findById(decoded.userId);
+        const user = await User.findById('66e6fdb3bb1315b4d4dd09be');
 
         if (user) {
             console.log("Endpoint 2 reached")
