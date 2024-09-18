@@ -44,7 +44,9 @@ export const flags = {
     calendarPopupShowing: false,
     dailyArrowClicked: false,
     dashboardPopulated: false,
-    sessionViewContainerShowing: false
+    sessionViewContainerShowing: false,
+    confirmSessionDeletionPopupShowing: false,
+    remainOnSelectedDate: false
 }
 
 export const charts = {

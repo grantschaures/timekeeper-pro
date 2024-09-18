@@ -10,8 +10,10 @@ let files = [
     'src/js/main/navigation.js',
     'src/js/main/notes.js',
     'src/js/main/end-session.js',
+
     'src/js/api/google-signin.js',
     'src/js/api/pip.js',
+
     'src/js/state/state.js',
     'src/js/state/update-labels.js',
     'src/js/state/update-deleted-labels.js',
@@ -28,6 +30,9 @@ let files = [
     'src/js/state/add-session.js',
     'src/js/state/add-notes-entry.js',
     'src/js/state/update-notes-entry.js',
+    'src/js/state/delete-session.js',
+    'src/js/state/update-session-summary-data.js',
+
     'src/js/utility/initialize-gui.js',
     'src/js/utility/preload.js',
     'src/js/utility/update-streaks.js',
@@ -37,6 +42,8 @@ let files = [
     'src/js/utility/session-summary-chart.js',
     'src/js/utility/adv-charts.js',
     'src/js/utility/main-charts.js',
+    'src/js/utility/session-view.js',
+
     'src/js/login-signup/login.js',
     'src/js/login-signup/signup.js',
     'src/js/login-signup/reset-password.js',

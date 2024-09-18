@@ -1,3 +1,4 @@
+import { flags as dashboardFlags } from '../modules/dashboard-objects.js';
 import { populateDashboard } from '../dashboard/populate-dashboard.js'; // minified
 
 export async function updateLabels(labelArr) {
@@ -26,6 +27,8 @@ export async function updateLabels(labelArr) {
         const data = await response.json();
         console.log("notes updated successfully:", data);
 
+        // update dashboard!
+        dashboardFlags.remainOnSelectedDate = true;
         populateDashboard(data.noteSessionData.sessions, data.noteSessionData.note, data.noteSessionData.notesEntries);
     } catch (error) {
         console.error('Failed to update labels:', error);

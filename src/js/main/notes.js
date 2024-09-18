@@ -305,6 +305,7 @@ document.addEventListener("stateUpdated", function() {
         }
     })
 
+    // possible source of Dad's bug
     document.addEventListener('keyup', function(event) {
         if ((event.key === 'Shift') && (flags.shiftPressed)) {
             flags.shiftPressed = false;

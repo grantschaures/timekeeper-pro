@@ -160,6 +160,19 @@
                     <button id="confirmLabelDeletionNoBtn">No</button>
                 </div>
             </div>
+            <div id="confirmSessionDeletionPopup">
+                <div id="confirmSessionDeletionPromptContainer">
+                    <div id="sessionToDeleteContainer"></div> <!-- dynamically load in session -->
+                    <hr class="popupHr">
+                    <p id="confirmSessionDeletionText">
+                        Are you sure you want to delete the following session and its associated data?
+                    </p>
+                </div>
+                <div id="confirmSessionDeletionBtnContainer">
+                    <button id="confirmSessionDeletionYesBtn">Yes</button>
+                    <button id="confirmSessionDeletionNoBtn">No</button>
+                </div>
+            </div>
             <div id="previousSessionStartedPopup"> <!-- in hibernation -->
                 <div d="previousSessionStartedPromptContainer">
                     <p id="previousSessionText">A previous session was started, but never ended. Would you like to: </p>
@@ -227,7 +240,6 @@
                     </button>
                 </div>
             </div>
-
             <div id="sessionSummarySignupPromptPopup">
                 <div id="signupPromptHeaderTextContainer">
                     <h1 id="signupPromptHeaderText">Would you like to save your sessions?</h1>

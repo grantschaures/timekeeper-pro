@@ -6,13 +6,13 @@ import { labelFlags, labelArrs, labelDict, notesFlags, flags as notesflags } fro
 import { tempStorage, flags as summaryFlags } from '../modules/summary-stats.js';
 import { flags as navFlags, state } from '../modules/navigation-objects.js';
 import { dailyContainer } from '../modules/dashboard-objects.js';
+import { flags as dashboardFlags } from '../modules/dashboard-objects.js';
 
 import { animationsFadeIn, animationsFadeOut, getTotalElapsed, returnTotalTimeString, updateLabelArrs, setBackground, pauseAndResetAlertSounds, resetDisplay, updateProgressBar, totalTimeDisplay, setButtonTextAndMode, hideSuggestionBreakContainer, hidePomodorosCompletedContainer, showInterruptionsSubContainer, setFavicon, observer, pomodoroWorker, suggestionWorker, flowmodoroWorker, displayWorker, totalDisplayWorker, updateDataPerHour, hideCat } from './index.js'; // minified
 import { checkInvaliDate } from '../state/check-invaliDate.js'; // minified
 import { addSession } from '../state/add-session.js'; // minified
 import { closeAboutContainer, closeBlogContainer, subMainContainerTransition } from './navigation.js'; // minified
 import { populateDashboard } from '../dashboard/populate-dashboard.js'; // minified
-import { setInitialDate } from '../dashboard/daily-sessions.js'; // minified
 
 const defaultFavicon = "/images/logo/HyperChillLogo_circular_white_border.png";
 
@@ -34,7 +34,7 @@ document.addEventListener("stateUpdated", function() {
 
             // if any overlay popups are showing, close those first before session summary popup shows (MAKE SURE TO UPDATE THIS IF MORE OVERLAY POPUP WINDOWS ARE ADDED)
             // (necessary due to pip end btn click)
-            if ((navFlags.deleteAccountWindowShowing) || (navFlags.accountWindowShowing) || (navFlags.shortcutsWindowShowing) || (notesflags.confirmLabelDeletionWindowShowing)) {
+            if ((navFlags.deleteAccountWindowShowing) || (navFlags.accountWindowShowing) || (navFlags.shortcutsWindowShowing) || (notesflags.confirmLabelDeletionWindowShowing) || (dashboardFlags.confirmSessionDeletionPopupShowing)) {
                 popupOverlay.click();
             }
 

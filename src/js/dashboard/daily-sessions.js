@@ -550,61 +550,66 @@ function formatDateString(dateStr) {
  * (7) Displays mini-charts
  */
 export async function setInitialDate() {
-    const now = new Date();
 
-    // set initial selectedDate to be current date
-    dailyContainer.selectedDate = general.currentDay;
+    if (!flags.remainOnSelectedDate) {
 
-    // set month and year fields of calendarContainer
-    let current = getMonthYearDay(general.currentDay);
-    calendarContainer.month = current.month;
-    calendarContainer.year = current.year;
+        const now = new Date();
+        // set initial selectedDate to be current date
+        dailyContainer.selectedDate = general.currentDay;
 
-    // set the value and the max of the yearSelection input
-    yearSelection.value = calendarContainer.year; // UI
-    yearSelection.max = calendarContainer.year;
+        // set month and year fields of calendarContainer
+        let current = getMonthYearDay(general.currentDay);
+        calendarContainer.month = current.month;
+        calendarContainer.year = current.year;
 
-    // set the value of the monthSelection element
-    monthSelection.value = calendarContainer.month; // UI
+        // set the value and the max of the yearSelection input
+        yearSelection.value = calendarContainer.year; // UI
+        yearSelection.max = calendarContainer.year;
 
-    // Initialize the calendarBody
-    updateCalendarBody(current);
-    
-    // Array of weekdays
-    const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    
-    // Array of month names
-    const months = [
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ];
-    
-    // Get the day of the week and the date
-    const dayOfWeek = weekdays[now.getDay()]; // Get the day of the week
-    const month = months[now.getMonth()]; // Get the month name
-    const day = now.getDate(); // Get the day of the month
-    const year = now.getFullYear(); // Get the year
-    
-    // Format the date as "Month Day, Year"
-    const formattedDate = `${month} ${day}, ${year}`;
+        // set the value of the monthSelection element
+        monthSelection.value = calendarContainer.month; // UI
 
-    dailyDay.innerText = dayOfWeek;
-    dailyDate.innerText = formattedDate;
+        // Initialize the calendarBody
+        updateCalendarBody(current);
+        
+        // Array of weekdays
+        const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        
+        // Array of month names
+        const months = [
+            "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+        
+        // Get the day of the week and the date
+        const dayOfWeek = weekdays[now.getDay()]; // Get the day of the week
+        const month = months[now.getMonth()]; // Get the month name
+        const day = now.getDate(); // Get the day of the month
+        const year = now.getFullYear(); // Get the year
+        
+        // Format the date as "Month Day, Year"
+        const formattedDate = `${month} ${day}, ${year}`;
 
-    // when this is called after initial call
-    if (dailyContainer.dayViewSummaryChartSeen) {
-        miniChartLabels[dailyContainer.weekIndex].style.textDecoration = '';
-        miniChartLabels[dailyContainer.weekIndex].style.fontSize = '9px';
+        dailyDay.innerText = dayOfWeek;
+        dailyDate.innerText = formattedDate;
+
+        // when this is called after initial call
+        if (dailyContainer.dayViewSummaryChartSeen) {
+            miniChartLabels[dailyContainer.weekIndex].style.textDecoration = '';
+            miniChartLabels[dailyContainer.weekIndex].style.fontSize = '9px';
+        }
+        dailyContainer.weekIndex = getWeekIndex();
+
+        await setBounds(dailyContainer, null, rightDailyArrow, rightDailyArrowGray);
+        updateMiniChartLabels();
     }
-    dailyContainer.weekIndex = getWeekIndex();
-
-    await setBounds(dailyContainer, null, rightDailyArrow, rightDailyArrowGray);
-    updateMiniChartLabels();
 
     // visualize data (call function to display mini charts)
     // if not logged in, display empty mini-charts; set calendarContainer.miniChartsDisplayType to 'empty'
     // else, set it to 'filled'
     document.dispatchEvent(new Event('displayMiniCharts'));
+
+    flags.remainOnSelectedDate = false;
 }
 
 function getMonthYearDay(dateStr) {

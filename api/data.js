@@ -19,6 +19,124 @@ router.use(checkAndRenewToken);
 // CONSTANTS
 MAX_ITEMS_SESSION_START_TIME_ARR = 5; // can reduce if necessary
 
+
+
+router.post("/update-session-summary-data", async function(req, res) {
+    // Assuming the JWT is sent automatically in cookie headers
+    const token = req.cookies.token;  // Extract the JWT from cookies directly
+    const { sessionId, summaryData } = req.body;
+    // console.log(req.body);
+
+    if (!token) {
+        return res.status(401).json({ message: 'Unauthorized: No token provided' });
+    }
+
+    try {
+        // Verify the token
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        const user = await User.findById(decoded.userId);
+
+        if (!user) {
+            return res.status(404).json({ 
+                message: "User not found"
+            });
+        }
+
+        // Find the session associated with the user
+        const session = await Session.findById(sessionId);
+
+        if (summaryData.type === 'comments') {
+            // update comments
+            session.sessionSummary.comments = summaryData.value;
+        } else if (summaryData.type === 'subjectiveFeedback') {
+            // update subjective feedback rating
+            session.sessionSummary.subjectiveFeedback = summaryData.value;
+        }
+
+        await session.save();
+
+        // READING FROM DB
+        const note = await Note.findOne({ userId: user._id });
+        const sessions = await Session.find({ userId: user._id });
+        const notesEntries = await NotesEntry.find({ userId: user._id});
+
+        let noteSessionData = {
+            note: note,
+            sessions: sessions,
+            notesEntries: notesEntries
+        }
+
+        res.json({ message: "Session summary data updated successfully", noteSessionData });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: "The server was unable to process the request: " + error.message
+        });
+    }
+});
+
+
+
+
+
+router.delete("/delete-session", async function(req, res) {
+    // Assuming the JWT is sent automatically in cookie headers
+    const token = req.cookies.token;  // Extract the JWT from cookies directly
+    const { sessionId } = req.body;
+
+    if (!token) {
+        return res.status(401).json({ message: 'Unauthorized: No token provided' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        const userId = decoded.userId;
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Fetch the session to be deleted
+        const sessionToBeDeleted = await Session.findById(sessionId);
+        if (!sessionToBeDeleted) {
+            return res.status(404).json({ message: "Session not found" });
+        }
+
+        // Find or create a report for the user
+        let report = await Report.findOne({ userId: user._id });
+        if (!report) {
+            report = new Report({ userId: user._id, userEmail: user.email, sessionCount: 0, deletedSessions: [] });
+        }
+
+        // Add the session to the deletedSessions array in the report
+        report.deletedSessions.push(sessionToBeDeleted);
+        await report.save();
+
+        // Delete the session document
+        await Session.findByIdAndDelete(sessionId);
+
+        // READING FROM DB
+        const note = await Note.findOne({ userId: user._id });
+        const sessions = await Session.find({ userId: user._id });
+        const notesEntries = await NotesEntry.find({ userId: user._id});
+
+        let noteSessionData = {
+            note: note,
+            sessions: sessions,
+            notesEntries: notesEntries
+        }
+
+        res.json({ noteSessionData, success: true, message: 'Session deleted successfully' });
+        
+    } catch (error) {
+        return res.status(500).json({
+            message: "The server was unable to process the request: " + error.message
+        });
+    }
+});
+
+
 router.post("/update-notes-entry", async function(req, res) {
     // Assuming the JWT is sent automatically in cookie headers
     const token = req.cookies.token;  // Extract the JWT from cookies directly
@@ -56,10 +174,10 @@ router.post("/update-notes-entry", async function(req, res) {
                 await newNotesEntry.save();
             }
 
-             // READING FROM DB
-             const note = await Note.findOne({ userId: user._id });
-             const sessions = await Session.find({ userId: user._id });
-             const notesEntries = await NotesEntry.find({ userId: user._id});
+            // READING FROM DB
+            const note = await Note.findOne({ userId: user._id });
+            const sessions = await Session.find({ userId: user._id });
+            const notesEntries = await NotesEntry.find({ userId: user._id});
  
             let noteSessionData = {
                 note: note,

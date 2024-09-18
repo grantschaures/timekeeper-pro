@@ -4,9 +4,12 @@ import { sessionState } from '../modules/state-objects.js';
 import { dashboardCatIds, flags as indexFlags, settingsMappings, tempCounters, tempStorage} from '../modules/index-objects.js';
 import { labelArrs, labelDict, labelFlags, flags as notesFlags, selectedLabelDict } from '../modules/notes-objects.js';
 import { chimePath, bellPath, soundMap } from '../modules/sound-map.js';
+import {flags as dashboardFlags } from '../modules/dashboard-objects.js';
+import { confirmSessionDeletionPopup } from '../modules/dashboard-elements.js';
 
 import { deleteUserAccount } from '../state/delete-account.js'; // minified
 import { animationsFadeIn, animationsFadeOut, handleViewportWidthChange, triggerSilentAlertAudioMobile } from './index.js'; // minified
+import { hideConfirmSessionDeletionPopup } from '../utility/session-view.js'; // minified
 
 window.addEventListener('popstate', (event) => {
     const hash = window.location.hash.substring(1);
@@ -204,16 +207,16 @@ document.addEventListener("stateUpdated", function() {
         showShortcutsPopup(popupOverlay, shortcutsPopup);
     })
     
-    // TO-DO: update this for sessionSummaryPopup
+    // UPDATE FOR NEW OVERLAY POPUP WINDOWS
     popupOverlay.addEventListener("click", function(event) {
         if ((flags.accountWindowShowing) && (!accountPopup.contains(event.target))) {
-            goBackBtn.click();
+            goBackBtn.click(); // could potentially remove click() and instead call function to hide popup directly
         } else if ((flags.deleteAccountWindowShowing) && (!deleteAccountPopup.contains(event.target))) {
-            deleteAccountPopupNoBtn.click();
+            deleteAccountPopupNoBtn.click(); // could potentially remove click() and instead call function to hide popup directly
         } else if ((flags.shortcutsWindowShowing) && (!shortcutsPopup.contains(event.target))) {
             hideShortcutsPopup(popupOverlay, shortcutsPopup);
         } else if ((notesFlags.confirmLabelDeletionWindowShowing) && (!confirmLabelDeletionPopup.contains(event.target))) {
-            confirmLabelDeletionNoBtn.click();
+            confirmLabelDeletionNoBtn.click(); // could potentially remove click() and instead call function to hide popup directly
         } else if ((flags.sessionSummarySignupPromptPopupShowing) && (!sessionSummarySignupPromptPopup.contains(event.target) && (event.target !== sessionSummaryOkBtn))) {
             hideSessionSummarySignupPromptPopup();
             popupOverlay.style.display = 'none';
@@ -221,6 +224,8 @@ document.addEventListener("stateUpdated", function() {
             if (state.lastSelectedMode === 'home') {
                 subMainContainerTransition("flex");
             }
+        } else if ((dashboardFlags.confirmSessionDeletionPopupShowing) && (!confirmSessionDeletionPopup.contains(event.target))) {
+            hideConfirmSessionDeletionPopup();
         }
     })
 

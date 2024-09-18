@@ -1,6 +1,13 @@
-import { dayViewContainer, dayViewSessionsContainer, percentTimeInDeepWorkStat, pomodoroCountStat, sessionDurationStat, sessionTitle, sessionViewBackBtn, sessionViewCommentsTextArea, sessionViewContainer, sessionViewHeaderContainer, sessionViewLabelsContainer, sessionViewNoLabelsContainer, sessionViewSessionContainer, sessionViewSubjectiveFeedbackDropdown } from "../modules/dashboard-elements.js";
+import { confirmSessionDeletionNoBtn, confirmSessionDeletionPopup, confirmSessionDeletionYesBtn, dayViewContainer, dayViewSessionsContainer, percentTimeInDeepWorkStat, pomodoroCountStat, sessionDurationStat, sessionTitle, sessionToDeleteContainer, sessionViewBackBtn, sessionViewCommentsTextArea, sessionViewContainer, sessionViewHeaderContainer, sessionViewLabelsContainer, sessionViewNoLabelsContainer, sessionViewSessionContainer, sessionViewSubjectiveFeedbackDropdown, sessionViewTrashIcon } from "../modules/dashboard-elements.js";
 import { dashboardData, flags } from "../modules/dashboard-objects.js";
-import { getDeepWork } from "./session-summary-chart.js";
+import { body, confirmLabelDeletionYesBtn, popupOverlay, subjectiveFeedbackDropdown } from "../modules/dom-elements.js";
+
+import { updateSessionSummaryData } from "../state/update-session-summary-data.js"; // add to editHTML
+import { deleteSession } from "../state/delete-session.js"; // add to editHTML
+import { getDeepWork } from "./session-summary-chart.js"; // add to editHTML
+
+let userSession;
+let sessionViewSessionContainerCopy;
 
 document.addEventListener("stateUpdated", async function() {
     
@@ -12,7 +19,6 @@ document.addEventListener("stateUpdated", async function() {
         sessionViewBackBtn.classList.remove('triggerBounceLeft');
         sessionViewBackBtn.classList.add('resetBounce');
     })
-
     sessionViewBackBtn.addEventListener("click", function(event) {
         // PROGRAMMATIC UPDATES
         flags.sessionViewContainerShowing = false;
@@ -25,7 +31,6 @@ document.addEventListener("stateUpdated", async function() {
         setTimeout(() => {
             dayViewContainer.style.opacity = '1';
         }, 0)
-
     })
     
     // Add event listener for input events
@@ -36,12 +41,86 @@ document.addEventListener("stateUpdated", async function() {
         this.style.height = 'auto'; // Reset height to auto to recalculate
         this.style.height = this.scrollHeight + 'px'; // Set height based on scrollHeight
     }
+
+    sessionViewTrashIcon.addEventListener('click', function() {
+        console.log('deleting session: ' + userSession._id);
+        // create a new popup for the session deletion
+        // hardcode most of popup in HTML, but dynamically load in the session representation
+        showConfirmSessionDeletionPopup();
+    })
+
+    confirmSessionDeletionNoBtn.addEventListener('click', function() {
+        hideConfirmSessionDeletionPopup();
+    })
+
+    confirmSessionDeletionYesBtn.addEventListener('click', async function() {
+        hideConfirmSessionDeletionPopup();
+        await deleteSession(userSession._id);
+        sessionViewBackBtn.click();
+    })
+
+    sessionViewCommentsTextArea.addEventListener('blur', function() {
+        // Once focus has been removed, update appropriate session w/ new session summary comments
+        let commentsText = sessionViewCommentsTextArea.value;
+        let summaryData = {
+            type: 'comments',
+            value: commentsText
+        }
+
+        updateSessionSummaryData(userSession._id, summaryData);
+    })
+
+    sessionViewSubjectiveFeedbackDropdown.addEventListener('change', function(event) {
+        let subjectiveFeedback = sessionViewSubjectiveFeedbackDropdown.value;
+        let summaryData = {
+            type: 'subjectiveFeedback',
+            value: subjectiveFeedback
+        }
+
+        updateSessionSummaryData(userSession._id, summaryData);
+    })
     
 })
 
+export function hideConfirmSessionDeletionPopup() {
+    flags.confirmSessionDeletionPopupShowing = false;
+    popupOverlay.style.display = "none";
+    confirmSessionDeletionPopup.style.display = "none";
+    body.style.overflowY = 'scroll';
+
+    sessionToDeleteContainer.removeChild(sessionToDeleteContainer.firstChild);
+}
+
+function showConfirmSessionDeletionPopup() {
+    flags.confirmSessionDeletionPopupShowing = true;
+
+    popupOverlay.style.display = "flex"; 
+    confirmSessionDeletionPopup.style.display = "block";
+    body.style.overflowY = 'hidden';
+
+    insertSessionContainerIntoPopup(); // add label to popup
+
+    // create event listener callback fns() for yes and no btns
+}
+
+function insertSessionContainerIntoPopup() {
+    // Visual modifications to sessionViewSessionContainerCopy
+    sessionViewSessionContainerCopy.style.backgroundColor = 'black';
+    sessionViewSessionContainerCopy.style.color = 'white';
+    sessionViewSessionContainerCopy.style.fontFamily = 'settingsHeaderFont';
+    sessionViewSessionContainerCopy.style.marginBottom = '15px';
+    sessionToDeleteContainer.appendChild(sessionViewSessionContainerCopy);
+}
+
 export async function initializeSessionView(session, dayViewSessionContainerCopy, sessionNumber) {
     await resetData();
+    await initializeData(session, dayViewSessionContainerCopy);
     displaySessionView(session, dayViewSessionContainerCopy, sessionNumber);
+}
+
+async function initializeData(session, dayViewSessionContainerCopy) {
+    userSession = session;
+    sessionViewSessionContainerCopy = dayViewSessionContainerCopy.cloneNode(true);
 }
 
 function displaySessionView(session, dayViewSessionContainerCopy, sessionNumber) {
@@ -225,4 +304,5 @@ async function resetData() {
     sessionDurationStat.innerText = "";
     percentTimeInDeepWorkStat.innerText = "";
     pomodoroCountStat.innerText = "";
+    sessionToDeleteContainer.innerHTML = "";
 }

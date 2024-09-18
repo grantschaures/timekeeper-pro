@@ -51,6 +51,9 @@ const mainChartsJsPath = './src/js/utility/main-charts.js';
 const updateLabelsJsPath = './src/js/state/update-labels.js';
 const updateNotesEntryJsPath = './src/js/state/update-notes-entry.js';
 const addNotesEntryJsPath = './src/js/state/add-notes-entry.js';
+const deleteSessionJsPath = './src/js/state/delete-session.js';
+const updateSessionSummaryDataJsPath = './src/js/state/update-session-summary-data.js';
+const sessionViewJsPath = './src/js/utility/session-view.js';
 
 // Define replacements for index.html
 const indexHtmlReplacements = [
@@ -193,6 +196,10 @@ const navigationReplacements = [
     {
         pattern: /import { animationsFadeIn, animationsFadeOut, handleViewportWidthChange, triggerSilentAlertAudioMobile } from '.\/index.js';/g,
         replacement: "import { animationsFadeIn, animationsFadeOut, handleViewportWidthChange, triggerSilentAlertAudioMobile } from '../minified/index.min.js';"
+    },
+    {
+        pattern: /import { hideConfirmSessionDeletionPopup } from '..\/utility\/session-view.js';/g,
+        replacement: "import { hideConfirmSessionDeletionPopup } from '../minified/session-view.min.js';"
     }
 ]
 
@@ -245,10 +252,6 @@ const endSessionReplacements = [
     {
         pattern: /import { populateDashboard } from '..\/dashboard\/populate-dashboard.js';/g,
         replacement: "import { populateDashboard } from '../minified/populate-dashboard.min.js';"
-    },
-    {
-        pattern: /import { setInitialDate } from '..\/dashboard\/daily-sessions.js';/g,
-        replacement: "import { setInitialDate } from '../minified/daily-sessions.min.js';"
     }
 ]
 
@@ -348,6 +351,39 @@ const dayViewReplacements = [
     {
         pattern: /import { userTimeZone } from '.\/identification.js';/g,
         replacement: "import { userTimeZone } from '../minified/identification.min.js';"
+    },
+    {
+        pattern: /import { initializeSessionView } from '.\/session-view.js';/g,
+        replacement: "import { initializeSessionView } from '../minified/session-view.min.js';"
+    }
+]
+
+const deleteSessionReplacements = [
+    {
+        pattern: /import { populateDashboard } from '..\/dashboard\/populate-dashboard.js';/g,
+        replacement: "import { populateDashboard } from '../minified/populate-dashboard.min.js';"
+    }
+]
+
+const updateSessionSummaryDataReplacements = [
+    {
+        pattern: /import { populateDashboard } from '..\/dashboard\/populate-dashboard.js';/g,
+        replacement: "import { populateDashboard } from '../minified/populate-dashboard.min.js';"
+    }
+]
+
+const sessionViewReplacements = [
+    {
+        pattern: /import { updateSessionSummaryData } from '..\/state\/update-session-summary-data.js';/g,
+        replacement: "import { updateSessionSummaryData } from '../minified/update-session-summary-data.min.js';"
+    },
+    {
+        pattern: /import { deleteSession } from '..\/state\/delete-session.js';/g,
+        replacement: "import { deleteSession } from '../minified/delete-session.min.js';"
+    },
+    {
+        pattern: /import { getDeepWork } from '.\/session-summary-chart.js';/g,
+        replacement: "import { getDeepWork } from '../minified/session-summary-chart.min.js';"
     }
 ]
 
@@ -386,3 +422,6 @@ readFileAndReplace(dayViewJsPath, dayViewReplacements);
 readFileAndReplace(updateNotesEntryJsPath, updateNotesEntryReplacements);
 readFileAndReplace(addNotesEntryJsPath, addNotesEntryReplacements);
 readFileAndReplace(mainChartsJsPath, mainChartsReplacements);
+readFileAndReplace(deleteSessionJsPath, deleteSessionReplacements);
+readFileAndReplace(updateSessionSummaryDataJsPath, updateSessionSummaryDataReplacements);
+readFileAndReplace(sessionViewJsPath, sessionViewReplacements);

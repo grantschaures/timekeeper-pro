@@ -1500,11 +1500,11 @@ header {
     max-width: 500px;
 }
 
-#deleteAccountPopupYesBtn, #goBackBtn, #confirmLabelDeletionYesBtn {
+#deleteAccountPopupYesBtn, #goBackBtn, #confirmLabelDeletionYesBtn, #confirmSessionDeletionYesBtn {
     margin-right: 5px;
 }
 
-#deleteAccountPopupNoBtn, #logoutBtn2, #confirmLabelDeletionNoBtn {
+#deleteAccountPopupNoBtn, #logoutBtn2, #confirmLabelDeletionNoBtn, #confirmSessionDeletionNoBtn {
     margin-left: 5px;
 }
 
@@ -1513,23 +1513,23 @@ header {
     color: black;
 }
 
-#deleteAccountPopupBtnContainer, #confirmLabelDeletionBtnContainer {
+#deleteAccountPopupBtnContainer, #confirmLabelDeletionBtnContainer, #confirmSessionDeletionBtnContainer {
     margin-bottom: 25px;
 }
 
-#deleteAccountPopupText, #confirmLabelDeletionText {
+#deleteAccountPopupText, #confirmLabelDeletionText, #confirmSessionDeletionText {
     font-family: 'settingsHeaderFont';
     color: white;
     font-size: 24px;
 }
 
-#deleteAccountPopupYesBtn:hover, #confirmLabelDeletionYesBtn:hover {
+#deleteAccountPopupYesBtn:hover, #confirmLabelDeletionYesBtn:hover, #confirmSessionDeletionYesBtn:hover {
     background-color: red;
     border: 2px solid red;
     color: white;
 }
 
-#deleteAccountPopupNoBtn:hover, #confirmLabelDeletionNoBtn:hover {
+#deleteAccountPopupNoBtn:hover, #confirmLabelDeletionNoBtn:hover, #confirmSessionDeletionNoBtn:hover {
     background-color: #53e658;
     border: 2px solid #53e658;
     color: white;
@@ -1774,7 +1774,7 @@ header {
     }
 }
 
-#confirmLabelDeletionPopup {
+#confirmLabelDeletionPopup, #confirmSessionDeletionPopup {
     display: none;
     background: rgb(50, 50, 50);
     padding-left: 20px;
@@ -1801,6 +1801,10 @@ header {
     transition: opacity 0.5s ease-in-out;
 }
 
+#labelToDeleteContainer #sessionToDeleteContainer {
+    margin: 25px;
+}
+
 #previousSessionText {
     font-size: 24px;
 }
@@ -1821,10 +1825,6 @@ header {
 #previousSessionStartedOkBtn {
     margin-top: 25px;
     margin-bottom: 25px;
-}
-
-#labelToDeleteContainer {
-    margin: 25px;
 }
 
 #sessionSummaryPopup, #sessionSummarySignupPromptPopup {

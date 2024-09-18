@@ -8,6 +8,7 @@ const reportSchema = new Schema({
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     userEmail: { type: String, required: true },
     sessionCount: { type: Number, required: true },
+    deletedSessions: [ sessionSchema ],
     lastSession: sessionSchema
 }, { collection: 'Reports' });
 
