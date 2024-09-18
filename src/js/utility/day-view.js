@@ -4,6 +4,7 @@ import { charts, constants, dailyContainer, dashboardData } from "../modules/das
 import { getDeepWork, getFocusQuality, getTargetHours } from './session-summary-chart.js'; // minified
 import { userTimeZone } from './identification.js'; // minified
 import { initializeSessionView } from './session-view.js'; // minified
+import { timeAmount, timeConvert } from "../modules/index-objects.js";
 
 let currentWeekData;
 let dayViewSummaryStats = {
@@ -410,7 +411,8 @@ function displayDayViewSummaryChart(animationLength) {
 
     let dayViewFocusQuality = 0;
     let dayViewDeepWorkTime = 0;
-    let dayViewTargetHourSum = 0.0000000000000001;
+    // let dayViewTargetHourSum = 0.0000000000000001;
+    let dayViewTargetHourThreshold = 8 * timeConvert.msPerHour; // 8 hours defualt
 
     if (currentWeekData.dailyData) {
         dayViewFocusQuality = 1 - ((currentWeekData.dailyData.distractions / (currentWeekData.dailyData.deepWorkTime / 60000)) / constants.FOCUS_QUALITY_CONSTANT);
@@ -419,7 +421,10 @@ function displayDayViewSummaryChart(animationLength) {
         }
 
         dayViewDeepWorkTime = currentWeekData.dailyData.deepWorkTime;
-        dayViewTargetHourSum = currentWeekData.dailyData.targetHourSum;
+        // dayViewTargetHourSum = currentWeekData.dailyData.targetHourSum;
+        // if (timeAmount.targetTime) {
+        //     dayViewTargetHourThreshold = timeAmount.targetTime;
+        // }
     }
 
     let focusQuality = getFocusQuality(dayViewFocusQuality);
@@ -428,7 +433,7 @@ function displayDayViewSummaryChart(animationLength) {
     let focusQualityRemainder = 100 - focusQuality;
 
     let deepWork = getDeepWork(dayViewDeepWorkTime);
-    let targetHours = getTargetHours(dayViewTargetHourSum);
+    let targetHours = getTargetHours(dayViewTargetHourThreshold);
     let deepWorkRemainder = targetHours - deepWork;
     if (deepWorkRemainder < 0) {
         deepWorkRemainder = 0;

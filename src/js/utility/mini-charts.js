@@ -1,5 +1,6 @@
 import { miniCharts } from "../modules/dashboard-elements.js";
 import { dashboardData, dailyContainer, miniChartsArr, constants, flags } from "../modules/dashboard-objects.js";
+import { timeAmount, timeConvert } from "../modules/index-objects.js";
 import { sessionState } from "../modules/state-objects.js";
 
 import { getDeepWork, getFocusQuality, getTargetHours } from './session-summary-chart.js';
@@ -46,7 +47,8 @@ function displayMiniChart(weekIndex, animationLength) {
 
     let miniChartDataFocusQuality = 0;
     let miniChartDataDeepWorkTime = 0;
-    let miniChartDataTargetHourSum = 0.0000000000000001;
+    // let miniChartDataTargetHourSum = 0.0000000000000001;
+    let miniChartDataTargetHourThreshold = 8 * timeConvert.msPerHour; // 8 hours defualt
 
     if (miniChartDataObj) {
         miniChartDataFocusQuality = 1 - ((miniChartDataObj.distractions / (miniChartDataObj.deepWorkTime / 60000)) / constants.FOCUS_QUALITY_CONSTANT);
@@ -55,14 +57,17 @@ function displayMiniChart(weekIndex, animationLength) {
         }
 
         miniChartDataDeepWorkTime = miniChartDataObj.deepWorkTime;
-        miniChartDataTargetHourSum = miniChartDataObj.targetHourSum;
+        // miniChartDataTargetHourSum = miniChartDataObj.targetHourSum;
+        // if (timeAmount.targetTime) {
+        //     miniChartDataTargetHourThreshold = timeAmount.targetTime;
+        // }
     }
 
     let focusQuality = getFocusQuality(miniChartDataFocusQuality);
     let focusQualityRemainder = 100 - focusQuality;
 
     let deepWork = getDeepWork(miniChartDataDeepWorkTime);
-    let targetHours = getTargetHours(miniChartDataTargetHourSum);
+    let targetHours = getTargetHours(miniChartDataTargetHourThreshold);
     let deepWorkRemainder = targetHours - deepWork;
     if (deepWorkRemainder < 0) {
         deepWorkRemainder = 0;
