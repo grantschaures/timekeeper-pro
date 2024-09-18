@@ -3,7 +3,7 @@ import { charts, constants, dailyContainer, dashboardData } from "../modules/das
 
 import { getDeepWork, getFocusQuality, getTargetHours } from './session-summary-chart.js'; // minified
 import { userTimeZone } from './identification.js'; // minified
-import { initializeSessionView } from "./session-view.js"; // minified
+import { initializeSessionView } from './session-view.js'; // minified
 
 let currentWeekData;
 let dayViewSummaryStats = {
