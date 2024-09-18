@@ -208,7 +208,7 @@ function calculatePercentTimeInDeepWork(totalDuration, deepWorkDuration) {
     return percentInDeepWork;
 }
 
-function calculateTotalDuration(startTime, endTime) {
+export function calculateTotalDuration(startTime, endTime) {
     // Convert the date strings into Date objects
     const startDate = new Date(startTime);
     const endDate = new Date(endTime);

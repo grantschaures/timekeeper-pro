@@ -48,7 +48,7 @@ function displayMiniChart(weekIndex, animationLength) {
     let miniChartDataFocusQuality = 0;
     let miniChartDataDeepWorkTime = 0;
     // let miniChartDataTargetHourSum = 0.0000000000000001;
-    let miniChartDataTargetHourThreshold = 8 * timeConvert.msPerHour; // 8 hours defualt
+    let miniChartDataTargetHourThreshold = 6 * timeConvert.msPerHour; // 6 hours defualt
 
     if (miniChartDataObj) {
         miniChartDataFocusQuality = 1 - ((miniChartDataObj.distractions / (miniChartDataObj.deepWorkTime / 60000)) / constants.FOCUS_QUALITY_CONSTANT);

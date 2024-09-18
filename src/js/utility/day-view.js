@@ -412,7 +412,7 @@ function displayDayViewSummaryChart(animationLength) {
     let dayViewFocusQuality = 0;
     let dayViewDeepWorkTime = 0;
     // let dayViewTargetHourSum = 0.0000000000000001;
-    let dayViewTargetHourThreshold = 8 * timeConvert.msPerHour; // 8 hours defualt
+    let dayViewTargetHourThreshold = 6 * timeConvert.msPerHour; // 6 hours defualt
 
     if (currentWeekData.dailyData) {
         dayViewFocusQuality = 1 - ((currentWeekData.dailyData.distractions / (currentWeekData.dailyData.deepWorkTime / 60000)) / constants.FOCUS_QUALITY_CONSTANT);

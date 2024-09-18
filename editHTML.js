@@ -314,6 +314,10 @@ const populateDashboardReplacements = [
         pattern: /import { setInitialDate } from '.\/daily-sessions.js';/g,
         replacement: "import { setInitialDate } from '../minified/daily-sessions.min.js';"
     },
+    {
+        pattern: /import { calculateTotalDuration } from '..\/utility\/session-view.js';/g,
+        replacement: "import { calculateTotalDuration } from '../minified/session-view.min.js';"
+    }
 ]
 
 const metricChartsReplacements = [

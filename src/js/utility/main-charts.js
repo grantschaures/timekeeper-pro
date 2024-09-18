@@ -16,6 +16,8 @@ let focusQualityArr = [];
 let avgIntervalArr = [];
 let sundayIndices = [];
 
+let percentInDeepWorkArr = [];
+
 let deepWorkIntervalDataArr = [];
 let breakIntervalDataArr = [];
 
@@ -77,6 +79,7 @@ document.addEventListener("displayMainCharts", async function() {
 
     if (chartTransition === 'all') {
         displayFocusQualityChart();
+        displayPercentDeepWorkChart();
     }
 
     if ((chartTransition === 'all') || (chartTransition === 'main-break')) {
@@ -540,6 +543,7 @@ async function resetData() {
     deepWorkArr = []; // holds normal or quality adjusted deep work time
     focusQualityArr = [];
     avgIntervalArr = [];
+    percentInDeepWorkArr = [];
     sundayIndices = [];
 
     deepWorkIntervalDataArr = [];
@@ -586,10 +590,10 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
     // if quality adjusted toggle is on, then make appropriate changes to data (labeling will not change)
     let deepWorkMsPerMonthArr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     let distractionsPerMonthArr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    let sessionTimeSumPerMonthArr =  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     let intervalsPerMonthArr = [[], [], [], [], [], [], [], [], [], [], [], []];
 
     let dashboardDataDailyArr = dashboardData.dailyArr;
-    console.log(dashboardDataDailyArr);
     for (let i = 0; i < dashboardDataDailyArr.length; i++) {
         let date = dashboardDataDailyArr[i].date;
         if((moment(date, 'YYYY-MM-DD').isSameOrAfter(moment(mainChartContainer.lowerBound, 'YYYY-MM-DD'))) && (moment(date, 'YYYY-MM-DD').isSameOrBefore(moment(mainChartContainer.upperBound, 'YYYY-MM-DD')))) {
@@ -597,6 +601,7 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
             let focusQuality = getDeepWorkHoursAndFocusQuality(dashboardDataDailyArr[i])[1];
             let avgInterval = getInterval(dashboardDataDailyArr[i]);
             let dateStr = formatDateString(date);
+            let percentInDeepWork = getPercentInDeepWork(dashboardDataDailyArr[i]);
 
             deepWork365Arr.push(deepWorkHours);
             distractions365Arr.push(dashboardDataDailyArr[i].distractions);
@@ -607,6 +612,7 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
                     deepWorkArr.push(0);
                     focusQualityArr.push(0);
                     avgIntervalArr.push(0);
+                    percentInDeepWorkArr.push(0);
                 }
                 updateDateStr(dateStr, dayOfWeekIndex);
                 
@@ -616,6 +622,7 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
                     deepWorkArr.push(0);
                     focusQualityArr.push(0);
                     avgIntervalArr.push(0);
+                    percentInDeepWorkArr.push(0);
                 }
                 updateDateStr(dateStr, dayOfMonthIndex);
 
@@ -629,6 +636,7 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
 
                 deepWorkMsPerMonthArr[monthIndex] += dashboardDataDailyArr[i].deepWorkTime;
                 distractionsPerMonthArr[monthIndex] += dashboardDataDailyArr[i].distractions;
+                sessionTimeSumPerMonthArr[monthIndex] += dashboardDataDailyArr[i].sessionTimeSum;
 
                 if (flags.avgBreakIntervalToggle) {
                     intervalsPerMonthArr[monthIndex].push(...dashboardDataDailyArr[i].breakIntervals);
@@ -641,6 +649,7 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
                 deepWorkArr.push(deepWorkHours);
                 focusQualityArr.push(Math.floor(focusQuality * 100));
                 avgIntervalArr.push(avgInterval);
+                percentInDeepWorkArr.push(Math.floor(percentInDeepWork * 100));
             }
         }
     }
@@ -672,22 +681,26 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
                 distractions: distractionsPerMonthArr[i],
                 deepWorkIntervals: intervalsPerMonthArr[i],
                 breakIntervals: intervalsPerMonthArr[i],
+                sessionTimeSum: sessionTimeSumPerMonthArr[i]
             }
 
             if (deepWorkMsPerMonthArr[i] !== 0) {
                 let deepWorkHours = getDeepWorkHoursAndFocusQuality(monthlyData)[0];
                 let focusQuality = getDeepWorkHoursAndFocusQuality(monthlyData)[1];
                 let avgInterval = getInterval(monthlyData);
+                let percentInDeepWork = getPercentInDeepWork(monthlyData);
 
                 deepWorkArr.push(deepWorkHours);
                 focusQualityArr.push(Math.floor(focusQuality * 100));
                 avgIntervalArr.push(avgInterval);
+                percentInDeepWorkArr.push(Math.floor(percentInDeepWork * 100));
 
                 dataPresent = true;
             } else {
                 deepWorkArr.push(0);
                 focusQualityArr.push(0);
                 avgIntervalArr.push(0);
+                percentInDeepWorkArr.push(0);
             }
 
             // update dateStrArr
@@ -699,6 +712,7 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
             deepWorkArr.length = 0;
             focusQualityArr.length = 0;
             avgIntervalArr.length = 0;
+            percentInDeepWorkArr.length = 0;
         }
     }
 
@@ -896,6 +910,17 @@ function getInterval(dailyData) { // either deep work or break, depending on tog
     }
 
     return avgIntervalMin;
+}
+
+function getPercentInDeepWork(dailyData) {
+    let totalSessionTime = dailyData.sessionTimeSum;
+    let deepWorkTime = dailyData.deepWorkTime;
+    let percentInDeepWork = deepWorkTime / totalSessionTime;
+    if (percentInDeepWork > 1) {
+        percentInDeepWork = 1;
+    }
+
+    return percentInDeepWork;
 }
 
 function getDeepWorkHoursAndFocusQuality(dailyData) {
@@ -1644,6 +1669,192 @@ function displaySessionIntervalsChart() {
     charts.sessionIntervals = new Chart(ctx, config);
 }
 
+function displayPercentDeepWorkChart() {
+
+    let xAxisTickLabelArr;
+    if (mainChartContainer.timeFrame === 'week') {
+        xAxisTickLabelArr = xAxisTickLabels.week;
+    } else if (mainChartContainer.timeFrame === 'month') {
+        xAxisTickLabelArr = xAxisTickLabels.month;
+
+        for (let i = 0; i < percentInDeepWorkArr.length; i++) {
+            if (dateStrArr[i] === 'no data') {
+                percentInDeepWorkArr[i] = null;
+            }
+        }
+
+    } else { // year
+        xAxisTickLabelArr = xAxisTickLabels.year;
+    }
+
+    let chartType = 'bar';
+    if (mainChartContainer.timeFrame === 'month') {
+        chartType = 'line';
+    }
+
+    const yScaleData = {
+        beginAtZero: true,
+        suggestedMax: 100,
+        title: {
+            display: true,
+            text: '% Time in Deep Work',
+            color: 'white'
+        },
+        ticks: {
+            color: 'white',
+        },
+        grid: {
+            display: true, 
+            color: 'rgba(255, 255, 255, 0.15)',
+            lineWidth: 1,
+            drawBorder: true,
+            drawOnChartArea: true,
+            drawTicks: false,
+        }
+    }
+
+    const yScaleNoData = {
+        beginAtZero: true,
+        max: 0,
+        title: {
+            display: true,
+            text: '% Time in Deep Work',
+            color: 'white'
+        },
+        ticks: {
+            color: 'white',
+        },
+        grid: {
+            display: true, 
+            color: 'rgba(255, 255, 255, 0.15)',
+            lineWidth: 1,
+            drawBorder: true,
+            drawOnChartArea: true,
+            drawTicks: false,
+        }
+    }
+
+    let yScale = yScaleData;
+    if (percentInDeepWorkArr.length === 0) {
+        yScale = yScaleNoData;
+    }
+
+    const ctx = document.getElementById('percentDeepWorkChart').getContext('2d');
+    const config = {
+        type: chartType,
+        data: {
+            labels: xAxisTickLabelArr,
+            datasets: [{
+                label: '% Time in Deep Work',
+                data: percentInDeepWorkArr,
+                backgroundColor: 'rgba(63, 210, 68, 1)',
+                borderColor: 'rgb(255, 255, 255)',
+                // borderWidth: 3,
+                borderRadius: 25,
+                borderSkipped: false,
+                barPercentage: 1,
+                categoryPercentage: 0.5,
+                pointRadius: 5, // Size of the points
+                pointHoverRadius: 8, // Size of the points when hovered
+                spanGaps: true, // Ensure the line spans across null values
+                tension: 0.4 // Set tension to make the line curvy
+            }]
+        },
+        options: {
+            onClick: function(event, elements) {
+                if (mainChartContainer.timeFrame !== 'year') {
+                    // Check if a bar (or element) was clicked
+                    if (elements.length > 0) {
+                        // Get the clicked element's data index and dataset index
+                        const elementIndex = elements[0].index; // Index of the clicked bar
+                        const datasetIndex = elements[0].datasetIndex;
+        
+                        // Trigger your custom callback function
+                        handleBarClick(elementIndex);
+                    }
+                }
+            },
+            onHover: function(event, elements) {
+                const chart = this;
+                const canvas = chart.canvas;
+    
+                // Check if we're hovering over a bar (elements array is not empty)
+                if ((elements.length) && (mainChartContainer.timeFrame !== 'year')) {
+                    canvas.style.cursor = 'pointer'; // Change cursor to pointer
+                } else {
+                    canvas.style.cursor = 'default'; // Reset cursor to default when not hovering
+                }
+            },
+            scales: {
+                y: yScale,
+                x: {
+                    title: {
+                        display: false
+                    },
+                    ticks: {
+                        color: 'white'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    enabled: true,
+                    backgroundColor: 'rgb(0, 0, 0)', // Sets the tooltip background color
+                    titleColor: 'white', // Sets the color of the title in the tooltip
+                    bodyColor: 'white', // Sets the color of the text in the tooltip body
+                    borderColor: 'white', // Sets the color of the tooltip border
+                    borderWidth: 2, // Sets the width of the tooltip border
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            // Custom title logic
+                            // tooltipItems is an array; we'll use the first item for the title
+                            let item = tooltipItems[0];
+                            let index = item.dataIndex;
+                            let date = dateStrArr[index];
+                            return `${date}`;
+                        },
+                        label: function(tooltipItem) {
+                            let item = tooltipItem;
+                            let index = item.dataIndex;
+                            let date = dateStrArr[index];
+
+                            if (date === "no data") {
+                                return null;
+                            } else {
+                                return ` ${tooltipItem.raw}%`; // Customize tooltip text
+                            }
+                        }
+                    }
+                }
+            },
+            animations: {
+                x: {
+                    duration: 0 
+                },
+                y: {
+                    duration: flags.quickerChartAnimations ? 500 : 1000,
+                    easing: 'easeOutQuint' 
+                }
+            }
+        },
+        plugins: [
+            noDataPlugin,    // Register the noDataPlugin
+            dottedLinePlugin // Register the dottedLinePlugin
+        ]
+    };
+
+    // Destroy the existing chart instance if it exists
+    if (charts.percentDeepWork) {
+        charts.percentDeepWork.destroy();
+        charts.percentDeepWork = null;
+    }
+
+    // Create a new chart instance
+    charts.percentDeepWork = new Chart(ctx, config);
+}
 
 const dottedLinePlugin = {
     id: 'dottedLinePlugin',

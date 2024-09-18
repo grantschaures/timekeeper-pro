@@ -56,7 +56,8 @@ export const charts = {
     sessionIntervals: null,
     hourlyFocus: null,
     avgDeepWork: null,
-    dayViewSummary: null
+    dayViewSummary: null,
+    percentDeepWork: null
 }
 
 export const miniChartsArr = [null, null, null, null, null, null, null];

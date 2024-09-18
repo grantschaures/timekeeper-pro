@@ -7,6 +7,7 @@ import { setMetricCharts } from './metric-charts.js'; // minified
 
 import { userTimeZone } from '../utility/identification.js'; // minified
 import { setInitialDate } from './daily-sessions.js'; // minified
+import { calculateTotalDuration } from '../utility/session-view.js'; // minified
 
 // GLOBAL VARIABLES
 const FOCUS_QUALITY_CONSTANT = constants.FOCUS_QUALITY_CONSTANT;
@@ -277,7 +278,7 @@ async function setDashboardData(sessionData, noteData, notesEntries) {
 async function initializeDailyData(sessions) {
 
     sessions.forEach(session => {
-        const { timeZone, totalDeepWork, totalDistractions, perHourData, targetHours, startTime, deepWorkIntervals, breakIntervals, labelTimes} = session;
+        const { timeZone, startTime, endTime, totalDeepWork, totalDistractions, perHourData, targetHours, deepWorkIntervals, breakIntervals, labelTimes} = session;
 
         // check if session startTime date is same as previous one, and if so, add it to the previous target hours
         const adjustedStartTime = moment.tz(startTime, timeZone).format();
@@ -287,17 +288,23 @@ async function initializeDailyData(sessions) {
         if (!dashboardData.dailySummary[startDate]) {
             dashboardData.dailySummary[startDate] = {
                 date: startDate,
+                sessionTimeSum: 0,
                 deepWorkTime: 0,
                 distractions: 0,
                 inDeepWork: false,
                 deepWorkIntervals: [],
                 breakIntervals: [],
                 labelTimes: {},
-                targetHourSum: null,
+                targetHourSum: 0,
                 sessions: []
             };
         }
 
+        // Session time sum
+        let sessionTime = calculateTotalDuration(startTime, endTime).totalDurationMs;
+        dashboardData.dailySummary[startDate].sessionTimeSum += sessionTime;
+
+        // Total deep work and distractions
         dashboardData.dailySummary[startDate].deepWorkTime += totalDeepWork;
         dashboardData.dailySummary[startDate].distractions += totalDistractions;
         
