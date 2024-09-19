@@ -3,6 +3,8 @@ import { labelDistributionElement, labelDistributionMonth, labelDistributionTime
 import { timeConvert } from '../modules/index-objects.js';
 import { sessionState } from '../modules/state-objects.js';
 
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
 // initialization of labelDistContainer (called in populate-dashboard.js)
 export function populateLabelDistContainer() {
     
@@ -23,15 +25,14 @@ export function checkViewportWidth() {
         labelDistributionWeek.innerText = "Week";
         labelDistributionMonth.innerText = "Month";
         labelDistributionYear.innerText = "Year";
-
     }
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-    window.addEventListener('resize', checkViewportWidth);
-})
+// document.addEventListener("DOMContentLoaded", function() {
+// })
 
 document.addEventListener("stateUpdated", function() {
+    window.addEventListener('resize', checkViewportWidth);
     // add click event listeners for week, month, year and label dist arrow btns
     if (sessionState.loggedIn) {
         labelDistributionWeek.addEventListener("click", function() {
