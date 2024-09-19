@@ -5,6 +5,12 @@ import { sessionState } from '../modules/state-objects.js';
 
 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
+function isIpadCheck() {
+    const userAgent = navigator.userAgent || window.opera;
+    return /iPad/.test(userAgent) || (navigator.maxTouchPoints > 1);
+}
+const isIpad = isIpadCheck();
+
 // initialization of labelDistContainer (called in populate-dashboard.js)
 export function populateLabelDistContainer() {
     
@@ -26,14 +32,20 @@ export function checkViewportWidth() {
         labelDistributionMonth.innerText = "Month";
         labelDistributionYear.innerText = "Year";
     }
-    
-    // Fixes the strange misshaped mini Charts which for some reason only appears on mobile
-    // We'll also want to just hardcode the font-size for the month and year selections
-    if (isMobile) {
+
+    if ((window.innerWidth < 450 ) && (isMobile)) {
         distributionsContainer.style.display = 'none';
         dailyContainerElement.style.height = '100%';
         dailyContainerElement.style.marginBottom = '0px';
 
+    } else {
+        distributionsContainer.style.display = 'flex';
+        dailyContainerElement.style.height = '';
+    }
+
+    // Fixes the strange misshaped mini Charts which for some reason only appears on mobile
+    // We'll also want to just hardcode the font-size for the month and year selections
+    if ((isMobile) || (isIpad)) {
         miniChartContainers.forEach( container => {
             container.style.height = '35px';
             container.style.width = '35px';
