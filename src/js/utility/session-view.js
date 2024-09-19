@@ -157,6 +157,18 @@ function displaySessionView(session, dayViewSessionContainerCopy, sessionNumber)
     
     // Initialize the subjective feedback
     let subjectiveFeedback = session.sessionSummary.subjectiveFeedback;
+
+    // Converting old subjective feedback values
+    if (subjectiveFeedback === "good") {
+        subjectiveFeedback = "2";
+    } else if (subjectiveFeedback === "ok") {
+        subjectiveFeedback = "0";
+    } else if (subjectiveFeedback === "bad") {
+        subjectiveFeedback = "-1";
+    } else if (subjectiveFeedback === "unsure") {
+        subjectiveFeedback = "";
+    }
+
     sessionViewSubjectiveFeedbackDropdown.value = subjectiveFeedback; // resets value on initialization
     
     // Initialize the label times

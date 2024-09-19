@@ -1319,6 +1319,7 @@
 
 #sessionViewCommentsTextArea:focus, #sessionViewSubjectiveFeedbackDropdown:focus {
     outline: none;
+    border: 2px solid white;
 }
 
 #sessionViewSubjectiveFeedbackContainer {
