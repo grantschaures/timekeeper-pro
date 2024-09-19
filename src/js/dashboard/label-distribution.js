@@ -1,5 +1,5 @@
-import { dashboardData, labelDistContainer, general } from '../modules/dashboard-objects.js';
-import { labelDistributionElement, labelDistributionMonth, labelDistributionTimeFrame, labelDistributionWeek, labelDistributionYear, labelLinesContainer, labelNamesContainer, labelTimesContainer, leftLabelDistributionArrow, metricDistributionMonth, metricDistributionTimeFrame, metricDistributionWeek, metricDistributionYear, rightLabelDistributionArrow, rightLabelDistributionArrowGray } from '../modules/dashboard-elements.js';
+import { dashboardData, labelDistContainer, general, dailyContainer } from '../modules/dashboard-objects.js';
+import { dailyContainerElement, distributionsContainer, labelDistributionElement, labelDistributionMonth, labelDistributionTimeFrame, labelDistributionWeek, labelDistributionYear, labelLinesContainer, labelNamesContainer, labelTimesContainer, leftLabelDistributionArrow, metricDistributionMonth, metricDistributionTimeFrame, metricDistributionWeek, metricDistributionYear, rightLabelDistributionArrow, rightLabelDistributionArrowGray } from '../modules/dashboard-elements.js';
 import { timeConvert } from '../modules/index-objects.js';
 import { sessionState } from '../modules/state-objects.js';
 
@@ -25,6 +25,14 @@ export function checkViewportWidth() {
         labelDistributionWeek.innerText = "Week";
         labelDistributionMonth.innerText = "Month";
         labelDistributionYear.innerText = "Year";
+    }
+
+    if ((window.innerWidth < 450 ) && (isMobile)) {
+        distributionsContainer.style.display = 'none';
+        dailyContainerElement.style.height = '100%';
+    } else {
+        distributionsContainer.style.display = 'flex';
+        dailyContainerElement.style.height = '';
     }
 }
 

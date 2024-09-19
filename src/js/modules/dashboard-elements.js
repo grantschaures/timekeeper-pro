@@ -9,6 +9,9 @@ export const avgFocusQualitySummaryStat = document.getElementById('avgFocusQuali
 export const avgIntervalLengthSummaryStat = document.getElementById('avgIntervalLengthSummaryStat');
 export const mostFocusedHourSummaryStat = document.getElementById('mostFocusedHourSummaryStat');
 
+// Distributions Container
+export const distributionsContainer = document.getElementById('distributionsContainer');
+
 // Label Distribution Container
 export const labelDistributionContainer = document.getElementById('labelDistributionContainer');
 export const labelDistributionTimeFrame = document.getElementById('labelDistributionTimeFrame');
@@ -88,6 +91,7 @@ export const summaryStatHeaders = document.querySelectorAll('.summaryStatHeader'
 
 
 // Daily Container
+export const dailyContainerElement = document.getElementById('dailyContainer');
 export const dailyDay = document.getElementById('dailyDay');
 export const dailyDate = document.getElementById('dailyDate');
 export const rightDailyArrow = document.getElementById('rightDailyArrow');
