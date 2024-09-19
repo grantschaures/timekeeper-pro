@@ -199,7 +199,7 @@ function displaySessionView(session, dayViewSessionContainerCopy, sessionNumber)
 }
 
 function calculatePercentTimeInDeepWork(totalDuration, deepWorkDuration) {
-    let percentInDeepWork = Math.round((deepWorkDuration / totalDuration) * 100);
+    let percentInDeepWork = Math.floor((deepWorkDuration / totalDuration) * 100);
 
     if (percentInDeepWork > 100) {
         percentInDeepWork = 100;

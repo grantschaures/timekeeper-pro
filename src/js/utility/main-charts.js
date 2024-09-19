@@ -1635,7 +1635,7 @@ function displaySessionIntervalsChart() {
                             let date = dateStrArr[index];
 
                             if ((date === "no data") || (!date)) {
-                                date = "data from overlapping session"; // This will be fine for now but could be optimized if time allows
+                                date = "data from multi-day session"; // This will be fine for now but could be optimized if time allows
                             }
                             return `${date}`;
                         },
