@@ -30,17 +30,18 @@ export function checkViewportWidth() {
     if ((window.innerWidth < 450 ) && (isMobile)) {
         distributionsContainer.style.display = 'none';
         dailyContainerElement.style.height = '100%';
+        dailyContainerElement.style.marginBottom = '0px';
     } else {
         distributionsContainer.style.display = 'flex';
         dailyContainerElement.style.height = '';
     }
 }
 
-// document.addEventListener("DOMContentLoaded", function() {
-// })
-
 document.addEventListener("stateUpdated", function() {
+
     window.addEventListener('resize', checkViewportWidth);
+    checkViewportWidth();
+
     // add click event listeners for week, month, year and label dist arrow btns
     if (sessionState.loggedIn) {
         labelDistributionWeek.addEventListener("click", function() {
