@@ -1,5 +1,5 @@
 import { dashboardData, labelDistContainer, general, dailyContainer } from '../modules/dashboard-objects.js';
-import { dailyContainerElement, distributionsContainer, labelDistributionElement, labelDistributionMonth, labelDistributionTimeFrame, labelDistributionWeek, labelDistributionYear, labelLinesContainer, labelNamesContainer, labelTimesContainer, leftLabelDistributionArrow, metricDistributionMonth, metricDistributionTimeFrame, metricDistributionWeek, metricDistributionYear, miniChartContainers, rightLabelDistributionArrow, rightLabelDistributionArrowGray } from '../modules/dashboard-elements.js';
+import { dailyContainerElement, distributionsContainer, labelDistributionElement, labelDistributionMonth, labelDistributionTimeFrame, labelDistributionWeek, labelDistributionYear, labelLinesContainer, labelNamesContainer, labelTimesContainer, leftLabelDistributionArrow, metricDistributionMonth, metricDistributionTimeFrame, metricDistributionWeek, metricDistributionYear, miniChartContainers, monthSelection, rightLabelDistributionArrow, rightLabelDistributionArrowGray, yearSelection } from '../modules/dashboard-elements.js';
 import { timeConvert } from '../modules/index-objects.js';
 import { sessionState } from '../modules/state-objects.js';
 
@@ -26,22 +26,21 @@ export function checkViewportWidth() {
         labelDistributionMonth.innerText = "Month";
         labelDistributionYear.innerText = "Year";
     }
-
-    if ((window.innerWidth < 450 ) && (isMobile)) {
+    
+    // Fixes the strange misshaped mini Charts which for some reason only appears on mobile
+    // We'll also want to just hardcode the font-size for the month and year selections
+    if (isMobile) {
         distributionsContainer.style.display = 'none';
         dailyContainerElement.style.height = '100%';
         dailyContainerElement.style.marginBottom = '0px';
-    } else {
-        distributionsContainer.style.display = 'flex';
-        dailyContainerElement.style.height = '';
-    }
 
-    // Fixes the strange misshaped mini Charts which for some reason only appears on mobile
-    if (isMobile) {
         miniChartContainers.forEach( container => {
             container.style.height = '35px';
             container.style.width = '35px';
         })
+
+        monthSelection.style.fontSize = '13px';
+        yearSelection.style.fontSize = '13px';
     }
 }
 
