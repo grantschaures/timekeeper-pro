@@ -36,6 +36,7 @@ export function checkViewportWidth() {
         dailyContainerElement.style.height = '';
     }
 
+    // Fixes the strange misshaped mini Charts which for some reason only appears on mobile
     if (isMobile) {
         miniChartContainers.forEach( container => {
             container.style.height = '35px';

@@ -900,7 +900,7 @@
 
     box-sizing: border-box;
 
-    border: 1px solid olive;
+    /* border: 1px solid olive; */
 }
 
 .miniChartContainer:hover {
