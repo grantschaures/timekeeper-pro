@@ -894,14 +894,13 @@
 .miniChartContainer {
     display: flex;
     height: 40px;
-    width: auto;
 
     align-items: center;
     justify-content: center;
 
     box-sizing: border-box;
 
-    /* border: 1px solid olive; */
+    border: 1px solid olive;
 }
 
 .miniChartContainer:hover {

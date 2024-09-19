@@ -1,5 +1,5 @@
 import { dashboardData, labelDistContainer, general, dailyContainer } from '../modules/dashboard-objects.js';
-import { dailyContainerElement, distributionsContainer, labelDistributionElement, labelDistributionMonth, labelDistributionTimeFrame, labelDistributionWeek, labelDistributionYear, labelLinesContainer, labelNamesContainer, labelTimesContainer, leftLabelDistributionArrow, metricDistributionMonth, metricDistributionTimeFrame, metricDistributionWeek, metricDistributionYear, rightLabelDistributionArrow, rightLabelDistributionArrowGray } from '../modules/dashboard-elements.js';
+import { dailyContainerElement, distributionsContainer, labelDistributionElement, labelDistributionMonth, labelDistributionTimeFrame, labelDistributionWeek, labelDistributionYear, labelLinesContainer, labelNamesContainer, labelTimesContainer, leftLabelDistributionArrow, metricDistributionMonth, metricDistributionTimeFrame, metricDistributionWeek, metricDistributionYear, miniChartContainers, rightLabelDistributionArrow, rightLabelDistributionArrowGray } from '../modules/dashboard-elements.js';
 import { timeConvert } from '../modules/index-objects.js';
 import { sessionState } from '../modules/state-objects.js';
 
@@ -34,6 +34,13 @@ export function checkViewportWidth() {
     } else {
         distributionsContainer.style.display = 'flex';
         dailyContainerElement.style.height = '';
+    }
+
+    if (isMobile) {
+        miniChartContainers.forEach( container => {
+            container.style.height = '35px';
+            container.style.width = '35px';
+        })
     }
 }
 
