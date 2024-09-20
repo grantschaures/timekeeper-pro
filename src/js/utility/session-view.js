@@ -164,7 +164,7 @@ function displaySessionView(session, dayViewSessionContainerCopy, sessionNumber)
     } else if (subjectiveFeedback === "ok") {
         subjectiveFeedback = "0";
     } else if (subjectiveFeedback === "bad") {
-        subjectiveFeedback = "-1";
+        subjectiveFeedback = "-2";
     } else if (subjectiveFeedback === "unsure") {
         subjectiveFeedback = "";
     }

@@ -31,8 +31,6 @@ export async function deleteSession(sessionId) {
             dashboardFlags.remainOnSelectedDate = true;
             populateDashboard(data.noteSessionData.sessions, data.noteSessionData.note, data.noteSessionData.notesEntries);
         }
-
-
     } catch (error) {
         console.error('Failed to delete user account:', error);
     }
