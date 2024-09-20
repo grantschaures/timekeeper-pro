@@ -138,7 +138,7 @@ document.addEventListener("stateUpdated", function() {
         })
     } else {
         const labelDistMessage = document.createElement('div');
-        labelDistMessage.innerText = "Log in to see your time distributions";
+        labelDistMessage.innerText = "Log in to see your dashboard data";
         labelDistMessage.classList.add('notLoggedInMessage');
         labelDistMessage.style.paddingBottom = '75px';
         labelDistributionElement.style.height = '100%';
