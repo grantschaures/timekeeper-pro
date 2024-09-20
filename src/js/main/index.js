@@ -1237,34 +1237,28 @@ document.addEventListener("stateUpdated", function() {
 // HELPER FUNCTIONS
 // ------------------
 async function hideDisplays() {
-    totalTimeToggle.checked = false;
     intervalTimeToggle.checked = false;
 
-    totalTimeToggleGUIUpdate();
     intervalTimeToggleGUIUpdate();
 
     if (sessionState.loggedIn) {
         await updateUserSettings({
             display: {
-                intervalTime: flags.intervalTimeToggle,
-                totalTime: flags.totalTimeToggle
+                intervalTime: flags.intervalTimeToggle
             }
         });
     }
 }
 
 async function showDisplays() {
-    totalTimeToggle.checked = true;
     intervalTimeToggle.checked = true;
 
-    totalTimeToggleGUIUpdate();
     intervalTimeToggleGUIUpdate();
 
     if (sessionState.loggedIn) {
         await updateUserSettings({
             display: {
-                intervalTime: flags.intervalTimeToggle,
-                totalTime: flags.totalTimeToggle
+                intervalTime: flags.intervalTimeToggle
             }
         });
     }
@@ -1382,7 +1376,7 @@ export function intervalTimeToggleGUIUpdate() {
 }
 
 function editDisplayGUIContainer() {
-    if ((!flags.totalTimeToggle) && (!flags.intervalTimeToggle)) {
+    if (!flags.intervalTimeToggle) {
         openEyeContainer.style.display = "none";
         closedEyeContainer.style.display = "flex";
     } else {
