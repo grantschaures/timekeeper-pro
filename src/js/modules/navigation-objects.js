@@ -15,7 +15,8 @@ export const flags = {
     sessionSummarySignupPromptPopupShowing: false,
     canToggleSwitch: false,
     blogContainerShowing: false,
-    aboutContainerShowing: false
+    aboutContainerShowing: false,
+    sessionIntervalsBoundsDemoPopupShowing: false
 }
 
 export const counters = {

@@ -9,7 +9,12 @@ import {
     openEyeContainer,
     closedEyeContainer,
     timestampsHeader,
-    timestampsInfoWindow
+    timestampsInfoWindow,
+    setDailyTargetHours,
+    dailyTargetHoursInfoWindow,
+    toggleAdvChartsSampleSize,
+    advChartsSampleSizeInfoWindow,
+    aboutIconSessionIntervalsChartBounds
 } from '../modules/dom-elements.js';
 
 import { flags as dashboardFlags } from '../modules/dashboard-objects.js';
@@ -413,74 +418,82 @@ document.addEventListener("stateUpdated", function() {
     pomodoroNotifications.addEventListener('mouseover', function() {
         toggleInfoWindow(pomodoroNotificationInfoWindow, 'showingPomodoroNotificationInfoWindow', flags);
     });
-
+    pomodoroNotifications.addEventListener('mouseout', function() {
+        toggleInfoWindow(pomodoroNotificationInfoWindow, 'showingPomodoroNotificationInfoWindow', flags);
+    });
+    
     flowmodoroNotifications.addEventListener('mouseover', function() {
+        toggleInfoWindow(flowmodoroNotificationInfoWindow, 'showingFlowmodoroNotificationInfoWindow', flags);
+    });
+    flowmodoroNotifications.addEventListener('mouseout', function() {
         toggleInfoWindow(flowmodoroNotificationInfoWindow, 'showingFlowmodoroNotificationInfoWindow', flags);
     });
     
     flowTimeBreakNotification.addEventListener('mouseover', function() {
         toggleInfoWindow(flowTimeBreakNotificationInfoWindow, 'showingFlowTimeBreakNotificationInfoWindow', flags);
     });
-
-    toggleIntervalTime.addEventListener('mouseover', function() {
-        toggleInfoWindow(intervalTimeInfoWindow, 'showingIntervalTimeInfoWindow', flags);
-    });
-
-    toggleTotalTime.addEventListener('mouseover', function() {
-        toggleInfoWindow(totalTimeInfoWindow, 'showingTotalTimeInfoWindow', flags);
-    });
-
-    toggleMuffin.addEventListener('mouseover', function() {
-        toggleInfoWindow(muffinInfoWindow, 'showingMuffinInfoWindow', flags)
-    })
-
-    notesAutoSwitch.addEventListener('mouseover', function() {
-        toggleInfoWindow(notesAutoSwitchInfoWindow, 'showingNotesAutoSwitchInfoWindow', flags);
-    });
-
-    propagateUnfinishedTasks.addEventListener('mouseover', function() {
-        toggleInfoWindow(propagateUnfinishedTasksInfoWindow, 'showingPropagateUnfinishedTasksInfoWindow', flags);
-    });
-
-    timestampsHeader.addEventListener('mouseover', function() {
-        toggleInfoWindow(timestampsInfoWindow, 'showingTimestampsInfoWindow', flags)
-    })
-
-    pomodoroNotifications.addEventListener('mouseout', function() {
-        toggleInfoWindow(pomodoroNotificationInfoWindow, 'showingPomodoroNotificationInfoWindow', flags);
-    });
-
-    flowmodoroNotifications.addEventListener('mouseout', function() {
-        toggleInfoWindow(flowmodoroNotificationInfoWindow, 'showingFlowmodoroNotificationInfoWindow', flags);
-    });
-    
     flowTimeBreakNotification.addEventListener('mouseout', function() {
         toggleInfoWindow(flowTimeBreakNotificationInfoWindow, 'showingFlowTimeBreakNotificationInfoWindow', flags);
     });
-
+    
+    toggleIntervalTime.addEventListener('mouseover', function() {
+        toggleInfoWindow(intervalTimeInfoWindow, 'showingIntervalTimeInfoWindow', flags);
+    });
     toggleIntervalTime.addEventListener('mouseout', function() {
         toggleInfoWindow(intervalTimeInfoWindow, 'showingIntervalTimeInfoWindow', flags);
     });
-
+    
+    toggleTotalTime.addEventListener('mouseover', function() {
+        toggleInfoWindow(totalTimeInfoWindow, 'showingTotalTimeInfoWindow', flags);
+    });
     toggleTotalTime.addEventListener('mouseout', function() {
         toggleInfoWindow(totalTimeInfoWindow, 'showingTotalTimeInfoWindow', flags);
     });
-
+    
+    toggleMuffin.addEventListener('mouseover', function() {
+        toggleInfoWindow(muffinInfoWindow, 'showingMuffinInfoWindow', flags);
+    });
     toggleMuffin.addEventListener('mouseout', function() {
-        toggleInfoWindow(muffinInfoWindow, 'showingMuffinInfoWindow', flags)
-    })
-
+        toggleInfoWindow(muffinInfoWindow, 'showingMuffinInfoWindow', flags);
+    });
+    
+    notesAutoSwitch.addEventListener('mouseover', function() {
+        toggleInfoWindow(notesAutoSwitchInfoWindow, 'showingNotesAutoSwitchInfoWindow', flags);
+    });
     notesAutoSwitch.addEventListener('mouseout', function() {
         toggleInfoWindow(notesAutoSwitchInfoWindow, 'showingNotesAutoSwitchInfoWindow', flags);
     });
-
+    
+    propagateUnfinishedTasks.addEventListener('mouseover', function() {
+        toggleInfoWindow(propagateUnfinishedTasksInfoWindow, 'showingPropagateUnfinishedTasksInfoWindow', flags);
+    });
     propagateUnfinishedTasks.addEventListener('mouseout', function() {
         toggleInfoWindow(propagateUnfinishedTasksInfoWindow, 'showingPropagateUnfinishedTasksInfoWindow', flags);
     });
-
+    
+    timestampsHeader.addEventListener('mouseover', function() {
+        toggleInfoWindow(timestampsInfoWindow, 'showingTimestampsInfoWindow', flags);
+    });
     timestampsHeader.addEventListener('mouseout', function() {
-        toggleInfoWindow(timestampsInfoWindow, 'showingTimestampsInfoWindow', flags)
+        toggleInfoWindow(timestampsInfoWindow, 'showingTimestampsInfoWindow', flags);
+    });
+
+    setDailyTargetHours.addEventListener('mouseover', function() {
+        toggleInfoWindow(dailyTargetHoursInfoWindow, 'showingDailyTargetHoursInfoWindow', flags);
     })
+    setDailyTargetHours.addEventListener('mouseout', function() {
+        toggleInfoWindow(dailyTargetHoursInfoWindow, 'showingDailyTargetHoursInfoWindow', flags);
+    })
+
+    toggleAdvChartsSampleSize.addEventListener('mouseover', function() {
+        toggleInfoWindow(advChartsSampleSizeInfoWindow, 'showingAdvChartsSampleSizeInfoWindow', flags);
+    })
+    toggleAdvChartsSampleSize.addEventListener('mouseout', function() {
+        toggleInfoWindow(advChartsSampleSizeInfoWindow, 'showingAdvChartsSampleSizeInfoWindow', flags);
+    })
+    
+
+
 
     // ALERT VOLUME TOGGLING FUNCTIONALITY
     flowmodoroVolumeThumb.addEventListener('mousedown', (event) => handleMouseDown(event, 'flowmodoroThumbIsDragging'));

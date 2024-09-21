@@ -34,7 +34,7 @@ document.addEventListener("stateUpdated", function() {
 
             // if any overlay popups are showing, close those first before session summary popup shows (MAKE SURE TO UPDATE THIS IF MORE OVERLAY POPUP WINDOWS ARE ADDED)
             // (necessary due to pip end btn click)
-            if ((navFlags.deleteAccountWindowShowing) || (navFlags.accountWindowShowing) || (navFlags.shortcutsWindowShowing) || (notesflags.confirmLabelDeletionWindowShowing) || (dashboardFlags.confirmSessionDeletionPopupShowing)) {
+            if ((navFlags.deleteAccountWindowShowing) || (navFlags.accountWindowShowing) || (navFlags.shortcutsWindowShowing) || (navFlags.sessionIntervalsBoundsDemoPopupShowing) || (notesflags.confirmLabelDeletionWindowShowing) || (dashboardFlags.confirmSessionDeletionPopupShowing)) {
                 popupOverlay.click();
             }
 

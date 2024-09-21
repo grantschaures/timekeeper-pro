@@ -229,10 +229,6 @@
                         <label for="subjectiveFeedbackDropdown"></label>
                         <select id="subjectiveFeedbackDropdown" name="subjectiveFeedbackDropdown">
                             <option value="" selected>Rate Mood</option>
-                            <!-- <option value="good">😊 Good</option>
-                            <option value="ok">😐 Mid</option>
-                            <option value="bad">😒 Bad</option>
-                            <option value="unsure">🤔 Not Sure</option> -->
                             <option value="5">😝 The Best</option>
                             <option value="4">😁 Amazing</option>
                             <option value="3">😀 Very Good</option>
@@ -262,6 +258,9 @@
                <div id="signupPromptPopupBtnContainer">
                    <button id="signupPromptPopupBtn">Create Account</button>
                </div>
+            </div>
+            <div id="sessionIntervalsBoundsDemoPopup">
+                <img id="sessionIntervalsBoundsDemoImg" src="images/tutorial/session-intervals-bounds-edit.png">
             </div>
         </div>
 
@@ -1112,10 +1111,6 @@
                                     <label for="sessionViewSubjectiveFeedbackDropdown"></label>
                                     <select id="sessionViewSubjectiveFeedbackDropdown" name="sessionViewSubjectiveFeedbackDropdown">
                                         <option value="" selected>Rate Mood</option>
-                                        <!-- <option value="good">😊 Good</option>
-                                        <option value="ok">😐 Mid</option>
-                                        <option value="bad">😒 Bad</option>
-                                        <option value="unsure">🤔 Not Sure</option> -->
                                         <option value="5">😝 The Best</option>
                                         <option value="4">😁 Amazing</option>
                                         <option value="3">😀 Very Good</option>
@@ -1816,6 +1811,18 @@
                                 <b>Display</b>
                             </div>
                         </div>
+                        <div id="dashboardBtnContainer" class="settingsHeaderRow">
+                            <div class="settingsIconContainer">
+                                <svg id="report-icon-settings" class="settingsIcon" data-testid="report-icon-settings" dinkle-doink="report" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" data-clickable">
+                                    <line x1="5" y1="24" x2="5" y2="28" style="fill: none; stroke: white; stroke-linecap: round; stroke-miterlimit: 10; stroke-width: 8px;"/>
+                                    <line x1="18" y1="16" x2="18" y2="28" style="fill: none; stroke: white; stroke-linecap: round; stroke-miterlimit: 10; stroke-width: 8px;"/>
+                                    <line x1="31" y1="5" x2="31" y2="28" style="fill: none; stroke: white; stroke-linecap: round; stroke-miterlimit: 10; stroke-width: 8px;"/>
+                                </svg>                                
+                            </div>
+                            <div id="dashboardHeader" class="settingsHeader">
+                                <b>Dashboard</b>
+                            </div>
+                        </div>
                         <div id="notesBtnContainer" class="settingsHeaderRow">
                             <div class="settingsIconContainer">
                                 <img src="images/icons/whitepencil.png" id="notesIcon" class="settingsIcon" draggable="false" alt="Notes Settings">
@@ -2106,13 +2113,13 @@
                                     </div>  
                                 </div>
                                 <div id="suggestionMinutesContainer" class="settingsMicroContainer">
-                                    <div id="suggestionMinutesText">
-                                        <p><b>Suggestion Minutes: </b></p>
-                                    </div>
                                     <div id="suggestionMinutesInputContainer" class="toggleContainer">
                                         <div id="coolDiv2">
                                             <input type="number" id="suggestionMinutesInput" data-testid="suggestionMinutesInput" value = '90' name="minutes" min="1" max="720" aria-labelledby="suggestionMinutesText">
                                         </div>
+                                    </div>
+                                    <div id="suggestionMinutesText">
+                                        <p><b>Suggestion Minutes</b></p>
                                     </div>
                                 </div>
                             </div>
@@ -2352,6 +2359,128 @@
                             </div>
                             <div id="muffinArtCreditsContainer">
                                 Art by Sofakitty (<a href="https://www.instagram.com/sofakitty_de/" target="_blank"> @sofakitty_de</a>)
+                            </div>
+                        </div>
+
+                        <div id="dashboardSettingsContainer" class="settingsContentContainer">
+                            <div id="dashboardSettingsSubContainer" class="settingsIconTextContainer">
+                                <h2>Dashboard</h2>
+                            </div>
+                            <div id="dailyTargetHoursBlock" class="settingsMicroContainer">
+                                <div id="dailyTargetHoursContainer">
+                                    <div id="dailyTargetHoursInputContainer" class="toggleContainer">
+                                        <label for="dailyTargetHoursDropdown"></label>
+                                        <select id="dailyTargetHoursDropdown" name="dailyTargetHoursDropdown">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6" selected>6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                        </select>
+                                    </div>
+                                    <div id="dailyTargetHoursText" class="settingsText">
+                                        <p id="setDailyTargetHours"><b class="settingsCategoryHeading">Daily Target Hours</b></p>
+                                    </div>
+                                </div>
+                                <div id="dailyTargetHoursInfoWindow" class="notificationInfoWindow displayInfoWindow">
+                                    Determines the daily deep work target time
+                                </div>
+                            </div>
+
+                            <hr id="dailyTargetHoursSettingsHr1">
+
+                            <div id="sessionIntervalsChartBoundsBlock" class="settingsMicroContainer">
+                                <div id="addingDeletingUpdatingLabelsText" class="settingsText">
+                                    <p id="addingDeletingUpdatingHeader"><b class="labelTutorialSettingsHeader">Session Intervals Chart Bounds</b></p>
+                                    <img id="aboutIconSessionIntervalsChartBounds" data-testid="aboutIconSessionIntervalsChartBounds" src="/images/icons/aboutIcon.png" alt="Session Intervals Bounds" class="no-select">
+                                </div>
+                                <div id="default24HoursBoundsContainer" class="sessionIntervalsChartBoundsContainer">
+                                    <input id="default24HoursBoundsInput" type="radio" name="sessionIntervalsChartBounds" class="sessionIntervalsChartBounds" aria-divledby="default24HoursBoundsText" checked>
+                                    <div id="default24HoursBoundsText" class="settingsHeader boundsSettingsHeader">
+                                        <p><b>24 Hours</b></p>
+                                    </div>
+                                </div>
+                                <div id="manualBoundsContainer" class="sessionIntervalsChartBoundsContainer">
+                                    <input id="manualBoundsInput" type="radio" name="sessionIntervalsChartBounds" class="sessionIntervalsChartBounds" aria-divledby="manualBoundsText">
+                                    <div id="manualBoundsText" class="settingsHeader boundsSettingsHeader">
+                                        <div id="manualLowerBoundsContainer" class="manualBoundsContainer">
+                                            <p><b>Lower Bound:</b></p>
+                                            <div id="lowerBoundHourInputContainer" class="manualBoundHourInputContainer">
+                                                <label for="lowerBoundHourDropdown"></label>
+                                                <select id="lowerBoundHourDropdown" name="lowerBoundHourDropdown" class="boundHourDropdown">
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6" selected>6</option>
+                                                    <option value="7">7</option>
+                                                    <option value="8">8</option>
+                                                    <option value="9">9</option>
+                                                    <option value="10">10</option>
+                                                    <option value="11">11</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                am
+                                            </div>
+                                        </div>
+                                        <div id="manualUpperBoundsContainer" class="manualBoundsContainer">
+                                            <p><b>Upper Bound:</b></p>
+                                            <div id="upperBoundHourInputContainer" class="manualBoundHourInputContainer">
+                                                <label for="upperBoundHourDropdown"></label>
+                                                <select id="upperBoundHourDropdown" name="upperBoundHourDropdown" class="boundHourDropdown">
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6" selected>6</option>
+                                                    <option value="7">7</option>
+                                                    <option value="8">8</option>
+                                                    <option value="9">9</option>
+                                                    <option value="10">10</option>
+                                                    <option value="11">11</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                pm
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="automaticBoundsContainer" class="sessionIntervalsChartBoundsContainer">
+                                    <input id="automaticBoundsInput" type="radio" name="sessionIntervalsChartBounds" class="sessionIntervalsChartBounds" aria-divledby="automaticBoundsText">
+                                    <div id="automaticBoundsText" class="settingsHeader boundsSettingsHeader">
+                                        <p><b>Automatic Adjustement</b></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr id="dailyTargetHoursSettingsHr2">
+
+                            <div id="advChartsSampleSizeBlock" class="settingsMicroContainer">
+                                <div id="toggleIntervalTimeContainer">
+                                    <div id="advChartsSampleSizeToggleContainer" class="toggleContainer">
+                                        <input type="checkbox" id="advChartsSampleSizeToggle" data-testid="advChartsSampleSizeToggle" class="toggle-checkbox" aria-labelledby="advChartsSampleSizeToggle" checked>
+                                        <label for="advChartsSampleSizeToggle" id="advChartsSampleSizeToggleLabel" class="toggle-label">
+                                            <span id="advChartsSampleSizeToggleBall" class="toggle-ball"></span>
+                                        </label>
+                                    </div>
+                                    <div id="toggleAdvChartsSampleSizeText" class="settingsText">
+                                        <p id="toggleAdvChartsSampleSize"><b class="settingsCategoryHeading">Rel. Sample Size Visualization</b></p>
+                                    </div>
+                                </div>
+                                <div id="advChartsSampleSizeInfoWindow" class="notificationInfoWindow displayInfoWindow">
+                                    Represent relative sample size in Advanced Charts by adjusting each bar's opacity
+                                </div>
                             </div>
                         </div>
 

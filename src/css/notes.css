@@ -641,6 +641,9 @@
     position: absolute;
     right: 20px;
     bottom: 15px;
+    
+    width: 22px;
+    height: 22px;
 }
 
 #aboutIconNotes:hover {

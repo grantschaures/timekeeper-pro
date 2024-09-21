@@ -133,6 +133,7 @@ export const blogs = document.querySelectorAll(".blog");
 export const settings_exit = document.getElementById("settingsExit");
 export const pomodoroBtnContainer = document.getElementById("pomodoroBtnContainer");
 export const backgroundsBtnContainer = document.getElementById("backgroundsBtnContainer");
+export const dashboardBtnContainer = document.getElementById("dashboardBtnContainer");
 export const reportIcon = document.getElementById("report-icon");
 export const reportPath = document.getElementById("report-path");
 export const spaceIcon = document.getElementById("space-icon"); // icon in three way toggle
@@ -298,3 +299,10 @@ export let hoverTimer;
 export var backgroundVideoSource = document.getElementById('background-video-source');
 export var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 export const initialViewportWidth = window.innerWidth || document.documentElement.clientWidth;
+
+export const setDailyTargetHours = document.getElementById('setDailyTargetHours');
+export const dailyTargetHoursInfoWindow = document.getElementById('dailyTargetHoursInfoWindow');
+export const toggleAdvChartsSampleSize = document.getElementById('toggleAdvChartsSampleSize');
+export const advChartsSampleSizeInfoWindow = document.getElementById('advChartsSampleSizeInfoWindow');
+export const aboutIconSessionIntervalsChartBounds = document.getElementById('aboutIconSessionIntervalsChartBounds');
+export const sessionIntervalsBoundsDemoPopup = document.getElementById('sessionIntervalsBoundsDemoPopup');

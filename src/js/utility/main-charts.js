@@ -1573,8 +1573,10 @@ function displaySessionIntervalsChart() {
             scales: {
                 y: {
                     beginAtZero: true,
-                    min: 0,
-                    max: yMax, // Representing 24 hours in a day
+                    // min: 0,
+                    // max: yMax,
+                    min: 6,
+                    max: 21,
                     reverse: true,
                     title: {
                         display: false,
@@ -1582,19 +1584,36 @@ function displaySessionIntervalsChart() {
                         color: 'white'
                     },
                     ticks: {
-                        stepSize: 3, // Set step size to 6 hours to match the intervals
+                        stepSize: 1, // Set step size to 6 hours to match the intervals
                         color: 'white',
                         callback: function(value) {
                             if (value === 0 || value === 24) return '12 AM';
+                            if (value === 1) return '1 AM';
+                            if (value === 2) return '2 AM';
                             if (value === 3) return '3 AM';
+                            if (value === 4) return '4 AM';
+                            if (value === 5) return '5 AM';
                             if (value === 6) return '6 AM';
+                            if (value === 7) return '7 AM';
+                            if (value === 8) return '8 AM';
                             if (value === 9) return '9 AM';
+                            if (value === 10) return '10 AM';
+                            if (value === 11) return '11 AM';
                             if (value === 12) return '12 PM';
+                            if (value === 13) return '1 PM';
+                            if (value === 14) return '2 PM';
                             if (value === 15) return '3 PM';
+                            if (value === 16) return '4 PM';
+                            if (value === 17) return '5 PM';
                             if (value === 18) return '6 PM';
+                            if (value === 19) return '7 PM';
+                            if (value === 20) return '8 PM';
                             if (value === 21) return '9 PM';
-                            return ''; // Hide other labels
+                            if (value === 22) return '10 PM';
+                            if (value === 23) return '11 PM';
+                            return ''; // Hide other labels (if needed)
                         }
+                        
                     },
                     grid: {
                         display: true, 

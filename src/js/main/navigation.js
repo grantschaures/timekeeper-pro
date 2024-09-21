@@ -1,4 +1,4 @@
-import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn, spaceContainer, shortcutsContainer, shortcutsPopup, shortcutsExit, dashboardContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, flowAnimation, chillAnimation, target_hours_input, streaksContainer, threeWayToggle, labelToDeleteContainer, confirmLabelDeletionPopup, labelSelectionRow, confirmLabelDeletionNoBtn, sessionSummaryOkBtn, sessionSummarySignupPromptPopup, HC_icon_signup_prompt, settingsGUIContainer, darkLightThemeGUIContainer, displayGUIContainer } from '../modules/dom-elements.js';
+import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn, spaceContainer, shortcutsContainer, shortcutsPopup, shortcutsExit, dashboardContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, flowAnimation, chillAnimation, target_hours_input, streaksContainer, threeWayToggle, labelToDeleteContainer, confirmLabelDeletionPopup, labelSelectionRow, confirmLabelDeletionNoBtn, sessionSummaryOkBtn, sessionSummarySignupPromptPopup, HC_icon_signup_prompt, settingsGUIContainer, darkLightThemeGUIContainer, displayGUIContainer, aboutIconSessionIntervalsChartBounds, sessionIntervalsBoundsDemoPopup, dashboardBtnContainer } from '../modules/dom-elements.js';
 import { blogIdList, flags, counters, state } from '../modules/navigation-objects.js';
 import { sessionState } from '../modules/state-objects.js';
 import { dashboardCatIds, flags as indexFlags, settingsMappings, tempCounters, tempStorage} from '../modules/index-objects.js';
@@ -206,6 +206,12 @@ document.addEventListener("stateUpdated", function() {
     shortcutsContainer.addEventListener("click", function() {
         showShortcutsPopup(popupOverlay, shortcutsPopup);
     })
+
+    aboutIconSessionIntervalsChartBounds.addEventListener('click', function() {
+        // bring up the demo picture illustrating the session intervals chart bounds
+        showSessionIntervalsBoundsDemoPopup();
+        
+    })
     
     // UPDATE FOR NEW OVERLAY POPUP WINDOWS
     popupOverlay.addEventListener("click", function(event) {
@@ -226,6 +232,8 @@ document.addEventListener("stateUpdated", function() {
             }
         } else if ((dashboardFlags.confirmSessionDeletionPopupShowing) && (!confirmSessionDeletionPopup.contains(event.target))) {
             hideConfirmSessionDeletionPopup();
+        } else if ((flags.sessionIntervalsBoundsDemoPopupShowing) && (!sessionIntervalsBoundsDemoPopup.contains(event.target))) {
+            hideSessionIntervalsBoundsDemoPopup();
         }
     })
 
@@ -382,8 +390,10 @@ function openSettingsContainer() {
 
     // OTHER CHANGES
     let viewportWidth = window.innerWidth || document.documentElement.clientWidth;
-    if ((counters.settingsBtnClicked === 0) && (viewportWidth > 650)) {
+    if ((counters.settingsBtnClicked === 0) && (state.lastSelectedMode !== 'report')) {
         pomodoroBtnContainer.click();
+    } else if (state.lastSelectedMode === 'report') {
+        dashboardBtnContainer.click();
     }
 
     triggerSilentAlertAudioMobile(soundMap.Chime, soundMap.Bell, chimePath, bellPath, indexFlags);
@@ -937,4 +947,19 @@ function hideSessionSummarySignupPromptPopup() {
     sessionSummarySignupPromptPopup.style.display = "none";
     HC_icon_signup_prompt.classList.remove('hyperChillSlowRotate');
     sessionSummarySignupPromptPopup.style.opacity = 0;
+}
+
+// show session intervals bounds popup
+function showSessionIntervalsBoundsDemoPopup() {
+    flags.sessionIntervalsBoundsDemoPopupShowing = true;
+    popupOverlay.style.display = "flex"; 
+    sessionIntervalsBoundsDemoPopup.style.display = "block";
+    body.style.overflowY = 'hidden';
+}
+
+function hideSessionIntervalsBoundsDemoPopup() {
+    flags.sessionIntervalsBoundsDemoPopupShowing = false,
+    popupOverlay.style.display = "none"; 
+    sessionIntervalsBoundsDemoPopup.style.display = "none";
+    body.style.overflowY = 'scroll';
 }
