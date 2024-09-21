@@ -301,8 +301,13 @@ export var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 export const initialViewportWidth = window.innerWidth || document.documentElement.clientWidth;
 
 export const setDailyTargetHours = document.getElementById('setDailyTargetHours');
+export const dailyTargetHoursDropdown = document.getElementById('dailyTargetHoursDropdown');
 export const dailyTargetHoursInfoWindow = document.getElementById('dailyTargetHoursInfoWindow');
 export const toggleAdvChartsSampleSize = document.getElementById('toggleAdvChartsSampleSize');
 export const advChartsSampleSizeInfoWindow = document.getElementById('advChartsSampleSizeInfoWindow');
 export const aboutIconSessionIntervalsChartBounds = document.getElementById('aboutIconSessionIntervalsChartBounds');
 export const sessionIntervalsBoundsDemoPopup = document.getElementById('sessionIntervalsBoundsDemoPopup');
+export const sessionIntervalsChartBoundsRadios = document.querySelectorAll('.sessionIntervalsChartBounds');
+
+export const lowerBoundHourDropdown = document.getElementById('lowerBoundHourDropdown');
+export const upperBoundHourDropdown = document.getElementById('upperBoundHourDropdown');

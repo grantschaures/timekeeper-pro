@@ -1,5 +1,5 @@
 import { miniCharts } from "../modules/dashboard-elements.js";
-import { dashboardData, dailyContainer, miniChartsArr, constants, flags } from "../modules/dashboard-objects.js";
+import { dashboardData, dailyContainer, miniChartsArr, constants, flags, settings } from "../modules/dashboard-objects.js";
 import { timeAmount, timeConvert } from "../modules/index-objects.js";
 import { sessionState } from "../modules/state-objects.js";
 
@@ -47,8 +47,9 @@ function displayMiniChart(weekIndex, animationLength) {
 
     let miniChartDataFocusQuality = 0;
     let miniChartDataDeepWorkTime = 0;
-    // let miniChartDataTargetHourSum = 0.0000000000000001;
-    let miniChartDataTargetHourThreshold = 6 * timeConvert.msPerHour; // 6 hours defualt
+
+    let dailyTargetHours = settings.dailyTargetHours;
+    let miniChartDataTargetHourThreshold = dailyTargetHours * timeConvert.msPerHour; // 6 hours defualt
 
     if (miniChartDataObj) {
         miniChartDataFocusQuality = 1 - ((miniChartDataObj.distractions / (miniChartDataObj.deepWorkTime / 60000)) / constants.FOCUS_QUALITY_CONSTANT);
@@ -57,10 +58,6 @@ function displayMiniChart(weekIndex, animationLength) {
         }
 
         miniChartDataDeepWorkTime = miniChartDataObj.deepWorkTime;
-        // miniChartDataTargetHourSum = miniChartDataObj.targetHourSum;
-        // if (timeAmount.targetTime) {
-        //     miniChartDataTargetHourThreshold = timeAmount.targetTime;
-        // }
     }
 
     let focusQuality = getFocusQuality(miniChartDataFocusQuality);

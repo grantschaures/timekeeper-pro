@@ -1,5 +1,5 @@
 import { dayViewCompletedTasks, dayViewCompletedTasksHeader, dayViewDeepWorkSummaryStat, dayViewFocusQualitySummaryStat, dayViewNoEntriesContainer, dayViewNotes, dayViewNotesEntriesContainer, dayViewNotesHeader, dayViewSessionsContainer, dayViewSummaryChart, sessionToDeleteContainer } from "../modules/dashboard-elements.js";
-import { charts, constants, dailyContainer, dashboardData } from "../modules/dashboard-objects.js";
+import { charts, constants, dailyContainer, dashboardData, settings } from "../modules/dashboard-objects.js";
 
 import { getDeepWork, getFocusQuality, getTargetHours } from './session-summary-chart.js'; // minified
 import { userTimeZone } from './identification.js'; // minified
@@ -411,8 +411,9 @@ function displayDayViewSummaryChart(animationLength) {
 
     let dayViewFocusQuality = 0;
     let dayViewDeepWorkTime = 0;
-    // let dayViewTargetHourSum = 0.0000000000000001;
-    let dayViewTargetHourThreshold = 6 * timeConvert.msPerHour; // 6 hours defualt
+
+    let dailyTargetHours = settings.dailyTargetHours;
+    let dayViewTargetHourThreshold = dailyTargetHours * timeConvert.msPerHour; // 6 hours defualt
 
     if (currentWeekData.dailyData) {
         dayViewFocusQuality = 1 - ((currentWeekData.dailyData.distractions / (currentWeekData.dailyData.deepWorkTime / 60000)) / constants.FOCUS_QUALITY_CONSTANT);
@@ -421,10 +422,6 @@ function displayDayViewSummaryChart(animationLength) {
         }
 
         dayViewDeepWorkTime = currentWeekData.dailyData.deepWorkTime;
-        // dayViewTargetHourSum = currentWeekData.dailyData.targetHourSum;
-        // if (timeAmount.targetTime) {
-        //     dayViewTargetHourThreshold = timeAmount.targetTime;
-        // }
     }
 
     let focusQuality = getFocusQuality(dayViewFocusQuality);

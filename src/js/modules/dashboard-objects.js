@@ -49,6 +49,17 @@ export const flags = {
     remainOnSelectedDate: false
 }
 
+// All settings the user can manually adjust in the settings window
+export const settings = {
+    dailyTargetHours: 6,
+    boundsType: '24hours', // for 24 hours, step value is 3, all else will be 1
+    manualBounds: {
+        lowerBound: 6,
+        upperBound: 6
+    },
+    relSampleSizeVis: true
+}
+
 export const charts = {
     deepWork: null,
     focusQuality: null,

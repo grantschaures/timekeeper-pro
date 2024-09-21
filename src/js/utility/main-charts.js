@@ -1,5 +1,5 @@
 import { directionIndicators, summaryAvgAdjustedDeepWorkDown, summaryAvgAdjustedDeepWorkTime, summaryAvgAdjustedDeepWorkUp, summaryAvgBreakInterval, summaryAvgBreakIntervalDown, summaryAvgBreakIntervalUp, summaryAvgDeepWorkDown, summaryAvgDeepWorkInterval, summaryAvgDeepWorkIntervalDown, summaryAvgDeepWorkIntervalUp, summaryAvgDeepWorkTime, summaryAvgDeepWorkUp, summaryDeepWorkTime, summaryDeepWorkTimeUp, summaryFocusQuality, summaryFocusQualityDown, summaryFocusQualityUp } from "../modules/dashboard-elements.js";
-import { charts, mainChartContainer, dashboardData, flags, constants, general } from "../modules/dashboard-objects.js";
+import { charts, mainChartContainer, dashboardData, flags, constants, general, settings } from "../modules/dashboard-objects.js";
 import { timeConvert } from "../modules/index-objects.js";
 
 import { updateDailyContainer } from '../dashboard/daily-sessions.js'; // minified
@@ -39,6 +39,11 @@ let prevStats = {
     adjustedDeepWorkTime: null, // hrs
     deepWorkInterval: null, // min
     breakInterval: null // min
+}
+
+let sessionIntervals = {
+    initialTimeMinValue: 24,
+    finalTimeMaxValue: 0
 }
 
 // holds yMax value for non-adjusted value (for deep work)
@@ -412,15 +417,23 @@ function populateIntervalDataArrs(startTime, endTime, hourlyTransitionArr) {
 
         let startTimeDay = extractDateInfo(startTime, mainChartContainer.timeFrame);
         let endTimeDay = extractDateInfo(endTime, mainChartContainer.timeFrame);
-
+        
         const isEven = i % 2 === 0;
         const dataArr = isEven ? deepWorkIntervalDataArr : breakIntervalDataArr;
-
+        
         const startTimeBeforeLowerBound = moment(startTime, 'YYYY-MM-DD').isBefore(moment(mainChartContainer.lowerBound, 'YYYY-MM-DD'));
         const endTimeAfterUpperBound = moment(endTime, 'YYYY-MM-DD').isAfter(moment(mainChartContainer.upperBound, 'YYYY-MM-DD'));
-
+        
         const initialTime = hourlyTransitionArr[i];
         const finalTime = hourlyTransitionArr[i + 1];
+
+        if (initialTime < sessionIntervals.initialTimeMinValue) {
+            sessionIntervals.initialTimeMinValue = initialTime;
+        }
+
+        if (finalTime > sessionIntervals.finalTimeMaxValue) {
+            sessionIntervals.finalTimeMaxValue = finalTime;
+        }
 
         if (startTimeBeforeLowerBound) {
             if (finalTime > 24) {
@@ -565,6 +578,9 @@ async function resetData() {
         indicator.style.display = 'none';
         indicator.style.opacity = '0';
     })
+
+    sessionIntervals.initialTimeMinValue = 24;
+    sessionIntervals.finalTimeMaxValue = 0;
 
     flags.populated365Arrs = false;
 }
@@ -1560,8 +1576,25 @@ function displaySessionIntervalsChart() {
         xAxisLabelsTempArr = monthsOfTheYear;
     }
 
-    let yMax = 24;
+    let yMin = 0; // default for '24hours' setting
+    let yMax = 24; // default for '24hours' setting
+    let stepSizeValue = 3; // default for '24hours' setting
+
+    if (settings.boundsType === 'manual') {
+        stepSizeValue = 1;
+        yMin = settings.manualBounds.lowerBound;
+        yMax = Number(settings.manualBounds.upperBound) + 12;
+        console.log(yMax)
+
+    } else if (settings.boundsType === 'auto') {
+        stepSizeValue = 1;
+        yMin = Math.floor(sessionIntervals.initialTimeMinValue);
+        yMax = Math.ceil(sessionIntervals.finalTimeMaxValue);
+    }
+
+    // allowing no data message to be shown
     if (deepWorkIntervalDataArr.length === 0) {
+        yMin = 0;
         yMax = 0;
     }
 
@@ -1573,10 +1606,8 @@ function displaySessionIntervalsChart() {
             scales: {
                 y: {
                     beginAtZero: true,
-                    // min: 0,
-                    // max: yMax,
-                    min: 6,
-                    max: 21,
+                    min: yMin,
+                    max: yMax,
                     reverse: true,
                     title: {
                         display: false,
@@ -1584,7 +1615,7 @@ function displaySessionIntervalsChart() {
                         color: 'white'
                     },
                     ticks: {
-                        stepSize: 1, // Set step size to 6 hours to match the intervals
+                        stepSize: stepSizeValue, // Set step size to 6 hours to match the intervals
                         color: 'white',
                         callback: function(value) {
                             if (value === 0 || value === 24) return '12 AM';

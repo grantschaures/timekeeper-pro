@@ -14,10 +14,13 @@ import {
     dailyTargetHoursInfoWindow,
     toggleAdvChartsSampleSize,
     advChartsSampleSizeInfoWindow,
-    aboutIconSessionIntervalsChartBounds
+    dailyTargetHoursDropdown,
+    sessionIntervalsChartBoundsRadios,
+    lowerBoundHourDropdown,
+    upperBoundHourDropdown
 } from '../modules/dom-elements.js';
 
-import { flags as dashboardFlags } from '../modules/dashboard-objects.js';
+import { flags as dashboardFlags, settings } from '../modules/dashboard-objects.js';
 
 import { sessionState } from '../modules/state-objects.js';
 import { state, flags as navFlags } from '../modules/navigation-objects.js';
@@ -380,6 +383,73 @@ document.addEventListener("stateUpdated", function() {
             });
         }
     })
+
+    // DASHBOARD SETTINGS
+
+    dailyTargetHoursDropdown.addEventListener('change', async function() {
+
+        let dailyTargetHoursInput = dailyTargetHoursDropdown.value;
+
+        // Programmatic changes
+        // mini charts
+        // day view doughnut chart
+        // main chart deep work threshold line
+        settings.dailyTargetHours = dailyTargetHoursInput;
+
+        // Note: We'll probably have to repopulate dashboared data after receiving response from server
+        if (sessionState.loggedIn) {
+            await updateUserSettings({
+                dashboard: {
+                    dailyTargetHours: dailyTargetHoursInput
+                }
+            });
+        }
+    })
+
+    sessionIntervalsChartBoundsRadios.forEach(radio => {
+        radio.addEventListener('change', event => handleSessionIntervalsChartBoundsRadioChange(event));
+    })
+
+    lowerBoundHourDropdown.addEventListener('change', async function() {
+
+        let lowerBoundHourInput = lowerBoundHourDropdown.value;
+
+        settings.manualBounds.lowerBound = lowerBoundHourInput;
+
+        if (sessionState.loggedIn) {
+            await updateUserSettings({
+                dashboard: {
+                    manualBounds: {
+                        lowerBound: settings.manualBounds.lowerBound,
+                        upperBound: settings.manualBounds.upperBound
+                    }
+                }
+            });
+        }
+    })
+    
+    upperBoundHourDropdown.addEventListener('change', async function() {
+        
+        let upperBoundHourInput = upperBoundHourDropdown.value;
+
+        settings.manualBounds.upperBound = upperBoundHourInput;
+
+        if (sessionState.loggedIn) {
+            await updateUserSettings({
+                dashboard: {
+                    manualBounds: {
+                        lowerBound: settings.manualBounds.lowerBound,
+                        upperBound: settings.manualBounds.upperBound
+                    }
+                }
+            });
+        }
+    })
+
+
+
+
+
 
     decBtn.addEventListener("click", function() {
         if (counters.interruptions > 0) {
@@ -1249,6 +1319,29 @@ document.addEventListener("stateUpdated", function() {
 // ------------------
 // HELPER FUNCTIONS
 // ------------------
+async function handleSessionIntervalsChartBoundsRadioChange(event) {
+    let targetId = event.target.id;
+
+    // may need to make this a global object ??
+    // figure this out when modifying state.js
+    const boundsObj = {
+        'default24HoursBoundsInput': '24hours',
+        'manualBoundsInput': 'manual',
+        'automaticBoundsInput': 'auto'
+    }
+
+    // programmatically set the settings.boundsType field
+    settings.boundsType = boundsObj[targetId];
+
+    if (sessionState.loggedIn) {
+        await updateUserSettings({
+            dashboard: {
+                boundsType: settings.boundsType
+            }
+        });
+    }
+}
+
 async function hideDisplays() {
     intervalTimeToggle.checked = false;
 

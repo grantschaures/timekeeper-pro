@@ -71,6 +71,15 @@ const User = db.model("User", {
       totalTime: { type: Boolean, default: true },
       muffinToggle: { type: Boolean, default: true }
     },
+    dashboard: {
+      dailyTargetHours: { type: Number, default: 6 }, // 1 - 12
+      boundsType: { type: String, default: "24hours" }, // can be "24hours", "manual", or "auto"
+      manualBounds: {
+        lowerBound: { type: Number, default: 6 }, // 1 - 11
+        upperBound: { type: Number, default: 6 } // 1 - 11
+      },
+      relSampleSizeVis: { type: Boolean, default: true }
+    },
     notes: {
       autoSwitchToggle: { type: Boolean, default: false },
       propagateUnfinishedTasksToggle: { type: Boolean, default: false },
