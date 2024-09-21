@@ -995,6 +995,7 @@ function constructDateArray(lowerBound, upperBound) {
     return dateArray;
 }
 
+
 function displayDeepWorkChart() {
 
     let xAxisTickLabelArr;
@@ -1584,7 +1585,6 @@ function displaySessionIntervalsChart() {
         stepSizeValue = 1;
         yMin = settings.manualBounds.lowerBound;
         yMax = Number(settings.manualBounds.upperBound) + 12;
-        console.log(yMax)
 
     } else if (settings.boundsType === 'auto') {
         stepSizeValue = 1;

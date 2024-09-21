@@ -17,7 +17,8 @@ import {
     dailyTargetHoursDropdown,
     sessionIntervalsChartBoundsRadios,
     lowerBoundHourDropdown,
-    upperBoundHourDropdown
+    upperBoundHourDropdown,
+    advChartsSampleSizeToggle
 } from '../modules/dom-elements.js';
 
 import { flags as dashboardFlags, settings } from '../modules/dashboard-objects.js';
@@ -35,6 +36,9 @@ import { lastIntervalSwitch } from '../state/last-interval-switch.js'; // minifi
 import { checkSession } from '../state/check-session.js'; // minified
 import { updateInvaliDate } from '../state/update-invaliDate.js'; // minified
 import { initialVisualReset, sessionReset } from './end-session.js'; // minified
+
+import { setMetricCharts } from '../dashboard/metric-charts.js'; // minified
+import { setInitialDate } from '../dashboard/daily-sessions.js'; // minified
 
 export const pomodoroWorker = new Worker('/js/web-workers/pomodoroWorker.js');
 export const suggestionWorker = new Worker('/js/web-workers/suggestionWorker.js');
@@ -403,6 +407,9 @@ document.addEventListener("stateUpdated", function() {
                     dailyTargetHours: dailyTargetHoursInput
                 }
             });
+
+            flags.remainOnSelectedDate = true;
+            setInitialDate();
         }
     })
 
@@ -425,6 +432,8 @@ document.addEventListener("stateUpdated", function() {
                     }
                 }
             });
+
+            setMetricCharts();
         }
     })
     
@@ -443,10 +452,28 @@ document.addEventListener("stateUpdated", function() {
                     }
                 }
             });
+
+            setMetricCharts();
         }
     })
 
+    advChartsSampleSizeToggle.addEventListener('click', async function() {
+        if (!settings.relSampleSizeVis) {
+            settings.relSampleSizeVis = true;
+        } else {
+            settings.relSampleSizeVis = false;
+        }
 
+        if (sessionState.loggedIn) {
+            await updateUserSettings({
+                dashboard: {
+                    relSampleSizeVis: settings.relSampleSizeVis
+                }
+            });
+
+            setMetricCharts();
+        }
+    })
 
 
 
@@ -1339,6 +1366,8 @@ async function handleSessionIntervalsChartBoundsRadioChange(event) {
                 boundsType: settings.boundsType
             }
         });
+
+        setMetricCharts();
     }
 }
 

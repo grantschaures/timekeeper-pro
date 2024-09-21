@@ -311,3 +311,9 @@ export const sessionIntervalsChartBoundsRadios = document.querySelectorAll('.ses
 
 export const lowerBoundHourDropdown = document.getElementById('lowerBoundHourDropdown');
 export const upperBoundHourDropdown = document.getElementById('upperBoundHourDropdown');
+
+export const advChartsSampleSizeToggle = document.getElementById('advChartsSampleSizeToggle');
+
+export const default24HoursBoundsInput = document.getElementById('default24HoursBoundsInput');
+export const manualBoundsInput = document.getElementById('manualBoundsInput');
+export const automaticBoundsInput = document.getElementById('automaticBoundsInput');

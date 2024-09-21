@@ -1,8 +1,8 @@
-import { pomodoroNotificationToggle, pomodoroInputs, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, pomodoroVolumeThumb, pomodoroVolumeThumb2, pomodoroRadios, flowmodoroNotificationToggle, flowmodoroInputs, flowmodoroVolumeThumb, flowmodoroVolumeThumb2, flowmodoroRadios, breakSuggestionToggle, suggestionMinutesInput, generalRadios, targetTimeReachedToggle, darkGrayTheme, defaultTheme, interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, emojiContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, transitionClockSoundToggle, labelSelectionRow, emojiImg, emojiImg2, dynamicList, propagateUnfinishedTasksToggle as propagateUnfinishedTasksToggleElement, timestampsToggle as timestampsToggleElement, blackFlowtimeBackground, blackChilltimeBackground, total_time_display, streaksContainer, labelInputContainer, tagIcon, promptContainer, clearIcon, addDoneContainer, tagSelectionDivider, taskPrompt, intervalTimeToggle, totalTimeToggle, muffinToggle as muffToggle, lightContainer, darkContainer, transitionNotesAutoSwitchToggle } from '../modules/dom-elements.js';
+import { pomodoroNotificationToggle, pomodoroInputs, autoStartPomodoroIntervalToggle, autoStartBreakIntervalToggle, pomodoroVolumeThumb, pomodoroVolumeThumb2, pomodoroRadios, flowmodoroNotificationToggle, flowmodoroInputs, flowmodoroVolumeThumb, flowmodoroVolumeThumb2, flowmodoroRadios, breakSuggestionToggle, suggestionMinutesInput, generalRadios, targetTimeReachedToggle, darkGrayTheme, defaultTheme, interruptionsContainer, targetHoursContainer, timekeepingContainer, progressBarContainer, popupMenu, settingsContainer, notesContainer, aboutContainer, blogContainer, emojiContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, transitionClockSoundToggle, labelSelectionRow, emojiImg, emojiImg2, dynamicList, propagateUnfinishedTasksToggle as propagateUnfinishedTasksToggleElement, timestampsToggle as timestampsToggleElement, blackFlowtimeBackground, blackChilltimeBackground, total_time_display, streaksContainer, labelInputContainer, tagIcon, promptContainer, clearIcon, addDoneContainer, tagSelectionDivider, taskPrompt, intervalTimeToggle, totalTimeToggle, muffinToggle as muffToggle, lightContainer, darkContainer, transitionNotesAutoSwitchToggle, dailyTargetHoursDropdown, default24HoursBoundsInput, manualBoundsInput, automaticBoundsInput, lowerBoundHourDropdown, upperBoundHourDropdown, advChartsSampleSizeToggle } from '../modules/dom-elements.js';
 import { sessionState } from '../modules/state-objects.js';
 import { flags, timeAmount, alertVolumes, alertSounds, selectedBackgroundId, selectedBackground, flowtimeBackgrounds, chilltimeBackgrounds, selectedBackgroundIdTemp, startTimes, elapsedTime, timeConvert, progressTextMod, darkHtmlBackground, lightHtmlBackground } from '../modules/index-objects.js';
 import { flags as notesflags, counters as notesCounters, state as notesState, labelDict, notesArr, selectedLabelDict, notesFlags, fontSizeArr, fontNumArr, labelFlags, labelArrs } from '../modules/notes-objects.js';
-import { general } from '../modules/dashboard-objects.js';
+import { general, settings } from '../modules/dashboard-objects.js';
 
 import { updateStreak } from '../utility/update-streaks.js';
 import { userTimeZone } from '../utility/identification.js';
@@ -176,8 +176,56 @@ function updateSettings(userData) {
 
     updateBackgroundsThemes(userData);
     updateDisplay(userData);
+    updateDashboard(userData);
     updateNotes(userData);
     updateSounds(userData);
+}
+
+function updateDashboard(userData) {
+    updateDailyTargetHours(userData);
+    updateSessionIntervalsChartBounds(userData);
+    updateRelSampleSizeVis(userData);
+}
+
+function updateRelSampleSizeVis(userData) {
+    const { relSampleSizeVis } = userData.settings.dashboard;
+    
+    // Programmatic updates
+    settings.relSampleSizeVis = relSampleSizeVis;
+
+    // UI updates
+    advChartsSampleSizeToggle.checked = relSampleSizeVis;
+}
+
+function updateSessionIntervalsChartBounds(userData) {
+    const { boundsType, manualBounds } = userData.settings.dashboard;
+
+    // Programmatic updates
+    settings.boundsType = boundsType;
+    settings.manualBounds.lowerBound = manualBounds.lowerBound;
+    settings.manualBounds.upperBound = manualBounds.upperBound;
+
+    // UI updates
+    if (boundsType === '24hours') {
+        default24HoursBoundsInput.checked = true;
+    } else if (boundsType === 'manual') {
+        manualBoundsInput.checked = true;
+    } else {
+        automaticBoundsInput.checked = true;
+    }
+
+    lowerBoundHourDropdown.value = manualBounds.lowerBound;
+    upperBoundHourDropdown.value = manualBounds.upperBound;
+}
+
+function updateDailyTargetHours(userData) {
+    const { dailyTargetHours } = userData.settings.dashboard;
+
+    // Programmatic update
+    settings.dailyTargetHours = dailyTargetHours;
+
+    // UI update
+    dailyTargetHoursDropdown.value = dailyTargetHours;
 }
 
 // POMODORO

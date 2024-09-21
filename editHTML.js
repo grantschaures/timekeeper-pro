@@ -155,7 +155,15 @@ const indexReplacements = [
     {
         pattern: /import { initialVisualReset, sessionReset } from '.\/end-session.js';/g,
         replacement: "import { initialVisualReset, sessionReset } from '../minified/end-session.min.js';"
-    }
+    },
+    {
+        pattern: /import { setMetricCharts } from '..\/dashboard\/metric-charts.js';/g,
+        replacement: "import { setMetricCharts } from '../minified/metric-charts.min.js';"
+    },
+    {
+        pattern: /import { setInitialDate } from '..\/dashboard\/daily-sessions.js';/g,
+        replacement: "import { setInitialDate } from '../minified/daily-sessions.min.js';"
+    },
 ];
 
 const notesReplacements = [

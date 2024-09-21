@@ -1,4 +1,4 @@
-import { charts, dashboardData, flags, constants, general } from "../modules/dashboard-objects.js";
+import { charts, dashboardData, flags, constants, general, settings } from "../modules/dashboard-objects.js";
 import { timeConvert } from "../modules/index-objects.js";
 
 import { calculateDistractionsPerHour, focusQualityCalculation } from '../dashboard/populate-dashboard.js';
@@ -8,6 +8,9 @@ let hourlyFocusQualityArr = [];
 let hourlyDistractionsArr = []; // avg per hour
 let hourlyDeepWorkArr = []; // avg per hour
 let hourlyAdjustedDeepWorkArr = [];
+
+let opacityArr = [];
+let maxSampleSize = 0;
 
 const finalHourArr = ['1am', '2am', '3am', '4am', '5am', '6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm', '9pm', '10pm', '11pm', '12am'];
 
@@ -36,19 +39,34 @@ async function resetHourlyData() {
     hourlyFocusQualityArr = [];
     hourlyDistractionsArr = []; // avg per hour
     hourlyDeepWorkArr = []; // avg per hour
+    opacityArr = [];
+    maxSampleSize = 0;
 }
 
 function displayHourlyAvgDeepWorkChart() {
 
-    let background = 'rgba(63, 210, 68, 1)';
-    if (flags.hourlyQualityAdjustedToggle) {
-        background = '#0cce63';
-    }
+    let backgroundColorStr = 'rgba(63, 210, 68, ';
+    let backgroundColorStrFull = 'rgb(63, 210, 68)';
 
+    if (flags.hourlyQualityAdjustedToggle) {
+        backgroundColorStr = 'rgba(12, 206, 99, ';
+        backgroundColorStrFull = 'rgb(12, 206, 99)';
+    }
+    
     let dataArr = hourlyDeepWorkArr;
     if (flags.hourlyQualityAdjustedToggle) {
         dataArr = hourlyAdjustedDeepWorkArr;
     }
+
+    let backgrounds = opacityArr.map((value, index) => {
+        let finalBackgroundColorStr;
+        if (settings.relSampleSizeVis) {
+            finalBackgroundColorStr = backgroundColorStr + value;
+        } else {
+            finalBackgroundColorStr = backgroundColorStrFull;
+        }
+        return finalBackgroundColorStr;
+    })
 
     const ctx = document.getElementById('avgDeepWorkChart').getContext('2d');
     const config = {
@@ -58,10 +76,9 @@ function displayHourlyAvgDeepWorkChart() {
             datasets: [{
                 label: 'Avg Deep Work (Min)',
                 data: dataArr,
-                backgroundColor: background,
-                borderColor: 'rgb(255, 255, 255)',
+                backgroundColor: backgrounds,
                 borderWidth: 2,
-                borderRadius: 5,
+                borderRadius: 25,
                 barPercentage: 1.0, // Full width bar
                 categoryPercentage: 1.0, // Full width category
                 offset: true // Offset the bars between the ticks
@@ -162,8 +179,25 @@ function displayHourlyFocusChart() {
     let dataArr;
     let yScale;
 
+    let backgroundColorStr = 'rgba(162, 0, 212, ';
+    let backgroundColorStrFull = 'rgb(162, 0, 212)';
     if (flags.distractionsToggle) {
-        barColor = 'rgb(255, 69, 0)';
+        backgroundColorStr = 'rgba(255, 69, 0, ';
+        backgroundColorStrFull = 'rgb(255, 69, 0)';
+    }
+
+    let backgrounds = opacityArr.map((value, index) => {
+        let finalBackgroundColorStr;
+        if (settings.relSampleSizeVis) {
+            finalBackgroundColorStr = backgroundColorStr + value;
+        } else {
+            finalBackgroundColorStr = backgroundColorStrFull;
+        }
+        return finalBackgroundColorStr;
+    })
+
+    if (flags.distractionsToggle) {
+        barColor = backgrounds;
         dataArr = hourlyDistractionsArr;
         yScale = {
             beginAtZero: true,
@@ -186,7 +220,7 @@ function displayHourlyFocusChart() {
             }
         }
     } else {
-        barColor = 'rgb(162, 0, 212)';
+        barColor = backgrounds;
         dataArr = hourlyFocusQualityArr;
         yScale = {
             beginAtZero: true,
@@ -218,10 +252,9 @@ function displayHourlyFocusChart() {
             datasets: [{
                 label: 'Hourly Focus Quality',
                 data: dataArr,
-                backgroundColor: barColor,
-                borderColor: 'rgb(255, 255, 255)',
+                backgroundColor: backgrounds,
                 borderWidth: 2,
-                borderRadius: 5,
+                borderRadius: 25,
                 barPercentage: 1.0, // Full width bar
                 categoryPercentage: 1.0, // Full width category
                 offset: true // Offset the bars between the ticks
@@ -343,6 +376,17 @@ export async function initializeHourlyData(dashboardData) {
 
         let adjustedAvgDeepWorkPerHour = Math.round(avgDeepWorkPerHour * focusQuality);
         hourlyAdjustedDeepWorkArr.push(adjustedAvgDeepWorkPerHour);
+
+        let hourlyArrLength = hourlyData[i].deepWorkTimes.length;
+        if (hourlyArrLength > maxSampleSize) {
+            maxSampleSize = hourlyArrLength;
+        }
+    }
+
+    for (let j = 0; j < hourlyData.length; j++) {
+        let currentSampleSize = hourlyData[j].deepWorkTimes.length;
+        let opacityValue = currentSampleSize / maxSampleSize;
+        opacityArr.push(opacityValue);
     }
 
     return hourlyAdjustedDeepWorkArr; // to populate the Most Productive Hour Summary Stat
