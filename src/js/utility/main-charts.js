@@ -17,6 +17,7 @@ let avgIntervalArr = [];
 let sundayIndices = [];
 
 let percentInDeepWorkArr = [];
+let avgMoodArr = [];
 
 let deepWorkIntervalDataArr = [];
 let breakIntervalDataArr = [];
@@ -65,6 +66,7 @@ let xAxisTickLabels = {
 }
 
 document.addEventListener("displayMainCharts", async function() {
+    // console.log(dashboardData.dailyArr)
 
     // reset everything
     resetStats(currStats);
@@ -85,6 +87,7 @@ document.addEventListener("displayMainCharts", async function() {
     if (chartTransition === 'all') {
         displayFocusQualityChart();
         displayPercentDeepWorkChart();
+        displayAvgMoodChart();
     }
 
     if ((chartTransition === 'all') || (chartTransition === 'main-break')) {
@@ -103,6 +106,106 @@ document.addEventListener("displayMainCharts", async function() {
 // // // // // // //
 // HELPER FUNCTIONS
 // // // // // // //
+function getMoodLabelStr(moodValue) {
+
+    // Check if moodValue is exactly on a whole number
+    switch (moodValue) {
+        case -5:
+            return "The Worst";
+        case -4:
+            return "Terrible";
+        case -3:
+            return "Very Bad";
+        case -2:
+            return "Bad";
+        case -1:
+            return "Not Great";
+        case 0:
+            return "Neutral";
+        case 1:
+            return "Not Bad";
+        case 2:
+            return "Good";
+        case 3:
+            return "Very Good";
+        case 4:
+            return "Amazing";
+        case 5:
+            return "The Best";
+    }
+
+    // Check if the moodValue falls between whole numbers
+    if (moodValue > -5 && moodValue < -4) {
+        return "Between Terrible and The Worst";
+    } else if (moodValue > -4 && moodValue < -3) {
+        return "Between Very Bad and Terrible";
+    } else if (moodValue > -3 && moodValue < -2) {
+        return "Between Bad and Very Bad";
+    } else if (moodValue > -2 && moodValue < -1) {
+        return "Between Not Great and Bad";
+    } else if (moodValue > -1 && moodValue < 0) {
+        return "Between Neutral and Not Great";
+    } else if (moodValue > 0 && moodValue < 1) {
+        return "Between Neutral and Not Bad";
+    } else if (moodValue > 1 && moodValue < 2) {
+        return "Between Not Bad and Good";
+    } else if (moodValue > 2 && moodValue < 3) {
+        return "Between Good and Very Good";
+    } else if (moodValue > 3 && moodValue < 4) {
+        return "Between Very Good and Amazing";
+    } else if (moodValue > 4 && moodValue < 5) {
+        return "Between Amazing and The Best";
+    }
+
+    // edge case
+    if (moodValue < -5 || moodValue > 5) {
+        return "Mood value out of range";
+    }
+
+    return "Neutral"; // catch all
+}
+
+function getAvgMonthlyMood(monthlyData, sessionsPerMonthArr, index) {
+    let monthlyDataMoodSum = monthlyData.moodSum;
+    let monthlySessionArr = sessionsPerMonthArr[index];
+    let count = 0;
+
+    monthlySessionArr.forEach(session => {
+        if (session.sessionSummary.subjectiveFeedback !== "") {
+            count++;
+        }
+    })
+
+    let avgMonthlyMood = 0;
+    if (count) {
+        avgMonthlyMood = monthlyDataMoodSum / count;
+    }
+
+    return avgMonthlyMood;
+}
+
+function getAvgMood(dailyData) {
+    let moodSum = dailyData.moodSum;
+    let sessionsArr = dailyData.sessions;
+    let count = 0;
+
+    sessionsArr.forEach(session => {
+        if (session.sessionSummary.subjectiveFeedback !== "") {
+            count++;
+        }
+    })
+
+    let avgMood;
+    if (moodSum !== null) {
+        // calculate avg mood for the day and return
+        avgMood = moodSum / count;
+
+    } else {
+        avgMood = null;
+    }
+
+    return avgMood;
+}
 
 function resetStats(stats) {
     for (let key in stats) {
@@ -556,6 +659,7 @@ async function resetData() {
     deepWorkArr = []; // holds normal or quality adjusted deep work time
     focusQualityArr = [];
     avgIntervalArr = [];
+    avgMoodArr = [];
     percentInDeepWorkArr = [];
     sundayIndices = [];
 
@@ -607,6 +711,10 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
     let deepWorkMsPerMonthArr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     let distractionsPerMonthArr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     let sessionTimeSumPerMonthArr =  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+    let avgMoodPerMonthArr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    let sessionsPerMonthArr = [[], [], [], [], [], [], [], [], [], [], [], []];
+
     let intervalsPerMonthArr = [[], [], [], [], [], [], [], [], [], [], [], []];
 
     let dashboardDataDailyArr = dashboardData.dailyArr;
@@ -616,6 +724,7 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
             let deepWorkHours = getDeepWorkHoursAndFocusQuality(dashboardDataDailyArr[i])[0];
             let focusQuality = getDeepWorkHoursAndFocusQuality(dashboardDataDailyArr[i])[1];
             let avgInterval = getInterval(dashboardDataDailyArr[i]);
+            let avgMood = getAvgMood(dashboardDataDailyArr[i]);
             let dateStr = formatDateString(date);
             let percentInDeepWork = getPercentInDeepWork(dashboardDataDailyArr[i]);
 
@@ -628,6 +737,7 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
                     deepWorkArr.push(0);
                     focusQualityArr.push(0);
                     avgIntervalArr.push(0);
+                    avgMoodArr.push(0);
                     percentInDeepWorkArr.push(0);
                 }
                 updateDateStr(dateStr, dayOfWeekIndex);
@@ -638,6 +748,7 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
                     deepWorkArr.push(0);
                     focusQualityArr.push(0);
                     avgIntervalArr.push(0);
+                    avgMoodArr.push(0);
                     percentInDeepWorkArr.push(0);
                 }
                 updateDateStr(dateStr, dayOfMonthIndex);
@@ -653,6 +764,11 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
                 deepWorkMsPerMonthArr[monthIndex] += dashboardDataDailyArr[i].deepWorkTime;
                 distractionsPerMonthArr[monthIndex] += dashboardDataDailyArr[i].distractions;
                 sessionTimeSumPerMonthArr[monthIndex] += dashboardDataDailyArr[i].sessionTimeSum;
+                
+                if (dashboardDataDailyArr[i].moodSum !== null) {
+                    avgMoodPerMonthArr[monthIndex] += dashboardDataDailyArr[i].moodSum;
+                }
+                sessionsPerMonthArr[monthIndex].push(...dashboardDataDailyArr[i].sessions);
 
                 if (flags.avgBreakIntervalToggle) {
                     intervalsPerMonthArr[monthIndex].push(...dashboardDataDailyArr[i].breakIntervals);
@@ -665,6 +781,7 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
                 deepWorkArr.push(deepWorkHours);
                 focusQualityArr.push(Math.floor(focusQuality * 100));
                 avgIntervalArr.push(avgInterval);
+                avgMoodArr.push(avgMood);
                 percentInDeepWorkArr.push(Math.floor(percentInDeepWork * 100));
             }
         }
@@ -697,6 +814,7 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
                 distractions: distractionsPerMonthArr[i],
                 deepWorkIntervals: intervalsPerMonthArr[i],
                 breakIntervals: intervalsPerMonthArr[i],
+                moodSum: avgMoodPerMonthArr[i],
                 sessionTimeSum: sessionTimeSumPerMonthArr[i]
             }
 
@@ -704,11 +822,13 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
                 let deepWorkHours = getDeepWorkHoursAndFocusQuality(monthlyData)[0];
                 let focusQuality = getDeepWorkHoursAndFocusQuality(monthlyData)[1];
                 let avgInterval = getInterval(monthlyData);
+                let avgMood = getAvgMonthlyMood(monthlyData, sessionsPerMonthArr, i);
                 let percentInDeepWork = getPercentInDeepWork(monthlyData);
 
                 deepWorkArr.push(deepWorkHours);
                 focusQualityArr.push(Math.floor(focusQuality * 100));
                 avgIntervalArr.push(avgInterval);
+                avgMoodArr.push(avgMood);
                 percentInDeepWorkArr.push(Math.floor(percentInDeepWork * 100));
 
                 dataPresent = true;
@@ -716,6 +836,7 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
                 deepWorkArr.push(0);
                 focusQualityArr.push(0);
                 avgIntervalArr.push(0);
+                avgMoodArr.push(0);
                 percentInDeepWorkArr.push(0);
             }
 
@@ -728,6 +849,7 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
             deepWorkArr.length = 0;
             focusQualityArr.length = 0;
             avgIntervalArr.length = 0;
+            avgMoodArr.length = 0;
             percentInDeepWorkArr.length = 0;
         }
     }
@@ -998,11 +1120,13 @@ function constructDateArray(lowerBound, upperBound) {
 
 function displayDeepWorkChart() {
 
+    let barWidth = 0.8;
     let xAxisTickLabelArr;
     if (mainChartContainer.timeFrame === 'week') {
         xAxisTickLabelArr = xAxisTickLabels.week;
     } else if (mainChartContainer.timeFrame === 'month') {
         xAxisTickLabelArr = xAxisTickLabels.month;
+        barWidth = 1;
     } else { // year
         xAxisTickLabelArr = xAxisTickLabels.year;
     }
@@ -1035,7 +1159,7 @@ function displayDeepWorkChart() {
                 // borderWidth: 3,
                 borderRadius: 25,
                 borderSkipped: false,
-                barPercentage: 1,
+                barPercentage: barWidth,
                 categoryPercentage: 0.5
             }]
         },
@@ -1155,7 +1279,6 @@ function displayFocusQualityChart() {
         xAxisTickLabelArr = xAxisTickLabels.week;
     } else if (mainChartContainer.timeFrame === 'month') {
         xAxisTickLabelArr = xAxisTickLabels.month;
-
         for (let i = 0; i < focusQualityArr.length; i++) {
             if (dateStrArr[i] === 'no data') {
                 focusQualityArr[i] = null;
@@ -1231,7 +1354,7 @@ function displayFocusQualityChart() {
                 // borderWidth: 3,
                 borderRadius: 25,
                 borderSkipped: false,
-                barPercentage: 1,
+                barPercentage: 0.8,
                 categoryPercentage: 0.5,
                 pointRadius: 5, // Size of the points
                 pointHoverRadius: 8, // Size of the points when hovered
@@ -1337,10 +1460,12 @@ function displayFocusQualityChart() {
 
 function displayAvgIntervalChart() {
     let xAxisTickLabelArr;
+    let barWidth = 0.8;
     if (mainChartContainer.timeFrame === 'week') {
         xAxisTickLabelArr = xAxisTickLabels.week;
     } else if (mainChartContainer.timeFrame === 'month') {
         xAxisTickLabelArr = xAxisTickLabels.month;
+        barWidth = 1;
     } else { // year
         xAxisTickLabelArr = xAxisTickLabels.year;
     }
@@ -1444,7 +1569,7 @@ function displayAvgIntervalChart() {
                 // borderWidth: 3,
                 borderRadius: 25,
                 borderSkipped: false,
-                barPercentage: 1,
+                barPercentage: barWidth,
                 categoryPercentage: 0.5
             }]
         },
@@ -1802,7 +1927,7 @@ function displayPercentDeepWorkChart() {
                 // borderWidth: 3,
                 borderRadius: 25,
                 borderSkipped: false,
-                barPercentage: 1,
+                barPercentage: 0.8,
                 categoryPercentage: 0.5,
                 pointRadius: 5, // Size of the points
                 pointHoverRadius: 8, // Size of the points when hovered
@@ -1904,6 +2029,226 @@ function displayPercentDeepWorkChart() {
 
     // Create a new chart instance
     charts.percentDeepWork = new Chart(ctx, config);
+}
+
+function displayAvgMoodChart() {
+
+    let barWidth = 0.8;
+    let xAxisTickLabelArr;
+    if (mainChartContainer.timeFrame === 'week') {
+        xAxisTickLabelArr = xAxisTickLabels.week;
+    } else if (mainChartContainer.timeFrame === 'month') {
+        xAxisTickLabelArr = xAxisTickLabels.month;
+        barWidth = 1;
+
+        for (let i = 0; i < percentInDeepWorkArr.length; i++) {
+            if (dateStrArr[i] === 'no data') {
+                percentInDeepWorkArr[i] = null;
+            }
+        }
+
+    } else { // year
+        xAxisTickLabelArr = xAxisTickLabels.year;
+    }
+
+    let backgrounds = avgMoodArr.map((value, index) => {
+        let finalBackgroundColorStr;
+        if (value > 0) {
+            finalBackgroundColorStr = 'rgba(63, 210, 68)';
+        } else {
+            finalBackgroundColorStr = 'rgb(245, 36, 36)';
+        }
+        return finalBackgroundColorStr;
+
+    })
+
+    const yScaleData = {
+        beginAtZero: true,
+        min: -5, // Set the minimum value of the y-axis to -5
+        max: 5,  // Set the maximum value of the y-axis to 5
+        suggestedMax: 100,
+        title: {
+            display: true,
+            text: 'Avg Mood',
+            color: 'white'
+        },
+        ticks: {
+            color: 'white',
+            font: {
+                size: 20 // Increase the font size (in pixels)
+            },
+            callback: function(value, index, values) {
+                // Custom labels based on value
+                if (value === 5) return '😝';
+                if (value === 4) return '😁';
+                if (value === 3) return '😀';
+                if (value === 2) return '😊';
+                if (value === 1) return '🙂';
+                if (value === 0) return '😐';
+                if (value === -1) return '🫤';
+                if (value === -2) return '🙁';
+                if (value === -3) return '😞';
+                if (value === -4) return '😣';
+                if (value === -5) return '😖';
+                return value; // Default to returning the value itself for other ticks
+            }
+        },
+        grid: {
+            display: true, 
+            color: function(context) {
+                // Make the line at y=0 fully opaque (white), others semi-transparent
+                return context.tick.value === 0 ? 'rgba(255, 255, 255, 0.5)' : 'rgba(255, 255, 255, 0.15)';
+            },
+            drawBorder: true,
+            drawOnChartArea: true,
+            drawTicks: false,
+        }
+    }
+
+    const yScaleNoData = {
+        beginAtZero: true,
+        max: 0,
+        title: {
+            display: true,
+            text: 'Avg Mood',
+            color: 'white'
+        },
+        ticks: {
+            color: 'white',
+        },
+        grid: {
+            display: true, 
+            color: 'rgba(255, 255, 255, 0.15)',
+            lineWidth: 1,
+            drawBorder: true,
+            drawOnChartArea: true,
+            drawTicks: false,
+        }
+    }
+
+    let yScale = yScaleData;
+    if (percentInDeepWorkArr.length === 0) {
+        yScale = yScaleNoData;
+    }
+
+    const ctx = document.getElementById('moodChart').getContext('2d');
+    const config = {
+        type: 'bar',
+        data: {
+            labels: xAxisTickLabelArr,
+            datasets: [{
+                label: 'Avg Mood',
+                data: avgMoodArr,
+                backgroundColor: backgrounds,
+                borderColor: 'rgb(255, 255, 255)',
+                // borderWidth: 3,
+                borderRadius: 25,
+                borderSkipped: false,
+                barPercentage: barWidth,
+                categoryPercentage: 0.5,
+                pointRadius: 5, // Size of the points
+                pointHoverRadius: 8, // Size of the points when hovered
+                spanGaps: true, // Ensure the line spans across null values
+                tension: 0.4 // Set tension to make the line curvy
+            }]
+        },
+        options: {
+            onClick: function(event, elements) {
+                if (mainChartContainer.timeFrame !== 'year') {
+                    // Check if a bar (or element) was clicked
+                    if (elements.length > 0) {
+                        // Get the clicked element's data index and dataset index
+                        const elementIndex = elements[0].index; // Index of the clicked bar
+                        const datasetIndex = elements[0].datasetIndex;
+        
+                        // Trigger your custom callback function
+                        handleBarClick(elementIndex);
+                    }
+                }
+            },
+            onHover: function(event, elements) {
+                const chart = this;
+                const canvas = chart.canvas;
+    
+                // Check if we're hovering over a bar (elements array is not empty)
+                if ((elements.length) && (mainChartContainer.timeFrame !== 'year')) {
+                    canvas.style.cursor = 'pointer'; // Change cursor to pointer
+                } else {
+                    canvas.style.cursor = 'default'; // Reset cursor to default when not hovering
+                }
+            },
+            scales: {
+                y: yScale,
+                x: {
+                    title: {
+                        display: false
+                    },
+                    ticks: {
+                        color: 'white'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    enabled: true,
+                    backgroundColor: 'rgb(0, 0, 0)', // Sets the tooltip background color
+                    titleColor: 'white', // Sets the color of the title in the tooltip
+                    bodyColor: 'white', // Sets the color of the text in the tooltip body
+                    borderColor: 'white', // Sets the color of the tooltip border
+                    borderWidth: 2, // Sets the width of the tooltip border
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            // Custom title logic
+                            // tooltipItems is an array; we'll use the first item for the title
+                            let item = tooltipItems[0];
+                            let index = item.dataIndex;
+                            let date = dateStrArr[index];
+                            return `${date}`;
+                        },
+                        label: function(tooltipItem) {
+                            let item = tooltipItem;
+                            let index = item.dataIndex;
+                            let date = dateStrArr[index];
+
+                            if (date === "no data") {
+                                return null;
+                            } else {
+                                let moodValue = tooltipItem.raw;
+                                let labelStr = getMoodLabelStr(moodValue);
+
+                                return ` ${labelStr}`; // Customize tooltip text
+                            }
+                        }
+                    }
+                }
+            },
+            animations: {
+                x: {
+                    duration: 0 
+                },
+                y: {
+                    duration: flags.quickerChartAnimations ? 500 : 1000,
+                    easing: 'easeOutQuint' 
+                }
+            }
+        },
+        plugins: [
+            noDataPlugin,    // Register the noDataPlugin
+            dottedLinePlugin // Register the dottedLinePlugin
+        ]
+    };
+
+    // Destroy the existing chart instance if it exists
+    if (charts.avgMood) {
+        charts.avgMood.destroy();
+        charts.avgMood = null;
+    }
+
+    // Create a new chart instance
+    charts.avgMood = new Chart(ctx, config);
 }
 
 const dottedLinePlugin = {

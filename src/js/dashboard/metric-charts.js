@@ -1,4 +1,4 @@
-import { adjustedDeepWorkToggle, advChartsContainer, advChartsCoverModule, chartHeaders, deepWorkHeaderText, HC_icon_metric_charts, labelDistributionContainer, leftMetricDistributionArrow, metricCharts, mainChartsContainer, mainChartsCoverModule, metricBodyContainers, metricChartsHr, metricDistributionArrows, metricDistributionBackBtn, metricDistributionContainer, metricDistributionCoverContainer, metricDistributionMonth, metricDistributionSelections, metricDistributionSubContainer, metricDistributionTimeFrame, metricDistributionWeek, metricDistributionYear, rightMetricDistributionArrow, rightMetricDistributionArrowGray, breakIntervalToggle, distractionsToggle, avgDeepWorkHeaderText, hourlyQualityAdjustedToggle, mainChartsSummary, mainChartsSummaryContainer, mainChartsSummarySubContainer, summaryDeepWorkTimeTitle, summaryAvgDeepWorkTimeTitle, summaryAvgAdjustedDeepWorkTimeTitle, summaryAvgDeepWorkIntervalTitle } from "../modules/dashboard-elements.js"
+import { adjustedDeepWorkToggle, advChartsContainer, advChartsCoverModule, chartHeaders, deepWorkHeaderText, HC_icon_metric_charts, labelDistributionContainer, leftMetricDistributionArrow, metricCharts, mainChartsContainer, mainChartsCoverModule, metricBodyContainers, metricChartsHr, metricDistributionArrows, metricDistributionBackBtn, metricDistributionContainer, metricDistributionCoverContainer, metricDistributionMonth, metricDistributionSelections, metricDistributionSubContainer, metricDistributionTimeFrame, metricDistributionWeek, metricDistributionYear, rightMetricDistributionArrow, rightMetricDistributionArrowGray, breakIntervalToggle, distractionsToggle, avgDeepWorkHeaderText, hourlyQualityAdjustedToggle, mainChartsSummary, mainChartsSummaryContainer, mainChartsSummarySubContainer, summaryDeepWorkTimeTitle, summaryAvgDeepWorkTimeTitle, summaryAvgAdjustedDeepWorkTimeTitle, summaryAvgDeepWorkIntervalTitle, mainChartsDivisionHr2, mainChartsDivisionHr1 } from "../modules/dashboard-elements.js"
 import { sessionState } from "../modules/state-objects.js"
 import { flags, general, labelDistContainer, mainChartContainer } from "../modules/dashboard-objects.js"
 
@@ -377,7 +377,8 @@ function expandMetricDistributionContainer(metricBodyContainer) {
                     metricBodyContainer.style.display = 'flex';
                 }
 
-                mainChartsDivisionHr.style.display = 'flex';
+                mainChartsDivisionHr1.style.display = 'flex';
+                mainChartsDivisionHr2.style.display = 'flex';
                 flags.mainChartsOpen = true;
 
                 document.dispatchEvent(new Event('displayMainCharts'));
@@ -461,7 +462,8 @@ function resetMetricDistributionContainer() {
     })
 
     // rehide the division Hr
-    mainChartsDivisionHr.style.display = 'none';
+    mainChartsDivisionHr1.style.display = 'none';
+    mainChartsDivisionHr2.style.display = 'none';
 }
 
 function adjustMetricDistributionHeaderContainer(metricBodyContainer) {

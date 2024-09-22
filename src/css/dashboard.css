@@ -617,11 +617,11 @@
     margin-top: 20px;
 }
 
-#sessionIntervalsChartContainer {
+#sessionIntervalsChartContainer, #moodChartContainer {
     margin-top: 20px;
 }
 
-#mainChartsDivisionHr {
+#mainChartsDivisionHr1, #mainChartsDivisionHr2 {
     display: none;
 }
 

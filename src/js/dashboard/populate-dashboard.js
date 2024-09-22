@@ -296,8 +296,30 @@ async function initializeDailyData(sessions) {
                 breakIntervals: [],
                 labelTimes: {},
                 targetHourSum: 0,
+                moodSum: null,
                 sessions: []
             };
+        }
+
+        // mood sum
+        let mood = session.sessionSummary.subjectiveFeedback;
+        if (mood === "good") {
+            mood = 2;
+        } else if (mood === "ok") {
+            mood = 0;
+        } else if (mood === "bad") {
+            mood = -2;
+        } else if (mood === "unsure") {
+            mood = "";
+        }
+
+        if (mood !== "") {
+            if (dashboardData.dailySummary[startDate].moodSum === null) {
+                dashboardData.dailySummary[startDate].moodSum = Number(mood);
+
+            } else {
+                dashboardData.dailySummary[startDate].moodSum += Number(mood);
+            }
         }
 
         // Session time sum
