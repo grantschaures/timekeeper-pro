@@ -2,7 +2,7 @@ import { dashboardData, labelDistContainer, general, dailyContainer } from '../m
 import { dailyContainerElement, distributionsContainer, labelDistributionElement, labelDistributionMonth, labelDistributionTimeFrame, labelDistributionWeek, labelDistributionYear, labelLinesContainer, labelNamesContainer, labelTimesContainer, leftLabelDistributionArrow, metricDistributionMonth, metricDistributionTimeFrame, metricDistributionWeek, metricDistributionYear, miniChartContainers, monthSelection, rightLabelDistributionArrow, rightLabelDistributionArrowGray, yearSelection } from '../modules/dashboard-elements.js';
 import { timeConvert } from '../modules/index-objects.js';
 import { sessionState } from '../modules/state-objects.js';
-import { aboutIconSessionIntervalsChartBounds } from '../modules/dom-elements.js';
+import { aboutIconSessionIntervalsChartBounds, feedbackFormBtn } from '../modules/dom-elements.js';
 
 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 

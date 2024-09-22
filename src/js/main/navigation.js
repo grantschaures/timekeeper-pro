@@ -1,4 +1,4 @@
-import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn, spaceContainer, shortcutsContainer, shortcutsPopup, shortcutsExit, dashboardContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, flowAnimation, chillAnimation, target_hours_input, streaksContainer, threeWayToggle, labelToDeleteContainer, confirmLabelDeletionPopup, labelSelectionRow, confirmLabelDeletionNoBtn, sessionSummaryOkBtn, sessionSummarySignupPromptPopup, HC_icon_signup_prompt, settingsGUIContainer, darkLightThemeGUIContainer, displayGUIContainer, aboutIconSessionIntervalsChartBounds, sessionIntervalsBoundsDemoPopup, dashboardBtnContainer } from '../modules/dom-elements.js';
+import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn, spaceContainer, shortcutsContainer, shortcutsPopup, shortcutsExit, dashboardContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, flowAnimation, chillAnimation, target_hours_input, streaksContainer, threeWayToggle, labelToDeleteContainer, confirmLabelDeletionPopup, labelSelectionRow, confirmLabelDeletionNoBtn, sessionSummaryOkBtn, sessionSummarySignupPromptPopup, HC_icon_signup_prompt, settingsGUIContainer, darkLightThemeGUIContainer, displayGUIContainer, aboutIconSessionIntervalsChartBounds, sessionIntervalsBoundsDemoPopup, dashboardBtnContainer, feedbackFormBtn } from '../modules/dom-elements.js';
 import { blogIdList, flags, counters, state } from '../modules/navigation-objects.js';
 import { sessionState } from '../modules/state-objects.js';
 import { dashboardCatIds, flags as indexFlags, settingsMappings, tempCounters, tempStorage} from '../modules/index-objects.js';
@@ -10,6 +10,16 @@ import { confirmSessionDeletionPopup } from '../modules/dashboard-elements.js';
 import { deleteUserAccount } from '../state/delete-account.js'; // minified
 import { animationsFadeIn, animationsFadeOut, handleViewportWidthChange, triggerSilentAlertAudioMobile } from './index.js'; // minified
 import { hideConfirmSessionDeletionPopup } from '../utility/session-view.js'; // minified
+
+export function checkViewportWidth() {
+    if (window.innerWidth < 650) {
+        feedbackFormBtn.style.opacity = 0;
+        feedbackFormBtn.classList.add('no-click');
+    } else {
+        feedbackFormBtn.style.opacity = 1;
+        feedbackFormBtn.classList.remove('no-click');
+    }
+}
 
 window.addEventListener('popstate', (event) => {
     const hash = window.location.hash.substring(1);
@@ -56,6 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.addEventListener("stateUpdated", function() {
+    window.addEventListener('resize', checkViewportWidth);
 
     // This may actually detect all mobile + iPad devices
     function isIpadCheck() {
@@ -70,10 +81,18 @@ document.addEventListener("stateUpdated", function() {
         settingsGUIContainer.style.display = 'flex';
         darkLightThemeGUIContainer.style.display = 'flex';
         displayGUIContainer.style.display = 'flex';
+
+        if (sessionState.loggedIn) {
+            feedbackFormBtn.style.display = 'flex';
+        }
     }
 
     setTimeout(() => {
         menuBtn.style.opacity = '1';
+
+        if (window.innerWidth >= 650) {
+            feedbackFormBtn.style.opacity = '1';
+        }
         flags.canToggleSwitch = true;
 
         if (!(isMobile)) {
@@ -87,6 +106,7 @@ document.addEventListener("stateUpdated", function() {
                 streaksContainer.style.transition = 'opacity 0.25s ease-in-out, background-color 0.25s ease';
                 darkLightThemeGUIContainer.style.transition = 'opacity 0.25s ease-in-out, background-color 0.25s ease';
                 displayGUIContainer.style.transition = 'opacity 0.25s ease-in-out, background-color 0.25s ease';
+                feedbackFormBtn.style.transition = 'opacity 0.25s ease-in-out, background-color 0.25s ease';
             }, 1000)
         }
     }, 1000)

@@ -324,12 +324,11 @@ body[dinkle-doink-setting=space] .dinkle-doink-mode .caption [dinkle-doink=space
 
 .container {
     display: flex;
-    flex-direction: row;
     justify-content: center;
     margin-bottom: 20px;
 
-    /* border: 3px solid rgb(0, 230, 0); */
     height: 95%; 
+    /* border: 3px solid rgb(0, 230, 0); */
 
     align-items: center;
 }
@@ -443,6 +442,34 @@ main {
     #flowAnimation {
         margin-top: 170px;
     }
+}
+
+#feedbackFormBtn {
+    display: none;
+    position: fixed;
+    top: 40px;
+    left: 25px;
+    font-family: myFont3;
+    color: white;
+    font-size: 18px;
+    width: auto;
+    padding: 5px;
+    border-radius: 25px;
+    opacity: 0;
+    transition: opacity 1s ease-in-out, background-color 0.25s ease;
+    border: 3px solid white;
+    
+    z-index: 2;
+}
+
+#feedbackFormBtn:hover:not(.no-click) {
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 1);
+    color: black;
+}
+
+.no-click {
+    cursor: default;
 }
 
 .headerBtns {

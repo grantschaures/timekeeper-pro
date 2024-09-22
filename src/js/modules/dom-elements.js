@@ -317,3 +317,5 @@ export const advChartsSampleSizeToggle = document.getElementById('advChartsSampl
 export const default24HoursBoundsInput = document.getElementById('default24HoursBoundsInput');
 export const manualBoundsInput = document.getElementById('manualBoundsInput');
 export const automaticBoundsInput = document.getElementById('automaticBoundsInput');
+
+export const feedbackFormBtn = document.getElementById('feedbackFormBtn');

@@ -18,7 +18,8 @@ import {
     sessionIntervalsChartBoundsRadios,
     lowerBoundHourDropdown,
     upperBoundHourDropdown,
-    advChartsSampleSizeToggle
+    advChartsSampleSizeToggle,
+    feedbackFormBtn
 } from '../modules/dom-elements.js';
 
 import { flags as dashboardFlags, settings } from '../modules/dashboard-objects.js';
@@ -1294,6 +1295,12 @@ document.addEventListener("stateUpdated", function() {
             console.error("Could not copy text: ", error);
 
         });
+    })
+
+    feedbackFormBtn.addEventListener('click', function() {
+        if (!feedbackFormBtn.classList.contains('no-click')) {
+            window.open('https://forms.gle/ZvKZ6SxskLD43nqd9', '_blank');
+        }
     })
 
     // ---------------------
