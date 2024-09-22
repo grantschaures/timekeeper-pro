@@ -144,3 +144,7 @@ export const confirmSessionDeletionPopup = document.getElementById('confirmSessi
 export const sessionToDeleteContainer = document.getElementById('sessionToDeleteContainer');
 export const confirmSessionDeletionNoBtn = document.getElementById('confirmSessionDeletionNoBtn');
 export const confirmSessionDeletionYesBtn = document.getElementById('confirmSessionDeletionYesBtn');
+
+export const summaryAvgMood = document.getElementById('summaryAvgMood');
+export const summaryAvgMoodUp = document.getElementById('summaryAvgMoodUp');
+export const summaryAvgMoodDown = document.getElementById('summaryAvgMoodDown');

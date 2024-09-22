@@ -1,4 +1,4 @@
-import { directionIndicators, summaryAvgAdjustedDeepWorkDown, summaryAvgAdjustedDeepWorkTime, summaryAvgAdjustedDeepWorkUp, summaryAvgBreakInterval, summaryAvgBreakIntervalDown, summaryAvgBreakIntervalUp, summaryAvgDeepWorkDown, summaryAvgDeepWorkInterval, summaryAvgDeepWorkIntervalDown, summaryAvgDeepWorkIntervalUp, summaryAvgDeepWorkTime, summaryAvgDeepWorkUp, summaryDeepWorkTime, summaryDeepWorkTimeUp, summaryFocusQuality, summaryFocusQualityDown, summaryFocusQualityUp } from "../modules/dashboard-elements.js";
+import { directionIndicators, summaryAvgAdjustedDeepWorkDown, summaryAvgAdjustedDeepWorkTime, summaryAvgAdjustedDeepWorkUp, summaryAvgBreakInterval, summaryAvgBreakIntervalDown, summaryAvgBreakIntervalUp, summaryAvgDeepWorkDown, summaryAvgDeepWorkInterval, summaryAvgDeepWorkIntervalDown, summaryAvgDeepWorkIntervalUp, summaryAvgDeepWorkTime, summaryAvgDeepWorkUp, summaryAvgMood, summaryAvgMoodDown, summaryAvgMoodUp, summaryDeepWorkTime, summaryDeepWorkTimeUp, summaryFocusQuality, summaryFocusQualityDown, summaryFocusQualityUp } from "../modules/dashboard-elements.js";
 import { charts, mainChartContainer, dashboardData, flags, constants, general, settings } from "../modules/dashboard-objects.js";
 import { timeConvert } from "../modules/index-objects.js";
 
@@ -11,6 +11,9 @@ let deepWork365Arr = []; // holds data for each day in year
 let distractions365Arr = []; // holds distractions for each day, going up to a year (365 days)
 let deepWorkInterval365Arr = [];
 let breakInterval365Arr = [];
+
+let avgMood365Arr = [];
+let sessions365Arr = [];
 
 let focusQualityArr = [];
 let avgIntervalArr = [];
@@ -30,7 +33,8 @@ let currStats = {
     focusQuality: null, // float
     adjustedDeepWorkTime: null, // hrs
     deepWorkInterval: null, // min
-    breakInterval: null // min
+    breakInterval: null, // min
+    avgMood: null // mood value (-5 to 5)
 }
 
 let prevStats = {
@@ -39,7 +43,8 @@ let prevStats = {
     focusQuality: null, // float
     adjustedDeepWorkTime: null, // hrs
     deepWorkInterval: null, // min
-    breakInterval: null // min
+    breakInterval: null, // min
+    avgMood: null // mood value (-5 to 5)
 }
 
 let sessionIntervals = {
@@ -106,6 +111,65 @@ document.addEventListener("displayMainCharts", async function() {
 // // // // // // //
 // HELPER FUNCTIONS
 // // // // // // //
+function getMoodEmojiStr(moodValue) {
+
+    // Check if moodValue is exactly on a whole number
+    switch (moodValue) {
+        case -5:
+            return "😖";
+        case -4:
+            return "😣";
+        case -3:
+            return "😞";
+        case -2:
+            return "🙁";
+        case -1:
+            return "🫤";
+        case 0:
+            return "😐";
+        case 1:
+            return "🙂";
+        case 2:
+            return "😊";
+        case 3:
+            return "😀";
+        case 4:
+            return "😁";
+        case 5:
+            return "😝";
+    }
+
+    // Check if the moodValue falls between whole numbers
+    if (moodValue > -5 && moodValue < -4) {
+        return "Between 😣 and 😖";
+    } else if (moodValue > -4 && moodValue < -3) {
+        return "Between 😞 and 😣";
+    } else if (moodValue > -3 && moodValue < -2) {
+        return "Between 🙁 and 😞";
+    } else if (moodValue > -2 && moodValue < -1) {
+        return "Between 🫤 and 🙁";
+    } else if (moodValue > -1 && moodValue < 0) {
+        return "Between 😐 and 🫤";
+    } else if (moodValue > 0 && moodValue < 1) {
+        return "Between 😐 and 🙂";
+    } else if (moodValue > 1 && moodValue < 2) {
+        return "Between 🙂 and 😊";
+    } else if (moodValue > 2 && moodValue < 3) {
+        return "Between 😊 and 😀";
+    } else if (moodValue > 3 && moodValue < 4) {
+        return "Between 😀 and 😁";
+    } else if (moodValue > 4 && moodValue < 5) {
+        return "Between 😁 and 😝";
+    }
+
+    // edge case
+    if (moodValue < -5 || moodValue > 5) {
+        return "Mood value out of range";
+    }
+
+    return "Neutral"; // catch all
+}
+
 function getMoodLabelStr(moodValue) {
 
     // Check if moodValue is exactly on a whole number
@@ -189,6 +253,8 @@ function getAvgMood(dailyData) {
     let sessionsArr = dailyData.sessions;
     let count = 0;
 
+    avgMood365Arr.push(moodSum);
+
     sessionsArr.forEach(session => {
         if (session.sessionSummary.subjectiveFeedback !== "") {
             count++;
@@ -229,11 +295,36 @@ async function displayMainChartsSummaryStats() {
     // display intervals
     let combinedArr2 = calculateAvgIntervals();
 
-    await setStatsObj(currStats, deepWorkTime, avgDeepWorkTime, combinedArr1[0], combinedArr1[1], combinedArr2[0], combinedArr2[1]);
+    // display avg mood
+    let avgMoodValue = calculateAvgMood();
+
+    await setStatsObj(currStats, deepWorkTime, avgDeepWorkTime, combinedArr1[0], combinedArr1[1], combinedArr2[0], combinedArr2[1], avgMoodValue);
 
     displayCurrStats();
 
     setDirectionIndicators();
+}
+
+function calculateAvgMood() {
+
+    let avgMoodSum = avgMood365Arr.reduce((total, num) => total + num, 0);
+
+    let count = 0;
+    for (let i = 0; i < sessions365Arr.length; i++) {
+        let session = sessions365Arr[i];
+        if (session.subjectiveFeedback !== "") {
+            count++;
+        }
+    }
+
+    let avgMood;
+    if (count) {
+        avgMood = avgMoodSum / count;
+    } else {
+        avgMood = null;
+    }
+
+    return avgMood;
 }
 
 async function setDirectionIndicators() {
@@ -259,7 +350,10 @@ async function setDirectionIndicators() {
     // display intervals
     let combinedArr2 = calculateAvgIntervals();
 
-    await setStatsObj(prevStats, deepWorkTime, avgDeepWorkTime, combinedArr1[0], combinedArr1[1], combinedArr2[0], combinedArr2[1]);
+    // display avg mood
+    let avgMoodValue = calculateAvgMood();
+
+    await setStatsObj(prevStats, deepWorkTime, avgDeepWorkTime, combinedArr1[0], combinedArr1[1], combinedArr2[0], combinedArr2[1], avgMoodValue);
 
     // compare to current stats and make corresponding changes to direction indicators
     displayDirectionIndicators();
@@ -275,9 +369,7 @@ function displayDirectionIndicators() {
     compareAndSetIndicatorDirection('focusQuality', summaryFocusQualityUp, summaryFocusQualityDown);
     compareAndSetIndicatorDirection('deepWorkInterval', summaryAvgDeepWorkIntervalUp, summaryAvgDeepWorkIntervalDown);
     compareAndSetIndicatorDirection('breakInterval', summaryAvgBreakIntervalUp, summaryAvgBreakIntervalDown);
-
-    // console.log(currStats)
-    // console.log(prevStats)
+    compareAndSetIndicatorDirection('avgMood', summaryAvgMoodUp, summaryAvgMoodDown);
 }
 
 function compareAndSetDeepWorkIndicatorDirection(statType) {
@@ -319,6 +411,22 @@ function displayCurrStats() {
     displayFocusQuality(currStats.focusQuality);
     displayAdjustedAvgDeepWorkTime(currStats.focusQuality, currStats.adjustedDeepWorkTime);
     displayAvgIntervals(currStats.deepWorkInterval, currStats.breakInterval);
+    displayAvgMood(currStats.avgMood);
+}
+
+function displayAvgMood(avgMood) {
+
+    let avgMoodStr;
+    if (avgMood !== null) {
+        // ge the avg Mood string (pretty sure we have a function for this)
+        avgMoodStr = getMoodEmojiStr(avgMood);
+
+    } else {
+        avgMoodStr = 'N/A';
+
+    }
+
+    summaryAvgMood.innerHTML = `<b>${avgMoodStr}</b>`;
 }
 
 function displayAvgIntervals(deepWorkInterval, breakInterval) {
@@ -411,13 +519,14 @@ function tempBoundShift(type) { // type can be 'shiftup' or 'shiftdown'
     }
 }
 
-async function setStatsObj(statsObj, deepWorkTime, avgDeepWorkTime, focusQuality, adjustedAvgDeepWork, deepWorkIntervalLength, breakIntervalLength) {
+async function setStatsObj(statsObj, deepWorkTime, avgDeepWorkTime, focusQuality, adjustedAvgDeepWork, deepWorkIntervalLength, breakIntervalLength, avgMoodValue) {
     statsObj.deepWorkTime = deepWorkTime;
     statsObj.avgDeepWorkTime = avgDeepWorkTime;
     statsObj.focusQuality = focusQuality;
     statsObj.adjustedDeepWorkTime = adjustedAvgDeepWork;
     statsObj.deepWorkInterval = deepWorkIntervalLength;
     statsObj.breakInterval = breakIntervalLength;
+    statsObj.avgMood = avgMoodValue; 
 }
 
 function calculateAvgIntervals() {
@@ -677,6 +786,8 @@ async function resetData() {
     distractions365Arr = [];
     deepWorkInterval365Arr = [];
     breakInterval365Arr = [];
+    avgMood365Arr = [];
+    sessions365Arr = [];
 
     directionIndicators.forEach(indicator => {
         indicator.style.display = 'none';
@@ -714,7 +825,6 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
 
     let avgMoodPerMonthArr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     let sessionsPerMonthArr = [[], [], [], [], [], [], [], [], [], [], [], []];
-
     let intervalsPerMonthArr = [[], [], [], [], [], [], [], [], [], [], [], []];
 
     let dashboardDataDailyArr = dashboardData.dailyArr;
@@ -730,6 +840,7 @@ async function initializeData(dashboardData, mainChartContainer, deepWorkArr, fo
 
             deepWork365Arr.push(deepWorkHours);
             distractions365Arr.push(dashboardDataDailyArr[i].distractions);
+            sessions365Arr.push(...dashboardDataDailyArr[i].sessions);
             
             if (mainChartContainer.timeFrame === 'week') {
                 let dayOfWeekIndex = getDayOfWeekIndex(date); // 0-6

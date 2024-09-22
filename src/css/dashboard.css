@@ -748,14 +748,11 @@
 .summarySubContainer {
     display: flex;
     margin-top: 15px;
-
-    /* flex-direction: column; */
-
-    /* border: 2px solid white; */
-
+    align-items: center;
     font-size: 22px;
-
     font-family: settingsHeaderFont;
+
+    /* border: 2px solid blue; */
 }
 
 .directionIndicatorContainer {
@@ -813,6 +810,8 @@
     display: flex;
     white-space: nowrap;
     margin-left: 20px;
+
+    /* border: 1px solid white; */
 }
 
 #dailyContainer {
