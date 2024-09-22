@@ -312,7 +312,7 @@ function calculateAvgMood() {
     let count = 0;
     for (let i = 0; i < sessions365Arr.length; i++) {
         let session = sessions365Arr[i];
-        if (session.subjectiveFeedback !== "") {
+        if (session.sessionSummary.subjectiveFeedback !== "") {
             count++;
         }
     }
@@ -415,6 +415,8 @@ function displayCurrStats() {
 }
 
 function displayAvgMood(avgMood) {
+
+    console.log(avgMood)
 
     let avgMoodStr;
     if (avgMood !== null) {
