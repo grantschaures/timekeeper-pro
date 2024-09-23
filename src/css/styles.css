@@ -447,7 +447,7 @@ main {
 #feedbackFormBtn {
     display: none;
     position: fixed;
-    top: 40px;
+    top: 25px;
     left: 25px;
     font-family: myFont3;
     color: white;
