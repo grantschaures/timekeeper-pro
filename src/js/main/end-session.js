@@ -71,8 +71,8 @@ document.addEventListener("stateUpdated", function() {
     });
 
     sessionSummaryOkBtn.addEventListener("click", async function() {
-        if (isMoreThan1000Chars(commentsTextArea.value)) {
-            alert("Please keep your comments 1000 characters or less. Thanks!");
+        if (isMoreThan10000Chars(commentsTextArea.value)) {
+            alert("Please keep your comments 10000 characters or less. Thanks!");
             commentsTextArea.focus();
             return;
         }
@@ -124,8 +124,8 @@ document.addEventListener("stateUpdated", function() {
 // MAIN FUNCTIONS
 // -----------------
 
-function isMoreThan1000Chars(inputStr) {
-    if (inputStr.length > 1000) {
+function isMoreThan10000Chars(inputStr) {
+    if (inputStr.length > 10000) {
         return true;
     } else {
         return false;

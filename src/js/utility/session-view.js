@@ -62,6 +62,14 @@ document.addEventListener("stateUpdated", async function() {
     sessionViewCommentsTextArea.addEventListener('blur', function() {
         // Once focus has been removed, update appropriate session w/ new session summary comments
         let commentsText = sessionViewCommentsTextArea.value;
+
+        if (commentsText.length > 10000) {
+            commentsText = commentsText.slice(0, 10000); // Cut off at the 10,000th character
+            sessionViewCommentsTextArea.value = commentsText;
+            sessionViewCommentsTextArea.style.height = 'auto'; // Reset height to auto to recalculate
+            sessionViewCommentsTextArea.style.height = sessionViewCommentsTextArea.scrollHeight + 'px'; // Set height based on scrollHeight
+        }
+
         let summaryData = {
             type: 'comments',
             value: commentsText
