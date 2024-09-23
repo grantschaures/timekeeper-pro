@@ -454,7 +454,7 @@ main {
     font-size: 18px;
     width: auto;
     padding: 5px;
-    border-radius: 25px;
+    border-radius: 15px;
     opacity: 0;
     transition: opacity 1s ease-in-out, background-color 0.25s ease;
     border: 3px solid white;
