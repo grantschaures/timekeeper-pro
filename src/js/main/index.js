@@ -135,6 +135,12 @@ document.addEventListener("stateUpdated", function() {
                 threeWayToggle.classList.add('threeWayToggleAnimation');
                 setTimeout(() => {
                     threeWayToggle.style.opacity = '1';
+                    if (window.innerWidth >= 650) {
+                        feedbackFormBtn.style.opacity = '1';
+                        setTimeout(() => {
+                            feedbackFormBtn.style.transition = 'opacity 0.25s ease-in-out, background-color 0.25s ease';
+                        }, 100)
+                    }
                 }, 100)
             }, 1000)
         }, 2000)

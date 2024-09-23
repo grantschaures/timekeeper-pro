@@ -89,10 +89,6 @@ document.addEventListener("stateUpdated", function() {
 
     setTimeout(() => {
         menuBtn.style.opacity = '1';
-
-        if (window.innerWidth >= 650) {
-            feedbackFormBtn.style.opacity = '1';
-        }
         flags.canToggleSwitch = true;
 
         if (!(isMobile)) {
@@ -106,7 +102,6 @@ document.addEventListener("stateUpdated", function() {
                 streaksContainer.style.transition = 'opacity 0.25s ease-in-out, background-color 0.25s ease';
                 darkLightThemeGUIContainer.style.transition = 'opacity 0.25s ease-in-out, background-color 0.25s ease';
                 displayGUIContainer.style.transition = 'opacity 0.25s ease-in-out, background-color 0.25s ease';
-                feedbackFormBtn.style.transition = 'opacity 0.25s ease-in-out, background-color 0.25s ease';
             }, 1000)
         }
     }, 1000)
