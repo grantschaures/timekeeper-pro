@@ -305,7 +305,13 @@ document.addEventListener("stateUpdated", function() {
         }
     })
 
-    // possible source of Dad's bug
+    // If the tab becomes refocused, always set the shiftPressed flag to false
+    document.addEventListener('visibilitychange', function(event) {
+        if ((!document.hidden) && (flags.shiftPressed)) {
+            flags.shiftPressed = false;
+        }
+    });
+
     document.addEventListener('keyup', function(event) {
         if ((event.key === 'Shift') && (flags.shiftPressed)) {
             flags.shiftPressed = false;
