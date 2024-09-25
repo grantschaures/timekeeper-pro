@@ -8,6 +8,11 @@
     src: url("../fonts/TTNormsProRegular.otf");
 }
 
+@font-face {
+    font-family: myFont3;
+    src: url("../fonts/CPMono_v07_Light.woff");
+}
+
 .logo {
     display: flex;
 }
@@ -33,7 +38,7 @@ h2 {
 
 #header {
     font-size: 32px;
-    font-family: myFont2;
+    font-family: myFont3;
 }
 
 img {
@@ -54,4 +59,37 @@ img {
 
 .mainText {
     font-family: mainFont;
+}
+
+@media (max-width: 620px) {
+    #header {
+        font-size: 24px;
+    }
+
+    #circularLogo {
+        height: 40px;
+        width: 40px;
+    }
+}
+
+@media (max-width: 485px) {
+    #header {
+        font-size: 18px;
+    }
+    
+    #circularLogo {
+        height: 35px;
+        width: 35px;
+    }
+}
+
+@media (max-width: 370px) {
+    #header {
+        font-size: 16px;
+    }
+    
+    #circularLogo {
+        height: 30px;
+        width: 30px;
+    }
 }
