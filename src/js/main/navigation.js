@@ -1,4 +1,4 @@
-import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn, spaceContainer, shortcutsContainer, shortcutsPopup, shortcutsExit, dashboardContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, flowAnimation, chillAnimation, target_hours_input, streaksContainer, threeWayToggle, labelToDeleteContainer, confirmLabelDeletionPopup, labelSelectionRow, confirmLabelDeletionNoBtn, sessionSummaryOkBtn, sessionSummarySignupPromptPopup, HC_icon_signup_prompt, settingsGUIContainer, darkLightThemeGUIContainer, displayGUIContainer, aboutIconSessionIntervalsChartBounds, sessionIntervalsBoundsDemoPopup, dashboardBtnContainer, feedbackFormBtn } from '../modules/dom-elements.js';
+import { menuBtn, popupMenu, blogBtn, blog_icon, about_btn, about_icon, about_menu_container, settings_btn, settings_icon, settings_menu_container, logInOut_btn, login_icon, login_menu_container, about_exit, blog_exit, blog_post_exit, blog_post_back, back_icons, exit_icons, main_elements, aboutContainer, blogContainer, settingsContainer, blog_post_container, blog_cells, blogs, settings_exit, pomodoroBtnContainer, backgroundsBtnContainer, start_stop_btn, reportIcon, reportPath, spaceIcon, homeIcon, blogMenuContainer, aboutIconNotes, body, isMobile, popupOverlay, questionIcon, popupQuestionMenu, privacyPolicyContainer, termsAndConditionsContainer, loginQuestionMenuContainer, accountPopup, deleteAccountPopup, goBackBtn, deleteAccountPopupNoBtn, deleteAccountPopupYesBtn, deleteAccountBtn, spaceContainer, shortcutsContainer, shortcutsPopup, dashboardContainer, flowTimeAnimationToggle, chillTimeAnimationToggle, flowAnimation, chillAnimation, target_hours_input, streaksContainer, threeWayToggle, labelToDeleteContainer, confirmLabelDeletionPopup, labelSelectionRow, confirmLabelDeletionNoBtn, sessionSummaryOkBtn, sessionSummarySignupPromptPopup, HC_icon_signup_prompt, settingsGUIContainer, darkLightThemeGUIContainer, displayGUIContainer, aboutIconSessionIntervalsChartBounds, sessionIntervalsBoundsDemoPopup, dashboardBtnContainer, feedbackFormBtn, targetHoursQuestionIcon, interruptionsQuestionIcon, targetHoursQuestionPopup, interruptionsQuestionPopup } from '../modules/dom-elements.js';
 import { blogIdList, flags, counters, state } from '../modules/navigation-objects.js';
 import { sessionState } from '../modules/state-objects.js';
 import { dashboardCatIds, flags as indexFlags, settingsMappings, tempCounters, tempStorage} from '../modules/index-objects.js';
@@ -240,7 +240,6 @@ document.addEventListener("stateUpdated", function() {
             confirmLabelDeletionNoBtn.click(); // could potentially remove click() and instead call function to hide popup directly
         } else if ((flags.sessionSummarySignupPromptPopupShowing) && (!sessionSummarySignupPromptPopup.contains(event.target) && (event.target !== sessionSummaryOkBtn))) {
             hideSessionSummarySignupPromptPopup();
-            popupOverlay.style.display = 'none';
 
             if (state.lastSelectedMode === 'home') {
                 subMainContainerTransition("flex");
@@ -249,12 +248,46 @@ document.addEventListener("stateUpdated", function() {
             hideConfirmSessionDeletionPopup();
         } else if ((flags.sessionIntervalsBoundsDemoPopupShowing) && (!sessionIntervalsBoundsDemoPopup.contains(event.target))) {
             hideSessionIntervalsBoundsDemoPopup();
+        } else if ((flags.targetHoursQuestionPopupShowing) && (!targetHoursQuestionPopup.contains(event.target))) {
+            hideTargetHoursQuestionPopup();
+        } else if ((flags.interruptionsQuestionPopupShowing) && (!interruptionsQuestionPopup.contains(event.target))) {
+            hideInterruptionsQuestionPopup();
         }
     })
 
-    shortcutsExit.addEventListener("click", function() {
-        hideShortcutsPopup(popupOverlay, shortcutsPopup);
+
+
+
+
+    targetHoursQuestionIcon.addEventListener('click', function() {
+        // display popup
+        flags.targetHoursQuestionPopupShowing = true;
+        popupOverlay.style.display = 'flex';
+        menuBtn.style.display = 'none';
+        menuBtn.style.opacity = '0';
+
+        targetHoursQuestionPopup.style.display = 'block';
+        setTimeout(() => {
+            targetHoursQuestionPopup.style.opacity = '1';
+        }, 0)
     })
+    
+    interruptionsQuestionIcon.addEventListener('click', function() {
+        flags.interruptionsQuestionPopupShowing = true;
+        popupOverlay.style.display = 'flex';
+
+        menuBtn.style.display = 'none';
+        menuBtn.style.opacity = '0';
+
+        interruptionsQuestionPopup.style.display = 'block';
+        setTimeout(() => {
+            interruptionsQuestionPopup.style.opacity = '1';
+        }, 0)
+    })
+
+
+
+
 
     // delete account stuff
     deleteAccountBtn.addEventListener("click", async function() {
@@ -355,6 +388,33 @@ document.addEventListener("stateUpdated", function() {
 // // // // // // //
 // HELPER FUNCTIONS
 // // // // // // //
+
+function hideInterruptionsQuestionPopup() {
+    flags.interruptionsQuestionPopupShowing = false;
+    interruptionsQuestionPopup.style.display = 'none';
+    interruptionsQuestionPopup.style.opacity = '0';
+
+    popupOverlay.style.display = 'none';
+    menuBtn.style.display = 'flex';
+    setTimeout(() => {
+        menuBtn.style.opacity = '1';
+    }, 0)
+    body.style.overflowY = 'scroll';
+}
+
+function hideTargetHoursQuestionPopup() {
+    flags.targetHoursQuestionPopupShowing = false;
+    targetHoursQuestionPopup.style.display = 'none';
+    targetHoursQuestionPopup.style.opacity = '0';
+
+    popupOverlay.style.display = 'none';
+    menuBtn.style.display = 'flex';
+
+    setTimeout(() => {
+        menuBtn.style.opacity = '1';
+    }, 0)
+    body.style.overflowY = 'scroll';
+}
 
 function displayBlogPost(postId) {
     // hiding main elements
@@ -916,6 +976,9 @@ function openQuestionMenu(flags, popupQuestionMenu) {
 function showAccountPopup(popupOverlay, accountPopup) {
     flags.accountWindowShowing = true;
     popupOverlay.style.display = "flex"; 
+    menuBtn.style.display = 'none';
+    menuBtn.style.opacity = '0';
+
     accountPopup.style.display = "block";
     body.style.overflowY = 'hidden';
 }
@@ -924,6 +987,10 @@ function hideAccountPopup(popupOverlay, accountPopup) {
     flags.accountWindowShowing = false;
     accountPopup.style.display = "none";
     popupOverlay.style.display = "none";
+    menuBtn.style.display = 'flex';
+    setTimeout(() => {
+        menuBtn.style.opacity = '1';
+    }, 0)
     body.style.overflowY = 'scroll';
 }
 
@@ -946,6 +1013,9 @@ function showShortcutsPopup(popupOverlay, shortcutsPopup) {
     flags.shortcutsWindowShowing = true;
     popupOverlay.style.display = "flex"; 
     shortcutsPopup.style.display = "block";
+    menuBtn.style.display = 'none';
+    menuBtn.style.opacity = '0';
+
     body.style.overflowY = 'hidden';
 }
 
@@ -953,6 +1023,10 @@ function hideShortcutsPopup(popupOverlay, shortcutsPopup) {
     flags.shortcutsWindowShowing = false;
     shortcutsPopup.style.display = "none";
     popupOverlay.style.display = "none";
+    menuBtn.style.display = 'flex';
+    setTimeout(() => {
+        menuBtn.style.opacity = '1';
+    }, 0)
     body.style.overflowY = 'scroll';
 }
 
@@ -960,6 +1034,13 @@ function hideShortcutsPopup(popupOverlay, shortcutsPopup) {
 function hideSessionSummarySignupPromptPopup() {
     flags.sessionSummarySignupPromptPopupShowing = false;
     sessionSummarySignupPromptPopup.style.display = "none";
+    popupOverlay.style.display = 'none';
+
+    menuBtn.style.display = 'flex';
+    setTimeout(() => {
+        menuBtn.style.opacity = '1';
+    }, 0)
+
     HC_icon_signup_prompt.classList.remove('hyperChillSlowRotate');
     sessionSummarySignupPromptPopup.style.opacity = 0;
 }

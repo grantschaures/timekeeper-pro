@@ -16,7 +16,9 @@ export const flags = {
     canToggleSwitch: false,
     blogContainerShowing: false,
     aboutContainerShowing: false,
-    sessionIntervalsBoundsDemoPopupShowing: false
+    sessionIntervalsBoundsDemoPopupShowing: false,
+    targetHoursQuestionPopupShowing: false,
+    interruptionsQuestionPopupShowing: false
 }
 
 export const counters = {

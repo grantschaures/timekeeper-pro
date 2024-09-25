@@ -19,7 +19,12 @@ import {
     lowerBoundHourDropdown,
     upperBoundHourDropdown,
     advChartsSampleSizeToggle,
-    feedbackFormBtn
+    feedbackFormBtn,
+    targetHoursQuestionIcon,
+    interruptionsQuestionIcon,
+    targetHoursQuestionPopup,
+    menuBtn,
+    interruptionsQuestionPopup
 } from '../modules/dom-elements.js';
 
 import { flags as dashboardFlags, settings } from '../modules/dashboard-objects.js';

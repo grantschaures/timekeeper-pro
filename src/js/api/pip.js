@@ -1,4 +1,4 @@
-import { catsContainer, completedPomodoros_label, completedPomodoros_min, completedPomodorosContainer, display, interruptionsChangeContainer, interruptionsContainer, interruptionsLabel, interruptionsNum, interruptionsSubContainer, lowerButtons, notesBtn, notesContainer, pipCatShadow, pipIconContainer, pipInfoText, pomodoroInfoTooltip, productivity_chill_mode, progress, progressCatBody, progressCatHead, start_stop_btn, stopwatch, suggestionBreak_label, suggestionBreak_min, targetHoursContainer, targetHoursInterruptionsContainer, timekeepingContainer } from "../modules/dom-elements.js";
+import { catsContainer, completedPomodoros_label, completedPomodoros_min, completedPomodorosContainer, display, interruptionsChangeContainer, interruptionsContainer, interruptionsLabel, interruptionsNum, interruptionsQuestionIcon, interruptionsSubContainer, lowerButtons, notesBtn, notesContainer, pipCatShadow, pipIconContainer, pipInfoText, pomodoroInfoTooltip, productivity_chill_mode, progress, progressCatBody, progressCatHead, start_stop_btn, stopwatch, suggestionBreak_label, suggestionBreak_min, targetHoursContainer, targetHoursInterruptionsContainer, timekeepingContainer } from "../modules/dom-elements.js";
 import { catIds, counters, flags, pip, selectedBackground } from "../modules/index-objects.js";
 
 import { displayCat, setBackground } from '../main/index.js';
@@ -78,6 +78,9 @@ document.addEventListener("stateUpdated", function() {
     interruptionsSubContainer.style.marginTop = '0px';
     interruptionsChangeContainer.style.marginBottom = '0px';
     interruptionsChangeContainer.style.marginTop = '0px';
+
+    // hide the interruptionsQuestionIcon
+    interruptionsQuestionIcon.style.display = 'none';
 
     let pipContainer = document.createElement('div');
     pipContainer.id = 'pipContainer';
@@ -176,6 +179,9 @@ document.addEventListener("stateUpdated", function() {
       interruptionsSubContainer.style.marginTop = '6px';
       interruptionsChangeContainer.style.marginBottom = '30px';
       interruptionsChangeContainer.style.marginTop = '-10px';
+
+      // show the interruptionsQuestionIcon
+      interruptionsQuestionIcon.style.display = 'flex';
 
 
       progress.insertAdjacentElement('afterend', timekeepingContainer);

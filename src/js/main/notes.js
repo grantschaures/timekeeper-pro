@@ -306,7 +306,7 @@ document.addEventListener("stateUpdated", function() {
     })
 
     // If the tab becomes refocused, always set the shiftPressed flag to false
-    document.addEventListener('visibilitychange', function(event) {
+    document.addEventListener('visibilitychange', function() {
         if ((!document.hidden) && (flags.shiftPressed)) {
             flags.shiftPressed = false;
         }
@@ -779,6 +779,12 @@ function hideConfirmLabelDeletionPopup(popupOverlay, confirmLabelDeletionPopup, 
     state.labelToDeleteId = null;
     popupOverlay.style.display = "none";
     confirmLabelDeletionPopup.style.display = "none";
+
+    menuBtn.style.display = 'flex';
+    setTimeout(() => {
+        menuBtn.style.opacity = '1';
+    }, 0)
+    
     body.style.overflowY = 'scroll';
     
     labelToDeleteContainer.removeChild(labelToDeleteContainer.firstChild); // remove label in popup
@@ -787,7 +793,11 @@ function hideConfirmLabelDeletionPopup(popupOverlay, confirmLabelDeletionPopup, 
 function showConfirmLabelDeletionPopup(labelId, popupOverlay, confirmLabelDeletionPopup, state) {
     flags.confirmLabelDeletionWindowShowing = true;
     state.labelToDeleteId = labelId;
-    popupOverlay.style.display = "flex"; 
+    popupOverlay.style.display = "flex";
+
+    menuBtn.style.display = 'none';
+    menuBtn.style.opacity = '0';
+
     confirmLabelDeletionPopup.style.display = "block";
     body.style.overflowY = 'hidden';
 

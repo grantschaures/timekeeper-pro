@@ -1,5 +1,5 @@
 import { timeConvert, intervals, startTimes, recoverBreakState, recoverPomState, elapsedTime, counters, flags, savedInterruptionsArr, timeAmount, intervalArrs, progressTextMod, lightHtmlBackground, darkHtmlBackground, times, perHourData, catIds, tempCounters, pip } from '../modules/index-objects.js';
-import { start_stop_btn, end_session_btn, total_time_display, productivity_chill_mode, progressBar, progressContainer, display, interruptionsSubContainer, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, flowAnimation, chillAnimation, streaksCount, breakBackground, deepWorkBackground, commentsTextArea, sessionSummaryOkBtn, subjectiveFeedbackDropdown, sessionSummaryPopup, summaryStats, HC_icon_session_summary, commentsContainer, sessionSummarySignupPromptPopup, popupOverlay, HC_icon_signup_prompt, signupPromptPopupBtn, sessionSummaryKitty2, sessionSummaryKitty1, sessionSummaryKitty3, blogs, blog_exit } from '../modules/dom-elements.js';
+import { start_stop_btn, end_session_btn, total_time_display, productivity_chill_mode, progressBar, progressContainer, display, interruptionsSubContainer, interruptionsNum, suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, completedPomodorosContainer, flowAnimation, chillAnimation, streaksCount, breakBackground, deepWorkBackground, commentsTextArea, sessionSummaryOkBtn, subjectiveFeedbackDropdown, sessionSummaryPopup, summaryStats, HC_icon_session_summary, commentsContainer, sessionSummarySignupPromptPopup, popupOverlay, HC_icon_signup_prompt, signupPromptPopupBtn, sessionSummaryKitty2, sessionSummaryKitty1, sessionSummaryKitty3, blogs, blog_exit, overlayExit, sessionSummaryChart, multiSeriesPiePlotContainer } from '../modules/dom-elements.js';
 import { soundMap } from '../modules/sound-map.js';
 import { sessionState } from '../modules/state-objects.js';
 import { labelFlags, labelArrs, labelDict, notesFlags, flags as notesflags } from '../modules/notes-objects.js';
@@ -112,6 +112,8 @@ document.addEventListener("stateUpdated", function() {
 
             // Reset session summary HC icon depth
             HC_icon_session_summary.style.zIndex = 2;
+
+            overlayExit.style.display = 'flex';
         }
     })
 
@@ -136,6 +138,10 @@ function isMoreThan10000Chars(inputStr) {
 function displaySessionSummarySignupPromptPopup() {
     navFlags.sessionSummarySignupPromptPopupShowing = true;
     sessionSummarySignupPromptPopup.style.display = "flex";
+
+    menuBtn.style.display = 'none';
+    menuBtn.style.opacity = '0';
+    
     HC_icon_signup_prompt.classList.add('hyperChillSlowRotate');
     setTimeout(() => {
         sessionSummarySignupPromptPopup.style.opacity = 1;
@@ -269,6 +275,8 @@ async function logSession() {
 function displaySessionSummaryPopup() {
     displaySessionSummaryCat();
 
+    // this is the only time we set opacity to 0 and then transition to 1 in order to get popupOverlay to fade in
+    overlayExit.style.display = 'none'; // we want to hide the x in order to encourage the user to click on the OK btn
     popupOverlay.style.opacity = 0;
     popupOverlay.style.display = 'flex';
     setTimeout(() => {

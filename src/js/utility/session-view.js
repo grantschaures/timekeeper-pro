@@ -94,6 +94,12 @@ export function hideConfirmSessionDeletionPopup() {
     flags.confirmSessionDeletionPopupShowing = false;
     popupOverlay.style.display = "none";
     confirmSessionDeletionPopup.style.display = "none";
+
+    menuBtn.style.display = 'flex';
+    setTimeout(() => {
+        menuBtn.style.opacity = '1';
+    }, 0)
+    
     body.style.overflowY = 'scroll';
 
     sessionToDeleteContainer.removeChild(sessionToDeleteContainer.firstChild);
@@ -103,6 +109,10 @@ function showConfirmSessionDeletionPopup() {
     flags.confirmSessionDeletionPopupShowing = true;
 
     popupOverlay.style.display = "flex"; 
+
+    menuBtn.style.display = 'none';
+    menuBtn.style.opacity = '0';
+
     confirmSessionDeletionPopup.style.display = "block";
     body.style.overflowY = 'hidden';
 

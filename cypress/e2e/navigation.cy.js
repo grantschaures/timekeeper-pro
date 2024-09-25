@@ -28,7 +28,7 @@ describe('Navigation', () => {
         cy.get('[data-testid="popupOverlay"]').should('be.visible');
         cy.get('[data-testid="shortcutsPopup"]').should('be.visible');
 
-        cy.get('[data-testid="shortcutsExit"]').click();
+        cy.get('[data-testid="overlayExit"]').click();
         cy.get('[data-testid="popupOverlay"]').should('not.be.visible');
         cy.get('[data-testid="shortcutsPopup"]').should('not.be.visible');
     })

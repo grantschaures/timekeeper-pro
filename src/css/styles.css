@@ -1017,12 +1017,85 @@ button:hover {
     margin-right: 25px;
 }
 
+.labelContainer {
+    display: flex;
+    align-items: center;
+
+    /* border: 1px solid white; */
+}
+
 #targetLabel {
     /* border: 1px solid yellow; */
     display: flex;
     justify-content: center;
     font-family: myFont3;
 }
+
+.targetHoursInterruptionsQuestionIcon {
+    display: flex;
+    height: 22px;
+    width: 22px;
+    margin-left: 10px;
+
+    cursor: pointer;
+
+    /* border: 1px solid orange; */
+}
+
+
+
+
+
+
+#targetHoursQuestionPopup {
+    display: none;
+    /* display: flex; */
+
+}
+
+#interruptionsQuestionPopup {
+    display: none;
+    /* display: flex; */
+}
+
+
+.questionPopup {
+    flex-direction: column;
+
+    position: absolute;
+    font-family: menuFont;
+    color: rgb(200, 200, 200);
+    letter-spacing: 1px;
+    font-size: 24px;
+    max-width: 700px;
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    justify-content: space-between;
+    margin-left: 10px;
+    margin-right: 10px;
+
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(100px);
+    border-radius: 25px;
+    text-align: left; /* You can remove this if text alignment is not needed */
+    box-sizing: border-box;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+#deepWorkInfo, #interruptionsInfo {
+    margin-top: 15px;
+}
+
+
+
+
+
+
+
 
 #target-hours {
     width: 50px;
@@ -1516,6 +1589,16 @@ header {
     transition: opacity 1s ease-out;
 }
 
+#overlayExit {
+    display: block;
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    cursor: pointer;
+
+    height: 50px;
+}
+
 #deleteAccountPopup {
     display: none;
     background: rgba(255, 255, 255, 0.15);
@@ -1597,7 +1680,7 @@ header {
 #shortcutsPopupHeader {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
 
     margin-top: 10px;
     margin-left: 20px;
@@ -1618,15 +1701,6 @@ header {
     font-family: settingsHeaderFont;
     letter-spacing: 2px;
     margin: 0;
-}
-
-#shortcutsExit {
-    position: static;
-    margin: 0;
-}
-
-#shortcutsPopupHeader {
-    display: flex;
 }
 
 .shortcutsContainer {
@@ -1832,8 +1906,12 @@ header {
     transition: opacity 0.5s ease-in-out;
 }
 
-#labelToDeleteContainer #sessionToDeleteContainer {
-    margin: 25px;
+#sessionToDeleteContainer {
+    margin: 15px;
+}
+
+#labelToDeleteContainer {
+    margin-top: 8px;
 }
 
 #previousSessionText {

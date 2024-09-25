@@ -198,6 +198,7 @@ export const logoutBtn = document.getElementById("logoutBtn");
 export const deleteAccountBtn = document.getElementById("deleteAccountBtn");
 export const forgotPasswordSettings = document.getElementById("forgotPasswordSettings");
 
+export const overlayExit = document.getElementById("overlayExit");
 export const popupOverlay = document.getElementById("popupOverlay");
 export const deleteAccountPopup = document.getElementById("deleteAccountPopup");
 export const deleteAccountPopupYesBtn = document.getElementById("deleteAccountPopupYesBtn");
@@ -222,7 +223,6 @@ export const privacyPolicyContainer = document.getElementById("privacyPolicyCont
 export const termsAndConditionsContainer = document.getElementById("termsAndConditionsContainer");
 export const shortcutsContainer = document.getElementById("shortcutsContainer");
 export const shortcutsPopup = document.getElementById("shortcutsPopup");
-export const shortcutsExit = document.getElementById("shortcutsExit");
 
 export const accountPopup = document.getElementById("accountPopup");
 export const goBackContainer = document.getElementById("goBackContainer");
@@ -319,3 +319,9 @@ export const manualBoundsInput = document.getElementById('manualBoundsInput');
 export const automaticBoundsInput = document.getElementById('automaticBoundsInput');
 
 export const feedbackFormBtn = document.getElementById('feedbackFormBtn');
+
+export const targetHoursQuestionIcon = document.getElementById('targetHoursQuestionIcon');
+export const interruptionsQuestionIcon = document.getElementById('interruptionsQuestionIcon');
+
+export const targetHoursQuestionPopup = document.getElementById('targetHoursQuestionPopup');
+export const interruptionsQuestionPopup = document.getElementById('interruptionsQuestionPopup');

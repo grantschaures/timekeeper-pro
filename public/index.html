@@ -78,6 +78,23 @@
             <source id="background-video-source" src="videos/istockphoto-1388209063-640_adpp_is.mp4" type="video/mp4">
         </video> -->
         <div id="popupOverlay" data-testid="popupOverlay" class="overlay"> <!-- z-index: 1000 -->
+            <img id="overlayExit" data-testid="overlayExit" src="images/icons/new-exit-icon.png">
+            <div id="targetHoursQuestionPopup" class="questionPopup">
+                <div id="targetTimeInstructions">
+                    Set a target time (in hours) for the amount of <u><b>deep work</b></u> you'd like to acheive during the session.
+                </div>
+                <div id="deepWorkInfo">
+                    <b>Deep Work:</b> Work performed in a state of deep concentration while also being able to recognize distractions as they appear in consciousness.
+                </div>
+            </div>
+            <div id="interruptionsQuestionPopup" class="questionPopup">
+                <div id="interruptionsInstructions">
+                    Mark a <b><u>distraction</u></b> when you're interrupted from your flow of concentration.
+                </div>
+                <div id="interruptionsInfo">
+                    <b>Distractions</b> can originate from your environment or within your mind. The goal here is to kindly acknowledge their existence without judgement, and place your full attention back on the task at hand.
+                </div>
+            </div>
             <div id="deleteAccountPopup">
                 <div id="deleteAccountPopupHeader">
                     <h2>💀 Delete Account 💀</h2>
@@ -103,7 +120,6 @@
             <div id="shortcutsPopup" data-testid="shortcutsPopup">
                 <div id="shortcutsPopupHeader">
                     <h2 id="shortcutsHeaderText">Keyboard Shortcuts</h2>
-                    <img class="exitIcon" id="shortcutsExit" data-testid="shortcutsExit" src="images/icons/exit-button-261420-white.png" draggable="false" alt="Exit">
                 </div>
                 <hr id="shortcutsHr" class="popupHr">
                 <div id="shortcutsPopupContainer">
@@ -426,7 +442,10 @@
                         </div>
                         <div id="targetHoursContainer">
                             <div id="targetHoursSubContainer">
-                                <h4 id="targetLabel" style="font-size: 20px" class="no-select">Target Hours</h4>
+                                <div id="targetLabelContainer" class="labelContainer">
+                                    <h4 id="targetLabel" style="font-size: 20px" class="no-select">Target Hours</h4>
+                                    <img src="images/icons/question-icon.png" id="targetHoursQuestionIcon" class="targetHoursInterruptionsQuestionIcon">
+                                </div>
                                 <div id="coolDiv-submit">
                                     <div id="coolDiv">
                                         <input type="number" id="target-hours" data-testid="target-hours" class="glowing-effect" name="hours" min="0" aria-labelledby="targetLabel">
@@ -437,7 +456,10 @@
                         </div>
                         <div id="interruptions-container">
                             <div id="interruptions-sub-container" data-testid="interruptions-sub-container">
-                                <h4 id="interruptions-label" style="font-size: 20px" class="no-select"> Distractions</h4>
+                                <div id="interruptionsLabelContainer" class="labelContainer">
+                                    <h4 id="interruptions-label" style="font-size: 20px" class="no-select"> Distractions</h4>
+                                    <img src="images/icons/question-icon.png" id="interruptionsQuestionIcon" class="targetHoursInterruptionsQuestionIcon">
+                                </div>
                                 <div id="interruptions-change-container">
                                     <button id="decBtn" class="interruptionsDivBtn no-select" aria-label="Distraction Decrement Button">-</button>
                                     <div id="coolerDiv" class="no-select">
@@ -459,6 +481,7 @@
                             </div>
                         </div>
                     </div>
+                    
                         
                     <div id="progress">
                         <div id="progressCatContainer">
