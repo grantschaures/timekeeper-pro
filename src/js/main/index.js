@@ -99,6 +99,8 @@ document.addEventListener("stateUpdated", function() {
         accountPopup.style.background = 'rgb(50, 50, 50)';
         deleteAccountPopup.style.background = 'rgb(50, 50, 50)';
         shortcutsPopup.style.background = 'rgb(50, 50, 50)';
+        targetHoursQuestionPopup.style.background = 'rgb(50, 50, 50)';
+        interruptionsQuestionPopup.style.background = 'rgb(50, 50, 50)';
     }
 
     // ----------------
