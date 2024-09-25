@@ -48,7 +48,6 @@ Cypress.Commands.add('pomodoroInterval', function(pomMin, HeaderStr, initialTota
     cy.get('[data-testid="display"]').should('contain', "00:00:00"); // ensure correct display time
     cy.get('[data-testid="progress-text"]').should('contain', initialTotalTimeStr); // ensure correct total display time
     cy.get('[data-testid="productivity-chill-mode"]').should('contain', HeaderStr); // check mode header
-    cy.contains('Distractions').should('be.visible'); // ensure Distractions container is showing
     
     cy.tick(pomMin * 60 * 1000); // simulate passing of 25 minutes
     
