@@ -398,7 +398,7 @@ function resetBackgrounds(deepWorkBackground, breakBackground) {
 
 function resetActions(flags, intervals, recoverBreakState, recoverPomState, startTimes, elapsedTime, counters, savedInterruptionsArr, intervalArrs, times) {
     observer.disconnect();
-    document.title = "Hyperchill.io";
+    document.title = "Hyperchill.io: Digital Productivity Journal";
 
     clearAllIntervals(intervals);
     resetPropertiesToNull(recoverBreakState);
