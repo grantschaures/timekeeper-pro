@@ -155,7 +155,7 @@ router.post('/resetPassword', async (req, res) => {
             subject: 'Reset your password',
             text: 'Visit hyperchill.io/login',
             html: `<div style="text-align: center;">
-                        <img src="https://hyperchill.io/images/email/logoImageSmall.png">
+                        <img src="https://hyperchill.io/images/email/updatedLogoImage.png" style="width: 520px; height: auto;">
                         <hr style="margin: 20px auto; width: 528px;">
                         <p style="font-size: 24px; color: black; font-family: Verdana, Geneva, Tahoma, sans-serif;">
                             Please reset your account password
