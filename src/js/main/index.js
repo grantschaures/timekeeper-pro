@@ -2258,7 +2258,7 @@ export function handleViewportWidthChange(settingsMappings, tempStorage) {
         }
     }
 
-    if (tempCounters.dashboardCatIdsArrIndex === 5) {
+    if ((tempCounters.dashboardCatIdsArrIndex === 5) && (state.lastSelectedMode === 'report')) {
         if ((viewportWidth <= 670) && (dashboardFlags.calendarPopupShowing)) {
             document.getElementById('dashboardCat6').style.display = 'none';
         } else {
@@ -2266,7 +2266,6 @@ export function handleViewportWidthChange(settingsMappings, tempStorage) {
         }
     }
 }
-
 
 // Show suggestion break container AND sets current flowmodoro notification
 function showSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, timeAmount, counters, flags) {

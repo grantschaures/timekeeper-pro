@@ -130,6 +130,7 @@ document.addEventListener("stateUpdated", function() {
                 setTimeout(() => {
                     calendarPopup.style.display = 'none';
                 }, 150)
+                
                 if (tempCounters.dashboardCatIdsArrIndex === 5) {
                     document.getElementById('dashboardCat6').style.display = 'flex';
                 }
