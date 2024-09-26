@@ -20,7 +20,7 @@ export function checkViewportWidth() {
         feedbackFormBtn.classList.remove('no-click');
     }
 }
-
+``
 window.addEventListener('popstate', (event) => {
     const hash = window.location.hash.substring(1);
     if (event.state && event.state.window) {
