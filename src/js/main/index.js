@@ -24,7 +24,8 @@ import {
     interruptionsQuestionIcon,
     targetHoursQuestionPopup,
     menuBtn,
-    interruptionsQuestionPopup
+    interruptionsQuestionPopup,
+    settingsDiscordBtn
 } from '../modules/dom-elements.js';
 
 import { flags as dashboardFlags, settings } from '../modules/dashboard-objects.js';
@@ -1314,6 +1315,10 @@ document.addEventListener("stateUpdated", function() {
         if (!feedbackFormBtn.classList.contains('no-click')) {
             window.open('https://forms.gle/ZvKZ6SxskLD43nqd9', '_blank');
         }
+    })
+
+    settingsDiscordBtn.addEventListener('click', function() {
+        window.open('https://discord.gg/puCuH3SY', '_blank');
     })
 
     // ---------------------

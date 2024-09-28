@@ -1326,7 +1326,13 @@
 
 /* I need to organize all of my CSS. This is patently insane. */
 
-
+#settingsDiscordBtn {
+    display: flex;
+    width: 200px;
+    height: auto;
+    margin-top: 25px;
+    cursor: pointer;
+}
 
 
 

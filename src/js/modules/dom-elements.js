@@ -325,3 +325,5 @@ export const interruptionsQuestionIcon = document.getElementById('interruptionsQ
 
 export const targetHoursQuestionPopup = document.getElementById('targetHoursQuestionPopup');
 export const interruptionsQuestionPopup = document.getElementById('interruptionsQuestionPopup');
+
+export const settingsDiscordBtn = document.getElementById('settingsDiscordBtn');
