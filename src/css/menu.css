@@ -47,7 +47,7 @@
     letter-spacing: 1px;
     font-size: 15px;
     min-width: 210px;
-    height: 200px;
+    height: 250px;
     /* background-color: rgba(255, 255, 255, 0.25); */
     backdrop-filter: blur(100px);
 
@@ -111,6 +111,11 @@
 .menuIcon {
     padding-left: 10px;
     padding-right: 15px;
+}
+
+#discordIcon {
+    width: 22px;
+    height: auto;
 }
 
 #blogIcon {

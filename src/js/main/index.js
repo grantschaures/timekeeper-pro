@@ -25,7 +25,8 @@ import {
     targetHoursQuestionPopup,
     menuBtn,
     interruptionsQuestionPopup,
-    settingsDiscordBtn
+    settingsDiscordBtn,
+    discordContainer
 } from '../modules/dom-elements.js';
 
 import { flags as dashboardFlags, settings } from '../modules/dashboard-objects.js';
@@ -1320,6 +1321,11 @@ document.addEventListener("stateUpdated", function() {
     settingsDiscordBtn.addEventListener('click', function() {
         window.open('https://discord.gg/puCuH3SY', '_blank');
     })
+    
+    discordContainer.addEventListener('click', function() {
+        window.open('https://discord.gg/puCuH3SY', '_blank');
+    })
+
 
     // ---------------------
     // DISPLAY WORKERS
