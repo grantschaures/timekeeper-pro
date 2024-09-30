@@ -303,7 +303,7 @@ function displaySessionViewLabels(labelObjsArr) {
             sessionViewLabelsContainer.appendChild(sessionViewLabelContainer);
 
             setTimeout(() => {
-                if (document.getElementById(sessionViewLabel.id).offsetWidth > 200) {
+                if (document.getElementById(sessionViewLabel.id).offsetWidth > 150) {
                     let innerText = document.getElementById(sessionViewLabel.id).innerText;
                     innerText = innerText.slice(0, 10) + '...';
                     document.getElementById(sessionViewLabel.id).innerText = innerText;
