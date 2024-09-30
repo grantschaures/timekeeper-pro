@@ -174,55 +174,31 @@ function getMoodLabelStr(moodValue) {
 
     // Check if moodValue is exactly on a whole number
     switch (moodValue) {
-        case -5:
-            return "The Worst";
-        case -4:
-            return "Terrible";
-        case -3:
-            return "Very Bad";
         case -2:
-            return "Bad";
+            return "Terrible";
         case -1:
-            return "Not Great";
+            return "Bad";
         case 0:
             return "Neutral";
         case 1:
-            return "Not Bad";
-        case 2:
             return "Good";
-        case 3:
-            return "Very Good";
-        case 4:
+        case 2:
             return "Amazing";
-        case 5:
-            return "The Best";
     }
 
     // Check if the moodValue falls between whole numbers
-    if (moodValue > -5 && moodValue < -4) {
-        return "Between Terrible and The Worst";
-    } else if (moodValue > -4 && moodValue < -3) {
-        return "Between Very Bad and Terrible";
-    } else if (moodValue > -3 && moodValue < -2) {
-        return "Between Bad and Very Bad";
-    } else if (moodValue > -2 && moodValue < -1) {
-        return "Between Not Great and Bad";
+    if (moodValue > -2 && moodValue < -1) {
+        return "Between Bad and Terrible";
     } else if (moodValue > -1 && moodValue < 0) {
-        return "Between Neutral and Not Great";
+        return "Between Neutral and Bad";
     } else if (moodValue > 0 && moodValue < 1) {
-        return "Between Neutral and Not Bad";
+        return "Between Neutral and Good";
     } else if (moodValue > 1 && moodValue < 2) {
-        return "Between Not Bad and Good";
-    } else if (moodValue > 2 && moodValue < 3) {
-        return "Between Good and Very Good";
-    } else if (moodValue > 3 && moodValue < 4) {
-        return "Between Very Good and Amazing";
-    } else if (moodValue > 4 && moodValue < 5) {
-        return "Between Amazing and The Best";
+        return "Between Good and Amazing";
     }
 
     // edge case
-    if (moodValue < -5 || moodValue > 5) {
+    if (moodValue < -2 || moodValue > 2) {
         return "Mood value out of range";
     }
 
@@ -268,6 +244,7 @@ function getAvgMood(dailyData) {
 
     } else {
         avgMood = null;
+
     }
 
     return avgMood;
@@ -2146,6 +2123,8 @@ function displayPercentDeepWorkChart() {
 
 function displayAvgMoodChart() {
 
+    console.log(dashboardData.dailyArr)
+
     let barWidth = 0.8;
     let xAxisTickLabelArr;
     if (mainChartContainer.timeFrame === 'week') {
@@ -2177,9 +2156,8 @@ function displayAvgMoodChart() {
 
     const yScaleData = {
         beginAtZero: true,
-        min: -5, // Set the minimum value of the y-axis to -5
-        max: 5,  // Set the maximum value of the y-axis to 5
-        suggestedMax: 100,
+        min: -2, // Set the minimum value of the y-axis to -5
+        max: 2,  // Set the maximum value of the y-axis to 5
         title: {
             display: true,
             text: 'Avg Mood',
@@ -2192,17 +2170,15 @@ function displayAvgMoodChart() {
             },
             callback: function(value, index, values) {
                 // Custom labels based on value
-                if (value === 5) return '😝';
-                if (value === 4) return '😁';
-                if (value === 3) return '😀';
-                if (value === 2) return '😊';
-                if (value === 1) return '🙂';
+                if (value === 2) return '😁';
+                if (value === 1.5) return '😀';
+                if (value === 1) return '😊';
+                if (value === 0.5) return '🙂';
                 if (value === 0) return '😐';
-                if (value === -1) return '🫤';
-                if (value === -2) return '🙁';
-                if (value === -3) return '😞';
-                if (value === -4) return '😣';
-                if (value === -5) return '😖';
+                if (value === -0.5) return '☹️';
+                if (value === -1) return '🙁';
+                if (value === -1.5) return '😞';
+                if (value === -2) return '😣';
                 return value; // Default to returning the value itself for other ticks
             }
         },

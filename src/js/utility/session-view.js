@@ -178,17 +178,17 @@ function displaySessionView(session, dayViewSessionContainerCopy, sessionNumber)
 
     // Converting old subjective feedback values (We could eventually use a MongoDB query to find all the old values and convert them to currently valid ones)
     if (subjectiveFeedback === "good") {
-        subjectiveFeedback = "2";
+        subjectiveFeedback = "1";
     } else if (subjectiveFeedback === "ok") {
         subjectiveFeedback = "0";
     } else if (subjectiveFeedback === "bad") {
-        subjectiveFeedback = "-2";
+        subjectiveFeedback = "-1";
     } else if (subjectiveFeedback === "unsure") {
         subjectiveFeedback = "";
-    } else if (subjectiveFeedback === "5") {
-        subjectiveFeedback = "4";
-    } else if (subjectiveFeedback === "-5") {
-        subjectiveFeedback = "-4";
+    } else if (Number(subjectiveFeedback) > 2) {
+        subjectiveFeedback = "2";
+    } else if (Number(subjectiveFeedback) < -2) {
+        subjectiveFeedback = "-2";
     }
 
     sessionViewSubjectiveFeedbackDropdown.value = subjectiveFeedback; // resets value on initialization
