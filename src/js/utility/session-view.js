@@ -176,7 +176,7 @@ function displaySessionView(session, dayViewSessionContainerCopy, sessionNumber)
     // Initialize the subjective feedback
     let subjectiveFeedback = session.sessionSummary.subjectiveFeedback;
 
-    // Converting old subjective feedback values
+    // Converting old subjective feedback values (We could eventually use a MongoDB query to find all the old values and convert them to currently valid ones)
     if (subjectiveFeedback === "good") {
         subjectiveFeedback = "2";
     } else if (subjectiveFeedback === "ok") {
