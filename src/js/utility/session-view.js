@@ -185,6 +185,10 @@ function displaySessionView(session, dayViewSessionContainerCopy, sessionNumber)
         subjectiveFeedback = "-2";
     } else if (subjectiveFeedback === "unsure") {
         subjectiveFeedback = "";
+    } else if (subjectiveFeedback === "5") {
+        subjectiveFeedback = "4";
+    } else if (subjectiveFeedback === "-5") {
+        subjectiveFeedback = "-4";
     }
 
     sessionViewSubjectiveFeedbackDropdown.value = subjectiveFeedback; // resets value on initialization
