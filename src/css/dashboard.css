@@ -102,6 +102,10 @@
     /* border: 3px solid rgb(255, 255, 255); */
 }
 
+#avgIntervalLengthStatContainer {
+    margin-bottom: 15px;
+}
+
 .summaryStatHeader {
     display: flex;
     text-align: center;
