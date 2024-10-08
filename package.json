@@ -8,6 +8,7 @@
     "minify": "node minify.js",
     "build": "npm run minify",
     "heroku-postbuild": "npm run build",
+    "insertAnalyticsScript": "npm run insertAnalyticsScript",
     "editHTML": "node editHTML.js",
     "cy:open": "cypress open",
     "cy:run": "cypress run",

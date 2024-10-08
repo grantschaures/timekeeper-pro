@@ -23,6 +23,9 @@ jobs:
     - name: Run tests
       run: npm test
 
+    - name: Insert Google Analytics Script
+      run: npm run insertAnalyticsScript
+
     - name: Edit HTML
       run: npm run editHTML
 
