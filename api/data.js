@@ -19,8 +19,6 @@ router.use(checkAndRenewToken);
 // CONSTANTS
 MAX_ITEMS_SESSION_START_TIME_ARR = 5; // can reduce if necessary
 
-
-
 router.post("/update-session-summary-data", async function(req, res) {
     // Assuming the JWT is sent automatically in cookie headers
     const token = req.cookies.token;  // Extract the JWT from cookies directly
@@ -74,9 +72,6 @@ router.post("/update-session-summary-data", async function(req, res) {
         });
     }
 });
-
-
-
 
 
 router.delete("/delete-session", async function(req, res) {

@@ -191,6 +191,10 @@ document.addEventListener("stateUpdated", function() {
             animationsFadeOut(chillAnimation);
             startTimes.lastPomNotification = Date.now();
 
+            if (flags.pipWindowOpen) {
+                intervalArrs.pipWindowEvent.push(Date.now());
+            }
+
             // randomize cat order
             reorderArray(catIds);
             
@@ -202,8 +206,9 @@ document.addEventListener("stateUpdated", function() {
             chillTimeToFirstPomodoro(flags, productivity_chill_mode, counters);
         }
         
+        
         checkSessionIntervalSwitch();
-        setLocalStartTime(flags, startTimes, recoverBreakState, recoverPomState);
+        startTimes.local = Date.now();
 
         displayWorker.postMessage("clearInterval");
         displayWorker.postMessage("startInterval");
@@ -280,7 +285,6 @@ document.addEventListener("stateUpdated", function() {
             lastFlowTimeInterval = Date.now() - startTimes.hyperFocus;
             intervalArrs.flowTime.push(lastFlowTimeInterval);
                 
-            let previousHyperFocusElapsedTime = elapsedTime.hyperFocus;
             elapsedTime.hyperFocus += Date.now() - startTimes.hyperFocus;
 
             if (!flags.autoStartBreakInterval) { // we know the user clicked the stop btn, and that it didn't happen programmatically
@@ -1933,11 +1937,6 @@ function flowTimeAnimationActions(counters, flags, chillAnimation, flowAnimation
     if (flags.flowTimeAnimationToggle) {
         animationsFadeIn(flowAnimation, 'block');
     }
-}
-
-// Sets local start time depending on notification mode
-function setLocalStartTime(flags, startTimes, recoverBreakState, recoverPomState) {
-    startTimes.local = Date.now();
 }
 
 // If in pomodoro mode AND not coming from non-pomodoro mode,

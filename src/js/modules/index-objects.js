@@ -49,12 +49,7 @@ export const timeConvert = {
 
 //INTERVALS
 export const intervals = {
-    main: null, //progress bar interval
-    total: null,
-    local: null, //interval for time display
-    suggestion: null,
-    chillTimeBreak: null,
-    pomodoro: null
+    main: null // progress bar interval
 };
 
 //START TIMES
@@ -69,7 +64,7 @@ export const startTimes = {
 };
 
 //RECOVERY
-export const recoverBreakState = {
+export const recoverBreakState = { // not used
     displayTime: null,
     pomodorosCompleted: null,
     hyperFocusElapsedTime: null,
@@ -77,7 +72,7 @@ export const recoverBreakState = {
     pomIntervalTime: null
 }
 
-export const recoverPomState = {
+export const recoverPomState = { // not used
     displayTime: null,
     pomodorosCompleted: null,
     hyperFocusElapsedTime: null,
@@ -218,7 +213,8 @@ export const intervalArrs = {
     flowTime: [],
     chillTime: [],
     transitionTime: [],
-    interruptionTime: []
+    interruptionTime: [],
+    pipWindowEvent: []
 }
 
 export const catIds = [

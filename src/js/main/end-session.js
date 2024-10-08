@@ -589,6 +589,7 @@ function finalLabelArrsUpdate(flags, labelFlags, labelArrs) {
 }
 
 async function finalizeSession(times, userTimeZone, totalTime, focusQualityFractionV2, focusQualityFractionV5, qualityAdjustedDeepWorkV2, qualityAdjustedDeepWorkV5, totalDistractions, intervalArrs, savedInterruptionsArr, avgFlowTimeInterval, avgChillTimeInterval, counters, timeAmount, flags, labelTimeSum, perHourData) {
+    
     const session = {
         startTime: times.start,
         endTime: times.end,
@@ -610,6 +611,7 @@ async function finalizeSession(times, userTimeZone, totalTime, focusQualityFract
         targetHours: timeAmount.targetTime,
         hitTarget: flags.hitTarget,
         pomodorosCompleted: counters.pomodorosCompleted,
+        pipWindowEvents: intervalArrs.pipWindowEvent,
         labelTimes: labelTimeSum,
         perHourData: perHourData
     }

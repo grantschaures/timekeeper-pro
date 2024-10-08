@@ -1,5 +1,5 @@
 import { catsContainer, completedPomodoros_label, completedPomodoros_min, completedPomodorosContainer, display, interruptionsChangeContainer, interruptionsContainer, interruptionsLabel, interruptionsNum, interruptionsQuestionIcon, interruptionsSubContainer, lowerButtons, notesBtn, notesContainer, pipCatShadow, pipIconContainer, pipInfoText, pomodoroInfoTooltip, productivity_chill_mode, progress, progressCatBody, progressCatHead, start_stop_btn, stopwatch, suggestionBreak_label, suggestionBreak_min, targetHoursContainer, targetHoursInterruptionsContainer, timekeepingContainer } from "../modules/dom-elements.js";
-import { catIds, counters, flags, pip, selectedBackground } from "../modules/index-objects.js";
+import { catIds, counters, flags, intervalArrs, pip, selectedBackground } from "../modules/index-objects.js";
 
 import { displayCat, setBackground } from '../main/index.js';
 
@@ -10,6 +10,10 @@ document.addEventListener("stateUpdated", function() {
 
   pipIconContainer.addEventListener('click', async function() {
     flags.pipWindowOpen = true;
+
+    if (flags.sessionInProgress) {
+      intervalArrs.pipWindowEvent.push(Date.now());
+    }
 
     // Open a Picture-in-Picture window.
     let width = 240;
@@ -122,6 +126,10 @@ document.addEventListener("stateUpdated", function() {
 
     pipWindow.addEventListener("pagehide", (event) => {
       flags.pipWindowOpen = false;
+      
+      if (flags.sessionInProgress) {
+        intervalArrs.pipWindowEvent.push(Date.now());
+      }
 
       // cat
       progressCatHead.style.display = 'none';

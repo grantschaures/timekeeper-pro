@@ -37,6 +37,7 @@ const sessionSchema = new Schema({
     targetHours: { type: Number },
     hitTarget: { type: Boolean },
     pomodorosCompleted: { type: Number },
+    pipWindowEvents: { type: [Date], default: [] },
     labelTimes: {
         type: Map,
         of: Number,
