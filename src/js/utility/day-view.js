@@ -1,4 +1,4 @@
-import { dayViewCompletedTasks, dayViewCompletedTasksHeader, dayViewDeepWorkSummaryStat, dayViewFocusQualitySummaryStat, dayViewNoEntriesContainer, dayViewNotes, dayViewNotesEntriesContainer, dayViewNotesHeader, dayViewSessionsContainer, dayViewSummaryChart, sessionToDeleteContainer } from "../modules/dashboard-elements.js";
+import { dayViewCompletedTasks, dayViewCompletedTasksHeader, dayViewDeepWorkSummaryStat, dayViewFocusQualitySummaryStat, dayViewLabelsContainer, dayViewNoEntriesContainer, dayViewNotes, dayViewNotesEntriesContainer, dayViewNotesHeader, dayViewSessionsContainer, dayViewSummaryChart, sessionToDeleteContainer } from "../modules/dashboard-elements.js";
 import { charts, constants, dailyContainer, dashboardData, settings } from "../modules/dashboard-objects.js";
 
 import { getDeepWork, getFocusQuality, getTargetHours } from './session-summary-chart.js'; // minified
@@ -58,6 +58,9 @@ async function resetData() {
     // reset the dayViewSessionsContainer UI
     dayViewSessionsContainer.innerHTML = "";
 
+    // reset the dayViewLabelsContainer
+    dayViewLabelsContainer.innerHTML = "";
+
     // we'll also need to clear the innerHTML of:
     // (1) #dayViewCompletedTasks
     // (2) #dayViewNotes
@@ -94,8 +97,105 @@ function displayDayView() {
     // (3) Initialize session selections
     initializeDayViewSessions();
 
+    // (3.5) Initialize label times
+    initializeDayViewLabels();
+
     // (4) Initialize the completed tasks and notes entries
     initializeNotesEntries();
+}
+
+function initializeDayViewLabels() {
+    let labelObjsArr = [];
+
+    let labelTimes;
+    if (currentWeekData.dailyData) {
+        labelTimes = currentWeekData.dailyData.labelTimes;
+    } else {
+        labelTimes = [];
+    }
+
+    // creates an array of all label time objects with some amount of time
+    for (let key in labelTimes) {
+        if (labelTimes.hasOwnProperty(key)) {
+            if (labelTimes[key] > 0) {
+                labelObjsArr.push({ id: key, time: labelTimes[key] });
+            }
+        }
+    }
+    displayDayViewLabels(labelObjsArr);
+
+}
+
+function displayDayViewLabels(labelObjsArr) {
+    // create an array of ALL labels (deleted or not)
+
+    let labels = dashboardData.noteData.labels;
+    let deletedLabels = dashboardData.noteData.deletedLabels;
+    let combinedLabels = { ...labels, ...deletedLabels}
+
+    if (labelObjsArr.length === 0) {
+        // create and show sessionViewNoLabelsContainer
+        let dayViewNoLabelsContainer = document.createElement('div');
+        dayViewNoLabelsContainer.classList.add('sessionViewNoLabelsContainer');
+        dayViewNoLabelsContainer.innerText = "No Labels";
+        dayViewLabelsContainer.appendChild(dayViewNoLabelsContainer);
+
+    } else {
+        for (let i = 0; i < labelObjsArr.length; i++) {
+            let labelName = combinedLabels[labelObjsArr[i].id];
+            let labelTime = labelObjsArr[i].time; // in ms
+    
+            // convert the labelTime (ms) to a time string of minutes and hours
+            let labelTimeStr = getTimeString(labelTime);
+            labelTimeStr = "| " + labelTimeStr;
+    
+            // create DOM elements and append as children to dayViewLabelsContainer
+            let dayViewLabelContainer = document.createElement('div');
+            dayViewLabelContainer.classList.add('sessionViewLabelContainer');
+    
+            let dayViewLabel = document.createElement('div');
+            dayViewLabel.classList.add('sessionViewLabel');
+            dayViewLabel.innerText = labelName;
+            dayViewLabel.id = 'dayViewLabel' + i;
+    
+            let dayViewLabelTime = document.createElement('div');
+            dayViewLabelTime.classList.add('sessionViewLabelTime');
+            dayViewLabelTime.innerText = labelTimeStr;
+    
+            dayViewLabelContainer.appendChild(dayViewLabel);
+            dayViewLabelContainer.appendChild(dayViewLabelTime);
+    
+            dayViewLabelsContainer.appendChild(dayViewLabelContainer);
+
+            setTimeout(() => {
+                if (document.getElementById(dayViewLabel.id).offsetWidth > 150) {
+                    let innerText = document.getElementById(dayViewLabel.id).innerText;
+                    innerText = innerText.slice(0, 10) + '...';
+                    document.getElementById(dayViewLabel.id).innerText = innerText;
+                }
+            }, 0);
+        }
+    }
+}
+
+function getTimeString(labelTime) {
+    let deepWork = getDeepWork(labelTime); // retrieves DW hours
+    let deepWorkHours = Math.floor(deepWork);
+    let deepWorkMinutes = Math.round((deepWork - deepWorkHours) * 60);
+    let deepWorkSeconds;
+
+    if (labelTime < 60000) {
+        deepWorkSeconds = Math.floor(labelTime / 1000);
+    }
+
+    let deepWorkStr;
+    if (deepWorkSeconds) {
+        deepWorkStr = `${deepWorkSeconds}s`;
+    } else {
+        deepWorkStr = `${deepWorkHours}h ${deepWorkMinutes}m`;
+    }
+
+    return deepWorkStr;
 }
 
 // includes completed tasks and notes
@@ -185,7 +285,6 @@ function initializeDayViewSessions() {
 
     } else {
         createAndAppendNoSessionsContainer();
-
     }
 }
 

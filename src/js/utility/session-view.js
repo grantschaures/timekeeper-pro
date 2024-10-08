@@ -313,6 +313,7 @@ function displaySessionViewLabels(labelObjsArr) {
     }
 }
 
+// repeated
 function getTimeString(labelTime) {
     let deepWork = getDeepWork(labelTime); // retrieves DW hours
     let deepWorkHours = Math.floor(deepWork);

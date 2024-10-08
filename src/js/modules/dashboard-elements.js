@@ -120,6 +120,8 @@ export const dayViewDeepWorkSummaryStat = document.getElementById('dayViewDeepWo
 export const dayViewFocusQualitySummaryStat = document.getElementById('dayViewFocusQualitySummaryStat');
 export const dayViewSessionsContainer = document.getElementById('dayViewSessionsContainer');
 
+export const dayViewLabelsContainer = document.getElementById('dayViewLabelsContainer');
+
 export const dayViewNotesHeader = document.getElementById('dayViewNotesHeader');
 export const dayViewCompletedTasksHeader = document.getElementById('dayViewCompletedTasksHeader');
 export const dayViewNotes = document.getElementById('dayViewNotes');

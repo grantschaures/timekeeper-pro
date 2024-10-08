@@ -1361,7 +1361,11 @@
     margin: 15px 0px;
 }
 
-#sessionViewLabelsContainer {
+#sessionViewHr2 {
+    margin-top: 0px;
+}
+
+#sessionViewLabelsContainer, #dayViewLabelsContainer {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -1641,6 +1645,7 @@
 #dayViewNoEntriesContainer {
     display: none;
     justify-content: center;
+    margin-top: 5px;
 
     /* border: 1px solid orange; */
 }
@@ -1688,7 +1693,15 @@
     width: 100%;
     border: 1px solid rgba(255, 255, 255, 0.15);
     box-sizing: border-box;
+}
+
+#dayViewHr1 {
     margin-top: -2px;
+    margin-bottom: 15px;
+}
+
+#dayViewHr2 {
+    margin-top: 0px;
 }
 
 @media (max-width: 1215px) {
