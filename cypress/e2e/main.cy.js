@@ -11,17 +11,15 @@ describe('Target Hours', () => {
         cy.contains('Change').should('exist');
         cy.get('[data-testid="progress-text"]').should('contain', '00:00:00 (0%)');
 
-        
-        
         cy.get('[data-testid="target-hours-submit"]').click();
         cy.contains('Submit').should('exist');
         cy.get('[data-testid="progress-text"]').should('contain', '00:00:00');
         
         cy.get('[data-testid="target-hours"]').type(1);
-        // cy.get('[data-testid="target-hours-submit"]').click();
-        // cy.get('[data-testid="target-hours"]').click();
-        // cy.contains('Submit').should('exist');
-        // cy.get('[data-testid="progress-text"]').should('contain', '00:00:00');
+        cy.get('[data-testid="target-hours-submit"]').click();
+        cy.get('[data-testid="target-hours"]').click();
+        cy.contains('Submit').should('exist');
+        cy.get('[data-testid="progress-text"]').should('contain', '00:00:00');
     })
 
     it('Progress Bar Constricts Initially & Expands Upon Input of Target Hour Value', () => {

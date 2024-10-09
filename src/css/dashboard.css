@@ -76,10 +76,18 @@
 #dashboardSummaryStatsContainer {
     display: flex;
     position: relative;
-    box-sizing: border-box;
+
+    /* Aligns more with SPREAD (not an acronym)
+    Principle | All other browsers */
     justify-content: space-around;
+
+    /* Aligns more with consistency with daily container 
+    (the other side container) principle | 🦊 FIREFOX 🦊 */
+    /* justify-content: default; */
+
     width: 225px;
     margin-left: 10px;
+
     overflow-y: scroll;
     padding-bottom: 15px;
 

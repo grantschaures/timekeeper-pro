@@ -1,11 +1,17 @@
-import { totalDeepWorkSummaryStat, avgDeepWorkSummaryStat, avgFocusQualitySummaryStat, avgIntervalLengthSummaryStat, mostFocusedHourSummaryStat } from '../modules/dashboard-elements.js';
-import { timeConvert } from '../modules/index-objects.js';
+import { totalDeepWorkSummaryStat, avgDeepWorkSummaryStat, avgFocusQualitySummaryStat, avgIntervalLengthSummaryStat, mostFocusedHourSummaryStat, dashboardSummaryStatsContainer } from '../modules/dashboard-elements.js';
+import { detectBrowser, timeConvert } from '../modules/index-objects.js';
 import { constants } from '../modules/dashboard-objects.js';
 
 import { initializeHourlyData } from '../utility/adv-charts.js'; // minified
 
 // Global Vars
 const FOCUS_QUALITY_CONSTANT = constants.FOCUS_QUALITY_CONSTANT;
+
+document.addEventListener("stateUpdated", function() {
+    if (detectBrowser() === "Firefox") {
+        dashboardSummaryStatsContainer.style.justifyContent = 'flex-start';
+    }
+})
 
 export function populateDashboardSummaryStats(timeConvert, dailySummarizedData, dashboardData) {
     let totalDeepWork = 0;

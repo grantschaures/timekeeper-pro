@@ -90,6 +90,8 @@ export const summaryAvgDeepWorkIntervalTitle = document.getElementById('summaryA
 export const summaryAvgBreakIntervalTitle = document.getElementById('summaryAvgBreakIntervalTitle');
 export const summaryStatHeaders = document.querySelectorAll('.summaryStatHeader');
 
+export const dashboardSummaryStatsContainer = document.getElementById('dashboardSummaryStatsContainer');
+
 
 // Daily Container
 export const dailyContainerElement = document.getElementById('dailyContainer');

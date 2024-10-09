@@ -257,7 +257,7 @@ export const perHourData = {};
 // HELPER FUNCTIONS
 // ---------------------
 
-function detectBrowser() { //Returns user's broswer type
+export function detectBrowser() { //Returns user's broswer type
     var userAgent = navigator.userAgent;
 
     if (userAgent.indexOf("Firefox") > -1) {
