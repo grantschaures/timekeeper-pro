@@ -2411,6 +2411,8 @@ async function enableNotifications() {
     return true;
 }
 
+// <input type="number" id="target-hours" data-testid="target-hours" class="glowing-effect" name="hours" min="0" aria-labelledby="targetLabel">
+
 async function changeTargetHours(flags, sessionState, timeAmount) {
     flags.submittedTarget = false;
     timeAmount.targetTime = null;
@@ -2420,6 +2422,8 @@ async function changeTargetHours(flags, sessionState, timeAmount) {
     let enterHours = document.createElement('input');
     enterHours.type = "number";
     enterHours.id = "target-hours";
+    enterHours.setAttribute('data-testid', 'target-hours');
+    enterHours.setAttribute('aria-labelledby', 'targetLabel');
     enterHours.name = "hours";
     enterHours.min = "0";
     enterHours.value = "";
