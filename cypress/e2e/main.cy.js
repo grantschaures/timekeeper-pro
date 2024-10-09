@@ -10,10 +10,20 @@ describe('Target Hours', () => {
         cy.get('[data-testid="target-hours-submit"]').click();
         cy.contains('Change').should('exist');
         cy.get('[data-testid="progress-text"]').should('contain', '00:00:00 (0%)');
+
+        cy.clock();
+        cy.tick(60 * 60 * 1000); // simulate passing of 60 minutes
+
         
         cy.get('[data-testid="target-hours-submit"]').click();
         cy.contains('Submit').should('exist');
         cy.get('[data-testid="progress-text"]').should('contain', '00:00:00');
+        
+        // cy.get('[data-testid="target-hours"]').type(1);
+        // cy.get('[data-testid="target-hours-submit"]').click();
+        // cy.get('[data-testid="target-hours"]').click();
+        // cy.contains('Submit').should('exist');
+        // cy.get('[data-testid="progress-text"]').should('contain', '00:00:00');
     })
 
     it('Progress Bar Constricts Initially & Expands Upon Input of Target Hour Value', () => {

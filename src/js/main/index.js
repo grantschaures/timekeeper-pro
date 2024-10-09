@@ -1323,13 +1323,12 @@ document.addEventListener("stateUpdated", function() {
     })
 
     settingsDiscordBtn.addEventListener('click', function() {
-        window.open('https://discord.gg/puCuH3SY', '_blank');
+        window.open('https://discord.gg/TYFZ46ATtH', '_blank');
     })
     
     discordContainer.addEventListener('click', function() {
-        window.open('https://discord.gg/puCuH3SY', '_blank');
+        window.open('https://discord.gg/TYFZ46ATtH', '_blank');
     })
-
 
     // ---------------------
     // DISPLAY WORKERS
@@ -2828,6 +2827,7 @@ export function replaceTargetHours(inputHours, timeAmount, flags) {
     let submitTarget = document.createElement('h4');
     submitTarget.textContent = targetHours;
     submitTarget.id = "target-hours";
+    submitTarget.setAttribute('data-testid', 'target-hours');
     submitTarget.className = "finalized-hours";
     submitTarget.style.backgroundColor = "#5c5c5c"; //dark grey finalized background color
     document.getElementById("coolDiv").appendChild(submitTarget);
