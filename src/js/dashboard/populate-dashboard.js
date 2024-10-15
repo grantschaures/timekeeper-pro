@@ -303,21 +303,6 @@ async function initializeDailyData(sessions) {
 
         // mood sum
         let mood = session.sessionSummary.subjectiveFeedback;
-        if (mood === "good") {
-            mood = 1;
-        } else if (mood === "ok") {
-            mood = 0;
-        } else if (mood === "bad") {
-            mood = -1;
-        } else if (mood === "unsure") {
-            mood = "";
-        }
-        
-        if (Number(mood) > 2) {
-            mood = "2";
-        } else if (Number(mood) < -2) {
-            mood = "-2";
-        }
 
         if (mood !== "") {
             if (dashboardData.dailySummary[startDate].moodSum === null) {

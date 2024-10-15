@@ -4,16 +4,6 @@ describe('Flowmodoro (Break Notification) Testing', () => {
         cy.get('#subMainContainer').invoke('css', 'opacity', '1');
         cy.openFlowmodoroSettingsContainer();
     })
-    
-    // it('Break Notifications Info Window Shows Up', () => {
-    //     cy.get('body').invoke('css', 'overflow-y', 'scroll');
-
-    //     cy.contains("Notifications").hover();
-    //     cy.contains("This will notify you (in break) after a period of time based on previous deep work interval").should('be.visible');
-        
-    //     cy.contains("Notifications").hover();
-    //     cy.contains("This will notify you (in break) after a period of time based on previous deep work interval").should('not.be.visible');
-    // })
 
     it('Break Notifications | < 25 min', () => {
         // INITIAL CONDITIONS
@@ -101,16 +91,6 @@ describe('Deep Work Notification Testing', () => {
         cy.get('#subMainContainer').invoke('css', 'opacity', '1');
         cy.openFlowTimeSettingsContainer();
     })
-
-    // it('Deep Work Notifications Info Window Shows Up', () => {
-    //     cy.get('body').invoke('css', 'overflow-y', 'scroll');
-
-    //     cy.contains("Deep Work Notifications").click();
-    //     cy.contains("Enter the time (in minutes) you'd like to pass while in Deep Work before getting a suggestion to take break").should('be.visible');
-        
-    //     cy.contains("Deep Work Notifications").click();
-    //     cy.contains("Enter the time (in minutes) you'd like to pass while in Deep Work before getting a suggestion to take break").should('not.be.visible');
-    // })
     
     it('Deep Work Notifications', () => {
         // INITIAL CONDITIONS

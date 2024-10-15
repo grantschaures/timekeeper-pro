@@ -83,7 +83,7 @@
 
     /* Aligns more with consistency with daily container 
     (the other side container) principle | 🦊 FIREFOX 🦊 */
-    /* justify-content: default; */
+    /* justify-content: flex-start; */
 
     width: 225px;
     margin-left: 10px;

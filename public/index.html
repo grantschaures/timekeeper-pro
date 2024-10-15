@@ -59,7 +59,7 @@
     <body dinkle-doink-setting="home"> <!-- enclose all elements and content to be rendered in the browser -->
         <div id="popupOverlay" data-testid="popupOverlay" class="overlay"> <!-- z-index: 1000 -->
             <img id="overlayExit" data-testid="overlayExit" src="images/icons/new-exit-icon.png">
-            <div id="targetHoursQuestionPopup" class="questionPopup">
+            <div id="targetHoursQuestionPopup" data-testid="targetHoursQuestionPopup" class="questionPopup">
                 <div id="targetTimeInstructions">
                     Set a target time (in hours) for the amount of <u><b>deep work</b></u> you'd like to acheive during the session.
                 </div>
@@ -67,7 +67,7 @@
                     <b>Deep Work:</b> Work performed in a state of deep focus on a single task while also being able to promptly recover from distractions when they occur.
                 </div>
             </div>
-            <div id="interruptionsQuestionPopup" class="questionPopup">
+            <div id="interruptionsQuestionPopup" data-testid="interruptionsQuestionPopup" class="questionPopup">
                 <div id="interruptionsInstructions">
                     Mark a <b><u>distraction</u></b> when you're interrupted from your flow of concentration.
                 </div>
@@ -205,25 +205,25 @@
                             <div id="deepWorkText">
                                 <b>Deep Work</b>
                             </div>
-                            <div id="deepWorkTime">
+                            <div id="deepWorkTime" data-testid="deepWorkTime">
                             </div>
                         </div>
                         <div id="focusPercentageContainer" class="summaryStats">
                             <div id="focusPercentageText">
                                 <b>Focus Quality</b>
                             </div>
-                            <div id="focusPercentage">
+                            <div id="focusPercentage" data-testid="focusPercentage">
                             </div>
                         </div>
                     </div>  
                 </div>
                 <div id="commentsContainer">
-                    <textarea id="commentsTextArea" placeholder="Comments"></textarea>
+                    <textarea id="commentsTextArea" data-testid="commentsTextArea" placeholder="Comments"></textarea>
                 </div>
                 <div id="bottomRow">
                     <div id="subjectiveFeedbackContainer">
                         <label for="subjectiveFeedbackDropdown"></label>
-                        <select id="subjectiveFeedbackDropdown" name="subjectiveFeedbackDropdown">
+                        <select id="subjectiveFeedbackDropdown" data-testid="subjectiveFeedbackDropdown" name="subjectiveFeedbackDropdown">
                             <option value="" selected>Rate Mood</option>
                             <option value="2">😁 Amazing</option>
                             <option value="1">😊 Good</option>
@@ -232,7 +232,7 @@
                             <option value="-2">😣 Terrible</option>
                         </select>
                     </div>
-                    <button id="sessionSummaryOkBtn">
+                    <button id="sessionSummaryOkBtn" data-testid="sessionSummaryOkBtn">
                         OK
                     </button>
                 </div>
@@ -247,7 +247,7 @@
                 </div>
                <div id="createAccountHere"><b>If so, create an account here!</b></div>
                <div id="signupPromptPopupBtnContainer">
-                   <button id="signupPromptPopupBtn">Create Account</button>
+                   <button id="signupPromptPopupBtn" data-testid="signupPromptPopupBtn">Create Account</button>
                </div>
             </div>
 
@@ -269,12 +269,8 @@
         </div>
 
         <div id="backgroundContainer">
-            <div id="deepWorkBackground">
-
-            </div>
-            <div id="breakBackground">
-
-            </div>
+            <div id="deepWorkBackground"></div>
+            <div id="breakBackground"></div>
         </div> <!-- z-index: 0 -->
 
         <div id="mainContainer"> <!-- z-index: 25 -->
@@ -361,15 +357,15 @@
                         </div>
                     </div>
                     <div class="bottomRight">
-                        <div id="streaksContainer" class="no-select">
+                        <div id="streaksContainer" data-testid="streaksContainer" class="no-select">
                             <div id="streaksEmoji" class="streaksComponent">
                                 🔥
                             </div>
-                            <div id="streaksCount" class="streaksComponent">
+                            <div id="streaksCount" data-testid="streaksCount" class="streaksComponent">
                                 0
                             </div>
                         </div>
-                        <div id="questionIconContainer" data-testid="questionIcon" alt="Question Button" class="no-select UIContainer">  <!-- z-index: 20 -->
+                        <div id="questionIconContainer" data-testid="questionIconContainer" alt="Question Button" class="no-select UIContainer">  <!-- z-index: 20 -->
                             ?
                         </div>
                     </div>
@@ -418,11 +414,11 @@
                             <img id="sleepyCat9" src="images/sprites/thicker-lines/kitty2.png" class="sleepyCat no-select">
                             <img id="zzz" src="images/icons/zzz_white.png" class="no-select">
                         </div>
-                        <div id="targetHoursContainer">
+                        <div id="targetHoursContainer" data-testid="targetHoursContainer">
                             <div id="targetHoursSubContainer">
                                 <div id="targetLabelContainer" class="labelContainer">
                                     <h4 id="targetLabel" style="font-size: 20px" class="no-select">Target Hours</h4>
-                                    <img src="images/icons/aboutIcon.png" id="targetHoursQuestionIcon" class="targetHoursInterruptionsQuestionIcon">
+                                    <img src="images/icons/aboutIcon.png" id="targetHoursQuestionIcon"  data-testid="targetHoursQuestionIcon" class="targetHoursInterruptionsQuestionIcon">
                                 </div>
                                 <div id="coolDiv-submit">
                                     <div id="coolDiv">
@@ -432,18 +428,18 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="interruptions-container">
+                        <div id="interruptions-container" data-testid="interruptions-container">
                             <div id="interruptions-sub-container" data-testid="interruptions-sub-container">
                                 <div id="interruptionsLabelContainer" class="labelContainer">
                                     <h4 id="interruptions-label" style="font-size: 20px" class="no-select"> Distractions</h4>
-                                    <img src="images/icons/aboutIcon.png" id="interruptionsQuestionIcon" class="targetHoursInterruptionsQuestionIcon">
+                                    <img src="images/icons/aboutIcon.png" id="interruptionsQuestionIcon" data-testid="interruptionsQuestionIcon" class="targetHoursInterruptionsQuestionIcon">
                                 </div>
                                 <div id="interruptions-change-container">
-                                    <button id="decBtn" class="interruptionsDivBtn no-select" aria-label="Distraction Decrement Button">-</button>
+                                    <button id="decBtn" class="interruptionsDivBtn no-select" data-testid="decBtn" aria-label="Distraction Decrement Button">-</button>
                                     <div id="coolerDiv" class="no-select">
-                                        <div id="interruptions_num" class="no-select">0</div>
+                                        <div id="interruptions_num" data-testid="interruptions_num" class="no-select">0</div>
                                     </div>
-                                    <button id="incBtn" class="interruptionsDivBtn no-select" aria-label="Distraction Increment Button">+</button>
+                                    <button id="incBtn" class="interruptionsDivBtn no-select" data-testid="incBtn" aria-label="Distraction Increment Button">+</button>
                                 </div>
                             </div>
                             <div id="suggestionBreakContainer" class="no-select">
@@ -478,30 +474,30 @@
                         </div>
                     </div>
 
-                    <div id="timekeeping-container">
+                    <div id="timekeeping-container" data-testid="timekeeping-container">
                         <div class="mode-text">
                             <div id="productivity-chill-mode" data-testid="productivity-chill-mode" class="no-select"><b>Press 'Start' to begin session</b></div>
                         </div>
-                        <div class="stopwatch" id="stopwatch">
+                        <div  id="stopwatch" data-testid="stopwatch" class="stopwatch">
                             <div id="display" data-testid="display" class="no-select">00:00:00</div>
                         </div>
                         <div id="lowerButtons" class="lower-buttons">
                             <div>
-                                <button id="notes" class="no-select">Notes</button>
+                                <button id="notes" data-testid="notes" class="no-select">Notes</button>
                             </div>
                             <div>
                                 <button id="start-stop" data-testid="start-stop" class="no-select">Start</button>
                             </div>
                             <div>
-                                <button id="end_session_btn" aria-label="End Session Button" class="no-select">End</button>
+                                <button id="end_session_btn" data-testid="end_session_btn" aria-label="End Session Button" class="no-select">End</button>
                             </div>
-                            <div id="pip-icon-container">
+                            <div id="pip-icon-container" data-testid="pip-icon-container">
                                 <div id="pip-icon"></div>
                             </div>
                         </div>
                     </div>
 
-                    <div data-testid="notes-container" id="notes-container"> <!-- z-index: 30 -->
+                    <div id="notes-container" data-testid="notes-container"> <!-- z-index: 30 -->
                         <div id="task-container">
                             <div id="clearDiv">
                                 <img src="images/icons/reset-1033424-white.png" id="clearIcon"  data-testid="clearIcon" class="no-select" alt="Reset Labels">
@@ -586,7 +582,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="emoji-container"> <!-- z-index: 30 -->
+                        <div id="emoji-container" data-testid="emoji-container"> <!-- z-index: 30 -->
                             <div id="emoji-row-1">
                                 <img id="studying-man-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/studying_man.png" alt="Studying Man Emoji">
                                 <img id="studying-woman-emoji" class="emoji-symbol" src="images/notes/emoji-symbols/studying_woman.png" alt="Studying Woman Emoji">
