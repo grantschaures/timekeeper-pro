@@ -2123,7 +2123,7 @@ function displayPercentDeepWorkChart() {
 
 function displayAvgMoodChart() {
 
-    console.log(dashboardData.dailyArr)
+    // console.log(dashboardData.dailyArr)
 
     let barWidth = 0.8;
     let xAxisTickLabelArr;
