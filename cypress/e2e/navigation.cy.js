@@ -15,14 +15,14 @@ describe('Navigation', () => {
     })
 
     it('Basic Testing of Question Menu Popup', () => {
-        cy.get('[data-testid="questionIcon"]').click();
+        cy.get('[data-testid="questionIconContainer"]').click();
         cy.get('[data-testid="popupQuestionMenu"]').should('be.visible');
-        cy.get('[data-testid="questionIcon"]').click();
+        cy.get('[data-testid="questionIconContainer"]').click();
         cy.get('[data-testid="popupQuestionMenu"]').should('not.be.visible');
     })
 
     it('Basic Testing of Shortcuts Popup', () => {
-        cy.get('[data-testid="questionIcon"]').click();
+        cy.get('[data-testid="questionIconContainer"]').click();
         cy.get('[data-testid="shortcutsContainer"]').click();
         
         cy.get('[data-testid="popupOverlay"]').should('be.visible');
