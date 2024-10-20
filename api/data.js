@@ -6,7 +6,7 @@ const Login = require("../models/login");
 const NotesEntry = require("../models/notes-entries");
 const DeletedAccount = require("../models/deleted-account");
 const { Session } = require("../models/session");
-const router = express.Router();  // This is a slight refactor for clarity
+const router = express.Router();
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
@@ -130,7 +130,6 @@ router.delete("/delete-session", async function(req, res) {
         });
     }
 });
-
 
 router.post("/update-notes-entry", async function(req, res) {
     // Assuming the JWT is sent automatically in cookie headers
