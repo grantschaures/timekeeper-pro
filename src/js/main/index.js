@@ -250,17 +250,19 @@ document.addEventListener("stateUpdated", function() {
             if (flags.pomodoroNotificationToggle) {
                 setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch", setPomodoroIntervalText(counters, timeAmount));
                 setPomodoroWorker(flags, elapsedTime, counters, recoverPomState, pomodoroWorker);
+
+            } else if (flags.breakSuggestionToggle) {
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch",`Deep Work | ${timeAmount.suggestionMinutes} min`);
+
             } else {
                 setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch","Deep Work");
+
             }
 
             if (counters.startStop > 1) { // runs first during first break interval
                 elapsedTime.chillTime += Date.now() - startTimes.chillTime;
                 hideCat(catIds, counters);
             }
-
-            // backgroundVideoSource.src = "videos/cyan_gradient_480p.mp4";
-            // backgroundVideo.load();
 
         } else { // --> BREAK
             // console.log(getCurrentTime() + " --> Entering Break");
@@ -297,8 +299,15 @@ document.addEventListener("stateUpdated", function() {
                 setPomodoroNotificationSeconds(flags, elapsedTime, counters, recoverBreakState, pomodoroWorker);
                 setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch", setBothBreakIntervalText(counters, timeAmount));
             } else {
+
+                if (flags.flowmodoroNotificationToggle) {
+                    setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch", `Break | ${timeAmount.breakTimeSuggestionsArr[counters.currentFlowmodoroBreakIndex]} min`);
+                } else {
+                    setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch", "Break");
+                }
+
                 showSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, timeAmount, counters, flags);
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch", "Break");
+
             }
 
             totalTimeDisplay(startTimes, elapsedTime, total_time_display, timeConvert, flags, timeAmount, progressTextMod);
@@ -396,6 +405,10 @@ document.addEventListener("stateUpdated", function() {
             } else {
                 flags.sentSuggestionMinutesNotification = true;
                 start_stop_btn.classList.add('glowing-effect');
+            }
+
+            if ((flags.sessionInProgress) && (flags.inHyperFocus)) {
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch",`Deep Work | ${timeAmount.suggestionMinutes} min`);
             }
         }
 
@@ -682,6 +695,7 @@ document.addEventListener("stateUpdated", function() {
             }
 
             suggestionBreak_min.textContent = counters.currentFlowmodoroNotification + " min";
+            setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch", `Break | ${timeAmount.breakTimeSuggestionsArr[counters.currentFlowmodoroBreakIndex]} min`);
         })
     })
 
@@ -816,10 +830,8 @@ document.addEventListener("stateUpdated", function() {
             enableNotifications();
             flags.breakSuggestionToggle = true;
 
-            if (flags.inHyperFocus) {
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch", "Deep Work");
-            } else {
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch","Break");
+            if ((flags.inHyperFocus) && (flags.sessionInProgress)) {
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch",`Deep Work | ${timeAmount.suggestionMinutes} min`);
             }
 
             resetPomodoroCounters(counters);
@@ -835,6 +847,10 @@ document.addEventListener("stateUpdated", function() {
             flags.breakSuggestionToggle = false;
             suggestionWorker.postMessage("clearInterval");
             start_stop_btn.classList.remove('glowing-effect');
+
+            if ((flags.inHyperFocus) && (flags.sessionInProgress)) {
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch","Deep Work");
+            }
         }
 
         if (sessionState.loggedIn) {
@@ -863,6 +879,7 @@ document.addEventListener("stateUpdated", function() {
                 elapsedTime.flowmodoroNotificationSeconds = ((counters.currentFlowmodoroNotification * 60) - elapsedTimeInChillTime);
                 flowmodoroWorker.postMessage("clearInterval");
                 flowmodoroWorker.postMessage(elapsedTime.flowmodoroNotificationSeconds);
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch", `Break | ${timeAmount.breakTimeSuggestionsArr[counters.currentFlowmodoroBreakIndex]} min`);
             }
             
             flags.flowmodoroNotificationToggle = true;
@@ -870,6 +887,10 @@ document.addEventListener("stateUpdated", function() {
             flags.flowmodoroNotificationToggle = false;
             flowmodoroWorker.postMessage("clearInterval");
             start_stop_btn.classList.remove('glowing-effect');
+
+            if (!flags.inHyperFocus && counters.startStop !== 0) {
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch", "Break");
+            }
         }
 
         if (sessionState.loggedIn) {
@@ -892,6 +913,7 @@ document.addEventListener("stateUpdated", function() {
             if (flowmodoroNotificationToggle.checked) {
                 flowmodoroNotificationToggle.click();
             }
+
             if (breakSuggestionToggle.checked) {
                 breakSuggestionToggle.click();
             }
@@ -920,8 +942,6 @@ document.addEventListener("stateUpdated", function() {
                 showSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, timeAmount, counters, flags);
             }
         }
-
-        changeSuggestionBreakContainerHeader(flags, suggestionBreak_label, suggestionBreak_min, counters);
 
         // Send asynchronous request to server to store user data if user logged in
         if (sessionState.loggedIn) {
