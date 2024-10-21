@@ -267,7 +267,7 @@ document.addEventListener("stateUpdated", function() {
         } else { // --> BREAK
             // console.log(getCurrentTime() + " --> Entering Break");
             flags.inHyperFocus = false;
-            flags.lastHyperFocusIntervalMin = Math.floor((Date.now() - startTimes.hyperFocus) / (1000 * 60));
+            elapsedTime.lastHyperFocusIntervalMin = Math.floor((Date.now() - startTimes.hyperFocus) / (1000 * 60));
             startTimes.chillTime = Date.now();
             counters.chillTimeIntervals++;
             setFavicon(blueFavicon);
@@ -300,13 +300,15 @@ document.addEventListener("stateUpdated", function() {
                 setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch", setBothBreakIntervalText(counters, timeAmount));
             } else {
 
+                setCurrentFlowmodoroNotification(counters, timeAmount);
+                showSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, timeAmount, counters, flags);
+
                 if (flags.flowmodoroNotificationToggle) {
-                    setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch", `Break | ${timeAmount.breakTimeSuggestionsArr[counters.currentFlowmodoroBreakIndex]} min`);
+                    setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch", `Break | ${counters.currentFlowmodoroNotification} min`);
                 } else {
                     setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch", "Break");
                 }
 
-                showSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, timeAmount, counters, flags);
 
             }
 
@@ -672,7 +674,7 @@ document.addEventListener("stateUpdated", function() {
             let newIntervalArr = [...timeAmount.breakTimeSuggestionsArr];
             
             setBreakTimeSuggestionsArr(event, timeAmount, validatedFinalInputVal, counters, newIntervalArr);
-            setCurrentFlowmodoroNotification(flags, counters, timeAmount);
+            setCurrentFlowmodoroNotification(counters, timeAmount);
 
             if ((counters.startStop === 0) || (flags.inHyperFocus)) {
                 elapsedTime.flowmodoroNotificationSeconds = (counters.currentFlowmodoroNotification * 60);
@@ -695,7 +697,10 @@ document.addEventListener("stateUpdated", function() {
             }
 
             suggestionBreak_min.textContent = counters.currentFlowmodoroNotification + " min";
-            setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch", `Break | ${timeAmount.breakTimeSuggestionsArr[counters.currentFlowmodoroBreakIndex]} min`);
+
+            if ((flags.sessionInProgress) && (!flags.inHyperFocus)) {
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch", `Break | ${counters.currentFlowmodoroNotification} min`);
+            }
         })
     })
 
@@ -879,7 +884,9 @@ document.addEventListener("stateUpdated", function() {
                 elapsedTime.flowmodoroNotificationSeconds = ((counters.currentFlowmodoroNotification * 60) - elapsedTimeInChillTime);
                 flowmodoroWorker.postMessage("clearInterval");
                 flowmodoroWorker.postMessage(elapsedTime.flowmodoroNotificationSeconds);
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch", `Break | ${timeAmount.breakTimeSuggestionsArr[counters.currentFlowmodoroBreakIndex]} min`);
+
+                setCurrentFlowmodoroNotification(counters, timeAmount);
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch", `Break | ${counters.currentFlowmodoroNotification} min`);
             }
             
             flags.flowmodoroNotificationToggle = true;
@@ -937,8 +944,10 @@ document.addEventListener("stateUpdated", function() {
             if (flags.inHyperFocus) {
                 setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch","Deep Work");
             } else if (counters.startStop > 1) {
-                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch","Break");
+                setButtonTextAndMode(start_stop_btn, productivity_chill_mode, "Switch", "Break");
                 hidePomodorosCompletedContainer(completedPomodorosContainer);
+                
+                setCurrentFlowmodoroNotification(counters, timeAmount);
                 showSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, timeAmount, counters, flags);
             }
         }
@@ -1998,45 +2007,6 @@ function sendFlowmodoroNotification(timeAmount, counters, startTimes, alertSound
     playAlertSoundCountdown(soundMap.Chime, soundMap.Bell, alertSounds.flowmodoro, alertVolumes.flowmodoro);
 }
 
-function sendPomodoroDelayNotification(startTimes, counters, timeAmount, alertSounds, alertVolumes, flags, isMobile, isIpad) {
-    let notificationString;
-    if (counters.currentPomodoroIntervalOrderIndex == 0 || counters.currentPomodoroIntervalOrderIndex == 2 || counters.currentPomodoroIntervalOrderIndex == 4) { // 1st-3rd pomodoro
-        if (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] == 1) {
-            notificationString = "It's been " + counters.currentPomodoroNotification + " minute! Are you ready to take a short break?";
-        } else {
-            notificationString = "It's been " + counters.currentPomodoroNotification + " minutes! Are you ready to take a short break?";
-        }
-        if (!flags.pomodoroCountIncremented) {
-            counters.pomodorosCompleted++;
-            flags.pomodoroCountIncremented = true;
-        }
-    } else if (counters.currentPomodoroIntervalOrderIndex == 6) { // 4th pomodoro
-        if (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] == 1) {
-            notificationString = "It's been " + counters.currentPomodoroNotification + " minute! Are you ready to take a long break?";
-        } else {
-            notificationString = "It's been " + counters.currentPomodoroNotification + " minutes! Are you ready to take a long break?";
-        }
-        if (!flags.pomodoroCountIncremented) {
-            counters.pomodorosCompleted++;
-            flags.pomodoroCountIncremented = true;
-        }
-    } else { // any of the breaks
-        if (timeAmount.pomodoroIntervalArr[counters.currentPomodoroIntervalIndex] == 1) {
-            notificationString = "It's been " + counters.currentPomodoroNotification + " minute! Are you ready to start your Pomodoro Interval?";
-        } else {
-            notificationString = "It's been " + counters.currentPomodoroNotification + " minutes! Are you ready to start your Pomodoro Interval?";
-        }
-    }
-
-    if (!(isMobile || isIpad)) {
-        new Notification(notificationString);
-    }
-    
-    playAlertSoundCountdown(soundMap.Chime, soundMap.Bell, alertSounds.pomodoro, alertVolumes.pomodoro);
-
-    startTimes.lastPomNotification = Date.now();
-}
-
 function pomodoroTimeRecovery(isMobile, isIpad) {
     console.log("pomodoro time recovery initiated");
     pomodoroTransition(isMobile, isIpad);
@@ -2299,17 +2269,15 @@ export function handleViewportWidthChange(settingsMappings, tempStorage) {
 // Show suggestion break container AND sets current flowmodoro notification
 function showSuggestionBreakContainer(suggestionBreakContainer, suggestionBreak_label, suggestionBreak_min, timeAmount, counters, flags) {
     suggestionBreakContainer.style.display = 'flex';
-
-    setCurrentFlowmodoroNotification(flags, counters, timeAmount);
     changeSuggestionBreakContainerHeader(flags, suggestionBreak_label, suggestionBreak_min, counters);
 }
 
-function setCurrentFlowmodoroNotification(flags, counters, timeAmount) {
-    if (flags.lastHyperFocusIntervalMin >= 90) {
+function setCurrentFlowmodoroNotification(counters, timeAmount) {
+    if (elapsedTime.lastHyperFocusIntervalMin >= 90) {
         counters.currentFlowmodoroNotification = timeAmount.breakTimeSuggestionsArr[3];
-    } else if (flags.lastHyperFocusIntervalMin >= 50) {
+    } else if (elapsedTime.lastHyperFocusIntervalMin >= 50) {
         counters.currentFlowmodoroNotification = timeAmount.breakTimeSuggestionsArr[2];
-    } else if (flags.lastHyperFocusIntervalMin >= 25) {
+    } else if (elapsedTime.lastHyperFocusIntervalMin >= 25) {
         counters.currentFlowmodoroNotification = timeAmount.breakTimeSuggestionsArr[1];
     } else {
         counters.currentFlowmodoroNotification = timeAmount.breakTimeSuggestionsArr[0];

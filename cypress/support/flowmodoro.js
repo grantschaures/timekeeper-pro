@@ -53,12 +53,13 @@ Cypress.Commands.add('setFlowmodoroIntervalTimes', function(lessThan25Min, lessT
 
 Cypress.Commands.add('mainFlowmodoroTest', function(breakTimeStr, breakTime, flowTime, breakInput) {
     cy.get('[data-testid="start-stop"]').click(); // --> Deep Work
-    cy.tick(flowTime * 60 * 1000); // simulate passing of 5 minutes
+    cy.tick(flowTime * 60 * 1000); // simulate passing of flowTime minutes
     cy.get('[data-testid="start-stop"]').click(); // --> Chill Time
 
     cy.get('#start-stop').should('not.have.class', 'glowing-effect'); // ensure start-stop btn is still not glowing
     cy.get('[data-testid="suggestionBreak-label"]').should('contain', 'Break');
     cy.get('[data-testid="suggestionBreak-min"]').should('contain', breakTimeStr);
+    cy.get('[data-testid="productivity-chill-mode"]').should('contain', `Break | ${breakTimeStr}` );
     
     cy.tick(breakTime * 60 * 1000); // simulate passing of breakTime minutes
     cy.get('#start-stop').should('have.class', 'glowing-effect'); // ensure start-stop btn is still not glowing
@@ -74,4 +75,5 @@ Cypress.Commands.add('mainFlowmodoroTest', function(breakTimeStr, breakTime, flo
     cy.get(`[data-testid=${breakInput}]`).type(breakTime - 1);
     cy.get('[data-testid="settingsExit"]').click(); // close settings container
     cy.get('#start-stop').should('have.class', 'glowing-effect'); // ensure start-stop btn is still not glowing
+    cy.get('[data-testid="productivity-chill-mode"]').should('contain', `Break | ${breakTime - 1} min`);
 })

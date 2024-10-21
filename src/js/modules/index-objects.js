@@ -107,8 +107,8 @@ export const alertSounds = {
 export const counters = {
     startStop: 0, //tracks number of times start/stop is pressed
     interruptions: 0,
-    currentFlowmodoroNotification: 0,
-    currentFlowmodoroBreakIndex: 0,
+    currentFlowmodoroNotification: 0, // holds int values representing minutes
+    currentFlowmodoroBreakIndex: 0, // holds index of last selected input
     currentPomodoroNotification: 0,
     currentPomodoroIntervalIndex: 0,
     currentPomodoroIntervalOrderIndex: 0,

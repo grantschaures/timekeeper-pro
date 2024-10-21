@@ -93,6 +93,8 @@ describe('Deep Work Notification Testing', () => {
     })
     
     it('Deep Work Notifications', () => {
+        cy.clock(); // start cypress clock
+
         // INITIAL CONDITIONS
         cy.get('body').invoke('css', 'overflow-y', 'scroll');
         cy.get('[data-testid="breakSuggestionToggle"]').click( {force: true} ); // turn on Deep Work notification toggle
@@ -100,11 +102,31 @@ describe('Deep Work Notification Testing', () => {
         cy.get('[data-testid="suggestionMinutesInput"]').type(90);
         cy.get('[data-testid="settingsExit"]').click();
 
-        cy.clock(); // start cypress clock
+        // ensure mode text is still the same
+        cy.get('[data-testid="productivity-chill-mode"]').should('contain', "Press 'Start' to begin session");
+
         cy.get('[data-testid="start-stop"]').click(); // --> Deep Work
         cy.get('#start-stop').should('not.have.class', 'glowing-effect');
+        cy.get('[data-testid="productivity-chill-mode"]').should('contain', "Deep Work | 90 min");
 
         cy.tick(90 * 60 * 1000); // simulate passing of 90 minutes
         cy.get('#start-stop').should('have.class', 'glowing-effect');
+
+        // turn notification toggle on/ off
+        cy.openFlowTimeSettingsContainer();
+        cy.get('[data-testid="breakSuggestionToggle"]').click( {force: true} ); // turn on Deep Work notification toggle
+        cy.get('[data-testid="productivity-chill-mode"]').should('contain', "Deep Work");
+        cy.get('[data-testid="breakSuggestionToggle"]').click( {force: true} ); // turn on Deep Work notification toggle
+        cy.get('[data-testid="productivity-chill-mode"]').should('contain', "Deep Work | 90 min");
+
+        // change the time and ensure mode text reflects change during deep work mode
+        cy.get('[data-testid="suggestionMinutesInput"]').clear();
+        cy.get('[data-testid="suggestionMinutesInput"]').type(120);
+        cy.get('[data-testid="settingsExit"]').click();
+        cy.get('[data-testid="productivity-chill-mode"]').should('contain', "Deep Work | 120 min");
+
+        cy.get('[data-testid="start-stop"]').click(); // --> Break
+        cy.get('[data-testid="start-stop"]').click(); // --> Deep Work
+        cy.get('[data-testid="productivity-chill-mode"]').should('contain', "Deep Work | 120 min");
     })
 })
