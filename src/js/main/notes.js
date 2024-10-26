@@ -305,10 +305,14 @@ document.addEventListener("stateUpdated", function() {
         }
     })
 
-    // If the tab becomes refocused, always set the shiftPressed flag to false
+    // If the tab becomes refocused, always set the shiftPressed and altPressed flag to false
     document.addEventListener('visibilitychange', function() {
         if ((!document.hidden) && (flags.shiftPressed)) {
             flags.shiftPressed = false;
+        }
+
+        if ((!document.hidden) && (flags.altPressed)) {
+            flags.altPressed = false;
         }
     });
 
