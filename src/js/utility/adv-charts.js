@@ -389,7 +389,7 @@ export async function initializeHourlyData(dashboardData) {
         opacityArr.push(opacityValue);
     }
 
-    return hourlyAdjustedDeepWorkArr; // to populate the Most Productive Hour Summary Stat
+    return { hourlyAdjustedDeepWorkArr, opacityArr }; // to populate the Most Productive Hour Summary Stat
 }
 
 

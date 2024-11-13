@@ -51,12 +51,12 @@ export function populateDashboardSummaryStats(timeConvert, dailySummarizedData, 
 
 async function populateMostFocusedHourSummaryStat(dashboardData) {
 
-    let hourlyAdjustedDeepWorkArr = await initializeHourlyData(dashboardData);
+    const { hourlyAdjustedDeepWorkArr, opacityArr } = await initializeHourlyData(dashboardData);
     let highestAdjustedDeepWork = 0;
     let highestAdjustedDeepWorkIndex = 0;
 
     for (let i = 0; i < hourlyAdjustedDeepWorkArr.length; i++) {
-        if (hourlyAdjustedDeepWorkArr[i] > highestAdjustedDeepWork) {
+        if ((hourlyAdjustedDeepWorkArr[i] > highestAdjustedDeepWork) && (opacityArr[i] >= 0.5)) {
             highestAdjustedDeepWork = hourlyAdjustedDeepWorkArr[i];
             highestAdjustedDeepWorkIndex = i;
         }
