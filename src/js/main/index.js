@@ -770,7 +770,8 @@ document.addEventListener("stateUpdated", function() {
             selectedBackgroundId.flowtime = newId;
             document.getElementById(event.target.id).classList.add('selected-background');
 
-            if ((flags.inHyperFocus) && (!flags.darkThemeActivated)) {
+            // EDIT: removed && (!flags.darkThemeActivated) condition
+            if (flags.inHyperFocus) {
                 setBackground(selectedBackground.flowtime, 1);
             }
 
@@ -796,7 +797,8 @@ document.addEventListener("stateUpdated", function() {
             document.getElementById(event.target.id).classList.add('selected-background');
 
             // if we're in chilltime (and not pre-session)
-            if ((!flags.inHyperFocus) && (counters.startStop >= 1) && (!flags.darkThemeActivated)) {
+            // EDIT: removed && (!flags.darkThemeActivated) condition
+            if ((!flags.inHyperFocus) && (counters.startStop >= 1)) {
                 setBackground(selectedBackground.chilltime, 1);
             }
 
