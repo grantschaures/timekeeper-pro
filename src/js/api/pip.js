@@ -59,8 +59,6 @@ document.addEventListener("stateUpdated", function() {
       productivity_chill_mode.innerHTML = "<b>Press 'Start'</b>";
     }
 
-    console.log(timekeepingContainer.offsetHeight);
-
     lowerButtons.classList.add('pipMode');
     lowerButtons.style.gap = '0px';
     start_stop_btn.style.marginRight = '10px';

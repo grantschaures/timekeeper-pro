@@ -1564,12 +1564,16 @@ export function intervalTimeToggleGUIUpdate() {
         timekeepingContainer.style.height = '350px';
         stopwatch.style.display = 'block';
 
+        // show the tab time
+
     } else {
         flags.intervalTimeToggle = false;
 
         // hide interval time display
         timekeepingContainer.style.height = '150px';
         stopwatch.style.display = 'none';
+
+        // hide the tab time
     }
 
     editDisplayGUIContainer();
@@ -2504,7 +2508,7 @@ function veryStartActions(startTimes, flags, times, counters, interruptionsNum) 
     startTimes.beginning = currentTime;
     times.start = currentTime;
     flags.sessionInProgress = true;
-    setBrowserTabTitle(); //sets browser tab title to the stopwatch time '00:00:00'
+    setBrowserTabTitle(); // configures observer and initial tab text
     document.getElementById("target-hours").classList.remove("glowing-effect");
 };
 
@@ -2577,10 +2581,14 @@ export function getTotalElapsed(flags, elapsedTime, startTimes) { //return curre
 };
 
 function setTabTitleFromDisplay() {
-    if (flags.pipWindowOpen) {
-        document.title = pip.window.document.getElementById('display').innerText;
+    if (flags.intervalTimeToggle) {
+        if (flags.pipWindowOpen) {
+            document.title = pip.window.document.getElementById('display').innerText;
+        } else {
+            document.title = document.getElementById("display").innerText;
+        }
     } else {
-        document.title = document.getElementById("display").innerText;
+        document.title = "Hyperchill.io: Digital Productivity Journal";
     }
 };
 
@@ -2606,6 +2614,9 @@ function setBrowserTabTitle() {
         });
     }
 
+    if (!flags.intervalTimeToggle) {
+        document.title = "Hyperchill.io: Digital Productivity Journal";
+    }
 };
 
 export function setFavicon(faviconPath) {
