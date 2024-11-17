@@ -16,13 +16,13 @@ document.addEventListener("stateUpdated", function() {
     }
 
     // Open a Picture-in-Picture window.
-    let width = 240;
+    let width = 300;
     let height;
 
     if (flags.intervalTimeToggle) {
-      height = 280;
+      height = 380;
     } else {
-      height = 240;
+      height = 280;
     }
 
     const pipWindow = await window.documentPictureInPicture.requestWindow({
@@ -58,6 +58,8 @@ document.addEventListener("stateUpdated", function() {
     if (counters.startStop === 0) {
       productivity_chill_mode.innerHTML = "<b>Press 'Start'</b>";
     }
+
+    console.log(timekeepingContainer.offsetHeight);
 
     lowerButtons.classList.add('pipMode');
     lowerButtons.style.gap = '0px';
