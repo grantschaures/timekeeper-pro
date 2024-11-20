@@ -1342,7 +1342,7 @@ function displayDeepWorkChart() {
                     duration: 0 
                 },
                 y: {
-                    duration: flags.quickerChartAnimations ? 500 : 1000,
+                    duration: flags.quickerChartAnimations ? 0 : 1000,
                     easing: 'easeOutQuint'
                 }
             }
@@ -1527,7 +1527,7 @@ function displayFocusQualityChart() {
                     duration: 0 
                 },
                 y: {
-                    duration: flags.quickerChartAnimations ? 500 : 1000,
+                    duration: flags.quickerChartAnimations ? 0 : 1000,
                     easing: 'easeOutQuint' 
                 }
             }
@@ -1730,7 +1730,7 @@ function displayAvgIntervalChart() {
                     duration: 0 
                 },
                 y: {
-                    duration: flags.quickerChartAnimations ? 500 : 1000,
+                    duration: flags.quickerChartAnimations ? 0 : 1000,
                     easing: 'easeOutQuint' 
                 }
             }
@@ -2100,7 +2100,7 @@ function displayPercentDeepWorkChart() {
                     duration: 0 
                 },
                 y: {
-                    duration: flags.quickerChartAnimations ? 500 : 1000,
+                    duration: flags.quickerChartAnimations ? 0 : 1000,
                     easing: 'easeOutQuint' 
                 }
             }
@@ -2319,7 +2319,7 @@ function displayAvgMoodChart() {
                     duration: 0 
                 },
                 y: {
-                    duration: flags.quickerChartAnimations ? 500 : 1000,
+                    duration: flags.quickerChartAnimations ? 0 : 1000,
                     easing: 'easeOutQuint' 
                 }
             }
@@ -2369,6 +2369,18 @@ const dottedLinePlugin = {
                 ctx.lineTo(xMid, yScale.bottom); // Draw to the bottom of the chart
                 ctx.stroke();
                 ctx.restore();
+
+                // BEHAVIOR OF THIS WILL DEPEND ON CURRENTLY SELECTED TIMESPAN IN THE DAILY CONTAINER
+                // Draw the background color between the previous and current lines
+                if (i > 0) {
+                    const prevXMid = (xScale.getPixelForValue(sundayIndices[i - 1] - 1) +
+                        xScale.getPixelForValue(sundayIndices[i - 1])) / 2;
+
+                    ctx.save();
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.15)'; // Set the background color and transparency
+                    ctx.fillRect(prevXMid, yScale.top, xMid - prevXMid, yScale.bottom - yScale.top);
+                    ctx.restore();
+                }
             }
         }
     }
