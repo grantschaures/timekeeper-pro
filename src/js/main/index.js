@@ -47,7 +47,7 @@ import { initialVisualReset, sessionReset } from './end-session.js'; // minified
 
 import { setMetricCharts } from '../dashboard/metric-charts.js'; // minified
 import { setInitialDate } from '../dashboard/daily-sessions.js'; // minified
-import { displayDashboardCat, hideDashboardCat } from './navigation.js';
+import { hideDashboardCat } from './navigation.js';
 
 export const pomodoroWorker = new Worker('/js/web-workers/pomodoroWorker.js');
 export const suggestionWorker = new Worker('/js/web-workers/suggestionWorker.js');

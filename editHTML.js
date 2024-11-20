@@ -163,6 +163,10 @@ const indexReplacements = [
         pattern: /import { setInitialDate } from '..\/dashboard\/daily-sessions.js';/g,
         replacement: "import { setInitialDate } from '../minified/daily-sessions.min.js';"
     },
+    {
+        pattern: /import { hideDashboardCat } from '.\/daily-sessions.js';/g,
+        replacement: "import { hideDashboardCat } from './minified/daily-sessions.min.js';"
+    },
 ];
 
 const notesReplacements = [
