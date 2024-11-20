@@ -47,6 +47,7 @@ import { initialVisualReset, sessionReset } from './end-session.js'; // minified
 
 import { setMetricCharts } from '../dashboard/metric-charts.js'; // minified
 import { setInitialDate } from '../dashboard/daily-sessions.js'; // minified
+import { displayDashboardCat, hideDashboardCat } from './navigation.js';
 
 export const pomodoroWorker = new Worker('/js/web-workers/pomodoroWorker.js');
 export const suggestionWorker = new Worker('/js/web-workers/suggestionWorker.js');
@@ -67,11 +68,6 @@ document.addEventListener("stateUpdated", function() {
     // Favicons
     const greenFavicon = "/images/logo/HyperChillLogoGreen.png";
     const blueFavicon = "/images/logo/HyperChillLogoBlue.png";
-
-    setTimeout(() => {
-
-        console.log(flags.muffinToggle)
-    }, 5000)
 
     let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     let isIpad = isIpadCheck();
@@ -1293,8 +1289,10 @@ document.addEventListener("stateUpdated", function() {
             // hide muffin if in break mode
             if (!flags.inHyperFocus) {
                 hideMuffin(catIds, counters);
+                hideDashboardCat();
+            } else {
+                hideDashboardCat();
             }
-            
         }
 
         if (sessionState.loggedIn) {

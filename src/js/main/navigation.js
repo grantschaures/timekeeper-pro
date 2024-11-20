@@ -809,7 +809,7 @@ function dealWithClick(excludeTargets, containers, exitTargets, exitTargetsWithS
     }
 }
 
-function displayDashboardCat() {
+export function displayDashboardCat() {
     if ((indexFlags.muffinToggle) && ((!indexFlags.sessionInProgress) || (indexFlags.inHyperFocus)) && (!indexFlags.pipWindowOpen) && (!isMobile)) {
         
         let randNum = Math.floor(Math.random() * 9);
