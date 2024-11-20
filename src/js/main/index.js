@@ -68,6 +68,11 @@ document.addEventListener("stateUpdated", function() {
     const greenFavicon = "/images/logo/HyperChillLogoGreen.png";
     const blueFavicon = "/images/logo/HyperChillLogoBlue.png";
 
+    setTimeout(() => {
+
+        console.log(flags.muffinToggle)
+    }, 5000)
+
     let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     let isIpad = isIpadCheck();
     let usingSafari = usingSafariCheck();
@@ -2617,6 +2622,23 @@ function setBrowserTabTitle() {
     if (!flags.intervalTimeToggle) {
         document.title = "Hyperchill.io: Digital Productivity Journal";
     }
+
+
+    // REFACTOR SUGGESTION
+        // Determine the appropriate document to observe
+        // const targetDocument = flags.pipWindowOpen ? pip.window.document : document;
+
+        // // Set the initial document title
+        // document.title = flags.intervalTimeToggle 
+        //     ? targetDocument.getElementById('display').innerText 
+        //     : "Hyperchill.io: Digital Productivity Journal";
+
+        // // Start observing the #display div for changes to its child nodes or subtree
+        // observer.observe(targetDocument.getElementById("display"), {
+        //     childList: true,
+        //     subtree: true,
+        //     characterData: true
+        // });
 };
 
 export function setFavicon(faviconPath) {

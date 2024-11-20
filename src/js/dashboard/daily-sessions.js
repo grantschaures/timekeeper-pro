@@ -1,6 +1,6 @@
 import { dailyDay, dailyDate, rightDailyArrow, rightDailyArrowGray, leftDailyArrow, miniChartLabels, miniChartContainers, dailyBlocks, calendarIconContainer, calendarPopup, monthSelection, yearSelection, calendarHeaderCells, leftCalendarArrow, rightCalendarArrow, rightCalendarArrowGray, calendarBody, todayBtn, sessionViewBackBtn } from '../modules/dashboard-elements.js';
 import { dailyContainer, general, flags, calendarContainer } from '../modules/dashboard-objects.js';
-import { tempCounters } from '../modules/index-objects.js';
+import { counters, tempCounters, flags as indexFlags } from '../modules/index-objects.js';
 import { sessionState } from '../modules/state-objects.js';
 
 import { setBounds, alterBounds, setRightArrowType } from './label-distribution.js';
@@ -131,7 +131,7 @@ document.addEventListener("stateUpdated", function() {
                     calendarPopup.style.display = 'none';
                 }, 150)
                 
-                if (tempCounters.dashboardCatIdsArrIndex === 5) {
+                if ((tempCounters.dashboardCatIdsArrIndex === 5) && ((counters.startStop === 0) || (counters.startStop % 2 === 1)) && (indexFlags.muffinToggle)) {
                     document.getElementById('dashboardCat6').style.display = 'flex';
                 }
             }
