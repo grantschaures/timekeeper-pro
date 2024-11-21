@@ -44,7 +44,8 @@ document.addEventListener("stateUpdated", function() {
         // the weekly array contians 7 objects with two key-value pairs
         // (1) dailyObj: {} --> We'll need to ensure that it contains a targetTimeSum (the sum of target times out of all the sessions)
         // (2) sessionsObj: {} or [{}, {}] or null, which represents a single session, multiple sessions, or no sessions, respectively
-
+        // asdf
+        
         // ARROWS EVENT LISTENERS
         leftDailyArrow.addEventListener("click", function() {
             alterBounds('shiftdown', dailyContainer, null, rightDailyArrow, rightDailyArrowGray);
