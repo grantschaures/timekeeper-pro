@@ -58,6 +58,7 @@ document.addEventListener("stateUpdated", function() {
             // visualize data (call function to display mini charts)
             document.dispatchEvent(new Event('displayMiniCharts'));
             document.dispatchEvent(new Event('displayMainCharts'));
+            general.chartTransition = 'all';
         })
         
         rightDailyArrow.addEventListener("click", function() {
@@ -72,6 +73,7 @@ document.addEventListener("stateUpdated", function() {
             // visualize data (call function to display mini charts)
             document.dispatchEvent(new Event('displayMiniCharts'));
             document.dispatchEvent(new Event('displayMainCharts'));
+            general.chartTransition = 'all';
         })
 
         // MINI CHART CANVAS SELECTION EVENT LISTENERS
@@ -207,6 +209,7 @@ document.addEventListener("stateUpdated", function() {
             setInitialDate();
             calendarIconContainer.click();
             document.dispatchEvent(new Event('displayMainCharts'));
+            general.chartTransition = 'all';
 
             // close the session view container if open
             if (flags.sessionViewContainerShowing) {
@@ -273,6 +276,7 @@ function updateDailyBounds() {
     setRightArrowType(dailyContainer, currentDate, rightDailyArrow, rightDailyArrowGray); // white or gray
 
     document.dispatchEvent(new Event('displayMainCharts'));
+    general.chartTransition = 'all';
 }
 
 function constructSelectedDateString(year, month, day) {
