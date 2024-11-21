@@ -57,7 +57,7 @@ document.addEventListener("stateUpdated", function() {
     
             // visualize data (call function to display mini charts)
             document.dispatchEvent(new Event('displayMiniCharts'));
-    
+            document.dispatchEvent(new Event('displayMainCharts'));
         })
         
         rightDailyArrow.addEventListener("click", function() {
@@ -71,7 +71,7 @@ document.addEventListener("stateUpdated", function() {
 
             // visualize data (call function to display mini charts)
             document.dispatchEvent(new Event('displayMiniCharts'));
-    
+            document.dispatchEvent(new Event('displayMainCharts'));
         })
 
         // MINI CHART CANVAS SELECTION EVENT LISTENERS

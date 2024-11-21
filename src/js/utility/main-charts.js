@@ -1,5 +1,5 @@
 import { directionIndicators, summaryAvgAdjustedDeepWorkDown, summaryAvgAdjustedDeepWorkTime, summaryAvgAdjustedDeepWorkUp, summaryAvgBreakInterval, summaryAvgBreakIntervalDown, summaryAvgBreakIntervalUp, summaryAvgDeepWorkDown, summaryAvgDeepWorkInterval, summaryAvgDeepWorkIntervalDown, summaryAvgDeepWorkIntervalUp, summaryAvgDeepWorkTime, summaryAvgDeepWorkUp, summaryAvgMood, summaryAvgMoodDown, summaryAvgMoodUp, summaryDeepWorkTime, summaryDeepWorkTimeUp, summaryFocusQuality, summaryFocusQualityDown, summaryFocusQualityUp } from "../modules/dashboard-elements.js";
-import { charts, mainChartContainer, dashboardData, flags, constants, general, settings } from "../modules/dashboard-objects.js";
+import { charts, mainChartContainer, dashboardData, flags, constants, general, settings, dailyContainer } from "../modules/dashboard-objects.js";
 import { timeConvert } from "../modules/index-objects.js";
 
 import { updateDailyContainer } from '../dashboard/daily-sessions.js'; // minified
@@ -392,8 +392,6 @@ function displayCurrStats() {
 }
 
 function displayAvgMood(avgMood) {
-
-    console.log(avgMood)
 
     let avgMoodStr;
     if (avgMood !== null) {
@@ -1209,7 +1207,6 @@ function constructDateArray(lowerBound, upperBound) {
 
 
 function displayDeepWorkChart() {
-
     let barWidth = 0.8;
     let xAxisTickLabelArr;
     if (mainChartContainer.timeFrame === 'week') {
@@ -1254,6 +1251,7 @@ function displayDeepWorkChart() {
             }]
         },
         options: {
+            name: 'deepWorkChart',
             onClick: function(event, elements) {
                 if (mainChartContainer.timeFrame !== 'year') {
                     // Check if a bar (or element) was clicked
@@ -1453,6 +1451,7 @@ function displayFocusQualityChart() {
             }]
         },
         options: {
+            name: "focusQualityChart",
             onClick: function(event, elements) {
                 if (mainChartContainer.timeFrame !== 'year') {
                     // Check if a bar (or element) was clicked
@@ -1664,6 +1663,7 @@ function displayAvgIntervalChart() {
             }]
         },
         options: {
+            name: "avgIntervalChart",
             onClick: function(event, elements) {
                 if (mainChartContainer.timeFrame !== 'year') {
                     // Check if a bar (or element) was clicked
@@ -1818,6 +1818,7 @@ function displaySessionIntervalsChart() {
         type: 'bar',
         data: data,
         options: {
+            name: "sessionIntervalsChart",
             scales: {
                 y: {
                     beginAtZero: true,
@@ -2026,6 +2027,7 @@ function displayPercentDeepWorkChart() {
             }]
         },
         options: {
+            name: "percentDeepWorkChart",
             onClick: function(event, elements) {
                 if (mainChartContainer.timeFrame !== 'year') {
                     // Check if a bar (or element) was clicked
@@ -2242,6 +2244,7 @@ function displayAvgMoodChart() {
             }]
         },
         options: {
+            name: "avgMoodChart",
             onClick: function(event, elements) {
                 if (mainChartContainer.timeFrame !== 'year') {
                     // Check if a bar (or element) was clicked
@@ -2348,15 +2351,21 @@ const dottedLinePlugin = {
             const xScale = chart.scales.x;
             const yScale = chart.scales.y;
 
+            const [mainChartYear, mainChartMonth, mainChartDay] = mainChartContainer.upperBound.split("-");
+            const [dailyLowerBoundYear, dailyLowerBoundMonth, dailyLowerBoundDay] = dailyContainer.lowerBound.split("-");
+            const [dailyUpperBoundYear, dailyUpperBoundMonth, dailyUpperBoundDay] = dailyContainer.upperBound.split("-");
+
+            let overlapCharts = ['focusQualityChart', 'percentDeepWorkChart'];
+
             for (let i = 0; i < sundayIndices.length; i++) {
                 const currentIndex = sundayIndices[i];
                 const prevIndex = currentIndex - 1;
 
                 // Get the pixel positions for the current and previous day
-                const xPrev = xScale.getPixelForValue(prevIndex);
-                const xCurr = xScale.getPixelForValue(currentIndex);
+                const xPrev = xScale.getPixelForValue(prevIndex); // saturday pixel location
+                const xCurr = xScale.getPixelForValue(currentIndex); // sunday pixel location
 
-                // Calculate the midpoint between the two x-axis values
+                // Calculate the midpoint between saturday and sunday
                 const xMid = (xPrev + xCurr) / 2;
         
                 // Draw the dotted line
@@ -2372,14 +2381,42 @@ const dottedLinePlugin = {
 
                 // BEHAVIOR OF THIS WILL DEPEND ON CURRENTLY SELECTED TIMESPAN IN THE DAILY CONTAINER
                 // Draw the background color between the previous and current lines
-                if (i > 0) {
-                    const prevXMid = (xScale.getPixelForValue(sundayIndices[i - 1] - 1) +
-                        xScale.getPixelForValue(sundayIndices[i - 1])) / 2;
 
-                    ctx.save();
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.15)'; // Set the background color and transparency
-                    ctx.fillRect(prevXMid, yScale.top, xMid - prevXMid, yScale.bottom - yScale.top);
-                    ctx.restore();
+                if (dailyLowerBoundYear === mainChartYear && dailyUpperBoundYear === mainChartYear && dailyLowerBoundMonth === mainChartMonth && dailyUpperBoundMonth === mainChartMonth) {
+                    if (sundayIndices[i] === Number(dailyUpperBoundDay)) {
+                        const prevXMid = (xScale.getPixelForValue(sundayIndices[i - 1] - 1) + xScale.getPixelForValue(sundayIndices[i - 1])) / 2;
+
+                        ctx.save();
+                        ctx.fillStyle = 'rgba(255, 255, 255, 0.15)'; // Set the background color and transparency
+                        ctx.fillRect(prevXMid, yScale.top, xMid - prevXMid, yScale.bottom - yScale.top);
+                        ctx.restore();
+                    }
+                } else if (dailyUpperBoundYear === mainChartYear && dailyUpperBoundMonth === mainChartMonth) {
+                    // if LB in prev month and UB in curr month
+                    if (i === 0) {
+
+                        let initialPixelForValue = -1;
+                        if (overlapCharts.includes(chart.options.name)) {
+                            initialPixelForValue = 0;
+                        }
+
+                        const prevXMid = (xScale.getPixelForValue(initialPixelForValue) + xScale.getPixelForValue(0)) / 2;
+
+                        ctx.save();
+                        ctx.fillStyle = 'rgba(255, 255, 255, 0.15)'; // Set the background color and transparency
+                        ctx.fillRect(prevXMid, yScale.top, xMid - prevXMid, yScale.bottom - yScale.top);
+                        ctx.restore();
+                    }
+                } else if (dailyLowerBoundYear === mainChartYear && dailyLowerBoundMonth === mainChartMonth) {
+                    // if LB in curr month and UB in next month
+                    if (i === sundayIndices.length - 1) {
+                        const prevXMid = (xScale.getPixelForValue(sundayIndices[i] - 1) + xScale.getPixelForValue(sundayIndices[i])) / 2;
+        
+                        ctx.save();
+                        ctx.fillStyle = 'rgba(255, 255, 255, 0.15)'; // Set the background color and transparency
+                        ctx.fillRect(prevXMid, yScale.top, xScale.getPixelForValue(mainChartDay) - prevXMid, yScale.bottom - yScale.top);
+                        ctx.restore();
+                    }
                 }
             }
         }
