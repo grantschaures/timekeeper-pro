@@ -206,6 +206,7 @@ document.addEventListener("stateUpdated", function() {
 
             setInitialDate();
             calendarIconContainer.click();
+            document.dispatchEvent(new Event('displayMainCharts'));
 
             // close the session view container if open
             if (flags.sessionViewContainerShowing) {
@@ -270,6 +271,8 @@ function updateDailyBounds() {
     dailyContainer.upperBound = upperBound;
 
     setRightArrowType(dailyContainer, currentDate, rightDailyArrow, rightDailyArrowGray); // white or gray
+
+    document.dispatchEvent(new Event('displayMainCharts'));
 }
 
 function constructSelectedDateString(year, month, day) {
