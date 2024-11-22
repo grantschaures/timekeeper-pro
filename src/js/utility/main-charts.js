@@ -72,6 +72,7 @@ let xAxisTickLabels = {
 
 document.addEventListener("displayMainCharts", async function() {
     // console.log(dashboardData.dailyArr)
+    console.log('asdf')
 
     // reset everything
     resetStats(currStats);

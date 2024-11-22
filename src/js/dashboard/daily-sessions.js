@@ -57,8 +57,9 @@ document.addEventListener("stateUpdated", function() {
     
             // visualize data (call function to display mini charts)
             document.dispatchEvent(new Event('displayMiniCharts'));
-            document.dispatchEvent(new Event('displayMainCharts'));
+
             general.chartTransition = 'all';
+            document.dispatchEvent(new Event('displayMainCharts'));
         })
         
         rightDailyArrow.addEventListener("click", function() {
@@ -72,8 +73,9 @@ document.addEventListener("stateUpdated", function() {
 
             // visualize data (call function to display mini charts)
             document.dispatchEvent(new Event('displayMiniCharts'));
-            document.dispatchEvent(new Event('displayMainCharts'));
+
             general.chartTransition = 'all';
+            document.dispatchEvent(new Event('displayMainCharts'));
         })
 
         // MINI CHART CANVAS SELECTION EVENT LISTENERS
@@ -208,8 +210,9 @@ document.addEventListener("stateUpdated", function() {
 
             setInitialDate();
             calendarIconContainer.click();
-            document.dispatchEvent(new Event('displayMainCharts'));
+
             general.chartTransition = 'all';
+            document.dispatchEvent(new Event('displayMainCharts'));
 
             // close the session view container if open
             if (flags.sessionViewContainerShowing) {
@@ -275,8 +278,10 @@ function updateDailyBounds() {
 
     setRightArrowType(dailyContainer, currentDate, rightDailyArrow, rightDailyArrowGray); // white or gray
 
-    document.dispatchEvent(new Event('displayMainCharts'));
-    general.chartTransition = 'all';
+    setTimeout(() => {
+        general.chartTransition = 'all';
+        document.dispatchEvent(new Event('displayMainCharts'));
+    }, 1)
 }
 
 function constructSelectedDateString(year, month, day) {
