@@ -72,7 +72,6 @@ let xAxisTickLabels = {
 
 document.addEventListener("displayMainCharts", async function() {
     // console.log(dashboardData.dailyArr)
-    console.log('asdf')
 
     // reset everything
     resetStats(currStats);
@@ -1206,6 +1205,23 @@ function constructDateArray(lowerBound, upperBound) {
     return dateArray;
 }
 
+function getNextDay(date) {
+    // Split the input date string into components
+    const [year, month, day] = date.split('-').map(Number);
+
+    // Create a Date object using UTC methods to avoid timezone conversions
+    let currentDate = new Date(Date.UTC(year, month - 1, day));
+
+    // Add one day
+    currentDate.setUTCDate(currentDate.getUTCDate() + 1);
+
+    // Format the resulting date back into "YYYY-MM-DD" format
+    const nextYear = currentDate.getUTCFullYear();
+    const nextMonth = String(currentDate.getUTCMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const nextDay = String(currentDate.getUTCDate()).padStart(2, '0');
+
+    return `${nextYear}-${nextMonth}-${nextDay}`;
+}
 
 function displayDeepWorkChart() {
     let barWidth = 0.8;
@@ -2354,7 +2370,10 @@ const dottedLinePlugin = {
 
             const [mainChartYear, mainChartMonth, mainChartDay] = mainChartContainer.upperBound.split("-");
             const [dailyLowerBoundYear, dailyLowerBoundMonth, dailyLowerBoundDay] = dailyContainer.lowerBound.split("-");
-            const [dailyUpperBoundYear, dailyUpperBoundMonth, dailyUpperBoundDay] = dailyContainer.upperBound.split("-");
+
+            // converting daily container upper bound (saturday) to next day (sunday)
+            let sundayUpperBound = getNextDay(dailyContainer.upperBound);
+            const [dailyUpperBoundYear, dailyUpperBoundMonth, dailyUpperBoundDay] = sundayUpperBound.split("-");
 
             let overlapCharts = ['focusQualityChart', 'percentDeepWorkChart'];
 
@@ -2384,9 +2403,9 @@ const dottedLinePlugin = {
                 // Draw the background color between the previous and current lines
 
                 if (dailyLowerBoundYear === mainChartYear && dailyUpperBoundYear === mainChartYear && dailyLowerBoundMonth === mainChartMonth && dailyUpperBoundMonth === mainChartMonth) {
-                    if (sundayIndices[i] === Number(dailyUpperBoundDay)) {
+                    if (sundayIndices[i] === Number(dailyUpperBoundDay) - 1) {
                         const prevXMid = (xScale.getPixelForValue(sundayIndices[i - 1] - 1) + xScale.getPixelForValue(sundayIndices[i - 1])) / 2;
-
+                        
                         ctx.save();
                         ctx.fillStyle = 'rgba(255, 255, 255, 0.15)'; // Set the background color and transparency
                         ctx.fillRect(prevXMid, yScale.top, xMid - prevXMid, yScale.bottom - yScale.top);
