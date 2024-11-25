@@ -5,15 +5,17 @@
     height: calc(100% - 105px);
     min-height: 410px;
     min-width: 320px;
+
     margin-left: auto;
     margin-right: auto;
     align-items: center;
     flex-direction: column; 
     box-sizing: border-box;
+
+    margin-top: 25px;
     border-radius: 25px;
     backdrop-filter: blur(100px);
     -webkit-backdrop-filter: blur(100px);
-    margin-top: 25px;
     
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
@@ -53,7 +55,6 @@
     font-family: settingsHeaderFontBold;
 
     /* border: 2px solid red; */
-
 }
 
 .no-transition {

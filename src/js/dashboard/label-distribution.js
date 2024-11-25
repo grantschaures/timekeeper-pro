@@ -44,6 +44,18 @@ export function checkViewportWidth() {
         dailyContainerElement.style.height = '';
     }
 
+    if (window.innerWidth <= 720) {
+        document.getElementById('sleepSpaceBlockHeader').innerText = '😴';
+        document.getElementById('physicalActivitySpaceBlockHeader').innerText = '⛹️';
+        document.getElementById('mindfulnessSpaceBlockHeader').innerText = '🧘';
+        document.getElementById('timeBlockingSpaceBlockHeader').innerText = '📅';
+    } else {
+        document.getElementById('sleepSpaceBlockHeader').innerText = '😴 Sleep';
+        document.getElementById('physicalActivitySpaceBlockHeader').innerText = '⛹️ Physical Activity';
+        document.getElementById('mindfulnessSpaceBlockHeader').innerText = '🧘 Mindfulness';
+        document.getElementById('timeBlockingSpaceBlockHeader').innerText = '📅 Time Blocking';
+    }
+
     // Fixes the strange misshaped mini Charts which for some reason only appears on mobile
     // We'll also want to just hardcode the font-size for the month and year selections
     if ((isMobile) || (isIpad)) {
