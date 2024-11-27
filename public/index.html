@@ -169,6 +169,24 @@
                     <button id="confirmSessionDeletionNoBtn">No</button>
                 </div>
             </div>
+            <div id="editSessionPopup">
+                <p id="editSessionTextTemp">
+                    Trim Session Duration
+                </p>
+                <div id="sessionToEditContainer">
+                    <div id="trim-marker">
+                       <img src="images/icons/trim-marker-1.png">
+                    </div>
+                    <div id="cutoffBackground"></div>
+                </div> <!-- dynamically load in session -->
+                <div id="cutoffTimeContainer">
+                    <p id="editSessionCutoffTime">Cutoff Time: </p>
+                </div>
+                <hr class="popupHr">
+                <p id="editSessionTextTemp">
+                    Adjust Label Times
+                </p>
+            </div>
             <div id="previousSessionStartedPopup"> <!-- in hibernation -->
                 <div d="previousSessionStartedPromptContainer">
                     <p id="previousSessionText">A previous session was started, but never ended. Would you like to: </p>
@@ -880,16 +898,30 @@
                             </div>
                             
                             <div id="sessionViewContainer">
-
                                 <div id="sessionViewHeaderContainer">
                                     <img id="sessionViewBackBtn" src="images/icons/left-arrow-261369-white.png" draggable="false" alt="Back" class="no-select">
                                     <div id="sessionTitle" class="no-select"></div>
-                                    <svg id="sessionViewTrashIcon" class="editRemoveSvg removeSvg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <polyline class="removePath" points="3 6 5 6 21 6"></polyline>
-                                        <path class="removePath" d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                        <line class="removePath" x1="10" y1="11" x2="10" y2="17"></line>
-                                        <line class="removePath" x1="14" y1="11" x2="14" y2="17"></line>
-                                    </svg>
+                                    <img id="sessionViewMoreOptionsIcon" src="images/icons/more-options-thin.png" draggable="false" alt="Back" class="no-select">
+                                    
+                                    <div id="sessionViewMoreOptionsDropdown">
+                                        <div id="editSessionContainer" class="sessionViewMoreOptionsContainer">
+                                            <img id="sessionViewEditIcon" src="images/icons/thicc-pencil.png">
+                                            <div id="editSessionText">
+                                                Edit Session
+                                            </div>
+                                        </div>
+                                        <div id="deleteSessionContainer" class="sessionViewMoreOptionsContainer">
+                                            <svg id="sessionViewTrashIcon" class="editRemoveSvg removeSvg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline class="removePath" points="3 6 5 6 21 6"></polyline>
+                                                <path class="removePath" d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                                <line class="removePath" x1="10" y1="11" x2="10" y2="17"></line>
+                                                <line class="removePath" x1="14" y1="11" x2="14" y2="17"></line>
+                                            </svg>
+                                            <div id="deleteSessionText">
+                                                Delete Session
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div id="sessionViewSessionContainer"></div>

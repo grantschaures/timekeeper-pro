@@ -1,5 +1,5 @@
-import { dashboardData, labelDistContainer, general, dailyContainer } from '../modules/dashboard-objects.js';
-import { dailyContainerElement, distributionsContainer, labelDistributionElement, labelDistributionMonth, labelDistributionTimeFrame, labelDistributionWeek, labelDistributionYear, labelLinesContainer, labelNamesContainer, labelTimesContainer, leftLabelDistributionArrow, metricDistributionMonth, metricDistributionTimeFrame, metricDistributionWeek, metricDistributionYear, miniChartContainers, monthSelection, rightLabelDistributionArrow, rightLabelDistributionArrowGray, yearSelection } from '../modules/dashboard-elements.js';
+import { dashboardData, labelDistContainer, general, flags } from '../modules/dashboard-objects.js';
+import { cutoffBackground, dailyContainerElement, distributionsContainer, labelDistributionElement, labelDistributionMonth, labelDistributionTimeFrame, labelDistributionWeek, labelDistributionYear, labelLinesContainer, labelNamesContainer, labelTimesContainer, leftLabelDistributionArrow, metricDistributionMonth, metricDistributionTimeFrame, metricDistributionWeek, metricDistributionYear, miniChartContainers, monthSelection, rightLabelDistributionArrow, rightLabelDistributionArrowGray, trim_marker, yearSelection } from '../modules/dashboard-elements.js';
 import { timeConvert } from '../modules/index-objects.js';
 import { sessionState } from '../modules/state-objects.js';
 import { aboutIconSessionIntervalsChartBounds, feedbackFormBtn } from '../modules/dom-elements.js';
@@ -70,6 +70,11 @@ export function checkViewportWidth() {
 
     if (isMobile) {
         aboutIconSessionIntervalsChartBounds.style.display = 'none';
+    }
+
+    if (flags.editSessionPopupShowing) {
+        trim_marker.style.right = '0px';
+        cutoffBackground.style.left = '';
     }
 }
 

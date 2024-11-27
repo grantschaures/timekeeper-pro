@@ -210,8 +210,8 @@ const navigationReplacements = [
         replacement: "import { animationsFadeIn, animationsFadeOut, handleViewportWidthChange, triggerSilentAlertAudioMobile } from '../minified/index.min.js';"
     },
     {
-        pattern: /import { hideConfirmSessionDeletionPopup } from '..\/utility\/session-view.js';/g,
-        replacement: "import { hideConfirmSessionDeletionPopup } from '../minified/session-view.min.js';"
+        pattern: /import { hideConfirmSessionDeletionPopup, hideEditSessionPopup } from '..\/utility\/session-view.js';/g,
+        replacement: "import { hideConfirmSessionDeletionPopup, hideEditSessionPopup } from '../minified/session-view.min.js';"
     }
 ]
 

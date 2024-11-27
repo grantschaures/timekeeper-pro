@@ -152,3 +152,13 @@ export const confirmSessionDeletionYesBtn = document.getElementById('confirmSess
 export const summaryAvgMood = document.getElementById('summaryAvgMood');
 export const summaryAvgMoodUp = document.getElementById('summaryAvgMoodUp');
 export const summaryAvgMoodDown = document.getElementById('summaryAvgMoodDown');
+
+export const deleteSessionContainer = document.getElementById('deleteSessionContainer');
+export const sessionViewMoreOptionsDropdown = document.getElementById('sessionViewMoreOptionsDropdown');
+export const editSessionContainer = document.getElementById('editSessionContainer');
+export const editSessionPopup = document.getElementById('editSessionPopup');
+export const sessionViewMoreOptionsIcon = document.getElementById('sessionViewMoreOptionsIcon');
+export const sessionToEditContainer = document.getElementById('sessionToEditContainer');
+export const trim_marker = document.getElementById('trim-marker');
+export const cutoffBackground = document.getElementById('cutoffBackground');
+export const editSessionCutoffTime = document.getElementById('editSessionCutoffTime');

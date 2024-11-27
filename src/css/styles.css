@@ -1627,7 +1627,7 @@ header {
     margin-bottom: 25px;
 }
 
-#deleteAccountPopupText, #confirmLabelDeletionText, #confirmSessionDeletionText {
+#deleteAccountPopupText, #confirmLabelDeletionText, #confirmSessionDeletionText, #editSessionTextTemp {
     font-family: 'settingsHeaderFont';
     color: white;
     font-size: 24px;
@@ -1879,15 +1879,29 @@ header {
     }
 }
 
-#confirmLabelDeletionPopup, #confirmSessionDeletionPopup {
+#confirmLabelDeletionPopup, #confirmSessionDeletionPopup, #editSessionPopup {
     display: none;
     background: rgb(50, 50, 50);
     padding-left: 20px;
     padding-right: 20px;
+    padding-top: 15px;
     border-radius: 25px;
     text-align: center;
     max-width: 500px;
+    width: 500px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#trim-marker {
+    display: flex;
+    position: absolute;
+    height: 120px;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: grab;
+
+    /* border: 1px solid white; */
 }
 
 #previousSessionStartedPopup {
@@ -1906,8 +1920,23 @@ header {
     transition: opacity 0.5s ease-in-out;
 }
 
-#sessionToDeleteContainer {
+#sessionToDeleteContainer, #sessionToEditContainer {
     margin: 15px;
+    margin-bottom: 25px;
+    position: relative;
+}
+
+#cutoffBackground {
+    display: flex;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 0, 0, 0.25);
+    height: 100%;
+    border-radius: 0px 25px 25px 0px;
+    opacity: 0;
+    /* left: 20px; */
 }
 
 #labelToDeleteContainer {

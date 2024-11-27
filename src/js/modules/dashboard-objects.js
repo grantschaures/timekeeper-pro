@@ -46,6 +46,8 @@ export const flags = {
     dashboardPopulated: false,
     sessionViewContainerShowing: false,
     confirmSessionDeletionPopupShowing: false,
+    editSessionPopupShowing: false,
+    sessionViewMoreOptionsDropdownShowing: false,
     remainOnSelectedDate: false
 }
 

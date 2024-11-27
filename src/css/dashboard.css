@@ -1279,6 +1279,46 @@
     /* border: 1px solid orange; */
 }
 
+#sessionViewMoreOptionsDropdown {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 47px;
+    right: 0;
+    width: 80%;
+    height: auto;
+    background-color: black;
+    border-radius: 25px;
+    padding: 10px;
+
+    border: 3px solid white;
+}
+
+.sessionViewMoreOptionsContainer {
+    display: flex;
+    height: 40px;
+    border-radius: 15px;
+    align-items: center;
+    padding: 5px;
+
+}
+
+.sessionViewMoreOptionsContainer:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    cursor: pointer;
+}
+
+#sessionViewEditIcon {
+    position: relative;
+    width: 22px;
+    height: auto;
+    z-index: 4;
+    opacity: 1.00;
+    margin-right: 10px;
+    
+    /* border: 1px solid yellow; */
+}
+
 #sessionViewBackBtn {
     width: 32px;
     height: 32px;
@@ -1290,6 +1330,16 @@
     cursor: pointer;
 }
 
+#sessionViewMoreOptionsIcon {
+    width: 29px;
+    height: 29px;
+    z-index: 4;
+    left: 10px;
+    opacity: 1.00;
+    margin-right: 3px;
+    cursor: pointer;
+}
+
 #sessionTitle {
     padding-right: 20px;
 
@@ -1298,7 +1348,7 @@
 
 #sessionViewTrashIcon {
     border-radius: 25px;
-    margin-right: 3px;
+    margin-right: 8px;
     cursor: pointer;
 }
 
@@ -1658,7 +1708,6 @@
 
     /* border: 1px solid orange; */
 }
-
 
 #dayViewNotesEntriesContainer {
     display: flex;

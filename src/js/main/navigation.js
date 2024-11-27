@@ -5,11 +5,11 @@ import { dashboardCatIds, flags as indexFlags, settingsMappings, tempCounters, t
 import { labelArrs, labelDict, labelFlags, flags as notesFlags, selectedLabelDict } from '../modules/notes-objects.js';
 import { chimePath, bellPath, soundMap } from '../modules/sound-map.js';
 import {flags as dashboardFlags } from '../modules/dashboard-objects.js';
-import { confirmSessionDeletionPopup } from '../modules/dashboard-elements.js';
+import { confirmSessionDeletionPopup, editSessionPopup } from '../modules/dashboard-elements.js';
 
 import { deleteUserAccount } from '../state/delete-account.js'; // minified
 import { animationsFadeIn, animationsFadeOut, handleViewportWidthChange, triggerSilentAlertAudioMobile } from './index.js'; // minified
-import { hideConfirmSessionDeletionPopup } from '../utility/session-view.js'; // minified
+import { hideConfirmSessionDeletionPopup, hideEditSessionPopup } from '../utility/session-view.js'; // minified
 
 export function checkViewportWidth() {
     if (window.innerWidth < 650) {
@@ -246,6 +246,8 @@ document.addEventListener("stateUpdated", function() {
             }
         } else if ((dashboardFlags.confirmSessionDeletionPopupShowing) && (!confirmSessionDeletionPopup.contains(event.target))) {
             hideConfirmSessionDeletionPopup();
+        }  else if ((dashboardFlags.editSessionPopupShowing) && (!editSessionPopup.contains(event.target))) {
+            hideEditSessionPopup();
         } else if ((flags.sessionIntervalsBoundsDemoPopupShowing) && (!sessionIntervalsBoundsDemoPopup.contains(event.target))) {
             hideSessionIntervalsBoundsDemoPopup();
         } else if ((flags.targetHoursQuestionPopupShowing) && (!targetHoursQuestionPopup.contains(event.target))) {

@@ -1,4 +1,4 @@
-import { confirmSessionDeletionNoBtn, confirmSessionDeletionPopup, confirmSessionDeletionYesBtn, dayViewContainer, dayViewSessionsContainer, percentTimeInDeepWorkStat, pomodoroCountStat, sessionDurationStat, sessionTitle, sessionToDeleteContainer, sessionViewBackBtn, sessionViewCommentsTextArea, sessionViewContainer, sessionViewHeaderContainer, sessionViewLabelsContainer, sessionViewNoLabelsContainer, sessionViewSessionContainer, sessionViewSubjectiveFeedbackDropdown, sessionViewTrashIcon } from "../modules/dashboard-elements.js";
+import { confirmSessionDeletionNoBtn, confirmSessionDeletionPopup, confirmSessionDeletionYesBtn, cutoffBackground, dayViewContainer, dayViewSessionsContainer, deleteSessionContainer, editSessionContainer, editSessionPopup, percentTimeInDeepWorkStat, pomodoroCountStat, sessionDurationStat, sessionTitle, sessionToDeleteContainer, sessionToEditContainer, sessionViewBackBtn, sessionViewCommentsTextArea, sessionViewContainer, sessionViewHeaderContainer, sessionViewLabelsContainer, sessionViewMoreOptionsDropdown, sessionViewMoreOptionsIcon, sessionViewNoLabelsContainer, sessionViewSessionContainer, sessionViewSubjectiveFeedbackDropdown, sessionViewTrashIcon, trim_marker } from "../modules/dashboard-elements.js";
 import { dashboardData, flags } from "../modules/dashboard-objects.js";
 import { body, confirmLabelDeletionYesBtn, popupOverlay, subjectiveFeedbackDropdown } from "../modules/dom-elements.js";
 
@@ -6,10 +6,28 @@ import { updateSessionSummaryData } from '../state/update-session-summary-data.j
 import { deleteSession } from '../state/delete-session.js'; // minified
 import { getDeepWork } from './session-summary-chart.js'; // minified
 
+
+// GLOBAL VARS
 let userSession;
 let sessionViewSessionContainerCopy;
+let isDragging = false;
+let containerRect;
+let sessionDuration; // in ms
+
+export function checkViewportWidth() {
+    if (flags.editSessionPopupShowing) {
+        trim_marker.style.right = '0px';
+        cutoffBackground.style.left = '';
+        // set cutoff time back to end time
+        let endTimeStr = getEndTimeStr();
+        editSessionCutoffTime.innerText = `Cutoff Time: ${endTimeStr}`;
+    }
+}
 
 document.addEventListener("stateUpdated", async function() {
+
+    window.addEventListener('resize', checkViewportWidth);
+    checkViewportWidth();
     
     sessionViewBackBtn.addEventListener('mouseover', function() {
         sessionViewBackBtn.classList.remove('resetBounce');
@@ -31,6 +49,11 @@ document.addEventListener("stateUpdated", async function() {
         setTimeout(() => {
             dayViewContainer.style.opacity = '1';
         }, 0)
+
+        if (flags.sessionViewMoreOptionsDropdownShowing) {
+            sessionViewMoreOptionsDropdown.style.display = "none";
+            flags.sessionViewMoreOptionsDropdownShowing = false;
+        }
     })
     
     // Add event listener for input events
@@ -42,7 +65,13 @@ document.addEventListener("stateUpdated", async function() {
         this.style.height = this.scrollHeight + 'px'; // Set height based on scrollHeight
     }
 
-    sessionViewTrashIcon.addEventListener('click', function() {
+    editSessionContainer.addEventListener('click', function() {
+        // console.log("you're now editing session: " + userSession._id);
+
+        showEditSessionPopup();
+    })
+
+    deleteSessionContainer.addEventListener('click', function() {
         console.log('deleting session: ' + userSession._id);
         // create a new popup for the session deletion
         // hardcode most of popup in HTML, but dynamically load in the session representation
@@ -87,8 +116,107 @@ document.addEventListener("stateUpdated", async function() {
 
         updateSessionSummaryData(userSession._id, summaryData);
     })
-    
+
+    sessionViewMoreOptionsIcon.addEventListener('click', function() {
+        if (flags.sessionViewMoreOptionsDropdownShowing) {
+            sessionViewMoreOptionsDropdown.style.display = 'none';
+            flags.sessionViewMoreOptionsDropdownShowing = false;
+        } else {
+            sessionViewMoreOptionsDropdown.style.display = 'flex';
+            flags.sessionViewMoreOptionsDropdownShowing = true;
+        }
+    })
+
+    trim_marker.addEventListener('mousedown', (event) => {
+        isDragging = true;
+        containerRect = sessionToEditContainer.getBoundingClientRect();
+        trim_marker.style.cursor = 'grabbing';
+        event.preventDefault(); // Prevent text selection
+    });
 })
+
+document.addEventListener('mouseup', () => {
+    if (isDragging) {
+        isDragging = false;
+        trim_marker.style.cursor = 'grab';
+    }
+});
+
+document.addEventListener('mousemove', (event) => {
+    if (isDragging) {
+        let newRight = containerRect.right - event.clientX;
+
+        // Constrain movement within the container bounds
+        if (newRight < 0) {
+            newRight = 0;
+        }
+
+        if (newRight > containerRect.width - 30) {
+            newRight = containerRect.width - 30;
+        }
+
+        let sessionPercentage = 1 - (newRight / ((containerRect.right - containerRect.left) - 30));
+
+        let cuttoffBackgroundOpacity = (1 - sessionPercentage) * 5;
+        cutoffBackground.style.opacity = cuttoffBackgroundOpacity;
+
+        cutoffBackground.style.left = (sessionPercentage * ((containerRect.right - containerRect.left) - 30)) + 15 + 'px';
+
+        // Update the position of the trim marker
+        trim_marker.style.right = `${newRight}px`;
+
+        // Calculate the updated time based on the sessionPercentage * sessionDuration added to the session startTime
+        // (1) Calculate the sessionDuration
+        let sessionTimeCutoffStr = getSessionTimeCutoffStr(sessionPercentage);
+        editSessionCutoffTime.innerText = `Cutoff Time: ${sessionTimeCutoffStr}`;
+    }
+})
+
+function getEndTimeStr() {
+    let sessionEndTime = userSession.endTime;
+    const date = new Date(sessionEndTime);
+    return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+}
+
+function getSessionTimeCutoffStr(sessionPercentage) {
+    let sessionStartDate = userSession.startTime;
+    const date = new Date(sessionStartDate);
+
+    // Add the milliseconds to the date
+    const newDate = new Date(date.getTime() + (sessionDuration * sessionPercentage));
+
+    return newDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+}
+
+function showEditSessionPopup() {
+    flags.editSessionPopupShowing = true;
+
+    popupOverlay.style.display = "flex"; 
+
+    menuBtn.style.display = 'none';
+    menuBtn.style.opacity = '0';
+
+    editSessionPopup.style.display = "block";
+    body.style.overflowY = 'hidden';
+
+    let endTimeStr = getEndTimeStr();
+    editSessionCutoffTime.innerText = `Cutoff Time: ${endTimeStr}`;
+
+    insertSessionContainerIntoPopup(sessionToEditContainer); // add label to popup
+}
+
+export function hideEditSessionPopup() {
+    flags.editSessionPopupShowing = false;
+    popupOverlay.style.display = "none";
+    editSessionPopup.style.display = "none";
+
+    menuBtn.style.display = 'flex';
+    setTimeout(() => {
+        menuBtn.style.opacity = '1';
+    }, 0)
+    
+    body.style.overflowY = 'scroll';
+}
 
 export function hideConfirmSessionDeletionPopup() {
     flags.confirmSessionDeletionPopupShowing = false;
@@ -116,18 +244,18 @@ function showConfirmSessionDeletionPopup() {
     confirmSessionDeletionPopup.style.display = "block";
     body.style.overflowY = 'hidden';
 
-    insertSessionContainerIntoPopup(); // add label to popup
+    insertSessionContainerIntoPopup(sessionToDeleteContainer); // add label to popup
 
     // create event listener callback fns() for yes and no btns
 }
 
-function insertSessionContainerIntoPopup() {
+function insertSessionContainerIntoPopup(container) {
     // Visual modifications to sessionViewSessionContainerCopy
     sessionViewSessionContainerCopy.style.backgroundColor = 'black';
     sessionViewSessionContainerCopy.style.color = 'white';
     sessionViewSessionContainerCopy.style.fontFamily = 'settingsHeaderFont';
     sessionViewSessionContainerCopy.style.marginBottom = '15px';
-    sessionToDeleteContainer.appendChild(sessionViewSessionContainerCopy);
+    container.appendChild(sessionViewSessionContainerCopy);
 }
 
 export async function initializeSessionView(session, dayViewSessionContainerCopy, sessionNumber) {
@@ -206,6 +334,7 @@ function displaySessionView(session, dayViewSessionContainerCopy, sessionNumber)
     let endTime = session.endTime;
 
     let totalDuration = calculateTotalDuration(startTime, endTime).totalDurationMs;
+    sessionDuration = totalDuration;
     let totalDurationStr = calculateTotalDuration(startTime, endTime).totalDurationStr;
     sessionDurationStat.innerText = totalDurationStr;
 
