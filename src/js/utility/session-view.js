@@ -13,6 +13,7 @@ let sessionViewSessionContainerCopy;
 let isDragging = false;
 let containerRect;
 let sessionDuration; // in ms
+let newSession = true;
 
 export function checkViewportWidth() {
     if (flags.editSessionPopupShowing) {
@@ -40,6 +41,7 @@ document.addEventListener("stateUpdated", async function() {
     sessionViewBackBtn.addEventListener("click", function(event) {
         // PROGRAMMATIC UPDATES
         flags.sessionViewContainerShowing = false;
+        newSession = true;
 
         // UI UPDATES
         event.stopPropagation(); // stops propagation in bubbling phase after target phase
@@ -54,6 +56,12 @@ document.addEventListener("stateUpdated", async function() {
             sessionViewMoreOptionsDropdown.style.display = "none";
             flags.sessionViewMoreOptionsDropdownShowing = false;
         }
+
+        // reset edit session popup
+        trim_marker.style.right = '0px';
+        cutoffBackground.style.left = '';
+        let endTimeStr = getEndTimeStr();
+        editSessionCutoffTime.innerText = `Cutoff Time: ${endTimeStr}`;
     })
     
     // Add event listener for input events
@@ -157,7 +165,7 @@ document.addEventListener('mousemove', (event) => {
 
         let sessionPercentage = 1 - (newRight / ((containerRect.right - containerRect.left) - 30));
 
-        let cuttoffBackgroundOpacity = (1 - sessionPercentage) * 5;
+        let cuttoffBackgroundOpacity = (1 - sessionPercentage) * 10;
         cutoffBackground.style.opacity = cuttoffBackgroundOpacity;
 
         cutoffBackground.style.left = (sessionPercentage * ((containerRect.right - containerRect.left) - 30)) + 15 + 'px';
@@ -200,9 +208,16 @@ function showEditSessionPopup() {
     body.style.overflowY = 'hidden';
 
     let endTimeStr = getEndTimeStr();
-    editSessionCutoffTime.innerText = `Cutoff Time: ${endTimeStr}`;
+    if (newSession) {
+        editSessionCutoffTime.innerText = `Cutoff Time: ${endTimeStr}`;
+        newSession = false;
+    }
 
     insertSessionContainerIntoPopup(sessionToEditContainer); // add label to popup
+
+    // Next insert labels
+
+    // Note: Eventually make it so that clicking on overlay won't take you out, you'll hav eto press save or cancel
 }
 
 export function hideEditSessionPopup() {
@@ -216,6 +231,8 @@ export function hideEditSessionPopup() {
     }, 0)
     
     body.style.overflowY = 'scroll';
+
+    sessionToEditContainer.removeChild(sessionToEditContainer.lastChild);
 }
 
 export function hideConfirmSessionDeletionPopup() {

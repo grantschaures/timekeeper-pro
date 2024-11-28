@@ -1627,7 +1627,7 @@ header {
     margin-bottom: 25px;
 }
 
-#deleteAccountPopupText, #confirmLabelDeletionText, #confirmSessionDeletionText, #editSessionTextTemp {
+#deleteAccountPopupText, #confirmLabelDeletionText, #confirmSessionDeletionText, .editSessionText {
     font-family: 'settingsHeaderFont';
     color: white;
     font-size: 24px;
@@ -1937,6 +1937,12 @@ header {
     border-radius: 0px 25px 25px 0px;
     opacity: 0;
     /* left: 20px; */
+}
+
+#cutoffTimeContainer {
+    display: flex;
+    align-items: left;
+    /* border: 1px solid white; */
 }
 
 #labelToDeleteContainer {
