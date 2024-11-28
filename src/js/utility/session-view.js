@@ -159,16 +159,16 @@ document.addEventListener('mousemove', (event) => {
             newRight = 0;
         }
 
-        if (newRight > containerRect.width - 30) {
-            newRight = containerRect.width - 30;
+        if (newRight > containerRect.width - 25) {
+            newRight = containerRect.width - 25;
         }
 
-        let sessionPercentage = 1 - (newRight / ((containerRect.right - containerRect.left) - 30));
+        let sessionPercentage = 1 - (newRight / ((containerRect.right - containerRect.left) - 25));
 
         let cuttoffBackgroundOpacity = (1 - sessionPercentage) * 10;
         cutoffBackground.style.opacity = cuttoffBackgroundOpacity;
 
-        cutoffBackground.style.left = (sessionPercentage * ((containerRect.right - containerRect.left) - 30)) + 15 + 'px';
+        cutoffBackground.style.left = (sessionPercentage * ((containerRect.right - containerRect.left) - 25)) + 10 + 'px';
 
         // Update the position of the trim marker
         trim_marker.style.right = `${newRight}px`;
