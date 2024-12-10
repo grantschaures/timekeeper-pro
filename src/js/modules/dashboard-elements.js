@@ -162,3 +162,5 @@ export const sessionToEditContainer = document.getElementById('sessionToEditCont
 export const trim_marker = document.getElementById('trim-marker');
 export const cutoffBackground = document.getElementById('cutoffBackground');
 export const editSessionCutoffTime = document.getElementById('editSessionCutoffTime');
+export const editSessionCancelBtn = document.getElementById('editSessionCancelBtn');
+export const editSessionSaveBtn = document.getElementById('editSessionSaveBtn');

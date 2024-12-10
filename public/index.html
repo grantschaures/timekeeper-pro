@@ -184,8 +184,23 @@
                 </div>
                 <hr class="popupHr">
                 <p class="editSessionText">
-                    Adjust Label Times
+                    <div>
+                        hour, min, sec
+                    </div>
+                    <div id="labelTimeEditContainers">
+                        <div class="labelTimeEditContainer">
+                            <p>CS 331</p>
+                            <div>
+                                <input type="number" id="numberInput" name="numberInput" placeholder="Enter a number">
+                            </div>
+                        </div>
+                    </div>
                 </p>
+                <hr class="popupHr">
+                <div id="editSessionFooterContainer">
+                    <button id="editSessionCancelBtn">Cancel</button>
+                    <button id="editSessionSaveBtn">Save</button>
+                </div>
             </div>
             <div id="previousSessionStartedPopup"> <!-- in hibernation -->
                 <div d="previousSessionStartedPromptContainer">
@@ -557,12 +572,12 @@
                                         <div id="lower-half-note-task-input">
                                             <div id="save-cancel-container">
                                                 <div id="note-input-save-container" data-testid="note-input-save-container" class="save-cancel-task-container">
-                                                    <div id="note-input-save-btn">
+                                                    <div id="note-input-save-btn" data-testid="note-input-save-btn">
                                                         Save
                                                     </div>
                                                 </div>
                                                 <div id="note-input-cancel-container" class="save-cancel-task-container">
-                                                    <div id="note-input-cancel-btn">
+                                                    <div id="note-input-cancel-btn" data-testid="note-input-cancel-btn">
                                                         Cancel
                                                     </div>
                                                 </div>
@@ -901,7 +916,7 @@
                                 <div id="sessionViewHeaderContainer">
                                     <img id="sessionViewBackBtn" src="images/icons/left-arrow-261369-white.png" draggable="false" alt="Back" class="no-select">
                                     <div id="sessionTitle" class="no-select"></div>
-                                    <img id="sessionViewMoreOptionsIcon" src="images/icons/more-options-thin.png" draggable="false" alt="Back" class="no-select">
+                                    <img id="sessionViewMoreOptionsIcon" src="images/icons/more-options-thin-32.png" draggable="false" alt="Back" class="no-select">
                                     
                                     <div id="sessionViewMoreOptionsDropdown">
                                         <div id="editSessionContainer" class="sessionViewMoreOptionsContainer">

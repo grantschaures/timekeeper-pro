@@ -28,8 +28,8 @@ require("@testing-library/cypress/add-commands")
 
 // Calculation Commands
 Cypress.Commands.add('saveAndCloseNoteInputContainer', function() {
-    cy.contains('div', 'Save').click();
-    cy.contains('div', 'Cancel').click();
+    cy.get('[data-testid="note-input-save-btn"]').click();
+    cy.get('[data-testid="note-input-cancel-btn"]').click();
 })
 
 Cypress.Commands.add('removeDefaultLabels', function() {

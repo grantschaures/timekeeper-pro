@@ -33,7 +33,7 @@ describe('Adding, Removing, Editing Notes and Tasks', () => {
     cy.get('[data-testid="editBtnTask0"]').click();
 
     cy.get('[data-testid="note-task-input-text-edit"]').type(" And here is an edit.");
-    cy.contains('div', 'Save').click();
+    cy.get('#note-input-save-btn-edit').click();
 
     // assertion to ensure edit was made successfully
     cy.get('[data-testid="taskDiv0"]').contains("This is a note. And here is an edit.");
@@ -72,7 +72,7 @@ describe('Adding, Removing, Editing Notes and Tasks', () => {
     cy.get('[data-testid="editBtnTask0"]').click();
 
     cy.get('[data-testid="note-task-input-text-edit"]').type(" And here is an edit.");
-    cy.contains('div', 'Save').click();
+    cy.get('#note-input-save-btn-edit').click();
 
     // assertion to ensure edit was made successfully
     cy.get('[data-testid="taskDiv0"]').contains("This is a task. And here is an edit.");

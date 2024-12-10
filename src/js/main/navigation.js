@@ -9,7 +9,7 @@ import { confirmSessionDeletionPopup, editSessionPopup } from '../modules/dashbo
 
 import { deleteUserAccount } from '../state/delete-account.js'; // minified
 import { animationsFadeIn, animationsFadeOut, handleViewportWidthChange, triggerSilentAlertAudioMobile } from './index.js'; // minified
-import { hideConfirmSessionDeletionPopup, hideEditSessionPopup } from '../utility/session-view.js'; // minified
+import { hideConfirmSessionDeletionPopup } from '../utility/session-view.js'; // minified
 
 export function checkViewportWidth() {
     if (window.innerWidth < 650) {
@@ -246,8 +246,6 @@ document.addEventListener("stateUpdated", function() {
             }
         } else if ((dashboardFlags.confirmSessionDeletionPopupShowing) && (!confirmSessionDeletionPopup.contains(event.target))) {
             hideConfirmSessionDeletionPopup();
-        }  else if ((dashboardFlags.editSessionPopupShowing) && (!editSessionPopup.contains(event.target))) {
-            hideEditSessionPopup();
         } else if ((flags.sessionIntervalsBoundsDemoPopupShowing) && (!sessionIntervalsBoundsDemoPopup.contains(event.target))) {
             hideSessionIntervalsBoundsDemoPopup();
         } else if ((flags.targetHoursQuestionPopupShowing) && (!targetHoursQuestionPopup.contains(event.target))) {

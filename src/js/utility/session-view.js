@@ -1,11 +1,10 @@
-import { confirmSessionDeletionNoBtn, confirmSessionDeletionPopup, confirmSessionDeletionYesBtn, cutoffBackground, dayViewContainer, dayViewSessionsContainer, deleteSessionContainer, editSessionContainer, editSessionPopup, percentTimeInDeepWorkStat, pomodoroCountStat, sessionDurationStat, sessionTitle, sessionToDeleteContainer, sessionToEditContainer, sessionViewBackBtn, sessionViewCommentsTextArea, sessionViewContainer, sessionViewHeaderContainer, sessionViewLabelsContainer, sessionViewMoreOptionsDropdown, sessionViewMoreOptionsIcon, sessionViewNoLabelsContainer, sessionViewSessionContainer, sessionViewSubjectiveFeedbackDropdown, sessionViewTrashIcon, trim_marker } from "../modules/dashboard-elements.js";
+import { confirmSessionDeletionNoBtn, confirmSessionDeletionPopup, confirmSessionDeletionYesBtn, cutoffBackground, dayViewContainer, dayViewSessionsContainer, deleteSessionContainer, editSessionCancelBtn, editSessionContainer, editSessionPopup, editSessionSaveBtn, percentTimeInDeepWorkStat, pomodoroCountStat, sessionDurationStat, sessionTitle, sessionToDeleteContainer, sessionToEditContainer, sessionViewBackBtn, sessionViewCommentsTextArea, sessionViewContainer, sessionViewHeaderContainer, sessionViewLabelsContainer, sessionViewMoreOptionsDropdown, sessionViewMoreOptionsIcon, sessionViewNoLabelsContainer, sessionViewSessionContainer, sessionViewSubjectiveFeedbackDropdown, sessionViewTrashIcon, trim_marker } from "../modules/dashboard-elements.js";
 import { dashboardData, flags } from "../modules/dashboard-objects.js";
-import { body, confirmLabelDeletionYesBtn, popupOverlay, subjectiveFeedbackDropdown } from "../modules/dom-elements.js";
+import { body, confirmLabelDeletionYesBtn, overlayExit, popupOverlay, subjectiveFeedbackDropdown } from "../modules/dom-elements.js";
 
 import { updateSessionSummaryData } from '../state/update-session-summary-data.js'; // minified
 import { deleteSession } from '../state/delete-session.js'; // minified
 import { getDeepWork } from './session-summary-chart.js'; // minified
-
 
 // GLOBAL VARS
 let userSession;
@@ -96,6 +95,18 @@ document.addEventListener("stateUpdated", async function() {
         sessionViewBackBtn.click();
     })
 
+    editSessionCancelBtn.addEventListener('click', function() {
+        // hide sessionToEditContainer
+        hideEditSessionPopup();
+    })
+    
+    editSessionSaveBtn.addEventListener('click', function() {
+        // hide sessionToEditContainer
+        hideEditSessionPopup();
+
+        // also make necessary update changes to the database
+    })
+
     sessionViewCommentsTextArea.addEventListener('blur', function() {
         // Once focus has been removed, update appropriate session w/ new session summary comments
         let commentsText = sessionViewCommentsTextArea.value;
@@ -180,6 +191,37 @@ document.addEventListener('mousemove', (event) => {
     }
 })
 
+function updateLabelTimes() {
+    // (1) iterate through userSession.labelTimes and create new object of labels with time {labelId: time (in ms)} if time > 0
+    const labelTimes = userSession.labelTimes;
+    const filteredTimes = {};
+
+    for (const [key, value] of Object.entries(labelTimes)) {
+        if (value > 0) {
+            filteredTimes[key] = value;
+        }
+    }
+    console.log(filteredTimes)
+
+    // (2) replace labelId in dictionary with label name based on users notes data --> {labelName: labelTime (in ms)}
+    let userNoteData = dashboardData.noteData;
+    let labels = userNoteData.labels;
+    let deletedLabels = userNoteData.deletedLabels;
+    const combinedLabels = { ...labels, ...deletedLabels };
+
+    const replacedKeys = Object.entries(filteredTimes).reduce((result, [key, value]) => {
+        if (combinedLabels[key]) {
+            result[combinedLabels[key]] = value; // Replace key with corresponding label
+        }
+        return result;
+    }, {});
+
+    // (3) for each key-value pair, create container with labelName and two inputs for the hour, minute, second amount
+    
+}
+
+
+
 function getEndTimeStr() {
     let sessionEndTime = userSession.endTime;
     const date = new Date(sessionEndTime);
@@ -197,12 +239,12 @@ function getSessionTimeCutoffStr(sessionPercentage) {
 }
 
 function showEditSessionPopup() {
+    flags.sessionViewMoreOptionsDropdownShowing = false;
+    sessionViewMoreOptionsDropdown.style.display = "none";
+
     flags.editSessionPopupShowing = true;
-
     popupOverlay.style.display = "flex"; 
-
-    menuBtn.style.display = 'none';
-    menuBtn.style.opacity = '0';
+    overlayExit.style.display = 'none';
 
     editSessionPopup.style.display = "block";
     body.style.overflowY = 'hidden';
@@ -215,9 +257,9 @@ function showEditSessionPopup() {
 
     insertSessionContainerIntoPopup(sessionToEditContainer); // add label to popup
 
-    // Next insert labels
-
-    // Note: Eventually make it so that clicking on overlay won't take you out, you'll hav eto press save or cancel
+    // Next insert labels --> call function that iterates through labelTimes and if time > 0
+    // find corresponding label name, add time in h and m to inputs that user can change (update)
+    updateLabelTimes();
 }
 
 export function hideEditSessionPopup() {
@@ -225,10 +267,7 @@ export function hideEditSessionPopup() {
     popupOverlay.style.display = "none";
     editSessionPopup.style.display = "none";
 
-    menuBtn.style.display = 'flex';
-    setTimeout(() => {
-        menuBtn.style.opacity = '1';
-    }, 0)
+    overlayExit.style.display = 'flex';
     
     body.style.overflowY = 'scroll';
 
@@ -251,8 +290,10 @@ export function hideConfirmSessionDeletionPopup() {
 }
 
 function showConfirmSessionDeletionPopup() {
-    flags.confirmSessionDeletionPopupShowing = true;
+    flags.sessionViewMoreOptionsDropdownShowing = false;
+    sessionViewMoreOptionsDropdown.style.display = "none";
 
+    flags.confirmSessionDeletionPopupShowing = true;
     popupOverlay.style.display = "flex"; 
 
     menuBtn.style.display = 'none';
