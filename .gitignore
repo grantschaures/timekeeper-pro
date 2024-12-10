@@ -2,3 +2,4 @@ node_modules/
 testing/
 .env
 sendgrid.env
+timekeeper_pro.code-workspace
