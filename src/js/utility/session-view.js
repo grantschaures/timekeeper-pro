@@ -1,4 +1,4 @@
-import { confirmSessionDeletionNoBtn, confirmSessionDeletionPopup, confirmSessionDeletionYesBtn, cutoffBackground, dayViewContainer, dayViewSessionsContainer, deleteSessionContainer, editSessionCancelBtn, editSessionContainer, editSessionPopup, editSessionSaveBtn, percentTimeInDeepWorkStat, pomodoroCountStat, sessionDurationStat, sessionTitle, sessionToDeleteContainer, sessionToEditContainer, sessionViewBackBtn, sessionViewCommentsTextArea, sessionViewContainer, sessionViewHeaderContainer, sessionViewLabelsContainer, sessionViewMoreOptionsDropdown, sessionViewMoreOptionsIcon, sessionViewNoLabelsContainer, sessionViewSessionContainer, sessionViewSubjectiveFeedbackDropdown, sessionViewTrashIcon, trim_marker } from "../modules/dashboard-elements.js";
+import { confirmSessionDeletionNoBtn, confirmSessionDeletionPopup, confirmSessionDeletionYesBtn, cutoffBackground, dayViewContainer, dayViewSessionsContainer, deleteSessionContainer, editLabelTimeColumns, editSessionCancelBtn, editSessionContainer, editSessionLabels, editSessionNoLabels, editSessionPopup, editSessionSaveBtn, labelHourColumn, labelMinColumn, labelNameColumn, labelSecColumn, percentTimeInDeepWorkStat, pomodoroCountStat, sessionDurationStat, sessionTitle, sessionToDeleteContainer, sessionToEditContainer, sessionViewBackBtn, sessionViewCommentsTextArea, sessionViewContainer, sessionViewHeaderContainer, sessionViewLabelsContainer, sessionViewMoreOptionsDropdown, sessionViewMoreOptionsIcon, sessionViewNoLabelsContainer, sessionViewSessionContainer, sessionViewSubjectiveFeedbackDropdown, sessionViewTrashIcon, trim_marker } from "../modules/dashboard-elements.js";
 import { dashboardData, flags } from "../modules/dashboard-objects.js";
 import { body, confirmLabelDeletionYesBtn, overlayExit, popupOverlay, subjectiveFeedbackDropdown } from "../modules/dom-elements.js";
 
@@ -201,7 +201,15 @@ function updateLabelTimes() {
             filteredTimes[key] = value;
         }
     }
-    console.log(filteredTimes)
+
+    if (Object.keys(filteredTimes).length === 0) {
+        displayEditSessionNoLabels()
+    } else {
+        displayEditSessionLabels(filteredTimes);
+    }
+}
+
+function displayEditSessionLabels(filteredTimes) {
 
     // (2) replace labelId in dictionary with label name based on users notes data --> {labelName: labelTime (in ms)}
     let userNoteData = dashboardData.noteData;
@@ -211,16 +219,80 @@ function updateLabelTimes() {
 
     const replacedKeys = Object.entries(filteredTimes).reduce((result, [key, value]) => {
         if (combinedLabels[key]) {
-            result[combinedLabels[key]] = value; // Replace key with corresponding label
+            result[key] = [combinedLabels[key], value]; // Replace key with corresponding label
         }
         return result;
     }, {});
 
     // (3) for each key-value pair, create container with labelName and two inputs for the hour, minute, second amount
-    
+    for (const key in replacedKeys) {
+
+        // (3.0) calculate times for hour, min and sec
+        let labelTimeMs = replacedKeys[key][1];
+        const hourMinSec = getHourMinSec(labelTimeMs);
+        const hours = hourMinSec[0];
+        const min = hourMinSec[1];
+        const sec = hourMinSec[2];
+
+        // (3.1) create label name element
+        let labelNameDiv = document.createElement('div');
+        labelNameDiv.classList.add('editSessionLabelName');
+        labelNameDiv.textContent = replacedKeys[key][0];
+        labelNameColumn.appendChild(labelNameDiv);
+
+        // (3.2) create label hour input element
+        let labelHourInput = document.createElement('input');
+        labelHourInput.type = 'number';
+        labelHourInput.value = hours; // actual value TBD
+        labelHourInput.classList.add('sessionEditLabelTimeInput');
+        labelHourInput.classList.add(key);
+        labelHourInput.name = 'hour';
+        labelHourInput.min = '0';
+        labelHourInput.max = '23';
+        labelHourInput.step = '1';
+        labelHourColumn.appendChild(labelHourInput);
+
+        // (3.3) create label min input element
+        let labelMinInput = document.createElement('input');
+        labelMinInput.type = 'number';
+        labelMinInput.value = min; // actual value TBD
+        labelMinInput.classList.add('sessionEditLabelTimeInput');
+        labelMinInput.classList.add(key);
+        labelMinInput.name = 'min';
+        labelMinInput.min = '0';
+        labelMinInput.max = '59';
+        labelMinInput.step = '1';
+        labelMinColumn.appendChild(labelMinInput);
+
+        // (3.4) create label sec input element
+        let labelSecInput = document.createElement('input');
+        labelSecInput.type = 'number';
+        labelSecInput.value = sec; // actual value TBD
+        labelSecInput.classList.add('sessionEditLabelTimeInput');
+        labelSecInput.classList.add(key);
+        labelSecInput.name = 'sec';
+        labelSecInput.min = '0';
+        labelSecInput.max = '59';
+        labelSecInput.step = '1';
+        labelSecColumn.appendChild(labelSecInput);
+    }
 }
 
+function displayEditSessionNoLabels() {
+    editSessionLabels.style.display = 'none';
+    editSessionNoLabels.style.display = 'flex';
+}
 
+// Input: ms duration of label time
+// Output: array of hour, min, and sec
+function getHourMinSec(labelTimeMs) {
+    const seconds = Math.floor(labelTimeMs / 1000); // Convert ms to seconds
+    const hours = Math.floor(seconds / 3600); // Extract hours
+    const minutes = Math.floor((seconds % 3600) / 60); // Extract minutes
+    const remainingSeconds = seconds % 60; // Remaining seconds
+
+    return [hours, minutes, remainingSeconds];
+}
 
 function getEndTimeStr() {
     let sessionEndTime = userSession.endTime;
@@ -259,6 +331,7 @@ function showEditSessionPopup() {
 
     // Next insert labels --> call function that iterates through labelTimes and if time > 0
     // find corresponding label name, add time in h and m to inputs that user can change (update)
+
     updateLabelTimes();
 }
 
@@ -271,7 +344,18 @@ export function hideEditSessionPopup() {
     
     body.style.overflowY = 'scroll';
 
+    // resetting the session visualization
     sessionToEditContainer.removeChild(sessionToEditContainer.lastChild);
+
+    // resetting the label columns
+    labelNameColumn.innerHTML = '';
+    editLabelTimeColumns.forEach(column => {
+        column.innerHTML = '';
+    })
+
+    // resetting containers
+    editSessionLabels.style.display = 'flex';
+    editSessionNoLabels.style.display = 'none';
 }
 
 export function hideConfirmSessionDeletionPopup() {

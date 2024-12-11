@@ -1922,7 +1922,7 @@ header {
 
 #sessionToDeleteContainer, #sessionToEditContainer {
     margin: 15px;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
     position: relative;
 
     /* border: 1px solid white; */
@@ -1941,12 +1941,6 @@ header {
     /* left: 20px; */
 }
 
-#cutoffTimeContainer {
-    display: flex;
-    align-items: left;
-    /* border: 1px solid white; */
-}
-
 #editSessionFooterContainer {
     display: flex;
     margin-top: 20px;
@@ -1961,12 +1955,113 @@ header {
     margin-left: 15px;
 }
 
-.labelTimeEditContainer {
+#editSessionLabels {
     display: flex;
     width: 100%;
+    justify-content: space-around;
+    max-height: 300px;
+    overflow-y: auto;
 
-    border: 1px solid cyan;
+    /* border: 1px solid cyan; */
 }
+
+#editSessionLabels::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+#editSessionLabels::-webkit-scrollbar:hover {
+    cursor: pointer;
+}
+
+#editSessionLabels::-webkit-scrollbar-track {
+    /* background: transparent; */
+    background: rgba(255, 255, 255, 0);
+}
+
+#editSessionLabels::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+}
+
+.editSessionLabelSection {
+    display: flex;
+    flex-direction: column;
+
+    /* border: 1px solid red; */
+}
+
+.editSessionLabelSection {
+    font-family: settingsHeaderFont;
+    color: white;
+    font-size: 18px;
+}
+
+.editSessionLabelHeading {
+    font-size: 20px;
+}
+
+.sessionEditLabelTimeInput {
+    width: 40px;
+    height: 14px;
+    background-color: #e0e0e0;
+    font-size: 14px;
+    padding: 8px 8px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid white;
+    
+    font-family: settingsHeaderFont;
+    letter-spacing: 1px;
+    font-weight: bold;
+    color: rgb(0, 0, 0);
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+#labelNameColumn {
+    margin-top: 5px;
+}
+
+.editSessionLabelName {
+    display: flex;
+    justify-content: center;
+    height: 30px;
+    white-space: nowrap;
+    margin-bottom: 10px;
+    align-items: center;
+
+    border: 1px solid rgb(0, 0, 0, 0);
+}
+
+.editLabelTimeColumn {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5px;
+}
+
+#editSessionNoLabels {
+    display: none;
+    justify-content: center;
+    font-family: settingsHeaderFont;
+    font-size: 24px;
+    color: white;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -183,19 +183,27 @@
                     <p id="editSessionCutoffTime" class="editSessionText">Cutoff Time: </p>
                 </div>
                 <hr class="popupHr">
-                <p class="editSessionText">
-                    <div>
-                        hour, min, sec
+                <div id="editSessionLabels">
+                    <div id="editSessionLabelNameContainer" class="editSessionLabelSection">
+                        <div class="editSessionLabelHeading">Label</div>
+                        <div id="labelNameColumn"></div>
                     </div>
-                    <div id="labelTimeEditContainers">
-                        <div class="labelTimeEditContainer">
-                            <p>CS 331</p>
-                            <div>
-                                <input type="number" id="numberInput" name="numberInput" placeholder="Enter a number">
-                            </div>
-                        </div>
+                    <div id="editSessionLabelHourContainer" class="editSessionLabelSection">
+                        <div class="editSessionLabelHeading">Hour</div>
+                        <div id="labelHourColumn" class="editLabelTimeColumn"></div>
                     </div>
-                </p>
+                    <div id="editSessionLabelMinContainer" class="editSessionLabelSection">
+                        <div class="editSessionLabelHeading">Min</div>
+                        <div id="labelMinColumn" class="editLabelTimeColumn"></div>
+                    </div>
+                    <div id="editSessionLabelSecContainer" class="editSessionLabelSection">
+                        <div class="editSessionLabelHeading">Sec</div>
+                        <div id="labelSecColumn" class="editLabelTimeColumn"></div>
+                    </div>
+                </div>
+                <div id="editSessionNoLabels">
+                    No Labels
+                </div>
                 <hr class="popupHr">
                 <div id="editSessionFooterContainer">
                     <button id="editSessionCancelBtn">Cancel</button>
