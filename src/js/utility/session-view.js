@@ -1,11 +1,12 @@
 import { confirmSessionDeletionNoBtn, confirmSessionDeletionPopup, confirmSessionDeletionYesBtn, cutoffBackground, dayViewContainer, dayViewSessionsContainer, deleteSessionContainer, editLabelTimeColumns, editSessionCancelBtn, editSessionContainer, editSessionLabels, editSessionNoLabels, editSessionPopup, editSessionSaveBtn, labelHourColumn, labelMinColumn, labelNameColumn, labelSecColumn, percentTimeInDeepWorkStat, pomodoroCountStat, sessionDurationStat, sessionTitle, sessionToDeleteContainer, sessionToEditContainer, sessionViewBackBtn, sessionViewCommentsTextArea, sessionViewContainer, sessionViewHeaderContainer, sessionViewLabelsContainer, sessionViewMoreOptionsDropdown, sessionViewMoreOptionsIcon, sessionViewNoLabelsContainer, sessionViewSessionContainer, sessionViewSubjectiveFeedbackDropdown, sessionViewTrashIcon, trim_marker } from "../modules/dashboard-elements.js";
 import { dashboardData, flags } from "../modules/dashboard-objects.js";
 import { body, confirmLabelDeletionYesBtn, overlayExit, popupOverlay, subjectiveFeedbackDropdown } from "../modules/dom-elements.js";
+import { timeConvert } from "../modules/index-objects.js";
 
 import { updateSessionSummaryData } from '../state/update-session-summary-data.js'; // minified
 import { deleteSession } from '../state/delete-session.js'; // minified
 import { getDeepWork } from './session-summary-chart.js'; // minified
-import { timeConvert } from "../modules/index-objects.js";
+import { populateDashboard } from '../dashboard/populate-dashboard.js'; // minified
 
 // GLOBAL VARS
 let userSession;
@@ -210,7 +211,6 @@ document.addEventListener('mousemove', (event) => {
 })
 
 async function updateSessionWithEdits() {
-    // console.log(userSession);
     // (1) derive the new session duration based on the new endTime
     let startTime = new Date(userSession.startTime);
     let newEndTime = new Date(newSessionCutoff.toISOString());
@@ -256,6 +256,11 @@ async function updateSessionWithEdits() {
         i++;
     }
 
+    // fixes issue where user places cutoff marker at very beginning, effectively cutting the session duration to 0
+    if (newDeepWorkIntervals.length == 0) {
+        newDeepWorkIntervals.push(1); // adds 1 ms as minimum time so session visualization isn't screwed up
+    }
+
     // set deep work and break intervals
     sessionEdits.deepWorkIntervals = newDeepWorkIntervals;
     sessionEdits.breakIntervals = newBreakIntervals;
@@ -268,11 +273,18 @@ async function updateSessionWithEdits() {
     let newTotalDeepWork = newDeepWorkIntervals.reduce((accumulator, currentVal) => accumulator + currentVal, 0);
     sessionEdits.totalDeepWork = newTotalDeepWork;
 
-    let newAvgDeepWorkInterval = newTotalDeepWork / newDeepWorkIntervals.length;
+    let newAvgDeepWorkInterval = null;
+    if (newDeepWorkIntervals.length > 0) {
+        newAvgDeepWorkInterval = newTotalDeepWork / newDeepWorkIntervals.length;
+    }
     sessionEdits.avgDeepWorkInterval = newAvgDeepWorkInterval;
 
     let newTotalBreak = newBreakIntervals.reduce((accumulator, currentVal) => accumulator + currentVal, 0);
-    let newAvgBreakInterval = newTotalBreak / newBreakIntervals.length;
+
+    let newAvgBreakInterval = null;
+    if (newBreakIntervals.length > 0) {
+        newAvgBreakInterval = newTotalBreak / newBreakIntervals.length;
+    }
     sessionEdits.avgBreakInterval = newAvgBreakInterval;
 
     let targetTimeMs = userSession.targetHours;
@@ -312,7 +324,6 @@ async function updateSessionWithEdits() {
     // note: sortedNewPerHourDataArr[j][1] is a reference to the same object in newPerHourData
     let j = sortedNewPerHourDataArr.length - 1;
     while ((cutoffDeepWorkTime > 0) && (j >= 0)) { // last condition shouldn't be necessary but just for insurance
-        console.log(removedDistractionCount);
 
         if (sortedNewPerHourDataArr[j][1].deepWorkTime <= cutoffDeepWorkTime) {
             cutoffDeepWorkTime = cutoffDeepWorkTime - sortedNewPerHourDataArr[j][1].deepWorkTime;
@@ -339,21 +350,34 @@ async function updateSessionWithEdits() {
 
     // (5) Label Time Edits - issue solved!
     let labelTimes = {};
+    let currInputVal;
     labelHourColumn.childNodes.forEach((input) => {
         let labelId = input.classList[1];
-        let labelTime = parseInt(input.value, 10) * timeConvert.msPerHour; // convert hours to ms
+        currInputVal = input.value;
+        if (currInputVal > 23) {
+            currInputVal = 23;
+        }
+        let labelTime = parseInt(currInputVal, 10) * timeConvert.msPerHour; // convert hours to ms
         labelTimes[labelId] = labelTime;
     })
     
     labelMinColumn.childNodes.forEach((input) => {
         let labelId = input.classList[1];
-        let labelTime = parseInt(input.value, 10) * timeConvert.msPerMin; // convert minutes to ms
+        currInputVal = input.value;
+        if (currInputVal > 59) {
+            currInputVal = 59;
+        }
+        let labelTime = parseInt(currInputVal, 10) * timeConvert.msPerMin; // convert minutes to ms
         labelTimes[labelId] += labelTime;
     })
 
     labelSecColumn.childNodes.forEach((input) => {        
         let labelId = input.classList[1];
-        let labelTime = parseInt(input.value, 10) * timeConvert.msPerSec; // convert seconds to ms
+        currInputVal = input.value;
+        if (currInputVal > 59) {
+            currInputVal = 59;
+        }
+        let labelTime = parseInt(currInputVal, 10) * timeConvert.msPerSec; // convert seconds to ms
         labelTimes[labelId] += labelTime;
     })
 
@@ -361,7 +385,34 @@ async function updateSessionWithEdits() {
 
     sessionEdits.edited = true;
 
+    finalizeSessionEdits(userSession._id, sessionEdits);
+}
 
+async function finalizeSessionEdits(sessionId, sessionEdits) {
+    // send a post request to the db with the session edits
+    console.log(sessionEdits);
+    const response = await fetch('/api/data/finalizeSessionEdits', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({sessionId, sessionEdits})
+    })
+
+    if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Response status:', response.status);
+        console.error('Response body:', errorText);
+        throw new Error('Network response was not ok');
+    } else {
+        const data = await response.json();
+        console.log("Session updated successfully:", data);
+
+        // update dashboard!
+        flags.remainOnSelectedDate = true;
+        populateDashboard(data.noteSessionData.sessions, data.noteSessionData.note, data.noteSessionData.notesEntries);
+        sessionViewBackBtn.click();
+    }
 }
 
 function updateLabelTimes() {

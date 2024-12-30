@@ -400,6 +400,10 @@ const sessionViewReplacements = [
     {
         pattern: /import { getDeepWork } from '.\/session-summary-chart.js';/g,
         replacement: "import { getDeepWork } from '../minified/session-summary-chart.min.js';"
+    },
+    {
+        pattern: /import { populateDashboard } from '..\/populate-dashboard.js';/g,
+        replacement: "import { populateDashboard } from '../minified/populate-dashboard.min.js';"
     }
 ]
 
