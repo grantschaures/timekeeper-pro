@@ -13,6 +13,21 @@ let isDragging = false;
 let containerRect;
 let sessionDuration; // in ms
 let newSession = true;
+let newSessionCutoff;
+
+let sessionEdits = {
+    endTime: null,
+    totalDeepWork: null,
+    deepWorkIntervals: null,
+    breakIntervals: null,
+    avgDeepWorkInterval: null,
+    avgBreakInterval: null,
+    deepWorkIntervalCount: null,
+    breakIntervalCount: null,
+    hitTarget: null,
+    perHourData: {},
+    labelTimes: {}
+}
 
 export function checkViewportWidth() {
     if (flags.editSessionPopupShowing) {
@@ -105,6 +120,7 @@ document.addEventListener("stateUpdated", async function() {
         hideEditSessionPopup();
 
         // also make necessary update changes to the database
+        updateSessionWithEdits();
     })
 
     sessionViewCommentsTextArea.addEventListener('blur', function() {
@@ -191,6 +207,142 @@ document.addEventListener('mousemove', (event) => {
     }
 })
 
+function updateSessionWithEdits() {
+    // console.log(userSession);
+    // (1) derive the new session duration based on the new endTime
+    let startTime = new Date(userSession.startTime);
+    let newEndTime = new Date(newSessionCutoff.toISOString());
+    let newDuration = Math.abs(newEndTime - startTime); // in ms
+    sessionEdits.endTime = newEndTime; // ensure this is the right format for the date in MongoDB
+
+    // (2) create combined deepwork/ break interval array
+    let deepWorkIntervals = [...userSession.deepWorkIntervals];
+    let breakIntervals = [...userSession.breakIntervals];
+    let totalIntervalCount = deepWorkIntervals.length + breakIntervals.length;
+    let combinedIntervalArr = [];
+
+    for (let i = 0; i < totalIntervalCount; i++) {
+        if (i % 2 == 0) {
+            combinedIntervalArr.push(deepWorkIntervals.shift())
+        } else {
+            combinedIntervalArr.push(breakIntervals.shift())
+        }
+    }
+
+    // (3) create new deep work and break intervals
+    let newDeepWorkIntervals = [];
+    let newBreakIntervals = [];
+
+    let i = 0;
+    while (newDuration > 0) {
+        let prevNewDuration = newDuration;
+        newDuration = newDuration - combinedIntervalArr[i];
+
+        if (newDuration > 0) {
+            if (i % 2 == 0) {
+                newDeepWorkIntervals.push(combinedIntervalArr[i]);
+            } else {
+                newBreakIntervals.push(combinedIntervalArr[i]);
+            }
+        } else {
+            if (i % 2 == 0) {
+                newDeepWorkIntervals.push(prevNewDuration);
+            } else {
+                newBreakIntervals.push(prevNewDuration);
+            }
+        }
+        i++;
+    }
+
+    // set deep work and break intervals
+    sessionEdits.deepWorkIntervals = newDeepWorkIntervals;
+    sessionEdits.breakIntervals = newBreakIntervals;
+
+    // set deep work and break interval count
+    sessionEdits.deepWorkIntervalCount = newDeepWorkIntervals.length;
+    sessionEdits.breakIntervalCount = newBreakIntervals.length;
+
+    // calculate and set totalDeepWork, avg intervals, hit target
+    let newTotalDeepWork = newDeepWorkIntervals.reduce((accumulator, currentVal) => accumulator + currentVal, 0);
+    sessionEdits.totalDeepWork = newTotalDeepWork;
+
+    let newAvgDeepWorkInterval = newTotalDeepWork / newDeepWorkIntervals.length;
+    sessionEdits.avgDeepWorkInterval = newAvgDeepWorkInterval;
+
+    let newTotalBreak = newBreakIntervals.reduce((accumulator, currentVal) => accumulator + currentVal, 0);
+    let newAvgBreakInterval = newTotalBreak / newBreakIntervals.length;
+    sessionEdits.avgBreakInterval = newAvgBreakInterval;
+
+    let targetTimeMs = userSession.targetHours;
+    if (newTotalDeepWork >= targetTimeMs) {
+        sessionEdits.hitTarget = true;
+    } else {
+        sessionEdits.hitTarget = false;
+    }
+
+    // (4) editing distractions
+    // first step here is to check if the new cutoff is before each distraction in the distraction times array
+    let distractionTimesArr = userSession.distractionTimesArr;
+    let newDistractionTimesArr = [];
+    
+    let d = 0;
+    while (new Date(distractionTimesArr[d]) < new Date(newEndTime)) {
+        newDistractionTimesArr.push(distractionTimesArr[d]);
+        d++;
+    }
+
+    // set value of distractionTimesArr and totalDistractions
+    sessionEdits.distractionTimesArr = newDistractionTimesArr;
+    sessionEdits.totalDistractions = newDistractionTimesArr.length;
+
+    // for use when iterating through perHourdata
+    let removedDistractionCount = distractionTimesArr.length - newDistractionTimesArr.length;
+    let cutoffDeepWorkTime = userSession.totalDeepWork - newTotalDeepWork;
+
+    // (5) editing perHourData
+    const newPerHourData = JSON.parse(JSON.stringify(userSession.perHourData)); // deep copy (nested objects are duplicates)
+
+    let sortedNewPerHourDataArr = Object.entries(newPerHourData)
+    .sort(([keyA], [keyB]) => {
+        return new Date(keyA) - new Date(keyB);
+    })
+
+    // note: sortedNewPerHourDataArr[j][1] is a reference to the same object in newPerHourData
+    let j = sortedNewPerHourDataArr.length - 1;
+    while ((cutoffDeepWorkTime > 0) && (j >= 0)) { // last condition shouldn't be necessary but just for insurance
+        console.log(removedDistractionCount);
+
+        if (sortedNewPerHourDataArr[j][1].deepWorkTime <= cutoffDeepWorkTime) {
+            cutoffDeepWorkTime = cutoffDeepWorkTime - sortedNewPerHourDataArr[j][1].deepWorkTime;
+            sortedNewPerHourDataArr[j][1].deepWorkTime = 0;
+            sortedNewPerHourDataArr[j][1].inDeepWork = false;
+            
+        } else {
+            sortedNewPerHourDataArr[j][1].deepWorkTime = sortedNewPerHourDataArr[j][1].deepWorkTime - cutoffDeepWorkTime;
+            // inDeepWork would remain true (nothing to do here)
+            cutoffDeepWorkTime = 0;
+        }
+        
+        if (removedDistractionCount >= sortedNewPerHourDataArr[j][1].distractions) {
+            removedDistractionCount = removedDistractionCount - sortedNewPerHourDataArr[j][1].distractions;
+            sortedNewPerHourDataArr[j][1].distractions = 0;
+        } else {
+            sortedNewPerHourDataArr[j][1].distractions = sortedNewPerHourDataArr[j][1].distractions - removedDistractionCount;
+        }
+        
+        j--;
+    }
+
+    sessionEdits.perHourData = newPerHourData;
+
+    // (5) Label Time Edits
+    // I am having issues with getting the dynamically added input elements for each label
+    // What I'll need to do add id's to each input element (based on labelId),
+    // and store those id's somewhere to access here
+
+
+}
+
 function updateLabelTimes() {
     // (1) iterate through userSession.labelTimes and create new object of labels with time {labelId: time (in ms)} if time > 0
     const labelTimes = userSession.labelTimes;
@@ -238,6 +390,7 @@ function displayEditSessionLabels(filteredTimes) {
         let labelNameDiv = document.createElement('div');
         labelNameDiv.classList.add('editSessionLabelName');
         labelNameDiv.textContent = replacedKeys[key][0];
+        labelNameDiv.id = "labelNameDiv-" + String(key);
         labelNameColumn.appendChild(labelNameDiv);
 
         // (3.2) create label hour input element
@@ -275,6 +428,15 @@ function displayEditSessionLabels(filteredTimes) {
         labelSecInput.max = '59';
         labelSecInput.step = '1';
         labelSecColumn.appendChild(labelSecInput);
+
+        // edit length of label name (still buggy)
+        setTimeout(() => {
+            if (document.getElementById(labelNameDiv.id).offsetWidth > 200) {
+                let innerText = document.getElementById(labelNameDiv.id).innerText;
+                innerText = innerText.slice(0, 10) + '...';
+                document.getElementById(labelNameDiv.id).innerText = innerText;
+            }
+        }, 0);
     }
 }
 
@@ -307,6 +469,9 @@ function getSessionTimeCutoffStr(sessionPercentage) {
     // Add the milliseconds to the date
     const newDate = new Date(date.getTime() + (sessionDuration * sessionPercentage));
 
+    // Set global newDate variable to this altered date
+    newSessionCutoff = newDate;
+
     return newDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
 }
 
@@ -328,6 +493,8 @@ function showEditSessionPopup() {
     }
 
     insertSessionContainerIntoPopup(sessionToEditContainer); // add label to popup
+    getSessionTimeCutoffStr(1.0); // initialize newSessionCutoff immediately
+    console.log(newSessionCutoff);
 
     // Next insert labels --> call function that iterates through labelTimes and if time > 0
     // find corresponding label name, add time in h and m to inputs that user can change (update)

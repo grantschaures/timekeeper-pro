@@ -2021,6 +2021,8 @@ header {
 
 #labelNameColumn {
     margin-top: 5px;
+
+    /* border: 1px solid cyan; */
 }
 
 .editSessionLabelName {

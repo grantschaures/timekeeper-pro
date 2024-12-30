@@ -21,13 +21,13 @@ const sessionSchema = new Schema({
     endTime: { type: Date },
     timeZone: { type: String },
     totalDeepWork: { type: Number },
-    focusQualityV2: { type: Number },
-    focusQualityV5: { type: Number },
-    qualityAdjustedDeepWorkV2: { type: Number },
-    qualityAdjustedDeepWorkV5: { type: Number },
+    focusQualityV2: { type: Number }, // obsolete
+    focusQualityV5: { type: Number }, // obsolete
+    qualityAdjustedDeepWorkV2: { type: Number }, // obsolete
+    qualityAdjustedDeepWorkV5: { type: Number }, // obsolete
     totalDistractions: { type: Number },
     distractionTimesArr: [{ type: Date }],
-    distractionsPerIntervalArr: [{ type: Number }],
+    distractionsPerIntervalArr: [{ type: Number }], // obsolete
     deepWorkIntervals: [{ type: Number }],
     breakIntervals: [{ type: Number }],
     avgDeepWorkInterval: { type: Number },
