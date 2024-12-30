@@ -5,6 +5,7 @@ import { body, confirmLabelDeletionYesBtn, overlayExit, popupOverlay, subjective
 import { updateSessionSummaryData } from '../state/update-session-summary-data.js'; // minified
 import { deleteSession } from '../state/delete-session.js'; // minified
 import { getDeepWork } from './session-summary-chart.js'; // minified
+import { timeConvert } from "../modules/index-objects.js";
 
 // GLOBAL VARS
 let userSession;
@@ -26,7 +27,8 @@ let sessionEdits = {
     breakIntervalCount: null,
     hitTarget: null,
     perHourData: {},
-    labelTimes: {}
+    labelTimes: {},
+    edited: null
 }
 
 export function checkViewportWidth() {
@@ -115,12 +117,12 @@ document.addEventListener("stateUpdated", async function() {
         hideEditSessionPopup();
     })
     
-    editSessionSaveBtn.addEventListener('click', function() {
+    editSessionSaveBtn.addEventListener('click', async function() {
+        // also make necessary update changes to the database
+        await updateSessionWithEdits();
+
         // hide sessionToEditContainer
         hideEditSessionPopup();
-
-        // also make necessary update changes to the database
-        updateSessionWithEdits();
     })
 
     sessionViewCommentsTextArea.addEventListener('blur', function() {
@@ -207,7 +209,7 @@ document.addEventListener('mousemove', (event) => {
     }
 })
 
-function updateSessionWithEdits() {
+async function updateSessionWithEdits() {
     // console.log(userSession);
     // (1) derive the new session duration based on the new endTime
     let startTime = new Date(userSession.startTime);
@@ -335,10 +337,29 @@ function updateSessionWithEdits() {
 
     sessionEdits.perHourData = newPerHourData;
 
-    // (5) Label Time Edits
-    // I am having issues with getting the dynamically added input elements for each label
-    // What I'll need to do add id's to each input element (based on labelId),
-    // and store those id's somewhere to access here
+    // (5) Label Time Edits - issue solved!
+    let labelTimes = {};
+    labelHourColumn.childNodes.forEach((input) => {
+        let labelId = input.classList[1];
+        let labelTime = parseInt(input.value, 10) * timeConvert.msPerHour; // convert hours to ms
+        labelTimes[labelId] = labelTime;
+    })
+    
+    labelMinColumn.childNodes.forEach((input) => {
+        let labelId = input.classList[1];
+        let labelTime = parseInt(input.value, 10) * timeConvert.msPerMin; // convert minutes to ms
+        labelTimes[labelId] += labelTime;
+    })
+
+    labelSecColumn.childNodes.forEach((input) => {        
+        let labelId = input.classList[1];
+        let labelTime = parseInt(input.value, 10) * timeConvert.msPerSec; // convert seconds to ms
+        labelTimes[labelId] += labelTime;
+    })
+
+    sessionEdits.labelTimes = labelTimes;
+
+    sessionEdits.edited = true;
 
 
 }
@@ -416,6 +437,7 @@ function displayEditSessionLabels(filteredTimes) {
         labelMinInput.max = '59';
         labelMinInput.step = '1';
         labelMinColumn.appendChild(labelMinInput);
+
 
         // (3.4) create label sec input element
         let labelSecInput = document.createElement('input');

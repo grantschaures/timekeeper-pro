@@ -48,7 +48,8 @@ const sessionSchema = new Schema({
         of: hourlyData,
         default: {}
     },
-    sessionSummary: { type: sessionSummarySchema, default: {} } // Ensure sessionSummary is always included
+    sessionSummary: { type: sessionSummarySchema, default: {} }, // Ensure sessionSummary is always included
+    edited: { type: Boolean, default: false }
 }, { collection: 'Sessions' });
 
 // Create the Session model
