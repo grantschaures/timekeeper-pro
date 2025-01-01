@@ -619,10 +619,10 @@ function handleLeftRightArrowKeys(event) {
                 fadeOutUIContainer(streaksContainer);
                 fadeOutUIContainer(darkLightThemeGUIContainer);
                 fadeOutUIContainer(displayGUIContainer);
+                subMainContainerTransition("none");
                 initializeNewMode(dashboardContainer);
                 isClickNotOnAboutElements(event, about_menu_container, aboutContainer, menuBtn, about_exit, reportIcon, reportPath);
                 isClickNotOnBlogElements(event, blogMenuContainer, blog_post_container, menuBtn, blog_exit);
-                subMainContainerTransition("none");
                 fadeOutAnimations(); // needs to execute first
                 setDinkleDoinkSetting("report"); // needs to execute second
                 
@@ -718,7 +718,7 @@ function initializeNewMode(containerType) {
         setTimeout(() => {
             containerType.style.opacity = 1;
         }, 0)
-    }, 250)
+    }, 150)
 }
 
 function resetMode(containerType) {
