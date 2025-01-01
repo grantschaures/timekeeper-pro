@@ -717,7 +717,7 @@ function initializeNewMode(containerType) {
         containerType.offsetHeight; // forcing reflow
         setTimeout(() => {
             containerType.style.opacity = 1;
-        }, 10)
+        }, 25)
     }, 150) // changed from 150
 }
 
