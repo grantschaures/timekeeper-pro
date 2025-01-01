@@ -398,7 +398,7 @@ main {
     margin-top: 25px;
 
     opacity: 0;
-    transition: opacity 1s ease-in-out;
+    transition: opacity 1s ease-in-out; /* Initial animation delay only */
     
     /* border: 3px solid black; */
     /* overflow-x: hidden; */
