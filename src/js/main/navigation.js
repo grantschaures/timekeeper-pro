@@ -225,7 +225,6 @@ document.addEventListener("stateUpdated", function() {
     aboutIconSessionIntervalsChartBounds.addEventListener('click', function() {
         // bring up the demo picture illustrating the session intervals chart bounds
         showSessionIntervalsBoundsDemoPopup();
-        
     })
     
     // UPDATE FOR NEW OVERLAY POPUP WINDOWS
@@ -719,7 +718,7 @@ function initializeNewMode(containerType) {
         setTimeout(() => {
             containerType.style.opacity = 1;
         }, 0)
-    }, 100)
+    }, 250)
 }
 
 function resetMode(containerType) {
