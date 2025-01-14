@@ -13,7 +13,7 @@ export async function deleteUserAccount() {
             console.error('Response body:', errorText);
             throw new Error('Network response was not ok');
         } else {
-            alert("Your account and all associated data has been deleted.");
+            alert("Your account and all associated data have been deleted.");
             const data = await response.json();
             console.log("Account deleted successfully:", data);
         }
