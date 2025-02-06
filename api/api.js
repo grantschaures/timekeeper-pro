@@ -52,7 +52,7 @@ router.post("/validateUser", loginLimiter, async function(req, res) {
     
     try {
         const user = await User.findOne({ email: email });
-        if (user && await bcrypt.compare(password, user.password)) {
+        if (user && bcrypt.compare(password, user.password)) {
             user.logins++;
             user.lastLogin = loginData;
             await user.save();
