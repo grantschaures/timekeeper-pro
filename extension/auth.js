@@ -25,6 +25,7 @@ router.post("/validateUser", async function(req, res) {
         const user = await User.findOne({ email: email });
         if (user && bcrypt.compare(password, user.password)) {
             beginSession(user, res);
+            console.log("User validated successfully");
 
         } else {
             // Authentication failed
@@ -184,7 +185,7 @@ router.post("/validateUser", async function(req, res) {
 //     }
 // });
 
-// This function sends the JWT within the cookie to the client browser
+// This function sends the JWT to the client browser
 function beginSession(user, res) {
     const SECRET_KEY = process.env.SECRET_KEY;
 
